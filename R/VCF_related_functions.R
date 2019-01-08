@@ -62,3 +62,29 @@ GetStrelkaVAF <-function(strelka.vcf) {
   return(vaf)
 }
 
+#' Add sequence context to a data frame with mutation records
+#'
+#' @param df An input data frame storing mutation records of a VCF file.
+#' @param seq A particular reference genome.
+#'
+#' @return A data frame with a new column added to the input data frame,
+#'     which contains sequence context information.
+#' @importFrom methods as
+#' @import BSgenome.Hsapiens.1000genomes.hs37d5
+#' @export
+AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
+
+  if (0 == nrow(df)) return(df)
+
+  # Create a GRanges object with range width equals to 21
+  Ranges <-
+    as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
+       "GRanges")
+
+  # Extract sequence context from the reference genome
+  df <- dplyr::mutate(df,
+                      seq.21context = BSgenome::getSeq(seq,
+                                                       Ranges,
+                                                       as.character = TRUE))
+  return(df)
+}
