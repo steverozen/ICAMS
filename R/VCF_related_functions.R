@@ -88,3 +88,49 @@ AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
                                                        as.character = TRUE))
   return(df)
 }
+
+#' Add transcript information to a data frame with mutation records
+#'
+#' @param df A data frame storing mutation records of a VCF file.
+#' @param trans.ranges A data.table with the genomic ranges and
+#'     strands of transcripts.
+#' @import data.table
+#' @return A data frame with new columns added to the input data frame,
+#'     which contain the mutated gene's name, range and strand information.
+#' @export
+AddTranscript <- function(df, trans.ranges) {
+  if (nrow(df) == 0) {
+    return(df)
+  }
+
+  # Find range overlaps between the df and trans.ranges
+  df1 <- data.table(df)
+  df1[, POS2 := POS]
+  dt <- foverlaps(df1, trans.ranges,
+                  by.x = c("CHROM", "POS", "POS2"),
+                  type = "within", mult = "all")
+
+  # Get the lower and upper bounds of the gene location range
+  dt1 <- dt[, .(Start = min(chromStart), End = max(chromEnd),
+                Name = name[1], strand = strand[1]),
+            by = .(CHROM, ALT, POS)] # Note that is important to have
+  # ALT in the by list because in a few cases
+  # there are multiple ALT alleles at one POS.
+
+  # Swap gene location according to strand information
+  dt2 <- dt1[strand == "-", c("End", "Start") := .(Start, End)]
+
+  return(cbind(df, dt2))
+}
+
+#' Read a list of VCF files from path
+#'
+#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#'
+#' @return A list of vcfs from vector.of.file.paths.
+#' @export
+ReadListOfVCFs <- function(vector.of.file.paths) {
+  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaVCF)
+  names(vcfs) <- vector.of.file.paths
+  return(vcfs)
+}
