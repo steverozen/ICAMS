@@ -10,10 +10,15 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    data.table
+    data.table,
+    dplyr,
+    BSgenome,
+    BSgenome.Hsapiens.1000genomes.hs37d5,
+    methods
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+
