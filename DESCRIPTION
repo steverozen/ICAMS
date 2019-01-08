@@ -1,7 +1,7 @@
 Package: ICAMS
 Type: Package
 Title: In-depth Characterization and Analysis of Mutational Signatures
-Version: 0.1.0
+Version: 0.0.0.9000
 Author: Steve Rozen, Nanhai Jiang, Arnoud Boot
 Maintainer: Steve Rozen <steverozen@gmail.com>
 Description: This package has functions to read in VCF files from Strelka and GATK, 
@@ -12,4 +12,8 @@ LazyData: true
 Imports:
     data.table
 RoxygenNote: 6.1.1
-
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
