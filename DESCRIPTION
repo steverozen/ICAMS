@@ -28,5 +28,3 @@ Collate:
     'utilities.R'
     'VCF_related_functions.R'
     'SNS_related_functions.R'
-    'data.R'
-    'dependencies.R'
