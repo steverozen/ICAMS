@@ -12,8 +12,10 @@ LazyData: true
 Imports:
     data.table,
     dplyr,
+    Biostrings,
     BSgenome,
     BSgenome.Hsapiens.1000genomes.hs37d5,
+    GenomicRanges,
     methods
 Depends: R (>= 2.10)
 RoxygenNote: 6.1.1
@@ -22,4 +24,9 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-
+Collate: 
+    'utilities.R'
+    'VCF_related_functions.R'
+    'SNS_related_functions.R'
+    'data.R'
+    'dependencies.R'
