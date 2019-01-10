@@ -132,6 +132,7 @@ AddTranscript <- function(df, trans.ranges) {
 #' @import data.table
 #' @return TODO
 #' @export
+# TODO(steve) add average VAF
 MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
   tmpvcf <- SNS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
   DNS.range.dt <- as.data.table(DNS.range.df)
@@ -312,3 +313,4 @@ ReadListOfVCFs <- function(vector.of.file.paths) {
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
 }
+
