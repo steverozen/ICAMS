@@ -16,7 +16,8 @@ Imports:
     BSgenome,
     BSgenome.Hsapiens.1000genomes.hs37d5,
     GenomicRanges,
-    methods
+    methods,
+    RColorBrewer
 Depends: R (>= 2.10)
 RoxygenNote: 6.1.1
 Suggests: 
@@ -25,6 +26,14 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Collate: 
-    'utilities.R'
+    'utility_functions.R'
     'VCF_related_functions.R'
+    'DNS_related_functions.R'
+    'INDELS_related_functions.R'
     'SNS_related_functions.R'
+    'catalog_related_functions.R'
+    'plot_DNS_catalog.R'
+    'plot_INDELS_catalog.R'
+    'plot_SNS_catalog.R'
+    'read_write_catalog.R'
+    'test_functions.R'
