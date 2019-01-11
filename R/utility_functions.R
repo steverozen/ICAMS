@@ -55,10 +55,10 @@ CreateTransRange <- function(path) {
   dt2 <- dt1[idx, ]
 
   # Split the 9th column of dt2 according to separator ";" and get a list
-  list <- str_split(dt2$V9, ";")
+  list <- stringr::str_split(dt2$V9, ";")
 
   # Extract the character string which contains gene name information
-  names <- sapply(list, str_subset, "gene_name")
+  names <- sapply(list, stringr::str_subset, "gene_name")
 
   # Remove the "gene_name" characters
   names <- sub(pattern = "gene_name.", replacement = "", names)
@@ -166,7 +166,7 @@ RevcDNS144 <- function(mutstring) {
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #' @export
 ReadTranscriptRanges <- function(path) {
-  d <- read.table(path)
+  d <- utils::read.table(path)
   colnames(d) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
   bed1 <- data.table(d)
   data.table::setkeyv(bed1, c("chrom", "chromStart", "chromEnd"))
@@ -182,7 +182,7 @@ ReadTranscriptRanges <- function(path) {
 #' @export
 ReadBedTranscriptRanges <- function(path) {
   names <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand")
-  bed <- read.table(path, col.names = names, as.is = TRUE)
+  bed <- utils::read.table(path, col.names = names, as.is = TRUE)
 
   # Delete duplicate entries in the BED file
   bed <- dplyr::distinct(bed, chrom, chromStart, chromEnd, strand, .keep_all = TRUE)
