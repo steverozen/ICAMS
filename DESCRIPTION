@@ -15,9 +15,14 @@ Imports:
     Biostrings,
     BSgenome,
     BSgenome.Hsapiens.1000genomes.hs37d5,
+    graphics,
+    grDevices,
     GenomicRanges,
     methods,
-    RColorBrewer
+    RColorBrewer,
+    RCurl,
+    stringr,
+    utils
 Depends: R (>= 2.10)
 RoxygenNote: 6.1.1
 Suggests: 
@@ -30,6 +35,7 @@ Collate:
     'VCF_related_functions.R'
     'DNS_related_functions.R'
     'INDELS_related_functions.R'
+    'PCAWG7_interaction_functions.R'
     'SNS_related_functions.R'
     'catalog_related_functions.R'
     'plot_DNS_catalog.R'
