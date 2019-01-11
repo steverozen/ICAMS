@@ -11,7 +11,7 @@
 #'   graph will plot the occurrences of the insertion and deletion mutation
 #'   types in the sample. If type = "signature", the graph will plot mutation
 #'   signatures of the sample. The default value for type is "counts".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCatID <- function(catalog, id, type = "counts"){
@@ -147,10 +147,10 @@ PlotCatID <- function(catalog, id, type = "counts"){
 CatIDToPdf <-
   function(catalog, name, id = colnames(catalog), type = "counts") {
     # Setting the width and length for A4 size plotting
-    cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
     n <- ncol(catalog)
-    par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
+    graphics::par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
 
     # Do recycling of the function parameters if a vector
     # with length more than one is not specified by the user.
@@ -163,7 +163,7 @@ CatIDToPdf <-
                 id = id[i],
                 type = type[i])
     }
-    invisible(dev.off())
+    invisible(grDevices::dev.off())
 
     invisible(TRUE)
   }
