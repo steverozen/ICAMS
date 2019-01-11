@@ -1,10 +1,32 @@
-#' Read 96-channel spectrum or signatures in PCAWG7 format
+#' Read Catalog Functions
 #'
+#' Read a catalog in PCAWG7 format from path
+#'
+#' \code{ReadCat96} Read a 96 SNS catalog from path
+#'
+#' \code{ReadCat192} Read a 192 SNS catalog from path
+#'
+#' \code{ReadCat1536} Read a 1536 SNS catalog from path
+#'
+#' \code{ReadCatDNS78} Read a 78 DNS catalog from path
+#'
+#' \code{ReadCatDNS144} Read a 144 DNS catalog from path
+#'
+#' \code{ReadCatQUAD136} Read a 136 QUAD catalog from path
+#'
+#' \code{ReadCatID} Read a ID (insertion/deletion) catalog from path
+#'
+#' Please take note that the deletions Repeat Size ranges from 0 to 5+
+#' in the catalog, but for plotting and end user documentation
+#' it ranges from 1 to 6+.
 #' @param path Path to a catalog on disk in the "PCAWG7" format.
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
-#'
 #' @return A catalog in canonical in-memory format.
+#' @name ReadCat
+NULL
+
+#' @rdname ReadCat
 #' @export
 ReadCat96 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -27,13 +49,8 @@ ReadCat96 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a 192 SNS catalog from path
-#'
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
+#' @rdname ReadCat
 #' @include utility_functions.R
-#' @return A catalog in canonical in-memory format.
 #' @export
 ReadCat192 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -68,13 +85,7 @@ ReadCat192 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a 1536 SNS catalog from path
-#'
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#'
-#' @return A catalog in canonical in-memory format.
+#' @rdname ReadCat
 #' @export
 ReadCat1536 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -97,13 +108,7 @@ ReadCat1536 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a 78 DNS catalog from path
-#'
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#'
-#' @return A catalog in canonical in-memory format.
+#' @rdname ReadCat
 #' @export
 ReadCatDNS78 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -150,13 +155,7 @@ ReadCatDNS78 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a 144 DNS catalog from path
-#'
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#'
-#' @return A catalog in canonical in-memory format.
+#' @rdname ReadCat
 #' @export
 ReadCatDNS144 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -176,13 +175,7 @@ ReadCatDNS144 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a 136 QUAD catalog from path
-#'
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#'
-#' @return A catalog in canonical in-memory format.
+#' @rdname ReadCat
 #' @export
 ReadCatQUAD136 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -201,16 +194,7 @@ ReadCatQUAD136 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Read a ID (insertion/deletion) catalog from path
-#'
-#' Please take note that the deletions Repeat Size ranges from 0 to 5+
-#' in the catalog, but for plotting and end user documentation
-#' it ranges from 1 to 6+.
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#'
-#' @return A catalog in canonical in-memory format.
+#' @rdname ReadCat
 #' @export
 ReadCatID <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
