@@ -11,7 +11,7 @@
 #'   "density".
 #' @param abundance A matrix containing trinucleotide abundance information. To
 #'   be used only when type = "density".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
@@ -170,10 +170,10 @@ Cat96ToPdf <-
   function(catalog, name, id = colnames(catalog), type = "density",
            abundance = NULL) {
     # Setting the width and length for A4 size plotting
-    cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
     n <- ncol(catalog)
-    par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+    graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
     # Do recycling of the function parameters if a vector
     # with length more than one is not specified by the user.
@@ -187,7 +187,7 @@ Cat96ToPdf <-
                 type = type[i],
                 abundance = abundance)
     }
-    invisible(dev.off())
+    invisible(grDevices::dev.off())
     invisible(TRUE)
   }
 
@@ -207,7 +207,7 @@ Cat96ToPdf <-
 #'   to the default.
 #' @param abundance A matrix containing trinucleotide abundance and strand
 #'   information, to be used only when type = "density".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCat192 <- function(catalog, id, type = "counts",
@@ -347,10 +347,10 @@ PlotCat192 <- function(catalog, id, type = "counts",
 Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
                         type = "counts", cex = 0.8, abundance = NULL) {
   # Setting the width and length for A4 size plotting
-  cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
-  par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
+  graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
@@ -363,7 +363,7 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
                id = id[i], type = type[i],
                cex = cex, abundance = abundance)
   }
-  invisible(dev.off())
+  invisible(grDevices::dev.off())
   invisible(TRUE)
 }
 
@@ -384,7 +384,7 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
 #'   to the default.
 #' @param abundance A matrix containing trinucleotide abundance and strand
 #'   information, to be used only when type = "density".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCat192Strand <- function(catalog, id, type = "counts",
@@ -493,10 +493,10 @@ PlotCat192Strand <- function(catalog, id, type = "counts",
 Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
                               type = "counts", cex = 1, abundance = NULL) {
   # Setting the width and length for A4 size plotting
-  cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
-  par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+  graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
@@ -509,7 +509,7 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
                      id = id[i], type = type[i],
                      cex = cex, abundance = abundance)
   }
-  invisible(dev.off())
+  invisible(grDevices::dev.off())
 
   invisible(TRUE)
 }
@@ -527,7 +527,7 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
 #' @param scale A logical value indicating whether to do color scaling for all
 #'   mutation types.
 #' @param abundance A matrix containing pentanucleotide abundance information.
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
@@ -539,7 +539,7 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
 
   # Define the theme color for plotting
   theme.col <- "darkgreen"
-  colPal <- colorRampPalette(c("white", theme.col))
+  colPal <- grDevices::colorRampPalette(c("white", theme.col))
 
   scale.col <- function(x, x.max) {
     idx <- round(x / x.max * 256)
@@ -596,8 +596,8 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
   rates$minus1bs <- substr(mut.type, 2, 2)
   rates$plus1bs <- substr(mut.type, 4, 4)
   rates$plus2bs <- substr(mut.type, 5, 5)
-  rates <- dplyr::arrange(rates, ref2alt, desc(minus1bs), desc(minus2bs),
-                   plus1bs, plus2bs)
+  rates <- dplyr::arrange(rates, ref2alt, dplyr::desc(minus1bs),
+                          dplyr::desc(minus2bs), plus1bs, plus2bs)
   plot.order <- rates$mut.type
   rates <- as.matrix(rates[, 1])
   rownames(rates) <- plot.order
@@ -621,7 +621,7 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
       max.col <- "darkgreen"
     }
 
-    col.ref <- colorRampPalette(c("white", max.col))(256)
+    col.ref <- grDevices::colorRampPalette(c("white", max.col))(256)
 
     # Draw the 6 plots on page one by one
     if (i == 1) {
@@ -691,7 +691,7 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
 #' @export
 Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
 
-  cairo_pdf(name, width = 11.6929, height = 9.2677, onefile = TRUE)
+  grDevices::cairo_pdf(name, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
 
@@ -700,7 +700,7 @@ Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
                 id = id[i],
                 abundance = abundance)
   }
-  invisible(dev.off())
+  invisible(grDevices::dev.off())
 
   invisible(TRUE)
 }
