@@ -12,7 +12,7 @@
 #'   "density".
 #' @param abundance A matrix containing dinucleotide abundance information, to
 #'   be used only when type = "density".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCatDNS78 <- function(catalog, id, type = "density", abundance = NULL) {
@@ -139,10 +139,10 @@ CatDNS78ToPdf <-
   function(catalog, name, id = colnames(catalog),
            type = "density", abundance = NULL) {
     # Setting the width and length for A4 size plotting
-    cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
     n <- ncol(catalog)
-    par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
+    graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
 
     # Do recycling of the function parameters if a vector
     # with length more than one is not specified by the user.
@@ -156,7 +156,7 @@ CatDNS78ToPdf <-
                    type = type[i],
                    abundance = abundance)
     }
-    invisible(dev.off())
+    invisible(grDevices::dev.off())
 
     invisible(TRUE)
   }
@@ -179,7 +179,7 @@ CatDNS78ToPdf <-
 #'   to the default.
 #' @param abundance A matrix containing dinucleotide abundance and strand
 #'   information, to be used only when type = "density".
-#'
+#' @import graphics
 #' @return invisible(TRUE)
 #' @export
 PlotCatDNS144 <- function(catalog, id, type = "counts",
@@ -291,10 +291,10 @@ PlotCatDNS144 <- function(catalog, id, type = "counts",
 CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
                            type = "counts", cex = 1, abundance = NULL) {
   # Setting the width and length for A4 size plotting
-  cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
-  par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+  graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
@@ -307,7 +307,7 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
                   id = id[i], type = type[i],
                   cex = cex, abundance = abundance)
   }
-  invisible(dev.off())
+  invisible(grDevices::dev.off())
 
   invisible(TRUE)
 }
