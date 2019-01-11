@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{CreateOneColIDCatalog}
 \alias{CreateOneColIDCatalog}
-\title{Create mutation catalog for *one* sample from a Variant Call Format (VCF)
+\title{Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 file}
 \usage{
 CreateOneColIDCatalog(ID.vcf, SBS.vcf)
@@ -10,7 +10,7 @@ CreateOneColIDCatalog(ID.vcf, SBS.vcf)
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the AddSequence
   and AddTranscript functions. It must only contain indels and must *not*
-  contain SBS (single base substituions), DBS or triplet base substituions
+  contain SBS (single base substituions), DBS, or triplet base substituions
   etc.
 
   * Sequence must already have been added to ID.vcf
@@ -27,13 +27,14 @@ SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 sample.}
 }
 \value{
-Returns a list with two elemsents:
-  ID.cat:   A matrix containing the mutation catalog information.
-  Problems: Locations of neighboring indels or indels neighboring SBS.
+A list with two elemsents:
+  ID.cat:   A 1-column matrix containing the mutation catalog information.
+  problems: Locations of neighboring indels or indels neighboring SBS.
             In the future we might handle these depending on what we
             find in the indel calls from different variant callers.
+TODO(steve) Is problems implemented?
 }
 \description{
-Create mutation catalog for *one* sample from a Variant Call Format (VCF)
+Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 file
 }

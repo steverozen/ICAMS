@@ -2,29 +2,29 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindMaxRepeatDel}
 \alias{FindMaxRepeatDel}
-\title{FindMaxRepeatDel}
+\title{Return the number of repeat units in which a deletion
+is embedded. TODO(Steve): check this statement; what
+if there is no repeat?}
 \usage{
 FindMaxRepeatDel(context, q, pos)
 }
 \arguments{
-\item{context}{TODO}
+\item{context}{A string that embeds \code{q} at position \code{pos}}
 
-\item{q}{TODO}
+\item{q}{A substring of \code{context} at \code{pos} to \code{pos + nchar(q) - 1}}
 
-\item{pos}{TODO}
+\item{pos}{The position of \code{q}}
 }
 \value{
-TODO
+The number of repeat units in which \code{q} is embedded.
 }
 \description{
-q is a substring of context at pos to pos + len(q) - 1
-}
-\details{
 e.g. q = ac
 pos = 3
 context = xyaczt
 pos         ^
-
-for deletion, if substr(context, pos, pos + len(q) - 1) != q
-there is an error.
+Return 1
+}
+\details{
+If \code{substr(context, pos, pos + nchar(q) - 1) != q} then stop
 }

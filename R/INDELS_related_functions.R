@@ -45,25 +45,25 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
   return(df)
 }
 
-#' FindMaxRepeatDel
-#'
-#' q is a substring of context at pos to pos + len(q) - 1
-#'
+#' Return the number of repeat units in which a deletion
+#' is embedded. TODO(Steve): check this statement; what
+#' if there is no repeat?
 #'
 #' e.g. q = ac
 #' pos = 3
 #' context = xyaczt
 #' pos         ^
+#' Return 1
 #'
-#' for deletion, if substr(context, pos, pos + len(q) - 1) != q
-#' there is an error.
-#' @param context TODO
-#' @param q TODO
-#' @param pos TODO
+#' If \code{substr(context, pos, pos + nchar(q) - 1) != q} then stop
 #'
-#' @return TODO
-#' @export
+#' @param context A string that embeds \code{q} at position \code{pos}
+#' @param q A substring of \code{context} at \code{pos} to \code{pos + nchar(q) - 1}
+#' @param pos The position of \code{q}
+#'
+#' @return The number of repeat units in which \code{q} is embedded.
 FindMaxRepeatDel <- function(context, q, pos) {
+  n <- nchar(q)
   stopifnot(substring(context, pos, pos + n - 1) == q)
 
   # Look left
@@ -215,7 +215,7 @@ Canonicalize1DEL <- function(ref, alt, context) {
   if ("-" == alt) {
     alt <- ""
   }
-  # TODO(steve): insert code to deal with the case that ref and alt shae a 1-base prefix
+  # TODO(steve): insert code to deal with the case that ref and alt share a 1-base prefix
   if (nchar(alt) > 0) {
     cat("possible complex indel:", ref, alt, context, "\n")
     stop()
@@ -272,12 +272,12 @@ CanonicalizeID <- function(ref, alt, context) {
   return(ret)
 }
 
-#' Create mutation catalog for *one* sample from a Variant Call Format (VCF)
+#' Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 #' file
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the AddSequence
 #'   and AddTranscript functions. It must only contain indels and must *not*
-#'   contain SBS (single base substituions), DBS or triplet base substituions
+#'   contain SBS (single base substituions), DBS, or triplet base substituions
 #'   etc.
 #'
 #'   * Sequence must already have been added to ID.vcf
@@ -287,45 +287,77 @@ CanonicalizeID <- function(ref, alt, context) {
 #'   A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
 #'   arise. In PCAWG, overlapping indel/SBS calls from different callers were
 #'   included in the indel VCFs.
+#'
 #' @param SBS.vcf An in-memory VCF as a data frame. Because we have to work with
 #'   some PCAWG data, we will look for neigboring indels and indels adjoining
 #'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 #'   sample.
 #'
-#' @return Returns a list with two elemsents:
-#'   ID.cat:   A matrix containing the mutation catalog information.
-#'   Problems: Locations of neighboring indels or indels neighboring SBS.
+#' @return A list with two elemsents:
+#'   ID.cat:   A 1-column matrix containing the mutation catalog information.
+#'   problems: Locations of neighboring indels or indels neighboring SBS.
 #'             In the future we might handle these depending on what we
 #'             find in the indel calls from different variant callers.
-#' @export
+#' TODO(steve) Is problems implemented?
 CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
   # TODO(steve): more checking of the ID VCF here
   stopifnot(nchar(SBS.vcf$ALT) == 1)
   stopifnot(nchar(SBS.vcf$REF) == 1)
-  stopifnot("seq.21context" %in% names(ID$vcf))
+  stopifnot("seq.21context" %in% names(ID.vcf))
 
+  canon.ID <- CanonicalizeID(ID.vcf$REF, ID.vcf$ALT, ID.vcf$seq.21context)
 
-  # START here
+  # Create the ID catalog matrix
+  tab.ID <- table(canon.ID)
 
-  canon.ID <- CanonicalizeID(vcf$REF, vcf$ALT, vcf$seq.21context)
+  row.order <- data.table(rn = .catalog.row.order.ID) # TODO(steve): can reduce use of data.table?
 
-
-
-
-  # Create the DBS catalog matrix
-  tab.DBS <- table(canon.DBS)
-
-  row.order <- data.table(rn = .catalog.row.order.DBS)
-  DBS.dt <- as.data.table(tab.DBS)
-  # DBS.dt has two columns, names cannon.dt (from the table() function
+  ID.dt <- as.data.table(tab.ID)
+  # ID.dt has two columns, names cannon.dt (from the table() function
   # and N (the count)
 
-  DBS.dt2 <-
-    merge(row.order, DBS.dt, by.x="rn", by.y="canon.DBS", all = TRUE)
-  DBS.dt2[ is.na(N) , N := 0]
-  stopifnot(unlist(DBS.dt2$rn) == .catalog.row.order.DBS)
+  ID.dt2 <-
+    merge(row.order, ID.dt, by.x="rn", by.y="canon.ID", all = TRUE)
+  ID.dt2[ is.na(N) , N := 0]
+  stopifnot(unlist(ID.dt2$rn) == .catalog.row.order.ID)
 
-  DBS.mat <- as.matrix(DBS.dt2[ , 2])
-  rownames(DBS.mat) <- DBS.dt2$rn
-  return(DBS.mat)
+  ID.mat <- as.matrix(ID.dt2[ , 2])
+  rownames(ID.mat) <- ID.dt2$rn
+  return(ID.mat)
+}
+
+
+if (FALSE) {
+  TestFindMaxRepeatDel <- function() {
+    FindMaxRepeatDel("abcabc", "abc", 1)
+    FindMaxRepeatDel("abc", "abc", 1)
+    FindMaxRepeatDel("abcabc", "abc", 4)
+    FindMaxRepeatDel("abcabcabc", "abc", 4)
+    FindMaxRepeatDel("abcxyx", "abc", 4)
+    FindMaxRepeatDel("xyzxyz", "abc", 4)
+    FindMaxRepeatDel("xyzabcxyz", "abc", 4)
+    FindMaxRepeatDel("xxxaaayyy", "a", 4)
+    FindMaxRepeatDel("xxxaaayyy", "a", 3)
+    FindMaxRepeatDel("xxxaaayyy", "a", 2)
+    FindMaxRepeatDel("xxxaaayyy", "a", 7)
+    FindMaxRepeatDel("xxxaaayyy", "a", 8)
+
+    TestFindMaxRepeatIns <- function() {
+      stop() # totally broken
+      FindMaxRepeatIns("abcabc", "abc", 1)
+      FindMaxRepeatIns("abc", "abc", 1)
+      FindMaxRepeatIns("abcabc", "abc", 4)
+      FindMaxRepeatIns("abcabcabc", "abc", 4)
+      FindMaxRepeatIns("abcxyx", "abc", 4)
+      FindMaxRepeatIns("xyzxyz", "abc", 4)
+      FindMaxRepeatIns("xyzabcxyz", "abc", 4)
+      FindMaxRepeatIns("xxxaaayyy", "a", 4)
+      FindMaxRepeatIns("xxxaaayyy", "a", 3)
+      FindMaxRepeatIns("xxxaaayyy", "a", 2)
+      FindMaxRepeatIns("xxxaaayyy", "a", 7)
+      FindMaxRepeatIns("xxxaaayyy", "a", 8)
+    }
+
+  }
+
 }
