@@ -208,7 +208,7 @@ FindMaxRepeatIns <- function(context, q, pos) {
 #' @param ref TODO
 #' @param alt TODO
 #' @param context TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 Canonicalize1DEL <- function(ref, alt, context) {
@@ -231,7 +231,7 @@ Canonicalize1DEL <- function(ref, alt, context) {
 #' @param ref TODO
 #' @param alt TODO
 #' @param context TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 Canonicalize1INS <- function(ref, alt, context) {
@@ -243,7 +243,7 @@ Canonicalize1INS <- function(ref, alt, context) {
 #' @param ref TODO
 #' @param alt TODO
 #' @param context TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 Canonicalize1ID <- function(ref, alt, context) {
@@ -264,7 +264,7 @@ Canonicalize1ID <- function(ref, alt, context) {
 #' @param ref TODO
 #' @param alt TODO
 #' @param context TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 CanonicalizeID <- function(ref, alt, context) {
