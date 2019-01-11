@@ -5,7 +5,7 @@ NULL
 #'
 #' @param ref.vec TODO
 #' @param alt.vec TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 CanonicalizeDNS <- function(ref.vec, alt.vec) {
@@ -31,7 +31,7 @@ CanonicalizeDNS <- function(ref.vec, alt.vec) {
 #' CanonicalizeQUAD
 #'
 #' @param quad TODO
-#'
+#' @keywords internal
 #' @return TODO
 #' @export
 CanonicalizeQUAD <- function(quad) {
