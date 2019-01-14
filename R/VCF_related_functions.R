@@ -1,3 +1,6 @@
+#' @include utility_functions.R
+NULL
+
 #' Read in the data lines of a Variant Call Format (VCF) file
 #' @importFrom utils read.csv
 #' @param path The name/path of the VCF file, or a complete URL.
@@ -22,7 +25,7 @@ ReadStrelkaVCF <- function(path) {
 
   df1$POS <- as.integer(df1$POS)
   df1$VAF <- GetStrelkaVAF(df1)
-  return(df1)
+  return(StandardChromName(df1))
 }
 
 #' Extract the VAFs (variant allele frequencies) from a VAF created by
