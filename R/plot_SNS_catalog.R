@@ -308,6 +308,48 @@ Cat96ToPdf <-
     invisible(TRUE)
   }
 
+#' Plot the SNS 96 mutation catalog of different samples to a PDF file
+#'
+#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
+#'   while its columns contain the counts of each mutation type from different
+#'   samples.
+#' @param name The name of the PDF file to be produced.
+#' @param id A vector containing the ID information of different samples.
+#' @param type A vector of values indicating the type of plot for each sample.
+#'   If type = "density", the graph will plot the rates of mutations per million
+#'   trinucleotides for each mutation type. If type = "counts", the graph will
+#'   plot the occurrences of the 96 mutation types in the sample. If type =
+#'   "signature", the graph will plot mutation signatures of the sample. The
+#'   default value for type is "density".
+#' @param abundance A matrix containing trinucleotide abundance information. To
+#'   be used only when type = "density".
+#' @return invisible(TRUE)
+#' @export
+Cat96ToPdfNew <-
+  function(catalog, name, id = colnames(catalog), type = "density",
+           abundance = NULL) {
+    # Setting the width and length for A4 size plotting
+    grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+
+    n <- ncol(catalog)
+    graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+
+    # Do recycling of the function parameters if a vector
+    # with length more than one is not specified by the user.
+    if (n > 1 && length(type) == 1) {
+      type <- rep(type, n)
+    }
+
+    for (i in 1 : n) {
+      PlotCat96New(catalog[, i, drop = FALSE],
+                   id = id[i],
+                   type = type[i],
+                   abundance = abundance)
+    }
+    invisible(grDevices::dev.off())
+    invisible(TRUE)
+  }
+
 #' Plot the SNS 192 mutation catalog of one sample
 #'
 #' @param catalog A matrix whose rownames indicate the 192 SNS mutation types
