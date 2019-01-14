@@ -15,23 +15,6 @@
 #' @return invisible(TRUE)
 #' @export
 PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
-  # Plot the SNS 96 mutation catalog of one sample.
-  #
-  # Args:
-  #   catalog:   A matrix whose rownames indicate the 96 SNS mutation types
-  #              while its columns contain the counts of each mutation type.
-  #   id:        The ID information of the sample which has mutations.
-  #   type:      A value indicating the type of the graph.
-  #              If type = "density", the graph will plot the rates of
-  #              mutations per million trinucleotides for each mutation type.
-  #              If type = "counts", the graph will plot the occurrences of
-  #              the 96 mutation types in the sample.
-  #              If type = "signature", the graph will plot mutation
-  #              signatures of the sample.
-  #              The default value for type is "density".
-  #   abundance: A matrix containing trinucleotide abundance information.
-  #              To be used only when type = "density".
-
   stopifnot(dim(catalog) == c(96, 1))
   stopifnot(rownames(catalog) == .catalog.row.order96)
 
