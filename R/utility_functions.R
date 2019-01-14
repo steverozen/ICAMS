@@ -75,9 +75,9 @@ CreateTransRange <- function(path) {
 
 #' PyrTri
 #'
-#' @param mutstring a mutation string
+#' @param mutstring TODO
 #'
-#' @return a mutation string
+#' @return TODO
 #' @export
 #' @keywords internal
 PyrTri <- function(mutstring) {
@@ -94,9 +94,9 @@ PyrTri <- function(mutstring) {
 
 #' PyrPenta
 #'
-#' @param mutstring a mutation string
+#' @param mutstring TODO
 #'
-#' @return a mutation string
+#' @return TODO
 #' @export
 #' @keywords internal
 PyrPenta <- function(mutstring) {
@@ -128,9 +128,9 @@ revc <- function(string.vec) {
 
 #' RevcSNS96
 #'
-#' @param mutstring a mutation string
+#' @param mutstring TODO
 #'
-#' @return a mutation string
+#' @return TODO
 #' @export
 RevcSNS96 <- function(mutstring) {
   # TODO (steve) document
