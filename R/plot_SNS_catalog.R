@@ -132,6 +132,140 @@ PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
   invisible(TRUE)
 }
 
+#' Plot the SNS 96 mutation catalog of one sample
+#'
+#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
+#'   while its columns contain the counts of each mutation type.
+#' @param id The ID information of the sample which has mutations.
+#' @param type A value indicating the type of the graph. If type = "density",
+#'   the graph will plot the rates of mutations per million trinucleotides for
+#'   each mutation type. If type = "counts", the graph will plot the occurrences
+#'   of the 96 mutation types in the sample. If type = "signature", the graph
+#'   will plot mutation signatures of the sample. The default value for type is
+#'   "density".
+#' @param abundance A matrix containing trinucleotide abundance information. To
+#'   be used only when type = "density".
+#' @import graphics
+#' @return invisible(TRUE)
+#' @export
+PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
+  stopifnot(dim(catalog) == c(96, 1))
+  stopifnot(rownames(catalog) == .catalog.row.order96)
+
+  class.col <- c("#0000ff",  # dark blue
+                 "#000000",  # black
+                 "#ff4040",  # red
+                 "#838383",  # grey
+                 "#40ff40",  # green
+                 "#ff667f")  # pink
+
+  cols <- rep(class.col, each = 16)
+  maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+  num.classes <- length(catalog)
+
+  if (type == "density") {
+    # Calculate rate of mutations per million trinucleotides for the catalog
+    rate <- double(96)
+    for (i in 1 : 96) {
+      rate[i] <-
+        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3), ]
+    }
+
+    # Get ylim
+    ymax <- max(rate)
+
+    # Barplot
+    bp <- barplot(rate, xaxt = "n", yaxt = "n", xaxs = "i",
+                  xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
+                  col = cols, ylab = "mut/million")
+
+    # Write the mutation counts on top of graph
+    for (i in 1 : 6) {
+      j <- 13 + 16 * (i - 1)
+      k <- 1 + 16 * (i - 1)
+      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
+           xpd = NA, cex = 0.8)
+    }
+  } else if (type == "counts") {
+    # Get ylim
+    ymax <- max(catalog[, 1])
+
+    # Barplot
+    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
+                  xaxs = "i", lwd = 3, space = 1.35, border = NA,
+                  col = cols, ylab = "counts")
+
+    # Write the mutation counts on top of graph
+    for (i in 1 : 6) {
+      j <- 13 + 16 * (i - 1)
+      k <- 1 + 16 * (i - 1)
+      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
+           xpd = NA, cex = 0.8)
+    }
+  } else if (type == "signature") {
+    # Calculate mutation signatures of the input catalog
+    sig <- catalog / sum(catalog)
+
+    # Get ylim
+    ymax <- max(sig)
+
+    # Barplot
+    bp <- barplot(sig[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
+                  lwd = 3, space = 1.35, border = NA,
+                  col = cols, ylab = "proportion")
+  } else {
+    stop('Please specify the correct type: "density", "counts" or "signature"')
+  }
+
+  # Draw grid lines
+  segments(bp[1] - 1, seq(0, ymax, ymax/4), bp[num.classes] + 1,
+           seq(0, ymax, ymax/4), col = 'grey35', lwd = 0.25)
+
+  # Draw y axis
+  y.axis.values <- seq(0, ymax, ymax/4)
+  if (type != "counts") {
+    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+  } else {
+    y.axis.labels <- round(y.axis.values, 0)
+  }
+  text(-0.5, y.axis.values, labels = y.axis.labels,
+       las = 1, adj = 1, xpd = NA, cex = 0.8)
+
+  # Draw the ID information on top of graph
+  text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
+
+  # Draw the labels along x axis
+  xlabel.idx <- seq(1, 96, by = 4)
+  label <- c("A", "C", "G", "T")
+
+  # Draw the first line of x axis label
+  text(bp[xlabel.idx], -ymax / 7, labels = label,
+       cex = 0.7, adj = 0.5, xpd = NA)
+
+  x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
+            bp[xlabel.idx + 2], bp[xlabel.idx + 3])
+  y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.5, -ymax / 2.1)
+  # Draw the remaining lines of x axis labels
+  for (i in 1 : 4) {
+    text(x[[i]], y[i], labels = label[i], cex = 0.7, adj = 0.5, xpd = NA)
+  }
+
+  # Draw the text on the left plane
+  text(1.5, -ymax / 7, labels = "preceded by 5'",
+       pos = 2, xpd = NA, cex = 0.8)
+  text(1.5, -ymax / 3.5, labels = "followed by 3'",
+       pos = 2, xpd = NA, cex = 0.8)
+
+  # Draw horizontal lines and names of major mutation class on top of graph
+  x.left <- bp[seq(1, 81, 16)]
+  x.right <- bp[seq(16, 96, 16)]
+  rect(xleft = x.left, ymax * 1.28, xright = x.right, ymax * 1.3,
+       col = class.col, border = NA, xpd = NA, adj = 0.5)
+  text((x.left + x.right)/2, ymax * 1.38, labels = maj.class.names, xpd = NA)
+
+  invisible(TRUE)
+}
+
 #' Plot the SNS 96 mutation catalog of different samples to a PDF file
 #'
 #' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
