@@ -7,10 +7,10 @@
 RevcSNS96(mutstring)
 }
 \arguments{
-\item{mutstring}{a mutation string}
+\item{mutstring}{TODO}
 }
 \value{
-a mutation string
+TODO
 }
 \description{
 RevcSNS96

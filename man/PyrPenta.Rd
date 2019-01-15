@@ -7,10 +7,10 @@
 PyrPenta(mutstring)
 }
 \arguments{
-\item{mutstring}{a mutation string}
+\item{mutstring}{TODO}
 }
 \value{
-a mutation string
+TODO
 }
 \description{
 PyrPenta
