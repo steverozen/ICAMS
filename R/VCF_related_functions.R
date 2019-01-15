@@ -69,14 +69,13 @@ GetStrelkaVAF <-function(strelka.vcf) {
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
 #' @param seq A particular reference genome.
-#'
+#' @importFrom methods as
+#' @importFrom BSgenome getSeq
+#' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #' @return A data frame with a new column added to the input data frame,
 #'     which contains sequence context information.
-#' @importFrom methods as
-#' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #' @export
 AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
-
   if (0 == nrow(df)) return(df)
 
   # Create a GRanges object with range width equals to 21
@@ -86,9 +85,9 @@ AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
   # Extract sequence context from the reference genome
   df <- dplyr::mutate(df,
-                      seq.21context = BSgenome::getSeq(seq,
-                                                       Ranges,
-                                                       as.character = TRUE))
+                      seq.21context = getSeq(seq,
+                                             Ranges,
+                                             as.character = TRUE))
   return(df)
 }
 
@@ -163,6 +162,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #' @param vcf.df An in-memory data frame containing a VCF file contents.
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
 #' @import data.table
+#' @importFrom GenomicRanges reduce
 #' @return A list of 3 in-memory objects with the elements:
 #    SNS.vcf:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
 #    DNS.vcf:   Data frame of pure DNS mutations -- no SNS or 3+BS mutations
@@ -246,7 +246,7 @@ SplitSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   ranges <-
     as(data.frame(chrom = non.SNS$CHROM, start = non.SNS$LOW, end = non.SNS$HIGH),
        "GRanges")
-  rranges <- GenomicRanges::reduce(ranges) # Merge overlapping ranges
+  rranges <- reduce(ranges) # Merge overlapping ranges
   DNS.plus <- as.data.frame(rranges)
   if ((sum(DNS.plus$width) + num.SNS.out) != num.in) {
     if ((sum(DNS.plus$width) + num.SNS.out) > num.in) {
