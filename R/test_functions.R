@@ -553,6 +553,7 @@ TestSNSandDNSCat <- function() {
 
 #' This function is to make catalogs from the sample VCF files
 #' to compare with the expected catalog information
+#' @importFrom BSgenome.Hsapiens.1000genomes.hs37d5
 #' @keywords internal
 #' @export
 TestMakeCatalogFromSNSVCFs <- function() {
