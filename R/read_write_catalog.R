@@ -26,6 +26,34 @@
 #' @name ReadCat
 NULL
 
+#' Write Catalog Functions
+#'
+#' Write a mutation catalog to a file on disk
+#'
+#' \code{WriteCat96} Write a SNS 96 mutation catalog to a file on disk
+#'
+#' \code{WriteCat192} Write a SNS 192 mutation catalog to a file on disk
+#'
+#' \code{WriteCat1536} Write a SNS 1536 mutation catalog to a file on disk
+#'
+#' \code{WriteCatDNS78} Write a DNS 78 mutation catalog to a file on disk
+#'
+#' \code{WriteCatDNS144} Write a DNS 144 mutation catalog to a file on disk
+#'
+#' \code{WriteCatQUAD136} Write a 136 QUAD catalog from path
+#'
+#' \code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk
+#'
+#' Please take note that the deletions Repeat Size ranges from 0 to 5+
+#' in the catalog, but for plotting and end user documentation
+#' it ranges from 1 to 6+.
+#' @param ct A matrix of mutation catalog.
+#' @param path The path of the file to be written on disk.
+#' @param strict If TRUE, do additional checks on the input,
+#'   and stop if the checks fail.
+#' @name WriteCatalog
+NULL
+
 #' @rdname ReadCat
 #' @export
 ReadCat96 <- function(path, strict = TRUE) {
@@ -238,85 +266,47 @@ WriteCat <- function(ct, path, num.row, row.order, row.header, strict) {
   fwrite(cbind(row.header, DT), file = path)
 }
 
-#' Write a SNS 96 mutation catalog to a file on disk
-#'
-#' @param ct A matrix of SNS 96 mutation catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCat96 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 96, .catalog.row.order96, .ct.96.row.headers, strict)
 }
 
-#' Write a SNS 192 mutation catalog to a file on disk
-#'
-#' @param ct A matrix of SNS 192 mutation catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCat192 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 192, .catalog.row.order192, .ct.192.row.headers, strict)
 }
 
-#' Write a SNS 1536 mutation catalog to a file on disk
-#'
-#' @param ct A matrix of SNS 1536 mutation catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCat1536 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 1536, .catalog.row.order1536,
            .ct.1536.row.headers, strict)
 }
 
-#' Write a DNS 78 mutation catalog to a file on disk
-#'
-#' @param ct A matrix of DNS 78 mutation catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCatDNS78 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 78, .catalog.row.order.DNS.78,
            .ct.DNS78.row.headers, strict)
 }
 
-#' Write a DNS 144 mutation catalog to a file on disk
-#'
-#' @param ct A matrix of DNS 144 mutation catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCatDNS144 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 144, .catalog.row.order.DNS.144,
            .ct.DNS144.row.headers, strict)
 }
 
-#' Write a QUAD 136 catalog to a file on disk
-#'
-#' @param ct A matrix of QUAD 136 catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCatQUAD136 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 136, .catalog.row.order.QUAD.136,
            .ct.QUAD136.row.headers, strict)
 }
 
-#' Write a ID (insertion/deletion) catalog to a file on disk
-#'
-#' Please take note that the deletions Repeat Size ranges from 0 to 5+
-#' in the catalog, but for plotting and end user documentation
-#' it ranges from 1 to 6+.
-#' @param ct A matrix of ID (insertion/deletion) catalog.
-#' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#' @rdname WriteCatalog
 #' @export
 WriteCatID <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 83, .catalog.row.order.ID, .ct.ID.row.headers, strict)
