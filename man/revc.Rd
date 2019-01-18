@@ -16,4 +16,3 @@ A vector of type characters with the reverse complement of
 \description{
 Reverse complement every string in string.vec
 }
-\keyword{internal}

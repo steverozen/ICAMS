@@ -23,7 +23,7 @@
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
 #' @return A catalog in canonical in-memory format.
-#' @name ReadCat
+#' @name ReadCatalog
 NULL
 
 #' Write Catalog Functions
@@ -54,7 +54,7 @@ NULL
 #' @name WriteCatalog
 NULL
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCat96 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -77,7 +77,7 @@ ReadCat96 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @include utility_functions.R
 #' @export
 ReadCat192 <- function(path, strict = TRUE) {
@@ -113,7 +113,7 @@ ReadCat192 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCat1536 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -136,7 +136,7 @@ ReadCat1536 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCatDNS78 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -183,7 +183,7 @@ ReadCatDNS78 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCatDNS144 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -203,7 +203,7 @@ ReadCatDNS144 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCatQUAD136 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -222,7 +222,7 @@ ReadCatQUAD136 <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @rdname ReadCat
+#' @rdname ReadCatalog
 #' @export
 ReadCatID <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
