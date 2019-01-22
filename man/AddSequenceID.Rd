@@ -2,12 +2,13 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{AddSequenceID}
 \alias{AddSequenceID}
-\title{Add sequence context to a data frame with mutation records}
+\title{Add sequence context to a data frame with ID (insertion/deletion) mutation records}
 \usage{
 AddSequenceID(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5)
 }
 \arguments{
-\item{df}{A data frame storing mutation records of a VCF file. IMPORTANT: The
+\item{df}{A data frame storing mutation records of a VCF file
+containing only insertions and deletions. IMPORTANT: The
 representation of indels in df must have been canonicalized, so that
 context bases (which are added by some indel callers) are placed in a
 column "Left.context.base" and so that, for deletions, ALT is the empty
@@ -21,5 +22,5 @@ A data frame with 2 new columns added to the input data frame. One
   the length of the "context" string to the left of the site of the variant.
 }
 \description{
-Add sequence context to a data frame with mutation records
+Add sequence context to a data frame with ID (insertion/deletion) mutation records
 }

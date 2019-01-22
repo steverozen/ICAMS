@@ -1,6 +1,7 @@
-#' Add sequence context to a data frame with mutation records
+#' Add sequence context to a data frame with ID (insertion/deletion) mutation records
 #'
-#' @param df A data frame storing mutation records of a VCF file. IMPORTANT: The
+#' @param df A data frame storing mutation records of a VCF file
+#'   containing only insertions and deletions. IMPORTANT: The
 #'   representation of indels in df must have been canonicalized, so that
 #'   context bases (which are added by some indel callers) are placed in a
 #'   column "Left.context.base" and so that, for deletions, ALT is the empty
@@ -11,20 +12,20 @@
 #' @return A data frame with 2 new columns added to the input data frame. One
 #'   column contains sequence context information and the other column contains
 #'   the length of the "context" string to the left of the site of the variant.
-#' @export
 AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
   # Create a GRanges object with the needed width.
 
   stopifnot(nchar(df$REF) != nchar(dr$ALT))
+  stopifnot((df$ref == "") | (df$ALT == "")) # The representation has to be canonicalized
 
   # First, figure out how much sequence context is needed.
   df$pad.width <- -99
 
   df[nchar(df$REF) > nchar(df$ALT),
-     # This is a deletion
+     # This is a deletion, so need sequence context of 5+ for repeats of any
+     # size
      "pad.width"] <- nchar(df$REF) * 5
-  # Need sequence context of 5+ for repeats of any size
 
   df[nchar(df$REF) < nchar(df$ALT),
      # This is an insertion
@@ -38,7 +39,7 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
     ),
     "GRanges")
 
-  # Extract sequence context from the reference genome
+  # Extract sequence context from the reference genome and add to df
   df <- dplyr::mutate(df,
                       seq.context = getSeq(seq, Ranges, as.character = TRUE))
   df <- dplyr::mutate(df, seq.pad.width = df$pad.width)
@@ -49,28 +50,30 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #' is embedded. TODO(Steve): check this statement; what
 #' if there is no repeat?
 #'
-#' e.g. q = ac
+#' e.g. rep.unit.seq = ac
 #' pos = 3
 #' context = xyaczt
 #' pos         ^
-#' Return 1
+#' Return 0
 #'
-#' If \code{substr(context, pos, pos + nchar(q) - 1) != q} then stop
+#' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 #'
-#' @param context A string that embeds \code{q} at position \code{pos}
-#' @param q A substring of \code{context} at \code{pos} to \code{pos + nchar(q) - 1}
-#' @param pos The position of \code{q}
+#' @param context A string that embeds \code{rep.unit.seq} at position \code{pos}
+#' @param rep.unit.seq A substring of \code{context} at \code{pos}
+#'  to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat unit sequence.
+#' @param pos The position of \code{rep.unit.seq}.
 #'
-#' @return The number of repeat units in which \code{q} is embedded.
-FindMaxRepeatDel <- function(context, q, pos) {
-  n <- nchar(q)
-  stopifnot(substring(context, pos, pos + n - 1) == q)
+#' @return The number of repeat units in which \code{rep.unit.seq} is embedded, not include
+#'   the input rep.unit.seq in the count.
+FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
+  n <- nchar(rep.unit.seq)
+  stopifnot(substring(context, pos, pos + n - 1) == rep.unit.seq)
 
   # Look left
   i <- pos - n
   left.count <- 0
   while (i > 0) {
-    if (substr(context, i, i + n - 1) == q) {
+    if (substr(context, i, i + n - 1) == rep.unit.seq) {
       left.count <- left.count + 1
       i <- i - n
     } else break
@@ -80,16 +83,17 @@ FindMaxRepeatDel <- function(context, q, pos) {
   i <- pos + n
   tot.len <- nchar(context)
   while ((i + n - 1) <= tot.len) {
-    if (substr(context, i, i + n -1) == q) {
+    if (substr(context, i, i + n -1) == rep.unit.seq) {
       right.count <- right.count + 1
       i <- i + n
     } else break
   }
 
-  return(left.count + 1 + right.count)
+  # IMPORTANT - in the catalog we exclude deleted unit from the count.
+  return(left.count + right.count)
 }
 
-#' FindDelMH
+#' FindDelMH TODO(steve):not finished
 #'
 #' Microhomology can be alligned in multiple equivalent ways.
 #' Example:
@@ -146,7 +150,7 @@ FindDelMH <- function(context, q, pos) {
   return(left.len + i)
 }
 
-#' FindMaxRepeatIns
+#' FindMaxRepeatIns TODO(steve):finish this
 #'
 #' If q is an insertion into context between pos and pos+1
 #' if q is repeated in context it might start at pos+1:
