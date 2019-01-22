@@ -1,18 +1,8 @@
-#' Plot the insertion and deletion catalog of one sample.
-#'
-#' Please take note that the deletions Repeat Size ranges from 0 to 5+
-#' in the catalog, but for plotting and end user documentation
-#' it ranges from 1 to 6+.
-#'
-#' @param catalog A matrix whose rownames indicate the insertion and deletion
-#'   mutation types while its column contains the counts of each mutation type.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "counts", the
-#'   graph will plot the occurrences of the insertion and deletion mutation
-#'   types in the sample. If type = "signature", the graph will plot mutation
-#'   signatures of the sample. The default value for type is "counts".
+#' @include plot_SNS_catalog.R
+NULL
+
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCatID <- function(catalog, id, type = "counts"){
   stopifnot(dim(catalog) == c(83, 1))
@@ -125,24 +115,7 @@ PlotCatID <- function(catalog, id, type = "counts"){
   invisible(TRUE)
 }
 
-#' Plot the insertion and deletion catalog of different samples to a PDF file
-#'
-#' Please take note that the deletions Repeat Size ranges from 0 to 5+
-#' in the catalog, but for plotting and end user documentation
-#' it ranges from 1 to 6+.
-#'
-#' @param catalog A matrix whose rownames indicate the insertion and
-#'            deletion mutation types while its column contains
-#'            the counts of each mutation type from different samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id A vector containing the ID information of different samples.
-#' @param type A vector of values indicating the type of plot for each sample.
-#'   If type = "counts", the graph will plot the occurrences of the insertion
-#'   and deletion mutation types in the sample. If type = "signature", the graph
-#'   will plot mutation signatures of the sample. The default value for type is
-#'   "counts".
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 CatIDToPdf <-
   function(catalog, name, id = colnames(catalog), type = "counts") {
