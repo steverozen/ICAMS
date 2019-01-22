@@ -1,18 +1,112 @@
-#' Plot the SNS 96 mutation catalog of one sample
+#' Plot Catalog Functions
 #'
-#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
+#' Plot the mutation catalog of one sample
+#'
+#' \code{PlotCat96} Plot the SNS 96 mutation catalog of one sample.
+#'
+#' \code{PlotCat96New} Plot the SNS 96 mutation catalog of one sample.
+#'
+#' \code{PlotCat192} Plot the SNS 192 mutation catalog of one sample.
+#'
+#' \code{PlotCat192Strand} Plot the transcription strand bias graph of 6 SNS
+#' mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
+#'
+#' \code{PlotCat1536} Plot the pentanucleotide sequence contexts for one sample,
+#' normalized by pentanucleotide occurrence in the genome. The mutation types
+#' are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
+#' position, third letter T refers to the base which has mutation, next second
+#' 2-letters TA refers to (+1, +2) position, last letter T refers to the base
+#' after mutation.
+#'
+#' \code{PlotCatDNS78} Plot the DNS 78 mutation catalog of one sample.
+#'
+#' \code{PlotCatDNS144} Plot the transcription strand bias graph of 10 major DNS
+#' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
+#' "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
+#'
+#' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
+#' (Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
+#' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+#' @param catalog A matrix whose rownames indicate the mutation types
 #'   while its columns contain the counts of each mutation type.
 #' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "density",
-#'   the graph will plot the rates of mutations per million trinucleotides for
-#'   each mutation type. If type = "counts", the graph will plot the occurrences
-#'   of the 96 mutation types in the sample. If type = "signature", the graph
-#'   will plot mutation signatures of the sample. The default value for type is
-#'   "density".
-#' @param abundance A matrix containing trinucleotide abundance information. To
-#'   be used only when type = "density".
-#' @import graphics
+#' @param type A value indicating the type of graph. If type = "counts", the
+#'   graph will plot the occurrences of the mutation types in the sample. If
+#'   type = "signature", the graph will plot mutation signatures of the sample.
+#'   If type = "density", the graph will plot the rates of mutations per million
+#'   nucleotides for each mutation type. (Please take note there is no "density"
+#'   type for PlotCatID function and the option of type = "density" is not
+#'   implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
+#'   the current stage.)
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   y axis labels, sample name and legend(if there exists) should be magnified
+#'   relative to the default.
+#' @param abundance A matrix containing nucleotide abundance information and
+#'   strand information(if there exists), to be used only when type = "density".
 #' @return invisible(TRUE)
+#' @name PlotCatalog
+NULL
+
+
+#' Catalog to Pdf Functions
+#'
+#' Plot the mutation catalog of different samples to a PDF file
+#'
+#' \code{Cat96ToPdf} Plot the SNS 96 mutation catalog of different samples
+#' to a PDF file.
+#'
+#' \code{Cat96ToPdfNew} Plot the SNS 96 mutation catalog of different samples
+#' to a PDF file.
+#'
+#' \code{Cat192ToPdf} Plot the SNS 192 mutation catalog of different samples
+#' to a PDF file.
+#'
+#' \code{Cat192StrandToPdf} Plot the transcription strand bias graph of
+#' 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+#' of different samples to a PDF file.
+#'
+#' \code{Cat1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
+#' file. The mutation types are in six-letters like CATTAT, first 2-letters CA
+#' refers to (-2, -1) position, third letter T refers to the base which has
+#' mutation, next second 2-letters TA refers to (+1, +2) position, last letter T
+#' refers to the base after mutation.
+#'
+#' \code{CatDNS78ToPdf} Plot the DNS 78 mutation catalog of different samples
+#' to a PDF file.
+#'
+#' \code{CatDNS144ToPdf} Plot the transcription strand bias graph of
+#' 10 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
+#' "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples
+#' to a PDF file.
+#'
+#' \code{CatIDToPdf} Plot the insertion and deletion catalog of different
+#' samples to a PDF file. (Please take note that the deletions Repeat Size
+#' ranges from 0 to 5+ in the catalog, but for plotting and end user
+#' documentation it ranges from 1 to 6+.)
+#' @param catalog A matrix whose rownames indicate the mutation types
+#'   while its columns contain the counts of each mutation type from
+#'   different samples.
+#' @param name The name of the PDF file to be produced.
+#' @param id A vector containing the ID information of different samples.
+#' @param type A vector of values indicating the type of plot for each sample.
+#'   If type = "counts", the graph will plot the occurrences of the mutation
+#'   types in the sample. If type = "signature", the graph will plot mutation
+#'   signatures of the sample. If type = "density", the graph will plot the
+#'   rates of mutations per million nucleotides for each mutation type. (Please
+#'   take note there is no "density" type for CatIDtoPdf function and the option
+#'   of type = "density" is not implemented for function Cat192ToPdf,
+#'   Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   y axis labels, sample name and legend(if there exists) should be magnified
+#'   relative to the default.
+#' @param abundance A matrix containing nucleotide abundance information, to
+#'   be used only when type = "density".
+#' @return invisible(TRUE)
+#' @name CatalogToPdf
+NULL
+
+#' @rdname PlotCatalog
+#' @import graphics
 #' @export
 PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(96, 1))
@@ -132,21 +226,8 @@ PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
   invisible(TRUE)
 }
 
-#' Plot the SNS 96 mutation catalog of one sample
-#'
-#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
-#'   while its columns contain the counts of each mutation type.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "density",
-#'   the graph will plot the rates of mutations per million trinucleotides for
-#'   each mutation type. If type = "counts", the graph will plot the occurrences
-#'   of the 96 mutation types in the sample. If type = "signature", the graph
-#'   will plot mutation signatures of the sample. The default value for type is
-#'   "density".
-#' @param abundance A matrix containing trinucleotide abundance information. To
-#'   be used only when type = "density".
+##' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(96, 1))
@@ -266,22 +347,7 @@ PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
   invisible(TRUE)
 }
 
-#' Plot the SNS 96 mutation catalog of different samples to a PDF file
-#'
-#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id A vector containing the ID information of different samples.
-#' @param type A vector of values indicating the type of plot for each sample.
-#'   If type = "density", the graph will plot the rates of mutations per million
-#'   trinucleotides for each mutation type. If type = "counts", the graph will
-#'   plot the occurrences of the 96 mutation types in the sample. If type =
-#'   "signature", the graph will plot mutation signatures of the sample. The
-#'   default value for type is "density".
-#' @param abundance A matrix containing trinucleotide abundance information. To
-#'   be used only when type = "density".
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 Cat96ToPdf <-
   function(catalog, name, id = colnames(catalog), type = "density",
@@ -308,22 +374,7 @@ Cat96ToPdf <-
     invisible(TRUE)
   }
 
-#' Plot the SNS 96 mutation catalog of different samples to a PDF file
-#'
-#' @param catalog A matrix whose rownames indicate the 96 SNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id A vector containing the ID information of different samples.
-#' @param type A vector of values indicating the type of plot for each sample.
-#'   If type = "density", the graph will plot the rates of mutations per million
-#'   trinucleotides for each mutation type. If type = "counts", the graph will
-#'   plot the occurrences of the 96 mutation types in the sample. If type =
-#'   "signature", the graph will plot mutation signatures of the sample. The
-#'   default value for type is "density".
-#' @param abundance A matrix containing trinucleotide abundance information. To
-#'   be used only when type = "density".
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 Cat96ToPdfNew <-
   function(catalog, name, id = colnames(catalog), type = "density",
@@ -350,24 +401,8 @@ Cat96ToPdfNew <-
     invisible(TRUE)
   }
 
-#' Plot the SNS 192 mutation catalog of one sample
-#'
-#' @param catalog A matrix whose rownames indicate the 192 SNS mutation types
-#'   while its column contains the counts of each mutation type.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "counts", the
-#'   graph will plot the occurrences of the 192 mutation types in the sample. If
-#'   type = "signature", the graph will plot mutation signatures of the sample.
-#'   If type = "density", the graph will plot the rates of mutations per million
-#'   trinucleotides for each mutation type. The default value for type is
-#'   "counts".
-#' @param cex A numerical value giving the amount by which mutation class labels
-#'   on top of graph, y axis labels and sample name should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing trinucleotide abundance and strand
-#'   information, to be used only when type = "density".
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCat192 <- function(catalog, id, type = "counts",
                        cex = 0.8, abundance = NULL) {
@@ -419,7 +454,7 @@ PlotCat192 <- function(catalog, id, type = "counts",
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
   } else if (type == "density") {
-    stop("not implemented")
+    stop('type = "density" not implemented')
   } else {
     stop('Please specify the correct type: "counts", "signature" or "density"')
   }
@@ -482,26 +517,7 @@ PlotCat192 <- function(catalog, id, type = "counts",
   invisible(TRUE)
 }
 
-#' Plot the SNS 192 mutation catalog of different samples to a PDF file
-#'
-#' @param catalog A matrix whose rownames indicate the 192 SNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A vector of values indicating the type of graph for each sample.
-#'   If type = "counts", the graph will plot the occurrences of the 192 mutation
-#'   types in the sample. If type = "signature", the graph will plot mutation
-#'   signatures of the sample. If type = "density", the graph will plot the
-#'   rates of mutations per million trinucleotides for each mutation type. The
-#'   default value for type is "counts".
-#' @param cex A numerical value giving the amount by which mutation class labels
-#'   on top of graph, y axis labels and sample name should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing trinucleotide abundance and strand
-#'   information, to be used only when type = "density".
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
                         type = "counts", cex = 0.8, abundance = NULL) {
@@ -526,25 +542,8 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
   invisible(TRUE)
 }
 
-#' Plot the transcription strand bias graph of 6 SNS mutation types
-#' ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample
-#'
-#' @param catalog A matrix whose rownames indicate the 192 SNS mutation types
-#'   while its column contains the counts of each mutation type.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "counts", the
-#'   graph will plot the occurrences of the 6 SNS mutation types in the sample.
-#'   If type = "signature", the graph will plot mutation signatures of the 6 SNS
-#'   mutation types in the sample. If type = "density", the graph will plot the
-#'   rates of mutations per million trinucleotides for each of the 6 SNS
-#'   mutation types. The default value for type is "counts".
-#' @param cex A numerical value giving the amount by which mutation class
-#'   labels, y axis labels, sample name and legend should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing trinucleotide abundance and strand
-#'   information, to be used only when type = "density".
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCat192Strand <- function(catalog, id, type = "counts",
                              cex = 1, abundance = NULL) {
@@ -593,7 +592,7 @@ PlotCat192Strand <- function(catalog, id, type = "counts",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "density") {
-    stop("not implemented")
+    stop('type = "density" not implemented')
   } else {
     stop('Please specify the correct type: "counts", "signature" or "density"')
   }
@@ -626,28 +625,7 @@ PlotCat192Strand <- function(catalog, id, type = "counts",
   invisible(TRUE)
 }
 
-#' Plot the transcription strand bias graph of 6 SNS mutation types
-#' ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") of different samples to
-#' a PDF file.
-#'
-#' @param catalog A matrix whose rownames indicate the 192 SNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A vector of values indicating the type of graph for each sample.
-#'   If type = "counts", the graph will plot the occurrences of the 192 mutation
-#'   types in the sample. If type = "signature", the graph will plot mutation
-#'   signatures of the sample. If type = "density", the graph will plot the
-#'   rates of mutations per million trinucleotides for each mutation type. The
-#'   default value for type is "counts".
-#' @param cex A numerical value giving the amount by which mutation class
-#'   labels, y axis labels, sample name and legend should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing trinucleotide abundance and strand
-#'   information, to be used only when type = "density".
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
                               type = "counts", cex = 1, abundance = NULL) {
@@ -673,23 +651,10 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
   invisible(TRUE)
 }
 
-#' Plot the pentanucleotide sequence contexts for one sample,
-#' normalized by pentanucleotide occurrence in the genome.
-#'
-#' @param catalog A matrix whose rownames indicate the 1536 SNS mutation types
-#'   while its column contains the counts of each mutation type. The mutation
-#'   types are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
-#'   position, third letter T refers to the base which has mutation, next second
-#'   2-letters TA refers to (+1, +2) position, last letter T refers to the base
-#'   after mutation.
-#' @param id The id of the sample to be displayed on top of the graph.
-#' @param scale A logical value indicating whether to do color scaling for all
-#'   mutation types.
-#' @param abundance A matrix containing pentanucleotide abundance information.
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
-PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
+PlotCat1536 <- function(catalog, id, abundance) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -770,15 +735,12 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
   old <- par(no.readonly = TRUE)
   par(mfrow = c(2, 3), oma = c(1, 1, 1, 1))
 
-  # Do the color scaling
   for (i in 1 : n.types) {
     main.type <- main.types[i]
     sub.rates <- rates[main.mut.type == main.type, 1, drop = FALSE]
-    if (scale) {
-      max.col <- scale.col(max(sub.rates), max(rates))
-    } else {
-      max.col <- "darkgreen"
-    }
+
+    # Do the color scaling
+    max.col <- scale.col(max(sub.rates), max(rates))
 
     col.ref <- grDevices::colorRampPalette(c("white", max.col))(256)
 
@@ -834,19 +796,7 @@ PlotCat1536 <- function(catalog, id, scale = TRUE, abundance) {
   invisible(TRUE)
 }
 
-#' Plot the 1536 mutation catalog of >= 1 samples to a PDF file
-#'
-#' @param catalog   A matrix whose rownames indicate the 1536 SNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples. The mutation types are in six-letters like CATTAT, first 2-letters
-#'   CA refers to (-2, -1) position, third letter T refers to the base which has
-#'   mutation, next second 2-letters TA refers to (+1, +2) position, last letter
-#'   T refers to the base after mutation.
-#' @param name Name of the PDF file to be produced.
-#' @param id  A vector containing the identifier of each sample.
-#' @param abundance A matrix containing pentanucleotide abundance information.
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
 
