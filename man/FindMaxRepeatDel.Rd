@@ -6,25 +6,27 @@
 is embedded. TODO(Steve): check this statement; what
 if there is no repeat?}
 \usage{
-FindMaxRepeatDel(context, q, pos)
+FindMaxRepeatDel(context, rep.unit.seq, pos)
 }
 \arguments{
-\item{context}{A string that embeds \code{q} at position \code{pos}}
+\item{context}{A string that embeds \code{rep.unit.seq} at position \code{pos}}
 
-\item{q}{A substring of \code{context} at \code{pos} to \code{pos + nchar(q) - 1}}
+\item{rep.unit.seq}{A substring of \code{context} at \code{pos}
+to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat unit sequence.}
 
-\item{pos}{The position of \code{q}}
+\item{pos}{The position of \code{rep.unit.seq}.}
 }
 \value{
-The number of repeat units in which \code{q} is embedded.
+The number of repeat units in which \code{rep.unit.seq} is embedded, not include
+  the input rep.unit.seq in the count.
 }
 \description{
-e.g. q = ac
+e.g. rep.unit.seq = ac
 pos = 3
 context = xyaczt
 pos         ^
-Return 1
+Return 0
 }
 \details{
-If \code{substr(context, pos, pos + nchar(q) - 1) != q} then stop
+If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 }
