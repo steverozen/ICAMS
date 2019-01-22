@@ -37,14 +37,14 @@ while its columns contain the counts of each mutation type.}
 
 \item{id}{The ID information of the sample which has mutations.}
 
-\item{type}{A value indicating the type of graph.
-If type = "counts", the graph will plot the occurrences of the mutation
-types in the sample. If type = "signature", the graph will plot mutation
-signatures of the sample. If type = "density", the graph will plot the
-rates of mutations per million nucleotides for each mutation type.
-(Please take note there is no "density" type for PlotCatID function and
-the option of type = "density" is not implemented for function PlotCat192,
-PlotCat192Strand and PlotCatDNS144 at the current stage)}
+\item{type}{A value indicating the type of graph. If type = "counts", the
+graph will plot the occurrences of the mutation types in the sample. If
+type = "signature", the graph will plot mutation signatures of the sample.
+If type = "density", the graph will plot the rates of mutations per million
+nucleotides for each mutation type. (Please take note there is no "density"
+type for PlotCatID function and the option of type = "density" is not
+implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
+the current stage.)}
 
 \item{abundance}{A matrix containing nucleotide abundance information and
 strand information(if there exists), to be used only when type = "density".}
@@ -83,8 +83,6 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 
 \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-
-Please take note that the deletions Repeat Size ranges from 0 to 5+
-in the catalog, but for plotting and end user documentation
-it ranges from 1 to 6+.
+(Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
+catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 }
