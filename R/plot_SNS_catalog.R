@@ -226,10 +226,11 @@ PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
   invisible(TRUE)
 }
 
-##' @rdname PlotCatalog
+#' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
+PlotCat96New <-
+  function(catalog, id, type = "density", grid = TRUE, abundance = NULL) {
   stopifnot(dim(catalog) == c(96, 1))
   stopifnot(rownames(catalog) == .catalog.row.order96)
 
@@ -299,8 +300,14 @@ PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
   }
 
   # Draw grid lines
-  segments(bp[1] - 1, seq(0, ymax, ymax/4), bp[num.classes] + 1,
-           seq(0, ymax, ymax/4), col = 'grey35', lwd = 0.25)
+  if (grid) {
+    segments(bp[1] - 1, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 1,
+             seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
+  }
+
+  # Draw the x axis
+  Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
+       labels = FALSE, lwd.tick = 0, lwd = 0.5)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax/4)
@@ -309,8 +316,14 @@ PlotCat96New <- function(catalog, id, type = "density", abundance = NULL) {
   } else {
     y.axis.labels <- round(y.axis.values, 0)
   }
-  text(-0.5, y.axis.values, labels = y.axis.labels,
-       las = 1, adj = 1, xpd = NA, cex = 0.8)
+  if (grid) {
+    text(-0.5, y.axis.values, labels = y.axis.labels,
+         las = 1, adj = 1, xpd = NA, cex = 0.8)
+  } else {
+    Axis(side = 2, at = y.axis.values, las = 1, cex.axis = 0.8, labels = FALSE)
+    text(-3.5, y.axis.values, labels = y.axis.labels, cex = 0.8,
+         las = 1, adj = 1, xpd = NA)
+  }
 
   # Draw the ID information on top of graph
   text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
@@ -378,7 +391,7 @@ Cat96ToPdf <-
 #' @export
 Cat96ToPdfNew <-
   function(catalog, name, id = colnames(catalog), type = "density",
-           abundance = NULL) {
+           grid = FALSE, abundance = NULL) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -391,10 +404,15 @@ Cat96ToPdfNew <-
       type <- rep(type, n)
     }
 
+    if (n > 1 && length(grid) == 1) {
+      grid <- rep(grid, n)
+    }
+
     for (i in 1 : n) {
       PlotCat96New(catalog[, i, drop = FALSE],
                    id = id[i],
                    type = type[i],
+                   grid = grid[i],
                    abundance = abundance)
     }
     invisible(grDevices::dev.off())
