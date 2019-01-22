@@ -1,19 +1,8 @@
-#' Plot the DNS 78 mutation catalog of one sample
-#'
-#' @param catalog A matrix whose rownames indicate the 78 DNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "density",
-#'   the graph will plot the rates of mutations per million nucleotides for each
-#'   mutation type. If type = "counts", the graph will plot the occurrences of
-#'   the 78 mutation types in the sample. If type = "signature", the graph will
-#'   plot mutation signatures of the sample. The default value for type is
-#'   "density".
-#' @param abundance A matrix containing dinucleotide abundance information, to
-#'   be used only when type = "density".
+#' @include plot_SNS_catalog.R
+NULL
+
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCatDNS78 <- function(catalog, id, type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
@@ -117,23 +106,7 @@ PlotCatDNS78 <- function(catalog, id, type = "density", abundance = NULL) {
   invisible(TRUE)
 }
 
-#' Plot the DNS 78 mutation catalog of different samples to a PDF file
-#'
-#' @param catalog A matrix whose rownames indicate the 78 DNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id A vector containing the ID information of different samples.
-#' @param type A vector of values indicating the type of plot for each sample.
-#'   If type = "density", the graph will plot the rates of mutations per million
-#'   nucleotides for each mutation type. If type = "counts", the graph will plot
-#'   the occurrences of the 78 mutation types in the sample. If type =
-#'   "signature", the graph will plot mutation signatures of the sample. The
-#'   default value for type is "density".
-#' @param abundance A matrix containing dinucleotide abundance information, to
-#'   be used only when type = "density".
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 CatDNS78ToPdf <-
   function(catalog, name, id = colnames(catalog),
@@ -161,26 +134,8 @@ CatDNS78ToPdf <-
     invisible(TRUE)
   }
 
-#' Plot the transcription strand bias graph of 10 major DNS mutation types
-#' ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN",
-#' "TC>NN", "TG>NN", "TT>NN") in one sample.
-#'
-#' @param catalog A matrix whose rownames indicate the 144 DNS mutation types
-#'   while its column contains the counts of each mutation type.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A value indicating the type of the graph. If type = "counts", the
-#'   graph will plot the occurrences of the 10 major DNS mutation types in the
-#'   sample. If type = "signature", the graph will plot mutation signatures of
-#'   the 10 major DNS mutation types in the sample. If type = "density", the
-#'   graph will plot the rates of mutations per million dinucleotides for each
-#'   of the 10 major DNS mutation types. The default value for type is "counts".
-#' @param cex A numerical value giving the amount by which mutation class
-#'   labels, y axis labels, sample name and legend should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing dinucleotide abundance and strand
-#'   information, to be used only when type = "density".
+#' @rdname PlotCatalog
 #' @import graphics
-#' @return invisible(TRUE)
 #' @export
 PlotCatDNS144 <- function(catalog, id, type = "counts",
                           cex = 1, abundance = NULL) {
@@ -231,7 +186,7 @@ PlotCatDNS144 <- function(catalog, id, type = "counts",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "density") {
-    stop("not implemented")
+    stop('type = "density" not implemented')
   } else {
     stop('Please specify the correct type: "counts", "signature" or "density"')
   }
@@ -264,29 +219,7 @@ PlotCatDNS144 <- function(catalog, id, type = "counts",
   invisible(TRUE)
 }
 
-#' Plot the transcription strand bias graph of 10 major DNS mutation types
-#' ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN",
-#' "TC>NN", "TG>NN", "TT>NN") of different samples to a PDF file.
-#'
-#' @param catalog A matrix whose rownames indicate the 144 DNS mutation types
-#'   while its columns contain the counts of each mutation type from different
-#'   samples.
-#' @param name The name of the PDF file to be produced.
-#' @param id The ID information of the sample which has mutations.
-#' @param type A vector of values indicating the type of graph for each sample.
-#'   If type = "counts", the graph will plot the occurrences of the 10 major DNS
-#'   mutation types in the sample. If type = "signature", the graph will plot
-#'   mutation signatures of the 10 major DNS mutation types in the sample. If
-#'   type = "density", the graph will plot the rates of mutations per million
-#'   dinucleotides for each of the 10 major DNS mutation types. The default
-#'   value for type is "counts".
-#' @param cex A numerical value giving the amount by which mutation class
-#'   labels, y axis labels, sample name and legend should be magnified relative
-#'   to the default.
-#' @param abundance A matrix containing dinucleotide abundance and strand
-#'   information, to be used only when type = "density".
-#'
-#' @return invisible(TRUE)
+#' @rdname CatalogToPdf
 #' @export
 CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
                            type = "counts", cex = 1, abundance = NULL) {
