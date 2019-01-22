@@ -1,17 +1,23 @@
-#' ICAMS: In Depth Characterization and Analysis of Mutational Signatures
+#' ICAMS: In-depth Characterization and Analysis of Mutational Signatures
 #'
-#' This package provides ...
+#' This package has functions to read in VCF files from Strelka and GATK,
+#' create SNS, DNS, ID catalogs and do different types of plotting.
 #'
-#' @section Plotting Signatures:
-#' Functions for comparing mutational signatures and
-#' sets of mutational signatures:
-#' \code{\link{PlotCat96}}
+#' @section Plotting catalogs:
+#' Functions for plotting the mutation catalog of one sample:
+#' \code{\link{PlotCatalog}}
 #'
-#' @section Generating mutational signature catalogs from VCF files:
-#' fwriteDataFrame
+#' Functions for plotting mutation catalog of different samples to a PDF file:
+#' \code{\link{CatalogToPdf}}
 #'
+#' @section Reading catalogs:
+#' Functions for reading a catalog in PCAWG7 format from path:
+#' \code{\link{ReadCatalog}}
+#'
+#' @section Writing catalogs:
+#' Functions for writting a mutation catalog to a file on disk:
+#' \code{\link{WriteCatalog}}
 #'
 #' @docType package
 #' @name ICAMS
-#' @keywords internal
 NULL
