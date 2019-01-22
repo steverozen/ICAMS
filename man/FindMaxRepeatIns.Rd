@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindMaxRepeatIns}
 \alias{FindMaxRepeatIns}
-\title{FindMaxRepeatIns}
+\title{FindMaxRepeatIns TODO(steve):finish this}
 \usage{
 FindMaxRepeatIns(context, q, pos)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindDelMH}
 \alias{FindDelMH}
-\title{FindDelMH}
+\title{FindDelMH TODO(steve):not finished}
 \usage{
 FindDelMH(context, q, pos)
 }
