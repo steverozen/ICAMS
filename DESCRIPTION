@@ -33,7 +33,6 @@ Collate:
     'ICAMS.R'
     'INDELS_related_functions.R'
     'utility_functions.R'
-    'SNS_related_functions.R'
     'VCF_to_catalog_functions.R'
     'plot_SNS_catalog.R'
     'plot_DNS_catalog.R'
