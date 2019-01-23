@@ -15,9 +15,7 @@
 #' @keywords internal
 AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
-  # Create a GRanges object with the needed width.
-
-  stopifnot(nchar(df$REF) != nchar(dr$ALT))
+  stopifnot(nchar(df$REF) != nchar(df$ALT))
   stopifnot((df$ref == "") | (df$ALT == "")) # The representation has to be canonicalized
 
   # First, figure out how much sequence context is needed.
@@ -32,7 +30,9 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
      # This is an insertion
      "pad.width"] <- nchar(df$ALT) * 5
 
-  # Not sure this will work if the pad.widths are different.
+  # Create a GRanges object with the needed width.
+  # TODO(steve): diff is not defined; should it be in df$
+  # e.g. df[   , "diff"] <- max(nchar(df$REF), nchar(df$ALT))
   Ranges <-
     as(data.frame(chrom = df$CHROM,
                   start = df$POS - df$pad.width, # 10,
@@ -47,14 +47,13 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
   return(df)
 }
 
-#' Return the number of repeat units in which a deletion
-#' is embedded. TODO(Steve): check this statement; what
-#' if there is no repeat?
+#' @title Return the number of repeat units in which a deletion
+#' is embedded.
 #'
 #' e.g. rep.unit.seq = ac
 #' pos = 3
 #' context = xyaczt
-#' pos         ^
+#' pos is here ^
 #' Return 0
 #'
 #' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
@@ -64,8 +63,14 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #'  to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat unit sequence.
 #' @param pos The position of \code{rep.unit.seq}.
 #'
-#' @return The number of repeat units in which \code{rep.unit.seq} is embedded, not include
-#'   the input rep.unit.seq in the count.
+#' @return The number of repeat units in which \code{rep.unit.seq} is
+#' embedded, not including
+#' the input rep.unit.seq in the count.
+#'
+#' @details If this functions returns 0, it is then necessary to
+#'   look for microhomology.
+#'
+#' @keywords internal
 FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   n <- nchar(rep.unit.seq)
   stopifnot(substring(context, pos, pos + n - 1) == rep.unit.seq)
@@ -90,7 +95,8 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
     } else break
   }
 
-  # IMPORTANT - in the catalog we exclude deleted unit from the count.
+  # IMPORTANT - in the catalog version of the the mutation class we exclude the
+  # deleted unit from the count, but in plotting we include it.
   return(left.count + right.count)
 }
 
@@ -151,61 +157,75 @@ FindDelMH <- function(context, q, pos) {
   return(left.len + i)
 }
 
-#' FindMaxRepeatIns TODO(steve):finish this
+#' @title Return the number of repeat units in which an insertion
+#' is embedded.
 #'
-#' If q is an insertion into context between pos and pos+1
-#' if q is repeated in context it might start at pos+1:
+#' e.g.
 #'
-#' e.g. q = ac
+#' rep.unit.seq = ac
+#' pos = 2
+#' context = xyaczt
+#' return 1
+#'
+#' rep.unit.seq = ac
 #' pos = 4
-#' context = abxyac
-#'  pos         ^
-#'  start        ^
+#' context = xyaczt
+#' return 1
 #'
-#' or q might start at pos + 1 - len(q)
+#' rep.unit.seq = cgct
+#' pos = 2
+#' rep.unit.seq = at
+#' return 0
 #'
-#' e.g. q = ac
-#' pos = 4
-#' context = xyaczz
-#'  pos         ^
-#'  start      ^
+#' context = gacacacacg
+#' rep.unit.seq = ac
+#' pos = any of 1, 3, 5, 7, 9
+#' return 4
 #'
-#' @param context TODO
-#' @param q TODO
-#' @param pos TODO
+#' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 #'
-#' @return TODO
-#' @export
-FindMaxRepeatIns <- function(context, q, pos) {
-  stop() # this code is complete broken
-  n <- nchar(q)
+#' @param context A string into which \code{rep.unit.seq} was
+#'  inseted at position \code{pos}
+#'
+#' @param rep.unit.seq The inserted sequence and potention repeat unit
+#'
+#' @param pos \code{rep.unit.seq} is understood to be inserted between
+#'   positions \code{pos} amd \code{pos + 1}.
+#'
+#' @return If same sequence as \code{rep.unit.seq} occurs ending at
+#'   \code{pos} or starting at \code{pos + 1} then the number of
+#'   repeat units before the insertion, otherwise 0.
+#'
+#' @keywords internal
+#'
+FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 
-  extra.count <- 0
-  if (substring(context, pos, pos + n - 1) == q) {
-    extra.count <- 1
-  }
+  n <- nchar(rep.unit.seq)
 
-  # Look left
-  i <- pos - n
+  # If rep.unit.seq is in context adjacent to pos, it might start at pos + 1 -
+  # len(rep.unit.seq), so look left
   left.count <- 0
-  while (i > 0) {
-    if (substr(context, i, i + n - 1) == q) {
+  p <- pos + 1 - n
+  while (p > 0) {
+    if (substring(context, p, p + n - 1) == rep.unit.seq) {
       left.count <- left.count + 1
-      i <- i - n
     } else break
+    p <- p - n
   }
 
+  # If rep.unit.seq is repeated in context it might start at pos + 1,
+  # so look right.
   right.count <- 0
-  i <- pos + n
+  p <- pos + 1
   tot.len <- nchar(context)
-  while ((i + n - 1) <= tot.len) {
-    if (substr(context, i, i + n -1) == q) {
+  while ((p + n - 1) <= tot.len) {
+    if (substr(context, p, p + n - 1) == rep.unit.seq) {
       right.count <- right.count + 1
-      i <- i + n
     } else break
+    p <- p + n
   }
 
-  return(left.count + extra.count + right.count)
+  return(left.count + right.count)
 }
 
 #' Canonicalize1DEL
@@ -251,6 +271,7 @@ Canonicalize1INS <- function(ref, alt, context) {
 #' @keywords internal
 #' @return TODO
 #' @export
+#'
 Canonicalize1ID <- function(ref, alt, context) {
   if (nchar(alt) < nchar(ref) || "-" == alt) {
     # A deletion
@@ -271,7 +292,7 @@ Canonicalize1ID <- function(ref, alt, context) {
 #' @param context TODO
 #' @keywords internal
 #' @return TODO
-#' @export
+
 CanonicalizeID <- function(ref, alt, context) {
   ret <- mapply(Canonicalize1ID, ref, alt, context)
   return(ret)
