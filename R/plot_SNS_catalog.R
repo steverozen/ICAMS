@@ -40,6 +40,11 @@
 #'   mutation counts(if there exists), y axis and its labels, x axis labels and
 #'   its annotations(if there exists) sample name and legend(if there exists)
 #'   should be magnified relative to the default.
+#' @param grid A logical value indicating whether to draw the grid lines in the
+#'   graph.
+#' @param upper A logical value indicating whether to draw horizontal lines and
+#'   names of major mutation class on top of graph.
+#' @param xlabels A logical value indicating whether to draw x axis labels.
 #' @param abundance A matrix containing nucleotide abundance information and
 #'   strand information(if there exists), to be used only when type = "density".
 #' @return invisible(TRUE)
@@ -95,6 +100,11 @@ NULL
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   y axis labels, sample name and legend(if there exists) should be magnified
 #'   relative to the default.
+#' @param grid A logical value indicating whether to draw the grid lines in the
+#'   graph.
+#' @param upper A logical value indicating whether to draw horizontal lines and
+#'   names of major mutation class on top of graph.
+#' @param xlabels A logical value indicating whether to draw x axis labels.
 #' @param abundance A matrix containing nucleotide abundance information, to
 #'   be used only when type = "density".
 #' @return invisible(TRUE)
@@ -175,7 +185,7 @@ PlotCat96 <-
       stop('Please specify the correct type: "density", "counts" or "signature"')
     }
 
-    # Draw grid lines
+    # Draw grid lines?
     if (grid) {
       segments(bp[1] - 1, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 1,
                seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
