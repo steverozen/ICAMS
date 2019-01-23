@@ -12,6 +12,7 @@
 #' @return A data frame with 2 new columns added to the input data frame. One
 #'   column contains sequence context information and the other column contains
 #'   the length of the "context" string to the left of the site of the variant.
+#' @keywords internal
 AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
   # Create a GRanges object with the needed width.

@@ -246,7 +246,10 @@ ReadCatID <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' Write a matrix of mutation catalog to a file on disk
+#' @title Write a mutation catalog to a file on disk
+#'
+#' @description Called by exported functions to do the
+#' actual writing of the catalog to disk.
 #'
 #' @param ct A matrix of mutation catalog.
 #' @param path The path of the file to be written on disk.

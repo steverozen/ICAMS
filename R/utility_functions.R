@@ -177,32 +177,38 @@ revc <- function(string.vec) {
   )
 }
 
-#' RevcSNS96
+#' @title Reverse complement strings that represent stranded SNSs
 #'
-#' @param mutstring TODO
+#' @param mutstring A vector of 4-character strings representing
+#' stranded SNSs in trinucleotide context,
+#' for example "AATC" represents AAT > ACT mutations.
 #'
-#' @return TODO
-#' @export
+#' @return Return the vector of
+#' reverse complements of the first 3 characters
+#' concatenated with the reverse complement of the
+#' last character, e.g. "AATC" returns "ATTG".
+#'
 #' @keywords internal
+#'
 RevcSNS96 <- function(mutstring) {
-  # TODO (steve) document
-
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   context <- revc(substr(mutstring, 1, 3))
   target  <- revc(substr(mutstring, 4, 4))
   return(paste0(context, target))
 }
 
-#' RevcDNS144
+#' @title Reverse complement strings that represent stranded DNSs
 #'
-#' @param mutstring TODO
+#' @param mutstring A vector of 4-character strings representing
+#' stranded DNSs, for example "AATC" represents AA > TC mutations.
 #'
-#' @return TODO
-#' @export
+#' @return Return the vector of
+#' reverse complements of the first 2 characters
+#' concatenated with the reverse complement of the second
+#' 2 characters, e.g. "AATC" returns "TTGA".
+#'
 #' @keywords internal
 RevcDNS144 <- function(mutstring) {
-  # TODO (Nanhai) document
-
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   context <- revc(substr(mutstring, 1, 2))
   target  <- revc(substr(mutstring, 3, 4))
