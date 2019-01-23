@@ -4,7 +4,6 @@
 \name{PlotCatalog}
 \alias{PlotCatalog}
 \alias{PlotCat96}
-\alias{PlotCat96New}
 \alias{PlotCat192}
 \alias{PlotCat192Strand}
 \alias{PlotCat1536}
@@ -13,10 +12,8 @@
 \alias{PlotCatID}
 \title{Plot Catalog Functions}
 \usage{
-PlotCat96(catalog, id, type = "density", abundance = NULL)
-
-PlotCat96New(catalog, id, type = "density", grid = TRUE,
-  abundance = NULL)
+PlotCat96(catalog, id, type = "density", cex = 0.8, grid = TRUE,
+  upper = TRUE, xlabels = TRUE, abundance = NULL)
 
 PlotCat192(catalog, id, type = "counts", cex = 0.8, abundance = NULL)
 
@@ -47,12 +44,13 @@ type for PlotCatID function and the option of type = "density" is not
 implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
 the current stage.)}
 
+\item{cex}{A numerical value giving the amount by which mutation class labels,
+mutation counts(if there exists), y axis and its labels, x axis labels and
+its annotations(if there exists) sample name and legend(if there exists)
+should be magnified relative to the default.}
+
 \item{abundance}{A matrix containing nucleotide abundance information and
 strand information(if there exists), to be used only when type = "density".}
-
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-y axis labels, sample name and legend(if there exists) should be magnified
-relative to the default.}
 }
 \value{
 invisible(TRUE)
@@ -62,8 +60,6 @@ Plot the mutation catalog of one sample
 }
 \details{
 \code{PlotCat96} Plot the SNS 96 mutation catalog of one sample.
-
-\code{PlotCat96New} Plot the SNS 96 mutation catalog of one sample.
 
 \code{PlotCat192} Plot the SNS 192 mutation catalog of one sample.
 

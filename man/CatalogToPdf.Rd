@@ -4,7 +4,6 @@
 \name{CatalogToPdf}
 \alias{CatalogToPdf}
 \alias{Cat96ToPdf}
-\alias{Cat96ToPdfNew}
 \alias{Cat192ToPdf}
 \alias{Cat192StrandToPdf}
 \alias{Cat1536ToPdf}
@@ -14,10 +13,7 @@
 \title{Catalog to Pdf Functions}
 \usage{
 Cat96ToPdf(catalog, name, id = colnames(catalog), type = "density",
-  abundance = NULL)
-
-Cat96ToPdfNew(catalog, name, id = colnames(catalog), type = "density",
-  grid = FALSE, abundance = NULL)
+  grid = FALSE, upper = TRUE, xlabels = TRUE, abundance = NULL)
 
 Cat192ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)
@@ -68,9 +64,6 @@ Plot the mutation catalog of different samples to a PDF file
 }
 \details{
 \code{Cat96ToPdf} Plot the SNS 96 mutation catalog of different samples
-to a PDF file.
-
-\code{Cat96ToPdfNew} Plot the SNS 96 mutation catalog of different samples
 to a PDF file.
 
 \code{Cat192ToPdf} Plot the SNS 192 mutation catalog of different samples
