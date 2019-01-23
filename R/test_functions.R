@@ -1,9 +1,8 @@
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired SNS catalogs
+#' are working correctly to produce the desired SNS catalogs.
 #'
 #' @param vcf.df An in-memory data frame containing a VCF file contents.
 #' @keywords internal
-#' @export
 TestSNSCatalog <- function(vcf.df) {
   stopifnot(!missing("vcf.df"))
   trans.ranges <- .trans.ranges
@@ -426,11 +425,11 @@ TestSNSCatalog <- function(vcf.df) {
 }
 
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired DNS catalogs
+#' are working correctly to produce the desired DNS catalogs.
 #'
-#' @param vcf.df An in-memory data frame containing a VCF file contents.
+#' @param vcf.df This function is to test whether the predefined functions
+#' are working correctly to produce the desired DNS catalogs.
 #' @keywords internal
-#' @export
 TestDNSCatalog <- function(vcf.df) {
   stopifnot(!missing("vcf.df"))
   trans.ranges <- .trans.ranges
@@ -536,9 +535,8 @@ TestDNSCatalog <- function(vcf.df) {
 }
 
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired SNS and DNS catalogs
+#' are working correctly to produce the desired DNS catalogs.
 #' @keywords internal
-#' @export
 TestSNSandDNSCat <- function() {
   # TODO(steve): move this into TestSNSCatalog and TESTSNSCatalog
   # so that these functions are self contained.
@@ -551,21 +549,19 @@ TestSNSandDNSCat <- function() {
   TestDNSCatalog(three.vcfs.df$DNS.vcf)
 }
 
-#' This function is to make catalogs from the sample VCF files
-#' to compare with the expected catalog information
-#' @import BSgenome.Hsapiens.1000genomes.hs37d5
-#' @keywords internal
-#' @export
 TestMakeCatalogFromSNSVCFs <- function() {
+  # This function is to make catalogs from the sample VCF files
+  # to compare with the expected catalog information.
+
   files <- c("data-raw/HepG2_Cis_1_SNVresult_rmDup.vcf",
              "data-raw/HepG2_Cis_2_SNVresult_rmDup.vcf",
              "data-raw/HepG2_Cis_3_SNVresult_rmDup.vcf",
              "data-raw/HepG2_Cis_4_SNVresult_rmDup.vcf")
 
   cats <-
-    VCFFiles2Catalog(
+    VCFFilesToCatalog(
       files,
-      genome = BSgenome.Hsapiens.1000genomes.hs37d5,
+      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
       # Use default transcript ranges
       trans.ranges = .trans.ranges)
 
