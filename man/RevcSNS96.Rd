@@ -2,17 +2,22 @@
 % Please edit documentation in R/utility_functions.R
 \name{RevcSNS96}
 \alias{RevcSNS96}
-\title{RevcSNS96}
+\title{Reverse complement strings that represent stranded SNSs}
 \usage{
 RevcSNS96(mutstring)
 }
 \arguments{
-\item{mutstring}{TODO}
+\item{mutstring}{A vector of 4-character strings representing
+stranded SNSs in trinucleotide context,
+for example "AATC" represents AAT > ACT mutations.}
 }
 \value{
-TODO
+Return the vector of
+reverse complements of the first 3 characters
+concatenated with the reverse complement of the
+last character, e.g. "AATC" returns "ATTG".
 }
 \description{
-RevcSNS96
+Reverse complement strings that represent stranded SNSs
 }
 \keyword{internal}

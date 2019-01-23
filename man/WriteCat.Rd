@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCat}
 \alias{WriteCat}
-\title{Write a matrix of mutation catalog to a file on disk}
+\title{Write a mutation catalog to a file on disk}
 \usage{
 WriteCat(ct, path, num.row, row.order, row.header, strict)
 }
@@ -24,6 +24,7 @@ checks fail.}
 A catalog in canonical in-memory format.
 }
 \description{
-Write a matrix of mutation catalog to a file on disk
+Called by exported functions to do the
+actual writing of the catalog to disk.
 }
 \keyword{internal}

@@ -2,17 +2,21 @@
 % Please edit documentation in R/utility_functions.R
 \name{RevcDNS144}
 \alias{RevcDNS144}
-\title{RevcDNS144}
+\title{Reverse complement strings that represent stranded DNSs}
 \usage{
 RevcDNS144(mutstring)
 }
 \arguments{
-\item{mutstring}{TODO}
+\item{mutstring}{A vector of 4-character strings representing
+stranded DNSs, for example "AATC" represents AA > TC mutations.}
 }
 \value{
-TODO
+Return the vector of
+reverse complements of the first 2 characters
+concatenated with the reverse complement of the second
+2 characters, e.g. "AATC" returns "TTGA".
 }
 \description{
-RevcDNS144
+Reverse complement strings that represent stranded DNSs
 }
 \keyword{internal}
