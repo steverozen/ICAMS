@@ -535,8 +535,8 @@ TestDNSCatalog <- function(vcf.df) {
 }
 
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired DNS catalogs.
-#' @keywords internal
+#' are working correctly to produce the desired SNS and DNS catalogs.
+#' @export
 TestSNSandDNSCat <- function() {
   # TODO(steve): move this into TestSNSCatalog and TESTSNSCatalog
   # so that these functions are self contained.
@@ -549,6 +549,9 @@ TestSNSandDNSCat <- function() {
   TestDNSCatalog(three.vcfs.df$DNS.vcf)
 }
 
+#' This function is to make catalogs from the sample VCF files
+#' to compare with the expected catalog information.
+#' @export
 TestMakeCatalogFromSNSVCFs <- function() {
   # This function is to make catalogs from the sample VCF files
   # to compare with the expected catalog information.
