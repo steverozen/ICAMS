@@ -49,6 +49,14 @@ take note there is no "density" type for CatIDtoPdf function and the option
 of type = "density" is not implemented for function Cat192ToPdf,
 Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)}
 
+\item{grid}{A logical value indicating whether to draw the grid lines in the
+graph.}
+
+\item{upper}{A logical value indicating whether to draw horizontal lines and
+names of major mutation class on top of graph.}
+
+\item{xlabels}{A logical value indicating whether to draw x axis labels.}
+
 \item{abundance}{A matrix containing nucleotide abundance information, to
 be used only when type = "density".}
 

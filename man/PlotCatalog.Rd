@@ -49,6 +49,14 @@ mutation counts(if there exists), y axis and its labels, x axis labels and
 its annotations(if there exists) sample name and legend(if there exists)
 should be magnified relative to the default.}
 
+\item{grid}{A logical value indicating whether to draw the grid lines in the
+graph.}
+
+\item{upper}{A logical value indicating whether to draw horizontal lines and
+names of major mutation class on top of graph.}
+
+\item{xlabels}{A logical value indicating whether to draw x axis labels.}
+
 \item{abundance}{A matrix containing nucleotide abundance information and
 strand information(if there exists), to be used only when type = "density".}
 }
