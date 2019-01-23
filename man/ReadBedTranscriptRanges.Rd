@@ -2,8 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{ReadBedTranscriptRanges}
 \alias{ReadBedTranscriptRanges}
-\title{Read transcript ranges and strands from a bed format file.
-Mostly for testing.}
+\title{Read transcript ranges and strands from a bed format file.}
 \usage{
 ReadBedTranscriptRanges(path)
 }
@@ -14,6 +13,6 @@ ReadBedTranscriptRanges(path)
 A data.table keyed by chrom, chromStart, and chromEnd.
 }
 \description{
-Read transcript ranges and strands from a bed format file.
-Mostly for testing.
+This function is mostly for testing purpose, may be removed in the future.
 }
+\keyword{internal}

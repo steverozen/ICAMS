@@ -17,3 +17,4 @@ A matrix whose row names indicate 32 different types of 3 base pairs
 \description{
 Read data from a nucleotide abundance file with 3 base pairs
 }
+\keyword{internal}

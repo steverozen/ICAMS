@@ -19,3 +19,4 @@ A data frame with new columns added to the input data frame,
 \description{
 Add transcript information to a data frame with mutation records
 }
+\keyword{internal}

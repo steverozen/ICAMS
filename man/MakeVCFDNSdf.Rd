@@ -2,9 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MakeVCFDNSdf}
 \alias{MakeVCFDNSdf}
-\title{Take DNS ranges and the original VCF and generate a VCF with
-dinucleotide REF and ALT alleles. The output VCF has minimal columns:
-just CHROM, POS, ID, REF, ALT.}
+\title{MakeVCFDNSdf TODO(steve) add average VAF}
 \usage{
 MakeVCFDNSdf(DNS.range.df, SNS.vcf.dt)
 }

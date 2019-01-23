@@ -23,3 +23,4 @@ Throws error with location information if the value of REF is
 Check that the sequence context information is consistent with the value of
 the column REF.
 }
+\keyword{internal}

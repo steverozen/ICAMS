@@ -10,7 +10,7 @@ CreateOneColSNSCatalog(vcf, sample.id = "count")
 \arguments{
 \item{vcf}{An in-memory VCF file annotated by the AddSequence and
 AddTranscript functions. It must *not* contain indels and must *not*
-contain DNS (double nucleotide substituions), or triplet base substituions
+contain DNS (double nucleotide substituions), or triplet base substitutions
 etc., even if encoded as neighboring SNS.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
@@ -23,3 +23,4 @@ A list of three matrices containing the SNS mutation catalog:
 Create single nucleotide mutation catalog for *one* sample from
 a Variant Call Format (VCF) file.
 }
+\keyword{internal}

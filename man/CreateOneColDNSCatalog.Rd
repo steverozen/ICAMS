@@ -11,7 +11,7 @@ CreateOneColDNSCatalog(vcf, sample.id = "count")
 \item{vcf}{An in-memory VCF file annotated by the AddSequence and
 AddTranscript functions. It must *not* contain indels and must
 *not* contain SNS (single nucleotide substituions), or triplet base
-substituions etc.}
+substitutions etc.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
@@ -23,3 +23,4 @@ A list of three matrices containing the DNS catalog:
 Create double nucleotide catalog for *one* sample from
 a Variant Call Format (VCF) file
 }
+\keyword{internal}

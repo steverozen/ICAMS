@@ -15,7 +15,8 @@
 \usage{
 PlotCat96(catalog, id, type = "density", abundance = NULL)
 
-PlotCat96New(catalog, id, type = "density", abundance = NULL)
+PlotCat96New(catalog, id, type = "density", grid = TRUE,
+  abundance = NULL)
 
 PlotCat192(catalog, id, type = "counts", cex = 0.8, abundance = NULL)
 

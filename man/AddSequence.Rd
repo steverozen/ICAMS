@@ -18,3 +18,4 @@ A data frame with a new column added to the input data frame,
 \description{
 Add sequence context to a data frame with mutation records
 }
+\keyword{internal}

@@ -18,3 +18,4 @@ A data.table keyed by chrom, chromStart, and chromEnd.
 Read transcript ranges and strands from a bed format file.
 Use this one for the new, cut down gff3 file (2018 11 24)
 }
+\keyword{internal}

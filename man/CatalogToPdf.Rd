@@ -17,7 +17,7 @@ Cat96ToPdf(catalog, name, id = colnames(catalog), type = "density",
   abundance = NULL)
 
 Cat96ToPdfNew(catalog, name, id = colnames(catalog), type = "density",
-  abundance = NULL)
+  grid = FALSE, abundance = NULL)
 
 Cat192ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)

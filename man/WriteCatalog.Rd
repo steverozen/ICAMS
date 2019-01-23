@@ -50,8 +50,9 @@ Write a mutation catalog to a file on disk
 \code{WriteCatQUAD136} Write a 136 QUAD catalog from path
 
 \code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk
-
 Please take note that the deletions Repeat Size ranges from 0 to 5+
 in the catalog, but for plotting and end user documentation
 it ranges from 1 to 6+.
+
+See also \code{\link{ReadCatalog}}
 }

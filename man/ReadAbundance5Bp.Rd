@@ -17,3 +17,4 @@ A matrix whose row names indicate 512 different types of 5 base
 \description{
 Read data from a nucleotide abundance file with 5 base pairs
 }
+\keyword{internal}

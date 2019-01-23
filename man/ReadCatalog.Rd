@@ -51,8 +51,9 @@ Read a catalog in PCAWG7 format from path
 \code{ReadCatQUAD136} Read a 136 QUAD catalog from path
 
 \code{ReadCatID} Read a ID (insertion/deletion) catalog from path
-
 Please take note that the deletions Repeat Size ranges from 0 to 5+
 in the catalog, but for plotting and end user documentation
 it ranges from 1 to 6+.
+
+See also \code{\link{WriteCatalog}}
 }

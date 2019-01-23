@@ -15,3 +15,4 @@ A data frame storing mutation records of a VCF file.
 \description{
 Read in the data lines of a Variant Call Format (VCF) file
 }
+\keyword{internal}

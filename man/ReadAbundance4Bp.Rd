@@ -17,3 +17,4 @@ A matrix whose row names indicate 10 different types of 2 base pairs
 \description{
 Read data from a nucleotide abundance file with 4 base pairs
 }
+\keyword{internal}
