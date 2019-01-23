@@ -6,7 +6,7 @@ NULL
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
-#' @export
+#' @keywords internal
 ReadStrelkaVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
@@ -74,6 +74,8 @@ GetStrelkaVAF <-function(strelka.vcf) {
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #' @return A data frame with a new column added to the input data frame,
 #'     which contains sequence context information.
+#' @keywords internal
+#' @export
 AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
   if (0 == nrow(df)) return(df)
 
@@ -99,6 +101,7 @@ AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #' @return A data frame with new columns added to the input data frame,
 #'     which contain the mutated gene's name, range and strand information.
 #' @export
+#' @keywords internal
 AddTranscript <- function(df, trans.ranges) {
   if (nrow(df) == 0) {
     return(df)
@@ -124,6 +127,8 @@ AddTranscript <- function(df, trans.ranges) {
   return(cbind(df, dt2))
 }
 
+#' MakeVCFDNSdf TODO(steve) add average VAF
+#'
 #' Take DNS ranges and the original VCF and generate a VCF with
 #' dinucleotide REF and ALT alleles. The output VCF has minimal columns:
 #' just CHROM, POS, ID, REF, ALT.
@@ -133,7 +138,6 @@ AddTranscript <- function(df, trans.ranges) {
 #' @import data.table
 #' @return TODO
 #' @export
-# TODO(steve) add average VAF
 MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
   tmpvcf <- SNS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
   DNS.range.dt <- as.data.table(DNS.range.df)
@@ -277,12 +281,11 @@ SplitSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' @param vcf In-memory VCF as a data.frame; must be an SNS or DNS VCF.
 #' @param column.to.use The column name as a string of the column in the VCF
 #'   with the context information
-#'
 #' @return Throws error with location information if the value of REF is
 #'   inconsistent with the value of seq.21context. Assumes the first base of the
 #'   reference allele is at position (size(<context string>)-1)/2, and generates
 #'   error if this is not an integer. Indices are 1-based.
-#' @export
+#' @keywords internal
 CheckSeqContextInVCF <- function(vcf, column.to.use) {
   if (0 == nrow(vcf)) return()
 
@@ -304,13 +307,13 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   }
 }
 
-#' Read a list of VCF files from path
+#' Read a list of Strelka VCF files from path
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @export
-ReadListOfVCFs <- function(vector.of.file.paths) {
+ReadListOfStrelkaVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaVCF)
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
@@ -321,13 +324,13 @@ ReadListOfVCFs <- function(vector.of.file.paths) {
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must *not*
-#'   contain DNS (double nucleotide substituions), or triplet base substituions
+#'   contain DNS (double nucleotide substituions), or triplet base substitutions
 #'   etc., even if encoded as neighboring SNS.
 #' @param sample.id Usually the sample id, but defaults to "count".
 #' @import data.table
 #' @return A list of three matrices containing the SNS mutation catalog:
 #'   96, 192, 1536 catalog respectively.
-#' @export
+#' @keywords internal
 CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -400,6 +403,8 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   return(list(cat96 = mat96, cat192 = mat192, cat1536 = mat1536))
 }
 
+#' Create SNS catalogs from VCFs
+#'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
 #' out of the contents of the VCFs in list.of.vcfs
 #'
@@ -414,7 +419,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   cat192
 #'   cat1536
 #' @export
-SNSVCFsToCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
+VCFsToSNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
   cat96 <- empty.cats$cat96
@@ -448,12 +453,12 @@ SNSVCFsToCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must
 #'   *not* contain SNS (single nucleotide substituions), or triplet base
-#'   substituions etc.
+#'   substitutions etc.
 #' @param sample.id Usually the sample id, but defaults to "count".
 #' @import data.table
 #' @return A list of three matrices containing the DNS catalog:
 #'   catDNS78, catDNS144, catQUAD136 respectively.
-#' @export
+#' @keywords internal
 CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -528,6 +533,8 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
               catQUAD136 = QUAD.mat.136))
 }
 
+#' Create DNS catalogs from VCFs
+#'
 #' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
 #' out of the contents of the VCFs in list.of.vcfs
 #'
@@ -542,7 +549,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catDNS144
 #'   catQUAD136
 #' @export
-DNSVCFsToCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
+VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
@@ -571,31 +578,33 @@ DNSVCFsToCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
               catQUAD136  = catQUAD136))
 }
 
-#' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-#' in the VCFs specified by vector.of.file.paths
+#' Create SNS and DNS catalogs from VCF files
 #'
+#' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
+#' from the VCFs specified by vector.of.file.paths
+#'
+#' This function calls \code{\link{VCFsToSNSCatalogs}} and \code{\link{VCFsToDNSCatalogs}}
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #' @param genome  Name of a particular reference genome
 #'   (without quotations marks).
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
-#'
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
-
 #' @export
-VCFFiles2Catalog <- function(vector.of.file.paths, genome, trans.ranges) {
-  vcfs <- ReadListOfVCFs(vector.of.file.paths)
-  return(c(SNSVCFsToCatalogs(vcfs, genome, trans.ranges),
-           DNSVCFsToCatalogs(vcfs, genome, trans.ranges)))
+VCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+  vcfs <- ReadListOfStrelkaVCFs(vector.of.file.paths)
+  return(c(VCFsToSNSCatalogs(vcfs, genome, trans.ranges),
+           VCFsToDNSCatalogs(vcfs, genome, trans.ranges)))
 }
 
 #' CanonicalizeDNS
 #'
 #' @param ref.vec TODO
 #' @param alt.vec TODO
-#' @keywords internal
+#'
 #' @return TODO
+#' @keywords internal
 CanonicalizeDNS <- function(ref.vec, alt.vec) {
   # TODO document
 
@@ -619,8 +628,9 @@ CanonicalizeDNS <- function(ref.vec, alt.vec) {
 #' CanonicalizeQUAD
 #'
 #' @param quad TODO
-#' @keywords internal
+#'
 #' @return TODO
+#' @keywords internal
 CanonicalizeQUAD <- function(quad) {
   # TODO document
 
@@ -639,25 +649,4 @@ CanonicalizeQUAD <- function(quad) {
 
   ret <- sapply(quad, FUN = Canonicalize1QUAD)
   return(ret)
-}
-
-#' Collapse a DNS 144 catalog matrix to a DNS 78 catalog matrix
-#'
-#' @param catDNS144 A DNS 144 catalog matrix whose row names indicate the 192
-#'   mutation types while its columns show the occurrences of each mutation type of
-#'   different samples.
-#' @import data.table
-#' @return A DNS 78 catalog matrix whose row names indicate the 96 mutation
-#'   types while its columns show the occurrences of each mutation type of different
-#'   samples.
-#' @export
-Collapse144to78 <- function(catDNS144) {
-  dt144 <- data.table(catDNS144)
-  ref <- substr(rownames(catDNS144), 1, 2)
-  alt <- substr(rownames(catDNS144), 3, 4)
-  dt144$rn <- CanonicalizeDNS(ref, alt)
-  dt78 <- dt144[, lapply(.SD, sum), by = rn, .SDcols = ]
-  mat78 <- as.matrix(dt78[ , -1])
-  rownames(mat78) <- dt78$rn
-  mat78 <- mat78[.catalog.row.order.DNS.78, , drop = FALSE]
 }
