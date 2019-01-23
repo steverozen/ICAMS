@@ -1,10 +1,68 @@
+#' Collapse Catalog Functions
+#'
+#' Collapse a catalog matrix to a canonical one
+#'
+#' \code{Collapse192To96} Collapse a SNS 192 catalog matrix to a SNS 96 catalog matrix.
+#'
+#' \code{Collapse1536To96} Collapse a SNS 1536 catalog matrix to a SNS 96 catalog matrix.
+#'
+#' \code{Collapse144To78} Collapse a DNS 144 catalog matrix to a DNS 78 catalog matrix.
+#' @param catalog A catalog matrix to be collapsed whose row names indicate the
+#'   mutation types while its columns show the occurrences of each mutation
+#'   type of different samples.
+#' @return A canonical catalog matrix whose row names indicate the mutation
+#'   types while its columns show the occurrences of each mutation type of
+#'   different samples.
+#' @name CollapseCatalog
+NULL
+
+#' @rdname CollapseCatalog
+#' @export
+Collapse192To96 <- function(catalog) {
+  dt192 <- data.table(catalog)
+  dt192$rn <- PyrTri(rownames(catalog))
+  dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
+  mat96 <- as.matrix(dt96[, -1])
+  rownames(mat96) <- dt96$rn
+  mat96 <- mat96[.catalog.row.order96, , drop = FALSE]
+}
+
+#' @rdname CollapseCatalog
+#' @export
+Collapse1536To96 <- function(catalog) {
+  dt <- data.table(catalog)
+  rn <- rownames(catalog)
+
+  # The next gsub replaces the string representing a
+  # single-base mutation in pentanucleotide with the corresponding
+  # sring for that mutation in a trinucleotide context.
+  dt$rn <- gsub(".(...).(.)", "\\1\\2", rn, perl = TRUE)
+  dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
+  mat96 <- as.matrix(dt96[, -1])
+  rownames(mat96) <- dt96$rn
+  mat96 <- mat96[.catalog.row.order96, , drop = FALSE]
+}
+
+#' @rdname CollapseCatalog
+#' @export
+Collapse144To78 <- function(catalog) {
+  dt144 <- data.table(catalog)
+  ref <- substr(rownames(catalog), 1, 2)
+  alt <- substr(rownames(catalog), 3, 4)
+  dt144$rn <- CanonicalizeDNS(ref, alt)
+  dt78 <- dt144[, lapply(.SD, sum), by = rn, .SDcols = ]
+  mat78 <- as.matrix(dt78[ , -1])
+  rownames(mat78) <- dt78$rn
+  mat78 <- mat78[.catalog.row.order.DNS.78, , drop = FALSE]
+}
+
 #' Standardize the Chromosome name annotations for a data frame
 #'
-#' @param df A data frame whose first column contains the Chromosome name.
+#' @param df A data frame whose first column contains the Chromosome name
+#'
+#' @return A data frame whose Chromosome names are only in the form of 1:22, "X"
+#'   and "Y".
 #' @keywords internal
-#' @return A data frame whose Chromosome names are only in the form of 1:22,
-#'   "X" and "Y".
-#' @export
 StandardChromName <- function(df) {
   # Is there any row in df whose Chromosome names start with "GL"?
   if (sum(grepl("^GL", df[[1]])) > 0) {
@@ -30,12 +88,12 @@ StandardChromName <- function(df) {
 #' Create a Transcript Range file from the raw GFF3 File
 #'
 #' @param path The name/path of the raw GFF3 File, or a complete URL.
-#' @keywords internal
+#'
 #' @return A data frame which contains chromosome name, start, end position,
 #'   strand information and gene name. Only the following four gene types are
 #'   kept to facilitate transcriptional strand bias analysis: protein_coding,
 #'   retained_intron, processed_transcript and nonsense_mediated_decay.
-#' @export
+#' @keywords internal
 CreateTransRange <- function(path) {
   df <- read.csv(path, header = FALSE, fill = TRUE, nrows = 20)
   # Count the number of comment lines
@@ -72,17 +130,14 @@ CreateTransRange <- function(path) {
   return(StandardChromName(dt2[, c(1, 4, 5, 7, 9)]))
 }
 
-
 #' PyrTri
 #'
 #' @param mutstring TODO
 #'
 #' @return TODO
-#' @export
 #' @keywords internal
 PyrTri <- function(mutstring) {
   # TODO (steve) document
-
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 2, 2) %in% c("A", "G"),
@@ -97,11 +152,9 @@ PyrTri <- function(mutstring) {
 #' @param mutstring TODO
 #'
 #' @return TODO
-#' @export
 #' @keywords internal
 PyrPenta <- function(mutstring) {
   # TODO (steve) document
-
   stopifnot(nchar(mutstring) == rep(6, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 3, 3) %in% c("A", "G"),
@@ -117,7 +170,6 @@ PyrPenta <- function(mutstring) {
 #' @importFrom Biostrings reverseComplement DNAStringSet
 #' @return A vector of type characters with the reverse complement of
 #'   of every string in string.vec.
-#' @keywords internal
 #' @export
 revc <- function(string.vec) {
   return(
@@ -131,6 +183,7 @@ revc <- function(string.vec) {
 #'
 #' @return TODO
 #' @export
+#' @keywords internal
 RevcSNS96 <- function(mutstring) {
   # TODO (steve) document
 
@@ -145,8 +198,8 @@ RevcSNS96 <- function(mutstring) {
 #' @param mutstring TODO
 #'
 #' @return TODO
-#' @keywords internal
 #' @export
+#' @keywords internal
 RevcDNS144 <- function(mutstring) {
   # TODO (Nanhai) document
 
@@ -164,6 +217,7 @@ RevcDNS144 <- function(mutstring) {
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #' @export
+#' @keywords internal
 ReadTranscriptRanges <- function(path) {
   d <- utils::read.table(path)
   colnames(d) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
@@ -173,12 +227,14 @@ ReadTranscriptRanges <- function(path) {
 }
 
 #' Read transcript ranges and strands from a bed format file.
-#' Mostly for testing.
+#'
+#' This function is mostly for testing purpose, may be removed in the future.
 #'
 #' @param path Path to the file with the transcript information (in bed format).
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #' @export
+#' @keywords internal
 ReadBedTranscriptRanges <- function(path) {
   names <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand")
   bed <- utils::read.table(path, col.names = names, as.is = TRUE)
@@ -204,6 +260,7 @@ ReadBedTranscriptRanges <- function(path) {
 #' @return A matrix whose row names indicate 32 different types of 3 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
+#' @keywords internal
 ReadAbundance3Bp <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("3bp", "occurrences")
@@ -223,6 +280,7 @@ ReadAbundance3Bp <- function(path) {
 #' @return A matrix whose row names indicate 10 different types of 2 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
+#' @keywords internal
 ReadAbundance4Bp <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
@@ -246,6 +304,7 @@ ReadAbundance4Bp <- function(path) {
 #' @return A matrix whose row names indicate 512 different types of 5 base
 #'   pairs combinations while its column contains the occurrences of each type.
 #' @export
+#' @keywords internal
 ReadAbundance5Bp <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("5bp", "occurrences")
