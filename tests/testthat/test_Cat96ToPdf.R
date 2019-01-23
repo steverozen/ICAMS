@@ -1,6 +1,6 @@
 context("Cat96ToPdf")
 
-test_that("Cat96ToPdfNew function is working properly", {
+test_that("Cat96ToPdf function is working properly", {
   catalog <- ReadCat96("testdata/regress.cat.96.csv")
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   cat1 <- catalog[, 1, drop = FALSE]
