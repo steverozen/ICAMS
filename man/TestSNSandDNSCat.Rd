@@ -3,12 +3,11 @@
 \name{TestSNSandDNSCat}
 \alias{TestSNSandDNSCat}
 \title{This function is to test whether the predefined functions
-are working correctly to produce the desired DNS catalogs.}
+are working correctly to produce the desired SNS and DNS catalogs.}
 \usage{
 TestSNSandDNSCat()
 }
 \description{
 This function is to test whether the predefined functions
-are working correctly to produce the desired DNS catalogs.
+are working correctly to produce the desired SNS and DNS catalogs.
 }
-\keyword{internal}

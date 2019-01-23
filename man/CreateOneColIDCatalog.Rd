@@ -10,7 +10,7 @@ CreateOneColIDCatalog(ID.vcf, SBS.vcf)
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the AddSequence
   and AddTranscript functions. It must only contain indels and must *not*
-  contain SNS (single nucleotide substituions), DNS, or triplet base substitutions
+  contain SBS (single base substituions), DBS, or triplet base substituions
   etc.
 
   * Sequence must already have been added to ID.vcf
@@ -38,4 +38,3 @@ TODO(steve) Is problems implemented?
 Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 file
 }
-\keyword{internal}
