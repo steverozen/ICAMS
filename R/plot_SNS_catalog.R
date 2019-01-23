@@ -4,8 +4,6 @@
 #'
 #' \code{PlotCat96} Plot the SNS 96 mutation catalog of one sample.
 #'
-#' \code{PlotCat96New} Plot the SNS 96 mutation catalog of one sample.
-#'
 #' \code{PlotCat192} Plot the SNS 192 mutation catalog of one sample.
 #'
 #' \code{PlotCat192Strand} Plot the transcription strand bias graph of 6 SNS
@@ -39,8 +37,9 @@
 #'   implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
 #'   the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
-#'   y axis labels, sample name and legend(if there exists) should be magnified
-#'   relative to the default.
+#'   mutation counts(if there exists), y axis and its labels, x axis labels and
+#'   its annotations(if there exists) sample name and legend(if there exists)
+#'   should be magnified relative to the default.
 #' @param abundance A matrix containing nucleotide abundance information and
 #'   strand information(if there exists), to be used only when type = "density".
 #' @return invisible(TRUE)
@@ -53,9 +52,6 @@ NULL
 #' Plot the mutation catalog of different samples to a PDF file
 #'
 #' \code{Cat96ToPdf} Plot the SNS 96 mutation catalog of different samples
-#' to a PDF file.
-#'
-#' \code{Cat96ToPdfNew} Plot the SNS 96 mutation catalog of different samples
 #' to a PDF file.
 #'
 #' \code{Cat192ToPdf} Plot the SNS 192 mutation catalog of different samples
@@ -108,290 +104,147 @@ NULL
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat96 <- function(catalog, id, type = "density", abundance = NULL) {
-  stopifnot(dim(catalog) == c(96, 1))
-  stopifnot(rownames(catalog) == .catalog.row.order96)
+PlotCat96 <-
+  function(catalog, id, type = "density", cex = 0.8, grid = TRUE,
+           upper = TRUE, xlabels = TRUE, abundance = NULL) {
+    stopifnot(dim(catalog) == c(96, 1))
+    stopifnot(rownames(catalog) == .catalog.row.order96)
 
-  class.col <- c("#0000ff",  # dark blue
-                 "#000000",  # black
-                 "#ff4040",  # red
-                 "#838383",  # grey
-                 "#40ff40",  # green
-                 "#ff667f")  # pink
-  cols <- rep(class.col, each = 16)
-  maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  num.classes <- length(catalog)
+    class.col <- c("#0000ff",  # dark blue
+                   "#000000",  # black
+                   "#ff4040",  # red
+                   "#838383",  # grey
+                   "#40ff40",  # green
+                   "#ff667f")  # pink
 
-  if (type == "density") {
-    # Calculate rate of mutations per million trinucleotides for the catalog
-    rate <- double(96)
-    for (i in 1 : 96) {
-      rate[i] <-
-        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3), ]
+    cols <- rep(class.col, each = 16)
+    maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+    num.classes <- length(catalog)
+
+    if (type == "density") {
+      # Calculate rate of mutations per million trinucleotides for the catalog
+      rate <- double(96)
+      for (i in 1 : 96) {
+        rate[i] <-
+          catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3), ]
+      }
+
+      # Get ylim
+      ymax <- max(rate)
+
+      # Barplot
+      bp <- barplot(rate, xaxt = "n", yaxt = "n", xaxs = "i",
+                    xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
+                    col = cols, ylab = "mut/million")
+
+      # Write the mutation counts on top of graph
+      for (i in 1 : 6) {
+        j <- 13 + 16 * (i - 1)
+        k <- 1 + 16 * (i - 1)
+        text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
+             xpd = NA, cex = cex)
+      }
+    } else if (type == "counts") {
+      # Get ylim
+      ymax <- max(catalog[, 1])
+
+      # Barplot
+      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
+                    xaxs = "i", lwd = 3, space = 1.35, border = NA,
+                    col = cols, ylab = "counts")
+
+      # Write the mutation counts on top of graph
+      for (i in 1 : 6) {
+        j <- 13 + 16 * (i - 1)
+        k <- 1 + 16 * (i - 1)
+        text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
+             xpd = NA, cex = cex)
+      }
+    } else if (type == "signature") {
+      # Calculate mutation signatures of the input catalog
+      sig <- catalog / sum(catalog)
+
+      # Get ylim
+      ymax <- max(sig)
+
+      # Barplot
+      bp <- barplot(sig[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
+                    lwd = 3, space = 1.35, border = NA,
+                    col = cols, ylab = "proportion")
+    } else {
+      stop('Please specify the correct type: "density", "counts" or "signature"')
     }
 
-    # Get ylim
-    ymax <- max(rate)
-
-    # Barplot
-    bp <- barplot(rate, xaxt = "n", yaxt = "n", xaxs = "i",
-                  xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "mut/million")
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 6) {
-      j <- 13 + 16 * (i - 1)
-      k <- 1 + 16 * (i - 1)
-      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-           xpd = NA, cex = 0.8)
-    }
-  } else if (type == "counts") {
-    # Get ylim
-    ymax <- max(catalog[, 1])
-
-    # Barplot
-    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
-                  xaxs = "i", lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "counts")
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 6) {
-      j <- 13 + 16 * (i - 1)
-      k <- 1 + 16 * (i - 1)
-      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-           xpd = NA, cex = 0.8)
-    }
-  } else if (type == "signature") {
-    # Calculate mutation signatures of the input catalog
-    sig <- catalog / sum(catalog)
-
-    # Get ylim
-    ymax <- max(sig)
-
-    # Barplot
-    bp <- barplot(sig[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
-                  lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "proportion")
-  } else {
-    stop('Please specify the correct type: "density", "counts" or "signature"')
-  }
-
-  # Draw the x axis
-  Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
-       labels = FALSE, lwd.tick = 0, lwd = 0.5)
-
-  # Draw the y axis
-  y.axis.values <- c(0, ymax)
-  if (type != "counts") {
-    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
-  } else {
-    y.axis.labels <- y.axis.values
-  }
-  Axis(side = 2, at = y.axis.values, las = 1, cex.axis = 0.8, labels = FALSE)
-  text(-3.5, y.axis.values, labels = y.axis.labels, cex = 0.8,
-       las = 1, adj = 1, xpd = NA)
-
-  # Draw the ID information on top of graph
-  text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
-
-  # Draw the labels along x axis
-  xlabel.idx <- seq(1, 96, by = 4)
-  label <- c("A", "C", "G", "T")
-
-  # Draw the first line of x axis label
-  text(bp[xlabel.idx], -ymax / 7, labels = label,
-       cex = 0.7, adj = 0.5, xpd = NA)
-
-  x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
-            bp[xlabel.idx + 2], bp[xlabel.idx + 3])
-  y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.5, -ymax / 2.1)
-  # Draw the remaining lines of x axis labels
-  for (i in 1 : 4) {
-    text(x[[i]], y[i], labels = label[i], cex = 0.7, adj = 0.5, xpd = NA)
-  }
-
-  # Draw the text on the left plane
-  text(1.5, -ymax / 7, labels = "preceded by 5'",
-       pos = 2, xpd = NA, cex = 0.8)
-  text(1.5, -ymax / 3.5, labels = "followed by 3'",
-       pos = 2, xpd = NA, cex = 0.8)
-
-  # Draw horizontal lines and names of major mutation class on top of graph
-  x.left <- bp[seq(1, 81, 16)]
-  x.right <- bp[seq(16, 96, 16)]
-  rect(xleft = x.left, ymax * 1.28, xright = x.right, ymax * 1.3,
-       col = class.col, border = NA, xpd = NA, adj = 0.5)
-  text((x.left + x.right)/2, ymax * 1.38, labels = maj.class.names, xpd = NA)
-
-  invisible(TRUE)
-}
-
-#' @rdname PlotCatalog
-#' @import graphics
-#' @export
-PlotCat96New <-
-  function(catalog, id, type = "density", grid = TRUE, abundance = NULL) {
-  stopifnot(dim(catalog) == c(96, 1))
-  stopifnot(rownames(catalog) == .catalog.row.order96)
-
-  class.col <- c("#0000ff",  # dark blue
-                 "#000000",  # black
-                 "#ff4040",  # red
-                 "#838383",  # grey
-                 "#40ff40",  # green
-                 "#ff667f")  # pink
-
-  cols <- rep(class.col, each = 16)
-  maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  num.classes <- length(catalog)
-
-  if (type == "density") {
-    # Calculate rate of mutations per million trinucleotides for the catalog
-    rate <- double(96)
-    for (i in 1 : 96) {
-      rate[i] <-
-        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3), ]
+    # Draw grid lines
+    if (grid) {
+      segments(bp[1] - 1, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 1,
+               seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
     }
 
-    # Get ylim
-    ymax <- max(rate)
+    # Draw the x axis
+    Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
+         labels = FALSE, lwd.tick = 0, lwd = 0.5)
 
-    # Barplot
-    bp <- barplot(rate, xaxt = "n", yaxt = "n", xaxs = "i",
-                  xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "mut/million")
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 6) {
-      j <- 13 + 16 * (i - 1)
-      k <- 1 + 16 * (i - 1)
-      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-           xpd = NA, cex = 0.8)
+    # Draw y axis
+    y.axis.values <- seq(0, ymax, ymax/4)
+    if (type != "counts") {
+      y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+    } else {
+      y.axis.labels <- round(y.axis.values, 0)
     }
-  } else if (type == "counts") {
-    # Get ylim
-    ymax <- max(catalog[, 1])
-
-    # Barplot
-    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
-                  xaxs = "i", lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "counts")
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 6) {
-      j <- 13 + 16 * (i - 1)
-      k <- 1 + 16 * (i - 1)
-      text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-           xpd = NA, cex = 0.8)
-    }
-  } else if (type == "signature") {
-    # Calculate mutation signatures of the input catalog
-    sig <- catalog / sum(catalog)
-
-    # Get ylim
-    ymax <- max(sig)
-
-    # Barplot
-    bp <- barplot(sig[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
-                  lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = "proportion")
-  } else {
-    stop('Please specify the correct type: "density", "counts" or "signature"')
-  }
-
-  # Draw grid lines
-  if (grid) {
-    segments(bp[1] - 1, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 1,
-             seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
-  }
-
-  # Draw the x axis
-  Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
-       labels = FALSE, lwd.tick = 0, lwd = 0.5)
-
-  # Draw y axis
-  y.axis.values <- seq(0, ymax, ymax/4)
-  if (type != "counts") {
-    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
-  } else {
-    y.axis.labels <- round(y.axis.values, 0)
-  }
-  if (grid) {
-    text(-0.5, y.axis.values, labels = y.axis.labels,
-         las = 1, adj = 1, xpd = NA, cex = 0.8)
-  } else {
-    Axis(side = 2, at = y.axis.values, las = 1, cex.axis = 0.8, labels = FALSE)
-    text(-3.5, y.axis.values, labels = y.axis.labels, cex = 0.8,
-         las = 1, adj = 1, xpd = NA)
-  }
-
-  # Draw the ID information on top of graph
-  text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
-
-  # Draw the labels along x axis
-  xlabel.idx <- seq(1, 96, by = 4)
-  label <- c("A", "C", "G", "T")
-
-  # Draw the first line of x axis label
-  text(bp[xlabel.idx], -ymax / 7, labels = label,
-       cex = 0.7, adj = 0.5, xpd = NA)
-
-  x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
-            bp[xlabel.idx + 2], bp[xlabel.idx + 3])
-  y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.5, -ymax / 2.1)
-  # Draw the remaining lines of x axis labels
-  for (i in 1 : 4) {
-    text(x[[i]], y[i], labels = label[i], cex = 0.7, adj = 0.5, xpd = NA)
-  }
-
-  # Draw the text on the left plane
-  text(1.5, -ymax / 7, labels = "preceded by 5'",
-       pos = 2, xpd = NA, cex = 0.8)
-  text(1.5, -ymax / 3.5, labels = "followed by 3'",
-       pos = 2, xpd = NA, cex = 0.8)
-
-  # Draw horizontal lines and names of major mutation class on top of graph
-  x.left <- bp[seq(1, 81, 16)]
-  x.right <- bp[seq(16, 96, 16)]
-  rect(xleft = x.left, ymax * 1.28, xright = x.right, ymax * 1.3,
-       col = class.col, border = NA, xpd = NA, adj = 0.5)
-  text((x.left + x.right)/2, ymax * 1.38, labels = maj.class.names, xpd = NA)
-
-  invisible(TRUE)
-}
-
-#' @rdname CatalogToPdf
-#' @export
-Cat96ToPdf <-
-  function(catalog, name, id = colnames(catalog), type = "density",
-           abundance = NULL) {
-    # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
-
-    n <- ncol(catalog)
-    graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
-
-    # Do recycling of the function parameters if a vector
-    # with length more than one is not specified by the user.
-    if (n > 1 && length(type) == 1) {
-      type <- rep(type, n)
+    if (grid) {
+      text(-0.5, y.axis.values, labels = y.axis.labels,
+           las = 1, adj = 1, xpd = NA, cex = cex)
+    } else {
+      Axis(side = 2, at = y.axis.values, las = 1, cex.axis = cex, labels = FALSE)
+      text(-3.5, y.axis.values, labels = y.axis.labels, cex = cex,
+           las = 1, adj = 1, xpd = NA)
     }
 
-    for (i in 1 : n) {
-      PlotCat96(catalog[, i, drop = FALSE],
-                id = id[i],
-                type = type[i],
-                abundance = abundance)
+    # Draw the ID information on top of graph
+    text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
+
+    # Draw the labels along x axis?
+    if (xlabels) {
+      xlabel.idx <- seq(1, 96, by = 4)
+      label <- c("A", "C", "G", "T")
+
+      # Draw the first line of x axis label
+      text(bp[xlabel.idx], -ymax / 7, labels = label,
+           cex = cex, adj = 0.5, xpd = NA)
+
+      x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
+                bp[xlabel.idx + 2], bp[xlabel.idx + 3])
+      y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.5, -ymax / 2.1)
+      # Draw the remaining lines of x axis labels
+      for (i in 1 : 4) {
+        text(x[[i]], y[i], labels = label[i], cex = cex, adj = 0.5, xpd = NA)
+      }
     }
-    invisible(grDevices::dev.off())
+
+    # Draw the text on the left plane
+    text(1.5, -ymax / 7, labels = "preceded by 5'",
+         pos = 2, xpd = NA, cex = cex)
+    text(1.5, -ymax / 3.5, labels = "followed by 3'",
+         pos = 2, xpd = NA, cex = cex)
+
+    # Draw horizontal lines and names of major mutation class on top of graph?
+    if (upper) {
+      x.left <- bp[seq(1, 81, 16)]
+      x.right <- bp[seq(16, 96, 16)]
+      rect(xleft = x.left, ymax * 1.28, xright = x.right, ymax * 1.3,
+           col = class.col, border = NA, xpd = NA, adj = 0.5)
+      text((x.left + x.right)/2, ymax * 1.38, labels = maj.class.names, xpd = NA)
+    }
+
     invisible(TRUE)
   }
 
 #' @rdname CatalogToPdf
 #' @export
-Cat96ToPdfNew <-
+Cat96ToPdf <-
   function(catalog, name, id = colnames(catalog), type = "density",
-           grid = FALSE, abundance = NULL) {
+           grid = FALSE, upper = TRUE, xlabels = TRUE, abundance = NULL) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -408,12 +261,22 @@ Cat96ToPdfNew <-
       grid <- rep(grid, n)
     }
 
+    if (n > 1 && length(upper) == 1) {
+      upper <- rep(upper, n)
+    }
+
+    if (n > 1 && length(xlabels) == 1) {
+      xlabels <- rep(xlabels, n)
+    }
+
     for (i in 1 : n) {
-      PlotCat96New(catalog[, i, drop = FALSE],
-                   id = id[i],
-                   type = type[i],
-                   grid = grid[i],
-                   abundance = abundance)
+      PlotCat96(catalog[, i, drop = FALSE],
+                id = id[i],
+                type = type[i],
+                grid = grid[i],
+                upper = upper[i],
+                xlabels = xlabels[i],
+                abundance = abundance)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
