@@ -1,7 +1,8 @@
 #' @include utility_functions.R
 NULL
 
-#' Read in the data lines of a Variant Call Format (VCF) file
+#' Read in the data lines of a Variant Call Format (VCF) file created by
+#'     Strelka version 1
 #' @importFrom utils read.csv
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
@@ -28,7 +29,7 @@ ReadStrelkaVCF <- function(path) {
   return(StandardChromName(df1))
 }
 
-#' Extract the VAFs (variant allele frequencies) from a VAF created by
+#' Extract the VAFs (variant allele frequencies) from a VCF created by
 #'     Strelka version 1
 #'
 #' @param strelka.vcf said VCF as a data.frame
@@ -63,6 +64,34 @@ GetStrelkaVAF <-function(strelka.vcf) {
     vaf[i] <- alt.count/total.read.count
   }
   return(vaf)
+}
+
+#' Read in the data lines of a Variant Call Format (VCF) file created by
+#'     MuTect
+#' @importFrom utils read.csv
+#' @param path The name/path of the VCF file, or a complete URL.
+#'
+#' @return A data frame storing mutation records of a VCF file.
+#' @keywords internal
+ReadMuTectVCF <- function(path) {
+  df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
+                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+
+  # Delete the columns which are totally empty
+  df <- df[!sapply(df, function(x) all(is.na(x)))]
+
+  # Delete meta-information lines which start with "##"
+  idx <- grep("^##", df[, 1])
+  df1 <- df[-idx, ]
+
+  # Extract the names of columns in the VCF file
+  names <- c("CHROM", as.character(df1[1, ])[-1])
+  df1 <- df1[-1, ]
+  colnames(df1) <- names
+
+  df1$POS <- as.integer(df1$POS)
+  df1$VAF <- GetMutectVAF(df1)
+  return(StandardChromName(df1))
 }
 
 #' Add sequence context to a data frame with mutation records
