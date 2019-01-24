@@ -94,6 +94,35 @@ ReadMuTectVCF <- function(path) {
   return(StandardChromName(df1))
 }
 
+#' Extract the VAFs (variant allele frequencies) from a VCF created by
+#'     MuTect
+#'
+#' @param mutect.vcf said VCF as a data.frame
+#'
+#' @return A vector of VAFs, one for each row of mutect.vcf
+#' @export
+GetMuTectVAF <-function(mutect.vcf) {
+  stopifnot(class(mutect.vcf) == "data.frame")
+
+  # Select out the column which has the information for F1R2 and F2R1
+  info <- mutect.vcf[[10]]
+
+  # Get the raw data by splitting the character string
+  raw <- strsplit(info, ":")
+
+  # Define a function to extract the values for F1R2 and F2R1
+  Extract <- function(x) as.integer(unlist(strsplit(x[5:6], ",")))
+
+  values <- lapply(raw, FUN = Extract)
+
+  # Define a function to calculate VAF according to F1R2 and F2R1 values
+  CalculateVAF <- function(x) sum(x[2], x[4]) / sum(x)
+
+  vaf <- sapply(values, FUN = CalculateVAF)
+
+  return(vaf)
+}
+
 #' Add sequence context to a data frame with mutation records
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
