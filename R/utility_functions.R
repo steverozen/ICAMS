@@ -303,16 +303,13 @@ CreateDinucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return A matrix whose row names indicate 10 different types of 2 base pairs
+#' @return A matrix whose row names indicate 136 different types of 4 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
 CreateTetranucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
-  canonical.ref <-
-    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
-  dt$type <-
-    ifelse(substr(dt[[1]], 2, 3) %in% canonical.ref, dt[[1]], revc(dt[[1]]))
+  dt$type <- CanonicalizeQUAD(dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   mat <- as.matrix(dt1[, 2])
   rownames(mat) <- dt1[[1]]
