@@ -377,6 +377,18 @@ ReadListOfStrelkaVCFs <- function(vector.of.file.paths) {
   return(vcfs)
 }
 
+#' Read a list of Mutect VCF files from path
+#'
+#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#'
+#' @return A list of vcfs from vector.of.file.paths.
+#' @export
+ReadListOfMutectVCFs <- function(vector.of.file.paths) {
+  vcfs <- lapply(vector.of.file.paths, FUN = ReadMutectVCF)
+  names(vcfs) <- vector.of.file.paths
+  return(vcfs)
+}
+
 #' Create single nucleotide mutation catalog for *one* sample from
 #' a Variant Call Format (VCF) file.
 #'
