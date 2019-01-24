@@ -3,25 +3,19 @@
 \name{FindMaxRepeatDel}
 \alias{FindMaxRepeatDel}
 \title{Return the number of repeat units in which a deletion
-is embedded.
-
-e.g. rep.unit.seq = ac
-pos = 3
-context = xyaczt
-pos is here ^
-Return 0
-
-If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.}
+is embedded.}
 \usage{
 FindMaxRepeatDel(context, rep.unit.seq, pos)
 }
 \arguments{
-\item{context}{A string that embeds \code{rep.unit.seq} at position \code{pos}}
+\item{context}{A string that embeds \code{rep.unit.seq} at position
+\code{pos}}
 
 \item{rep.unit.seq}{A substring of \code{context} at \code{pos}
-to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat unit sequence.}
+to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat
+ unit sequence.}
 
-\item{pos}{The position of \code{rep.unit.seq}.}
+\item{pos}{The position of \code{rep.unit.seq} in \code{context}.}
 }
 \value{
 The number of repeat units in which \code{rep.unit.seq} is
@@ -31,17 +25,16 @@ the input rep.unit.seq in the count.
 \description{
 Return the number of repeat units in which a deletion
 is embedded.
-
-e.g. rep.unit.seq = ac
-pos = 3
-context = xyaczt
-pos is here ^
-Return 0
-
-If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 }
 \details{
-If this functions returns 0, it is then necessary to
+For example \code{FindMaxRepeatDel("xyaczt", "ac", 3)}
+returns 0.
+
+If
+\code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq}
+ then stop.
+
+If this functions returns 0, then it is necessary to
   look for microhomology.
 }
 \keyword{internal}

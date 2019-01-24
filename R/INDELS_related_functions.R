@@ -50,16 +50,6 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #' @title Return the number of repeat units in which a deletion
 #' is embedded.
 #'
-#' e.g. rep.unit.seq = ac
-#' pos = 3
-#' context = xyaczt
-#' pos is here ^
-#' Return 0
-#'
-#' If
-#'  \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq}
-#'  then stop.
-#'
 #' @param context A string that embeds \code{rep.unit.seq} at position
 #'  \code{pos}
 #'
@@ -73,7 +63,16 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #' embedded, not including
 #' the input rep.unit.seq in the count.
 #'
-#' @details If this functions returns 0, it is then necessary to
+#' @details
+#'
+#' For example \code{FindMaxRepeatDel("xyaczt", "ac", 3)}
+#' returns 0.
+#'
+#' If
+#' \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq}
+#'  then stop.
+#'
+#' If this functions returns 0, then it is necessary to
 #'   look for microhomology.
 #'
 #' @keywords internal
@@ -107,21 +106,42 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
-#' FindDelMH TODO(steve):not finished
+#' @title Return the length of microhomology at a deletion
+#'
+#' TODO(steve):not finished
 #'
 #' Microhomology can be alligned in multiple equivalent ways.
 #' Example:
 #'
-#' GGCTAGTT aligned to
+#' GGCTAGTT aligned to GGCTAGAACTAGTT
 #'
+#' \preformatted{
 #' GGCTAGAACTAGTT
 #' GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
 #'                            ----   ----
+#'
 #' GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
 #'                           * ---  * ---
-#' GGCT------AGTT GGCTAGTT
-#' GGCTA------GTT GGCTAGTT
-#' GGCTAG------TT GGCTAGTT
+#'
+#' GGCT------AGTT GGCTAGTT GGCT[AGAACT]AGTT
+#'                           ** --  ** --
+#'
+#' GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
+#'                           *** -  *** -
+#'
+#' GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
+#'                           ****   ****
+#' }
+#'
+#'
+#' Be carefull that the glued together microhomology on
+#' The left == the glued together microhomology on
+#' the right.
+#'
+#' \preformatted{
+#' GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
+#'                          ** ---  ** ---
+#' }
 #'
 #' All the same pairs of sequence, aligned 5 different ways.
 #' 4 bp of microhomology.
@@ -131,43 +151,88 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' (1) The maxium match of undeleted sequence on left that is
 #' identical to the right end of deleted sequence, and
 #'
-#' (2) The maxium match of undeleted sequence on right that is
-#' identical to the left end of deleted sequence.
-#'
 #' The microhomology sequence is the concatenation of items
 #' (1) and (2).
 #'
-#' @param context TODO
-#' @param q TODO
-#' @param pos TODO
+#' @param context The deleted sequence plus ample surround
+#'   sequence on each side (at least as long as \code{del.sequence}).
 #'
-#' @return TODO
-#' @export
-FindDelMH <- function(context, q, pos) {
-  stopifnot(substr(context, pos, pos + nchar(q) - 1) == q)
-  stopifnot(pos > nchar(q) + 1) # The context on the left has to be
-  # longer than q
+#' @param deleted.seq The deleted sequence in \code{context}.
+#' #'
+#' @param pos The position of \code{del.sequence} in \code{context}.
+#'
+#' @param trace If > 0, cat various messages.
+#'
+#' @return The length of the maxium microhomology of \code{del.sequence}
+#'   in \code{context}.
+#'
+#' @keywords internal
+#'
+FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
+  n <- nchar(deleted.seq)
 
-  i <- 0
-  while (substr(context, pos - (i + 1), pos - 1) ==
-         substr(q, nchar(q) - i, nchar(q))) {
-    i <- i + 1
-  }
-  left.len <- i
+  stopifnot(substr(context, pos, pos + n - 1) == deleted.seq)
+  # The context on the left has to be at least as long as deleted.seq
+  stopifnot((pos - 1) >= n)
+  # The context on the right as to be at least as long as deleted.seq
+  stopifnot(nchar(context) - (pos + n - 1) >= n)
 
-  i <- 0
-  right.context.start <- pos + nchar(q)
-  while (substr(q, 1, 1 + i ) ==
-         substr(context, right.context.start, right.context.start + i)) {
-    i <- i + 1
+  ds <- unlist(strsplit(deleted.seq, ""))
+
+  # Look for microhomology to the left in context.
+  left.context <- substr(context, pos - n, pos - 1)
+  left <- unlist(strsplit(x = left.context, ""))
+  for (i in n:1) {
+    if (ds[i] != left[i]) break;
   }
-  return(left.len + i)
+  left.len <- n - i
+  if (trace > 0 ) {
+    cat("Left break", i, "\n")
+  }
+
+  # Look for microhomology to the right in context.
+  right.context <- substr(context, pos + n - 1, pos + 2 * n - 1)
+  right <- unlist(strsplit(x = right.context, ""))
+  for (i2 in 1:n) {
+    if (ds[i2] != right[i2]) break;
+  }
+  if (trace > 0) {
+    cat("Right break", i2, "\n")
+    cat(paste0(left.context, "[",
+               deleted.seq, "]",
+               right.context, "\n"))
+  }
+  return (left.len + i2)
+}
+
+if (FALSE) {
+
+  #     GAGAGG[CTAGAA]CTAGTT
+  #            ----   ----
+  FindDelMH("GAGAGGCTAGAACTAGTT", "CTAGAA", 7, trace = 1)
+
 }
 
 #' @title Return the number of repeat units in which an insertion
 #' is embedded.
 #'
-#' e.g.
+#' @param context A string into which \code{rep.unit.seq} was
+#'  inseted at position \code{pos}
+#'
+#' @param rep.unit.seq The inserted sequence and potention repeat unit
+#'
+#' @param pos \code{rep.unit.seq} is understood to be inserted between
+#'   positions \code{pos} amd \code{pos + 1}.
+#'
+#' @return If same sequence as \code{rep.unit.seq} occurs ending at
+#'   \code{pos} or starting at \code{pos + 1} then the number of
+#'   repeat units before the insertion, otherwise 0.
+#'
+#'
+#' @details
+#' For example
+#'
+#' \preformatted{
 #'
 #' rep.unit.seq = ac
 #' pos = 2
@@ -188,20 +253,9 @@ FindDelMH <- function(context, q, pos) {
 #' rep.unit.seq = ac
 #' pos = any of 1, 3, 5, 7, 9
 #' return 4
+#' }
 #'
 #' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
-#'
-#' @param context A string into which \code{rep.unit.seq} was
-#'  inseted at position \code{pos}
-#'
-#' @param rep.unit.seq The inserted sequence and potention repeat unit
-#'
-#' @param pos \code{rep.unit.seq} is understood to be inserted between
-#'   positions \code{pos} amd \code{pos + 1}.
-#'
-#' @return If same sequence as \code{rep.unit.seq} occurs ending at
-#'   \code{pos} or starting at \code{pos + 1} then the number of
-#'   repeat units before the insertion, otherwise 0.
 #'
 #' @keywords internal
 #'

@@ -3,31 +3,7 @@
 \name{FindMaxRepeatIns}
 \alias{FindMaxRepeatIns}
 \title{Return the number of repeat units in which an insertion
-is embedded.
-
-e.g.
-
-rep.unit.seq = ac
-pos = 2
-context = xyaczt
-return 1
-
-rep.unit.seq = ac
-pos = 4
-context = xyaczt
-return 1
-
-rep.unit.seq = cgct
-pos = 2
-rep.unit.seq = at
-return 0
-
-context = gacacacacg
-rep.unit.seq = ac
-pos = any of 1, 3, 5, 7, 9
-return 4
-
-If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.}
+is embedded.}
 \usage{
 FindMaxRepeatIns(context, rep.unit.seq, pos)
 }
@@ -48,8 +24,11 @@ If same sequence as \code{rep.unit.seq} occurs ending at
 \description{
 Return the number of repeat units in which an insertion
 is embedded.
+}
+\details{
+For example
 
-e.g.
+\preformatted{
 
 rep.unit.seq = ac
 pos = 2
@@ -70,6 +49,7 @@ context = gacacacacg
 rep.unit.seq = ac
 pos = any of 1, 3, 5, 7, 9
 return 4
+}
 
 If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 }

@@ -2,35 +2,42 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindDelMH}
 \alias{FindDelMH}
-\title{FindDelMH TODO(steve):not finished}
-\usage{
-FindDelMH(context, q, pos)
-}
-\arguments{
-\item{context}{TODO}
+\title{Return the length of microhomology at a deletion
 
-\item{q}{TODO}
+TODO(steve):not finished
 
-\item{pos}{TODO}
-}
-\value{
-TODO
-}
-\description{
 Microhomology can be alligned in multiple equivalent ways.
 Example:
-}
-\details{
-GGCTAGTT aligned to
 
+GGCTAGTT aligned to GGCTAGAACTAGTT
+
+\preformatted{
 GGCTAGAACTAGTT
 GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
                            ----   ----
+
 GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
                           * ---  * ---
-GGCT------AGTT GGCTAGTT
-GGCTA------GTT GGCTAGTT
-GGCTAG------TT GGCTAGTT
+
+GGCT------AGTT GGCTAGTT GGCT[AGAACT]AGTT
+                          ** --  ** --
+
+GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
+                          *** -  *** -
+
+GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
+                          ****   ****
+}
+
+
+Be carefull that the glued together microhomology on
+The left == the glued together microhomology on
+the right.
+
+\preformatted{
+GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
+                         ** ---  ** ---
+}
 
 All the same pairs of sequence, aligned 5 different ways.
 4 bp of microhomology.
@@ -40,9 +47,73 @@ Need to find:
 (1) The maxium match of undeleted sequence on left that is
 identical to the right end of deleted sequence, and
 
-(2) The maxium match of undeleted sequence on right that is
-identical to the left end of deleted sequence.
+The microhomology sequence is the concatenation of items
+(1) and (2).}
+\usage{
+FindDelMH(context, deleted.seq, pos, trace = 0)
+}
+\arguments{
+\item{context}{The deleted sequence plus ample surround
+sequence on each side (at least as long as \code{del.sequence}).}
+
+\item{deleted.seq}{The deleted sequence in \code{context}.
+#'}
+
+\item{pos}{The position of \code{del.sequence} in \code{context}.}
+
+\item{trace}{If > 0, cat various messages.}
+}
+\value{
+The length of the maxium microhomology of \code{del.sequence}
+  in \code{context}.
+}
+\description{
+Return the length of microhomology at a deletion
+
+TODO(steve):not finished
+
+Microhomology can be alligned in multiple equivalent ways.
+Example:
+
+GGCTAGTT aligned to GGCTAGAACTAGTT
+
+\preformatted{
+GGCTAGAACTAGTT
+GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
+                           ----   ----
+
+GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
+                          * ---  * ---
+
+GGCT------AGTT GGCTAGTT GGCT[AGAACT]AGTT
+                          ** --  ** --
+
+GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
+                          *** -  *** -
+
+GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
+                          ****   ****
+}
+
+
+Be carefull that the glued together microhomology on
+The left == the glued together microhomology on
+the right.
+
+\preformatted{
+GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
+                         ** ---  ** ---
+}
+
+All the same pairs of sequence, aligned 5 different ways.
+4 bp of microhomology.
+
+Need to find:
+
+(1) The maxium match of undeleted sequence on left that is
+identical to the right end of deleted sequence, and
 
 The microhomology sequence is the concatenation of items
 (1) and (2).
 }
+\keyword{internal}
