@@ -134,13 +134,14 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' }
 #'
 #'
-#' Be carefull that the glued together microhomology on
-#' The left == the glued together microhomology on
-#' the right.
-#'
 #' \preformatted{
 #' GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
 #'                          ** ---  ** ---
+#'
+#' GGCTA----GTT GGCTAGTT GACTA[GCTA]GTT
+#'                         *** -*** -
+#
+#'
 #' }
 #'
 #' All the same pairs of sequence, aligned 5 different ways.
@@ -172,10 +173,10 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   n <- nchar(deleted.seq)
 
   stopifnot(substr(context, pos, pos + n - 1) == deleted.seq)
-  # The context on the left has to be at least as long as deleted.seq
-  stopifnot((pos - 1) >= n)
-  # The context on the right as to be at least as long as deleted.seq
-  stopifnot(nchar(context) - (pos + n - 1) >= n)
+  # The context on the left has to be longer then deleted.seq
+  stopifnot((pos - 1) > n)
+  # The context on the right as to be longer than deleted.seq
+  stopifnot(nchar(context) - (pos + n - 1) > n)
 
   ds <- unlist(strsplit(deleted.seq, ""))
 
@@ -183,35 +184,69 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   left.context <- substr(context, pos - n, pos - 1)
   left <- unlist(strsplit(x = left.context, ""))
   for (i in n:1) {
-    if (ds[i] != left[i]) break;
+    if (ds[i] != left[i]) break
+    if (i == 1) stop("Thre is a repeat to the left of ", deleted.seq)
   }
   left.len <- n - i
   if (trace > 0 ) {
-    cat("Left break", i, "\n")
+    cat("Left break", i, "\nleft.len =", left.len, "\n")
   }
 
   # Look for microhomology to the right in context.
-  right.context <- substr(context, pos + n - 1, pos + 2 * n - 1)
+  right.context <- substr(context, pos + n, pos + 2 * n)
   right <- unlist(strsplit(x = right.context, ""))
   for (i2 in 1:n) {
-    if (ds[i2] != right[i2]) break;
+    if (ds[i2] != right[i2]) break
+    if (i2 == n) stop("There is repeat to the right of ", deleted.seq)
   }
+  right.len <- i2 - 1
   if (trace > 0) {
-    cat("Right break", i2, "\n")
+    cat("Right break", i2, "\nright.len =", right.len, "\n")
     cat(paste0(left.context, "[",
                deleted.seq, "]",
                right.context, "\n"))
+    # left.context and right.context are the same length as deleted.seq
+
   }
-  return (left.len + i2)
+  return (left.len + right.len)
 }
 
 if (FALSE) {
 
-  #     GAGAGG[CTAGAA]CTAGTT
-  #            ----   ----
-  FindDelMH("GAGAGGCTAGAACTAGTT", "CTAGAA", 7, trace = 1)
+  # GAGAGG[CTAGAA]CTAGTT
+  #        ----   ----
+  FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 1)
 
-}
+  # GAGAGGC[TAGAAC]TAGTT
+  #       * ---  * ---
+  FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 1)
+
+
+  # TGACTA[GCTA]GTTAA
+  #    *** -*** -
+  FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7)
+
+  # AGATA[GATA]CCCCA
+  #  **** ----
+  FindDelMH("AGATAGATACCCCA", "GATA", 6)
+
+  # ACCCCC[GATA]GATACCCCA
+  #        **** ----
+  FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7)
+
+
+
+
+  # AAGATA[GATAG]CCCCAA
+  #   **** ----
+  FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7)
+
+  # AAGATA[GGATA]CCCCAAA
+  #   ****  ----
+  FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7)
+
+
+  }
 
 #' @title Return the number of repeat units in which an insertion
 #' is embedded.
