@@ -73,7 +73,7 @@ GetStrelkaVAF <-function(strelka.vcf) {
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #' @keywords internal
-ReadMuTectVCF <- function(path) {
+ReadMutectVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
@@ -101,7 +101,7 @@ ReadMuTectVCF <- function(path) {
 #'
 #' @return A vector of VAFs, one for each row of mutect.vcf
 #' @export
-GetMuTectVAF <-function(mutect.vcf) {
+GetMutectVAF <-function(mutect.vcf) {
   stopifnot(class(mutect.vcf) == "data.frame")
 
   # Select out the column which has the information for F1R2 and F2R1
