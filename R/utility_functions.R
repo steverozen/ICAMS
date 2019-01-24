@@ -189,7 +189,6 @@ revc <- function(string.vec) {
 #' last character, e.g. "AATC" returns "ATTG".
 #'
 #' @keywords internal
-#'
 RevcSNS96 <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   context <- revc(substr(mutstring, 1, 3))
@@ -215,7 +214,7 @@ RevcDNS144 <- function(mutstring) {
   return(paste0(context, target))
 }
 
-#' Read transcript ranges and strands from a bed format file.
+#' Read transcript ranges and strands from a gff3 format file.
 #' Use this one for the new, cut down gff3 file (2018 11 24)
 #'
 #' @param path Path to the file with the transcript information with 1-based
@@ -223,7 +222,6 @@ RevcDNS144 <- function(mutstring) {
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #' @export
-#' @keywords internal
 ReadTranscriptRanges <- function(path) {
   d <- utils::read.table(path)
   colnames(d) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
@@ -266,7 +264,6 @@ ReadBedTranscriptRanges <- function(path) {
 #' @return A matrix whose row names indicate 32 different types of 3 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
-#' @keywords internal
 CreateTrinucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("3bp", "occurrences")
@@ -286,7 +283,6 @@ CreateTrinucAbundance <- function(path) {
 #' @return A matrix whose row names indicate 10 different types of 2 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
-#' @keywords internal
 CreateDinucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
@@ -310,7 +306,6 @@ CreateDinucAbundance <- function(path) {
 #' @return A matrix whose row names indicate 10 different types of 2 base pairs
 #'   combinations while its column contains the occurrences of each type.
 #' @export
-#' @keywords internal
 CreateTetranucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
@@ -332,7 +327,6 @@ CreateTetranucAbundance <- function(path) {
 #' @return A matrix whose row names indicate 512 different types of 5 base
 #'   pairs combinations while its column contains the occurrences of each type.
 #' @export
-#' @keywords internal
 CreatePentanucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("5bp", "occurrences")
