@@ -10,8 +10,8 @@ revc(string.vec)
 \item{string.vec}{a vector of type character.}
 }
 \value{
-A vector of type characters with the reverse complement of
-  of every string in string.vec.
+A vector of type characters with the reverse complement of every
+  string in string.vec.
 }
 \description{
 Reverse complement every string in string.vec
