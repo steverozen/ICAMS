@@ -594,7 +594,7 @@ PlotCat1536 <- function(catalog, id, abundance) {
 
   mut.type <- rownames(catalog)
 
-  # Calculate pentanucleotide sequence, normalized by pentanucleotide
+  # Calculate pentanucleotide sequence contexts, normalized by pentanucleotide
   # occurrence in the genome
   rates <- catalog
   for (i in 1 : 1536) {
