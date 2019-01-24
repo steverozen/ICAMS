@@ -258,7 +258,7 @@ ReadBedTranscriptRanges <- function(path) {
   return(bed1)
 }
 
-#' Read data from a nucleotide abundance file with 3 base pairs
+#' Create Trinucleotide abundance file
 #'
 #' @param path Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
@@ -267,7 +267,7 @@ ReadBedTranscriptRanges <- function(path) {
 #'   combinations while its column contains the occurrences of each type.
 #' @export
 #' @keywords internal
-ReadAbundance3Bp <- function(path) {
+CreateTrinucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("3bp", "occurrences")
   dt$type <-
