@@ -302,7 +302,7 @@ ReadAbundance4Bp <- function(path) {
   return(mat)
 }
 
-#' Read data from a nucleotide abundance file with 5 base pairs
+#' Create pentanucleotide abundance file
 #'
 #' @param path Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
@@ -311,7 +311,7 @@ ReadAbundance4Bp <- function(path) {
 #'   pairs combinations while its column contains the occurrences of each type.
 #' @export
 #' @keywords internal
-ReadAbundance5Bp <- function(path) {
+CreatePentanucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("5bp", "occurrences")
   dt$type <-
