@@ -131,16 +131,23 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
 #'                           ****   ****
+#' GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
+#'                          ** --- ** ---
 #' }
 #'
 #'
 #' \preformatted{
-#' GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
-#'                          ** ---  ** ---
-#'
-#' GGCTA----GTT GGCTAGTT GACTA[GCTA]GTT
+#' GACTAGCTAGTT
+#' GACTA----GTT GACTAGTT GACTA[GCTA]GTT
 #'                         *** -*** -
-#
+#'
+#' ** This is really repeat TODO(steve): add check in code
+#' GACTAG----TT GACTAGTT GACTAG[CTAG]TT
+#'                         **** ----
+#'
+#' GACT----AGTT GACTAGTT GACT[AGCT]AGTT
+#'                         ** --** --
+#'
 #'
 #' }
 #'
