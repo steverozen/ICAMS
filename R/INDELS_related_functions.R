@@ -56,12 +56,18 @@ AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 #' pos is here ^
 #' Return 0
 #'
-#' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
+#' If
+#'  \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq}
+#'  then stop.
 #'
-#' @param context A string that embeds \code{rep.unit.seq} at position \code{pos}
+#' @param context A string that embeds \code{rep.unit.seq} at position
+#'  \code{pos}
+#'
 #' @param rep.unit.seq A substring of \code{context} at \code{pos}
-#'  to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat unit sequence.
-#' @param pos The position of \code{rep.unit.seq}.
+#'  to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat
+#'   unit sequence.
+#'
+#' @param pos The position of \code{rep.unit.seq} in \code{context}.
 #'
 #' @return The number of repeat units in which \code{rep.unit.seq} is
 #' embedded, not including
@@ -85,6 +91,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
     } else break
   }
 
+  # Look right
   right.count <- 0
   i <- pos + n
   tot.len <- nchar(context)
