@@ -168,8 +168,8 @@ PyrPenta <- function(mutstring) {
 #'
 #' @param string.vec a vector of type character.
 #' @importFrom Biostrings reverseComplement DNAStringSet
-#' @return A vector of type characters with the reverse complement of
-#'   of every string in string.vec.
+#' @return A vector of type characters with the reverse complement of every
+#'   string in string.vec.
 #' @export
 revc <- function(string.vec) {
   return(
