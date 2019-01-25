@@ -34,5 +34,19 @@ test_that("FindDelMH", {
     FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 1),
     4)
 
+  # GAGAGGC[TAGAAC]TAGTT
+  #       * ---  * ---
+  expect_equal(
+    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 1),
+    4)
+
+  # AAGGCT[AGAACT]AGTTTT
+  #     ** --  ** --
+  expect_equal(
+    FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 1),
+    4)
+
+
+
 
 })

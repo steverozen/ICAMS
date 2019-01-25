@@ -283,13 +283,7 @@ if (FALSE) {
 
 
 
-  # GAGAGGC[TAGAAC]TAGTT
-  #       * ---  * ---
-  FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 1)
 
-  # AAGGCT[AGAACT]AGTTTT
-  #     ** --  ** --
-  FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 1)
 
   # GGCTA[GAACTA]GTT
   #   *** -  *** -
