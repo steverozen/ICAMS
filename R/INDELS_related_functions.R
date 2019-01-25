@@ -1,3 +1,30 @@
+#' @title Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
+#'
+#' #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
+#'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
+#'
+#' @return A list with the SNS, DNS, and ID portions of the VCF file, plus a
+#' data.frame of other mutations
+#'
+#' @keywords internal
+SplitMutectVCF <- function(vcf.df) {
+  return(list(foo = 1))
+
+}
+
+#' @title test \code{MutectVCFToCatalog}.
+#'
+#' @return NULL
+#'
+#' @details Stop if the catalogs created do not match the expected values.
+#'
+#' @export
+TestMutectVCFToCatalog <- function() {
+
+  df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
+
+}
+
 #' Add sequence context to a data frame with ID (insertion/deletion) mutation records
 #'
 #' @param df A data frame storing mutation records of a VCF file
@@ -237,7 +264,11 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   left <- unlist(strsplit(x = left.context, ""))
   for (i in n:1) {
     if (ds[i] != left[i]) break
-    if (i == 1) stop("There is a repeat to the left of ", deleted.seq)
+    if (i == 1) {
+      stop("There is a repeated ", deleted.seq,
+           " to the left of the deleted ",
+           deleted.seq)
+    }
   }
   left.len <- n - i
   if (trace > 0 ) {
@@ -249,7 +280,11 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   right <- unlist(strsplit(x = right.context, ""))
   for (i2 in 1:n) {
     if (ds[i2] != right[i2]) break
-    if (i2 == n) stop("There is repeat to the right of ", deleted.seq)
+    if (i2 == n) {
+      stop("There is a repeated ", deleted.seq,
+           " to the right of the deleted ",
+           deleted.seq)
+    }
   }
   right.len <- i2 - 1
   if (trace > 0) {
@@ -257,7 +292,9 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
     cat(paste0(left.context, "[",
                deleted.seq, "]",
                right.context, "\n"))
-    # left.context and right.context are the same length as deleted.seq
+    # Print out strings of ** and -- to indicated the sequences involved in the
+    # microhomology; left.context and right.context are the same length as
+    # deleted.seq
     cat(paste(c(
       rep(" ", n - left.len),
       rep("*", left.len),
@@ -277,49 +314,6 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   }
   return (left.len + right.len)
 }
-
-# TODO(steve): finish tests
-if (FALSE) {
-
-
-
-
-
-  # GGCTA[GAACTA]GTT
-  #   *** -  *** -
-  FindDelMH("AAAGGCTAGAACTAGTTTTTT", "GAACTA", 9, trace = 1)
-
-  # GGCTAG[AACTAG]TT
-  #   ****   ****
-  FindDelMH("AAAGGCTAGAACTAGTTTTTTT", "AACTAG", 10, trace = 1)
-
-  # Cryptic repeat, return -1
-  # TGACTA[GCTA]GTTAA
-  #    *** -*** -
-  FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 1)
-
-  # Missed obvious repeat
-  # AGATA[GATA]CCCCA
-  #  **** ----
-  FindDelMH("AGATAGATACCCCA", "GATA", 6, trace = 1)
-
-  # Missed obvious repeat
-  # ACCCCC[GATA]GATACCCCA
-  #        **** ----
-  FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7, trace = 1)
-
-  # No microhomology at all
-  # AAGATA[GATAG]CCCCAA
-  #   **** ----
-  FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7, trace = 1)
-
-  # Veurs microhomology of 4
-  # AAGATA[GGATA]CCCCAAA
-  #   ****  ----
-  FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 1)
-
-
-  }
 
 #' @title Return the number of repeat units in which an insertion
 #' is embedded.

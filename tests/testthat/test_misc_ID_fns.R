@@ -46,7 +46,51 @@ test_that("FindDelMH", {
     FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 1),
     4)
 
+  # GGCTA[GAACTA]GTT
+  #   *** -  *** -
+  expect_equal(
+    FindDelMH("AAAGGCTAGAACTAGTTTTTT", "GAACTA", 9, trace = 1),
+    4)
 
+  # GGCTAG[AACTAG]TT
+  #   ****   ****
+  expect_equal(
+    FindDelMH("AAAGGCTAGAACTAGTTTTTTT", "AACTAG", 10, trace = 1),
+    4)
 
+  # Cryptic repeat, return -1
+  # TGACTA[GCTA]GTTAA
+  #    *** -*** -
+  expect_equal(
+    FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 1),
+    -1)
 
+  # Missed obvious repeat
+  # AGATA[GATA]CCCCA
+  #  **** ----
+  expect_error(
+    FindDelMH("AGATAGATACCCCA", "GATA", 6, trace = 1),
+    "There is a repeated GATA to the left of the deleted GATA",
+    fixed = TRUE)
+
+  # Missed obvious repeat
+  # ACCCCC[GATA]GATACCCCA
+  #        **** ----
+  expect_error(
+    FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7, trace = 1),
+    "There is a repeated GATA to the right of the deleted GATA",
+    fixed = TRUE)
+
+  # No microhomology at all
+  # AAGATA[GATAG]CCCCAA
+  #   **** ----
+  expect_equal(
+    FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7, trace = 1),
+    0)
+
+  # AAGATA[GGATA]CCCCAAA
+  #   ****  ----
+  expect_equal(
+    FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 1),
+    4)
 })
