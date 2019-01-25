@@ -9,6 +9,7 @@
 \alias{PlotCat1536}
 \alias{PlotCatDNS78}
 \alias{PlotCatDNS144}
+\alias{PlotQUAD136}
 \alias{PlotCatID}
 \title{Plot Catalog Functions}
 \usage{
@@ -26,6 +27,9 @@ PlotCatDNS78(catalog, id, type = "density", abundance = NULL)
 
 PlotCatDNS144(catalog, id, type = "counts", cex = 1,
   abundance = NULL)
+
+PlotQUAD136(catalog, id = colnames(catalog), type = "density",
+  abundance = .abundance.4bp)
 
 PlotCatID(catalog, id, type = "counts")
 }
@@ -86,6 +90,11 @@ after mutation.
 \code{PlotCatDNS144} Plot the transcription strand bias graph of 10 major DNS
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
+
+\code{PlotQUAD136} Plot the tetranucleotide sequence contexts of 10 major DNS
+mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
+"TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample, normalized by
+tetranucleotide occurrence in the genome.
 
 \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 (Please take note that the deletions Repeat Size ranges from 0 to 5+ in the

@@ -244,3 +244,104 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 
   invisible(TRUE)
 }
+
+#' @rdname PlotCatalog
+#' @import graphics
+#' @importFrom grDevices colorRampPalette
+#' @importFrom stats aggregate na.omit
+#' @export
+PlotQUAD136 <- function(catalog, id = colnames(catalog),
+                        type = "density", abundance = .abundance.4bp) {
+  stopifnot(dim(catalog) == c(136, 1))
+
+  # Calculate the total number of DNSs per mutation class
+  cat <- data.frame(catalog)
+  colnames(cat) <- "occurences"
+  cat$Ref <- substr(rownames(cat), 2, 3)
+  cat1 <- aggregate(cat$occurences, by = list(Ref = cat$Ref), FUN = sum)
+  counts <- matrix(cat1$x, 10, 1)
+  rownames(counts) <- cat1$Ref
+
+  # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
+  # occurrence in the genome
+  rates <- matrix(0, nrow = 160, ncol = 1)
+  rownames(rates) <- .order.for.QUAD136.plotting
+  for (i in 1:160){
+    if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
+      rates[i] <-
+        catalog[.order.for.QUAD136.plotting[i], ] /
+        abundance[.order.for.QUAD136.plotting[i], ]
+    } else {
+      rates[i] <- NA
+    }
+  }
+
+  # Calculate Maxima per mutation class(mut/million)
+  df <- data.frame(na.omit(rates))
+  colnames(df) <- "rates"
+  df$Ref <- substr(rownames(df), 2, 3)
+  df1 <- aggregate(df$rates, by = list(Ref = df$Ref), FUN = max)
+  max.per.class <- matrix(round(df1$x * 1000000, 3), 10, 1)
+  rownames(max.per.class) <- df1$Ref
+
+  # Specify the lay out of the plotting
+  layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4, byrow = TRUE))
+  layout.show(11)
+
+  ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
+
+  # Define the bases and their colors in plot
+  base <- c("A", "C", "G", "T")
+  base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
+  mut.type <- paste(ref.order, "NN", sep = ">")
+
+  for (i in 1:10){
+    par(mar = c(1, 1, 4.5, 1))
+
+    image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+          col = colorRampPalette(c("white", "darkgreen"))(16),
+          asp = 1, axes = FALSE, ann = FALSE)
+
+    # Make the background of the plot grey
+    rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
+
+    # Plot the image again
+    image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+          col = colorRampPalette(c("white", "darkgreen"))(16),
+          asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+
+    # Draw the mutation type and number of occurrences on top of image
+    text(2, 5.3, mut.type[i], font = 2, xpd = NA)
+    text(3.2, 5.3, paste0("(", counts[ref.order[i], ], ")"), font = 2, xpd = NA)
+
+    # Draw a box surrounding the image
+    segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
+    segments(c(0.5, 4.5), c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), xpd = NA)
+
+    # Draw the base information of the plot
+    text(rep(0.2, 4), c(4, 3, 2, 1), base, col = base.cols, xpd = NA)
+    text(seq(4), rep(4.8, 4), base, col = base.cols, xpd = NA)
+
+    # Draw the ID information of the sample
+    if (i == 8) {
+      mtext(id, at = 5, line =3)
+    }
+  }
+
+  if (type == "density") {
+    # Add in additional information
+    plot(c(0, 1), c(0, 1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
+    text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
+    text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
+    ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
+    maxima <- numeric(0)
+    for (i in 1:10) {
+      maxima[i] <- max.per.class[ref[i], ]
+      names(maxima)[i] <- ref[i]
+    }
+    text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
+         paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
+    text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
+         paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+  }
+}

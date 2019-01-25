@@ -11,7 +11,7 @@ CreateTetranucAbundance(path)
 base pairs.}
 }
 \value{
-A matrix whose row names indicate 10 different types of 2 base pairs
+A matrix whose row names indicate 136 different types of 4 base pairs
   combinations while its column contains the occurrences of each type.
 }
 \description{

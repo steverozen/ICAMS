@@ -2,7 +2,61 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindDelMH}
 \alias{FindDelMH}
-\title{Return the length of microhomology at a deletion}
+\title{Return the length of microhomology at a deletion
+
+TODO(steve):not finished
+
+Microhomology can be alligned in multiple equivalent ways.
+Example:
+
+GGCTAGTT aligned to GGCTAGAACTAGTT
+
+\preformatted{
+GGCTAGAACTAGTT
+GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
+                           ----   ----
+
+GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
+                          * ---  * ---
+
+GGCT------AGTT GGCTAGTT GGCT[AGAACT]AGTT
+                          ** --  ** --
+
+GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
+                          *** -  *** -
+
+GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
+                          ****   ****
+GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
+                         ** --- ** ---
+}
+
+
+\preformatted{
+GACTAGCTAGTT
+GACTA----GTT GACTAGTT GACTA[GCTA]GTT
+                        *** -*** -
+
+** This is really repeat TODO(steve): add check in code
+GACTAG----TT GACTAGTT GACTAG[CTAG]TT
+                        **** ----
+
+GACT----AGTT GACTAGTT GACT[AGCT]AGTT
+                        ** --** --
+
+
+}
+
+All the same pairs of sequence, aligned 5 different ways.
+4 bp of microhomology.
+
+Need to find:
+
+(1) The maxium match of undeleted sequence on left that is
+identical to the right end of deleted sequence, and
+
+The microhomology sequence is the concatenation of items
+(1) and (2).}
 \usage{
 FindDelMH(context, deleted.seq, pos, trace = 0)
 }
@@ -23,44 +77,18 @@ The length of the maxium microhomology of \code{del.sequence}
 }
 \description{
 Return the length of microhomology at a deletion
-}
-\details{
+
+TODO(steve):not finished
+
+Microhomology can be alligned in multiple equivalent ways.
 Example:
 
-\code{GGCTAGTT} aligned to \code{GGCTAGAACTAGTT} with
-a deletion represented as:
-\preformatted{
+GGCTAGTT aligned to GGCTAGAACTAGTT
 
+\preformatted{
 GGCTAGAACTAGTT
 GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
                            ----   ----
-}
-
-Presumed repair mechanism leading to this:
-
-\preformatted{
- ....
-GGCTAGAACTAGTT
-CCGATCTTGATCAA
-
-=>
-
-  ....
-GGCTAG      TT
-CC      GATCAA
-        ....
-
-=>
-
-GGCTAGTT
-CCGATCAA
-
-}
-
-The same deletion can be represented in several
-different ways.
-
-\preformatted{
 
 GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
                           * ---  * ---
@@ -73,41 +101,33 @@ GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
 
 GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
                           ****   ****
+GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
+                         ** --- ** ---
 }
 
-A deletion in a \emph{repeat} can also be represented
-in several different ways. A deletion in a repeat
-is abstractly equivalent to microhomology that
-spans the entire deleted sequence. For example;
 
 \preformatted{
 GACTAGCTAGTT
 GACTA----GTT GACTAGTT GACTA[GCTA]GTT
                         *** -*** -
-}
 
-is really a repeat:
-
-\preformatted{
-
-TODO(steve): add check in code
+** This is really repeat TODO(steve): add check in code
 GACTAG----TT GACTAGTT GACTAG[CTAG]TT
                         **** ----
 
 GACT----AGTT GACTAGTT GACT[AGCT]AGTT
                         ** --** --
+
+
 }
 
-In the implementation, the function finds:
+All the same pairs of sequence, aligned 5 different ways.
+4 bp of microhomology.
 
-\enumerate{
+Need to find:
 
-\item The maxium match of undeleted sequence on left that is
-identical to the right end of the deleted sequence, and
-
-\item The maxium match of undeleted sequence on the right this
-is identical to the left end of the deleted sequence.
-}
+(1) The maxium match of undeleted sequence on left that is
+identical to the right end of deleted sequence, and
 
 The microhomology sequence is the concatenation of items
 (1) and (2).
