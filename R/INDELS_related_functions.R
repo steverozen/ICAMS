@@ -8,6 +8,24 @@
 #'
 #' @keywords internal
 SplitMutectVCF <- function(vcf.df) {
+
+  # Mutect VCFs can represent multiple non-reference alleles at the
+  # same site; the alleles are separated by commas in the ALT columm;
+  # these are quite rare and often dubious, so we ignore them.
+  mutiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
+
+  multple.alt.df <- vcf.df[multiple.alt, ]
+  df <- vcf.df[-multiple.alt, ]
+  rm(multiple.alt)
+
+  SNS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
+  DNS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
+  other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
+  ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
+
+  # TODO(steve): check that the "extra" base and the deleted string
+  # match the genome at POS; or does this happen in add sequence.
+
   return(list(foo = 1))
 
 }
