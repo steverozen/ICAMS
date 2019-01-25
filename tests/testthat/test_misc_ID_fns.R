@@ -26,3 +26,13 @@ test_that("FindMaxRepeatIns", {
     expect_equal(FindMaxRepeatIns("acacacac", "ac", pos = i), 4)
   }
 })
+
+test_that("FindDelMH", {
+  # GAGAGG[CTAGAA]CTAGTT
+  #        ----   ----
+  expect_equal(
+    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 1),
+    4)
+
+
+})

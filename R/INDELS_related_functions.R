@@ -108,17 +108,48 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 
 #' @title Return the length of microhomology at a deletion
 #'
-#' TODO(steve):not finished
+#' @details
 #'
-#' Microhomology can be alligned in multiple equivalent ways.
+#' This function is primarily for internal use, but we export
+#' it so that the somewhat complicated
+#' logic behind it will be documented for users.
+#'
 #' Example:
 #'
-#' GGCTAGTT aligned to GGCTAGAACTAGTT
-#'
+#' \code{GGCTAGTT} aligned to \code{GGCTAGAACTAGTT} with
+#' a deletion represented as:
 #' \preformatted{
+#'
 #' GGCTAGAACTAGTT
 #' GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
 #'                            ----   ----
+#' }
+#'
+#' Presumed repair mechanism leading to this:
+#'
+#' \preformatted{
+#'  ....
+#' GGCTAGAACTAGTT
+#' CCGATCTTGATCAA
+#'
+#' =>
+#'
+#'   ....
+#' GGCTAG      TT
+#' CC      GATCAA
+#'         ....
+#'
+#' =>
+#'
+#' GGCTAGTT
+#' CCGATCAA
+#'
+#' }
+#'
+#' The same deletion can be represented in several
+#' different ways.
+#'
+#' \preformatted{
 #'
 #' GGC------TAGTT GGCTAGTT GGC[TAGAAC]TAGTT
 #'                           * ---  * ---
@@ -131,38 +162,49 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
 #'                           ****   ****
-#' GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
-#'                          ** --- ** ---
 #' }
 #'
+#' A deletion in a \emph{repeat} can also be represented
+#' in several different ways. A deletion in a repeat
+#' is abstractly equivalent to microhomology that
+#' spans the entire deleted sequence. For example;
 #'
 #' \preformatted{
 #' GACTAGCTAGTT
 #' GACTA----GTT GACTAGTT GACTA[GCTA]GTT
 #'                         *** -*** -
+#' }
 #'
-#' ** This is really repeat TODO(steve): add check in code
+#' is really a repeat
+#'
+#' \preformatted{
+#'
+#' TODO(steve): add check in code
 #' GACTAG----TT GACTAGTT GACTAG[CTAG]TT
 #'                         **** ----
 #'
 #' GACT----AGTT GACTAGTT GACT[AGCT]AGTT
 #'                         ** --** --
-#'
-#'
 #' }
 #'
-#' All the same pairs of sequence, aligned 5 different ways.
-#' 4 bp of microhomology.
+#' \strong{But the function only flags this with a -1 return; it does not figure
+#' out the repeat extent.}
 #'
-#' Need to find:
+#' In the implementation, the function finds:
 #'
-#' (1) The maxium match of undeleted sequence on left that is
-#' identical to the right end of deleted sequence, and
+#' \enumerate{
+#'
+#' \item The maxium match of undeleted sequence on left that is
+#' identical to the right end of the deleted sequence, and
+#'
+#' \item The maxium match of undeleted sequence on the right this
+#' is identical to the left end of the deleted sequence.
+#'}
 #'
 #' The microhomology sequence is the concatenation of items
 #' (1) and (2).
 #'
-#' @param context The deleted sequence plus ample surround
+#' @param context The deleted sequence plus ample surrounding
 #'   sequence on each side (at least as long as \code{del.sequence}).
 #'
 #' @param deleted.seq The deleted sequence in \code{context}.
@@ -174,12 +216,15 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @return The length of the maxium microhomology of \code{del.sequence}
 #'   in \code{context}.
 #'
-#' @keywords internal
+#' @export
 #'
 FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   n <- nchar(deleted.seq)
 
-  stopifnot(substr(context, pos, pos + n - 1) == deleted.seq)
+  if (substr(context, pos, pos + n - 1) != deleted.seq) {
+    stop("substr(context, pos, pos + n - 1) != deleted.seq\n",
+         substr(context, pos, pos + n -1), " ", deleted.seq, "\n")
+  }
   # The context on the left has to be longer then deleted.seq
   stopifnot((pos - 1) > n)
   # The context on the right as to be longer than deleted.seq
@@ -192,7 +237,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   left <- unlist(strsplit(x = left.context, ""))
   for (i in n:1) {
     if (ds[i] != left[i]) break
-    if (i == 1) stop("Thre is a repeat to the left of ", deleted.seq)
+    if (i == 1) stop("There is a repeat to the left of ", deleted.seq)
   }
   left.len <- n - i
   if (trace > 0 ) {
@@ -200,7 +245,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   }
 
   # Look for microhomology to the right in context.
-  right.context <- substr(context, pos + n, pos + 2 * n)
+  right.context <- substr(context, pos + n, (pos + 2 * n) - 1)
   right <- unlist(strsplit(x = right.context, ""))
   for (i2 in 1:n) {
     if (ds[i2] != right[i2]) break
@@ -213,44 +258,71 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
                deleted.seq, "]",
                right.context, "\n"))
     # left.context and right.context are the same length as deleted.seq
+    cat(paste(c(
+      rep(" ", n - left.len),
+      rep("*", left.len),
+      " ",
+      rep("-", right.len),
+      rep(" ", n - (left.len + right.len)),
+      rep("*", left.len),
+      " ",
+      rep("-", right.len),
+      "\n"
+    ), collapse = ""))
 
+  }
+  if (left.len + right.len == n) {
+    warning("There is unhandled cryptic repeat, returning -1")
+    return(-1)
   }
   return (left.len + right.len)
 }
 
+# TODO(steve): finish tests
 if (FALSE) {
 
-  # GAGAGG[CTAGAA]CTAGTT
-  #        ----   ----
-  FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 1)
+
 
   # GAGAGGC[TAGAAC]TAGTT
   #       * ---  * ---
   FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 1)
 
+  # AAGGCT[AGAACT]AGTTTT
+  #     ** --  ** --
+  FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 1)
 
+  # GGCTA[GAACTA]GTT
+  #   *** -  *** -
+  FindDelMH("AAAGGCTAGAACTAGTTTTTT", "GAACTA", 9, trace = 1)
+
+  # GGCTAG[AACTAG]TT
+  #   ****   ****
+  FindDelMH("AAAGGCTAGAACTAGTTTTTTT", "AACTAG", 10, trace = 1)
+
+  # Cryptic repeat, return -1
   # TGACTA[GCTA]GTTAA
   #    *** -*** -
-  FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7)
+  FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 1)
 
+  # Missed obvious repeat
   # AGATA[GATA]CCCCA
   #  **** ----
-  FindDelMH("AGATAGATACCCCA", "GATA", 6)
+  FindDelMH("AGATAGATACCCCA", "GATA", 6, trace = 1)
 
+  # Missed obvious repeat
   # ACCCCC[GATA]GATACCCCA
   #        **** ----
-  FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7)
+  FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7, trace = 1)
 
-
-
-
+  # No microhomology at all
   # AAGATA[GATAG]CCCCAA
   #   **** ----
-  FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7)
+  FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7, trace = 1)
 
+  # Veurs microhomology of 4
   # AAGATA[GGATA]CCCCAAA
   #   ****  ----
-  FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7)
+  FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 1)
 
 
   }
@@ -401,6 +473,8 @@ CanonicalizeID <- function(ref, alt, context) {
   return(ret)
 }
 
+# TODO(steve): START HERE, test on data-raw/MCF10A_Carb_Low..., mutect2_MCF10A...
+# and some PCAWG simple files where we know the expected output.
 #' Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 #' file
 #'
