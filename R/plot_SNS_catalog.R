@@ -22,6 +22,11 @@
 #' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 #'
+#' \code{PlotQUAD136} Plot the tetranucleotide sequence contexts of 10 major DNS
+#' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
+#' "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample, normalized by
+#' tetranucleotide occurrence in the genome.
+#'
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 #' (Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
