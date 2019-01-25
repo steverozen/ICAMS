@@ -27,16 +27,24 @@ GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
 
 GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
                           ****   ****
+GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
+                         ** --- ** ---
 }
 
 
-Be carefull that the glued together microhomology on
-The left == the glued together microhomology on
-the right.
-
 \preformatted{
-GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
-                         ** ---  ** ---
+GACTAGCTAGTT
+GACTA----GTT GACTAGTT GACTA[GCTA]GTT
+                        *** -*** -
+
+** This is really repeat TODO(steve): add check in code
+GACTAG----TT GACTAGTT GACTAG[CTAG]TT
+                        **** ----
+
+GACT----AGTT GACTAGTT GACT[AGCT]AGTT
+                        ** --** --
+
+
 }
 
 All the same pairs of sequence, aligned 5 different ways.
@@ -93,16 +101,24 @@ GGCTA------GTT GGCTAGTT GGCTA[GAACTA]GTT
 
 GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
                           ****   ****
+GAC------TAGTT GACTAGTT GAC[TAGAAC]TAGTT
+                         ** --- ** ---
 }
 
 
-Be carefull that the glued together microhomology on
-The left == the glued together microhomology on
-the right.
-
 \preformatted{
-GAC------TAGTT GGCTAGTT GAC[TAGAAC]TAGTT
-                         ** ---  ** ---
+GACTAGCTAGTT
+GACTA----GTT GACTAGTT GACTA[GCTA]GTT
+                        *** -*** -
+
+** This is really repeat TODO(steve): add check in code
+GACTAG----TT GACTAGTT GACTAG[CTAG]TT
+                        **** ----
+
+GACT----AGTT GACTAGTT GACT[AGCT]AGTT
+                        ** --** --
+
+
 }
 
 All the same pairs of sequence, aligned 5 different ways.
