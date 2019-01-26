@@ -3,34 +3,62 @@
 #' #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
 #'
-#' @return A list with the SNS, DNS, and ID portions of the VCF file, plus a
-#' data.frame of other mutations
+#' @return A list with the SNS, DNS, and ID portions of the VCF file, plus two
+#' data.frames of other mutations
 #'
 #' @keywords internal
-SplitMutectVCF <- function(vcf.df) {
+SplitOneMutectVCF <- function(vcf.df) {
 
   # Mutect VCFs can represent multiple non-reference alleles at the
   # same site; the alleles are separated by commas in the ALT columm;
   # these are quite rare and often dubious, so we ignore them.
-  mutiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
+  multiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
 
-  multple.alt.df <- vcf.df[multiple.alt, ]
+  multiple.alt.df <- vcf.df[multiple.alt, ]
   df <- vcf.df[-multiple.alt, ]
-  rm(multiple.alt)
+  rm(multiple.alt, vcf.df)
 
   SNS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
+
+  # SNS.df <- AddSequence(SNS.df, seq = genome)
+  # CheckSeqContextInVCF(SNS.df, "seq.21context")
+  # SNS.df <- AddTranscript(SNS.df, trans.ranges)
+
   DNS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
+  # DNS.df <- AddSequence(DNS.df, seq = genome)
+  # CheckSeqContextInVCF(DNS.df, "seq.21context")
+  # DNS.df <- AddTranscript(DNS.df, trans.ranges)
+
   other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
+
   ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
+  # TODO(remove the "extra" context base)
 
+  # TODO(steve): call the right AddSequenceID function here
   # TODO(steve): check that the "extra" base and the deleted string
-  # match the genome at POS; or does this happen in add sequence.
+  # match the genome at POS
+  # TODO(steve): remove the "extra" base.
 
-  return(list(foo = 1))
+  return(list(SNS = SNS.df, DNS = DNS.df, ID = ID.df,
+              other=other.df, multiple.alt = multiple.alt.df))
 
 }
 
-#' @title test \code{MutectVCFToCatalog}.
+#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)
+#'
+#' @param list.of.vcfs List of VCFs as in-memory data.frames
+#'
+#' @returns A list with 5 elements, as folows:
+#'
+#' @export
+SplitMutectVCFs <- function(list.of.vcfs) {
+  retval <- lapply(list.of.vcfs, SplitOneMutectVCF)
+
+  return(retval)
+}
+
+
+#' @title test \code{SplitMutectVCFs}.
 #'
 #' @return NULL
 #'
@@ -40,8 +68,70 @@ SplitMutectVCF <- function(vcf.df) {
 TestMutectVCFToCatalog <- function() {
 
   df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
+  retval <- SplitMutectVCFs(list(test.vcf = df))
 
+  SNS.catalogs <-
+    VCFsToSNSCatalogs(retval$SNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      .trans.ranges)
+  # TODO(steve) generate DNS and ID catalogs
+
+  invisible(list(retval, SNS.catalogs))
 }
+
+
+#' Add sequence context to a data frame with ID (insertion/deletion) mutation records
+#'
+#' @param df A data frame storing mutation records of a VCF file
+#'   containing only insertions and deletions. IMPORTANT: The
+#'   representation of indels in df must have been canonicalized, so that
+#'   context bases (which are added by some indel callers) are placed in a
+#'   column "Left.context.base" and so that, for deletions, ALT is the empty
+#'   string, and, for insertions, REF is the empty string.
+#' @param seq A particular reference genome.
+#' @importFrom methods as
+#' @import BSgenome.Hsapiens.1000genomes.hs37d5
+#' @return A data frame with 2 new columns added to the input data frame. One
+#'   column contains sequence context information and the other column contains
+#'   the length of the "context" string to the left of the site of the variant.
+#' @keywords internal
+NewAddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
+
+  stopifnot(nchar(df$REF) != nchar(df$ALT))
+  stopifnot((df$ref == "") | (df$ALT == "")) # The representation has to be canonicalized
+
+  # First, figure out how much sequence context is needed.
+  df$pad.width <- -99
+
+  df[nchar(df$REF) > nchar(df$ALT),
+     # This is a deletion, so need sequence context of 5+ for repeats of any
+     # size
+     "pad.width"] <- nchar(df$REF) * 5
+
+  df[nchar(df$REF) < nchar(df$ALT),
+     # This is an insertion
+     "pad.width"] <- nchar(df$ALT) * 5
+
+  # Create a GRanges object with the needed width.
+  # TODO(steve): diff is not defined; should it be in df$
+  # e.g. df[   , "diff"] <- max(nchar(df$REF), nchar(df$ALT))
+  Ranges <-
+    as(data.frame(chrom = df$CHROM,
+                  start = df$POS - df$pad.width, # 10,
+                  end = df$POS + diff + df$pad.width # 10
+    ),
+    "GRanges")
+
+  # Extract sequence context from the reference genome and add to df
+  df <- dplyr::mutate(df,
+                      seq.context = getSeq(seq, Ranges, as.character = TRUE))
+  df <- dplyr::mutate(df, seq.pad.width = df$pad.width)
+  return(df)
+}
+
+
+
+
 
 #' Add sequence context to a data frame with ID (insertion/deletion) mutation records
 #'

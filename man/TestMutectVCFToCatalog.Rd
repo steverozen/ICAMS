@@ -2,12 +2,12 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{TestMutectVCFToCatalog}
 \alias{TestMutectVCFToCatalog}
-\title{test \code{MutectVCFToCatalog}.}
+\title{test \code{SplitMutectVCFs}.}
 \usage{
 TestMutectVCFToCatalog()
 }
 \description{
-test \code{MutectVCFToCatalog}.
+test \code{SplitMutectVCFs}.
 }
 \details{
 Stop if the catalogs created do not match the expected values.
