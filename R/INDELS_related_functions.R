@@ -128,6 +128,10 @@ TestMutectVCFToCatalog <- function() {
                        BSgenome.Hsapiens.1000genomes.hs37d5,
                        .trans.ranges)
 
+  ID.catalog <-
+    VCFsToIDCatalogs(retval$ID,
+                     BSgenome.Hsapiens.1000genomes.hs37d5)
+
   # TODO(steve) Insert code to generate ID catalogs
 
   invisible(list(retval, SNS.catalogs, DNS.catalogs))
@@ -680,6 +684,40 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
 }
 
 
+#' Create ID (indel) catalog from VCFs
+#'
+#' @param list.of.vcfs List of in-memory VCFs. The list names will be
+#' the sample ids in the output catalog.
+#'
+#' @param genome Name of a particular reference genome
+#' (without quotations marks).
+#'
+#' @return An ID (indel) catalog
+#'
+#' @export
+
+VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
+  ncol <- length(list.of.vcfs)
+
+  catID <- empty.cats$catID
+
+  for (i in 1 : ncol) {
+    ID <- list.of.vcfs[[i]]
+    ID <- AddSequenceID(ID, seq = genome)
+    # Unlike the case for SNS and DNS, we do not
+    # add transcript information.
+    CheckSeqContextInVCF(ID, "seq.21context")
+    one.ID.column <- CreateOneColIDCatalog(ID)
+    rm(ID)
+    catID <- cbind(catID, one.ID.column)
+  }
+
+  colnames(catID) <- names(list.of.vcfs)
+  return(catID)
+}
+
+
+# TODO: move to tests
 if (FALSE) {
   TestFindMaxRepeatDel <- function() {
     FindMaxRepeatDel("abcabc", "abc", 1)
