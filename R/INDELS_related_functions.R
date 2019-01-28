@@ -53,7 +53,7 @@ SplitMutectVCFs <- function(list.of.vcfs) {
 #' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
 #' out of the contents of the VCFs in list.of.vcfs
 #'
-#' @param list.of.vcfs List vector of in-memory VCFs. The list names will be
+#' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #' @param genome Name of a particular reference genome
 #' (without quotations marks).
