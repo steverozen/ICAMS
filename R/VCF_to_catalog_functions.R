@@ -231,7 +231,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #    information (reference sequence, alternative sequence, context, etc.)
 #    Additional information not fully implemented at this point because of
 #    limited immediate biological interest.
-#' @export
+#' @keywords internal
 SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot(class(vcf.df) == "data.frame")
 
@@ -520,7 +520,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   cat96
 #'   cat192
 #'   cat1536
-#' @export
+#' @keywords internal
 StrelkaVCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
@@ -650,7 +650,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catDNS78
 #'   catDNS144
 #'   catQUAD136
-#' @export
+#' @keywords internal
 StrelkaVCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
