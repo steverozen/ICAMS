@@ -1,12 +1,8 @@
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired SNS catalogs.
+#' are working correctly to produce the desired SNS catalogs from Strelka VCF.
 #'
-#' @param vcf.df An in-memory data frame containing a VCF file contents.
-#' @keywords internal
-TestStrelkaSNSCatalog <- function(vcf.df) {
-  stopifnot(!missing("vcf.df"))
-  trans.ranges <- .trans.ranges
-
+#' @export
+TestStrelkaSNSCatalog <- function() {
   expected.cat96 <-
     structure(
       c(25L, 77L, 1L, 38L, 59L, 28L, 8L, 71L, 46L, 191L,
@@ -403,12 +399,16 @@ TestStrelkaSNSCatalog <- function(vcf.df) {
                "TTTGAG", "TTTGCG", "TTTGGG", "TTTGTG", "TTTTAG", "TTTTCG", "TTTTGG",
                "TTTTTG"), NULL))
 
-  vcf.df <- AddSequence(vcf.df)
-  CheckSeqContextInVCF(vcf.df, "seq.21context")
+  vcf.df <- ReadStrelkaVCF("data-raw/cis_8wks_05_cl4_SNVresult.vcf")
+  stopifnot(nrow(vcf.df) ==  3544)
+  SNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$SNS.vcf
 
-  vcf.df <- AddTranscript(vcf.df, trans.ranges)
+  SNS.vcf <- AddSequence(SNS.vcf)
+  CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
-  cats <- CreateOneColSNSCatalog(vcf.df)
+  SNS.vcf <- AddTranscript(SNS.vcf, .trans.ranges)
+
+  cats <- CreateOneColSNSCatalog(SNS.vcf)
 
   cat("total 192 =", sum(cats$cat192), "\n")
   stopifnot(sum(cats$cat96) == 3336)
