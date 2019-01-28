@@ -104,26 +104,27 @@ TestMutectVCFToCatalog <- function() {
   df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
-  # TODO(steve)Try pulling out the DNS from SNS
+  if (FALSE) { #For faster debugging
+    SNS.catalogs <-
+      VCFsToSNSCatalogs(retval$SNS,
+                        BSgenome.Hsapiens.1000genomes.hs37d5,
+                        .trans.ranges)
+    test <- SplitSNSVCF(retval$SNS); cat(nrow(test[[1]]))
 
-  SNS.catalogs <-
-    VCFsToSNSCatalogs(retval$SNS,
-                      BSgenome.Hsapiens.1000genomes.hs37d5,
-                      .trans.ranges)
-  DNS.catalogs <-
-    NewVCFsToDNSCatalogs(retval$DNS,
-                       BSgenome.Hsapiens.1000genomes.hs37d5,
-                       .trans.ranges)
+    DNS.catalogs <-
+      NewVCFsToDNSCatalogs(retval$DNS,
+                           BSgenome.Hsapiens.1000genomes.hs37d5,
+                           .trans.ranges)
+  }
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,
                      BSgenome.Hsapiens.1000genomes.hs37d5)
 
-  # TODO(steve) Insert code to generate ID catalogs
-
-  invisible(list(retval, SNS.catalogs, DNS.catalogs))
+  return(ID.catalog)
+  # For faster debugging
+  # invisible(list(retval, SNS.catalogs, DNS.catalogs))
 }
-
 
 #' Add sequence context to a data frame with ID (insertion/deletion) mutation records
 #'
@@ -140,90 +141,49 @@ TestMutectVCFToCatalog <- function() {
 #'   column contains sequence context information and the other column contains
 #'   the length of the "context" string to the left of the site of the variant.
 #' @keywords internal
-NewAddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
+AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
-  stopifnot(nchar(df$REF) != nchar(df$ALT))
-  stopifnot((df$ref == "") | (df$ALT == "")) # The representation has to be canonicalized
-
+  stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
+  if (any(df$REF == "" | df$ALT == "")) {
+    # Not sure how to handle this yet; the code may work with minimal adjustment
+    stop("Cannot handle VCF with indel representation with one allele the empty string")
+  } else {
+    # We expect either eg ref = ACG, alt = A (deletion of CG) or
+    # ref = A, alt = ACC (insertion of CC)
+    stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
+    complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
+    if (length(complex.indels.to.remove > 0)) {
+      cat("Removing complex indels", complex.indels.to.remove)
+      print(df[ complex.indels.to.remove, 1:5])
+      df <- df[ -complex.indels.to.remove, ]
+    }
+  }
   # First, figure out how much sequence context is needed.
-  df$pad.width <- -99
+  var.width <- abs(nchar(df$ALT) - nchar(df$REF))
 
-  df[nchar(df$REF) > nchar(df$ALT),
-     # This is a deletion, so need sequence context of 5+ for repeats of any
-     # size
-     "pad.width"] <- nchar(df$REF) * 5
+  is.del <- nchar(df$ALT) <= nchar(df$REF)
+  var.width.in.genome <- ifelse(is.del, var.width, 0)
 
-  df[nchar(df$REF) < nchar(df$ALT),
-     # This is an insertion
-     "pad.width"] <- nchar(df$ALT) * 5
+  df$seq.pad.width <- var.width * 6
+  # 6 because we need to find if the insertion or deletion is embedded
+  # in up to 5 additonal repeats of the inserted or deleted sequence.
+  # Then 6 to avoid possible future issues.
 
   # Create a GRanges object with the needed width.
-  # TODO(steve): diff is not defined; should it be in df$
-  # e.g. df[   , "diff"] <- max(nchar(df$REF), nchar(df$ALT))
   Ranges <-
     as(data.frame(chrom = df$CHROM,
-                  start = df$POS - df$pad.width, # 10,
-                  end = df$POS + diff + df$pad.width # 10
+                  start = df$POS - df$seq.pad.width, # 10,
+                  end = df$POS + var.width.in.genome + df$seq.pad.width # 10
     ),
     "GRanges")
 
-  # Extract sequence context from the reference genome and add to df
-  df <- dplyr::mutate(df,
-                      seq.context = getSeq(seq, Ranges, as.character = TRUE))
-  df <- dplyr::mutate(df, seq.pad.width = df$pad.width)
-  return(df)
-}
+  # Extract sequence context from the reference genome
+  df$seq.context <- getSeq(seq, Ranges, as.character = TRUE)
 
+  seq.to.check <- substr(df$seq.context, df$seq.pad.width + 1, df$seq.pad.width + var.width.in.genome + 1)
 
+  stopifnot(seq.to.check == df$REF)
 
-
-
-#' Add sequence context to a data frame with ID (insertion/deletion) mutation records
-#'
-#' @param df A data frame storing mutation records of a VCF file
-#'   containing only insertions and deletions. IMPORTANT: The
-#'   representation of indels in df must have been canonicalized, so that
-#'   context bases (which are added by some indel callers) are placed in a
-#'   column "Left.context.base" and so that, for deletions, ALT is the empty
-#'   string, and, for insertions, REF is the empty string.
-#' @param seq A particular reference genome.
-#' @importFrom methods as
-#' @import BSgenome.Hsapiens.1000genomes.hs37d5
-#' @return A data frame with 2 new columns added to the input data frame. One
-#'   column contains sequence context information and the other column contains
-#'   the length of the "context" string to the left of the site of the variant.
-#' @keywords internal
-AddSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
-
-  stopifnot(nchar(df$REF) != nchar(df$ALT))
-  stopifnot((df$ref == "") | (df$ALT == "")) # The representation has to be canonicalized
-
-  # First, figure out how much sequence context is needed.
-  df$pad.width <- -99
-
-  df[nchar(df$REF) > nchar(df$ALT),
-     # This is a deletion, so need sequence context of 5+ for repeats of any
-     # size
-     "pad.width"] <- nchar(df$REF) * 5
-
-  df[nchar(df$REF) < nchar(df$ALT),
-     # This is an insertion
-     "pad.width"] <- nchar(df$ALT) * 5
-
-  # Create a GRanges object with the needed width.
-  # TODO(steve): diff is not defined; should it be in df$
-  # e.g. df[   , "diff"] <- max(nchar(df$REF), nchar(df$ALT))
-  Ranges <-
-    as(data.frame(chrom = df$CHROM,
-                  start = df$POS - df$pad.width, # 10,
-                  end = df$POS + diff + df$pad.width # 10
-    ),
-    "GRanges")
-
-  # Extract sequence context from the reference genome and add to df
-  df <- dplyr::mutate(df,
-                      seq.context = getSeq(seq, Ranges, as.character = TRUE))
-  df <- dplyr::mutate(df, seq.pad.width = df$pad.width)
   return(df)
 }
 
@@ -544,27 +504,57 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
-#' Canonicalize1DEL
+#' @tile Given a deletion in context categorize it.
 #'
-#' @param ref TODO
-#' @param alt TODO
-#' @param context TODO
+#' @param context The deleted sequence plus ample surrounding
+#'   sequence on each side (at least as long as \code{del.sequence}).
+#'
+#' @param del.seq The deleted sequence in \code{context}.
+#'
+#' @param pos The position of \code{del.sequence} in \code{context}.
+#'
+#' @param trace If > 0 cat information how the computation is carried out.
+#
+#' @return A string that is the canonical represention of the given deletion type
+#'
 #' @keywords internal
-#' @return TODO
-#' @export
-Canonicalize1DEL <- function(ref, alt, context) {
-  if ("-" == alt) {
-    alt <- ""
-  }
-  # TODO(steve): insert code to deal with the case that ref and alt share a 1-base prefix
-  if (nchar(alt) > 0) {
-    cat("possible complex indel:", ref, alt, context, "\n")
-    stop()
-  }
-  del.len <- nchar(ref)
-  stopifnot(substr(context, 11, del.len) == ref)
+Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
   # Is the deletion involved in a repeat?
-  rep.count <- FindMaxRepeatDel(context, ref, 11)
+  rep.count <- FindMaxRepeatDel(context, del.seq, pos)
+
+  rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
+  deletion.size <- nchar(del.seq)
+  deletion.size.string <- ifelse(deletion.size >= 5, "5+", as.character(deletion.size))
+
+  # Category is "1bp deletion"
+  if (deletion.size == 1) {
+    if (del.seq == "G") del.seq <- "C"
+    if (del.seq == "A") del.seq <- "TF"
+    return(paste0("DEL:", del.seq, ":1:", rep.count.string))
+  }
+
+  # Category is ">2bp deletion"
+  if (rep.count > 0) {
+    return(paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string))
+  }
+
+  # We have to look for microhomology
+  microhomology.len <- FindDelMH(context, del.seq, pos, trace = trace)
+  if (microhomology.len == -1) {
+    stop("Non-normalized deleted repeat: ",
+         "necessary to use a different indel caller or enhance this code")
+  }
+
+  if (microhomology.len == 0) {
+    stopifnot(rep.count.string == 0)
+    # Categorize and return non-repeat, non-microhomology deletion
+    return(paste0("DEL:repeats:", deletion.size.string, ":0"))
+  }
+
+  microhomology.len.str <-
+    ifelse(microhomology.len >= 5, "5+", as.character(microhomology.len))
+
+  return(paste0("DEL:MH:", deletion.size.string, ":", microhomology.len.str))
 }
 
 #' Canonicalize1INS
@@ -579,39 +569,87 @@ Canonicalize1INS <- function(ref, alt, context) {
   stop() # not done
 }
 
-#' Canonicalize1ID
+#' @tile Given a single insertion or deletion in context categorize it.
 #'
-#' @param ref TODO
-#' @param alt TODO
-#' @param context TODO
+#' @param context Ample surrounding
+#'   sequence on each side of the insertion or deletion.
+#'
+#' @param ref The reference allele (vector of length 1)
+#'
+#' @param alt The alternative allele (vector of length 1)
+#'
+#' @param pos The position of \code{ins.or.del.seq} in \code{context}.
+#'
+#' @param trace If > 0 cat information how the computation is carried out.
+#
+#' @return A string that is the canonical represention of the given deletion type
+#'
 #' @keywords internal
-#' @return TODO
-#' @export
-#'
-Canonicalize1ID <- function(ref, alt, context) {
-  if (nchar(alt) < nchar(ref) || "-" == alt) {
+Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
+  if (trace > 0) cat("Canonicalize1ID(", context, ",", ref, ",", alt, ",", pos, "\n")
+  if (nchar(alt) < nchar(ref)) {
     # A deletion
-    Canonicalize1INS(ref, alt, context)
-  } else if (nchar(alt) > nchar(ref) ||  "-" == ref) {
+    return(Canonicalize1DEL(context, ref, pos + 1, trace))
+  } else if (nchar(alt) > nchar(ref)) {
     # An insertion
-    Canonicalize1INS(ref, alt, context)
+    # Temporary
+    return("")
+    Canonicalize1INS(context, alt, pos, trace)
   } else {
     cat("Non-insertion / non-deletion found:", ref, alt, context, "\n")
     stop()
   }
 }
 
-#' CanonicalizeID
+#' @tile Given vectors of insertions and deletions in contexts categorize them.
 #'
-#' @param ref TODO
-#' @param alt TODO
-#' @param context TODO
+#' @param context A vector of ample surrounding
+#'   sequence on each side the variants
+#'
+#' @param ref Vector of reference alleles
+#'
+#' @param alt Vector of alternative alleles
+#'
+#' @param pos Vector of the positions of the insertions and deletions in \code{context}.
+#'
+#' @param trace If > 0 cat information how the computation is carried out.
+#
+#' @return A vector of strings that are the canonical representions
+#'  of the given insertions and deletions.
+#'
 #' @keywords internal
-#' @return TODO
+CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 
-CanonicalizeID <- function(ref, alt, context) {
-  ret <- mapply(Canonicalize1ID, ref, alt, context)
+  if (trace > 1) {
+    print(head(data.frame(
+      context, substr(context, 1, pos), ref, alt)))
+  }
+
+  if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
+    ref <- substr(ref, 2, nchar(ref))
+    alt <- substr(alt, 2, nchar(alt))
+  } else {
+    stopifnot(ref != "" | alt != "")
+  }
+  trace = 1
+  ret <- mapply(Canonicalize1ID, context, ref, alt, pos, trace)
   return(ret)
+}
+
+# load("data-raw/test.del.ID.vcf")
+# ICAMS:::CreateOneColIDCatalog(test.del.ID.vcf, NULL)
+# debug(ICAMS:::CreateOneColIDCatalog)
+# debug(ICAMS:::Canonicalize1ID)
+
+if (FALSE) {
+MakeTmpInsVCF <- function() {
+  return(data.frame(
+    seq.context=c("TTTTTTTTTTTTCGACCCCCCCCCCCC", "TTTTTTTTTTTTGAACCCCCCCCCC", "TTTTTTTTTTTTGCCCCCCCCCCCC"),
+    REF=c("C", "G", "G"),
+    ALT=c("CGA", "GA", "GA"),
+    seq.pad.width=c(12, 12, 12)
+  ))
+}
 }
 
 # TODO(steve): START HERE, test on data-raw/MCF10A_Carb_Low..., mutect2_MCF10A...
@@ -619,8 +657,8 @@ CanonicalizeID <- function(ref, alt, context) {
 #' Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
 #' file
 #'
-#' @param ID.vcf An in-memory VCF as a data.frame annotated by the AddSequence
-#'   and AddTranscript functions. It must only contain indels and must *not*
+#' @param ID.vcf An in-memory VCF as a data.frame annotated by the
+#'   AddAndCheckSequenceID function. It must only contain indels and must *not*
 #'   contain SBS (single base substituions), DBS, or triplet base substituions
 #'   etc.
 #'
@@ -645,11 +683,12 @@ CanonicalizeID <- function(ref, alt, context) {
 #' TODO(steve) Is problems implemented?
 CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
   # TODO(steve): more checking of the ID VCF here
-  stopifnot(nchar(SBS.vcf$ALT) == 1)
-  stopifnot(nchar(SBS.vcf$REF) == 1)
-  stopifnot("seq.21context" %in% names(ID.vcf))
 
-  canon.ID <- CanonicalizeID(ID.vcf$REF, ID.vcf$ALT, ID.vcf$seq.21context)
+
+  canon.ID <- CanonicalizeID(ID.vcf$seq.context,
+                             ID.vcf$REF,
+                             ID.vcf$ALT,
+                             ID.vcf$seq.pad.width + 1)
 
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
@@ -663,11 +702,11 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
   ID.dt2 <-
     merge(row.order, ID.dt, by.x="rn", by.y="canon.ID", all = TRUE)
   ID.dt2[ is.na(N) , N := 0]
-  stopifnot(unlist(ID.dt2$rn) == .catalog.row.order.ID)
+  stopifnot(setequal(unlist(ID.dt2$rn), .catalog.row.order.ID))
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
   rownames(ID.mat) <- ID.dt2$rn
-  return(ID.mat)
+  return(ID.mat[.catalog.row.order.ID, , drop = F])
 }
 
 
@@ -683,25 +722,19 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
 #'
 #' @export
 
-# TODO(remove the "extra" context base)
-
-# TODO(steve): call the right AddSequenceID function here
-# TODO(steve): check that the "extra" base and the deleted string
-# match the genome at POS
-# TODO(steve): remove the "extra" base.
-
-
 VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
+
   ncol <- length(list.of.vcfs)
 
-  catID <- empty.cats$catID
+  # Create a 0-column matrix with the correct row labels.
+  catID <- matrix(0, nrow = length(.catalog.row.order.ID), ncol = 0)
+  rownames(catID) <- .catalog.row.order.ID
 
   for (i in 1 : ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AddSequenceID(ID, seq = genome)
+    ID <- AddAndCheckSequenceID(ID, seq = genome)
     # Unlike the case for SNS and DNS, we do not
     # add transcript information.
-    CheckSeqContextInVCF(ID, "seq.21context")
     one.ID.column <- CreateOneColIDCatalog(ID)
     rm(ID)
     catID <- cbind(catID, one.ID.column)
@@ -711,39 +744,3 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
   return(catID)
 }
 
-
-# TODO: move to tests
-if (FALSE) {
-  TestFindMaxRepeatDel <- function() {
-    FindMaxRepeatDel("abcabc", "abc", 1)
-    FindMaxRepeatDel("abc", "abc", 1)
-    FindMaxRepeatDel("abcabc", "abc", 4)
-    FindMaxRepeatDel("abcabcabc", "abc", 4)
-    FindMaxRepeatDel("abcxyx", "abc", 4)
-    FindMaxRepeatDel("xyzxyz", "abc", 4)
-    FindMaxRepeatDel("xyzabcxyz", "abc", 4)
-    FindMaxRepeatDel("xxxaaayyy", "a", 4)
-    FindMaxRepeatDel("xxxaaayyy", "a", 3)
-    FindMaxRepeatDel("xxxaaayyy", "a", 2)
-    FindMaxRepeatDel("xxxaaayyy", "a", 7)
-    FindMaxRepeatDel("xxxaaayyy", "a", 8)
-
-    TestFindMaxRepeatIns <- function() {
-      stop() # totally broken
-      FindMaxRepeatIns("abcabc", "abc", 1)
-      FindMaxRepeatIns("abc", "abc", 1)
-      FindMaxRepeatIns("abcabc", "abc", 4)
-      FindMaxRepeatIns("abcabcabc", "abc", 4)
-      FindMaxRepeatIns("abcxyx", "abc", 4)
-      FindMaxRepeatIns("xyzxyz", "abc", 4)
-      FindMaxRepeatIns("xyzabcxyz", "abc", 4)
-      FindMaxRepeatIns("xxxaaayyy", "a", 4)
-      FindMaxRepeatIns("xxxaaayyy", "a", 3)
-      FindMaxRepeatIns("xxxaaayyy", "a", 2)
-      FindMaxRepeatIns("xxxaaayyy", "a", 7)
-      FindMaxRepeatIns("xxxaaayyy", "a", 8)
-    }
-
-  }
-
-}
