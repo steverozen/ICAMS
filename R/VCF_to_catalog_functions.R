@@ -212,7 +212,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
   return(as.data.frame(tmp2[, c("CHROM", "POS", "ID", "REF", "ALT")]))
 }
 
-#' Split an in-memory VCF into SNS, DNS, and variants involving
+#' Split an in-memory Strelka VCF into SNS, DNS, and variants involving
 #' > 2 consecutive bases
 #'
 #' SNSs are single nucleotide substitutions,
@@ -220,7 +220,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #' eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
-#' @param vcf.df An in-memory data frame containing a VCF file contents.
+#' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
 #' @import data.table
 #' @importFrom GenomicRanges reduce
@@ -232,7 +232,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #    Additional information not fully implemented at this point because of
 #    limited immediate biological interest.
 #' @export
-SplitSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
+SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot(class(vcf.df) == "data.frame")
 
   # Record the total number of input variants for later sanity checking.
@@ -351,7 +351,7 @@ SplitSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #    limited immediate biological interest.
 #' @export
 SplitListOfStrelkaVCFs <- function(list.of.vcfs) {
-  split.vcfs<- lapply(list.of.vcfs, FUN = SplitSNSVCF)
+  split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
   n <- length(list.of.vcfs)
   SNS.vcfs <- list()
   DNS.vcfs <- list()
@@ -504,13 +504,14 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   return(list(cat96 = mat96, cat192 = mat192, cat1536 = mat1536))
 }
 
-#' Create SNS catalogs from VCFs
+#' Create SNS catalogs from Strelka VCFs
 #'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
-#' out of the contents of the VCFs in list.of.vcfs
+#' out of the contents in list.of.SNS.vcfs
 #'
-#' @param list.of.vcfs List of in-memory VCFs. The list names will be the
-#'   sample ids in the output catalog.
+#' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
+#'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
+#'   output catalog.
 #' @param genome Name of a particular reference genome (without quotations
 #'   marks).
 #' @param trans.ranges A data frame containing transcript ranges.
@@ -520,16 +521,15 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   cat192
 #'   cat1536
 #' @export
-VCFsToSNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
+StrelkaVCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
   cat96 <- empty.cats$cat96
   cat192 <- empty.cats$cat192
   cat1536 <- empty.cats$cat1536
 
-  for (i in 1 : ncol) {
-    three.vcfs.df <- SplitSNSVCF(list.of.vcfs[[i]])
-    SNS <- three.vcfs.df$SNS.vcf
+  for (i in 1:ncol) {
+    SNS <- list.of.SNS.vcfs[[i]]
 
     SNS <- AddSequence(SNS, seq = genome)
     CheckSeqContextInVCF(SNS, "seq.21context")
@@ -541,9 +541,9 @@ VCFsToSNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
     cat1536 <- cbind(cat1536, SNS.cat$cat1536)
   }
 
-  colnames(cat96) <- names(list.of.vcfs)
-  colnames(cat192) <- names(list.of.vcfs)
-  colnames(cat1536) <- names(list.of.vcfs)
+  colnames(cat96) <- names(list.of.SNS.vcfs)
+  colnames(cat192) <- names(list.of.SNS.vcfs)
+  colnames(cat1536) <- names(list.of.SNS.vcfs)
 
   return(list(cat96 = cat96, cat192 = cat192, cat1536 = cat1536))
 }
@@ -634,13 +634,14 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
               catQUAD136 = QUAD.mat.136))
 }
 
-#' Create DNS catalogs from VCFs
+#' Create DNS catalogs from Strelka VCFs
 #'
 #' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
-#' out of the contents of the VCFs in list.of.vcfs
+#' out of the contents in list.of.DNS.vcfs
 #'
-#' @param list.of.vcfs List of in-memory VCFs. The list names will be
-#' the sample ids in the output catalog.
+#' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
+#'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
+#'   output catalog.
 #' @param genome Name of a particular reference genome
 #' (without quotations marks).
 #' @param trans.ranges A data frame containing transcript ranges.
@@ -650,7 +651,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catDNS144
 #'   catQUAD136
 #' @export
-VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
+StrelkaVCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
@@ -658,8 +659,7 @@ VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
   catQUAD136 <- empty.cats$catQUAD136
 
   for (i in 1 : ncol) {
-    three.vcfs.df <- SplitSNSVCF(list.of.vcfs[[i]])
-    DNS <- three.vcfs.df$DNS.vcf
+    DNS <- list.of.DNS.vcfs[[i]]
 
     DNS <- AddSequence(DNS, seq = genome)
     DNS <- AddTranscript(DNS, trans.ranges)
@@ -671,21 +671,22 @@ VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
     catQUAD136 <- cbind(catQUAD136, DNS.cat$catQUAD136)
   }
 
-  colnames(catDNS78) <- names(list.of.vcfs)
-  colnames(catDNS144) <- names(list.of.vcfs)
-  colnames(catQUAD136) <- names(list.of.vcfs)
+  colnames(catDNS78) <- names(list.of.DNS.vcfs)
+  colnames(catDNS144) <- names(list.of.DNS.vcfs)
+  colnames(catQUAD136) <- names(list.of.DNS.vcfs)
 
   return(list(catDNS78  = catDNS78, catDNS144  = catDNS144,
               catQUAD136  = catQUAD136))
 }
 
-#' Create SNS and DNS catalogs from VCF files
+#' Create SNS and DNS catalogs from Strelka VCF files
 #'
 #' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-#' from the VCFs specified by vector.of.file.paths
+#' from the Strelka VCFs specified by vector.of.file.paths
 #'
-#' This function calls \code{\link{VCFsToSNSCatalogs}} and \code{\link{VCFsToDNSCatalogs}}
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' This function calls \code{\link{StrelkaVCFsToSNSCatalogs}} and
+#' \code{\link{StrelkaVCFsToDNSCatalogs}}
+#' @param vector.of.file.paths A vector containing the paths of the Strelka VCF files.
 #' @param genome  Name of a particular reference genome
 #'   (without quotations marks).
 #' @param trans.ranges A data.table which contains transcript range and
@@ -693,22 +694,11 @@ VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #' @export
-VCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+StrelkaVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadListOfStrelkaVCFs(vector.of.file.paths)
-
-  # TODO(nanhai): split.vcfs <- SplitListOfVCFs(vcfs)
-  #
-  # SplitListOfVCFs <- function(list.of.vcfs) {
-  #   v1 <- lapply(list.of.vcfs, SplitSNSVCF.........
-  #   SNS <- lapply(v1, funtion(x) x$SNS....)
-  #   DNS <- la....
-  #   return(list(SNS = SNS, DNS = DNS))
-  # }
-  #
-  # return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
-  #     VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges)))
-  return(c(VCFsToSNSCatalogs(vcfs, genome, trans.ranges),
-           VCFsToDNSCatalogs(vcfs, genome, trans.ranges)))
+  split.vcfs <- SplitListOfStrelkaVCFs(vcfs)
+  return(c(StrelkaVCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
+           StrelkaVCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
 }
 
 #' CanonicalizeDNS
