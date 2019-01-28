@@ -522,7 +522,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   cat1536
 #' @keywords internal
 StrelkaVCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
-  ncol <- length(list.of.vcfs)
+  ncol <- length(list.of.SNS.vcfs)
 
   cat96 <- empty.cats$cat96
   cat192 <- empty.cats$cat192
@@ -652,7 +652,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catQUAD136
 #' @keywords internal
 StrelkaVCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
-  ncol <- length(list.of.vcfs)
+  ncol <- length(list.of.DNS.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
   catDNS144 <- empty.cats$catDNS144
