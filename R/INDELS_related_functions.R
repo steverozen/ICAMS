@@ -104,7 +104,7 @@ TestMutectVCFToCatalog <- function() {
   df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
-<<<<<<< HEAD
+
   if (FALSE) { #For faster debugging
     SNS.catalogs <-
       VCFsToSNSCatalogs(retval$SNS,
@@ -115,20 +115,8 @@ TestMutectVCFToCatalog <- function() {
     DNS.catalogs <-
       NewVCFsToDNSCatalogs(retval$DNS,
                            BSgenome.Hsapiens.1000genomes.hs37d5,
-                           .trans.ranges)
+                           .trans.ranges) # Note variable name changed
   }
-=======
-  # TODO(steve)Try pulling out the DNS from SNS
-
-  SNS.catalogs <-
-    VCFsToSNSCatalogs(retval$SNS,
-                      BSgenome.Hsapiens.1000genomes.hs37d5,
-                      .trans.ranges.GRCh37)
-  DNS.catalogs <-
-    NewVCFsToDNSCatalogs(retval$DNS,
-                       BSgenome.Hsapiens.1000genomes.hs37d5,
-                       .trans.ranges.GRCh37)
->>>>>>> df3558941b3d83a11c2714f2fca7ab9636360e2d
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,
