@@ -562,7 +562,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
              "data-raw/HepG2_Cis_4_SNVresult_rmDup.vcf")
 
   cats <-
-    VCFFilesToCatalog(
+    StrelkaVCFFilesToCatalog(
       files,
       genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
       # Use default transcript ranges
