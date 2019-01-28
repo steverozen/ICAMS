@@ -532,21 +532,6 @@ TestStrelkaDNSCatalog <- function() {
   cat("ok\n")
 }
 
-#' This function is to test whether the predefined functions
-#' are working correctly to produce the desired SNS and DNS catalogs.
-#' @export
-TestSNSandDNSCat <- function() {
-  # TODO(steve): move this into TestSNSCatalog and TESTSNSCatalog
-  # so that these functions are self contained.
-  vcf.df <- ReadStrelkaVCF("data-raw/cis_8wks_05_cl4_SNVresult.vcf")
-  stopifnot(nrow(vcf.df) ==  3544)
-  three.vcfs.df <- SplitSNSVCF(vcf.df)
-
-  # Use default transcript ranges
-  TestStrelkaSNSCatalog(three.vcfs.df$SNS.vcf)
-  TestStrelakDNSCatalog(three.vcfs.df$DNS.vcf)
-}
-
 #' This function is to make catalogs from the sample VCF files
 #' to compare with the expected catalog information.
 #' @export
