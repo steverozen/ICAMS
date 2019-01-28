@@ -35,7 +35,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames
 #'
-#' @returns A list with 5 elements, as folows:
+#' @return A list with 5 elements, as folows:
 #'
 #' @export
 SplitMutectVCFs <- function(list.of.vcfs) {
@@ -53,7 +53,7 @@ SplitMutectVCFs <- function(list.of.vcfs) {
 #' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
 #' out of the contents of the VCFs in list.of.vcfs
 #'
-#' @param list.of.vcfs List vector of in-memory VCFs. The list names will be
+#' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #' @param genome Name of a particular reference genome
 #' (without quotations marks).
@@ -104,6 +104,7 @@ TestMutectVCFToCatalog <- function() {
   df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
+<<<<<<< HEAD
   if (FALSE) { #For faster debugging
     SNS.catalogs <-
       VCFsToSNSCatalogs(retval$SNS,
@@ -116,6 +117,18 @@ TestMutectVCFToCatalog <- function() {
                            BSgenome.Hsapiens.1000genomes.hs37d5,
                            .trans.ranges)
   }
+=======
+  # TODO(steve)Try pulling out the DNS from SNS
+
+  SNS.catalogs <-
+    VCFsToSNSCatalogs(retval$SNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      .trans.ranges.GRCh37)
+  DNS.catalogs <-
+    NewVCFsToDNSCatalogs(retval$DNS,
+                       BSgenome.Hsapiens.1000genomes.hs37d5,
+                       .trans.ranges.GRCh37)
+>>>>>>> df3558941b3d83a11c2714f2fca7ab9636360e2d
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,

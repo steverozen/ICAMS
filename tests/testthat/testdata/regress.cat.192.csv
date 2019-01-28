@@ -1,4 +1,4 @@
-Strand,Mutation type,Trinucleotide,data/HepG2_Cis_1_SNVresult_rmDup.vcf,data/HepG2_Cis_2_SNVresult_rmDup.vcf,data/HepG2_Cis_3_SNVresult_rmDup.vcf,data/HepG2_Cis_4_SNVresult_rmDup.vcf
+Strand,Mutation type,Trinucleotide,V1,V2,V3,V4
 T,T>G,TTT,6,5,5,2
 T,T>G,GTT,2,3,3,3
 T,T>G,CTT,9,3,8,3

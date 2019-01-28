@@ -9,6 +9,9 @@ SplitMutectVCFs(list.of.vcfs)
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames}
 }
+\value{
+A list with 5 elements, as folows:
+}
 \description{
 Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)
 }

@@ -7,7 +7,7 @@
 NewVCFsToDNSCatalogs(list.of.vcfs, genome, trans.ranges)
 }
 \arguments{
-\item{list.of.vcfs}{List vector of in-memory VCFs. The list names will be
+\item{list.of.vcfs}{List of in-memory VCFs. The list names will be
 the sample ids in the output catalog.}
 
 \item{genome}{Name of a particular reference genome
