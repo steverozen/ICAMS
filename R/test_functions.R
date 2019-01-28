@@ -1130,3 +1130,51 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
 
   invisible(cats)
 }
+
+#' This function is to make catalogs from the sample VCF files
+#' to compare with the expected catalog information.
+#' @export
+NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
+  files <- c("data-raw/MCF10A_Carb_Low_cl2_SNVresult.vcf")
+
+  cats <-
+    StrelkaVCFFilesToCatalog(
+      files,
+      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
+      # Use default transcript ranges
+      trans.ranges = .trans.ranges.GRCh37)
+
+  prev.catalog.192 <-
+    ReadCat192(
+      "tests/testthat/testdata/new.regress.cat.192.csv")
+  stopifnot(cats$cat192 == prev.catalog.192)
+
+  prev.catalog.96 <-
+    ReadCat96(
+      "tests/testthat/testdata/new.regress.cat.96.csv")
+  stopifnot(cats$cat96 == prev.catalog.96)
+
+  prev.catalog.1536 <-
+    ReadCat1536(
+      "tests/testthat/testdata/new.regress.cat.1536.csv")
+  stopifnot(cats$cat1536 == prev.catalog.1536)
+
+  prev.catalog.DNS.78<-
+    ReadCatDNS78(
+      "tests/testthat/testdata/new.regress.cat.dns.78.csv")
+  stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
+
+  prev.catalog.QUAD.136<-
+    ReadCatQUAD136(
+      "tests/testthat/testdata/new.regress.cat.quad.136.csv")
+  stopifnot(cats$catQUAD136 == prev.catalog.QUAD.136)
+
+  prev.catalog.DNS.144<-
+    ReadCatDNS144(
+      "tests/testthat/testdata/new.regress.cat.dns.144.csv")
+  stopifnot(cats$catDNS144 == prev.catalog.DNS.144)
+
+  cat("ok\n")
+
+  invisible(cats)
+}
