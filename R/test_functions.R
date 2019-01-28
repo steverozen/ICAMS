@@ -3,7 +3,7 @@
 #'
 #' @param vcf.df An in-memory data frame containing a VCF file contents.
 #' @keywords internal
-TestSNSCatalog <- function(vcf.df) {
+TestStrelkaSNSCatalog <- function(vcf.df) {
   stopifnot(!missing("vcf.df"))
   trans.ranges <- .trans.ranges
 
@@ -430,7 +430,7 @@ TestSNSCatalog <- function(vcf.df) {
 #' @param vcf.df This function is to test whether the predefined functions
 #' are working correctly to produce the desired DNS catalogs.
 #' @keywords internal
-TestDNSCatalog <- function(vcf.df) {
+TestStrelkaDNSCatalog <- function(vcf.df) {
   stopifnot(!missing("vcf.df"))
   trans.ranges <- .trans.ranges
 
@@ -545,14 +545,14 @@ TestSNSandDNSCat <- function() {
   three.vcfs.df <- SplitSNSVCF(vcf.df)
 
   # Use default transcript ranges
-  TestSNSCatalog(three.vcfs.df$SNS.vcf)
-  TestDNSCatalog(three.vcfs.df$DNS.vcf)
+  TestStrelkaSNSCatalog(three.vcfs.df$SNS.vcf)
+  TestStrelakDNSCatalog(three.vcfs.df$DNS.vcf)
 }
 
 #' This function is to make catalogs from the sample VCF files
 #' to compare with the expected catalog information.
 #' @export
-TestMakeCatalogFromSNSVCFs <- function() {
+TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   # This function is to make catalogs from the sample VCF files
   # to compare with the expected catalog information.
 

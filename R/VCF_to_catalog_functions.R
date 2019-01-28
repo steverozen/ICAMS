@@ -664,6 +664,18 @@ VCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
 #' @export
 VCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadListOfStrelkaVCFs(vector.of.file.paths)
+
+  # TODO(nanhai): split.vcfs <- SplitListOfVCFs(vcfs)
+  #
+  # SplitListOfVCFs <- function(list.of.vcfs) {
+  #   v1 <- lapply(list.of.vcfs, SplitSNSVCF.........
+  #   SNS <- lapply(v1, funtion(x) x$SNS....)
+  #   DNS <- la....
+  #   return(list(SNS = SNS, DNS = DNS))
+  # }
+  #
+  # return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
+  #     VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges)))
   return(c(VCFsToSNSCatalogs(vcfs, genome, trans.ranges),
            VCFsToDNSCatalogs(vcfs, genome, trans.ranges)))
 }

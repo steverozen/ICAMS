@@ -1,6 +1,6 @@
 #' @title Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
 #'
-#' #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
+#' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
 #'
 #' @return A list with the SNS, DNS, and ID portions of the VCF file, plus two
@@ -20,24 +20,11 @@ SplitOneMutectVCF <- function(vcf.df) {
 
   SNS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
 
-  # SNS.df <- AddSequence(SNS.df, seq = genome)
-  # CheckSeqContextInVCF(SNS.df, "seq.21context")
-  # SNS.df <- AddTranscript(SNS.df, trans.ranges)
-
   DNS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
-  # DNS.df <- AddSequence(DNS.df, seq = genome)
-  # CheckSeqContextInVCF(DNS.df, "seq.21context")
-  # DNS.df <- AddTranscript(DNS.df, trans.ranges)
 
   other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
 
   ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
-  # TODO(remove the "extra" context base)
-
-  # TODO(steve): call the right AddSequenceID function here
-  # TODO(steve): check that the "extra" base and the deleted string
-  # match the genome at POS
-  # TODO(steve): remove the "extra" base.
 
   return(list(SNS = SNS.df, DNS = DNS.df, ID = ID.df,
               other=other.df, multiple.alt = multiple.alt.df))
@@ -695,6 +682,14 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
 #' @return An ID (indel) catalog
 #'
 #' @export
+
+# TODO(remove the "extra" context base)
+
+# TODO(steve): call the right AddSequenceID function here
+# TODO(steve): check that the "extra" base and the deleted string
+# match the genome at POS
+# TODO(steve): remove the "extra" base.
+
 
 VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
   ncol <- length(list.of.vcfs)
