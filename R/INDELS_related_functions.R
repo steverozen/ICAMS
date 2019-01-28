@@ -109,11 +109,11 @@ TestMutectVCFToCatalog <- function() {
   SNS.catalogs <-
     VCFsToSNSCatalogs(retval$SNS,
                       BSgenome.Hsapiens.1000genomes.hs37d5,
-                      .trans.ranges)
+                      .trans.ranges.GRCh37)
   DNS.catalogs <-
     NewVCFsToDNSCatalogs(retval$DNS,
                        BSgenome.Hsapiens.1000genomes.hs37d5,
-                       .trans.ranges)
+                       .trans.ranges.GRCh37)
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,

@@ -406,7 +406,7 @@ TestStrelkaSNSCatalog <- function() {
   SNS.vcf <- AddSequence(SNS.vcf)
   CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
-  SNS.vcf <- AddTranscript(SNS.vcf, .trans.ranges)
+  SNS.vcf <- AddTranscript(SNS.vcf, .trans.ranges.GRCh37)
 
   cats <- CreateOneColSNSCatalog(SNS.vcf)
 
@@ -521,7 +521,7 @@ TestStrelkaDNSCatalog <- function() {
   DNS.vcf <- AddSequence(DNS.vcf)
   CheckSeqContextInVCF(DNS.vcf, "seq.21context")
 
-  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges)
+  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges.GRCh37)
 
   DNS.cat <- CreateOneColDNSCatalog(DNS.vcf)
 
@@ -549,7 +549,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
       files,
       genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
       # Use default transcript ranges
-      trans.ranges = .trans.ranges)
+      trans.ranges = .trans.ranges.GRCh37)
 
   prev.catalog.192 <-
     ReadCat192(
