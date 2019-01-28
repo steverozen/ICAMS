@@ -35,7 +35,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames
 #'
-#' @return A list with 5 elements, as folows:
+#' @returns A list with 5 elements, as folows:
 #'
 #' @export
 SplitMutectVCFs <- function(list.of.vcfs) {
