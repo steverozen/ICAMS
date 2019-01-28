@@ -410,7 +410,6 @@ TestStrelkaSNSCatalog <- function() {
 
   cats <- CreateOneColSNSCatalog(SNS.vcf)
 
-  cat("total 192 =", sum(cats$cat192), "\n")
   stopifnot(sum(cats$cat96) == 3336)
   stopifnot(sum(cats$cat1536) == 3336)
   stopifnot(sum(cats$cat192) == 1520)
@@ -425,22 +424,9 @@ TestStrelkaSNSCatalog <- function() {
 }
 
 #' This function is to test whether the predefined functions
-#' are working correctly to produce the desired DNS catalogs.
-#'
-#' @param vcf.df This function is to test whether the predefined functions
-#' are working correctly to produce the desired DNS catalogs.
-#' @keywords internal
-TestStrelkaDNSCatalog <- function(vcf.df) {
-  stopifnot(!missing("vcf.df"))
-  trans.ranges <- .trans.ranges
-
-  vcf.df <- AddSequence(vcf.df)
-  CheckSeqContextInVCF(vcf.df, "seq.21context")
-
-  vcf.df <- AddTranscript(vcf.df, trans.ranges)
-
-  DNS.cat <- CreateOneColDNSCatalog(vcf.df)
-
+#' are working correctly to produce the desired DNS catalogs from Strelka VCF.
+#' @export
+TestStrelkaDNSCatalog <- function() {
   expected.cat.78 <-
     structure(
       c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,
@@ -528,10 +514,22 @@ TestStrelkaDNSCatalog <- function(vcf.df) {
           "TCGA", "TCTA", "TCTC", "TCTG", "TCTT", "TGCA", "TTAA", "TTCA",
           "TTCC", "TTCG", "TTCT", "TTGA", "TTGC", "TTGG", "TTGT", "TTTA",
           "TTTC", "TTTG", "TTTT"), NULL))
+  vcf.df <- ReadStrelkaVCF("data-raw/cis_8wks_05_cl4_SNVresult.vcf")
+  stopifnot(nrow(vcf.df) ==  3544)
+  DNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$DNS.vcf
+
+  DNS.vcf <- AddSequence(DNS.vcf)
+  CheckSeqContextInVCF(DNS.vcf, "seq.21context")
+
+  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges)
+
+  DNS.cat <- CreateOneColDNSCatalog(DNS.vcf)
 
   stopifnot(DNS.cat$catDNS78 == expected.cat.78)
   stopifnot(DNS.cat$catDNS144 == expected.cat.144)
   stopifnot(DNS.cat$catQUAD136 == expected.cat.136)
+
+  cat("ok\n")
 }
 
 #' This function is to test whether the predefined functions
