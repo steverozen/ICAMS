@@ -2,12 +2,13 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{SplitOneMutectVCF}
 \alias{SplitOneMutectVCF}
-\title{Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
-
-#' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
- VAFs, which are added by \code{\link{ReadMutectVCF}}.}
+\title{Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations}
 \usage{
 SplitOneMutectVCF(vcf.df)
+}
+\arguments{
+\item{vcf.df}{An in-memory data.frame representing a Mutect VCF, including
+VAFs, which are added by \code{\link{ReadMutectVCF}}.}
 }
 \value{
 A list with the SNS, DNS, and ID portions of the VCF file, plus two
@@ -15,8 +16,5 @@ data.frames of other mutations
 }
 \description{
 Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
-
-#' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
- VAFs, which are added by \code{\link{ReadMutectVCF}}.
 }
 \keyword{internal}
