@@ -333,6 +333,37 @@ SplitSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
               ThreePlus = other.ranges))
 }
 
+#' Split a list of in-memory Strelka VCF into SNS, DNS, and variants involving
+#' > 2 consecutive bases
+#'
+#' SNSs are single nucleotide substitutions,
+#' eg C>T, A<G,....  DNSs are double nucleotide substitutions,
+#' eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
+#' bases are rare, so this function just records them. These
+#' would be variants such ATG>CCT, AGAT > TCTA, ...
+#' @param list.of.vcfs A list of in-memory data frame containing Strelka VCF file contents.
+#' @return A list of 3 in-memory objects with the elements:
+#    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
+#    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
+#    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
+#    information (reference sequence, alternative sequence, context, etc.)
+#    Additional information not fully implemented at this point because of
+#    limited immediate biological interest.
+#' @export
+SplitListOfStrelkaVCFs <- function(list.of.vcfs) {
+  split.vcfs<- lapply(list.of.vcfs, FUN = SplitSNSVCF)
+  n <- length(list.of.vcfs)
+  SNS.vcfs <- list()
+  DNS.vcfs <- list()
+  ThreePlus <- list()
+  for (i in 1:n) {
+    SNS.vcfs <- c(SNS.vcfs, list(split.vcfs[[i]]$SNS.vcf))
+    DNS.vcfs <- c(DNS.vcfs, list(split.vcfs[[i]]$DNS.vcf))
+    ThreePlus <- c(ThreePlus, list(split.vcfs[[i]]$ThreePlus))
+  }
+  return(list(SNS.vcfs = SNS.vcfs, DNS.vcfs = DNS.vcfs, ThreePlus = ThreePlus))
+}
+
 #' Check that the sequence context information is consistent with the value of
 #' the column REF.
 #'
