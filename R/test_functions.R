@@ -964,6 +964,119 @@ TestStrelkaDNSCatalog <- function() {
   cat("ok\n")
 }
 
+#' This function is to test whether the predefined functions
+#' are working correctly to produce the desired DNS catalogs from Strelka VCF.
+#' @export
+NewTestStrelkaDNSCatalog <- function() {
+  expected.cat.78 <-
+    structure(
+      c(0L, 0L, 0L, 0L, 0L, 0L, 5L, 0L, 2L, 0L, 0L, 0L, 0L,
+        0L, 0L, 22L, 7L, 12L, 0L, 1L, 1L, 2L, 1L, 4L, 0L, 0L, 1L, 0L,
+        0L, 2L, 55L, 33L, 3L, 4L, 2L, 0L, 3L, 2L, 0L, 14L, 5L, 5L, 1L,
+        0L, 2L, 2L, 0L, 2L, 0L, 0L, 1L, 28L, 10L, 30L, 2L, 0L, 2L, 1L,
+        0L, 2L, 0L, 2L, 11L, 1L, 2L, 4L, 1L, 0L, 19L, 2L, 1L, 0L, 1L,
+        0L, 0L, 0L, 0L, 0L),
+      .Dim = c(78L, 1L),
+      .Dimnames = list(
+        c("ACCA",
+          "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA", "ACTG", "ACTT",
+          "ATCA", "ATCC", "ATCG", "ATGA", "ATGC", "ATTA", "CCAA", "CCAG",
+          "CCAT", "CCGA", "CCGG", "CCGT", "CCTA", "CCTG", "CCTT", "CGAT",
+          "CGGC", "CGGT", "CGTA", "CGTC", "CGTT", "CTAA", "CTAC", "CTAG",
+          "CTGA", "CTGC", "CTGG", "CTTA", "CTTC", "CTTG", "GCAA", "GCAG",
+          "GCAT", "GCCA", "GCCG", "GCTA", "TAAT", "TACG", "TACT", "TAGC",
+          "TAGG", "TAGT", "TCAA", "TCAG", "TCAT", "TCCA", "TCCG", "TCCT",
+          "TCGA", "TCGG", "TCGT", "TGAA", "TGAC", "TGAT", "TGCA", "TGCC",
+          "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC", "TTAG", "TTCA",
+          "TTCC", "TTCG", "TTGA", "TTGC", "TTGG"), NULL))
+
+  expected.cat.144 <-
+    structure(
+      c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,
+        0L, 0L, 0L, 0L, 2L, 0L, 0L, 0L, 1L, 0L, 2L, 0L, 1L, 5L, 0L, 0L,
+        0L, 0L, 0L, 0L, 0L, 0L, 0L, 1L, 2L, 4L, 0L, 0L, 1L, 0L, 0L, 0L,
+        3L, 0L, 3L, 0L, 0L, 0L, 1L, 0L, 0L, 1L, 0L, 0L, 0L, 0L, 0L, 0L,
+        0L, 0L, 12L, 4L, 0L, 0L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 8L, 0L,
+        0L, 4L, 1L, 1L, 10L, 2L, 1L, 0L, 0L, 0L, 1L, 0L, 1L, 3L, 2L,
+        1L, 2L, 0L, 0L, 4L, 1L, 0L, 4L, 0L, 0L, 0L, 0L, 0L, 0L, 1L, 0L,
+        0L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 0L, 0L, 3L, 1L, 2L, 0L, 0L, 0L,
+        0L, 0L, 1L, 0L, 0L, 0L, 0L, 1L, 0L, 0L, 0L, 7L, 1L, 1L, 0L, 1L,
+        0L, 0L, 0L, 0L, 0L),
+      .Dim = c(144L, 1L),
+      .Dimnames = list(
+        c("AACC",
+          "AACG", "AACT", "AAGC", "AAGG", "AAGT", "AATC", "AATG", "AATT",
+          "ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA", "ACTG",
+          "ACTT", "AGCA", "AGCC", "AGCT", "AGGA", "AGGC", "AGGT", "AGTA",
+          "AGTC", "AGTT", "ATCA", "ATCC", "ATCG", "ATGA", "ATGC", "ATGG",
+          "ATTA", "ATTC", "ATTG", "CAAC", "CAAG", "CAAT", "CAGC", "CAGG",
+          "CAGT", "CATC", "CATG", "CATT", "CCAA", "CCAG", "CCAT", "CCGA",
+          "CCGG", "CCGT", "CCTA", "CCTG", "CCTT", "CGAA", "CGAC", "CGAT",
+          "CGGA", "CGGC", "CGGT", "CGTA", "CGTC", "CGTT", "CTAA", "CTAC",
+          "CTAG", "CTGA", "CTGC", "CTGG", "CTTA", "CTTC", "CTTG", "GAAC",
+          "GAAG", "GAAT", "GACC", "GACG", "GACT", "GATC", "GATG", "GATT",
+          "GCAA", "GCAG", "GCAT", "GCCA", "GCCG", "GCCT", "GCTA", "GCTG",
+          "GCTT", "GGAA", "GGAC", "GGAT", "GGCA", "GGCC", "GGCT", "GGTA",
+          "GGTC", "GGTT", "GTAA", "GTAC", "GTAG", "GTCA", "GTCC", "GTCG",
+          "GTTA", "GTTC", "GTTG", "TAAC", "TAAG", "TAAT", "TACC", "TACG",
+          "TACT", "TAGC", "TAGG", "TAGT", "TCAA", "TCAG", "TCAT", "TCCA",
+          "TCCG", "TCCT", "TCGA", "TCGG", "TCGT", "TGAA", "TGAC", "TGAT",
+          "TGCA", "TGCC", "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC",
+          "TTAG", "TTCA", "TTCC", "TTCG", "TTGA", "TTGC", "TTGG"), NULL))
+
+  expected.cat.136 <-
+    structure(
+      c(1L, 1L, 0L, 1L, 0L, 0L, 0L, 0L, 1L, 2L, 0L, 3L, 0L,
+        0L, 1L, 0L, 8L, 3L, 18L, 13L, 5L, 12L, 0L, 7L, 0L, 0L, 1L, 1L,
+        7L, 9L, 0L, 13L, 1L, 0L, 15L, 0L, 0L, 0L, 1L, 0L, 2L, 0L, 0L,
+        0L, 0L, 0L, 0L, 2L, 0L, 2L, 2L, 1L, 0L, 0L, 8L, 12L, 5L, 14L,
+        0L, 0L, 0L, 2L, 1L, 0L, 0L, 5L, 1L, 7L, 2L, 4L, 6L, 1L, 3L, 0L,
+        0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 9L, 0L, 24L, 0L, 0L, 4L,
+        0L, 4L, 2L, 2L, 0L, 0L, 0L, 4L, 4L, 0L, 19L, 0L, 0L, 2L, 1L,
+        0L, 0L, 0L, 0L, 1L, 1L, 0L, 0L, 0L, 0L, 1L, 0L, 4L, 1L, 2L, 1L,
+        7L, 1L, 1L, 0L, 0L, 0L, 0L, 6L, 2L, 1L, 5L, 0L, 0L, 0L, 0L, 0L),
+      .Dim = c(136L, 1L),
+      .Dimnames = list(
+        c("AACA", "AACC", "AACG", "AACT", "AATA",
+          "AATC", "AATG", "AATT", "ACCA", "ACCC", "ACCG", "ACCT", "ACGA",
+          "ACGC", "ACGG", "ACGT", "ACTA", "ACTC", "ACTG", "ACTT", "AGCA",
+          "AGCC", "AGCG", "AGCT", "ATAA", "ATAC", "ATAG", "ATAT", "ATCA",
+          "ATCC", "ATCG", "ATCT", "ATGA", "ATGC", "ATGG", "ATGT", "ATTA",
+          "ATTC", "ATTG", "ATTT", "CACA", "CACC", "CACG", "CACT", "CATA",
+          "CATC", "CATG", "CCCA", "CCCC", "CCCG", "CCCT", "CCGA", "CCGC",
+          "CCGG", "CCTA", "CCTC", "CCTG", "CCTT", "CGCA", "CGCC", "CGCG",
+          "CTAA", "CTAC", "CTAG", "CTCA", "CTCC", "CTCG", "CTCT", "CTGA",
+          "CTGC", "CTGG", "CTGT", "CTTA", "CTTC", "CTTG", "CTTT", "GACA",
+          "GACC", "GACG", "GACT", "GATA", "GATC", "GCCA", "GCCC", "GCCG",
+          "GCCT", "GCGA", "GCGC", "GCTA", "GCTC", "GCTG", "GCTT", "GGCA",
+          "GGCC", "GTAA", "GTAC", "GTCA", "GTCC", "GTCG", "GTCT", "GTGA",
+          "GTGC", "GTGG", "GTGT", "GTTA", "GTTC", "GTTG", "GTTT", "TACA",
+          "TACC", "TACG", "TACT", "TATA", "TCCA", "TCCC", "TCCG", "TCCT",
+          "TCGA", "TCTA", "TCTC", "TCTG", "TCTT", "TGCA", "TTAA", "TTCA",
+          "TTCC", "TTCG", "TTCT", "TTGA", "TTGC", "TTGG", "TTGT", "TTTA",
+          "TTTC", "TTTG", "TTTT"), NULL))
+  vcf.df <- ReadStrelkaVCF("data-raw/MCF10A_Carb_Low_cl2_SNVresult.vcf")
+  stopifnot(nrow(vcf.df) ==  10293)
+  DNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$DNS.vcf
+
+  DNS.vcf <- AddSequence(DNS.vcf)
+  CheckSeqContextInVCF(DNS.vcf, "seq.21context")
+
+  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges.GRCh37)
+
+  DNS.cat <- CreateOneColDNSCatalog(DNS.vcf)
+
+  stopifnot(sum(DNS.cat$catDNS78) == 313)
+  stopifnot(sum(DNS.cat$catDNS144) == 113)
+  stopifnot(sum(DNS.cat$catQUAD136) == 313)
+
+  stopifnot(DNS.cat$catDNS78 == expected.cat.78)
+  stopifnot(DNS.cat$catDNS144 == expected.cat.144)
+  stopifnot(DNS.cat$catQUAD136 == expected.cat.136)
+
+  cat("ok\n")
+}
+
 #' This function is to make catalogs from the sample VCF files
 #' to compare with the expected catalog information.
 #' @export
