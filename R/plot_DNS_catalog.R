@@ -286,55 +286,59 @@ PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
   rownames(max.count.per.class) <- df1$Ref
   rownames(counts.per.class) <- df2$Ref
 
-  # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
-  # occurrence in the genome
-  rates <- matrix(0, nrow = 160, ncol = 1)
-  rownames(rates) <- .order.for.QUAD136.plotting
-  for (i in 1:160){
-    if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
-      rates[i] <-
-        catalog[.order.for.QUAD136.plotting[i], ] /
-        abundance[.order.for.QUAD136.plotting[i], ]
-    } else {
-      rates[i] <- NA
+  if (type == "density") {
+    # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
+    # occurrence in the genome
+    rates <- matrix(0, nrow = 160, ncol = 1)
+    rownames(rates) <- .order.for.QUAD136.plotting
+    for (i in 1:160){
+      if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
+        rates[i] <-
+          catalog[.order.for.QUAD136.plotting[i], ] /
+          abundance[.order.for.QUAD136.plotting[i], ]
+      } else {
+        rates[i] <- NA
+      }
     }
+
+    # Calculate maxima per mutation class(mut/million)
+    df3 <- data.frame(stats::na.omit(rates))
+    colnames(df3) <- "rates"
+    df3$Ref <- substr(rownames(df3), 2, 3)
+    df4 <- stats::aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
+    max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
+    rownames(max.rate.per.class) <- df4$Ref
   }
 
-  # Calculate maxima per mutation class(mut/million)
-  df3 <- data.frame(stats::na.omit(rates))
-  colnames(df3) <- "rates"
-  df3$Ref <- substr(rownames(df3), 2, 3)
-  df4 <- stats::aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
-  max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
-  rownames(max.rate.per.class) <- df4$Ref
+  DrawImage <- function(mat) {
+    value <- as.numeric(unlist(mat))
+    maximum <- max(value[!is.na(value)])
+    if (maximum == 0) {
+      col.ref <- "white"
+    } else {
+      col.ref <- "palegreen3"
+    }
+
+    image(1:4, 1:4, mat,
+          col = grDevices::colorRampPalette(c("white", col.ref))(16),
+          asp = 1, axes = FALSE, ann = FALSE)
+
+    # Make the background of the plot grey
+    rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
+
+    # Plot the image again
+    image(1:4, 1:4, mat,
+          col = grDevices::colorRampPalette(c("white", col.ref))(16),
+          asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+  }
 
   for (i in 1:10){
     par(mar = c(1, 1, 4.5, 1))
 
     if (type == "density") {
-      image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
-            asp = 1, axes = FALSE, ann = FALSE)
-
-      # Make the background of the plot grey
-      rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
-
-      # Plot the image again
-      image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
-            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+      DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
     } else if (type == "counts") {
-      image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
-            asp = 1, axes = FALSE, ann = FALSE)
-
-      # Make the background of the plot grey
-      rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
-
-      # Plot the image again
-      image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
-            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+      DrawImage(matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
     } else {
       stop('Please specify the correct type: "density" or "counts"')
     }
