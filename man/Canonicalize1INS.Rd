@@ -2,21 +2,24 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{Canonicalize1INS}
 \alias{Canonicalize1INS}
-\title{Canonicalize1INS}
+\title{Given an insertion and its sequence context, categorize it.}
 \usage{
-Canonicalize1INS(ref, alt, context)
+Canonicalize1INS(context, ins.sequence, pos, trace = 0)
 }
 \arguments{
-\item{ref}{TODO}
+\item{context}{The deleted sequence plus ample surrounding
+sequence on each side (at least as long as \code{ins.sequence} * 6).}
 
-\item{alt}{TODO}
+\item{ins.sequence}{The deleted sequence in \code{context}.}
 
-\item{context}{TODO}
+\item{pos}{The position of \code{ins.sequence} in \code{context}.}
+
+\item{trace}{If > 0, then cat information how the computation is carried out.}
 }
 \value{
-TODO
+A string that is the canonical represention of the given insertion type
 }
 \description{
-Canonicalize1INS
+Given an insertion and its sequence context, categorize it.
 }
 \keyword{internal}

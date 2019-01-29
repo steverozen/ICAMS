@@ -8,8 +8,8 @@ file}
 CreateOneColIDCatalog(ID.vcf, SBS.vcf)
 }
 \arguments{
-\item{ID.vcf}{An in-memory VCF as a data.frame annotated by the AddSequence
-  and AddTranscript functions. It must only contain indels and must *not*
+\item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
+  AddAndCheckSequenceID function. It must only contain indels and must *not*
   contain SBS (single base substituions), DBS, or triplet base substituions
   etc.
 

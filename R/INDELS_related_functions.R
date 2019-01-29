@@ -35,7 +35,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames
 #'
-#' @returns A list with 5 elements, as folows:
+#' @return A list with 5 elements, as folows:
 #'
 #' @export
 SplitMutectVCFs <- function(list.of.vcfs) {
@@ -105,7 +105,8 @@ TestMutectVCFToCatalog <- function() {
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
 
-  if (FALSE) { #For faster debugging
+  # if (FALSE)
+    { #For faster debugging
     SNS.catalogs <-
       VCFsToSNSCatalogs(retval$SNS,
                         BSgenome.Hsapiens.1000genomes.hs37d5,
@@ -113,7 +114,7 @@ TestMutectVCFToCatalog <- function() {
     test <- SplitSNSVCF(retval$SNS); cat(nrow(test[[1]]))
 
     DNS.catalogs <-
-      NewVCFsToDNSCatalogs(retval$DNS,
+      VCFsToDNSCatalogs(retval$DNS,
                            BSgenome.Hsapiens.1000genomes.hs37d5,
                            .trans.ranges) # Note variable name changed
   }
@@ -123,24 +124,33 @@ TestMutectVCFToCatalog <- function() {
                      BSgenome.Hsapiens.1000genomes.hs37d5)
 
   return(ID.catalog)
-  # For faster debugging
-  # invisible(list(retval, SNS.catalogs, DNS.catalogs))
+
+  # invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
 }
 
-#' Add sequence context to a data frame with ID (insertion/deletion) mutation records
+#' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
+#'  and confirm that they match the given reference genome.
 #'
 #' @param df A data frame storing mutation records of a VCF file
-#'   containing only insertions and deletions. IMPORTANT: The
-#'   representation of indels in df must have been canonicalized, so that
-#'   context bases (which are added by some indel callers) are placed in a
-#'   column "Left.context.base" and so that, for deletions, ALT is the empty
-#'   string, and, for insertions, REF is the empty string.
+#'   containing only insertions and deletions. This function expects that
+#'   there is a "context base" to the left, for example REF = ACG, ALT = A
+#'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
+#'
 #' @param seq A particular reference genome.
+#'
 #' @importFrom methods as
+#'
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
-#' @return A data frame with 2 new columns added to the input data frame. One
-#'   column contains sequence context information and the other column contains
-#'   the length of the "context" string to the left of the site of the variant.
+#'
+#' @return A data frame with 2 new columns added to the input data frame:
+#' \enumerate{
+#'  \item \code{seq.context} The sequence embedding the variant.
+#'
+#'  \item \code{seq.context.width} The width of \code{seq.context} to the left
+#'     of the variant. Does not inlude the "context base". TODO(steve): do we need
+#'     to modify this function so that it can handle indel callers that do
+#'     not provide the "context base"?
+#' }
 #' @keywords internal
 AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
@@ -165,7 +175,7 @@ AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5
   is.del <- nchar(df$ALT) <= nchar(df$REF)
   var.width.in.genome <- ifelse(is.del, var.width, 0)
 
-  df$seq.pad.width <- var.width * 6
+  df$seq.context.width <- var.width * 6
   # 6 because we need to find if the insertion or deletion is embedded
   # in up to 5 additonal repeats of the inserted or deleted sequence.
   # Then 6 to avoid possible future issues.
@@ -173,15 +183,15 @@ AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5
   # Create a GRanges object with the needed width.
   Ranges <-
     as(data.frame(chrom = df$CHROM,
-                  start = df$POS - df$seq.pad.width, # 10,
-                  end = df$POS + var.width.in.genome + df$seq.pad.width # 10
+                  start = df$POS - df$seq.context.width, # 10,
+                  end = df$POS + var.width.in.genome + df$seq.context.width # 10
     ),
     "GRanges")
 
   # Extract sequence context from the reference genome
   df$seq.context <- getSeq(seq, Ranges, as.character = TRUE)
 
-  seq.to.check <- substr(df$seq.context, df$seq.pad.width + 1, df$seq.pad.width + var.width.in.genome + 1)
+  seq.to.check <- substr(df$seq.context, df$seq.context.width + 1, df$seq.context.width + var.width.in.genome + 1)
 
   stopifnot(seq.to.check == df$REF)
 
@@ -505,10 +515,10 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
-#' @tile Given a deletion in context categorize it.
+#' @title Given a deletion and its sequence context, categorize it.
 #'
 #' @param context The deleted sequence plus ample surrounding
-#'   sequence on each side (at least as long as \code{del.sequence}).
+#'   sequence on each side (at least as long as \code{del.seq}).
 #'
 #' @param del.seq The deleted sequence in \code{context}.
 #'
@@ -558,19 +568,30 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
   return(paste0("DEL:MH:", deletion.size.string, ":", microhomology.len.str))
 }
 
-#' Canonicalize1INS
+#' @title Given an insertion and its sequence context, categorize it.
 #'
-#' @param ref TODO
-#' @param alt TODO
-#' @param context TODO
+#' @param context The deleted sequence plus ample surrounding
+#'   sequence on each side (at least as long as \code{ins.sequence} * 6).
+#'
+#' @param ins.sequence The deleted sequence in \code{context}.
+#'
+#' @param pos The position of \code{ins.sequence} in \code{context}.
+#'
+#' @param trace If > 0, then cat information how the computation is carried out.
+#
+#' @return A string that is the canonical represention of the given insertion type
+#'
 #' @keywords internal
-#' @return TODO
-#' @export
-Canonicalize1INS <- function(ref, alt, context) {
-  stop() # not done
+
+Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
+  rep.count <- FindMaxRepeatIns(context, ins.sequence, pos)
+  rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
+  insertion.size <- nchar(ins.sequence)
+
+  # TODO(steve):start here
 }
 
-#' @tile Given a single insertion or deletion in context categorize it.
+#' @title Given a single insertion or deletion in context categorize it.
 #'
 #' @param context Ample surrounding
 #'   sequence on each side of the insertion or deletion.
@@ -583,7 +604,8 @@ Canonicalize1INS <- function(ref, alt, context) {
 #'
 #' @param trace If > 0 cat information how the computation is carried out.
 #
-#' @return A string that is the canonical represention of the given deletion type
+#' @return A string that is the canonical represention of the type of the given
+#'  insertion or deletion.
 #'
 #' @keywords internal
 Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
@@ -602,7 +624,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   }
 }
 
-#' @tile Given vectors of insertions and deletions in contexts categorize them.
+#' @title Given vectors of insertions and deletions in contexts categorize them.
 #'
 #' @param context A vector of ample surrounding
 #'   sequence on each side the variants
@@ -648,7 +670,7 @@ MakeTmpInsVCF <- function() {
     seq.context=c("TTTTTTTTTTTTCGACCCCCCCCCCCC", "TTTTTTTTTTTTGAACCCCCCCCCC", "TTTTTTTTTTTTGCCCCCCCCCCCC"),
     REF=c("C", "G", "G"),
     ALT=c("CGA", "GA", "GA"),
-    seq.pad.width=c(12, 12, 12)
+    seq.context.width=c(12, 12, 12)
   ))
 }
 }
@@ -689,7 +711,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
                              ID.vcf$ALT,
-                             ID.vcf$seq.pad.width + 1)
+                             ID.vcf$seq.context.width + 1)
 
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)

@@ -2,9 +2,6 @@
 
 export(AddSequence)
 export(AddTranscript)
-export(Canonicalize1DEL)
-export(Canonicalize1ID)
-export(Canonicalize1INS)
 export(Cat1536ToPdf)
 export(Cat192StrandToPdf)
 export(Cat192ToPdf)

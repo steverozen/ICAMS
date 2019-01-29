@@ -2,21 +2,27 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{Canonicalize1ID}
 \alias{Canonicalize1ID}
-\title{Canonicalize1ID}
+\title{Given a single insertion or deletion in context categorize it.}
 \usage{
-Canonicalize1ID(ref, alt, context)
+Canonicalize1ID(context, ref, alt, pos, trace = 0)
 }
 \arguments{
-\item{ref}{TODO}
+\item{context}{Ample surrounding
+sequence on each side of the insertion or deletion.}
 
-\item{alt}{TODO}
+\item{ref}{The reference allele (vector of length 1)}
 
-\item{context}{TODO}
+\item{alt}{The alternative allele (vector of length 1)}
+
+\item{pos}{The position of \code{ins.or.del.seq} in \code{context}.}
+
+\item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-TODO
+A string that is the canonical represention of the type of the given
+ insertion or deletion.
 }
 \description{
-Canonicalize1ID
+Given a single insertion or deletion in context categorize it.
 }
 \keyword{internal}

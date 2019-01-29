@@ -2,21 +2,24 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{Canonicalize1DEL}
 \alias{Canonicalize1DEL}
-\title{Canonicalize1DEL}
+\title{Given a deletion and its sequence context, categorize it.}
 \usage{
-Canonicalize1DEL(ref, alt, context)
+Canonicalize1DEL(context, del.seq, pos, trace = 0)
 }
 \arguments{
-\item{ref}{TODO}
+\item{context}{The deleted sequence plus ample surrounding
+sequence on each side (at least as long as \code{del.seq}).}
 
-\item{alt}{TODO}
+\item{del.seq}{The deleted sequence in \code{context}.}
 
-\item{context}{TODO}
+\item{pos}{The position of \code{del.sequence} in \code{context}.}
+
+\item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-TODO
+A string that is the canonical represention of the given deletion type
 }
 \description{
-Canonicalize1DEL
+Given a deletion and its sequence context, categorize it.
 }
 \keyword{internal}

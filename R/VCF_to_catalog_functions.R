@@ -504,10 +504,11 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   return(list(cat96 = mat96, cat192 = mat192, cat1536 = mat1536))
 }
 
-#' Create SNS catalogs from Strelka VCFs
+#' Create SNS catalogs from SNS VCFs
 #'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
-#' out of the contents in list.of.SNS.vcfs
+#' out of the contents in list.of.SNS.vcfs. The SNS VCFs must not contain
+#' DNSs, indels, or other types of mutations.
 #'
 #' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
@@ -521,7 +522,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   cat192
 #'   cat1536
 #' @keywords internal
-StrelkaVCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
+VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
   cat96 <- empty.cats$cat96
@@ -634,10 +635,11 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
               catQUAD136 = QUAD.mat.136))
 }
 
-#' Create DNS catalogs from Strelka VCFs
+#' Create DNS catalogs from VCFs
 #'
 #' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
-#' out of the contents in list.of.DNS.vcfs
+#' out of the contents in list.of.DNS.vcfs. The VCFs must not contain
+#' any type of mutation other then DNSs.
 #'
 #' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
@@ -651,7 +653,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catDNS144
 #'   catQUAD136
 #' @keywords internal
-StrelkaVCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
+VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.DNS.vcfs)
 
   catDNS78 <- empty.cats$catDNS78

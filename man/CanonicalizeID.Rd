@@ -2,21 +2,27 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{CanonicalizeID}
 \alias{CanonicalizeID}
-\title{CanonicalizeID}
+\title{Given vectors of insertions and deletions in contexts categorize them.}
 \usage{
-CanonicalizeID(ref, alt, context)
+CanonicalizeID(context, ref, alt, pos, trace = 0)
 }
 \arguments{
-\item{ref}{TODO}
+\item{context}{A vector of ample surrounding
+sequence on each side the variants}
 
-\item{alt}{TODO}
+\item{ref}{Vector of reference alleles}
 
-\item{context}{TODO}
+\item{alt}{Vector of alternative alleles}
+
+\item{pos}{Vector of the positions of the insertions and deletions in \code{context}.}
+
+\item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-TODO
+A vector of strings that are the canonical representions
+ of the given insertions and deletions.
 }
 \description{
-CanonicalizeID
+Given vectors of insertions and deletions in contexts categorize them.
 }
 \keyword{internal}
