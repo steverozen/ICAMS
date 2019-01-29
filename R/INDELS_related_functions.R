@@ -47,51 +47,6 @@ SplitMutectVCFs <- function(list.of.vcfs) {
   return(list(SNS = SNS, DNS = DNS, ID = ID))
 }
 
-
-#' Create DNS catalogs from VCFs
-#'
-#' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
-#' out of the contents of the VCFs in list.of.vcfs
-#'
-#' @param list.of.vcfs List of in-memory VCFs. The list names will be
-#' the sample ids in the output catalog.
-#' @param genome Name of a particular reference genome
-#' (without quotations marks).
-#' @param trans.ranges A data frame containing transcript ranges.
-#'
-#' @return A list of 3 catalogs, one each for DNS78, DNS144, QUAD136:
-#'   catDNS78
-#'   catDNS144
-#'   catQUAD136
-#' @export
-NewVCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
-  ncol <- length(list.of.vcfs)
-
-  catDNS78 <- empty.cats$catDNS78
-  catDNS144 <- empty.cats$catDNS144
-  catQUAD136 <- empty.cats$catQUAD136
-
-  for (i in 1 : ncol) {
-    DNS <- list.of.vcfs[[i]]
-    DNS <- AddSequence(DNS, seq = genome)
-    DNS <- AddTranscript(DNS, trans.ranges)
-    CheckSeqContextInVCF(DNS, "seq.21context")
-    DNS.cat <- CreateOneColDNSCatalog(DNS)
-    rm(DNS)
-    catDNS78 <- cbind(catDNS78, DNS.cat$catDNS78)
-    catDNS144 <- cbind(catDNS144, DNS.cat$catDNS144)
-    catQUAD136 <- cbind(catQUAD136, DNS.cat$catQUAD136)
-  }
-
-  colnames(catDNS78) <- names(list.of.vcfs)
-  colnames(catDNS144) <- names(list.of.vcfs)
-  colnames(catQUAD136) <- names(list.of.vcfs)
-
-  return(list(catDNS78  = catDNS78, catDNS144  = catDNS144,
-              catQUAD136  = catQUAD136))
-}
-
-
 #' @title test \code{SplitMutectVCFs}.
 #'
 #' @return NULL
@@ -101,7 +56,7 @@ NewVCFsToDNSCatalogs <- function(list.of.vcfs, genome, trans.ranges) {
 #' @export
 TestMutectVCFToCatalog <- function() {
 
-  df <- ReadMutectVCF("data-raw/mutect2_MCF10A_Carb_Low_cl2_Filtered_intersect.vcf")
+  df <- ReadMutectVCF("data-raw/MCF10A_Carb_Low_cl2_Mutect.vcf")
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
 
@@ -110,13 +65,13 @@ TestMutectVCFToCatalog <- function() {
     SNS.catalogs <-
       VCFsToSNSCatalogs(retval$SNS,
                         BSgenome.Hsapiens.1000genomes.hs37d5,
-                        .trans.ranges)
+                        .trans.ranges.GRCh37)
     test <- SplitSNSVCF(retval$SNS); cat(nrow(test[[1]]))
 
     DNS.catalogs <-
       VCFsToDNSCatalogs(retval$DNS,
                            BSgenome.Hsapiens.1000genomes.hs37d5,
-                           .trans.ranges) # Note variable name changed
+                           .trans.ranges.GRCh37) # Note variable name changed
   }
 
   ID.catalog <-

@@ -24,6 +24,6 @@ Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
 from the Strelka VCFs specified by vector.of.file.paths
 }
 \details{
-This function calls \code{\link{StrelkaVCFsToSNSCatalogs}} and
-\code{\link{StrelkaVCFsToDNSCatalogs}}
+This function calls \code{\link{VCFsToSNSCatalogs}} and
+\code{\link{VCFsToDNSCatalogs}}
 }

@@ -686,8 +686,8 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
 #' from the Strelka VCFs specified by vector.of.file.paths
 #'
-#' This function calls \code{\link{StrelkaVCFsToSNSCatalogs}} and
-#' \code{\link{StrelkaVCFsToDNSCatalogs}}
+#' This function calls \code{\link{VCFsToSNSCatalogs}} and
+#' \code{\link{VCFsToDNSCatalogs}}
 #' @param vector.of.file.paths A vector containing the paths of the Strelka VCF files.
 #' @param genome  Name of a particular reference genome
 #'   (without quotations marks).
@@ -699,8 +699,8 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 StrelkaVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadListOfStrelkaVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfStrelkaVCFs(vcfs)
-  return(c(StrelkaVCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
-           StrelkaVCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
+           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
 }
 
 #' CanonicalizeDNS
