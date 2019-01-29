@@ -249,8 +249,8 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotQUAD136 <- function(catalog, id = colnames(catalog),
-                        type = "density", abundance = NULL) {
+PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
+                           type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
 
   # Specify the lay out of the plotting
@@ -383,4 +383,163 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
   text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+}
+
+#' @rdname CatalogToPdf
+#' @export
+CatQUAD136ToPdf <- function(catalog, name, id = colnames(catalog),
+                            type = "density", abundance = NULL) {
+  stopifnot(nrow(catalog) == 136)
+  n <- ncol(catalog)
+
+  # Setting the width and length for A4 size plotting
+  grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
+  par(oma = c(2, 2, 2, 2))
+
+  # Do recycling of the function parameters if a vector
+  # with length more than one is not specified by the user.
+  if (n > 1 && length(type) == 1) {
+    type <- rep(type, n)
+  }
+
+  # Specify the lay out of the plotting
+  invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2, 3, 11, 18,
+                            19, 20, 21, 15, 16, 17, 22, 12, 13, 14, 22),
+                          6, 4,byrow = TRUE)))
+
+  # Define the bases and their colors in plot
+  base <- c("A", "C", "G", "T")
+  base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
+
+  ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
+  mut.type <- paste(ref.order, "NN", sep = ">")
+
+  for (i in 1:n) {
+    cat <- catalog[, i, drop = FALSE]
+
+    # Calculate the occurrences of each mutation type for plotting
+    counts <- matrix(0, nrow = 160, ncol = 1)
+    rownames(counts) <- .order.for.QUAD136.plotting
+    for (j in 1:160){
+      if (.order.for.QUAD136.plotting[j] %in% rownames(cat)) {
+        counts[j] <- cat[.order.for.QUAD136.plotting[j], ]
+      } else {
+        counts[j] <- NA
+      }
+    }
+
+    # Calculate maximum count and total counts per mutation class
+    df <- data.frame(stats::na.omit(counts))
+    colnames(df) <- "counts"
+    df$Ref <- substr(rownames(df), 2, 3)
+    df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
+    df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
+    max.count.per.class <- matrix(df1$x, 10, 1)
+    counts.per.class <- matrix(df2$x, 10, 1)
+    rownames(max.count.per.class) <- df1$Ref
+    rownames(counts.per.class) <- df2$Ref
+
+    if (type[i] == "density") {
+      # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
+      # occurrence in the genome
+      rates <- matrix(0, nrow = 160, ncol = 1)
+      rownames(rates) <- .order.for.QUAD136.plotting
+      for (j in 1:160){
+        if (.order.for.QUAD136.plotting[j] %in% rownames(cat)) {
+          rates[j] <-
+            cat[.order.for.QUAD136.plotting[j], ] /
+            abundance[.order.for.QUAD136.plotting[j], ]
+        } else {
+          rates[j] <- NA
+        }
+      }
+
+      # Calculate maxima per mutation class(mut/million)
+      df3 <- data.frame(stats::na.omit(rates))
+      colnames(df3) <- "rates"
+      df3$Ref <- substr(rownames(df3), 2, 3)
+      df4 <- stats::aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
+      max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
+      rownames(max.rate.per.class) <- df4$Ref
+    }
+
+    DrawImage <- function(mat) {
+      value <- as.numeric(unlist(mat))
+      maximum <- max(value[!is.na(value)])
+      if (maximum == 0) {
+        col.ref <- "white"
+      } else {
+        col.ref <- "palegreen3"
+      }
+
+      image(1:4, 1:4, mat,
+            col = grDevices::colorRampPalette(c("white", col.ref))(16),
+            asp = 1, axes = FALSE, ann = FALSE)
+
+      # Make the background of the plot grey
+      rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
+
+      # Plot the image again
+      image(1:4, 1:4, mat,
+            col = grDevices::colorRampPalette(c("white", col.ref))(16),
+            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+    }
+
+    for (j in 1:10) {
+      par(mar = c(1, 1, 4.5, 1))
+      if (type[i] == "density") {
+        DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
+      } else if (type[i] == "counts") {
+        DrawImage(matrix(counts[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
+      } else {
+        stop('Please specify the correct type: "density" or "counts"')
+      }
+
+      # Draw the mutation type and number of occurrences on top of image
+      text(2, 5.3, mut.type[j], font = 2, xpd = NA)
+      text(3.2, 5.3, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
+
+      # Draw a box surrounding the image
+      segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
+      segments(c(0.5, 4.5), c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), xpd = NA)
+
+      # Draw the base information of the plot
+      text(rep(0.2, 4), c(4, 3, 2, 1), base, col = base.cols, xpd = NA)
+      text(seq(4), rep(4.8, 4), base, col = base.cols, xpd = NA)
+
+      # Draw the ID information of the sample
+      if (j == 8) {
+        mtext(id[i], at = 5, line = 3)
+      }
+    }
+
+    # Add in additional information
+    plot(c(0, 1), c(0, 1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
+    text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
+    ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
+
+    if (type[i] == "density") {
+      text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
+      maxima <- numeric(0)
+      for (j in 1:10) {
+        maxima[j] <- max.rate.per.class[ref[j], ]
+        names(maxima)[j] <- ref[j]
+      }
+    } else if (type[i] == "counts") {
+      text(x = 0.5, y = 0.8, "(counts)", cex = 1.2)
+      maxima <- numeric(0)
+      for (j in 1:10) {
+        maxima[j] <- max.count.per.class[ref[j], ]
+        names(maxima)[j] <- ref[j]
+      }
+    } else {
+      stop('Please specify the correct type: "density" or "counts"')
+    }
+    text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
+         paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
+    text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
+         paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+  }
+  invisible(grDevices::dev.off())
+  invisible(TRUE)
 }
