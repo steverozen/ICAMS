@@ -387,6 +387,7 @@ PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
   text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+  invisible(TRUE)
 }
 
 #' @rdname CatalogToPdf
