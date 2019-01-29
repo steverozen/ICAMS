@@ -94,3 +94,44 @@ test_that("FindDelMH", {
     FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 1),
     4)
 })
+
+test_that("CreateOneColIDCatalog insertions", {
+  MakeTestInsVCF <- function() {
+    return(data.frame(
+      seq.context=c("TTTTTTTTTTTTCGACCCCCCCCCCCC",
+                    "TTTTTTTTTTTTGAACCCCCCCCCC",
+                    "TTTTTTTTTTTTGCCCCCCCCCCCC",
+                    "TTTTTTTTTTTTGCCCCCCCCCCCC"),
+      REF=c("C", "G", "G", "G"),
+      ALT=c("CGA", "GA", "GA", "GC"),
+      seq.context.width=c(12, 12, 12, 12),
+      stringsAsFactors = FALSE
+    ))
+  }
+  cat("HERE I AM\n", getwd(), "\n")
+  load("create_one_col_insert_test.Rdata")
+  expect_equal(
+    ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 2),
+    create.one.col.insert.test)
+})
+
+test_that("CreateOneColIDCatalog deletions", {
+  MakeTestDelVCF <- function() {
+    return(
+      data.frame(
+        seq.context = c(
+          "GAGGTATACATTGTGTTTACTTTTTCTATGTTTATGTACAATAGTAATATCTTTATAGTTATACTAACGTTATTAAAATAAGTAATTATATTAACTAAGTTTAGGACCAGTTTCTAGT",
+          "GACCACTGAGAACCCAGGTTTTAGGCCCACCCCGGTACCAGGCCAGCCCCTGT",
+          "AAGGTTTGGCTTCA",
+          "ATTAAAATGGGGTT"),
+        REF = c("ATAGTTATAC", "GCCCA", "TG", "AT"),
+        ALT = c("A", "G", "T", "A"),
+        seq.context.width = c(54, 24, 6, 6),
+        stringsAsFactors = FALSE))
+  }
+  load("create_one_col_delete_test.Rdata")
+  expect_equal(
+    ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 2),
+    create.one.col.delete.test)
+})
+

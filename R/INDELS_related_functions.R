@@ -59,28 +59,25 @@ TestMutectVCFToCatalog <- function() {
   df <- ReadMutectVCF("data-raw/MCF10A_Carb_Low_cl2_Mutect.vcf")
   retval <- SplitMutectVCFs(list(test.vcf = df))
 
+  SNS.catalogs <-
+    VCFsToSNSCatalogs(retval$SNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      .trans.ranges.GRCh37)
+  # test <- SplitStrelkaSNSVCF(retval$SNS)
+  # cat(nrow(test[[1]], nrow(retval$SNS)), "\n")
+  # TODO(steve):see if we would pick up more DNS using DNS splitting code
+  # (low priority, we assume the caller knows what it is doing)
 
-  # if (FALSE)
-    { #For faster debugging
-    SNS.catalogs <-
-      VCFsToSNSCatalogs(retval$SNS,
-                        BSgenome.Hsapiens.1000genomes.hs37d5,
-                        .trans.ranges.GRCh37)
-    test <- SplitSNSVCF(retval$SNS); cat(nrow(test[[1]]))
-
-    DNS.catalogs <-
-      VCFsToDNSCatalogs(retval$DNS,
-                           BSgenome.Hsapiens.1000genomes.hs37d5,
-                           .trans.ranges.GRCh37) # Note variable name changed
-  }
+  DNS.catalogs <-
+    VCFsToDNSCatalogs(retval$DNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      .trans.ranges.GRCh37) # Note variable name changed
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,
                      BSgenome.Hsapiens.1000genomes.hs37d5)
 
-  return(ID.catalog)
-
-  # invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
+  invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
 }
 
 #' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
@@ -119,7 +116,7 @@ AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5
     stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
     complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
     if (length(complex.indels.to.remove > 0)) {
-      cat("Removing complex indels", complex.indels.to.remove)
+      cat("Removing complex indels", complex.indels.to.remove, "\n")
       print(df[ complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }
@@ -495,7 +492,7 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
   # Category is "1bp deletion"
   if (deletion.size == 1) {
     if (del.seq == "G") del.seq <- "C"
-    if (del.seq == "A") del.seq <- "TF"
+    if (del.seq == "A") del.seq <- "T"
     return(paste0("DEL:", del.seq, ":1:", rep.count.string))
   }
 
@@ -539,11 +536,27 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
 #' @keywords internal
 
 Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
+  if (trace > 0) {
+   cat("Canonicalize1ID(", context, ",", ins.sequence, ",", pos, "\n")
+  }
   rep.count <- FindMaxRepeatIns(context, ins.sequence, pos)
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
   insertion.size <- nchar(ins.sequence)
+  insertion.size.string <-
+    ifelse(insertion.size >= 5, "5+", as.character(insertion.size))
 
-  # TODO(steve):start here
+  if (insertion.size == 1) {
+    if (ins.sequence == "G") ins.sequence <- "C"
+    if (ins.sequence == "A") ins.sequence <- "T"
+    retval <-
+      paste0("INS:", ins.sequence, ":1:", rep.count.string)
+    if (trace > 0) cat(retval, "\n")
+    return(retval)
+  }
+  retval <-
+    paste0("INS:repeats:", insertion.size.string, ":", rep.count.string)
+  cat(retval, "\n")
+  return(retval)
 }
 
 #' @title Given a single insertion or deletion in context categorize it.
@@ -570,9 +583,8 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
     return(Canonicalize1DEL(context, ref, pos + 1, trace))
   } else if (nchar(alt) > nchar(ref)) {
     # An insertion
-    # Temporary
-    return("")
-    Canonicalize1INS(context, alt, pos, trace)
+    return(Canonicalize1INS(context, alt, pos, trace))
+    # TODO(steve): Make sure pos rather than pos + 1 is correct
   } else {
     cat("Non-insertion / non-deletion found:", ref, alt, context, "\n")
     stop()
@@ -600,7 +612,8 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 
   if (trace > 1) {
     print(head(data.frame(
-      context, substr(context, 1, pos), ref, alt)))
+      context, left.pad = substr(context, 1, pos), pos, ref, alt,
+      stringsAsFactors = FALSE)))
   }
 
   if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
@@ -609,38 +622,40 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
   } else {
     stopifnot(ref != "" | alt != "")
   }
-  trace = 1
+  # trace = 1
   ret <- mapply(Canonicalize1ID, context, ref, alt, pos, trace)
   return(ret)
 }
 
-# load("data-raw/test.del.ID.vcf")
-# ICAMS:::CreateOneColIDCatalog(test.del.ID.vcf, NULL)
+if (FALSE)  {
+  MakeTestDelVCF <- function() {
+    return(
+      data.frame(
+        seq.context = c(
+          "GAGGTATACATTGTGTTTACTTTTTCTATGTTTATGTACAATAGTAATATCTTTATAGTTATACTAACGTTATTAAAATAAGTAATTATATTAACTAAGTTTAGGACCAGTTTCTAGT",
+          "GACCACTGAGAACCCAGGTTTTAGGCCCACCCCGGTACCAGGCCAGCCCCTGT",
+          "AAGGTTTGGCTTCA",
+          "ATTAAAATGGGGTT"),
+        REF = c("ATAGTTATAC", "GCCCA", "TG", "AT"),
+        ALT = c("A", "G", "T", "A"),
+        seq.context.width = c(54, 24, 6, 6),
+        stringsAsFactors = FALSE))
+  }
+
+# debug(ICAMS:::CanonicalizeID)
 # debug(ICAMS:::CreateOneColIDCatalog)
-# debug(ICAMS:::Canonicalize1ID)
-
-if (FALSE) {
-MakeTmpInsVCF <- function() {
-  return(data.frame(
-    seq.context=c("TTTTTTTTTTTTCGACCCCCCCCCCCC", "TTTTTTTTTTTTGAACCCCCCCCCC", "TTTTTTTTTTTTGCCCCCCCCCCCC"),
-    REF=c("C", "G", "G"),
-    ALT=c("CGA", "GA", "GA"),
-    seq.context.width=c(12, 12, 12)
-  ))
-}
+create.one.col.delete.test <-
+  ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF, NULL, trace = 2)
+save(create.one.col.delete.test, file="tests/testthat/create_one_col_delete_test.Rdata")
 }
 
-# TODO(steve): START HERE, test on data-raw/MCF10A_Carb_Low..., mutect2_MCF10A...
-# and some PCAWG simple files where we know the expected output.
-#' Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
-#' file
+#' @title Create one column of an indel catalog from one VCF
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
-#'   AddAndCheckSequenceID function. It must only contain indels and must *not*
-#'   contain SBS (single base substituions), DBS, or triplet base substituions
-#'   etc.
-#'
-#'   * Sequence must already have been added to ID.vcf
+#'   \code{\link{AddAndCheckSequenceID}} function. It must only
+#'   contain indels and must \strong{not} contain SNSs
+#'   (single nucleotide/base substituions), DBS, or triplet
+#'   base substituions, etc.
 #'
 #'   One design decision for variant callers is the representation of "complex
 #'   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
@@ -653,20 +668,25 @@ MakeTmpInsVCF <- function() {
 #'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 #'   sample.
 #'
+#' @param trace If > 0, various called functions cat information
+#'   useful for debugging and testing. The larger the number, the
+#'   more output.
+#'
 #' @return A list with two elemsents:
 #'   ID.cat:   A 1-column matrix containing the mutation catalog information.
 #'   problems: Locations of neighboring indels or indels neighboring SBS.
 #'             In the future we might handle these depending on what we
 #'             find in the indel calls from different variant callers.
 #' TODO(steve) Is problems implemented?
-CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf) {
+CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
   # TODO(steve): more checking of the ID VCF here
 
 
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
                              ID.vcf$ALT,
-                             ID.vcf$seq.context.width + 1)
+                             ID.vcf$seq.context.width + 1,
+                             trace = trace)
 
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)

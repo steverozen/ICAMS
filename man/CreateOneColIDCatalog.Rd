@@ -2,18 +2,16 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{CreateOneColIDCatalog}
 \alias{CreateOneColIDCatalog}
-\title{Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
-file}
+\title{Create one column of an indel catalog from one VCF}
 \usage{
-CreateOneColIDCatalog(ID.vcf, SBS.vcf)
+CreateOneColIDCatalog(ID.vcf, SBS.vcf, trace = 0)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
-  AddAndCheckSequenceID function. It must only contain indels and must *not*
-  contain SBS (single base substituions), DBS, or triplet base substituions
-  etc.
-
-  * Sequence must already have been added to ID.vcf
+  \code{\link{AddAndCheckSequenceID}} function. It must only
+  contain indels and must \strong{not} contain SNSs
+  (single nucleotide/base substituions), DBS, or triplet
+  base substituions, etc.
 
   One design decision for variant callers is the representation of "complex
   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
@@ -25,6 +23,10 @@ CreateOneColIDCatalog(ID.vcf, SBS.vcf)
 some PCAWG data, we will look for neigboring indels and indels adjoining
 SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 sample.}
+
+\item{trace}{If > 0, various called functions cat information
+useful for debugging and testing. The larger the number, the
+more output.}
 }
 \value{
 A list with two elemsents:
@@ -35,6 +37,5 @@ A list with two elemsents:
 TODO(steve) Is problems implemented?
 }
 \description{
-Create an indel (ID) mutation catalog for *one* sample from a Variant Call Format (VCF)
-file
+Create one column of an indel catalog from one VCF
 }
