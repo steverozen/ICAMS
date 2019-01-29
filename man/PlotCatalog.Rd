@@ -13,25 +13,28 @@
 \alias{PlotCatID}
 \title{Plot Catalog Functions}
 \usage{
-PlotCat96(catalog, id, type = "density", cex = 0.8, grid = TRUE,
-  upper = TRUE, xlabels = TRUE, abundance = NULL)
-
-PlotCat192(catalog, id, type = "counts", cex = 0.8, abundance = NULL)
-
-PlotCat192Strand(catalog, id, type = "counts", cex = 1,
+PlotCat96(catalog, id = colnames(catalog), type = "density",
+  cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE,
   abundance = NULL)
 
-PlotCat1536(catalog, id, abundance)
+PlotCat192(catalog, id = colnames(catalog), type = "counts",
+  cex = 0.8, abundance = NULL)
 
-PlotCatDNS78(catalog, id, type = "density", abundance = NULL)
+PlotCat192Strand(catalog, id = colnames(catalog), type = "counts",
+  cex = 1, abundance = NULL)
 
-PlotCatDNS144(catalog, id, type = "counts", cex = 1,
+PlotCat1536(catalog, abundance, id = colnames(catalog))
+
+PlotCatDNS78(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
+
+PlotCatDNS144(catalog, id = colnames(catalog), type = "counts",
+  cex = 1, abundance = NULL)
 
 PlotQUAD136(catalog, id = colnames(catalog), type = "density",
-  abundance = .abundance.4bp)
+  abundance = NULL)
 
-PlotCatID(catalog, id, type = "counts")
+PlotCatID(catalog, id = colnames(catalog), type = "counts")
 }
 \arguments{
 \item{catalog}{A matrix whose rownames indicate the mutation types
