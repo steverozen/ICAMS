@@ -120,7 +120,7 @@ NULL
 #' @import graphics
 #' @export
 PlotCat96 <-
-  function(catalog, id, type = "density", cex = 0.8, grid = TRUE,
+  function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
     stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == .catalog.row.order96)
@@ -300,7 +300,7 @@ Cat96ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat192 <- function(catalog, id, type = "counts",
+PlotCat192 <- function(catalog, id = colnames(catalog), type = "counts",
                        cex = 0.8, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -441,7 +441,7 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat192Strand <- function(catalog, id, type = "counts",
+PlotCat192Strand <- function(catalog, id = colnames(catalog), type = "counts",
                              cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -550,7 +550,7 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat1536 <- function(catalog, id, abundance) {
+PlotCat1536 <- function(catalog, abundance, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
