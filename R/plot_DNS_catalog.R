@@ -4,7 +4,8 @@ NULL
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatDNS78 <- function(catalog, id, type = "density", abundance = NULL) {
+PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
+                         abundance = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
   stopifnot(rownames(catalog) == .catalog.row.order.DNS.78)
 
@@ -137,7 +138,7 @@ CatDNS78ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatDNS144 <- function(catalog, id, type = "counts",
+PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
                           cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(144, 1))
 
@@ -247,11 +248,9 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @importFrom grDevices colorRampPalette
-#' @importFrom stats aggregate na.omit
 #' @export
 PlotQUAD136 <- function(catalog, id = colnames(catalog),
-                        type = "density", abundance = .abundance.4bp) {
+                        type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
 
   # Specify the lay out of the plotting
@@ -276,12 +275,12 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
     }
   }
 
-  # Calculate Maximum count and total counts per mutation class
-  df <- data.frame(na.omit(counts))
+  # Calculate maximum count and total counts per mutation class
+  df <- data.frame(stats::na.omit(counts))
   colnames(df) <- "counts"
   df$Ref <- substr(rownames(df), 2, 3)
-  df1 <- aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
-  df2 <- aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
+  df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
+  df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
   max.count.per.class <- matrix(df1$x, 10, 1)
   counts.per.class <- matrix(df2$x, 10, 1)
   rownames(max.count.per.class) <- df1$Ref
@@ -301,11 +300,11 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
     }
   }
 
-  # Calculate Maxima per mutation class(mut/million)
-  df3 <- data.frame(na.omit(rates))
+  # Calculate maxima per mutation class(mut/million)
+  df3 <- data.frame(stats::na.omit(rates))
   colnames(df3) <- "rates"
   df3$Ref <- substr(rownames(df3), 2, 3)
-  df4 <- aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
+  df4 <- stats::aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
   max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
   rownames(max.rate.per.class) <- df4$Ref
 
@@ -314,7 +313,7 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
 
     if (type == "density") {
       image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = colorRampPalette(c("white", "palegreen3"))(16),
+            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
             asp = 1, axes = FALSE, ann = FALSE)
 
       # Make the background of the plot grey
@@ -322,11 +321,11 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
 
       # Plot the image again
       image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = colorRampPalette(c("white", "palegreen3"))(16),
+            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
             asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
     } else if (type == "counts") {
       image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = colorRampPalette(c("white", "palegreen3"))(16),
+            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
             asp = 1, axes = FALSE, ann = FALSE)
 
       # Make the background of the plot grey
@@ -334,7 +333,7 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
 
       # Plot the image again
       image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-            col = colorRampPalette(c("white", "palegreen3"))(16),
+            col = grDevices::colorRampPalette(c("white", "palegreen3"))(16),
             asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
     } else {
       stop('Please specify the correct type: "density" or "counts"')
