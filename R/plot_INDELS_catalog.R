@@ -4,7 +4,7 @@ NULL
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatID <- function(catalog, id, type = "counts"){
+PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
   stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
