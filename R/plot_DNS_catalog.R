@@ -254,13 +254,38 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
                         type = "density", abundance = .abundance.4bp) {
   stopifnot(dim(catalog) == c(136, 1))
 
-  # Calculate the total number of DNSs per mutation class
-  cat <- data.frame(catalog)
-  colnames(cat) <- "occurences"
-  cat$Ref <- substr(rownames(cat), 2, 3)
-  cat1 <- aggregate(cat$occurences, by = list(Ref = cat$Ref), FUN = sum)
-  counts <- matrix(cat1$x, 10, 1)
-  rownames(counts) <- cat1$Ref
+  # Specify the lay out of the plotting
+  invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
+                          byrow = TRUE)))
+
+  # Define the bases and their colors in plot
+  base <- c("A", "C", "G", "T")
+  base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
+
+  ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
+  mut.type <- paste(ref.order, "NN", sep = ">")
+
+  # Calculate the occurrences of each mutation type for plotting
+  counts <- matrix(0, nrow = 160, ncol = 1)
+  rownames(counts) <- .order.for.QUAD136.plotting
+  for (i in 1:160){
+    if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
+      counts[i] <- catalog[.order.for.QUAD136.plotting[i], ]
+    } else {
+      counts[i] <- NA
+    }
+  }
+
+  # Calculate Maximum count and total counts per mutation class
+  df <- data.frame(na.omit(counts))
+  colnames(df) <- "counts"
+  df$Ref <- substr(rownames(df), 2, 3)
+  df1 <- aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
+  df2 <- aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
+  max.count.per.class <- matrix(df1$x, 10, 1)
+  counts.per.class <- matrix(df2$x, 10, 1)
+  rownames(max.count.per.class) <- df1$Ref
+  rownames(counts.per.class) <- df2$Ref
 
   # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
   # occurrence in the genome
@@ -277,42 +302,47 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
   }
 
   # Calculate Maxima per mutation class(mut/million)
-  df <- data.frame(na.omit(rates))
-  colnames(df) <- "rates"
-  df$Ref <- substr(rownames(df), 2, 3)
-  df1 <- aggregate(df$rates, by = list(Ref = df$Ref), FUN = max)
-  max.per.class <- matrix(round(df1$x * 1000000, 3), 10, 1)
-  rownames(max.per.class) <- df1$Ref
-
-  # Specify the lay out of the plotting
-  layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4, byrow = TRUE))
-  layout.show(11)
-
-  ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
-
-  # Define the bases and their colors in plot
-  base <- c("A", "C", "G", "T")
-  base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
-  mut.type <- paste(ref.order, "NN", sep = ">")
+  df3 <- data.frame(na.omit(rates))
+  colnames(df3) <- "rates"
+  df3$Ref <- substr(rownames(df3), 2, 3)
+  df4 <- aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
+  max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
+  rownames(max.rate.per.class) <- df4$Ref
 
   for (i in 1:10){
     par(mar = c(1, 1, 4.5, 1))
 
-    image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-          col = colorRampPalette(c("white", "darkgreen"))(16),
-          asp = 1, axes = FALSE, ann = FALSE)
+    if (type == "density") {
+      image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+            col = colorRampPalette(c("white", "palegreen3"))(16),
+            asp = 1, axes = FALSE, ann = FALSE)
 
-    # Make the background of the plot grey
-    rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
+      # Make the background of the plot grey
+      rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
 
-    # Plot the image again
-    image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
-          col = colorRampPalette(c("white", "darkgreen"))(16),
-          asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+      # Plot the image again
+      image(1:4, 1:4, matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+            col = colorRampPalette(c("white", "palegreen3"))(16),
+            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+    } else if (type == "counts") {
+      image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+            col = colorRampPalette(c("white", "palegreen3"))(16),
+            asp = 1, axes = FALSE, ann = FALSE)
+
+      # Make the background of the plot grey
+      rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
+
+      # Plot the image again
+      image(1:4, 1:4, matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4),
+            col = colorRampPalette(c("white", "palegreen3"))(16),
+            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+    } else {
+      stop('Please specify the correct type: "density" or "counts"')
+    }
 
     # Draw the mutation type and number of occurrences on top of image
     text(2, 5.3, mut.type[i], font = 2, xpd = NA)
-    text(3.2, 5.3, paste0("(", counts[ref.order[i], ], ")"), font = 2, xpd = NA)
+    text(3.2, 5.3, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
 
     # Draw a box surrounding the image
     segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
@@ -328,20 +358,30 @@ PlotQUAD136 <- function(catalog, id = colnames(catalog),
     }
   }
 
+  # Add in additional information
+  plot(c(0, 1), c(0, 1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
+  text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
+  ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
+
   if (type == "density") {
-    # Add in additional information
-    plot(c(0, 1), c(0, 1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
-    text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
     text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
-    ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
     maxima <- numeric(0)
     for (i in 1:10) {
-      maxima[i] <- max.per.class[ref[i], ]
+      maxima[i] <- max.rate.per.class[ref[i], ]
       names(maxima)[i] <- ref[i]
     }
-    text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
-         paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
-    text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
-         paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+  } else if (type == "counts") {
+    text(x = 0.5, y = 0.8, "(counts)", cex = 1.2)
+    maxima <- numeric(0)
+    for (i in 1:10) {
+      maxima[i] <- max.count.per.class[ref[i], ]
+      names(maxima)[i] <- ref[i]
+    }
+  } else {
+    stop('Please specify the correct type: "density" or "counts"')
   }
+  text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
+       paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
+  text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
+       paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
 }
