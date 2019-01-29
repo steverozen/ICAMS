@@ -9,6 +9,7 @@
 \alias{Cat1536ToPdf}
 \alias{CatDNS78ToPdf}
 \alias{CatDNS144ToPdf}
+\alias{CatQUAD136ToPdf}
 \alias{CatIDToPdf}
 \title{Catalog to Pdf Functions}
 \usage{
@@ -28,6 +29,9 @@ CatDNS78ToPdf(catalog, name, id = colnames(catalog), type = "density",
 
 CatDNS144ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 1, abundance = NULL)
+
+CatQUAD136ToPdf(catalog, name, id = colnames(catalog),
+  type = "density", abundance = NULL)
 
 CatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 }
@@ -94,6 +98,10 @@ to a PDF file.
 10 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
 "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples
 to a PDF file.
+
+\code{CatQUAD136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
+DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
+"TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples to a PDF file.
 
 \code{CatIDToPdf} Plot the insertion and deletion catalog of different
 samples to a PDF file. (Please take note that the deletions Repeat Size

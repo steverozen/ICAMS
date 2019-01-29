@@ -9,6 +9,7 @@ Description: This package has functions to read in VCF files from Strelka and GA
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+biocViews:
 Imports: Biostrings (>= 2.50.2),
     BSgenome (>= 1.50.0),
     BSgenome.Hsapiens.1000genomes.hs37d5 (>= 0.99.1),
@@ -20,6 +21,7 @@ Imports: Biostrings (>= 2.50.2),
     methods,
     RColorBrewer,
     RCurl,
+    stats,
     stringr,
     utils
 Depends: R (>= 3.5),

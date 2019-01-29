@@ -9,29 +9,32 @@
 \alias{PlotCat1536}
 \alias{PlotCatDNS78}
 \alias{PlotCatDNS144}
-\alias{PlotQUAD136}
+\alias{PlotCatQUAD136}
 \alias{PlotCatID}
 \title{Plot Catalog Functions}
 \usage{
-PlotCat96(catalog, id, type = "density", cex = 0.8, grid = TRUE,
-  upper = TRUE, xlabels = TRUE, abundance = NULL)
-
-PlotCat192(catalog, id, type = "counts", cex = 0.8, abundance = NULL)
-
-PlotCat192Strand(catalog, id, type = "counts", cex = 1,
+PlotCat96(catalog, id = colnames(catalog), type = "density",
+  cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE,
   abundance = NULL)
 
-PlotCat1536(catalog, id, abundance)
+PlotCat192(catalog, id = colnames(catalog), type = "counts",
+  cex = 0.8, abundance = NULL)
 
-PlotCatDNS78(catalog, id, type = "density", abundance = NULL)
+PlotCat192Strand(catalog, id = colnames(catalog), type = "counts",
+  cex = 1, abundance = NULL)
 
-PlotCatDNS144(catalog, id, type = "counts", cex = 1,
+PlotCat1536(catalog, abundance, id = colnames(catalog))
+
+PlotCatDNS78(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
 
-PlotQUAD136(catalog, id = colnames(catalog), type = "density",
-  abundance = .abundance.4bp)
+PlotCatDNS144(catalog, id = colnames(catalog), type = "counts",
+  cex = 1, abundance = NULL)
 
-PlotCatID(catalog, id, type = "counts")
+PlotCatQUAD136(catalog, id = colnames(catalog), type = "density",
+  abundance = NULL)
+
+PlotCatID(catalog, id = colnames(catalog), type = "counts")
 }
 \arguments{
 \item{catalog}{A matrix whose rownames indicate the mutation types
@@ -93,8 +96,7 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 
 \code{PlotQUAD136} Plot the tetranucleotide sequence contexts of 10 major DNS
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-"TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample, normalized by
-tetranucleotide occurrence in the genome.
+"TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 
 \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 (Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
