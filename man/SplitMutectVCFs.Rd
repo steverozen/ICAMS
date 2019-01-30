@@ -10,7 +10,24 @@ SplitMutectVCFs(list.of.vcfs)
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames}
 }
 \value{
-A list with 5 elements, as folows:
+A list with 5 in-memory VCFs, as folows:
+
+\enumerate{
+
+ \item \code{SNS} Only single nucleotide substitutions.
+
+ \item \code{DNS} Only doublet nucleotide substitutions
+  as called by Mutect.
+
+ \item \code{ID} Only small insertions and deletions.
+
+ \item \code{other.subs} Coordinate substitutions involving
+ 3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+
+ \item \code{multiple.alternative.alleles} Variants with multiple
+ alternative alleles.
+
+}
 }
 \description{
 Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)

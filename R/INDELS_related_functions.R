@@ -35,7 +35,24 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames
 #'
-#' @return A list with 5 elements, as folows:
+#' @return A list with 5 in-memory VCFs, as folows:
+#'
+#' \enumerate{
+#'
+#'  \item \code{SNS} Only single nucleotide substitutions.
+#'
+#'  \item \code{DNS} Only doublet nucleotide substitutions
+#'   as called by Mutect.
+#'
+#'  \item \code{ID} Only small insertions and deletions.
+#'
+#'  \item \code{other.subs} Coordinate substitutions involving
+#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+#'
+#'  \item \code{multiple.alternative.alleles} Variants with multiple
+#'  alternative alleles.
+#'
+#' }
 #'
 #' @export
 SplitMutectVCFs <- function(list.of.vcfs) {
@@ -43,8 +60,15 @@ SplitMutectVCFs <- function(list.of.vcfs) {
   SNS <- lapply(v1, function(x) x$SNS)
   DNS <- lapply(v1, function(x) x$DNS)
   ID  <- lapply(v1, function(x) x$ID)
+  other.subs <- lapply(v1, function(x) x$other.df)
+  multiple.alternative.alleles <-
+    lapply(v1, function(x) x$multiple.alt)
 
-  return(list(SNS = SNS, DNS = DNS, ID = ID))
+  return(list(SNS = SNS, DNS = DNS, ID = ID,
+              other.subs = other.subs,
+              multiple.alternative.alleles
+              = multiple.alternative.alleles
+              ))
 }
 
 #' @title test \code{SplitMutectVCFs}.
@@ -116,7 +140,7 @@ AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5
     stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
     complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
     if (length(complex.indels.to.remove > 0)) {
-      cat("Removing complex indels", complex.indels.to.remove, "\n")
+      warn("Removing complex indels", complex.indels.to.remove, "\n")
       print(df[ complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }
@@ -555,7 +579,7 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
   }
   retval <-
     paste0("INS:repeats:", insertion.size.string, ":", rep.count.string)
-  cat(retval, "\n")
+  if (trace > 0) cat(retval, "\n")
   return(retval)
 }
 
