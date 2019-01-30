@@ -61,9 +61,9 @@ test_that("FindDelMH", {
   # Cryptic repeat, return -1
   # TGACTA[GCTA]GTTAA
   #    *** -*** -
-  expect_equal(
+  expect_warning(
     FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 1),
-    -1)
+    regexp = "unhandled cryptic repeat", fixed = TRUE)
 
   # Missed obvious repeat
   # AGATA[GATA]CCCCA
@@ -108,7 +108,6 @@ test_that("CreateOneColIDCatalog insertions", {
       stringsAsFactors = FALSE
     ))
   }
-  cat("HERE I AM\n", getwd(), "\n")
   load("create_one_col_insert_test.Rdata")
   expect_equal(
     ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 2),
