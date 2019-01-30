@@ -1,7 +1,25 @@
 #' ICAMS: In-depth Characterization and Analysis of Mutational Signatures
 #'
-#' This package has functions to read in VCF files from Strelka and GATK,
-#' create SNS, DNS, ID catalogs and do different types of plotting.
+#' This package has functions to read in VCF files from Strelka and Mutect
+#' (in the Broad GATK package),
+#' create, read, and write SNS, DNS, ID catalogs and do different types of plotting.
+#'
+#' This alpha version only works with VCFs for human GRCh37, but will work for
+#' arbitrary \strong{human} catalogs (assuming no major change in "opportunities"
+#' between GRCh37 and GRCh38).
+#'
+#' @section Reading VCF files:
+#' \code{\link{ReadListOfStrelkaVCFs}}, which only reads Strelka single nucleotide
+#' substitution (SNS) VCFs, not Strelka
+#' indel VCFS.  Handling of indel VCFs for Strelka is not
+#' finshed yet.
+#' \code{\link{ReadListOfMutectVCFs}}, which reads Mutect VCFs, which contain indels and double
+#' nucleotide substitutions (DNSs) as well and SNSs.
+#'
+#' @section Splitting of in-memory VCFs:
+#' \code{\link{SplitListOfStrelkaVCFs}}, which splits Strelka SNS VCFs
+#' into SNS and inferred DNS VCFs, and \code{\link{SplitListOfMutectVCFs}},
+#' which separates Mutect VCFs into their SNS, DNS, and indel components.
 #'
 #' @section Reading catalogs:
 #' Functions for reading a catalog in PCAWG7 format from path:

@@ -1,77 +1,4 @@
-#' @title Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
-#'
-#' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
-#'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
-#'
-#' @return A list with the SNS, DNS, and ID portions of the VCF file, plus two
-#' data.frames of other mutations
-#'
-#' @keywords internal
-SplitOneMutectVCF <- function(vcf.df) {
-
-  # Mutect VCFs can represent multiple non-reference alleles at the
-  # same site; the alleles are separated by commas in the ALT columm;
-  # these are quite rare and often dubious, so we ignore them.
-  multiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
-
-  multiple.alt.df <- vcf.df[multiple.alt, ]
-  df <- vcf.df[-multiple.alt, ]
-  rm(multiple.alt, vcf.df)
-
-  SNS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
-
-  DNS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
-
-  other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
-
-  ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
-
-  return(list(SNS = SNS.df, DNS = DNS.df, ID = ID.df,
-              other=other.df, multiple.alt = multiple.alt.df))
-
-}
-
-#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)
-#'
-#' @param list.of.vcfs List of VCFs as in-memory data.frames
-#'
-#' @return A list with 5 in-memory VCFs, as folows:
-#'
-#' \enumerate{
-#'
-#'  \item \code{SNS} Only single nucleotide substitutions.
-#'
-#'  \item \code{DNS} Only doublet nucleotide substitutions
-#'   as called by Mutect.
-#'
-#'  \item \code{ID} Only small insertions and deletions.
-#'
-#'  \item \code{other.subs} Coordinate substitutions involving
-#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
-#'
-#'  \item \code{multiple.alternative.alleles} Variants with multiple
-#'  alternative alleles.
-#'
-#' }
-#'
-#' @export
-SplitMutectVCFs <- function(list.of.vcfs) {
-  v1 <- lapply(list.of.vcfs, SplitOneMutectVCF)
-  SNS <- lapply(v1, function(x) x$SNS)
-  DNS <- lapply(v1, function(x) x$DNS)
-  ID  <- lapply(v1, function(x) x$ID)
-  other.subs <- lapply(v1, function(x) x$other.df)
-  multiple.alternative.alleles <-
-    lapply(v1, function(x) x$multiple.alt)
-
-  return(list(SNS = SNS, DNS = DNS, ID = ID,
-              other.subs = other.subs,
-              multiple.alternative.alleles
-              = multiple.alternative.alleles
-              ))
-}
-
-#' @title test \code{SplitMutectVCFs}.
+#' @title test \code{SplitListOfMutectVCFs} and functions to create catalogs.
 #'
 #' @return NULL
 #'
@@ -80,8 +7,10 @@ SplitMutectVCFs <- function(list.of.vcfs) {
 #' @export
 TestMutectVCFToCatalog <- function() {
 
+  # TODO(steve): add plotting
+
   df <- ReadMutectVCF("data-raw/MCF10A_Carb_Low_cl2_Mutect.vcf")
-  retval <- SplitMutectVCFs(list(test.vcf = df))
+  retval <- SplitListOfMutectVCFs(list(test.vcf = df))
 
   SNS.catalogs <-
     VCFsToSNSCatalogs(retval$SNS,
@@ -102,6 +31,10 @@ TestMutectVCFToCatalog <- function() {
                      BSgenome.Hsapiens.1000genomes.hs37d5)
 
   invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
+}
+if (FALSE) {
+  load("data-raw/TestMutectVCFToCatalog.out.Rdata")
+  expect_equal(TestMutectVCFToCatalog(), TestMutectVCFToCatalog.out)
 }
 
 #' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
@@ -630,6 +563,8 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #
 #' @return A vector of strings that are the canonical representions
 #'  of the given insertions and deletions.
+#'
+#' @importFrom utils head
 #'
 #' @keywords internal
 CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
