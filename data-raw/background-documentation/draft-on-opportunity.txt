@@ -1,0 +1,83 @@
+# Controlling for different tri-nucleotide (or other) abundances in viewing and analyzing mutational spectra and signatures
+
+Steve Rozen steverozen@gmail.com
+
+We will start thinking about single nucleotide substitutions in trinucleotide context,
+but the concepts here generalize to other classifications of mutations.
+
+To plot (or think about) a mutational spectrum, there are two broad approaches:
+
+1. One can simply count up the number of mutations in each category (and plot that), and call
+it the spectrum.  The issue with this is that in the portion of a genome under consideration there
+may be many more "opportunities" for one kind of mutation than for another. 
+Notably in many mammalian genomes, CG sequences are rare, so that
+mutations from ACG, CCG, GCG, and TCG will be rare,
+not because mutations from any give CG are rare, but because CG sequences are rare.
+
+2. It is also straightforward to conceptualize a spectrum as the proportion
+of each trinucleotide that are mutated, so e.g. the proportion of
+of ACGs that are mutated to AAG, to AGG, to ATG, etc. Since proportions of any
+given trinucleotide that a mutated are low, we usually represent this as 
+mutations per million trinucleotide.  (Each trinucleotide is an "opportunity" for
+a mutation from that trinucleotide). The advantages of this concept of a spectrum is that
+spectra from exomes and genomes or from different organisms can be compared 
+directly, even though trinucleotide abundances differ between exome and genomes of different
+species.  Also, this concept of spectrum reveals the sequence propensities of the
+underlying mutational processes, since these are not composed with the sequence-based
+opportunities for processes to operate.
+
+Now suppose that you want to compare spectra from exomes and genomes, or from human and mouse genomes.  The solutions is to covert to mutations / mb and then back
+
+# Convert from genome counts to counts as they would be in the exome
+
+# Convert to "per trinucleotide frequency"
+for each mutation type, t {
+	per.trinuc.freq(t) <- genome.count(t) / opportunity.in.genome(t)
+}
+
+for each mutation type, t {
+	inferred.exome.count(t) <- opportunity.in.exome * per.trinuc.freq(t)
+}
+
+This can be simplified to 
+
+for each mutation type, t {
+    per.trinuc.freq(t) <- genome.count(t) / opportunity.in.genome(t)
+	inferred.exome.count(t) <- opportunity.in.exome * per.trinuc.freq(t)
+}
+
+or equivalently, by algebraic simplification:
+
+for each mutation type, t {
+	inferred.exome.count(t) <- genome.count(t) * opportunity.in.exome / opportunity.in.genome(t) 
+}
+
+
+Not, to move on to signatures as opposed to spectra, let us take the 
+correct perspective that spectra due to a single exposure can be thought 
+of a signature, provided we ignore the intensity of the exposure.  So to go from
+a spectrum to a signature based on *counts*, we divide the count of each mutation type by the total number of mutations. To go from a spectrum based on *per-trinucleotide frequencies*, we divide the
+per-trinucleotide frequency of each mutation type by the total of all per-trinucleotide
+frequencies.
+
+Converting between a signature based on genome counts to one based on per-trinucleotide frequencies:
+
+for each mutation type, t {
+	tmp(t) <- genome.counts(t) / opportunity.in.genome(t)
+}
+for each mutation type, t {
+  proportion.of.per-trinucleotide-frequency <- tmp(t) / sum_over_all_t(tmp(t))
+}
+
+You can probably fill in the missing pieces. To go from proportions based on 
+genome counts to proportions based on exome counts
+
+for each mutation type, t {
+	tmp(t) <- count(t) * opportunity.in.exome / opportunity.in.genome(t) 
+}
+for each mutation type, t {
+  inferred.per-trinucleotide-proportion-in-exome <- tmp(t)  / sum_over_all_t(tmp(t))
+}
+
+
+
