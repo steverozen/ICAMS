@@ -1120,7 +1120,7 @@ CatQUAD136ToPdf <- function(catalog, name, id = colnames(catalog),
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
-  par(oma = c(2, 2, 2, 2))
+  par(oma = c(3, 2, 2, 3))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
