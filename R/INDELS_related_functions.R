@@ -9,7 +9,11 @@ TestMutectVCFToCatalog <- function() {
 
   # TODO(steve): add plotting
 
-  df <- ReadMutectVCF("data-raw/MCF10A_Carb_Low_cl2_Mutect.vcf")
+  df <-
+    ReadMutectVCF(system.file("extdata",
+                              "MCF10A_Carb_Low_cl2_Mutect.vcf",
+                              package = "ICAMS",
+                              mustWork = TRUE))
   retval <- SplitListOfMutectVCFs(list(test.vcf = df))
 
   SNS.catalogs <-
@@ -31,6 +35,7 @@ TestMutectVCFToCatalog <- function() {
                      BSgenome.Hsapiens.1000genomes.hs37d5)
 
   invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
+  cat("ok\n")
 }
 if (FALSE) {
   load("data-raw/TestMutectVCFToCatalog.out.Rdata")
