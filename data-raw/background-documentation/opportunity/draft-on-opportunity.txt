@@ -22,7 +22,7 @@ of ACGs that are mutated to AAG, to AGG, to ATG, etc. Each trinucleotide is an "
 a mutation from that trinucleotide. 
 We refer to this as a "per-trinucleotide frequency" mutational spectrum.
 (Since the proportion of any
-given trinucleotide that is mutated is low, we usually plot per-trinucleotide frequencly
+given trinucleotide that is mutated is low, we usually plot per-trinucleotide frequency
 spectra as mutations per million trinucleotides.)  
 An advantage of this concept of a spectrum is that
 spectra from exomes and genomes or from different organisms can be compared 
