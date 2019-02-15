@@ -24,7 +24,7 @@ Collapse192To96 <- function(catalog) {
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[catalog.row.order96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order.SNS.96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -40,7 +40,7 @@ Collapse1536To96 <- function(catalog) {
   dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[catalog.row.order96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order.SNS.96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog

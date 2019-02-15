@@ -131,7 +131,7 @@ PlotCat96 <-
   function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
     stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == catalog.row.order96)
+    stopifnot(rownames(catalog) == catalog.row.order.SNS.96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -330,7 +330,7 @@ PlotCat192 <- function(catalog, id = colnames(catalog), type = "counts",
                   "#e83020")
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.192.for.plotting, ]
+  counts <- catalog[.to.reorder.SNS.192.for.plotting, ]
 
   num.classes <- length(counts)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -457,7 +457,7 @@ PlotCat192Strand <- function(catalog, id = colnames(catalog), type = "counts",
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.192.for.plotting, ]
+  counts <- catalog[.to.reorder.SNS.192.for.plotting, ]
 
   # Get the counts for each major mutation class
   counts.strand <- integer(12)
@@ -867,7 +867,7 @@ PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.144.for.plotting, ]
+  counts <- catalog[.to.reorder.DNS.144.for.plotting, ]
 
   # Get the counts for each major mutation class
   counts.strand <- integer(20)
@@ -987,10 +987,10 @@ PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
 
   # Calculate the occurrences of each mutation type for plotting
   counts <- matrix(0, nrow = 160, ncol = 1)
-  rownames(counts) <- .order.for.QUAD136.plotting
+  rownames(counts) <- .order.for.DNS.136.plotting
   for (i in 1:160){
-    if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
-      counts[i] <- catalog[.order.for.QUAD136.plotting[i], ]
+    if (.order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+      counts[i] <- catalog[.order.for.DNS.136.plotting[i], ]
     } else {
       counts[i] <- NA
     }
@@ -1011,12 +1011,12 @@ PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
-    rownames(rates) <- .order.for.QUAD136.plotting
+    rownames(rates) <- .order.for.DNS.136.plotting
     for (i in 1:160){
-      if (.order.for.QUAD136.plotting[i] %in% rownames(catalog)) {
+      if (.order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
         rates[i] <-
-          catalog[.order.for.QUAD136.plotting[i], ] /
-          abundance[.order.for.QUAD136.plotting[i], ]
+          catalog[.order.for.DNS.136.plotting[i], ] /
+          abundance[.order.for.DNS.136.plotting[i], ]
       } else {
         rates[i] <- NA
       }
@@ -1145,10 +1145,10 @@ CatQUAD136ToPdf <- function(catalog, name, id = colnames(catalog),
 
     # Calculate the occurrences of each mutation type for plotting
     counts <- matrix(0, nrow = 160, ncol = 1)
-    rownames(counts) <- .order.for.QUAD136.plotting
+    rownames(counts) <- .order.for.DNS.136.plotting
     for (j in 1:160){
-      if (.order.for.QUAD136.plotting[j] %in% rownames(cat)) {
-        counts[j] <- cat[.order.for.QUAD136.plotting[j], ]
+      if (.order.for.DNS.136.plotting[j] %in% rownames(cat)) {
+        counts[j] <- cat[.order.for.DNS.136.plotting[j], ]
       } else {
         counts[j] <- NA
       }
@@ -1169,12 +1169,12 @@ CatQUAD136ToPdf <- function(catalog, name, id = colnames(catalog),
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
-      rownames(rates) <- .order.for.QUAD136.plotting
+      rownames(rates) <- .order.for.DNS.136.plotting
       for (j in 1:160){
-        if (.order.for.QUAD136.plotting[j] %in% rownames(cat)) {
+        if (.order.for.DNS.136.plotting[j] %in% rownames(cat)) {
           rates[j] <-
-            cat[.order.for.QUAD136.plotting[j], ] /
-            abundance[.order.for.QUAD136.plotting[j], ]
+            cat[.order.for.DNS.136.plotting[j], ] /
+            abundance[.order.for.DNS.136.plotting[j], ]
         } else {
           rates[j] <- NA
         }

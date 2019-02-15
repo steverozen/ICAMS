@@ -72,10 +72,10 @@ ReadCat96 <- function(path, strict = TRUE) {
   out <- as.matrix(out)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(rownames(out) == catalog.row.order96)
+    stopifnot(rownames(out) == catalog.row.order.SNS.96)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[catalog.row.order96, ]
+  out <- out[catalog.row.order.SNS.96, ]
   return(out)
 }
 
@@ -106,12 +106,12 @@ ReadCat192 <- function(path, strict = TRUE) {
 
   tmp <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(tmp == catalog.row.order192)
+    stopifnot(tmp == catalog.row.order.SNS.192)
   }
   out <- cos[, -(1 : 3), drop = FALSE]
   out <- as.matrix(out)
   rownames(out) <- tmp
-  out <- out[catalog.row.order192, ]
+  out <- out[catalog.row.order.SNS.192, ]
   return(out)
 }
 
@@ -131,10 +131,10 @@ ReadCat1536 <- function(path, strict = TRUE) {
   out <- as.matrix(cos[ , -(1 : 2)])
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(rownames(out) == catalog.row.order1536)
+    stopifnot(rownames(out) == catalog.row.order.SNS.1536)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[catalog.row.order1536, ]
+  out <- out[catalog.row.order.SNS.1536, ]
   return(out)
 }
 
@@ -218,9 +218,9 @@ ReadCatQUAD136 <- function(path, strict = TRUE) {
   out <- as.matrix(out)
   rownames(out) <- cos$Quad
   if (strict) {
-    stopifnot(rownames(out) == catalog.row.order.QUAD.136)
+    stopifnot(rownames(out) == catalog.row.order.DNS.136)
   }
-  out <- out[catalog.row.order.QUAD.136, ]
+  out <- out[catalog.row.order.DNS.136, ]
   return(out)
 }
 
@@ -274,45 +274,45 @@ WriteCat <- function(ct, path, num.row, row.order, row.header, strict) {
 #' @rdname WriteCatalog
 #' @export
 WriteCat96 <- function(ct, path, strict = TRUE) {
-  WriteCat(ct, path, 96, catalog.row.order96, ct.96.row.headers, strict)
+  WriteCat(ct, path, 96, catalog.row.order.SNS.96, catalog.row.headers.SNS.96, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCat192 <- function(ct, path, strict = TRUE) {
-  WriteCat(ct, path, 192, catalog.row.order192, ct.192.row.headers, strict)
+  WriteCat(ct, path, 192, catalog.row.order.SNS.192, catalog.row.headers.SNS.192, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCat1536 <- function(ct, path, strict = TRUE) {
-  WriteCat(ct, path, 1536, catalog.row.order1536,
-           ct.1536.row.headers, strict)
+  WriteCat(ct, path, 1536, catalog.row.order.SNS.1536,
+           catalog.row.headers.SNS.1536, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCatDNS78 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 78, catalog.row.order.DNS.78,
-           ct.DNS78.row.headers, strict)
+           catalog.row.headers.DNS.78, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCatDNS144 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 144, catalog.row.order.DNS.144,
-           ct.DNS144.row.headers, strict)
+           catalog.row.headers.DNS.144, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCatQUAD136 <- function(ct, path, strict = TRUE) {
-  WriteCat(ct, path, 136, catalog.row.order.QUAD.136,
-           ct.QUAD136.row.headers, strict)
+  WriteCat(ct, path, 136, catalog.row.order.DNS.136,
+           catalog.row.headers.DNS.136, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
 WriteCatID <- function(ct, path, strict = TRUE) {
-  WriteCat(ct, path, 83, catalog.row.order.ID, ct.ID.row.headers, strict)
+  WriteCat(ct, path, 83, catalog.row.order.ID, catalog.row.headers.ID, strict)
 }

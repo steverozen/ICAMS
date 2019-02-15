@@ -27,9 +27,9 @@ make.row.order1536 <- function() {
   return(list(standard = retval1, mini = retval2))
 }
 
-catalog.row.order1536 <- make.row.order1536()$standard
+catalog.row.order.SNS.1536 <- make.row.order1536()$standard
 
-catalog.row.order192 <-
+catalog.row.order.SNS.192 <-
   c("AAAC","AACC","AAGC","AATC","CAAC","CACC","CAGC","CATC","GAAC",
     "GACC","GAGC","GATC","TAAC","TACC","TAGC","TATC","AAAG","AACG",
     "AAGG","AATG","CAAG","CACG","CAGG","CATG","GAAG","GACG","GAGG",
@@ -53,7 +53,7 @@ catalog.row.order192 <-
     "CTAG","CTCG","CTGG","CTTG","GTAG","GTCG","GTGG","GTTG","TTAG",
     "TTCG","TTGG","TTTG")
 
-to.reorder.192.for.plotting <-
+to.reorder.SNS.192.for.plotting <-
   c("TGTT", "ACAA", "GGTT", "ACCA", "CGTT", "ACGA", "AGTT", "ACTA",
     "TGGT", "CCAA", "GGGT", "CCCA", "CGGT", "CCGA", "AGGT", "CCTA",
     "TGCT", "GCAA", "GGCT", "GCCA", "CGCT", "GCGA", "AGCT", "GCTA",
@@ -80,7 +80,7 @@ to.reorder.192.for.plotting <-
     "TAAC", "TTAG", "GAAC", "TTCG", "CAAC", "TTGG", "AAAC", "TTTG"
   )
 
-catalog.row.order96 <-
+catalog.row.order.SNS.96 <-
   c("ACAA", "ACCA", "ACGA", "ACTA", "CCAA", "CCCA", "CCGA", "CCTA",
     "GCAA", "GCCA", "GCGA", "GCTA", "TCAA", "TCCA", "TCGA", "TCTA",
     "ACAG", "ACCG", "ACGG", "ACTG", "CCAG", "CCCG", "CCGG", "CCTG",
@@ -138,7 +138,7 @@ catalog.row.order.DNS.144 <-
 # symmetrical, hence not able to determine the strand information.
 # ("ATCG", "ATGC", "ATTA", "CGAT", "CGGC", "CGTA", "GCAT", "GCCG",
 # "GCTA", "TAAT", "TACG", "TAGC")
-to.reorder.144.for.plotting <-
+to.reorder.DNS.144.for.plotting <-
   c("GTTG", "ACCA", "GTCG", "ACCG", "GTAG", "ACCT", "GTTC", "ACGA",
     "GTCC", "ACGG", "GTAC", "ACGT", "GTTA", "ACTA", "GTCA", "ACTG",
     "GTAA", "ACTT", "ATTG", "ATCA", "ATGG", "ATCC", "ATTC", "ATGA",
@@ -157,7 +157,7 @@ to.reorder.144.for.plotting <-
     "AATG", "TTCA", "AAGG", "TTCC", "AACG", "TTCG", "AATC", "TTGA",
     "AAGC", "TTGC", "AACC", "TTGG")
 
-catalog.row.order.QUAD.136 <-
+catalog.row.order.DNS.136 <-
   c("AACA", "AACC", "AACG", "AACT", "AATA",
     "AATC", "AATG", "AATT", "ACCA", "ACCC", "ACCG", "ACCT", "ACGA",
     "ACGC", "ACGG", "ACGT", "ACTA", "ACTC", "ACTG", "ACTT", "AGCA",
@@ -204,7 +204,7 @@ catalog.row.order.ID <-
 # need to write catalogs to disk.
 ##############################################################
 
-ct.96.row.headers <-
+catalog.row.headers.SNS.96 <-
   structure(
     list(
       `Mutation type` =
@@ -238,7 +238,7 @@ ct.96.row.headers <-
     # , .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-ct.192.row.headers <-
+catalog.row.headers.SNS.192 <-
   structure(
     list(
       Strand =
@@ -310,7 +310,7 @@ ct.192.row.headers <-
     # .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-ct.1536.row.headers <-
+catalog.row.headers.SNS.1536 <-
   structure(
     list(
       `Mutation type` =
@@ -713,7 +713,7 @@ ct.1536.row.headers <-
     #, .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-ct.DNS78.row.headers <-
+catalog.row.headers.DNS.78 <-
   structure(
     list(
       Ref =
@@ -738,7 +738,7 @@ ct.DNS78.row.headers <-
     # ,  .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-ct.DNS144.row.headers <-
+catalog.row.headers.DNS.144 <-
   structure(
     list(
       Ref =
@@ -774,7 +774,7 @@ ct.DNS144.row.headers <-
     row.names = c(NA, -144L))
 # .internal.selfref = <pointer: 0x0000000002611ef0>)
 
-ct.QUAD136.row.headers <-
+catalog.row.headers.DNS.136 <-
   structure(
     list(
       Quad =
@@ -800,7 +800,7 @@ ct.QUAD136.row.headers <-
     row.names = c(NA, -136L))
 # .internal.selfref = <pointer: 0x0000000002611ef0>)
 
-ct.ID.row.headers <-
+catalog.row.headers.ID <-
   structure(
     list(
       Type =
@@ -851,13 +851,13 @@ ct.ID.row.headers <-
   )
 # Create a list of empty matrices
 empty96 <- matrix(0, nrow = 96, ncol = 0)
-rownames(empty96) <- catalog.row.order96
+rownames(empty96) <- catalog.row.order.SNS.96
 
 empty192 <- matrix(0, nrow = 192, ncol = 0)
-rownames(empty192) <- catalog.row.order192
+rownames(empty192) <- catalog.row.order.SNS.192
 
 empty1536 <- matrix(0, nrow = 1536, ncol = 0)
-rownames(empty1536) <- catalog.row.order1536
+rownames(empty1536) <- catalog.row.order.SNS.1536
 
 emptyDNS78 <- matrix(0, nrow = 78, ncol = 0)
 rownames(emptyDNS78) <- catalog.row.order.DNS.78
@@ -866,7 +866,7 @@ emptyDNS144 <- matrix(0, nrow = 144, ncol = 0)
 rownames(emptyDNS144) <- catalog.row.order.DNS.144
 
 emptyQUAD136 <- matrix(0, nrow = 136, ncol = 0)
-rownames(emptyQUAD136) <- catalog.row.order.QUAD.136
+rownames(emptyQUAD136) <- catalog.row.order.DNS.136
 
 empty.cats <- list(cat96 = empty96,
                     cat192 = empty192,

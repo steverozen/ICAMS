@@ -1,4 +1,4 @@
-CreateOrderForQUAD136Plotting <- function() {
+CreateOrderForDNS136Plotting <- function() {
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   base <- c("A", "C", "G", "T")
   rev.base <- c("T", "G", "C", "A")
@@ -13,4 +13,4 @@ CreateOrderForQUAD136Plotting <- function() {
   return(output)
 }
 
-order.for.QUAD136.plotting <- CreateOrderForQUAD136Plotting()
+order.for.DNS.136.plotting <- CreateOrderForDNS136Plotting()
