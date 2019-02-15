@@ -1,24 +1,6 @@
 #' Global data used in ICAMS package
 #'
-#' Documentations for the global data used in ICAMS package
-#'
-#' \code{catalog.row.order.SNS.96} The canonical order of row names in a SNS 96
-#' catalog.
-#'
-#' \code{catalog.row.order.SNS.192} The canonical order of row names in a SNS 192
-#' catalog.
-#'
-#' \code{catalog.row.order.SNS.1536} The canonical order of row names in a SNS 1536
-#' catalog.
-#'
-#' \code{catalog.row.order.DNS.78} The canonical order of row names in a DNS 78
-#' catalog.
-#'
-#' \code{catalog.row.order.DNS.144} The canonical order of row names in a DNS
-#' 144 catalog.
-#'
-#' \code{catalog.row.order.DNS.136} The canonical order of row names in a QUAD
-#' 136 catalog.
+#' Documentation for the global data used in ICAMS package
 #'
 #' \code{catalog.row.order.ID} The canonical order of row names in a ID
 #' (insertion and deletion) catalog. (Please take note that the deletions Repeat
@@ -106,8 +88,12 @@
 #' @name data
 NULL
 
-#' canonical order of row names in a SNS 96 catalog
-#' @format A string of characters
+#' Canonical Order of Row Names in a Catalog
+#' @format A string of characters indicating the canonical order of row names in
+#'   a catalog.
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
 #' @name CatalogRowOrder
 NULL
 
@@ -118,3 +104,17 @@ NULL
 #' @rdname CatalogRowOrder
 "catalog.row.order.SNS.192"
 
+#' @rdname CatalogRowOrder
+"catalog.row.order.SNS.1536"
+
+#' @rdname CatalogRowOrder
+"catalog.row.order.DNS.78"
+
+#' @rdname CatalogRowOrder
+"catalog.row.order.DNS.144"
+
+#' @rdname CatalogRowOrder
+"catalog.row.order.DNS.136"
+
+#' @rdname CatalogRowOrder
+"catalog.row.order.ID"

@@ -4,27 +4,9 @@
 \alias{data}
 \title{Global data used in ICAMS package}
 \description{
-Documentations for the global data used in ICAMS package
+Documentation for the global data used in ICAMS package
 }
 \details{
-\code{catalog.row.order.SNS.96} The canonical order of row names in a SNS 96
-catalog.
-
-\code{catalog.row.order.SNS.192} The canonical order of row names in a SNS 192
-catalog.
-
-\code{catalog.row.order.SNS.1536} The canonical order of row names in a SNS 1536
-catalog.
-
-\code{catalog.row.order.DNS.78} The canonical order of row names in a DNS 78
-catalog.
-
-\code{catalog.row.order.DNS.144} The canonical order of row names in a DNS
-144 catalog.
-
-\code{catalog.row.order.DNS.136} The canonical order of row names in a QUAD
-136 catalog.
-
 \code{catalog.row.order.ID} The canonical order of row names in a ID
 (insertion and deletion) catalog. (Please take note that the deletions Repeat
 Size ranges from 0 to 5+ in the catalog, but for plotting and end user

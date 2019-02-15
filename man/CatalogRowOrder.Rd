@@ -5,14 +5,35 @@
 \alias{CatalogRowOrder}
 \alias{catalog.row.order.SNS.96}
 \alias{catalog.row.order.SNS.192}
-\title{canonical order of row names in a SNS 96 catalog}
-\format{A string of characters}
+\alias{catalog.row.order.SNS.1536}
+\alias{catalog.row.order.DNS.78}
+\alias{catalog.row.order.DNS.144}
+\alias{catalog.row.order.DNS.136}
+\alias{catalog.row.order.ID}
+\title{Canonical Order of Row Names in a Catalog}
+\format{A string of characters indicating the canonical order of row names in
+  a catalog.}
 \usage{
 catalog.row.order.SNS.96
 
 catalog.row.order.SNS.192
+
+catalog.row.order.SNS.1536
+
+catalog.row.order.DNS.78
+
+catalog.row.order.DNS.144
+
+catalog.row.order.DNS.136
+
+catalog.row.order.ID
 }
 \description{
-canonical order of row names in a SNS 96 catalog
+Canonical Order of Row Names in a Catalog
+}
+\note{
+In the ID (insertion and deletion) catalog, the deletions repeat size
+  ranges from 0 to 5+, but for plotting and end user documentation it ranges
+  from 1 to 6+.
 }
 \keyword{datasets}
