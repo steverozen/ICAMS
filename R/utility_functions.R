@@ -24,7 +24,7 @@ Collapse192To96 <- function(catalog) {
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[.catalog.row.order96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -40,7 +40,7 @@ Collapse1536To96 <- function(catalog) {
   dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[.catalog.row.order96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -53,7 +53,7 @@ Collapse144To78 <- function(catalog) {
   dt78 <- dt144[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
-  mat78 <- mat78[.catalog.row.order.DNS.78, , drop = FALSE]
+  mat78 <- mat78[catalog.row.order.DNS.78, , drop = FALSE]
 }
 
 #' Standardize the Chromosome name annotations for a data frame

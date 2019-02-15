@@ -131,7 +131,7 @@ PlotCat96 <-
   function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
     stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == .catalog.row.order96)
+    stopifnot(rownames(catalog) == catalog.row.order96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -728,7 +728,7 @@ Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
 PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
                          abundance = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
-  stopifnot(rownames(catalog) == .catalog.row.order.DNS.78)
+  stopifnot(rownames(catalog) == catalog.row.order.DNS.78)
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))

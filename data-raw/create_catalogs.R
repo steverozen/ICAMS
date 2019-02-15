@@ -27,9 +27,9 @@ make.row.order1536 <- function() {
   return(list(standard = retval1, mini = retval2))
 }
 
-.catalog.row.order1536 <<- make.row.order1536()$standard
+catalog.row.order1536 <- make.row.order1536()$standard
 
-.catalog.row.order192 <<-
+catalog.row.order192 <-
   c("AAAC","AACC","AAGC","AATC","CAAC","CACC","CAGC","CATC","GAAC",
     "GACC","GAGC","GATC","TAAC","TACC","TAGC","TATC","AAAG","AACG",
     "AAGG","AATG","CAAG","CACG","CAGG","CATG","GAAG","GACG","GAGG",
@@ -53,7 +53,7 @@ make.row.order1536 <- function() {
     "CTAG","CTCG","CTGG","CTTG","GTAG","GTCG","GTGG","GTTG","TTAG",
     "TTCG","TTGG","TTTG")
 
-.to.reorder.192.for.plotting <<-
+to.reorder.192.for.plotting <-
   c("TGTT", "ACAA", "GGTT", "ACCA", "CGTT", "ACGA", "AGTT", "ACTA",
     "TGGT", "CCAA", "GGGT", "CCCA", "CGGT", "CCGA", "AGGT", "CCTA",
     "TGCT", "GCAA", "GGCT", "GCCA", "CGCT", "GCGA", "AGCT", "GCTA",
@@ -80,7 +80,7 @@ make.row.order1536 <- function() {
     "TAAC", "TTAG", "GAAC", "TTCG", "CAAC", "TTGG", "AAAC", "TTTG"
   )
 
-.catalog.row.order96 <<-
+catalog.row.order96 <-
   c("ACAA", "ACCA", "ACGA", "ACTA", "CCAA", "CCCA", "CCGA", "CCTA",
     "GCAA", "GCCA", "GCGA", "GCTA", "TCAA", "TCCA", "TCGA", "TCTA",
     "ACAG", "ACCG", "ACGG", "ACTG", "CCAG", "CCCG", "CCGG", "CCTG",
@@ -97,7 +97,7 @@ make.row.order1536 <- function() {
 
 # The first two letters are reference bases while the
 # last two letters are the altered bases after mutation.
-.catalog.row.order.DNS.78 <<-
+catalog.row.order.DNS.78 <-
   c("ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA", "ACTG",
     "ACTT", "ATCA", "ATCC", "ATCG", "ATGA", "ATGC", "ATTA", "CCAA",
     "CCAG", "CCAT", "CCGA", "CCGG", "CCGT", "CCTA", "CCTG", "CCTT",
@@ -111,7 +111,7 @@ make.row.order1536 <- function() {
 
 # There are 144 stranded DNSs: 4 X 4 sources and 3 X 3 alternates;
 # 4 x 4 x 3 x 3 = 144.
-.catalog.row.order.DNS.144 <<-
+catalog.row.order.DNS.144 <-
   c("AACC", "AACG", "AACT", "AAGC", "AAGG", "AAGT", "AATC", "AATG",
     "AATT", "ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA",
     "ACTG", "ACTT", "AGCA", "AGCC", "AGCT", "AGGA", "AGGC", "AGGT",
@@ -138,7 +138,7 @@ make.row.order1536 <- function() {
 # symmetrical, hence not able to determine the strand information.
 # ("ATCG", "ATGC", "ATTA", "CGAT", "CGGC", "CGTA", "GCAT", "GCCG",
 # "GCTA", "TAAT", "TACG", "TAGC")
-.to.reorder.144.for.plotting <<-
+to.reorder.144.for.plotting <-
   c("GTTG", "ACCA", "GTCG", "ACCG", "GTAG", "ACCT", "GTTC", "ACGA",
     "GTCC", "ACGG", "GTAC", "ACGT", "GTTA", "ACTA", "GTCA", "ACTG",
     "GTAA", "ACTT", "ATTG", "ATCA", "ATGG", "ATCC", "ATTC", "ATGA",
@@ -157,7 +157,7 @@ make.row.order1536 <- function() {
     "AATG", "TTCA", "AAGG", "TTCC", "AACG", "TTCG", "AATC", "TTGA",
     "AAGC", "TTGC", "AACC", "TTGG")
 
-.catalog.row.order.QUAD.136 <<-
+catalog.row.order.QUAD.136 <-
   c("AACA", "AACC", "AACG", "AACT", "AATA",
     "AATC", "AATG", "AATT", "ACCA", "ACCC", "ACCG", "ACCT", "ACGA",
     "ACGC", "ACGG", "ACGT", "ACTA", "ACTC", "ACTG", "ACTT", "AGCA",
@@ -177,7 +177,7 @@ make.row.order1536 <- function() {
     "TTCC", "TTCG", "TTCT", "TTGA", "TTGC", "TTGG", "TTGT", "TTTA",
     "TTTC", "TTTG", "TTTT")
 
-.catalog.row.order.ID <<-
+catalog.row.order.ID <-
   c("DEL:C:1:0", "DEL:C:1:1", "DEL:C:1:2", "DEL:C:1:3", "DEL:C:1:4",
     "DEL:C:1:5+", "DEL:T:1:0", "DEL:T:1:1", "DEL:T:1:2", "DEL:T:1:3",
     "DEL:T:1:4", "DEL:T:1:5+", "INS:C:1:0", "INS:C:1:1", "INS:C:1:2",
@@ -204,7 +204,7 @@ make.row.order1536 <- function() {
 # need to write catalogs to disk.
 ##############################################################
 
-.ct.96.row.headers <<-
+ct.96.row.headers <-
   structure(
     list(
       `Mutation type` =
@@ -238,7 +238,7 @@ make.row.order1536 <- function() {
     # , .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-.ct.192.row.headers <<-
+ct.192.row.headers <-
   structure(
     list(
       Strand =
@@ -310,7 +310,7 @@ make.row.order1536 <- function() {
     # .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-.ct.1536.row.headers <<-
+ct.1536.row.headers <-
   structure(
     list(
       `Mutation type` =
@@ -713,7 +713,7 @@ make.row.order1536 <- function() {
     #, .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-.ct.DNS78.row.headers <<-
+ct.DNS78.row.headers <-
   structure(
     list(
       Ref =
@@ -738,7 +738,7 @@ make.row.order1536 <- function() {
     # ,  .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-.ct.DNS144.row.headers <<-
+ct.DNS144.row.headers <-
   structure(
     list(
       Ref =
@@ -774,7 +774,7 @@ make.row.order1536 <- function() {
     row.names = c(NA, -144L))
 # .internal.selfref = <pointer: 0x0000000002611ef0>)
 
-.ct.QUAD136.row.headers <<-
+ct.QUAD136.row.headers <-
   structure(
     list(
       Quad =
@@ -800,7 +800,7 @@ make.row.order1536 <- function() {
     row.names = c(NA, -136L))
 # .internal.selfref = <pointer: 0x0000000002611ef0>)
 
-.ct.ID.row.headers <<-
+ct.ID.row.headers <-
   structure(
     list(
       Type =
@@ -851,24 +851,24 @@ make.row.order1536 <- function() {
   )
 # Create a list of empty matrices
 empty96 <- matrix(0, nrow = 96, ncol = 0)
-rownames(empty96) <- .catalog.row.order96
+rownames(empty96) <- catalog.row.order96
 
 empty192 <- matrix(0, nrow = 192, ncol = 0)
-rownames(empty192) <- .catalog.row.order192
+rownames(empty192) <- catalog.row.order192
 
 empty1536 <- matrix(0, nrow = 1536, ncol = 0)
-rownames(empty1536) <- .catalog.row.order1536
+rownames(empty1536) <- catalog.row.order1536
 
 emptyDNS78 <- matrix(0, nrow = 78, ncol = 0)
-rownames(emptyDNS78) <- .catalog.row.order.DNS.78
+rownames(emptyDNS78) <- catalog.row.order.DNS.78
 
 emptyDNS144 <- matrix(0, nrow = 144, ncol = 0)
-rownames(emptyDNS144) <- .catalog.row.order.DNS.144
+rownames(emptyDNS144) <- catalog.row.order.DNS.144
 
 emptyQUAD136 <- matrix(0, nrow = 136, ncol = 0)
-rownames(emptyQUAD136) <- .catalog.row.order.QUAD.136
+rownames(emptyQUAD136) <- catalog.row.order.QUAD.136
 
-empty.cats <<- list(cat96 = empty96,
+empty.cats <- list(cat96 = empty96,
                     cat192 = empty192,
                     cat1536 = empty1536,
                     catDNS78 = emptyDNS78,

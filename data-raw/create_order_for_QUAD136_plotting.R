@@ -13,4 +13,4 @@ CreateOrderForQUAD136Plotting <- function() {
   return(output)
 }
 
-.order.for.QUAD136.plotting <<- CreateOrderForQUAD136Plotting()
+order.for.QUAD136.plotting <- CreateOrderForQUAD136Plotting()
