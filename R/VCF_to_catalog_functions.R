@@ -632,7 +632,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
 #' @param sample.id Usually the sample id, but defaults to "count".
 #' @import data.table
 #' @return A list of three matrices containing the DNS catalog:
-#'   catDNS78, catDNS144, catQUAD136 respectively.
+#'   catDNS78, catDNS144, catDNS136 respectively.
 #' @keywords internal
 CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
@@ -643,7 +643,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   if (0 == nrow(vcf)) {
     return(list(catDNS78 = empty.cats$catDNS78,
                 catDNS144 = empty.cats$catDNS144,
-                catQUAD136 = empty.cats$catQUAD136))
+                catDNS136 = empty.cats$catDNS136))
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
@@ -666,22 +666,22 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   rownames(DNS.mat.78) <- DNS.dt.78.2$rn
   colnames(DNS.mat.78)<- sample.id
 
-  # Create the 136 QUAD catalog matrix
-  canon.QUAD.136 <- CanonicalizeQUAD(substr(vcf$seq.21context, 10, 13))
-  tab.QUAD.136 <- table(canon.QUAD.136)
+  # Create the 136 DNS catalog matrix
+  canon.DNS.136 <- CanonicalizeDNS(substr(vcf$seq.21context, 10, 13))
+  tab.DNS.136 <- table(canon.DNS.136)
   row.order.136 <- data.table(rn = catalog.row.order.DNS.136)
-  QUAD.dt.136 <- as.data.table(tab.QUAD.136)
+  DNS.dt.136 <- as.data.table(tab.DNS.136)
 
-  # QUAD.dt.136 has two columns, names canon.QUAD.136 (from the table() function)
+  # DNS.dt.136 has two columns, names canon.DNS.136 (from the table() function)
   # and N (the count)
-  QUAD.dt.136.2 <-
-    merge(row.order.136, QUAD.dt.136,
-          by.x = "rn", by.y = "canon.QUAD.136", all = TRUE)
-  QUAD.dt.136.2[is.na(N), N := 0]
-  stopifnot(QUAD.dt.136.2$rn == catalog.row.order.DNS.136)
-  QUAD.mat.136 <- as.matrix(QUAD.dt.136.2[, 2])
-  rownames(QUAD.mat.136) <- QUAD.dt.136.2$rn
-  colnames(QUAD.mat.136)<- sample.id
+  DNS.dt.136.2 <-
+    merge(row.order.136, DNS.dt.136,
+          by.x = "rn", by.y = "canon.DNS.136", all = TRUE)
+  DNS.dt.136.2[is.na(N), N := 0]
+  stopifnot(DNS.dt.136.2$rn == catalog.row.order.DNS.136)
+  DNS.mat.136 <- as.matrix(DNS.dt.136.2[, 2])
+  rownames(DNS.mat.136) <- DNS.dt.136.2$rn
+  colnames(DNS.mat.136)<- sample.id
 
   # Create the 144 DNS catalog matrix
   # There are 144 stranded DNSs: 4 X 4 sources and 3 X 3 alternates;
@@ -705,12 +705,12 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   colnames(DNS.mat.144)<- sample.id
 
   return(list(catDNS78 = DNS.mat.78, catDNS144 = DNS.mat.144,
-              catQUAD136 = QUAD.mat.136))
+              catDNS136 = DNS.mat.136))
 }
 
 #' Create DNS catalogs from VCFs
 #'
-#' Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
+#' Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)
 #' out of the contents in list.of.DNS.vcfs. The VCFs must not contain
 #' any type of mutation other then DNSs.
 #'
@@ -721,17 +721,17 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' (without quotations marks).
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
-#' @return A list of 3 catalogs, one each for DNS78, DNS144, QUAD136:
+#' @return A list of 3 catalogs, one each for DNS78, DNS144, DNS136:
 #'   catDNS78
 #'   catDNS144
-#'   catQUAD136
+#'   catDNS136
 #' @keywords internal
 VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.DNS.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
   catDNS144 <- empty.cats$catDNS144
-  catQUAD136 <- empty.cats$catQUAD136
+  catDNS136 <- empty.cats$catDNS136
 
   for (i in 1 : ncol) {
     DNS <- list.of.DNS.vcfs[[i]]
@@ -743,15 +743,15 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
     rm(DNS)
     catDNS78 <- cbind(catDNS78, DNS.cat$catDNS78)
     catDNS144 <- cbind(catDNS144, DNS.cat$catDNS144)
-    catQUAD136 <- cbind(catQUAD136, DNS.cat$catQUAD136)
+    catDNS136 <- cbind(catDNS136, DNS.cat$catDNS136)
   }
 
   colnames(catDNS78) <- names(list.of.DNS.vcfs)
   colnames(catDNS144) <- names(list.of.DNS.vcfs)
-  colnames(catQUAD136) <- names(list.of.DNS.vcfs)
+  colnames(catDNS136) <- names(list.of.DNS.vcfs)
 
   return(list(catDNS78  = catDNS78, catDNS144  = catDNS144,
-              catQUAD136  = catQUAD136))
+              catDNS136  = catDNS136))
 }
 
 #' Create SNS and DNS catalogs from Strelka VCF files
