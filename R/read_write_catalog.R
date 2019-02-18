@@ -12,7 +12,7 @@
 #'
 #' \code{ReadCatDNS144} Read a 144 DNS catalog from path
 #'
-#' \code{ReadCatQUAD136} Read a 136 QUAD catalog from path
+#' \code{ReadCatDNS136} Read a 136 DNS catalog from path
 #'
 #' \code{ReadCatID} Read a ID (insertion/deletion) catalog from path
 #' Please take note that the deletions Repeat Size ranges from 0 to 5+
@@ -41,7 +41,7 @@ NULL
 #'
 #' \code{WriteCatDNS144} Write a DNS 144 mutation catalog to a file on disk
 #'
-#' \code{WriteCatQUAD136} Write a 136 QUAD catalog from path
+#' \code{WriteCatDNS136} Write a 136 DNS catalog from path
 #'
 #' \code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk
 #' Please take note that the deletions Repeat Size ranges from 0 to 5+
@@ -207,7 +207,7 @@ ReadCatDNS144 <- function(path, strict = TRUE) {
 
 #' @rdname ReadCatalog
 #' @export
-ReadCatQUAD136 <- function(path, strict = TRUE) {
+ReadCatDNS136 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -306,7 +306,7 @@ WriteCatDNS144 <- function(ct, path, strict = TRUE) {
 
 #' @rdname WriteCatalog
 #' @export
-WriteCatQUAD136 <- function(ct, path, strict = TRUE) {
+WriteCatDNS136 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 136, catalog.row.order.DNS.136,
            catalog.row.headers.DNS.136, strict)
 }
