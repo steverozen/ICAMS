@@ -850,14 +850,14 @@ catalog.row.headers.ID <-
     #, .internal.selfref = <pointer: 0x0000000008dc1ef0>
   )
 # Create a list of empty matrices
-empty96 <- matrix(0, nrow = 96, ncol = 0)
-rownames(empty96) <- catalog.row.order.SNS.96
+emptySNS96 <- matrix(0, nrow = 96, ncol = 0)
+rownames(emptySNS96) <- catalog.row.order.SNS.96
 
-empty192 <- matrix(0, nrow = 192, ncol = 0)
-rownames(empty192) <- catalog.row.order.SNS.192
+emptySNS192 <- matrix(0, nrow = 192, ncol = 0)
+rownames(emptySNS192) <- catalog.row.order.SNS.192
 
-empty1536 <- matrix(0, nrow = 1536, ncol = 0)
-rownames(empty1536) <- catalog.row.order.SNS.1536
+emptySNS1536 <- matrix(0, nrow = 1536, ncol = 0)
+rownames(emptySNS1536) <- catalog.row.order.SNS.1536
 
 emptyDNS78 <- matrix(0, nrow = 78, ncol = 0)
 rownames(emptyDNS78) <- catalog.row.order.DNS.78
@@ -865,12 +865,12 @@ rownames(emptyDNS78) <- catalog.row.order.DNS.78
 emptyDNS144 <- matrix(0, nrow = 144, ncol = 0)
 rownames(emptyDNS144) <- catalog.row.order.DNS.144
 
-emptyQUAD136 <- matrix(0, nrow = 136, ncol = 0)
-rownames(emptyQUAD136) <- catalog.row.order.DNS.136
+emptyDNS136 <- matrix(0, nrow = 136, ncol = 0)
+rownames(emptyDNS136) <- catalog.row.order.DNS.136
 
-empty.cats <- list(cat96 = empty96,
-                    cat192 = empty192,
-                    cat1536 = empty1536,
+empty.cats <- list(cat96 = emptySNS96,
+                    cat192 = emptySNS192,
+                    cat1536 = emptySNS1536,
                     catDNS78 = emptyDNS78,
                     catDNS144 = emptyDNS144,
-                    catQUAD136 = emptyQUAD136)
+                    catDNS136 = emptyDNS136)
