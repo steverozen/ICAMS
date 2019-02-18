@@ -2,20 +2,20 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCatalog}
 \alias{WriteCatalog}
-\alias{WriteCat96}
-\alias{WriteCat192}
-\alias{WriteCat1536}
+\alias{WriteCatSNS96}
+\alias{WriteCatSNS192}
+\alias{WriteCatSNS1536}
 \alias{WriteCatDNS78}
 \alias{WriteCatDNS144}
 \alias{WriteCatDNS136}
 \alias{WriteCatID}
 \title{Write Catalog Functions}
 \usage{
-WriteCat96(ct, path, strict = TRUE)
+WriteCatSNS96(ct, path, strict = TRUE)
 
-WriteCat192(ct, path, strict = TRUE)
+WriteCatSNS192(ct, path, strict = TRUE)
 
-WriteCat1536(ct, path, strict = TRUE)
+WriteCatSNS1536(ct, path, strict = TRUE)
 
 WriteCatDNS78(ct, path, strict = TRUE)
 
@@ -37,11 +37,11 @@ and stop if the checks fail.}
 Write a mutation catalog to a file on disk
 }
 \details{
-\code{WriteCat96} Write a SNS 96 mutation catalog to a file on disk
+\code{WriteCatSNS96} Write a SNS 96 mutation catalog to a file on disk
 
-\code{WriteCat192} Write a SNS 192 mutation catalog to a file on disk
+\code{WriteCatSNS192} Write a SNS 192 mutation catalog to a file on disk
 
-\code{WriteCat1536} Write a SNS 1536 mutation catalog to a file on disk
+\code{WriteCatSNS1536} Write a SNS 1536 mutation catalog to a file on disk
 
 \code{WriteCatDNS78} Write a DNS 78 mutation catalog to a file on disk
 

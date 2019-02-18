@@ -4,7 +4,7 @@
 \alias{CatalogToPdf}
 \alias{CatSNS96ToPdf}
 \alias{CatSNS192ToPdf}
-\alias{Cat192StrandToPdf}
+\alias{CatSNS192StrandToPdf}
 \alias{CatSNS1536ToPdf}
 \alias{CatDNS78ToPdf}
 \alias{CatDNS144ToPdf}
@@ -18,7 +18,7 @@ CatSNS96ToPdf(catalog, name, id = colnames(catalog), type = "density",
 CatSNS192ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)
 
-Cat192StrandToPdf(catalog, name, id = colnames(catalog),
+CatSNS192StrandToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
 CatSNS1536ToPdf(catalog, name, id = colnames(catalog), abundance)
@@ -50,7 +50,7 @@ signatures of the sample. If type = "density", the graph will plot the
 rates of mutations per million nucleotides for each mutation type. (Please
 take note there is no "density" type for CatIDtoPdf function and the option
 of type = "density" is not implemented for function CatSNS192ToPdf,
-Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)}
+CatSNS192StrandToPdf and CatDNS144ToPdf at the current stage.)}
 
 \item{grid}{A logical value indicating whether to draw the grid lines in the
 graph.}
@@ -80,7 +80,7 @@ to a PDF file.
 \code{CatSNS192ToPdf} Plot the SNS 192 mutation catalog of different samples
 to a PDF file.
 
-\code{Cat192StrandToPdf} Plot the transcription strand bias graph of
+\code{CatSNS192StrandToPdf} Plot the transcription strand bias graph of
 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 of different samples to a PDF file.
 

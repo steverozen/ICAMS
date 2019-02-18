@@ -67,7 +67,7 @@ NULL
 #' \code{CatSNS192ToPdf} Plot the SNS 192 mutation catalog of different samples
 #' to a PDF file.
 #'
-#' \code{Cat192StrandToPdf} Plot the transcription strand bias graph of
+#' \code{CatSNS192StrandToPdf} Plot the transcription strand bias graph of
 #' 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 #' of different samples to a PDF file.
 #'
@@ -105,7 +105,7 @@ NULL
 #'   rates of mutations per million nucleotides for each mutation type. (Please
 #'   take note there is no "density" type for CatIDtoPdf function and the option
 #'   of type = "density" is not implemented for function CatSNS192ToPdf,
-#'   Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)
+#'   CatSNS192StrandToPdf and CatDNS144ToPdf at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   y axis labels, sample name and legend(if there exists) should be magnified
 #'   relative to the default.
@@ -331,7 +331,7 @@ PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
                   "#e83020")
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.SNS.192.for.plotting, ]
+  counts <- catalog[to.reorder.SNS.192.for.plotting, ]
 
   num.classes <- length(counts)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -458,7 +458,7 @@ PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts"
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.SNS.192.for.plotting, ]
+  counts <- catalog[to.reorder.SNS.192.for.plotting, ]
 
   # Get the counts for each major mutation class
   counts.strand <- integer(12)
@@ -532,7 +532,7 @@ PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts"
 
 #' @rdname CatalogToPdf
 #' @export
-Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
+CatSNS192StrandToPdf <- function(catalog, name, id = colnames(catalog),
                               type = "counts", cex = 1, abundance = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -868,7 +868,7 @@ PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[.to.reorder.DNS.144.for.plotting, ]
+  counts <- catalog[to.reorder.DNS.144.for.plotting, ]
 
   # Get the counts for each major mutation class
   counts.strand <- integer(20)
@@ -988,10 +988,10 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
 
   # Calculate the occurrences of each mutation type for plotting
   counts <- matrix(0, nrow = 160, ncol = 1)
-  rownames(counts) <- .order.for.DNS.136.plotting
+  rownames(counts) <- order.for.DNS.136.plotting
   for (i in 1:160){
-    if (.order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
-      counts[i] <- catalog[.order.for.DNS.136.plotting[i], ]
+    if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+      counts[i] <- catalog[order.for.DNS.136.plotting[i], ]
     } else {
       counts[i] <- NA
     }
@@ -1012,12 +1012,12 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
-    rownames(rates) <- .order.for.DNS.136.plotting
+    rownames(rates) <- order.for.DNS.136.plotting
     for (i in 1:160){
-      if (.order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
         rates[i] <-
-          catalog[.order.for.DNS.136.plotting[i], ] /
-          abundance[.order.for.DNS.136.plotting[i], ]
+          catalog[order.for.DNS.136.plotting[i], ] /
+          abundance[order.for.DNS.136.plotting[i], ]
       } else {
         rates[i] <- NA
       }
@@ -1146,10 +1146,10 @@ CatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
 
     # Calculate the occurrences of each mutation type for plotting
     counts <- matrix(0, nrow = 160, ncol = 1)
-    rownames(counts) <- .order.for.DNS.136.plotting
+    rownames(counts) <- order.for.DNS.136.plotting
     for (j in 1:160){
-      if (.order.for.DNS.136.plotting[j] %in% rownames(cat)) {
-        counts[j] <- cat[.order.for.DNS.136.plotting[j], ]
+      if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
+        counts[j] <- cat[order.for.DNS.136.plotting[j], ]
       } else {
         counts[j] <- NA
       }
@@ -1170,12 +1170,12 @@ CatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
-      rownames(rates) <- .order.for.DNS.136.plotting
+      rownames(rates) <- order.for.DNS.136.plotting
       for (j in 1:160){
-        if (.order.for.DNS.136.plotting[j] %in% rownames(cat)) {
+        if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
           rates[j] <-
-            cat[.order.for.DNS.136.plotting[j], ] /
-            abundance[.order.for.DNS.136.plotting[j], ]
+            cat[order.for.DNS.136.plotting[j], ] /
+            abundance[order.for.DNS.136.plotting[j], ]
         } else {
           rates[j] <- NA
         }

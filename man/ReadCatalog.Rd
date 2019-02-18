@@ -2,20 +2,20 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{ReadCatalog}
 \alias{ReadCatalog}
-\alias{ReadCat96}
-\alias{ReadCat192}
-\alias{ReadCat1536}
+\alias{ReadCatSNS96}
+\alias{ReadCatSNS192}
+\alias{ReadCatSNS1536}
 \alias{ReadCatDNS78}
 \alias{ReadCatDNS144}
 \alias{ReadCatDNS136}
 \alias{ReadCatID}
 \title{Read Catalog Functions}
 \usage{
-ReadCat96(path, strict = TRUE)
+ReadCatSNS96(path, strict = TRUE)
 
-ReadCat192(path, strict = TRUE)
+ReadCatSNS192(path, strict = TRUE)
 
-ReadCat1536(path, strict = TRUE)
+ReadCatSNS1536(path, strict = TRUE)
 
 ReadCatDNS78(path, strict = TRUE)
 
@@ -38,11 +38,11 @@ A catalog in canonical in-memory format.
 Read a catalog in PCAWG7 format from path
 }
 \details{
-\code{ReadCat96} Read a 96 SNS catalog from path
+\code{ReadCatSNS96} Read a 96 SNS catalog from path
 
-\code{ReadCat192} Read a 192 SNS catalog from path
+\code{ReadCatSNS192} Read a 192 SNS catalog from path
 
-\code{ReadCat1536} Read a 1536 SNS catalog from path
+\code{ReadCatSNS1536} Read a 1536 SNS catalog from path
 
 \code{ReadCatDNS78} Read a 78 DNS catalog from path
 

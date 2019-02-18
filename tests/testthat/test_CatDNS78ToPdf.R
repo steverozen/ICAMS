@@ -11,6 +11,6 @@ test_that("CatDNS78ToPdf function is working properly", {
                cat4, cat4, cat4)
   type <- c("counts", "signature", "density")
   out <- CatDNS78ToPdf(cat, "PlotCatDNS78.test.pdf", type = rep(type, 4),
-                       abundance = .abundance.2bp)
+                       abundance = abundance.2bp.GRCh37)
   expect_equal(out, TRUE)
 })

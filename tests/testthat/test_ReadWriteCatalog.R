@@ -2,9 +2,9 @@ context("Read and Write Catalog")
 
 test_that("Functions for reading and writing catalog are working properly", {
   read.fn <-
-    c(ReadCat96,
-      ReadCat192,
-      ReadCat1536,
+    c(ReadCatSNS96,
+      ReadCatSNS192,
+      ReadCatSNS1536,
       ReadCatDNS78,
       ReadCatDNS144,
       ReadCatDNS136,
@@ -12,9 +12,9 @@ test_that("Functions for reading and writing catalog are working properly", {
     )
 
   write.fn <-
-    c(WriteCat96,
-      WriteCat192,
-      WriteCat1536,
+    c(WriteCatSNS96,
+      WriteCatSNS192,
+      WriteCatSNS1536,
       WriteCatDNS78,
       WriteCatDNS144,
       WriteCatDNS136,

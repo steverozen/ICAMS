@@ -2,11 +2,11 @@
 #'
 #' Read a catalog in PCAWG7 format from path
 #'
-#' \code{ReadCat96} Read a 96 SNS catalog from path
+#' \code{ReadCatSNS96} Read a 96 SNS catalog from path
 #'
-#' \code{ReadCat192} Read a 192 SNS catalog from path
+#' \code{ReadCatSNS192} Read a 192 SNS catalog from path
 #'
-#' \code{ReadCat1536} Read a 1536 SNS catalog from path
+#' \code{ReadCatSNS1536} Read a 1536 SNS catalog from path
 #'
 #' \code{ReadCatDNS78} Read a 78 DNS catalog from path
 #'
@@ -31,11 +31,11 @@ NULL
 #'
 #' Write a mutation catalog to a file on disk
 #'
-#' \code{WriteCat96} Write a SNS 96 mutation catalog to a file on disk
+#' \code{WriteCatSNS96} Write a SNS 96 mutation catalog to a file on disk
 #'
-#' \code{WriteCat192} Write a SNS 192 mutation catalog to a file on disk
+#' \code{WriteCatSNS192} Write a SNS 192 mutation catalog to a file on disk
 #'
-#' \code{WriteCat1536} Write a SNS 1536 mutation catalog to a file on disk
+#' \code{WriteCatSNS1536} Write a SNS 1536 mutation catalog to a file on disk
 #'
 #' \code{WriteCatDNS78} Write a DNS 78 mutation catalog to a file on disk
 #'
@@ -58,7 +58,7 @@ NULL
 
 #' @rdname ReadCatalog
 #' @export
-ReadCat96 <- function(path, strict = TRUE) {
+ReadCatSNS96 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -82,7 +82,7 @@ ReadCat96 <- function(path, strict = TRUE) {
 #' @rdname ReadCatalog
 #' @include utility_functions.R
 #' @export
-ReadCat192 <- function(path, strict = TRUE) {
+ReadCatSNS192 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
@@ -117,7 +117,7 @@ ReadCat192 <- function(path, strict = TRUE) {
 
 #' @rdname ReadCatalog
 #' @export
-ReadCat1536 <- function(path, strict = TRUE) {
+ReadCatSNS1536 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -273,19 +273,19 @@ WriteCat <- function(ct, path, num.row, row.order, row.header, strict) {
 
 #' @rdname WriteCatalog
 #' @export
-WriteCat96 <- function(ct, path, strict = TRUE) {
+WriteCatSNS96 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 96, catalog.row.order.SNS.96, catalog.row.headers.SNS.96, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
-WriteCat192 <- function(ct, path, strict = TRUE) {
+WriteCatSNS192 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 192, catalog.row.order.SNS.192, catalog.row.headers.SNS.192, strict)
 }
 
 #' @rdname WriteCatalog
 #' @export
-WriteCat1536 <- function(ct, path, strict = TRUE) {
+WriteCatSNS1536 <- function(ct, path, strict = TRUE) {
   WriteCat(ct, path, 1536, catalog.row.order.SNS.1536,
            catalog.row.headers.SNS.1536, strict)
 }

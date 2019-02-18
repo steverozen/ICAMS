@@ -5,6 +5,6 @@ test_that("CatDNS136ToPdf function is working properly", {
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   type <- rep(c("density", "counts"), 2)
   out <- CatDNS136ToPdf(catalog, "PlotCatDNS136.test.pdf", type = type,
-                         abundance = .abundance.4bp.GRCh37)
+                         abundance = abundance.4bp.GRCh37)
   expect_equal(out, TRUE)
 })
