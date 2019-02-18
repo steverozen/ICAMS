@@ -256,7 +256,7 @@ ReadBedTranscriptRanges <- function(path) {
   return(bed1)
 }
 
-#' Create Trinucleotide abundance file
+#' Create trinucleotide abundance file
 #'
 #' @param path Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
@@ -275,7 +275,7 @@ CreateTrinucAbundance <- function(path) {
   return(mat)
 }
 
-#' Create Dinucleotide abundance file
+#' Create dinucleotide abundance file
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
@@ -298,7 +298,7 @@ CreateDinucAbundance <- function(path) {
   return(mat)
 }
 
-#' Create Tetranucleotide abundance file
+#' Create tetranucleotide abundance file
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
