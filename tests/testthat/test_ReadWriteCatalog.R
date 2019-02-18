@@ -7,7 +7,7 @@ test_that("Functions for reading and writing catalog are working properly", {
       ReadCat1536,
       ReadCatDNS78,
       ReadCatDNS144,
-      ReadCatQUAD136,
+      ReadCatDNS136,
       ReadCatID
     )
 
@@ -17,16 +17,16 @@ test_that("Functions for reading and writing catalog are working properly", {
       WriteCat1536,
       WriteCatDNS78,
       WriteCatDNS144,
-      WriteCatQUAD136,
+      WriteCatDNS136,
       WriteCatID)
 
   fl <-
-    c("testdata/BTSG_WGS_PCAWG.96.csv",
-      "testdata/BTSG_WGS_PCAWG.192.csv",
-      "testdata/BTSG_WGS_PCAWG.1536.csv",
-      "testdata/BTSG_WGS_PCAWG.dinucs.csv",
-      "testdata/HepG2.dinucs.144.csv",
-      "testdata/HepG2.quad.136.csv",
+    c("testdata/BTSG_WGS_PCAWG.sns.96.csv",
+      "testdata/BTSG_WGS_PCAWG.sns.192.csv",
+      "testdata/BTSG_WGS_PCAWG.sns.1536.csv",
+      "testdata/BTSG_WGS_PCAWG.dns.78.csv",
+      "testdata/HepG2.dns.144.csv",
+      "testdata/HepG2.dns.136.csv",
       "testdata/BTSG_WGS_PCAWG.indels.csv"
     )
 
