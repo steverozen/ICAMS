@@ -7,7 +7,7 @@
 \alias{WriteCat1536}
 \alias{WriteCatDNS78}
 \alias{WriteCatDNS144}
-\alias{WriteCatQUAD136}
+\alias{WriteCatDNS136}
 \alias{WriteCatID}
 \title{Write Catalog Functions}
 \usage{
@@ -21,7 +21,7 @@ WriteCatDNS78(ct, path, strict = TRUE)
 
 WriteCatDNS144(ct, path, strict = TRUE)
 
-WriteCatQUAD136(ct, path, strict = TRUE)
+WriteCatDNS136(ct, path, strict = TRUE)
 
 WriteCatID(ct, path, strict = TRUE)
 }
@@ -47,7 +47,7 @@ Write a mutation catalog to a file on disk
 
 \code{WriteCatDNS144} Write a DNS 144 mutation catalog to a file on disk
 
-\code{WriteCatQUAD136} Write a 136 QUAD catalog from path
+\code{WriteCatDNS136} Write a 136 DNS catalog from path
 
 \code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk
 Please take note that the deletions Repeat Size ranges from 0 to 5+

@@ -2,27 +2,27 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
-\alias{PlotCat96}
-\alias{PlotCat192}
-\alias{PlotCat192Strand}
-\alias{PlotCat1536}
+\alias{PlotCatSNS96}
+\alias{PlotCatSNS192}
+\alias{PlotCatSNS192Strand}
+\alias{PlotCatSNS1536}
 \alias{PlotCatDNS78}
 \alias{PlotCatDNS144}
-\alias{PlotCatQUAD136}
+\alias{PlotCatDNS136}
 \alias{PlotCatID}
-\title{Plot Catalog Functions}
+\title{Plot catalog functions}
 \usage{
-PlotCat96(catalog, id = colnames(catalog), type = "density",
+PlotCatSNS96(catalog, id = colnames(catalog), type = "density",
   cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE,
   abundance = NULL)
 
-PlotCat192(catalog, id = colnames(catalog), type = "counts",
+PlotCatSNS192(catalog, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)
 
-PlotCat192Strand(catalog, id = colnames(catalog), type = "counts",
+PlotCatSNS192Strand(catalog, id = colnames(catalog), type = "counts",
   cex = 1, abundance = NULL)
 
-PlotCat1536(catalog, abundance, id = colnames(catalog))
+PlotCatSNS1536(catalog, abundance, id = colnames(catalog))
 
 PlotCatDNS78(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
@@ -30,14 +30,15 @@ PlotCatDNS78(catalog, id = colnames(catalog), type = "density",
 PlotCatDNS144(catalog, id = colnames(catalog), type = "counts",
   cex = 1, abundance = NULL)
 
-PlotCatQUAD136(catalog, id = colnames(catalog), type = "density",
+PlotCatDNS136(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
 
 PlotCatID(catalog, id = colnames(catalog), type = "counts")
 }
 \arguments{
-\item{catalog}{A matrix whose rownames indicate the mutation types
-while its columns contain the counts of each mutation type.}
+\item{catalog}{A matrix whose rownames indicate the mutation type/sequence
+context(CatDNS136) while its columns contain the counts of each mutation
+type/sequence context(CatDNS136).}
 
 \item{id}{The ID information of the sample which has mutations.}
 
@@ -47,7 +48,7 @@ type = "signature", the graph will plot mutation signatures of the sample.
 If type = "density", the graph will plot the rates of mutations per million
 nucleotides for each mutation type. (Please take note there is no "density"
 type for PlotCatID function and the option of type = "density" is not
-implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
+implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
 the current stage.)}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
@@ -70,17 +71,17 @@ strand information(if there exists), to be used only when type = "density".}
 invisible(TRUE)
 }
 \description{
-Plot the mutation catalog of one sample
+Plot the catalog of one sample which has mutations
 }
 \details{
-\code{PlotCat96} Plot the SNS 96 mutation catalog of one sample.
+\code{PlotCatSNS96} Plot the SNS 96 mutation catalog of one sample.
 
-\code{PlotCat192} Plot the SNS 192 mutation catalog of one sample.
+\code{PlotCatSNS192} Plot the SNS 192 mutation catalog of one sample.
 
-\code{PlotCat192Strand} Plot the transcription strand bias graph of 6 SNS
+\code{PlotCatSNS192Strand} Plot the transcription strand bias graph of 6 SNS
 mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
 
-\code{PlotCat1536} Plot the pentanucleotide sequence contexts for one sample,
+\code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
 normalized by pentanucleotide occurrence in the genome. The mutation types
 are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
 position, third letter T refers to the base which has mutation, next second
@@ -93,11 +94,11 @@ after mutation.
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 
-\code{PlotQUAD136} Plot the tetranucleotide sequence contexts of 10 major DNS
+\code{PlotCatDNS136} Plot the tetranucleotide sequence context of 10 major DNS
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 
 \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-(Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
+(Please take note that the deletions repeat size ranges from 0 to 5+ in the
 catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 }

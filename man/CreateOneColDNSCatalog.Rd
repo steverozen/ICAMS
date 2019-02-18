@@ -17,7 +17,7 @@ substitutions etc.}
 }
 \value{
 A list of three matrices containing the DNS catalog:
-  catDNS78, catDNS144, catQUAD136 respectively.
+  catDNS78, catDNS144, catDNS136 respectively.
 }
 \description{
 Create double nucleotide catalog for *one* sample from

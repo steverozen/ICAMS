@@ -7,7 +7,7 @@
 \alias{ReadCat1536}
 \alias{ReadCatDNS78}
 \alias{ReadCatDNS144}
-\alias{ReadCatQUAD136}
+\alias{ReadCatDNS136}
 \alias{ReadCatID}
 \title{Read Catalog Functions}
 \usage{
@@ -21,7 +21,7 @@ ReadCatDNS78(path, strict = TRUE)
 
 ReadCatDNS144(path, strict = TRUE)
 
-ReadCatQUAD136(path, strict = TRUE)
+ReadCatDNS136(path, strict = TRUE)
 
 ReadCatID(path, strict = TRUE)
 }
@@ -48,7 +48,7 @@ Read a catalog in PCAWG7 format from path
 
 \code{ReadCatDNS144} Read a 144 DNS catalog from path
 
-\code{ReadCatQUAD136} Read a 136 QUAD catalog from path
+\code{ReadCatDNS136} Read a 136 DNS catalog from path
 
 \code{ReadCatID} Read a ID (insertion/deletion) catalog from path
 Please take note that the deletions Repeat Size ranges from 0 to 5+

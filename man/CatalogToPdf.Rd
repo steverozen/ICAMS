@@ -2,26 +2,26 @@
 % Please edit documentation in R/plot.R
 \name{CatalogToPdf}
 \alias{CatalogToPdf}
-\alias{Cat96ToPdf}
-\alias{Cat192ToPdf}
+\alias{CatSNS96ToPdf}
+\alias{CatSNS192ToPdf}
 \alias{Cat192StrandToPdf}
-\alias{Cat1536ToPdf}
+\alias{CatSNS1536ToPdf}
 \alias{CatDNS78ToPdf}
 \alias{CatDNS144ToPdf}
-\alias{CatQUAD136ToPdf}
+\alias{CatDNS136ToPdf}
 \alias{CatIDToPdf}
-\title{Catalog to Pdf Functions}
+\title{Catalog to pdf functions}
 \usage{
-Cat96ToPdf(catalog, name, id = colnames(catalog), type = "density",
+CatSNS96ToPdf(catalog, name, id = colnames(catalog), type = "density",
   grid = FALSE, upper = TRUE, xlabels = TRUE, abundance = NULL)
 
-Cat192ToPdf(catalog, name, id = colnames(catalog), type = "counts",
+CatSNS192ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)
 
 Cat192StrandToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
-Cat1536ToPdf(catalog, name, id = colnames(catalog), abundance)
+CatSNS1536ToPdf(catalog, name, id = colnames(catalog), abundance)
 
 CatDNS78ToPdf(catalog, name, id = colnames(catalog), type = "density",
   abundance = NULL)
@@ -29,8 +29,8 @@ CatDNS78ToPdf(catalog, name, id = colnames(catalog), type = "density",
 CatDNS144ToPdf(catalog, name, id = colnames(catalog), type = "counts",
   cex = 1, abundance = NULL)
 
-CatQUAD136ToPdf(catalog, name, id = colnames(catalog),
-  type = "density", abundance = NULL)
+CatDNS136ToPdf(catalog, name, id = colnames(catalog), type = "density",
+  abundance = NULL)
 
 CatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 }
@@ -49,7 +49,7 @@ types in the sample. If type = "signature", the graph will plot mutation
 signatures of the sample. If type = "density", the graph will plot the
 rates of mutations per million nucleotides for each mutation type. (Please
 take note there is no "density" type for CatIDtoPdf function and the option
-of type = "density" is not implemented for function Cat192ToPdf,
+of type = "density" is not implemented for function CatSNS192ToPdf,
 Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)}
 
 \item{grid}{A logical value indicating whether to draw the grid lines in the
@@ -74,17 +74,17 @@ invisible(TRUE)
 Plot the mutation catalog of different samples to a PDF file
 }
 \details{
-\code{Cat96ToPdf} Plot the SNS 96 mutation catalog of different samples
+\code{CatSNS96ToPdf} Plot the SNS 96 mutation catalog of different samples
 to a PDF file.
 
-\code{Cat192ToPdf} Plot the SNS 192 mutation catalog of different samples
+\code{CatSNS192ToPdf} Plot the SNS 192 mutation catalog of different samples
 to a PDF file.
 
 \code{Cat192StrandToPdf} Plot the transcription strand bias graph of
 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 of different samples to a PDF file.
 
-\code{Cat1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
+\code{CatSNS1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
 file. The mutation types are in six-letters like CATTAT, first 2-letters CA
 refers to (-2, -1) position, third letter T refers to the base which has
 mutation, next second 2-letters TA refers to (+1, +2) position, last letter T
@@ -98,7 +98,7 @@ to a PDF file.
 "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples
 to a PDF file.
 
-\code{CatQUAD136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
+\code{CatDNS136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
 DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples to a PDF file.
 

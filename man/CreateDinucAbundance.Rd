@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateDinucAbundance}
 \alias{CreateDinucAbundance}
-\title{Create Dinucleotide abundance file}
+\title{Create dinucleotide abundance file}
 \usage{
 CreateDinucAbundance(path)
 }
@@ -15,5 +15,5 @@ A matrix whose row names indicate 10 different types of 2 base pairs
   combinations while its column contains the occurrences of each type.
 }
 \description{
-Create Dinucleotide abundance file
+Create dinucleotide abundance file
 }

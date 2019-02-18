@@ -10,7 +10,7 @@
 \alias{catalog.row.headers.DNS.144}
 \alias{catalog.row.headers.DNS.136}
 \alias{catalog.row.headers.ID}
-\title{Row Headers Information for Writing a Catalog to Disk in PCAWG7 Format}
+\title{Row headers information for writing a catalog to disk in PCAWG7 format}
 \format{A data frame which contains the row headers information for writing
   a catalog to disk in PCAWG7 format.}
 \usage{
@@ -29,7 +29,7 @@ catalog.row.headers.DNS.136
 catalog.row.headers.ID
 }
 \description{
-Row Headers Information for Writing a Catalog to Disk in PCAWG7 Format
+Row headers information for writing a catalog to disk in PCAWG7 format
 }
 \note{
 In the ID (insertion and deletion) catalog, the deletions repeat size

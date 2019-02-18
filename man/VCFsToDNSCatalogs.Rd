@@ -17,13 +17,13 @@ output catalog.}
 \item{trans.ranges}{A data frame containing transcript ranges.}
 }
 \value{
-A list of 3 catalogs, one each for DNS78, DNS144, QUAD136:
+A list of 3 catalogs, one each for DNS78, DNS144, DNS136:
   catDNS78
   catDNS144
-  catQUAD136
+  catDNS136
 }
 \description{
-Create a list of 3 catalogs (one each for DNS78, DNS144 and QUAD136)
+Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)
 out of the contents in list.of.DNS.vcfs. The VCFs must not contain
 any type of mutation other then DNSs.
 }

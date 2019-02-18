@@ -10,7 +10,7 @@
 \alias{catalog.row.order.DNS.144}
 \alias{catalog.row.order.DNS.136}
 \alias{catalog.row.order.ID}
-\title{Canonical Order of Row Names in a Catalog}
+\title{Canonical order of row names in a catalog}
 \format{A string of characters indicating the canonical order of row names in
   a catalog.}
 \usage{
@@ -29,7 +29,7 @@ catalog.row.order.DNS.136
 catalog.row.order.ID
 }
 \description{
-Canonical Order of Row Names in a Catalog
+Canonical order of row names in a catalog
 }
 \note{
 In the ID (insertion and deletion) catalog, the deletions repeat size
