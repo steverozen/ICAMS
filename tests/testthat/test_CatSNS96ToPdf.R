@@ -1,7 +1,7 @@
-context("Cat96ToPdf")
+context("CatSNS96ToPdf")
 
-test_that("Cat96ToPdf function is working properly", {
-  catalog <- ReadCat96("testdata/regress.cat.96.csv")
+test_that("CatSNS96ToPdf function is working properly", {
+  catalog <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   cat1 <- catalog[, 1, drop = FALSE]
   cat2 <- catalog[, 2, drop = FALSE]
@@ -12,8 +12,8 @@ test_that("Cat96ToPdf function is working properly", {
   type <- c("counts", "signature", "density")
   upper <- c(TRUE, rep(FALSE, 7), TRUE, rep(FALSE, 3))
   xlabels <- c(rep(FALSE, 7), TRUE, rep(FALSE, 3), TRUE)
-  out <- Cat96ToPdf(cat, "PlotCat96.test.pdf",
+  out <- CatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
                     type = rep(type, 4), grid = FALSE, upper = upper,
-                    xlabels = xlabels, abundance = .abundance.3bp)
+                    xlabels = xlabels, abundance = .abundance.3bp.GRCh37)
   expect_equal(out, TRUE)
 })
