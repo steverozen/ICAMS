@@ -1,15 +1,15 @@
-#' Plot Catalog Functions
+#' Plot catalog functions
 #'
-#' Plot the mutation catalog of one sample
+#' Plot the catalog of one sample which has mutations
 #'
-#' \code{PlotCat96} Plot the SNS 96 mutation catalog of one sample.
+#' \code{PlotCatSNS96} Plot the SNS 96 mutation catalog of one sample.
 #'
-#' \code{PlotCat192} Plot the SNS 192 mutation catalog of one sample.
+#' \code{PlotCatSNS192} Plot the SNS 192 mutation catalog of one sample.
 #'
-#' \code{PlotCat192Strand} Plot the transcription strand bias graph of 6 SNS
+#' \code{PlotCatSNS192Strand} Plot the transcription strand bias graph of 6 SNS
 #' mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
 #'
-#' \code{PlotCat1536} Plot the pentanucleotide sequence contexts for one sample,
+#' \code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
 #' normalized by pentanucleotide occurrence in the genome. The mutation types
 #' are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
 #' position, third letter T refers to the base which has mutation, next second
@@ -22,15 +22,16 @@
 #' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 #'
-#' \code{PlotQUAD136} Plot the tetranucleotide sequence contexts of 10 major DNS
+#' \code{PlotCatDNS136} Plot the tetranucleotide sequence context of 10 major DNS
 #' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 #'
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-#' (Please take note that the deletions Repeat Size ranges from 0 to 5+ in the
+#' (Please take note that the deletions repeat size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
-#' @param catalog A matrix whose rownames indicate the mutation types
-#'   while its columns contain the counts of each mutation type.
+#' @param catalog A matrix whose rownames indicate the mutation type/sequence
+#'   context(CatDNS136) while its columns contain the counts of each mutation
+#'   type/sequence context(CatDNS136).
 #' @param id The ID information of the sample which has mutations.
 #' @param type A value indicating the type of graph. If type = "counts", the
 #'   graph will plot the occurrences of the mutation types in the sample. If
@@ -38,7 +39,7 @@
 #'   If type = "density", the graph will plot the rates of mutations per million
 #'   nucleotides for each mutation type. (Please take note there is no "density"
 #'   type for PlotCatID function and the option of type = "density" is not
-#'   implemented for function PlotCat192, PlotCat192Strand and PlotCatDNS144 at
+#'   implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
 #'   the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if there exists), y axis and its labels, x axis labels and
@@ -56,21 +57,21 @@
 NULL
 
 
-#' Catalog to Pdf Functions
+#' Catalog to pdf functions
 #'
 #' Plot the mutation catalog of different samples to a PDF file
 #'
-#' \code{Cat96ToPdf} Plot the SNS 96 mutation catalog of different samples
+#' \code{CatSNS96ToPdf} Plot the SNS 96 mutation catalog of different samples
 #' to a PDF file.
 #'
-#' \code{Cat192ToPdf} Plot the SNS 192 mutation catalog of different samples
+#' \code{CatSNS192ToPdf} Plot the SNS 192 mutation catalog of different samples
 #' to a PDF file.
 #'
 #' \code{Cat192StrandToPdf} Plot the transcription strand bias graph of
 #' 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 #' of different samples to a PDF file.
 #'
-#' \code{Cat1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
+#' \code{CatSNS1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
 #' file. The mutation types are in six-letters like CATTAT, first 2-letters CA
 #' refers to (-2, -1) position, third letter T refers to the base which has
 #' mutation, next second 2-letters TA refers to (+1, +2) position, last letter T
@@ -84,7 +85,7 @@ NULL
 #' "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples
 #' to a PDF file.
 #'
-#' \code{CatQUAD136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
+#' \code{CatDNS136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
 #' DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") of different samples to a PDF file.
 #'
@@ -103,7 +104,7 @@ NULL
 #'   signatures of the sample. If type = "density", the graph will plot the
 #'   rates of mutations per million nucleotides for each mutation type. (Please
 #'   take note there is no "density" type for CatIDtoPdf function and the option
-#'   of type = "density" is not implemented for function Cat192ToPdf,
+#'   of type = "density" is not implemented for function CatSNS192ToPdf,
 #'   Cat192StrandToPdf and CatDNS144ToPdf at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   y axis labels, sample name and legend(if there exists) should be magnified
@@ -127,7 +128,7 @@ NULL
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat96 <-
+PlotCatSNS96 <-
   function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
     stopifnot(dim(catalog) == c(96, 1))
@@ -265,7 +266,7 @@ PlotCat96 <-
 
 #' @rdname CatalogToPdf
 #' @export
-Cat96ToPdf <-
+CatSNS96ToPdf <-
   function(catalog, name, id = colnames(catalog), type = "density",
            grid = FALSE, upper = TRUE, xlabels = TRUE, abundance = NULL) {
     # Setting the width and length for A4 size plotting
@@ -293,7 +294,7 @@ Cat96ToPdf <-
     }
 
     for (i in 1 : n) {
-      PlotCat96(catalog[, i, drop = FALSE],
+      PlotCatSNS96(catalog[, i, drop = FALSE],
                 id = id[i],
                 type = type[i],
                 grid = grid[i],
@@ -308,7 +309,7 @@ Cat96ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat192 <- function(catalog, id = colnames(catalog), type = "counts",
+PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
                        cex = 0.8, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -423,7 +424,7 @@ PlotCat192 <- function(catalog, id = colnames(catalog), type = "counts",
 
 #' @rdname CatalogToPdf
 #' @export
-Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
+CatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
                         type = "counts", cex = 0.8, abundance = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -438,7 +439,7 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
   }
 
   for (i in 1 : n) {
-    PlotCat192(catalog[, i, drop = FALSE],
+    PlotCatSNS192(catalog[, i, drop = FALSE],
                id = id[i], type = type[i],
                cex = cex, abundance = abundance)
   }
@@ -449,7 +450,7 @@ Cat192ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat192Strand <- function(catalog, id = colnames(catalog), type = "counts",
+PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts",
                              cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -546,7 +547,7 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
   }
 
   for (i in 1 : n) {
-    PlotCat192Strand(catalog[, i, drop = FALSE],
+    PlotCatSNS192Strand(catalog[, i, drop = FALSE],
                      id = id[i], type = type[i],
                      cex = cex, abundance = abundance)
   }
@@ -558,7 +559,7 @@ Cat192StrandToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCat1536 <- function(catalog, abundance, id = colnames(catalog)) {
+PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -702,14 +703,14 @@ PlotCat1536 <- function(catalog, abundance, id = colnames(catalog)) {
 
 #' @rdname CatalogToPdf
 #' @export
-Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
+CatSNS1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
 
   grDevices::cairo_pdf(name, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
 
   for (i in 1 : n) {
-    PlotCat1536(catalog[, i, drop = FALSE],
+    PlotCatSNS1536(catalog[, i, drop = FALSE],
                 id = id[i],
                 abundance = abundance)
   }
@@ -719,7 +720,7 @@ Cat1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
 }
 
 ###############################################################################
-# Plotting functions for DNS78, DNS144 and QUAD136 catalog start here
+# Plotting functions for DNS78, DNS144 and DNS136 catalog start here
 ###############################################################################
 
 #' @rdname PlotCatalog
@@ -970,7 +971,7 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
+PlotCatDNS136 <- function(catalog, id = colnames(catalog),
                            type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
 
@@ -1113,7 +1114,7 @@ PlotCatQUAD136 <- function(catalog, id = colnames(catalog),
 
 #' @rdname CatalogToPdf
 #' @export
-CatQUAD136ToPdf <- function(catalog, name, id = colnames(catalog),
+CatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
                             type = "density", abundance = NULL) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
