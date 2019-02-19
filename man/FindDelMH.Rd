@@ -26,7 +26,7 @@ Return the length of microhomology at a deletion
 }
 \details{
 This function is primarily for internal use, but we export
-it so that the somewhat complicated
+it so that the
 logic behind it will be documented for users.
 
 Example:
@@ -43,7 +43,7 @@ GG------CTAGTT GGCTAGTT GG[CTAGAA]CTAGTT
 Presumed repair mechanism leading to this:
 
 \preformatted{
- ....
+  ....
 GGCTAGAACTAGTT
 CCGATCTTGATCAA
 

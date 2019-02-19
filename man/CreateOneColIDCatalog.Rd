@@ -33,9 +33,10 @@ A list with two elemsents:
   ID.cat:   A 1-column matrix containing the mutation catalog information.
   problems: Locations of neighboring indels or indels neighboring SBS.
             In the future we might handle these depending on what we
-            find in the indel calls from different variant callers.
-TODO(steve) Is problems implemented?
+            find in the indel calls from different variant callers. This
+            is not implemented at present.
 }
 \description{
 Create one column of an indel catalog from one VCF
 }
+\keyword{internal}
