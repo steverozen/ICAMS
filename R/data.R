@@ -115,16 +115,28 @@ NULL
 "catalog.row.headers.ID"
 
 #' @rdname AbundanceFile
-"abundance.2bp.GRCh37"
+"abundance.2bp.exome.GRCh37"
 
 #' @rdname AbundanceFile
-"abundance.3bp.GRCh37"
+"abundance.2bp.genome.GRCh37"
 
 #' @rdname AbundanceFile
-"abundance.4bp.GRCh37"
+"abundance.3bp.exome.GRCh37"
 
 #' @rdname AbundanceFile
-"abundance.5bp.GRCh37"
+"abundance.3bp.genome.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.4bp.exome.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.4bp.genome.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.5bp.exome.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.5bp.genome.GRCh37"
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh37"

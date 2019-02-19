@@ -176,7 +176,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @details
 #'
 #' This function is primarily for internal use, but we export
-#' it so that the somewhat complicated
+#' it so that the
 #' logic behind it will be documented for users.
 #'
 #' Example:
@@ -193,7 +193,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' Presumed repair mechanism leading to this:
 #'
 #' \preformatted{
-#'  ....
+#'   ....
 #' GGCTAGAACTAGTT
 #' CCGATCTTGATCAA
 #'
@@ -591,28 +591,6 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
   return(ret)
 }
 
-if (FALSE)  {
-  MakeTestDelVCF <- function() {
-    return(
-      data.frame(
-        seq.context = c(
-          "GAGGTATACATTGTGTTTACTTTTTCTATGTTTATGTACAATAGTAATATCTTTATAGTTATACTAACGTTATTAAAATAAGTAATTATATTAACTAAGTTTAGGACCAGTTTCTAGT",
-          "GACCACTGAGAACCCAGGTTTTAGGCCCACCCCGGTACCAGGCCAGCCCCTGT",
-          "AAGGTTTGGCTTCA",
-          "ATTAAAATGGGGTT"),
-        REF = c("ATAGTTATAC", "GCCCA", "TG", "AT"),
-        ALT = c("A", "G", "T", "A"),
-        seq.context.width = c(54, 24, 6, 6),
-        stringsAsFactors = FALSE))
-  }
-
-# debug(ICAMS:::CanonicalizeID)
-# debug(ICAMS:::CreateOneColIDCatalog)
-create.one.col.delete.test <-
-  ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF, NULL, trace = 2)
-save(create.one.col.delete.test, file="tests/testthat/create_one_col_delete_test.Rdata")
-}
-
 #' @title Create one column of an indel catalog from one VCF
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
@@ -640,8 +618,10 @@ save(create.one.col.delete.test, file="tests/testthat/create_one_col_delete_test
 #'   ID.cat:   A 1-column matrix containing the mutation catalog information.
 #'   problems: Locations of neighboring indels or indels neighboring SBS.
 #'             In the future we might handle these depending on what we
-#'             find in the indel calls from different variant callers.
-#' TODO(steve) Is problems implemented?
+#'             find in the indel calls from different variant callers. This
+#'             is not implemented at present.
+#'
+#' @keywords internal
 CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
   # TODO(steve): more checking of the ID VCF here
 
