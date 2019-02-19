@@ -974,6 +974,7 @@ CatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 PlotCatDNS136 <- function(catalog, id = colnames(catalog),
                            type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
+
   old <- par(no.readonly = TRUE)
   # Specify the lay out of the plotting
   invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
@@ -1105,10 +1106,10 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
   } else {
     stop('Please specify the correct type: "density" or "counts"')
   }
-  text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
-       paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
-  text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
-       paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+  text(rep(-0.1, 5), seq(0.7, 0.3, length.out = 5),
+       paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
+  text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
+       paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   on.exit(par(old), add = TRUE)
   invisible(TRUE)
 }
@@ -1119,7 +1120,6 @@ CatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
                             type = "density", abundance = NULL) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
-  old <- par(no.readonly = TRUE)
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -1270,7 +1270,6 @@ CatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
          paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
   }
   invisible(grDevices::dev.off())
-  on.exit(par(old), add = TRUE)
   invisible(TRUE)
 }
 
