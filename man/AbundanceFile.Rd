@@ -3,20 +3,32 @@
 \docType{data}
 \name{AbundanceFile}
 \alias{AbundanceFile}
-\alias{abundance.2bp.GRCh37}
-\alias{abundance.3bp.GRCh37}
-\alias{abundance.4bp.GRCh37}
-\alias{abundance.5bp.GRCh37}
+\alias{abundance.2bp.exome.GRCh37}
+\alias{abundance.2bp.genome.GRCh37}
+\alias{abundance.3bp.exome.GRCh37}
+\alias{abundance.3bp.genome.GRCh37}
+\alias{abundance.4bp.exome.GRCh37}
+\alias{abundance.4bp.genome.GRCh37}
+\alias{abundance.5bp.exome.GRCh37}
+\alias{abundance.5bp.genome.GRCh37}
 \title{Nucleotide abundance file}
 \format{A matrix containing nucleotide abundance information for different organism.}
 \usage{
-abundance.2bp.GRCh37
+abundance.2bp.exome.GRCh37
 
-abundance.3bp.GRCh37
+abundance.2bp.genome.GRCh37
 
-abundance.4bp.GRCh37
+abundance.3bp.exome.GRCh37
 
-abundance.5bp.GRCh37
+abundance.3bp.genome.GRCh37
+
+abundance.4bp.exome.GRCh37
+
+abundance.4bp.genome.GRCh37
+
+abundance.5bp.exome.GRCh37
+
+abundance.5bp.genome.GRCh37
 }
 \description{
 Nucleotide abundance information for a particular organism

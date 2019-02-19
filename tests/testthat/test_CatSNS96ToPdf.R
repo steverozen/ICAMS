@@ -12,8 +12,11 @@ test_that("CatSNS96ToPdf function is working properly", {
   type <- c("counts", "signature", "density")
   upper <- c(TRUE, rep(FALSE, 7), TRUE, rep(FALSE, 3))
   xlabels <- c(rep(FALSE, 7), TRUE, rep(FALSE, 3), TRUE)
-  out <- CatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
-                    type = rep(type, 4), grid = FALSE, upper = upper,
-                    xlabels = xlabels, abundance = abundance.3bp.GRCh37)
+  out <-
+    CatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
+                  type = rep(type, 4), grid = FALSE,
+                  upper = upper,
+                  xlabels = xlabels,
+                  abundance = abundance.3bp.genome.GRCh37)
   expect_equal(out, TRUE)
 })

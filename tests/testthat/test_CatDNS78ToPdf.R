@@ -10,7 +10,9 @@ test_that("CatDNS78ToPdf function is working properly", {
   cat <- cbind(cat1, cat1, cat1, cat2, cat2, cat2, cat3, cat3, cat3,
                cat4, cat4, cat4)
   type <- c("counts", "signature", "density")
-  out <- CatDNS78ToPdf(cat, "PlotCatDNS78.test.pdf", type = rep(type, 4),
-                       abundance = abundance.2bp.GRCh37)
+  out <-
+    CatDNS78ToPdf(cat, "PlotCatDNS78.test.pdf",
+                  type = rep(type, 4),
+                  abundance = abundance.2bp.genome.GRCh37)
   expect_equal(out, TRUE)
 })
