@@ -1,59 +1,58 @@
-#' Global data used in ICAMS package
+#' Canonical order of row names in a catalog
+#' @format A string of characters indicating the canonical order of row names in
+#'   a catalog.
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+#' @name CatalogRowOrder
+NULL
+
+#' Row headers information for writing a catalog to disk in PCAWG7 format
+#' @format A data frame which contains the row headers information for writing
+#'   a catalog to disk in PCAWG7 format.
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+#' @name CatalogRowHeaders
+NULL
+
+#' Nucleotide abundance file
 #'
-#' Documentation for the global data used in ICAMS package
+#' Nucleotide abundance information for a particular organism
 #'
-#' \code{catalog.row.order.ID} The canonical order of row names in a ID
-#' (insertion and deletion) catalog. (Please take note that the deletions Repeat
-#' Size ranges from 0 to 5+ in the catalog, but for plotting and end user
-#' documentation it ranges from 1 to 6+.)
-#'
-#' \code{catalog.row.headers.SNS.96} A data frame which contains the row headers
-#' information for writing a SNS 96 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.SNS.192} A data frame which contains the row headers
-#' information for writing a SNS 192 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.SNS.1536} A data frame which contains the row headers
-#' information for writing a SNS 1536 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.DNS.78} A data frame which contains the row headers
-#' information fo writing a DNS 78 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.DNS.144} A data frame which contains the row headers
-#' information for writing a DNS 144 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.DNS.136} A data frame which contains the row headers
-#' information for writing a QUAD 136 catalog to disk in PCAWG7 format.
-#'
-#' \code{catalog.row.headers.ID} A data frame which contains the row headers
-#' information for writing a ID (insertion and deletion) catalog to disk in
-#' PCAWG7 format. (Please take note that the deletions Repeat Size ranges from 0
-#' to 5+ in the catalog, but for plotting and end user documentation it ranges
-#' from 1 to 6+.)
-#'
-#' \code{abundance.2bp} A matrix containing dinucleotide abundance information
+#' \code{abundance.2bp.GRCh37} A matrix containing dinucleotide abundance information
 #' for human GRCh37. Its row names indicate 10 different types of 2 base pairs
 #' combinations while its column contains the occurrences of each type. It can
 #' be used in plotting functions \code{\link{PlotCatDNS78}} and
 #' \code{\link{CatDNS78ToPdf}}.
 #'
-#' \code{abundance.3bp} A matrix containing trinucleotide abundance information
+#' \code{abundance.3bp.GRCh37} A matrix containing trinucleotide abundance information
 #' for human GRCh37. Its row names indicate 32 different types of 3 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCat96}} and
-#' \code{\link{Cat96ToPdf}}.
+#' be used in plotting functions \code{\link{PlotCatSNS96}} and
+#' \code{\link{CatSNS96ToPdf}}.
 #'
-#' \code{abundance.4bp} A matrix containing tetranucleotide abundance
+#' \code{abundance.4bp.GRCh37} A matrix containing tetranucleotide abundance
 #' information for human GRCh37. Its row names indicate 136 different types of 4
 #' base pairs combinations while its column contains the occurrences of each
-#' type. It can be used in plotting functions \code{\link{PlotCatQUAD136}} and
-#' \code{\link{CatQUAD136ToPdf}}.
+#' type. It can be used in plotting functions \code{\link{PlotCatDNS136}} and
+#' \code{\link{CatDNS136ToPdf}}.
 #'
-#' \code{abundance.5bp} A matrix containing pentanucleotide abundance
+#' \code{abundance.5bp.GRCh37} A matrix containing pentanucleotide abundance
 #' information for human GRCh37. Its row names indicate 512 different types of 5
 #' base pairs combinations while its column contains the occurrences of each
-#' type. It can be used in plotting functions \code{\link{PlotCat1536}} and
-#' \code{\link{Cat1536ToPdf}}.
+#' type. It can be used in plotting functions \code{\link{PlotCatSNS1536}} and
+#' \code{\link{CatSNS1536ToPdf}}.
+#' @format A matrix containing nucleotide abundance information for different organism.
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+#' @name AbundanceFile
+NULL
+
+#' Transcript ranges data
+#'
+#' Transcript ranges and strand information for a particular organism
 #'
 #' \code{trans.ranges.GRCh37} A data.table which contains transcript range and
 #' strand information for human GRCh37. It is derived from a raw \strong{GFF3}
@@ -68,35 +67,10 @@
 #' and strand information for human GRCh37, which is derived from a raw
 #' \strong{BED} format file and is keyed by chrom, chromStart, and chromEnd.
 #' This is mostly for testing purpose, may be removed in the future.
-#'
-#' \code{to.reorder.SNS.192.for.plotting} A reordering of row names in a SNS 192
-#' catalog for plotting purpose. It is used in plotting functions
-#' \code{\link{PlotCat192}} and \code{\link{PlotCat192Strand}}.
-#'
-#' \code{to.reorder.DNS.144.for.plotting} A reordering of row names in a DNS 144
-#' catalog for plotting purpose. It is used in plotting function
-#' \code{\link{PlotCatDNS144}}.
-#'
-#' \code{order.for.DNS.136.plotting} An order of tetranucleotides for plotting
-#' QUAD 136 catalog. It is used in plotting functions
-#' \code{\link{PlotCatQUAD136}} and \code{\link{CatQUAD136ToPdf}}.
-#'
-#' \code{empty.cats} A list of 6 empty catalogs (SNS 96, SNS 192, SNS 1536, DNS
-#' 78, DNS 144, QUAD 136). This is mainly used in the internal functions in
-#' ICAMS package.
-#'
-#' @name data
+#' @format A data.table which contains transcript range and strand information
+#'   for a particular organism.
+#' @name TranscriptRanges
 NULL
-
-#' Canonical Order of Row Names in a Catalog
-#' @format A string of characters indicating the canonical order of row names in
-#'   a catalog.
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
-#' @name CatalogRowOrder
-NULL
-
 
 #' @rdname CatalogRowOrder
 "catalog.row.order.SNS.96"
@@ -118,3 +92,42 @@ NULL
 
 #' @rdname CatalogRowOrder
 "catalog.row.order.ID"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.SNS.96"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.SNS.192"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.SNS.1536"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.DNS.78"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.DNS.144"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.DNS.136"
+
+#' @rdname CatalogRowHeaders
+"catalog.row.headers.ID"
+
+#' @rdname AbundanceFile
+"abundance.2bp.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.3bp.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.4bp.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.5bp.GRCh37"
+
+#' @rdname TranscriptRanges
+"trans.ranges.GRCh37"
+
+#' @rdname TranscriptRanges
+"old.trans.ranges.GRCh37"
