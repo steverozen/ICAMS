@@ -3,7 +3,7 @@
 #'
 #' @export
 TestStrelkaSNSCatalog <- function() {
-  expected.cat96 <-
+  expected.catSNS96 <-
     structure(
       c(25L, 77L, 1L, 38L, 59L, 28L, 8L, 71L, 46L, 191L,
         6L, 28L, 26L, 40L, 3L, 67L, 15L, 10L, 2L, 19L, 7L, 6L, 4L, 23L,
@@ -29,7 +29,7 @@ TestStrelkaSNSCatalog <- function() {
             "CTTG", "GTAG", "GTCG", "GTGG", "GTTG", "TTAG", "TTCG", "TTGG",
             "TTTG"), NULL))
 
-  expected.cat192 <-
+  expected.catSNS192 <-
     structure(
       c(0L, 0L, 1L, 2L, 3L, 14L, 2L, 4L, 0L, 7L, 7L, 2L,
         0L, 1L, 2L, 3L, 5L, 2L, 18L, 3L, 1L, 2L, 10L, 8L, 2L, 16L, 19L,
@@ -74,7 +74,7 @@ TestStrelkaSNSCatalog <- function() {
             "ATCG", "ATGG", "ATTG", "CTAG", "CTCG", "CTGG", "CTTG", "GTAG",
             "GTCG", "GTGG", "GTTG", "TTAG", "TTCG", "TTGG", "TTTG"), NULL))
 
-  expected.cat1536 <-
+  expected.catSNS1536 <-
     structure(
       c(5L, 0L, 4L, 1L, 6L, 10L, 0L, 12L, 0L, 0L, 0L, 1L,
         5L, 0L, 5L, 1L, 2L, 7L, 2L, 5L, 2L, 2L, 3L, 4L, 2L, 1L, 0L, 0L,
@@ -400,7 +400,7 @@ TestStrelkaSNSCatalog <- function() {
                "TTTTTG"), NULL))
 
   vcf.df <-
-    ReadStrelkaVCF(system.file("extdata",
+    ReadStrelkaSNSVCF(system.file("extdata",
                    "cis_8wks_05_cl4_SNVresult.vcf",
                    package = "ICAMS",
                    mustWork = TRUE))
@@ -410,19 +410,19 @@ TestStrelkaSNSCatalog <- function() {
   SNS.vcf <- AddSequence(SNS.vcf)
   CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
-  SNS.vcf <- AddTranscript(SNS.vcf, .trans.ranges.GRCh37)
+  SNS.vcf <- AddTranscript(SNS.vcf, trans.ranges.GRCh37)
 
   cats <- CreateOneColSNSCatalog(SNS.vcf)
 
-  stopifnot(sum(cats$cat96) == 3336)
-  stopifnot(sum(cats$cat1536) == 3336)
-  stopifnot(sum(cats$cat192) == 1520)
+  stopifnot(sum(cats$catSNS96) == 3336)
+  stopifnot(sum(cats$catSNS1536) == 3336)
+  stopifnot(sum(cats$catSNS192) == 1520)
 
-  stopifnot(cats$cat96 == expected.cat96)
+  stopifnot(cats$catSNS96 == expected.catSNS96)
 
-  stopifnot(cats$cat192 == expected.cat192)
+  stopifnot(cats$catSNS192 == expected.catSNS192)
 
-  stopifnot(cats$cat1536 == expected.cat1536)
+  stopifnot(cats$catSNS1536 == expected.catSNS1536)
 
   cat("ok\n")
 }
@@ -432,7 +432,7 @@ TestStrelkaSNSCatalog <- function() {
 #'
 #' @export
 NewTestStrelkaSNSCatalog <- function() {
-  expected.cat96 <-
+  expected.catSNS96 <-
     structure(
       c(98L, 247L, 7L, 116L, 184L, 89L, 11L, 232L, 267L,
         570L, 8L, 127L, 109L, 125L, 8L, 167L, 45L, 31L, 5L, 72L, 30L,
@@ -459,7 +459,7 @@ NewTestStrelkaSNSCatalog <- function() {
             "CTTG", "GTAG", "GTCG", "GTGG", "GTTG", "TTAG", "TTCG", "TTGG",
             "TTTG"), NULL))
 
-  expected.cat192 <-
+  expected.catSNS192 <-
     structure(
       c(6L, 4L, 11L, 7L, 12L, 5L, 17L, 10L, 6L, 17L, 13L,
         6L, 11L, 1L, 4L, 5L, 4L, 8L, 30L, 12L, 3L, 11L, 25L, 9L, 11L,
@@ -505,7 +505,7 @@ NewTestStrelkaSNSCatalog <- function() {
             "ATCG", "ATGG", "ATTG", "CTAG", "CTCG", "CTGG", "CTTG", "GTAG",
             "GTCG", "GTGG", "GTTG", "TTAG", "TTCG", "TTGG", "TTTG"), NULL))
 
-  expected.cat1536 <-
+  expected.catSNS1536 <-
     structure(
       c(14L, 6L, 5L, 8L, 16L, 37L, 3L, 53L, 0L, 1L, 0L, 0L,
         9L, 10L, 13L, 8L, 13L, 8L, 7L, 8L, 6L, 8L, 4L, 16L, 0L, 0L, 0L,
@@ -835,7 +835,7 @@ NewTestStrelkaSNSCatalog <- function() {
                "TTTTTG"), NULL))
 
   vcf.df <-
-    ReadStrelkaVCF(system.file("extdata",
+    ReadStrelkaSNSVCF(system.file("extdata",
                                "MCF10A_Carb_Low_cl2_Strelka_SNS.vcf",
                                package = "ICAMS",
                                mustWork = TRUE))
@@ -845,19 +845,19 @@ NewTestStrelkaSNSCatalog <- function() {
   SNS.vcf <- AddSequence(SNS.vcf)
   CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
-  SNS.vcf <- AddTranscript(SNS.vcf, .trans.ranges.GRCh37)
+  SNS.vcf <- AddTranscript(SNS.vcf, trans.ranges.GRCh37)
 
   cats <- CreateOneColSNSCatalog(SNS.vcf)
 
-  stopifnot(sum(cats$cat96) == 9652)
-  stopifnot(sum(cats$cat1536) == 9652)
-  stopifnot(sum(cats$cat192) == 3878)
+  stopifnot(sum(cats$catSNS96) == 9652)
+  stopifnot(sum(cats$catSNS1536) == 9652)
+  stopifnot(sum(cats$catSNS192) == 3878)
 
-  stopifnot(cats$cat96 == expected.cat96)
+  stopifnot(cats$catSNS96 == expected.catSNS96)
 
-  stopifnot(cats$cat192 == expected.cat192)
+  stopifnot(cats$catSNS192 == expected.catSNS192)
 
-  stopifnot(cats$cat1536 == expected.cat1536)
+  stopifnot(cats$catSNS1536 == expected.catSNS1536)
 
   cat("ok\n")
 }
@@ -955,7 +955,7 @@ TestStrelkaDNSCatalog <- function() {
           "TTCC", "TTCG", "TTCT", "TTGA", "TTGC", "TTGG", "TTGT", "TTTA",
           "TTTC", "TTTG", "TTTT"), NULL))
   vcf.df <-
-    ReadStrelkaVCF(system.file("extdata",
+    ReadStrelkaSNSVCF(system.file("extdata",
                                "cis_8wks_05_cl4_SNVresult.vcf",
                                package = "ICAMS",
                                mustWork = TRUE))
@@ -965,7 +965,7 @@ TestStrelkaDNSCatalog <- function() {
   DNS.vcf <- AddSequence(DNS.vcf)
   CheckSeqContextInVCF(DNS.vcf, "seq.21context")
 
-  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges.GRCh37)
+  DNS.vcf <- AddTranscript(DNS.vcf, trans.ranges.GRCh37)
 
   DNS.cat <- CreateOneColDNSCatalog(DNS.vcf)
 
@@ -1068,7 +1068,7 @@ NewTestStrelkaDNSCatalog <- function() {
           "TTCC", "TTCG", "TTCT", "TTGA", "TTGC", "TTGG", "TTGT", "TTTA",
           "TTTC", "TTTG", "TTTT"), NULL))
   vcf.df <-
-    ReadStrelkaVCF(system.file("extdata",
+    ReadStrelkaSNSVCF(system.file("extdata",
                                "MCF10A_Carb_Low_cl2_Strelka_SNS.vcf",
                                package = "ICAMS",
                                mustWork = TRUE))
@@ -1078,23 +1078,23 @@ NewTestStrelkaDNSCatalog <- function() {
   DNS.vcf <- AddSequence(DNS.vcf)
   CheckSeqContextInVCF(DNS.vcf, "seq.21context")
 
-  DNS.vcf <- AddTranscript(DNS.vcf, .trans.ranges.GRCh37)
+  DNS.vcf <- AddTranscript(DNS.vcf, trans.ranges.GRCh37)
 
   DNS.cat <- CreateOneColDNSCatalog(DNS.vcf)
 
   stopifnot(sum(DNS.cat$catDNS78) == 313)
   stopifnot(sum(DNS.cat$catDNS144) == 113)
-  stopifnot(sum(DNS.cat$catQUAD136) == 313)
+  stopifnot(sum(DNS.cat$catDNS136) == 313)
 
   stopifnot(DNS.cat$catDNS78 == expected.cat.78)
   stopifnot(DNS.cat$catDNS144 == expected.cat.144)
-  stopifnot(DNS.cat$catQUAD136 == expected.cat.136)
+  stopifnot(DNS.cat$catDNS136 == expected.cat.136)
 
   cat("ok\n")
 }
 
-#' This function is to make catalogs from the sample VCF files
-#' to compare with the expected catalog information.
+#' This function is to make catalogs from the sample Strelka SNS VCF files to
+#' compare with the expected catalog information.
 #' @export
 TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   # This function is to make catalogs from the sample VCF files
@@ -1118,35 +1118,35 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    StrelkaVCFFilesToCatalog(
+    StrelkaSNSVCFFilesToCatalog(
       files,
       genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
       # Use default transcript ranges
-      trans.ranges = .trans.ranges.GRCh37)
+      trans.ranges = trans.ranges.GRCh37)
 
   prev.catalog.192 <-
-    ReadCat192(
+    ReadCatSNS192(
       system.file("extdata",
-                  "regress.cat.192.csv",
+                  "regress.cat.sns.192.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat192 == prev.catalog.192)
+  stopifnot(cats$catSNS192 == prev.catalog.192)
 
   prev.catalog.96 <-
-    ReadCat96(
+    ReadCatSNS96(
       system.file("extdata",
-                  "regress.cat.96.csv",
+                  "regress.cat.sns.96.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat96 == prev.catalog.96)
+  stopifnot(cats$catSNS96 == prev.catalog.96)
 
   prev.catalog.1536 <-
-    ReadCat1536(
+    ReadCatSNS1536(
       system.file("extdata",
-                  "regress.cat.1536.csv",
+                  "regress.cat.sns.1536.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat1536 == prev.catalog.1536)
+  stopifnot(cats$catSNS1536 == prev.catalog.1536)
 
   prev.catalog.DNS.78<-
     ReadCatDNS78(
@@ -1156,13 +1156,13 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   mustWork = TRUE))
   stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
 
-  prev.catalog.QUAD.136<-
-    ReadCatQUAD136(
+  prev.catalog.DNS.136<-
+    ReadCatDNS136(
       system.file("extdata",
-                  "regress.cat.quad.136.csv",
+                  "regress.cat.dns.136.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$catQUAD136 == prev.catalog.QUAD.136)
+  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136)
 
   prev.catalog.DNS.144<-
     ReadCatDNS144(
@@ -1177,7 +1177,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   invisible(cats)
 }
 
-#' This function is to make catalogs from the sample VCF files
+#' This function is to make catalogs from the sample Strelka SNS VCF files
 #' to compare with the expected catalog information.
 #' @export
 NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
@@ -1187,35 +1187,35 @@ NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    StrelkaVCFFilesToCatalog(
+    StrelkaSNSVCFFilesToCatalog(
       files,
       genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
       # Use default transcript ranges
-      trans.ranges = .trans.ranges.GRCh37)
+      trans.ranges = trans.ranges.GRCh37)
 
   prev.catalog.192 <-
-    ReadCat192(
+    ReadCatSNS192(
       system.file("extdata",
-                  "new.regress.cat.192.csv",
+                  "new.regress.cat.sns.192.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat192 == prev.catalog.192)
+  stopifnot(cats$catSNS192 == prev.catalog.192)
 
   prev.catalog.96 <-
-    ReadCat96(
+    ReadCatSNS96(
       system.file("extdata",
-                  "new.regress.cat.96.csv",
+                  "new.regress.cat.sns.96.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat96 == prev.catalog.96)
+  stopifnot(cats$catSNS96 == prev.catalog.96)
 
   prev.catalog.1536 <-
-    ReadCat1536(
+    ReadCatSNS1536(
       system.file("extdata",
-                  "new.regress.cat.1536.csv",
+                  "new.regress.cat.sns.1536.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$cat1536 == prev.catalog.1536)
+  stopifnot(cats$catSNS1536 == prev.catalog.1536)
 
   prev.catalog.DNS.78<-
     ReadCatDNS78(
@@ -1225,13 +1225,13 @@ NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   mustWork = TRUE))
   stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
 
-  prev.catalog.QUAD.136<-
-    ReadCatQUAD136(
+  prev.catalog.DNS.136<-
+    ReadCatDNS136(
       system.file("extdata",
-                  "new.regress.cat.quad.136.csv",
+                  "new.regress.cat.dns.136.csv",
                   package = "ICAMS",
                   mustWork = TRUE))
-  stopifnot(cats$catQUAD136 == prev.catalog.QUAD.136)
+  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136)
 
   prev.catalog.DNS.144<-
     ReadCatDNS144(
@@ -1244,4 +1244,32 @@ NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
   cat("ok\n")
 
   invisible(cats)
+}
+
+
+#' This function is to make catalogs from the sample Strelka ID VCF files
+#' to compare with the expected catalog information.
+#' @export
+NewTestMakeCatalogFromStrelkaIDVCFs <- function() {
+  files <- c(system.file("extdata",
+                         "MCF10A_Carb_Low_cl2_INDELresult.vcf",
+                         package = "ICAMS",
+                         mustWork = TRUE))
+
+  cat.ID <-
+    StrelkaIDVCFFilesToCatalog(
+      files,
+      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5)
+
+  prev.catalog.indels<-
+    ReadCatID(
+      system.file("extdata",
+                  "new.regress.cat.indels.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cat.ID == prev.catalog.indels)
+
+  cat("ok\n")
+
+  invisible(cat.ID)
 }
