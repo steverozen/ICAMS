@@ -18,9 +18,9 @@ marks).}
 }
 \value{
 A list of 3 catalogs, one each for 96, 192, 1536:
-  cat96
-  cat192
-  cat1536
+  catSNS96
+  catSNS192
+  catSNS1536
 }
 \description{
 Create a list of 3 catalogs (one each for 96, 192, 1536)

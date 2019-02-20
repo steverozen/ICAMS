@@ -2,12 +2,12 @@
 % Please edit documentation in R/test_functions.R
 \name{TestMakeCatalogFromStrelkaSNSVCFs}
 \alias{TestMakeCatalogFromStrelkaSNSVCFs}
-\title{This function is to make catalogs from the sample VCF files
-to compare with the expected catalog information.}
+\title{This function is to make catalogs from the sample Strelka SNS VCF files to
+compare with the expected catalog information.}
 \usage{
 TestMakeCatalogFromStrelkaSNSVCFs()
 }
 \description{
-This function is to make catalogs from the sample VCF files
-to compare with the expected catalog information.
+This function is to make catalogs from the sample Strelka SNS VCF files to
+compare with the expected catalog information.
 }

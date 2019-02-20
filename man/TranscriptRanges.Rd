@@ -18,16 +18,16 @@ Transcript ranges and strand information for a particular organism
 }
 \details{
 \code{trans.ranges.GRCh37} A data.table which contains transcript range and
-strand information for human GRCh37. It is derived from a raw \strong{GFF3}
+strand information for \strong{Human} GRCh37. It is derived from a raw \strong{GFF3}
 format file, from which only the following four gene types are kept to
 facilitate transcriptional strand bias analysis: protein_coding,
 retained_intron, processed_transcript and nonsense_mediated_decay. It
 contains chromosome name, start, end position, strand information and gene
 name and is keyed by chrom, chromStart, and chromEnd. It can be used in
-function \code{\link{StrelkaVCFFilesToCatalog}}.
+function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
 
 \code{old.trans.ranges.GRCh37} A data.table which contains transcript range
-and strand information for human GRCh37, which is derived from a raw
+and strand information for \strong{Human} GRCh37, which is derived from a raw
 \strong{BED} format file and is keyed by chrom, chromStart, and chromEnd.
 This is mostly for testing purpose, may be removed in the future.
 }

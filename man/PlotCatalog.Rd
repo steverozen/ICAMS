@@ -102,3 +102,4 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 (Please take note that the deletions repeat size ranges from 0 to 5+ in the
 catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 }
+\keyword{internal}
