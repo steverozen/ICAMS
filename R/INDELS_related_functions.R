@@ -19,7 +19,7 @@ TestMutectVCFToCatalog <- function() {
   SNS.catalogs <-
     VCFsToSNSCatalogs(retval$SNS,
                       BSgenome.Hsapiens.1000genomes.hs37d5,
-                      .trans.ranges.GRCh37)
+                      trans.ranges.GRCh37)
   # test <- SplitStrelkaSNSVCF(retval$SNS)
   # cat(nrow(test[[1]], nrow(retval$SNS)), "\n")
   # TODO(steve):see if we would pick up more DNS using DNS splitting code
@@ -28,7 +28,7 @@ TestMutectVCFToCatalog <- function() {
   DNS.catalogs <-
     VCFsToDNSCatalogs(retval$DNS,
                       BSgenome.Hsapiens.1000genomes.hs37d5,
-                      .trans.ranges.GRCh37) # Note variable name changed
+                      trans.ranges.GRCh37) # Note variable name changed
 
   ID.catalog <-
     VCFsToIDCatalogs(retval$ID,
