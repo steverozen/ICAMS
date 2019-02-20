@@ -20,29 +20,89 @@ NULL
 #'
 #' Nucleotide abundance information for a particular organism
 #'
-#' \code{abundance.2bp.GRCh37} A matrix containing dinucleotide abundance information
-#' for human GRCh37. Its row names indicate 10 different types of 2 base pairs
+#' \code{abundance.2bp.genome.GRCh37}, \code{abundance.2bp.exome.GRCh37} A
+#' matrix containing dinucleotide abundance information for \strong{Human}
+#' GRCh37. Its row names indicate 10 different types of 2 base pairs
 #' combinations while its column contains the occurrences of each type. It can
 #' be used in plotting functions \code{\link{PlotCatDNS78}} and
-#' \code{\link{CatDNS78ToPdf}}.
+#' \code{\link{PlotCatDNS78ToPdf}}.
 #'
-#' \code{abundance.3bp.GRCh37} A matrix containing trinucleotide abundance information
-#' for human GRCh37. Its row names indicate 32 different types of 3 base pairs
+#' \code{abundance.2bp.genome.GRCh38}, \code{abundance.2bp.exome.GRCh38} A
+#' matrix containing dinucleotide abundance information for \strong{Human}
+#' GRCh38. Its row names indicate 10 different types of 2 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatDNS78}} and
+#' \code{\link{PlotCatDNS78ToPdf}}.
+#'
+#' \code{abundance.2bp.genome.GRCm38}, \code{abundance.2bp.exome.GRCm38} A
+#' matrix containing dinucleotide abundance information for \strong{Mouse}
+#' GRCm38. Its row names indicate 10 different types of 2 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatDNS78}} and
+#' \code{\link{PlotCatDNS78ToPdf}}.
+#'
+#' \code{abundance.3bp.genome.GRCh37}, \code{abundance.3bp.exome.GRCh37} A
+#' matrix containing trinucleotide abundance information for \strong{Human}
+#' GRCh37. Its row names indicate 32 different types of 3 base pairs
 #' combinations while its column contains the occurrences of each type. It can
 #' be used in plotting functions \code{\link{PlotCatSNS96}} and
-#' \code{\link{CatSNS96ToPdf}}.
+#' \code{\link{PlotCatSNS96ToPdf}}.
 #'
-#' \code{abundance.4bp.GRCh37} A matrix containing tetranucleotide abundance
-#' information for human GRCh37. Its row names indicate 136 different types of 4
-#' base pairs combinations while its column contains the occurrences of each
-#' type. It can be used in plotting functions \code{\link{PlotCatDNS136}} and
-#' \code{\link{CatDNS136ToPdf}}.
+#' \code{abundance.3bp.genome.GRCh38}, \code{abundance.3bp.exome.GRCh38} A
+#' matrix containing trinucleotide abundance information for \strong{Human}
+#' GRCh38. Its row names indicate 32 different types of 3 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatSNS96}} and
+#' \code{\link{PlotCatSNS96ToPdf}}.
 #'
-#' \code{abundance.5bp.GRCh37} A matrix containing pentanucleotide abundance
-#' information for human GRCh37. Its row names indicate 512 different types of 5
-#' base pairs combinations while its column contains the occurrences of each
-#' type. It can be used in plotting functions \code{\link{PlotCatSNS1536}} and
-#' \code{\link{CatSNS1536ToPdf}}.
+#' \code{abundance.3bp.genome.GRCm37}, \code{abundance.3bp.exome.GRCm37} A
+#' matrix containing trinucleotide abundance information for \strong{Mouse}
+#' GRCm37. Its row names indicate 32 different types of 3 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatSNS96}} and
+#' \code{\link{PlotCatSNS96ToPdf}}.
+#'
+#' \code{abundance.4bp.genome.GRCh37}, \code{abundance.4bp.exome.GRCh37} A
+#' matrix containing tetranucleotide abundance information for \strong{Human}
+#' GRCh37. Its row names indicate 136 different types of 4 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatDNS136}} and
+#' \code{\link{PlotCatDNS136ToPdf}}.
+#'
+#' \code{abundance.4bp.genome.GRCh38}, \code{abundance.4bp.exome.GRCh38} A
+#' matrix containing tetranucleotide abundance information for \strong{Human}
+#' GRCh38. Its row names indicate 136 different types of 4 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatDNS136}} and
+#' \code{\link{PlotCatDNS136ToPdf}}.
+#'
+#' \code{abundance.4bp.genome.GRCm37}, \code{abundance.4bp.exome.GRCm37} A
+#' matrix containing tetranucleotide abundance information for \strong{Mouse}
+#' GRCm37. Its row names indicate 136 different types of 4 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatDNS136}} and
+#' \code{\link{PlotCatDNS136ToPdf}}.
+#'
+#' \code{abundance.5bp.genome.GRCh37}, \code{abundance.5bp.exome.GRCh37} A
+#' matrix containing pentanucleotide abundance information for \strong{Human}
+#' GRCh37. Its row names indicate 512 different types of 5 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
+#' \code{\link{PlotCatSNS1536ToPdf}}.
+#'
+#' \code{abundance.5bp.genome.GRCh38}, \code{abundance.5bp.exome.GRCh38} A
+#' matrix containing pentanucleotide abundance information for \strong{Human}
+#' GRCh38. Its row names indicate 512 different types of 5 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
+#' \code{\link{PlotCatSNS1536ToPdf}}.
+#'
+#' \code{abundance.5bp.genome.GRCm37}, \code{abundance.5bp.exome.GRCm37} A
+#' matrix containing pentanucleotide abundance information for \strong{Mouse}
+#' GRCm37. Its row names indicate 512 different types of 5 base pairs
+#' combinations while its column contains the occurrences of each type. It can
+#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
+#' \code{\link{PlotCatSNS1536ToPdf}}.
 #' @format A matrix containing nucleotide abundance information for different organism.
 #' @note In the ID (insertion and deletion) catalog, the deletions repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -55,16 +115,16 @@ NULL
 #' Transcript ranges and strand information for a particular organism
 #'
 #' \code{trans.ranges.GRCh37} A data.table which contains transcript range and
-#' strand information for human GRCh37. It is derived from a raw \strong{GFF3}
+#' strand information for \strong{Human} GRCh37. It is derived from a raw \strong{GFF3}
 #' format file, from which only the following four gene types are kept to
 #' facilitate transcriptional strand bias analysis: protein_coding,
 #' retained_intron, processed_transcript and nonsense_mediated_decay. It
 #' contains chromosome name, start, end position, strand information and gene
 #' name and is keyed by chrom, chromStart, and chromEnd. It can be used in
-#' function \code{\link{StrelkaVCFFilesToCatalog}}.
+#' function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
 #'
 #' \code{old.trans.ranges.GRCh37} A data.table which contains transcript range
-#' and strand information for human GRCh37, which is derived from a raw
+#' and strand information for \strong{Human} GRCh37, which is derived from a raw
 #' \strong{BED} format file and is keyed by chrom, chromStart, and chromEnd.
 #' This is mostly for testing purpose, may be removed in the future.
 #' @format A data.table which contains transcript range and strand information
@@ -137,6 +197,54 @@ NULL
 
 #' @rdname AbundanceFile
 "abundance.5bp.genome.GRCh37"
+
+#' @rdname AbundanceFile
+"abundance.2bp.exome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.2bp.genome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.3bp.exome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.3bp.genome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.4bp.exome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.4bp.genome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.5bp.exome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.5bp.genome.GRCh38"
+
+#' @rdname AbundanceFile
+"abundance.2bp.exome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.2bp.genome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.3bp.exome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.3bp.genome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.4bp.exome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.4bp.genome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.5bp.exome.GRCm38"
+
+#' @rdname AbundanceFile
+"abundance.5bp.genome.GRCm38"
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh37"
