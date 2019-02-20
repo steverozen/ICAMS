@@ -868,9 +868,9 @@ rownames(emptyDNS144) <- catalog.row.order.DNS.144
 emptyDNS136 <- matrix(0, nrow = 136, ncol = 0)
 rownames(emptyDNS136) <- catalog.row.order.DNS.136
 
-empty.cats <- list(cat96 = emptySNS96,
-                    cat192 = emptySNS192,
-                    cat1536 = emptySNS1536,
-                    catDNS78 = emptyDNS78,
-                    catDNS144 = emptyDNS144,
-                    catDNS136 = emptyDNS136)
+empty.cats <- list(catSNS96 = emptySNS96,
+                   catSNS192 = emptySNS192,
+                   catSNS1536 = emptySNS1536,
+                   catDNS78 = emptyDNS78,
+                   catDNS144 = emptyDNS144,
+                   catDNS136 = emptyDNS136)
