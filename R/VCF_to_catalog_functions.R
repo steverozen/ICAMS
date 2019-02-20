@@ -1,14 +1,13 @@
 #' @include utility_functions.R
 NULL
 
-#' Read in the data lines of a Variant Call Format (VCF) file created by
-#'     Strelka version 1
+#' Read in the data lines of an SNS VCF created by Strelka version 1
 #' @importFrom utils read.csv
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #' @keywords internal
-ReadStrelkaVCF <- function(path) {
+ReadStrelkaSNSVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
@@ -26,6 +25,35 @@ ReadStrelkaVCF <- function(path) {
 
   df1$POS <- as.integer(df1$POS)
   df1$VAF <- GetStrelkaVAF(df1)
+  return(StandardChromName(df1))
+}
+
+#' Read in the data lines of an ID VCF created by Strelka version 1
+#' @importFrom utils read.csv
+#' @param path The name/path of the VCF file, or a complete URL.
+#'
+#' @return A data frame storing mutation records of a VCF file.
+#' @keywords internal
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+ReadStrelkaIDVCF <- function(path) {
+  df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
+                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+
+  # Delete the columns which are totally empty
+  df <- df[!sapply(df, function(x) all(is.na(x)))]
+
+  # Delete meta-information lines which start with "##"
+  idx <- grep("^##", df[, 1])
+  df1 <- df[-idx, ]
+
+  # Extract the names of columns in the VCF file
+  names <- c("CHROM", as.character(df1[1, ])[-1])
+  df1 <- df1[-1, ]
+  colnames(df1) <- names
+
+  df1$POS <- as.integer(df1$POS)
   return(StandardChromName(df1))
 }
 
@@ -406,7 +434,7 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
               ThreePlus = other.ranges))
 }
 
-#' Split a list of in-memory Strelka VCF into SNS, DNS, and variants involving
+#' Split a list of in-memory Strelka SNS VCF into SNS, DNS, and variants involving
 #' > 2 consecutive bases
 #'
 #' SNSs are single nucleotide substitutions,
@@ -414,7 +442,7 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
-#' @param list.of.vcfs A list of in-memory data frame containing Strelka VCF file contents.
+#' @param list.of.vcfs A list of in-memory data frame containing Strelka SNS VCF file contents.
 #' @return A list of 3 in-memory objects with the elements:
 #    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
 #    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
@@ -423,7 +451,7 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #    Additional information not fully implemented at this point because of
 #    limited immediate biological interest.
 #' @export
-SplitListOfStrelkaVCFs <- function(list.of.vcfs) {
+SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
   split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
   n <- length(list.of.vcfs)
   SNS.vcfs <- list()
@@ -469,14 +497,29 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   }
 }
 
-#' Read a list of Strelka VCF files from path
+#' Read a list of Strelka SNS VCF files from path
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @export
-ReadListOfStrelkaVCFs <- function(vector.of.file.paths) {
-  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaVCF)
+ReadListOfStrelkaSNSVCFs <- function(vector.of.file.paths) {
+  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSNSVCF)
+  names(vcfs) <- vector.of.file.paths
+  return(vcfs)
+}
+
+#' Read a list of Strelka ID VCF files from path
+#'
+#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#'
+#' @return A list of vcfs from vector.of.file.paths.
+#' @export
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+ReadListOfStrelkaIDVCFs <- function(vector.of.file.paths) {
+  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
 }
@@ -512,8 +555,8 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # before calling the function. This function does not detect DNSs.
 
   if (0 == nrow(vcf)) {
-    return(list(cat96 = empty.cats$cat96, cat192 = empty.cats$cat192,
-                cat1536 = empty.cats$cat1536))
+    return(list(catSNS96 = empty.cats$catSNS96, catSNS192 = empty.cats$catSNS192,
+                catSNS1536 = empty.cats$catSNS1536))
   }
 
   stopifnot(nchar(vcf$ALT) == 1)
@@ -574,7 +617,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   mat192 <- mat192[catalog.row.order.SNS.192, , drop = FALSE]
   colnames(mat192) <- sample.id
 
-  return(list(cat96 = mat96, cat192 = mat192, cat1536 = mat1536))
+  return(list(catSNS96 = mat96, catSNS192 = mat192, catSNS1536 = mat1536))
 }
 
 #' Create SNS catalogs from SNS VCFs
@@ -591,16 +634,16 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
 #' @return A list of 3 catalogs, one each for 96, 192, 1536:
-#'   cat96
-#'   cat192
-#'   cat1536
+#'   catSNS96
+#'   catSNS192
+#'   catSNS1536
 #' @keywords internal
 VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
-  cat96 <- empty.cats$cat96
-  cat192 <- empty.cats$cat192
-  cat1536 <- empty.cats$cat1536
+  catSNS96 <- empty.cats$catSNS96
+  catSNS192 <- empty.cats$catSNS192
+  catSNS1536 <- empty.cats$catSNS1536
 
   for (i in 1:ncol) {
     SNS <- list.of.SNS.vcfs[[i]]
@@ -610,16 +653,16 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
     SNS <- AddTranscript(SNS, trans.ranges)
     SNS.cat <- CreateOneColSNSCatalog(SNS)
     rm(SNS)
-    cat96 <- cbind(cat96, SNS.cat$cat96)
-    cat192 <- cbind(cat192, SNS.cat$cat192)
-    cat1536 <- cbind(cat1536, SNS.cat$cat1536)
+    catSNS96 <- cbind(catSNS96, SNS.cat$catSNS96)
+    catSNS192 <- cbind(catSNS192, SNS.cat$catSNS192)
+    catSNS1536 <- cbind(catSNS1536, SNS.cat$catSNS1536)
   }
 
-  colnames(cat96) <- names(list.of.SNS.vcfs)
-  colnames(cat192) <- names(list.of.SNS.vcfs)
-  colnames(cat1536) <- names(list.of.SNS.vcfs)
+  colnames(catSNS96) <- names(list.of.SNS.vcfs)
+  colnames(catSNS192) <- names(list.of.SNS.vcfs)
+  colnames(catSNS1536) <- names(list.of.SNS.vcfs)
 
-  return(list(cat96 = cat96, cat192 = cat192, cat1536 = cat1536))
+  return(list(catSNS96 = catSNS96, catSNS192 = catSNS192, catSNS1536 = catSNS1536))
 }
 
 #' Create double nucleotide catalog for *one* sample from
@@ -667,7 +710,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   colnames(DNS.mat.78)<- sample.id
 
   # Create the 136 DNS catalog matrix
-  canon.DNS.136 <- CanonicalizeDNS(substr(vcf$seq.21context, 10, 13))
+  canon.DNS.136 <- CanonicalizeQUAD(substr(vcf$seq.21context, 10, 13))
   tab.DNS.136 <- table(canon.DNS.136)
   row.order.136 <- data.table(rn = catalog.row.order.DNS.136)
   DNS.dt.136 <- as.data.table(tab.DNS.136)
@@ -754,14 +797,14 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
               catDNS136  = catDNS136))
 }
 
-#' Create SNS and DNS catalogs from Strelka VCF files
+#' Create SNS and DNS catalogs from Strelka SNS VCF files
 #'
 #' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-#' from the Strelka VCFs specified by vector.of.file.paths
+#' from the Strelka SNS VCFs specified by vector.of.file.paths
 #'
 #' This function calls \code{\link{VCFsToSNSCatalogs}} and
 #' \code{\link{VCFsToDNSCatalogs}}
-#' @param vector.of.file.paths A vector containing the paths of the Strelka VCF files.
+#' @param vector.of.file.paths A vector containing the paths of the Strelka SNS VCF files.
 #' @param genome  Name of a particular reference genome
 #'   (without quotations marks).
 #' @param trans.ranges A data.table which contains transcript range and
@@ -769,11 +812,52 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #' @export
-StrelkaVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
-  vcfs <- ReadListOfStrelkaVCFs(vector.of.file.paths)
-  split.vcfs <- SplitListOfStrelkaVCFs(vcfs)
+StrelkaSNSVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+  vcfs <- ReadListOfStrelkaSNSVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
            VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
+}
+
+#' Create ID (indel) catalog from Strelka ID VCF files
+#'
+#' Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths
+#'
+#' This function calls \code{\link{VCFsToIDCatalogs}}
+#' @param vector.of.file.paths A vector containing the paths of the Strelka ID VCF files.
+#' @param genome  Name of a particular reference genome
+#'   (without quotations marks).
+#' @return  An ID (indel) catalog
+#' @export
+#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
+  vcfs <- ReadListOfStrelkaIDVCFs(vector.of.file.paths)
+  return(VCFsToIDCatalogs(vcfs, genome))
+}
+
+#' Create SNS and DNS catalogs from Mutect VCF files
+#'
+#' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
+#' from the Mutect VCFs specified by vector.of.file.paths
+#'
+#' This function calls \code{\link{VCFsToSNSCatalogs}},
+#' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
+#' @param vector.of.file.paths A vector containing the paths of the Mutect VCF files.
+#' @param genome  Name of a particular reference genome
+#'   (without quotations marks).
+#' @param trans.ranges A data.table which contains transcript range and
+#'   strand information.
+#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
+#'   , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#' @export
+MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+  vcfs <- ReadListOfMutectVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfMutectVCFs(vcfs)
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
+           VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges),
+           VCFsToIDCatalogs(split.vcfs$ID, genome)))
 }
 
 #' CanonicalizeDNS
