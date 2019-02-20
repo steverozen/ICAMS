@@ -1,6 +1,6 @@
-context("CatDNS78ToPdf")
+context("PlotCatDNS78ToPdf")
 
-test_that("CatDNS78ToPdf function is working properly", {
+test_that("PlotCatDNS78ToPdf function is working properly", {
   catalog <- ReadCatDNS78("testdata/regress.cat.dns.78.csv")
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   cat1 <- catalog[, 1, drop = FALSE]
@@ -11,8 +11,8 @@ test_that("CatDNS78ToPdf function is working properly", {
                cat4, cat4, cat4)
   type <- c("counts", "signature", "density")
   out <-
-    CatDNS78ToPdf(cat, "PlotCatDNS78.test.pdf",
-                  type = rep(type, 4),
-                  abundance = abundance.2bp.genome.GRCh37)
+    PlotCatDNS78ToPdf(cat, "PlotCatDNS78.test.pdf",
+                      type = rep(type, 4),
+                      abundance = abundance.2bp.genome.GRCh37)
   expect_equal(out, TRUE)
 })

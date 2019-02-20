@@ -1,6 +1,6 @@
-context("CatSNS96ToPdf")
+context("PlotCatSNS96ToPdf")
 
-test_that("CatSNS96ToPdf function is working properly", {
+test_that("PlotCatSNS96ToPdf function is working properly", {
   catalog <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   cat1 <- catalog[, 1, drop = FALSE]
@@ -13,10 +13,10 @@ test_that("CatSNS96ToPdf function is working properly", {
   upper <- c(TRUE, rep(FALSE, 7), TRUE, rep(FALSE, 3))
   xlabels <- c(rep(FALSE, 7), TRUE, rep(FALSE, 3), TRUE)
   out <-
-    CatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
-                  type = rep(type, 4), grid = FALSE,
-                  upper = upper,
-                  xlabels = xlabels,
-                  abundance = abundance.3bp.genome.GRCh37)
+    PlotCatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
+                      type = rep(type, 4), grid = FALSE,
+                      upper = upper,
+                      xlabels = xlabels,
+                      abundance = abundance.3bp.genome.GRCh37)
   expect_equal(out, TRUE)
 })
