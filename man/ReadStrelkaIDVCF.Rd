@@ -16,7 +16,7 @@ A data frame storing mutation records of a VCF file.
 Read in the data lines of an ID VCF created by Strelka version 1
 }
 \note{
-In the ID (insertion and deletion) catalog, the deletions repeat size
+In the ID (insertion and deletion) catalog, deletion repeat size
   ranges from 0 to 5+, but for plotting and end user documentation it ranges
   from 1 to 6+.
 }

@@ -32,7 +32,7 @@ catalog.row.headers.ID
 Row headers information for writing a catalog to disk in PCAWG7 format
 }
 \note{
-In the ID (insertion and deletion) catalog, the deletions repeat size
+In the ID (insertion and deletion) catalog, deletion repeat size
   ranges from 0 to 5+, but for plotting and end user documentation it ranges
   from 1 to 6+.
 }

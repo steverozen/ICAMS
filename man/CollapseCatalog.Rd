@@ -5,7 +5,7 @@
 \alias{Collapse192To96}
 \alias{Collapse1536To96}
 \alias{Collapse144To78}
-\title{Collapse Catalog Functions}
+\title{Collapse catalog functions}
 \usage{
 Collapse192To96(catalog)
 
@@ -24,7 +24,7 @@ A canonical catalog matrix whose row names indicate the mutation
   different samples.
 }
 \description{
-Collapse a catalog matrix to a canonical one
+Collapse a catalog matrix
 }
 \details{
 \code{Collapse192To96} Collapse a SNS 192 catalog matrix to a SNS 96 catalog matrix.

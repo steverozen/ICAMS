@@ -6,9 +6,10 @@
 \alias{ICAMS-package}
 \title{ICAMS: In-depth Characterization and Analysis of Mutational Signatures}
 \description{
-This package has functions to read in VCF files from Strelka and Mutect
-(in the Broad GATK package),
-create, read, and write SNS, DNS, ID catalogs and do different types of plotting.
+This package has functions to read in VCF files from Strelka and Mutect (in
+the Broad GATK package), create, read, and write single nucleotide
+substitutions (SNS), double nucleotide substitutions (DNS), insertions and
+deletions (ID) catalogs and do different types of plotting.
 }
 \details{
 This alpha version only works with VCFs for human GRCh37, but will work for

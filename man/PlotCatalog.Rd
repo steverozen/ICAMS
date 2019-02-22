@@ -99,7 +99,7 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 
 \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-(Please take note that the deletions repeat size ranges from 0 to 5+ in the
+(Please take note that deletion repeat size ranges from 0 to 5+ in the
 catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 }
 \keyword{internal}

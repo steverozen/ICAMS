@@ -42,7 +42,7 @@ various samples.}
 
 \item{name}{The name of the PDF file to be produced.}
 
-\item{id}{A vector containing the ID information of various samples.}
+\item{id}{A vector containing the identifiers of the samples in catalog.}
 
 \item{type}{A vector of values indicating the type of plot for each sample.
 If type = "counts", the graph will plot the occurrences of the mutation
@@ -53,26 +53,25 @@ take note there is no "density" type for PlotCatIDtoPdf function and the option
 of type = "density" is not implemented for function PlotCatSNS192ToPdf,
 PlotCatSNS192StrandToPdf and PlotCatDNS144ToPdf at the current stage.)}
 
-\item{grid}{A logical value indicating whether to draw the grid lines in the
-graph.}
+\item{grid}{If TRUE, draw grid lines in the graph.}
 
-\item{upper}{A logical value indicating whether to draw horizontal lines and
-names of major mutation class on top of graph.}
+\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
+class on top of graph.}
 
-\item{xlabels}{A logical value indicating whether to draw x axis labels.}
+\item{xlabels}{If TRUE, draw x axis labels.}
 
 \item{abundance}{A matrix containing nucleotide abundance information, to
 be used only when type = "density".}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
-y axis labels, sample name and legend(if there exists) should be magnified
+y axis labels, sample name and legend (if it exists) should be magnified
 relative to the default.}
 }
 \value{
 invisible(TRUE)
 }
 \description{
-Plot the mutation catalog of various samples to a PDF file
+Plot mutation catalogs of various samples to a PDF file
 }
 \details{
 \code{PlotCatSNS96ToPdf} Plot the SNS 96 mutation catalog of various samples
@@ -104,7 +103,7 @@ DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples to a PDF file.
 
 \code{PlotCatIDToPdf} Plot the insertion and deletion catalog of various
-samples to a PDF file. (Please take note that the deletions Repeat Size
+samples to a PDF file. (Please take note that deletion repeat size
 ranges from 0 to 5+ in the catalog, but for plotting and end user
 documentation it ranges from 1 to 6+.)
 }

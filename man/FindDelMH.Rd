@@ -25,8 +25,7 @@ The length of the maxium microhomology of \code{del.sequence}
 Return the length of microhomology at a deletion
 }
 \details{
-This function is primarily for internal use, but we export
-it so that the
+This function is primarily for internal use, but we export it so that the
 logic behind it will be documented for users.
 
 Example:

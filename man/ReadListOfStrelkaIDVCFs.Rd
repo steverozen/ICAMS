@@ -16,7 +16,7 @@ A list of vcfs from vector.of.file.paths.
 Read a list of Strelka ID VCF files from path
 }
 \note{
-In the ID (insertion and deletion) catalog, the deletions repeat size
+In the ID (insertion and deletion) catalog, deletion repeat size
   ranges from 0 to 5+, but for plotting and end user documentation it ranges
   from 1 to 6+.
 }
