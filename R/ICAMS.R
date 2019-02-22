@@ -1,8 +1,9 @@
 #' ICAMS: In-depth Characterization and Analysis of Mutational Signatures
 #'
-#' This package has functions to read in VCF files from Strelka and Mutect
-#' (in the Broad GATK package),
-#' create, read, and write SNS, DNS, ID catalogs and do different types of plotting.
+#' This package has functions to read in VCF files from Strelka and Mutect (in
+#' the Broad GATK package), create, read, and write single nucleotide
+#' substitutions (SNS), double nucleotide substitutions (DNS), insertions and
+#' deletions (ID) catalogs and do different types of plotting.
 #'
 #' This alpha version only works with VCFs for human GRCh37, but will work for
 #' arbitrary \strong{human} catalogs (assuming no major change in "opportunities"
@@ -41,7 +42,7 @@
 #' \code{\link{WriteCatalog}}
 #'
 #' @section Collapsing catalogs:
-#' Functions for collapsing a mutation catalog to a canonical one:
+#' Functions for collapsing a mutation catalog:
 #' \code{\link{CollapseCatalog}}
 #'
 #' @section Plotting catalogs:
