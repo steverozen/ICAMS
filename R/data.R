@@ -1,7 +1,7 @@
 #' Canonical order of row names in a catalog
 #' @format A string of characters indicating the canonical order of row names in
 #'   a catalog.
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #' @name CatalogRowOrder
@@ -10,7 +10,7 @@ NULL
 #' Row headers information for writing a catalog to disk in PCAWG7 format
 #' @format A data frame which contains the row headers information for writing
 #'   a catalog to disk in PCAWG7 format.
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #' @name CatalogRowHeaders
@@ -104,7 +104,7 @@ NULL
 #' be used in plotting functions \code{\link{PlotCatSNS1536}} and
 #' \code{\link{PlotCatSNS1536ToPdf}}.
 #' @format A matrix containing nucleotide abundance information for different organism.
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #' @name AbundanceFile
