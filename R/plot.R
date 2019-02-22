@@ -27,12 +27,12 @@
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 #'
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-#' (Please take note that the deletions repeat size ranges from 0 to 5+ in the
+#' (Please take note that deletion repeat size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 #' @param catalog A matrix whose rownames indicate the mutation type/sequence
 #'   context(CatDNS136) while its columns contain the counts of each mutation
 #'   type/sequence context(CatDNS136).
-#' @param id The ID information of the sample which has mutations.
+#' @param id The identifier of the sample which has mutations.
 #' @param type A value indicating the type of graph. If type = "counts", the
 #'   graph will plot the occurrences of the mutation types in the sample. If
 #'   type = "signature", the graph will plot mutation signatures of the sample.
@@ -42,16 +42,15 @@
 #'   implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
 #'   the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
-#'   mutation counts(if there exists), y axis and its labels, x axis labels and
-#'   its annotations(if there exists) sample name and legend(if there exists)
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists) sample name and legend(if it exists)
 #'   should be magnified relative to the default.
-#' @param grid A logical value indicating whether to draw the grid lines in the
-#'   graph.
-#' @param upper A logical value indicating whether to draw horizontal lines and
-#'   names of major mutation class on top of graph.
-#' @param xlabels A logical value indicating whether to draw x axis labels.
+#' @param grid If TRUE, draw grid lines in the graph.
+#' @param upper If TRUE, draw horizontal lines and the names of major mutation
+#'   class on top of graph.
+#' @param xlabels If TRUE, draw x axis labels.
 #' @param abundance A matrix containing nucleotide abundance information and
-#'   strand information(if there exists), to be used only when type = "density".
+#'   strand information (if it exists), to be used only when type = "density".
 #' @return invisible(TRUE)
 #' @name PlotCatalog
 NULL
@@ -59,7 +58,7 @@ NULL
 
 #' Plot catalog to pdf functions
 #'
-#' Plot the mutation catalog of various samples to a PDF file
+#' Plot mutation catalogs of various samples to a PDF file
 #'
 #' \code{PlotCatSNS96ToPdf} Plot the SNS 96 mutation catalog of various samples
 #' to a PDF file.
@@ -90,14 +89,14 @@ NULL
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples to a PDF file.
 #'
 #' \code{PlotCatIDToPdf} Plot the insertion and deletion catalog of various
-#' samples to a PDF file. (Please take note that the deletions Repeat Size
+#' samples to a PDF file. (Please take note that deletion repeat size
 #' ranges from 0 to 5+ in the catalog, but for plotting and end user
 #' documentation it ranges from 1 to 6+.)
-#' @param catalog A matrix whose rownames indicate the mutation types
-#'   while its columns contain the counts of each mutation type from
-#'   various samples.
+#' @param catalog A matrix whose rownames indicate the mutation type/sequence
+#'   context(CatDNS136) while its columns contain the counts of each mutation
+#'   type/sequence context(CatDNS136).
 #' @param name The name of the PDF file to be produced.
-#' @param id A vector containing the ID information of various samples.
+#' @param id A vector containing the identifiers of the samples in catalog.
 #' @param type A vector of values indicating the type of plot for each sample.
 #'   If type = "counts", the graph will plot the occurrences of the mutation
 #'   types in the sample. If type = "signature", the graph will plot mutation
@@ -107,15 +106,14 @@ NULL
 #'   of type = "density" is not implemented for function PlotCatSNS192ToPdf,
 #'   PlotCatSNS192StrandToPdf and PlotCatDNS144ToPdf at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
-#'   y axis labels, sample name and legend(if there exists) should be magnified
+#'   y axis labels, sample name and legend (if it exists) should be magnified
 #'   relative to the default.
-#' @param grid A logical value indicating whether to draw the grid lines in the
-#'   graph.
-#' @param upper A logical value indicating whether to draw horizontal lines and
-#'   names of major mutation class on top of graph.
-#' @param xlabels A logical value indicating whether to draw x axis labels.
-#' @param abundance A matrix containing nucleotide abundance information, to
-#'   be used only when type = "density".
+#' @param grid If TRUE, draw grid lines in the graph.
+#' @param upper If TRUE, draw horizontal lines and the names of major mutation
+#'   class on top of graph.
+#' @param xlabels If TRUE, draw x axis labels.
+#' @param abundance A matrix containing nucleotide abundance information and
+#'   strand information (if it exists), to be used only when type = "density".
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
 NULL
