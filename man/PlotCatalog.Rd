@@ -40,7 +40,7 @@ PlotCatID(catalog, id = colnames(catalog), type = "counts")
 context(CatDNS136) while its columns contain the counts of each mutation
 type/sequence context(CatDNS136).}
 
-\item{id}{The ID information of the sample which has mutations.}
+\item{id}{The identifier of the sample which has mutations.}
 
 \item{type}{A value indicating the type of graph. If type = "counts", the
 graph will plot the occurrences of the mutation types in the sample. If
@@ -52,20 +52,19 @@ implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
 the current stage.)}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
-mutation counts(if there exists), y axis and its labels, x axis labels and
-its annotations(if there exists) sample name and legend(if there exists)
+mutation counts(if it exists), y axis and its labels, x axis labels and
+its annotations(if it exists) sample name and legend(if it exists)
 should be magnified relative to the default.}
 
-\item{grid}{A logical value indicating whether to draw the grid lines in the
-graph.}
+\item{grid}{If TRUE, draw grid lines in the graph.}
 
-\item{upper}{A logical value indicating whether to draw horizontal lines and
-names of major mutation class on top of graph.}
+\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
+class on top of graph.}
 
-\item{xlabels}{A logical value indicating whether to draw x axis labels.}
+\item{xlabels}{If TRUE, draw x axis labels.}
 
 \item{abundance}{A matrix containing nucleotide abundance information and
-strand information(if there exists), to be used only when type = "density".}
+strand information (if it exists), to be used only when type = "density".}
 }
 \value{
 invisible(TRUE)

@@ -36,9 +36,9 @@ PlotCatDNS136ToPdf(catalog, name, id = colnames(catalog),
 PlotCatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 }
 \arguments{
-\item{catalog}{A matrix whose rownames indicate the mutation types
-while its columns contain the counts of each mutation type from
-various samples.}
+\item{catalog}{A matrix whose rownames indicate the mutation type/sequence
+context(CatDNS136) while its columns contain the counts of each mutation
+type/sequence context(CatDNS136).}
 
 \item{name}{The name of the PDF file to be produced.}
 
@@ -60,8 +60,8 @@ class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
 
-\item{abundance}{A matrix containing nucleotide abundance information, to
-be used only when type = "density".}
+\item{abundance}{A matrix containing nucleotide abundance information and
+strand information (if it exists), to be used only when type = "density".}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 y axis labels, sample name and legend (if it exists) should be magnified

@@ -60,7 +60,7 @@ Functions for writting a mutation catalog to a file on disk:
 
 \section{Collapsing catalogs}{
 
-Functions for collapsing a mutation catalog to a canonical one:
+Functions for collapsing a mutation catalog:
 \code{\link{CollapseCatalog}}
 }
 

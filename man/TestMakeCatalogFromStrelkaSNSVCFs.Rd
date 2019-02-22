@@ -6,8 +6,14 @@
 compare with the expected catalog information.}
 \usage{
 TestMakeCatalogFromStrelkaSNSVCFs()
+
+TestMakeCatalogFromStrelkaSNSVCFs()
 }
 \description{
 This function is to make catalogs from the sample Strelka SNS VCF files to
 compare with the expected catalog information.
+
+This function is to make catalogs from the sample Strelka SNS VCF files
+to compare with the expected catalog information.
 }
+\keyword{internal}

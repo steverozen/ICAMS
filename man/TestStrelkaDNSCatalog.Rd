@@ -11,3 +11,4 @@ TestStrelkaDNSCatalog()
 This function is to test whether the predefined functions
 are working correctly to produce the desired DNS catalogs from Strelka VCF.
 }
+\keyword{internal}
