@@ -4,18 +4,18 @@
 \alias{GetVAF}
 \alias{GetStrelkaVAF}
 \alias{GetMutectVAF}
-\title{Extract the VAFs (variant allele frequencies) from a VCF file}
+\title{Extract the VAFs (variant allele frequencies) from a VCF file.}
 \usage{
 GetStrelkaVAF(vcf)
 
 GetMutectVAF(vcf)
 }
 \arguments{
-\item{vcf}{said VCF as a data.frame}
+\item{vcf}{said VCF as a data.frame.}
 }
 \value{
-A vector of VAFs, one for each row of vcf
+A vector of VAFs, one for each row of \code{vcf}.
 }
 \description{
-Extract the VAFs (variant allele frequencies) from a VCF file
+Extract the VAFs (variant allele frequencies) from a VCF file.
 }

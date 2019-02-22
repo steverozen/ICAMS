@@ -60,8 +60,9 @@ CCGATCAA
 
 }
 
-The same deletion can be represented in several
-different ways.
+The deletion caller can represent the
+same deletion in several
+different, but completely equivalent, ways.
 
 \preformatted{
 

@@ -17,44 +17,59 @@ arbitrary \strong{human} catalogs (assuming no major change in "opportunities"
 between GRCh37 and GRCh38).
 }
 \section{Reading VCF files}{
+ \enumerate{
 
-\code{\link{ReadListOfStrelkaSNSVCFs}}, which only reads Strelka single nucleotide
-substitution (SNS) VCFs, not Strelka
-indel VCFS.\cr
-\code{\link{ReadListOfStrelkaIDVCFs}}, which only reads Strelka indels (ID) VCFs, not Strelka
-SNS VCFS.\cr
-\code{\link{ReadListOfMutectVCFs}}, which reads Mutect VCFs, which contain indels and double
+\item \code{\link{ReadListOfStrelkaSNSVCFs}} Read Strelka single nucleotide
+substitution (SNS) VCFs (not Strelka indel VCFS).
+
+\item \code{\link{ReadListOfStrelkaIDVCFs}} Read Strelka indel (ID) VCFs (not Strelka
+SNS VCFS).
+
+\item \code{\link{ReadListOfMutectVCFs}} Read Mutect VCFs, which contain indels and double
 nucleotide substitutions (DNSs) as well and SNSs.
 }
+}
 
-\section{Splitting of in-memory VCFs}{
+\section{Splitting in-memory VCFs}{
 
-\code{\link{SplitListOfStrelkaSNSVCFs}}, which splits Strelka SNS VCFs
-into SNS and inferred DNS VCFs. \cr
- \code{\link{SplitListOfMutectVCFs}}, which separates Mutect VCFs into their
- SNS, DNS, and indel components.
+\enumerate{
+\item \code{\link{SplitListOfStrelkaSNSVCFs}} Split Strelka SNS VCFs
+into pairs of SNS and inferred DNS VCFs. This is necessary because Strelka
+does not call DNSs directly. Instead this functions merges adjacent SNSs
+into DNSs provided their VAFs (variant allele frequencies) are similar.
+
+\item \code{\link{SplitListOfMutectVCFs}} Split Mutect VCFs into
+ SNS, DNS, and indel components. (Mutect VCFS include SNSs, DNSs, and indels,
+ as well as a few other, extremely rare mutation types, such as triplet
+ nucleotide substitutions).
+}
 }
 
 \section{Creating catalogs from VCF files}{
 
-\code{\link{StrelkaSNSVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
+\enumerate{
+\item \code{\link{StrelkaSNSVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
 192, 1536) and 3 DNS catalogs (78, 136, 144) from the Strelka SNS VCFs.\cr
-\code{\link{StrelkaIDVCFFilesToCatalog}}, which creates ID (indels) catalog
+\item \code{\link{StrelkaIDVCFFilesToCatalog}}, which creates ID (indels) catalog
 from the Strelka ID VCFs.\cr
-\code{\link{MutectVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
+\item \code{\link{MutectVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
 192, 1536), 3 DNS catalogs (78, 136, 144) and ID (indels) catalog from the
 Mutect VCFs.
+}
 }
 
 \section{Reading catalogs}{
 
-Functions for reading a catalog in PCAWG7 format from path:
+Functions for reading files that contain mutational
+spectrum catalogs in standardized format. These
+also work for reading mutational signature profiles.
 \code{\link{ReadCatalog}}
 }
 
 \section{Writing catalogs}{
 
-Functions for writting a mutation catalog to a file on disk:
+Functions for writing a mutational spectrum catalog to a file on disk.
+These also work for writing mutationl signature profiles.
 \code{\link{WriteCatalog}}
 }
 
@@ -66,7 +81,9 @@ Functions for collapsing a mutation catalog:
 
 \section{Plotting catalogs}{
 
-Functions for plotting mutation catalog of various samples to a PDF file:
+Functions for plotting mutation spectrum catalogs
+to a PDF file. These also work for plotting
+mutational signature profiles.
 \code{\link{PlotCatalogToPdf}}
 }
 

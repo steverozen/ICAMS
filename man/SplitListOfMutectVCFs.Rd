@@ -2,33 +2,39 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitListOfMutectVCFs}
 \alias{SplitListOfMutectVCFs}
-\title{Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)}
+\title{Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+VCF-like data frame with left-over rows).}
 \usage{
 SplitListOfMutectVCFs(list.of.vcfs)
 }
 \arguments{
-\item{list.of.vcfs}{List of VCFs as in-memory data.frames}
+\item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
 }
 \value{
-A list with 5 list of in-memory VCFs, as folows:
+A list with 3 in-memory VCFs and two left-over
+VCF-like data frames with rows that were not incorportated
+into the first 3 VCFs, as follows:
 
 \enumerate{
 
- \item \code{SNS} Only single nucleotide substitutions.
+ \item \code{SNS} VCF with only single nucleotide substitutions.
 
- \item \code{DNS} Only doublet nucleotide substitutions
+ \item \code{DNS} VCF with only doublet nucleotide substitutions
   as called by Mutect.
 
- \item \code{ID} Only small insertions and deletions.
+ \item \code{ID} VCF with only small insertions and deletions.
 
- \item \code{other.subs} Coordinate substitutions involving
+ \item \code{other.subs} VCF like data.frame with
+ rows for coordinate substitutions involving
  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
 
- \item \code{multiple.alternative.alleles} Variants with multiple
- alternative alleles.
+ \item \code{multiple.alternative.alleles} VCF like data.frame with
+ rows for varaints with multiple alternative alleles, for example
+ ACT mutated to both AGT and ACT at the same position.
 
 }
 }
 \description{
-Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)
+Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+VCF-like data frame with left-over rows).
 }

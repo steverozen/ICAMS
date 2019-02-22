@@ -14,6 +14,14 @@ SplitStrelkaSNSVCF(vcf.df, max.vaf.diff = 0.02)
 }
 \value{
 A list of 3 in-memory objects with the elements:
+\enumerate{
+   \item \code{SNS.vcf}:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
+   \item \code{DNS.vcf}:   Data frame of pure DNS mutations -- no SNS or 3+BS mutations
+   \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
+   information (reference sequence, alternative sequence, context, etc.)
+   Additional information not fully implemented at this point because of
+   limited immediate biological interest.
+   }
 }
 \description{
 SNSs are single nucleotide substitutions,
