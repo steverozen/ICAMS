@@ -1,6 +1,14 @@
 #' @include utility_functions.R
 NULL
 
+#' Extract the VAFs (variant allele frequencies) from a VCF file
+#'
+#' @param vcf said VCF as a data.frame
+#'
+#' @return A vector of VAFs, one for each row of vcf
+#' @name GetVAF
+NULL
+
 #' Read in the data lines of an SNS VCF created by Strelka version 1
 #' @importFrom utils read.csv
 #' @param path The name/path of the VCF file, or a complete URL.
@@ -34,7 +42,7 @@ ReadStrelkaSNSVCF <- function(path) {
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #' @keywords internal
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 ReadStrelkaIDVCF <- function(path) {
@@ -57,27 +65,22 @@ ReadStrelkaIDVCF <- function(path) {
   return(StandardChromName(df1))
 }
 
-#' Extract the VAFs (variant allele frequencies) from a VCF created by
-#'     Strelka version 1
-#'
-#' @param strelka.vcf said VCF as a data.frame
-#'
-#' @return A vector of VAFs, one for each row of strelka.vcf
+#' @rdname GetVAF
 #' @export
-GetStrelkaVAF <-function(strelka.vcf) {
-  stopifnot(class(strelka.vcf) == "data.frame")
-  if (!("TUMOR" %in% names(strelka.vcf)) ||
-      !("FORMAT" %in% names(strelka.vcf))) {
-    stop("strelka.vcf does not appear to a Strelka VCF, column names are",
-         paste(colnames(strelka.vcf), collapse=" "))
+GetStrelkaVAF <-function(vcf) {
+  stopifnot(class(vcf) == "data.frame")
+  if (!("TUMOR" %in% names(vcf)) ||
+      !("FORMAT" %in% names(vcf))) {
+    stop("vcf does not appear to a Strelka VCF, column names are",
+         paste(colnames(vcf), collapse=" "))
   }
-  TUMOR <- strelka.vcf[ , "TUMOR"]
-  control <- unique(strelka.vcf[ , "FORMAT"])
-  alt     <- strelka.vcf[ , "ALT"]
+  TUMOR <- vcf[ , "TUMOR"]
+  control <- unique(vcf[ , "FORMAT"])
+  alt     <- vcf[ , "ALT"]
   stopifnot(length(control) == 1)
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   values <- strsplit(TUMOR, split=":", fixed=TRUE)
-  vaf <- numeric(nrow(strelka.vcf))
+  vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
   for (i in 1:length(vaf)) {
     row.i <- values[[i]]
@@ -122,18 +125,13 @@ ReadMutectVCF <- function(path) {
   return(StandardChromName(df1))
 }
 
-#' Extract the VAFs (variant allele frequencies) from a VCF created by
-#'     MuTect
-#'
-#' @param mutect.vcf said VCF as a data.frame
-#'
-#' @return A vector of VAFs, one for each row of mutect.vcf
+#' @rdname GetVAF
 #' @export
-GetMutectVAF <-function(mutect.vcf) {
-  stopifnot(class(mutect.vcf) == "data.frame")
+GetMutectVAF <-function(vcf) {
+  stopifnot(class(vcf) == "data.frame")
 
   # Select out the column which has the information for F1R2 and F2R1
-  info <- mutect.vcf[[10]]
+  info <- vcf[[10]]
 
   # Get the raw data by splitting the character string
   raw <- strsplit(info, ":")
@@ -515,7 +513,7 @@ ReadListOfStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @export
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 ReadListOfStrelkaIDVCFs <- function(vector.of.file.paths) {
@@ -829,7 +827,7 @@ StrelkaSNSVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.rang
 #'   (without quotations marks).
 #' @return  An ID (indel) catalog
 #' @export
-#' @note In the ID (insertion and deletion) catalog, the deletions repeat size
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
