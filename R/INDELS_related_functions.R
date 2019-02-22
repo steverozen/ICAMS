@@ -175,8 +175,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' @details
 #'
-#' This function is primarily for internal use, but we export
-#' it so that the
+#' This function is primarily for internal use, but we export it so that the
 #' logic behind it will be documented for users.
 #'
 #' Example:
