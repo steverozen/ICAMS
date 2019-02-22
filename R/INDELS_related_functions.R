@@ -7,7 +7,7 @@
 #' @export
 TestMutectVCFToCatalog <- function() {
 
-  # TODO(steve): add plotting
+  # TODO(Steve): add plotting
 
   df <-
     ReadMutectVCF(system.file("extdata",
@@ -22,7 +22,7 @@ TestMutectVCFToCatalog <- function() {
                       trans.ranges.GRCh37)
   # test <- SplitStrelkaSNSVCF(retval$SNS)
   # cat(nrow(test[[1]], nrow(retval$SNS)), "\n")
-  # TODO(steve):see if we would pick up more DNS using DNS splitting code
+  # TODO(Steve):see if we would pick up more DNS using DNS splitting code
   # (low priority, we assume the caller knows what it is doing)
 
   DNS.catalogs <-
@@ -210,8 +210,9 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' }
 #'
-#' The same deletion can be represented in several
-#' different ways.
+#' The deletion caller can represent the
+#' same deletion in several
+#' different, but completely equivalent, ways.
 #'
 #' \preformatted{
 #'
@@ -595,13 +596,13 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
 #'   \code{\link{AddAndCheckSequenceID}} function. It must only
 #'   contain indels and must \strong{not} contain SNSs
-#'   (single nucleotide/base substituions), DBS, or triplet
+#'   (single nucleotide/base substituions), DNSs, or triplet
 #'   base substituions, etc.
 #'
 #'   One design decision for variant callers is the representation of "complex
 #'   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
 #'   A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
-#'   arise. In PCAWG, overlapping indel/SBS calls from different callers were
+#'   arise. In PCAWG, overlapping indel/SNS calls from different callers were
 #'   included in the indel VCFs.
 #'
 #' @param SBS.vcf An in-memory VCF as a data frame. Because we have to work with
@@ -622,8 +623,7 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @keywords internal
 CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
-  # TODO(steve): more checking of the ID VCF here
-
+  # TODO(Steve): more checking of the ID VCF here
 
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
@@ -634,7 +634,8 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
 
-  row.order <- data.table(rn = catalog.row.order.ID) # TODO(steve): can reduce use of data.table?
+  row.order <- data.table(rn = catalog.row.order.ID)
+  # TODO(Steve): can reduce use of data.table?
 
   ID.dt <- as.data.table(tab.ID)
   # ID.dt has two columns, names cannon.dt (from the table() function

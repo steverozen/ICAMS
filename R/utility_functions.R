@@ -137,7 +137,7 @@ CreateTransRange <- function(path) {
 #' @return TODO
 #' @keywords internal
 PyrTri <- function(mutstring) {
-  # TODO (steve) document
+  # TODO (Steve) document
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 2, 2) %in% c("A", "G"),
@@ -154,7 +154,7 @@ PyrTri <- function(mutstring) {
 #' @return TODO
 #' @keywords internal
 PyrPenta <- function(mutstring) {
-  # TODO (steve) document
+  # TODO (Steve) document
   stopifnot(nchar(mutstring) == rep(6, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 3, 3) %in% c("A", "G"),
@@ -164,12 +164,12 @@ PyrPenta <- function(mutstring) {
   return(output)
 }
 
-#' Reverse complement every string in string.vec
+#' Reverse complement every string in \code{string.vec}.
 #'
 #' @param string.vec a vector of type character.
 #' @importFrom Biostrings reverseComplement DNAStringSet
 #' @return A vector of type characters with the reverse complement of every
-#'   string in string.vec.
+#'   string in \code{string.vec}.
 #' @export
 revc <- function(string.vec) {
   return(

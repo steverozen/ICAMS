@@ -103,11 +103,17 @@ NULL
 #' combinations while its column contains the occurrences of each type. It can
 #' be used in plotting functions \code{\link{PlotCatSNS1536}} and
 #' \code{\link{PlotCatSNS1536ToPdf}}.
-#' @format A matrix containing nucleotide abundance information for different organism.
+#' @format A single-column
+#' matrix containing the counts of particular sequences in
+#' a genome or part of a genome. This include
+#' 2-mers, 3-mers, 4-mers, 5-mers, stranded or strand-agnostic,
+#' and genome-wide, in-transcript, or in-exome, for different
+#' reference genome versions and for different organisms. The names should
+#' be self explanatory.
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
-#' @name AbundanceFile
+#' @name Abundance
 NULL
 
 #' Transcript ranges data
@@ -174,76 +180,76 @@ NULL
 #' @rdname CatalogRowHeaders
 "catalog.row.headers.ID"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.exome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.genome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.exome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.genome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.exome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.genome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.exome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.genome.GRCh37"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.exome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.genome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.exome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.genome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.exome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.genome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.exome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.genome.GRCh38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.exome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.2bp.genome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.exome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.3bp.genome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.exome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.4bp.genome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.exome.GRCm38"
 
-#' @rdname AbundanceFile
+#' @rdname Abundance
 "abundance.5bp.genome.GRCm38"
 
 #' @rdname TranscriptRanges

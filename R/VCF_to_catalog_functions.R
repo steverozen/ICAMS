@@ -1,11 +1,11 @@
 #' @include utility_functions.R
 NULL
 
-#' Extract the VAFs (variant allele frequencies) from a VCF file
+#' Extract the VAFs (variant allele frequencies) from a VCF file.
 #'
-#' @param vcf said VCF as a data.frame
+#' @param vcf said VCF as a data.frame.
 #'
-#' @return A vector of VAFs, one for each row of vcf
+#' @return A vector of VAFs, one for each row of \code{vcf}.
 #' @name GetVAF
 NULL
 
@@ -182,26 +182,31 @@ SplitOneMutectVCF <- function(vcf.df) {
 
 }
 
-#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two left-over data.frames)
+#' Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+#' VCF-like data frame with left-over rows).
 #'
-#' @param list.of.vcfs List of VCFs as in-memory data.frames
+#' @param list.of.vcfs List of VCFs as in-memory data.frames.
 #'
-#' @return A list with 5 list of in-memory VCFs, as folows:
+#' @return A list with 3 in-memory VCFs and two left-over
+#' VCF-like data frames with rows that were not incorportated
+#' into the first 3 VCFs, as follows:
 #'
 #' \enumerate{
 #'
-#'  \item \code{SNS} Only single nucleotide substitutions.
+#'  \item \code{SNS} VCF with only single nucleotide substitutions.
 #'
-#'  \item \code{DNS} Only doublet nucleotide substitutions
+#'  \item \code{DNS} VCF with only doublet nucleotide substitutions
 #'   as called by Mutect.
 #'
-#'  \item \code{ID} Only small insertions and deletions.
+#'  \item \code{ID} VCF with only small insertions and deletions.
 #'
-#'  \item \code{other.subs} Coordinate substitutions involving
+#'  \item \code{other.subs} VCF like data.frame with
+#'  rows for coordinate substitutions involving
 #'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
 #'
-#'  \item \code{multiple.alternative.alleles} Variants with multiple
-#'  alternative alleles.
+#'  \item \code{multiple.alternative.alleles} VCF like data.frame with
+#'  rows for varaints with multiple alternative alleles, for example
+#'  ACT mutated to both AGT and ACT at the same position.
 #'
 #' }
 #'
@@ -284,18 +289,23 @@ AddTranscript <- function(df, trans.ranges) {
   return(cbind(df, dt2))
 }
 
-#' MakeVCFDNSdf TODO(steve) add average VAF
+#' MakeVCFDNSdf Take DNS ranges and the original VCF and generate a VCF with
+#' dinucleotide REF and ALT alleles.
 #'
-#' Take DNS ranges and the original VCF and generate a VCF with
-#' dinucleotide REF and ALT alleles. The output VCF has minimal columns:
-#' just CHROM, POS, ID, REF, ALT.
+#' @return A minimal VCF with only the columns \code{CHROM},
+#' \code{POS}, \code{ID}, \code{REF}, \code{ALT}.
 #'
 #' @param DNS.range.df Data frame with columns CHROM, LOW, HIGH
-#' @param SNS.vcf.dt TODO
+#'
+#' @param SNS.vcf.dt A data table containing the VCF from which
+#' \code{DNS.range.df} was computed.
+#'
 #' @import data.table
-#' @return TODO
-#' @export
+#'
+#' @keywords internal
 MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
+  # TODO(Steve): add average VAF to the output.
+
   tmpvcf <- SNS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
   DNS.range.dt <- as.data.table(DNS.range.df)
   tmp1 <- merge(DNS.range.dt, tmpvcf,
@@ -324,12 +334,14 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #' @import data.table
 #' @importFrom GenomicRanges reduce
 #' @return A list of 3 in-memory objects with the elements:
-#    SNS.vcf:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
-#    DNS.vcf:   Data frame of pure DNS mutations -- no SNS or 3+BS mutations
-#    ThreePlus: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
-#    information (reference sequence, alternative sequence, context, etc.)
-#    Additional information not fully implemented at this point because of
-#    limited immediate biological interest.
+#' \enumerate{
+#'    \item \code{SNS.vcf}:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
+#'    \item \code{DNS.vcf}:   Data frame of pure DNS mutations -- no SNS or 3+BS mutations
+#'    \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
+#'    information (reference sequence, alternative sequence, context, etc.)
+#'    Additional information not fully implemented at this point because of
+#'    limited immediate biological interest.
+#'    }
 #' @keywords internal
 SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot(class(vcf.df) == "data.frame")

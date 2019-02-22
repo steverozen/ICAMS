@@ -92,9 +92,9 @@ NULL
 #' samples to a PDF file. (Please take note that deletion repeat size
 #' ranges from 0 to 5+ in the catalog, but for plotting and end user
 #' documentation it ranges from 1 to 6+.)
-#' @param catalog A matrix whose rownames indicate the mutation type/sequence
-#'   context(CatDNS136) while its columns contain the counts of each mutation
-#'   type/sequence context(CatDNS136).
+#' @param catalog A matrix of mutation counts. Rownames
+#' indicate the mutation types. Each column contains the mutation counts for
+#' one sample.
 #' @param name The name of the PDF file to be produced.
 #' @param id A vector containing the identifiers of the samples in catalog.
 #' @param type A vector of values indicating the type of plot for each sample.
@@ -112,8 +112,8 @@ NULL
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance A matrix containing nucleotide abundance information and
-#'   strand information (if it exists), to be used only when type = "density".
+#' @param abundance A single column matrix, see \link{Abundance}, used only
+#'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
 NULL
