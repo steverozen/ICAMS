@@ -1,7 +1,7 @@
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired SNS catalogs from Strelka VCF.
 #'
-#' @export
+#' @keywords internal
 TestStrelkaSNSCatalog <- function() {
   expected.catSNS96 <-
     structure(
@@ -431,7 +431,7 @@ TestStrelkaSNSCatalog <- function() {
 #' are working correctly to produce the desired SNS catalogs from Strelka VCF.
 #'
 #' @export
-NewTestStrelkaSNSCatalog <- function() {
+TestStrelkaVCFToSNSCatalog <- function() {
   expected.catSNS96 <-
     structure(
       c(98L, 247L, 7L, 116L, 184L, 89L, 11L, 232L, 267L,
@@ -865,7 +865,7 @@ NewTestStrelkaSNSCatalog <- function() {
 
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired DNS catalogs from Strelka VCF.
-#' @export
+#' @keywords internal
 TestStrelkaDNSCatalog <- function() {
   expected.cat.78 <-
     structure(
@@ -979,7 +979,7 @@ TestStrelkaDNSCatalog <- function() {
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired DNS catalogs from Strelka VCF.
 #' @export
-NewTestStrelkaDNSCatalog <- function() {
+TestStrelkaVCFToDNSCatalog <- function() {
   expected.cat.78 <-
     structure(
       c(0L, 0L, 0L, 0L, 0L, 0L, 5L, 0L, 2L, 0L, 0L, 0L, 0L,
@@ -1095,7 +1095,7 @@ NewTestStrelkaDNSCatalog <- function() {
 
 #' This function is to make catalogs from the sample Strelka SNS VCF files to
 #' compare with the expected catalog information.
-#' @export
+#' @keywords internal
 TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   # This function is to make catalogs from the sample VCF files
   # to compare with the expected catalog information.
@@ -1180,7 +1180,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
 #' This function is to make catalogs from the sample Strelka SNS VCF files
 #' to compare with the expected catalog information.
 #' @export
-NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
+TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   files <- c(system.file("extdata",
                          "MCF10A_Carb_Low_cl2_Strelka_SNS.vcf",
                          package = "ICAMS",
@@ -1250,7 +1250,7 @@ NewTestMakeCatalogFromStrelkaSNSVCFs <- function() {
 #' This function is to make catalogs from the sample Strelka ID VCF files
 #' to compare with the expected catalog information.
 #' @export
-NewTestMakeCatalogFromStrelkaIDVCFs <- function() {
+TestMakeCatalogFromStrelkaIDVCFs <- function() {
   files <- c(system.file("extdata",
                          "MCF10A_Carb_Low_cl2_INDELresult.vcf",
                          package = "ICAMS",
