@@ -1,6 +1,6 @@
-#' Collapse Catalog Functions
+#' Collapse catalog functions
 #'
-#' Collapse a catalog matrix to a canonical one
+#' Collapse a catalog matrix
 #'
 #' \code{Collapse192To96} Collapse a SNS 192 catalog matrix to a SNS 96 catalog matrix.
 #'
