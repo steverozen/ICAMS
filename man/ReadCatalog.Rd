@@ -26,7 +26,7 @@ ReadCatDNS136(path, strict = TRUE)
 ReadCatID(path, strict = TRUE)
 }
 \arguments{
-\item{path}{Path to a catalog on disk in the "PCAWG7" format.}
+\item{path}{Path to a catalog on disk in the standardized format.}
 
 \item{strict}{If TRUE, do additional checks on the input, and stop if the
 checks fail.}
@@ -35,7 +35,7 @@ checks fail.}
 A catalog in canonical in-memory format.
 }
 \description{
-Read a catalog in PCAWG7 format from path
+Read a catalog in standardized format from path
 }
 \details{
 \code{ReadCatSNS96} Read a 96 SNS catalog from path

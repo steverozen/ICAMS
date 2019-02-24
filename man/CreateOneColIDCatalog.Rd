@@ -10,13 +10,13 @@ CreateOneColIDCatalog(ID.vcf, SBS.vcf, trace = 0)
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
   \code{\link{AddAndCheckSequenceID}} function. It must only
   contain indels and must \strong{not} contain SNSs
-  (single nucleotide/base substituions), DBS, or triplet
+  (single nucleotide/base substituions), DNSs, or triplet
   base substituions, etc.
 
   One design decision for variant callers is the representation of "complex
   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
   A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
-  arise. In PCAWG, overlapping indel/SBS calls from different callers were
+  arise. In PCAWG, overlapping indel/SNS calls from different callers were
   included in the indel VCFs.}
 
 \item{SBS.vcf}{An in-memory VCF as a data frame. Because we have to work with
