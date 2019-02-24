@@ -37,9 +37,11 @@
 #' @section Creating catalogs from VCF files:
 #' \enumerate{
 #' \item \code{\link{StrelkaSNSVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
-#' 192, 1536) and 3 DNS catalogs (78, 136, 144) from the Strelka SNS VCFs.\cr
+#' 192, 1536) and 3 DNS catalogs (78, 136, 144) from the Strelka SNS VCFs.
+#'
 #' \item \code{\link{StrelkaIDVCFFilesToCatalog}}, which creates ID (indels) catalog
-#' from the Strelka ID VCFs.\cr
+#' from the Strelka ID VCFs.
+#'
 #' \item \code{\link{MutectVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
 #' 192, 1536), 3 DNS catalogs (78, 136, 144) and ID (indels) catalog from the
 #' Mutect VCFs.
@@ -66,6 +68,17 @@
 #' mutational signature profiles.
 #' \code{\link{PlotCatalogToPdf}}
 #'
+#' @section Exported data: \enumerate{
+#'
+#' \item \code{\link{CatalogRowOrder}} Canonical order of row names in a catalog.
+#'
+#' \item \code{\link{CatalogRowHeaders}} Row headers information for writing a
+#' catalog to disk in standardized format.
+#'
+#' \item \code{\link{Abundance}} Nucleotide abundance information for a particular organism.
+#'
+#'\item \code{\link{TranscriptRanges}} Transcript ranges and strand information
+#'for a particular organism. }
 #' @docType package
 #' @name ICAMS
 NULL
