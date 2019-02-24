@@ -7,9 +7,9 @@
 #' @name CatalogRowOrder
 NULL
 
-#' Row headers information for writing a catalog to disk in PCAWG7 format
+#' Row headers information for writing a catalog to disk in standardized format
 #' @format A data frame which contains the row headers information for writing
-#'   a catalog to disk in PCAWG7 format.
+#'   a catalog to disk in standardized format.
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
