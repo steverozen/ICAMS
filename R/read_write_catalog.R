@@ -1,6 +1,6 @@
 #' Read Catalog Functions
 #'
-#' Read a catalog in PCAWG7 format from path
+#' Read a catalog in standardized format from path
 #'
 #' \code{ReadCatSNS96} Read a 96 SNS catalog from path
 #'
@@ -20,7 +20,7 @@
 #' it ranges from 1 to 6+.
 #'
 #' See also \code{\link{WriteCatalog}}
-#' @param path Path to a catalog on disk in the "PCAWG7" format.
+#' @param path Path to a catalog on disk in the standardized format.
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
 #' @return A catalog in canonical in-memory format.
@@ -62,7 +62,8 @@ ReadCatSNS96 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
   if (strict) {
-    stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation.type"))
+    stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation Type",
+                                   "Mutation.type", "Mutation.Type"))
     stopifnot(names(cos)[2] == "Trinucleotide")
   }
   ref.gt.var       <- unlist(cos[, 1])
@@ -121,7 +122,8 @@ ReadCatSNS1536 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
-    stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation.type"))
+    stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation Type",
+                                   "Mutation.type", "Mutation.Type"))
     stopifnot(names(cos)[2] == "Pentanucleotide")
   }
   names(cos)[1:2] <- c("Mutation type", "Pentanucleotide")
