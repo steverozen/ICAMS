@@ -463,15 +463,9 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' @export
 SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
   split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
-  n <- length(list.of.vcfs)
-  SNS.vcfs <- list()
-  DNS.vcfs <- list()
-  ThreePlus <- list()
-  for (i in 1:n) {
-    SNS.vcfs <- c(SNS.vcfs, list(split.vcfs[[i]]$SNS.vcf))
-    DNS.vcfs <- c(DNS.vcfs, list(split.vcfs[[i]]$DNS.vcf))
-    ThreePlus <- c(ThreePlus, list(split.vcfs[[i]]$ThreePlus))
-  }
+  SNS.vcfs <- lapply(split.vcfs, function(x) x$SNS.vcf)
+  DNS.vcfs <- lapply(split.vcfs, function(x) x$DNS.vcf)
+  ThreePlus <- lapply(split.vcfs, function(x) x$ThreePlus)
   return(list(SNS.vcfs = SNS.vcfs, DNS.vcfs = DNS.vcfs, ThreePlus = ThreePlus))
 }
 
@@ -867,7 +861,7 @@ MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) 
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
            VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges),
-           VCFsToIDCatalogs(split.vcfs$ID, genome)))
+           list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome))))
 }
 
 #' CanonicalizeDNS
