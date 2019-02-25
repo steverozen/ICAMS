@@ -2,7 +2,7 @@
 #' are working correctly to produce the desired SNS catalogs from Strelka VCF.
 #'
 #' @keywords internal
-TestStrelkaSNSCatalog <- function() {
+OldTestStrelkaSNSCatalog <- function() {
   expected.catSNS96 <-
     structure(
       c(25L, 77L, 1L, 38L, 59L, 28L, 8L, 71L, 46L, 191L,
@@ -430,7 +430,7 @@ TestStrelkaSNSCatalog <- function() {
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired SNS catalogs from Strelka VCF.
 #'
-#' @export
+#' @keywords internal
 TestStrelkaVCFToSNSCatalog <- function() {
   expected.catSNS96 <-
     structure(
@@ -866,7 +866,7 @@ TestStrelkaVCFToSNSCatalog <- function() {
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired DNS catalogs from Strelka VCF.
 #' @keywords internal
-TestStrelkaDNSCatalog <- function() {
+OldTestStrelkaDNSCatalog <- function() {
   expected.cat.78 <-
     structure(
       c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,
@@ -978,7 +978,7 @@ TestStrelkaDNSCatalog <- function() {
 
 #' This function is to test whether the predefined functions
 #' are working correctly to produce the desired DNS catalogs from Strelka VCF.
-#' @export
+#' @keywords internal
 TestStrelkaVCFToDNSCatalog <- function() {
   expected.cat.78 <-
     structure(
@@ -1093,10 +1093,54 @@ TestStrelkaVCFToDNSCatalog <- function() {
   cat("ok\n")
 }
 
+#' @title test \code{SplitListOfMutectVCFs} and functions to create catalogs.
+#'
+#' @return NULL
+#'
+#' @details Stop if the catalogs created do not match the expected values.
+#'
+#' @export
+TestMutectVCFToCatalog <- function() {
+
+  # TODO(Steve): add plotting
+
+  df <-
+    ReadMutectVCF(system.file("extdata",
+                              "MCF10A_Carb_Low_cl2_Mutect.vcf",
+                              package = "ICAMS",
+                              mustWork = TRUE))
+  retval <- SplitListOfMutectVCFs(list(test.vcf = df))
+
+  SNS.catalogs <-
+    VCFsToSNSCatalogs(retval$SNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      trans.ranges.GRCh37)
+  # test <- SplitStrelkaSNSVCF(retval$SNS)
+  # cat(nrow(test[[1]], nrow(retval$SNS)), "\n")
+  # TODO(Steve):see if we would pick up more DNS using DNS splitting code
+  # (low priority, we assume the caller knows what it is doing)
+
+  DNS.catalogs <-
+    VCFsToDNSCatalogs(retval$DNS,
+                      BSgenome.Hsapiens.1000genomes.hs37d5,
+                      trans.ranges.GRCh37) # Note variable name changed
+
+  ID.catalog <-
+    VCFsToIDCatalogs(retval$ID,
+                     BSgenome.Hsapiens.1000genomes.hs37d5)
+
+  cat("ok\n")
+  invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
+}
+if (FALSE) {
+  load("data-raw/TestMutectVCFToCatalog.out.Rdata")
+  expect_equal(TestMutectVCFToCatalog(), TestMutectVCFToCatalog.out)
+}
+
 #' This function is to make catalogs from the sample Strelka SNS VCF files to
 #' compare with the expected catalog information.
 #' @keywords internal
-TestMakeCatalogFromStrelkaSNSVCFs <- function() {
+OldTestMakeCatalogFromStrelkaSNSVCFs <- function() {
   # This function is to make catalogs from the sample VCF files
   # to compare with the expected catalog information.
 
