@@ -11,3 +11,4 @@ TestStrelkaVCFToSNSCatalog()
 This function is to test whether the predefined functions
 are working correctly to produce the desired SNS catalogs from Strelka VCF.
 }
+\keyword{internal}
