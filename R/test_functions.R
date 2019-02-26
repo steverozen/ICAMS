@@ -1093,48 +1093,81 @@ TestStrelkaVCFToDNSCatalog <- function() {
   cat("ok\n")
 }
 
-#' @title test \code{SplitListOfMutectVCFs} and functions to create catalogs.
-#'
-#' @return NULL
-#'
-#' @details Stop if the catalogs created do not match the expected values.
-#'
+#' This function is to make catalogs from the sample Mutect VCF file
+#' to compare with the expected catalog information.
 #' @export
-TestMutectVCFToCatalog <- function() {
+TestMakeCatalogFromMutectVCFs <- function() {
+  files <- c(system.file("extdata",
+                         "MCF10A_Carb_Low_cl2_Mutect.vcf",
+                         package = "ICAMS",
+                         mustWork = TRUE))
 
-  # TODO(Steve): add plotting
+  cats <-
+    MutectVCFFilesToCatalog(
+      files,
+      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
+      # Use default transcript ranges
+      trans.ranges = trans.ranges.GRCh37)
 
-  df <-
-    ReadMutectVCF(system.file("extdata",
-                              "MCF10A_Carb_Low_cl2_Mutect.vcf",
-                              package = "ICAMS",
-                              mustWork = TRUE))
-  retval <- SplitListOfMutectVCFs(list(test.vcf = df))
+  prev.catalog.192 <-
+    ReadCatSNS192(
+      system.file("extdata",
+                  "mutect.regress.cat.sns.192.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catSNS192 == prev.catalog.192)
 
-  SNS.catalogs <-
-    VCFsToSNSCatalogs(retval$SNS,
-                      BSgenome.Hsapiens.1000genomes.hs37d5,
-                      trans.ranges.GRCh37)
-  # test <- SplitStrelkaSNSVCF(retval$SNS)
-  # cat(nrow(test[[1]], nrow(retval$SNS)), "\n")
-  # TODO(Steve):see if we would pick up more DNS using DNS splitting code
-  # (low priority, we assume the caller knows what it is doing)
+  prev.catalog.96 <-
+    ReadCatSNS96(
+      system.file("extdata",
+                  "mutect.regress.cat.sns.96.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catSNS96 == prev.catalog.96)
 
-  DNS.catalogs <-
-    VCFsToDNSCatalogs(retval$DNS,
-                      BSgenome.Hsapiens.1000genomes.hs37d5,
-                      trans.ranges.GRCh37) # Note variable name changed
+  prev.catalog.1536 <-
+    ReadCatSNS1536(
+      system.file("extdata",
+                  "mutect.regress.cat.sns.1536.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catSNS1536 == prev.catalog.1536)
 
-  ID.catalog <-
-    VCFsToIDCatalogs(retval$ID,
-                     BSgenome.Hsapiens.1000genomes.hs37d5)
+  prev.catalog.DNS.78<-
+    ReadCatDNS78(
+      system.file("extdata",
+                  "mutect.regress.cat.dns.78.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
+
+  prev.catalog.DNS.136<-
+    ReadCatDNS136(
+      system.file("extdata",
+                  "mutect.regress.cat.dns.136.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136)
+
+  prev.catalog.DNS.144<-
+    ReadCatDNS144(
+      system.file("extdata",
+                  "mutect.regress.cat.dns.144.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catDNS144 == prev.catalog.DNS.144)
+
+  prev.catalog.indels<-
+    ReadCatID(
+      system.file("extdata",
+                  "mutect.regress.cat.indels.csv",
+                  package = "ICAMS",
+                  mustWork = TRUE))
+  stopifnot(cats$catID == prev.catalog.indels)
 
   cat("ok\n")
-  invisible(c(SNS.catalogs, DNS.catalogs, list(catID = ID.catalog)))
-}
-if (FALSE) {
-  load("data-raw/TestMutectVCFToCatalog.out.Rdata")
-  expect_equal(TestMutectVCFToCatalog(), TestMutectVCFToCatalog.out)
+
+  invisible(cats)
 }
 
 #' This function is to make catalogs from the sample Strelka SNS VCF files to
