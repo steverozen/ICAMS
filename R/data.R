@@ -16,7 +16,7 @@ NULL
 #' @name CatalogRowHeaders
 NULL
 
-#' Nucleotide abundance file
+#' Nucleotide abundance
 #'
 #' Nucleotide abundance information for a particular organism
 #'
