@@ -24,85 +24,73 @@ NULL
 #' matrix containing dinucleotide abundance information for \strong{Human}
 #' GRCh37. Its row names indicate 10 different types of 2 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS78}} and
-#' \code{\link{PlotCatDNS78ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS78ToPdf}}.
 #'
 #' \code{abundance.2bp.genome.GRCh38}, \code{abundance.2bp.exome.GRCh38} A
 #' matrix containing dinucleotide abundance information for \strong{Human}
 #' GRCh38. Its row names indicate 10 different types of 2 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS78}} and
-#' \code{\link{PlotCatDNS78ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS78ToPdf}}.
 #'
 #' \code{abundance.2bp.genome.GRCm38}, \code{abundance.2bp.exome.GRCm38} A
 #' matrix containing dinucleotide abundance information for \strong{Mouse}
 #' GRCm38. Its row names indicate 10 different types of 2 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS78}} and
-#' \code{\link{PlotCatDNS78ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS78ToPdf}}.
 #'
 #' \code{abundance.3bp.genome.GRCh37}, \code{abundance.3bp.exome.GRCh37} A
 #' matrix containing trinucleotide abundance information for \strong{Human}
 #' GRCh37. Its row names indicate 32 different types of 3 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS96}} and
-#' \code{\link{PlotCatSNS96ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS96ToPdf}}.
 #'
 #' \code{abundance.3bp.genome.GRCh38}, \code{abundance.3bp.exome.GRCh38} A
 #' matrix containing trinucleotide abundance information for \strong{Human}
 #' GRCh38. Its row names indicate 32 different types of 3 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS96}} and
-#' \code{\link{PlotCatSNS96ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS96ToPdf}}.
 #'
 #' \code{abundance.3bp.genome.GRCm37}, \code{abundance.3bp.exome.GRCm37} A
 #' matrix containing trinucleotide abundance information for \strong{Mouse}
 #' GRCm37. Its row names indicate 32 different types of 3 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS96}} and
-#' \code{\link{PlotCatSNS96ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS96ToPdf}}.
 #'
 #' \code{abundance.4bp.genome.GRCh37}, \code{abundance.4bp.exome.GRCh37} A
 #' matrix containing tetranucleotide abundance information for \strong{Human}
 #' GRCh37. Its row names indicate 136 different types of 4 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS136}} and
-#' \code{\link{PlotCatDNS136ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS136ToPdf}}.
 #'
 #' \code{abundance.4bp.genome.GRCh38}, \code{abundance.4bp.exome.GRCh38} A
 #' matrix containing tetranucleotide abundance information for \strong{Human}
 #' GRCh38. Its row names indicate 136 different types of 4 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS136}} and
-#' \code{\link{PlotCatDNS136ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS136ToPdf}}.
 #'
 #' \code{abundance.4bp.genome.GRCm37}, \code{abundance.4bp.exome.GRCm37} A
 #' matrix containing tetranucleotide abundance information for \strong{Mouse}
 #' GRCm37. Its row names indicate 136 different types of 4 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatDNS136}} and
-#' \code{\link{PlotCatDNS136ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatDNS136ToPdf}}.
 #'
 #' \code{abundance.5bp.genome.GRCh37}, \code{abundance.5bp.exome.GRCh37} A
 #' matrix containing pentanucleotide abundance information for \strong{Human}
 #' GRCh37. Its row names indicate 512 different types of 5 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
-#' \code{\link{PlotCatSNS1536ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS1536ToPdf}}.
 #'
 #' \code{abundance.5bp.genome.GRCh38}, \code{abundance.5bp.exome.GRCh38} A
 #' matrix containing pentanucleotide abundance information for \strong{Human}
 #' GRCh38. Its row names indicate 512 different types of 5 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
-#' \code{\link{PlotCatSNS1536ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS1536ToPdf}}.
 #'
 #' \code{abundance.5bp.genome.GRCm37}, \code{abundance.5bp.exome.GRCm37} A
 #' matrix containing pentanucleotide abundance information for \strong{Mouse}
 #' GRCm37. Its row names indicate 512 different types of 5 base pairs
 #' combinations while its column contains the occurrences of each type. It can
-#' be used in plotting functions \code{\link{PlotCatSNS1536}} and
-#' \code{\link{PlotCatSNS1536ToPdf}}.
+#' be used in plotting function \code{\link{PlotCatSNS1536ToPdf}}.
 #' @format A single-column
 #' matrix containing the counts of particular sequences in
 #' a genome or part of a genome. This include
