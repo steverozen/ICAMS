@@ -19,3 +19,4 @@ An ID (indel) catalog
 \description{
 Create ID (indel) catalog from VCFs
 }
+\keyword{internal}
