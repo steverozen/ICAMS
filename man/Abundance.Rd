@@ -27,7 +27,7 @@
 \alias{abundance.4bp.genome.GRCm38}
 \alias{abundance.5bp.exome.GRCm38}
 \alias{abundance.5bp.genome.GRCm38}
-\title{Nucleotide abundance file}
+\title{Nucleotide abundance}
 \format{A single-column
 matrix containing the counts of particular sequences in
 a genome or part of a genome. This include
