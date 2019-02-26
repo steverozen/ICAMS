@@ -210,7 +210,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' }
 #'
-#' @export
+#' @keywords internal
 SplitListOfMutectVCFs <- function(list.of.vcfs) {
   v1 <- lapply(list.of.vcfs, SplitOneMutectVCF)
   SNS <- lapply(v1, function(x) x$SNS)
@@ -547,16 +547,50 @@ ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
   return(vcfs)
 }
 
-#' Read a list of Mutect VCF files from path
+#' Read Mutect VCF files from paths
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
-#' @export
-ReadListOfMutectVCFs <- function(vector.of.file.paths) {
+#' @keywords internal
+ReadMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadMutectVCF)
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
+}
+
+#' Read and split Mutect VCF files from paths
+#'
+#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#'
+#' @return A list with 3 in-memory VCFs and two left-over
+#' VCF-like data frames with rows that were not incorporated
+#' into the first 3 VCFs, as follows:
+#'
+#' \enumerate{
+#'
+#'  \item \code{SNS} VCF with only single nucleotide substitutions.
+#'
+#'  \item \code{DNS} VCF with only doublet nucleotide substitutions
+#'   as called by Mutect.
+#'
+#'  \item \code{ID} VCF with only small insertions and deletions.
+#'
+#'  \item \code{other.subs} VCF like data.frame with
+#'  rows for coordinate substitutions involving
+#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+#'
+#'  \item \code{multiple.alternative.alleles} VCF like data.frame with
+#'  rows for variants with multiple alternative alleles, for example
+#'  ACT mutated to both AGT and ACT at the same position.
+#'
+#' }
+#'
+#' @export
+ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
+  vcfs <- ReadMutectVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfMutectVCFs(vcfs)
+  return(split.vcfs)
 }
 
 #' Create single nucleotide mutation catalog for *one* sample from
@@ -876,7 +910,7 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #'   , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
 #' @export
 MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
-  vcfs <- ReadListOfMutectVCFs(vector.of.file.paths)
+  vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
            VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges),
