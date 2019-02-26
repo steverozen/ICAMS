@@ -19,7 +19,7 @@ sequence on each side the variants}
 \item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-A vector of strings that are the canonical representions
+A vector of strings that are the canonical representations
  of the given insertions and deletions.
 }
 \description{

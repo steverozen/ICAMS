@@ -4,14 +4,14 @@
 \alias{CreateOneColIDCatalog}
 \title{Create one column of an indel catalog from one VCF}
 \usage{
-CreateOneColIDCatalog(ID.vcf, SBS.vcf, trace = 0)
+CreateOneColIDCatalog(ID.vcf, SNS.vcf, trace = 0)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
   \code{\link{AddAndCheckSequenceID}} function. It must only
   contain indels and must \strong{not} contain SNSs
-  (single nucleotide/base substituions), DNSs, or triplet
-  base substituions, etc.
+  (single nucleotide/base substitutions), DNSs, or triplet
+  base substitutions, etc.
 
   One design decision for variant callers is the representation of "complex
   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
@@ -19,9 +19,9 @@ CreateOneColIDCatalog(ID.vcf, SBS.vcf, trace = 0)
   arise. In PCAWG, overlapping indel/SNS calls from different callers were
   included in the indel VCFs.}
 
-\item{SBS.vcf}{An in-memory VCF as a data frame. Because we have to work with
-some PCAWG data, we will look for neigboring indels and indels adjoining
-SBS. That means this functions takes an SBS VCF and an ID VCF from the same
+\item{SNS.vcf}{An in-memory VCF as a data frame. Because we have to work with
+some PCAWG data, we will look for neighboring indels and indels adjoining
+SNS. That means this functions takes an SNS VCF and an ID VCF from the same
 sample.}
 
 \item{trace}{If > 0, various called functions cat information
@@ -29,9 +29,9 @@ useful for debugging and testing. The larger the number, the
 more output.}
 }
 \value{
-A list with two elemsents:
+A list with two elements:
   ID.cat:   A 1-column matrix containing the mutation catalog information.
-  problems: Locations of neighboring indels or indels neighboring SBS.
+  problems: Locations of neighboring indels or indels neighboring SNS.
             In the future we might handle these depending on what we
             find in the indel calls from different variant callers. This
             is not implemented at present.

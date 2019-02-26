@@ -18,7 +18,7 @@ sequence on each side (at least as long as \code{del.sequence}).}
 \item{trace}{If > 0, cat various messages.}
 }
 \value{
-The length of the maxium microhomology of \code{del.sequence}
+The length of the maximum microhomology of \code{del.sequence}
   in \code{context}.
 }
 \description{
@@ -94,7 +94,7 @@ is really a repeat
 
 \preformatted{
 
-TODO(steve): add check in code
+TODO(Steve): add check in code
 GACTAG----TT GACTAGTT GACTAG[CTAG]TT
                         **** ----
 
@@ -109,10 +109,10 @@ In the implementation, the function finds:
 
 \enumerate{
 
-\item The maxium match of undeleted sequence on left that is
+\item The maximum match of undeleted sequence on left that is
 identical to the right end of the deleted sequence, and
 
-\item The maxium match of undeleted sequence on the right this
+\item The maximum match of undeleted sequence on the right this
 is identical to the left end of the deleted sequence.
 }
 

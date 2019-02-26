@@ -17,7 +17,7 @@
 #'  \item \code{seq.context} The sequence embedding the variant.
 #'
 #'  \item \code{seq.context.width} The width of \code{seq.context} to the left
-#'     of the variant. Does not inlude the "context base". TODO(steve): do we need
+#'     of the variant. Does not include the "context base". TODO(Steve): do we need
 #'     to modify this function so that it can handle indel callers that do
 #'     not provide the "context base"?
 #' }
@@ -200,7 +200,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' \preformatted{
 #'
-#' TODO(steve): add check in code
+#' TODO(Steve): add check in code
 #' GACTAG----TT GACTAGTT GACTAG[CTAG]TT
 #'                         **** ----
 #'
@@ -215,10 +215,10 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' \enumerate{
 #'
-#' \item The maxium match of undeleted sequence on left that is
+#' \item The maximum match of undeleted sequence on left that is
 #' identical to the right end of the deleted sequence, and
 #'
-#' \item The maxium match of undeleted sequence on the right this
+#' \item The maximum match of undeleted sequence on the right this
 #' is identical to the left end of the deleted sequence.
 #'}
 #'
@@ -234,7 +234,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' @param trace If > 0, cat various messages.
 #'
-#' @return The length of the maxium microhomology of \code{del.sequence}
+#' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
 #'
 #' @export
@@ -318,7 +318,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
 #' @param rep.unit.seq The inserted sequence and potention repeat unit
 #'
 #' @param pos \code{rep.unit.seq} is understood to be inserted between
-#'   positions \code{pos} amd \code{pos + 1}.
+#'   positions \code{pos} and \code{pos + 1}.
 #'
 #' @return If same sequence as \code{rep.unit.seq} occurs ending at
 #'   \code{pos} or starting at \code{pos + 1} then the number of
@@ -396,7 +396,7 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #'
 #' @param trace If > 0 cat information how the computation is carried out.
 #
-#' @return A string that is the canonical represention of the given deletion type
+#' @return A string that is the canonical representation of the given deletion type
 #'
 #' @keywords internal
 Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
@@ -449,7 +449,7 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
 #'
 #' @param trace If > 0, then cat information how the computation is carried out.
 #
-#' @return A string that is the canonical represention of the given insertion type
+#' @return A string that is the canonical representation of the given insertion type
 #'
 #' @keywords internal
 
@@ -490,7 +490,7 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #'
 #' @param trace If > 0 cat information how the computation is carried out.
 #
-#' @return A string that is the canonical represention of the type of the given
+#' @return A string that is the canonical representation of the type of the given
 #'  insertion or deletion.
 #'
 #' @keywords internal
@@ -502,7 +502,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   } else if (nchar(alt) > nchar(ref)) {
     # An insertion
     return(Canonicalize1INS(context, alt, pos, trace))
-    # TODO(steve): Make sure pos rather than pos + 1 is correct
+    # TODO(Steve): Make sure pos rather than pos + 1 is correct
   } else {
     cat("Non-insertion / non-deletion found:", ref, alt, context, "\n")
     stop()
@@ -522,7 +522,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @param trace If > 0 cat information how the computation is carried out.
 #
-#' @return A vector of strings that are the canonical representions
+#' @return A vector of strings that are the canonical representations
 #'  of the given insertions and deletions.
 #'
 #' @importFrom utils head
@@ -552,8 +552,8 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
 #'   \code{\link{AddAndCheckSequenceID}} function. It must only
 #'   contain indels and must \strong{not} contain SNSs
-#'   (single nucleotide/base substituions), DNSs, or triplet
-#'   base substituions, etc.
+#'   (single nucleotide/base substitutions), DNSs, or triplet
+#'   base substitutions, etc.
 #'
 #'   One design decision for variant callers is the representation of "complex
 #'   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
@@ -561,24 +561,24 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'   arise. In PCAWG, overlapping indel/SNS calls from different callers were
 #'   included in the indel VCFs.
 #'
-#' @param SBS.vcf An in-memory VCF as a data frame. Because we have to work with
-#'   some PCAWG data, we will look for neigboring indels and indels adjoining
-#'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
+#' @param SNS.vcf An in-memory VCF as a data frame. Because we have to work with
+#'   some PCAWG data, we will look for neighboring indels and indels adjoining
+#'   SNS. That means this functions takes an SNS VCF and an ID VCF from the same
 #'   sample.
 #'
 #' @param trace If > 0, various called functions cat information
 #'   useful for debugging and testing. The larger the number, the
 #'   more output.
 #'
-#' @return A list with two elemsents:
+#' @return A list with two elements:
 #'   ID.cat:   A 1-column matrix containing the mutation catalog information.
-#'   problems: Locations of neighboring indels or indels neighboring SBS.
+#'   problems: Locations of neighboring indels or indels neighboring SNS.
 #'             In the future we might handle these depending on what we
 #'             find in the indel calls from different variant callers. This
 #'             is not implemented at present.
 #'
 #' @keywords internal
-CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
+CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
   # TODO(Steve): more checking of the ID VCF here
 
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,

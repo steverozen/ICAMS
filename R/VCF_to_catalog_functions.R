@@ -188,7 +188,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
 #'
 #' @return A list with 3 in-memory VCFs and two left-over
-#' VCF-like data frames with rows that were not incorportated
+#' VCF-like data frames with rows that were not incorporated
 #' into the first 3 VCFs, as follows:
 #'
 #' \enumerate{
@@ -205,7 +205,7 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
 #'
 #'  \item \code{multiple.alternative.alleles} VCF like data.frame with
-#'  rows for varaints with multiple alternative alleles, for example
+#'  rows for variants with multiple alternative alleles, for example
 #'  ACT mutated to both AGT and ACT at the same position.
 #'
 #' }
@@ -325,8 +325,8 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #' > 2 consecutive bases
 #'
 #' SNSs are single nucleotide substitutions,
-#' eg C>T, A<G,....  DNSs are double nucleotide substitutions,
-#' eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
+#' e.g. C>T, A<G,....  DNSs are double nucleotide substitutions,
+#' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
@@ -448,8 +448,8 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' > 2 consecutive bases
 #'
 #' SNSs are single nucleotide substitutions,
-#' eg C>T, A<G,....  DNSs are double nucleotide substitutions,
-#' eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
+#' e.g. C>T, A<G,....  DNSs are double nucleotide substitutions,
+#' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
 #' @param list.of.vcfs A list of in-memory data frame containing Strelka SNS VCF file contents.
@@ -545,7 +545,7 @@ ReadListOfMutectVCFs <- function(vector.of.file.paths) {
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must *not*
-#'   contain DNS (double nucleotide substituions), or triplet base substitutions
+#'   contain DNS (double nucleotide substitutions), or triplet base substitutions
 #'   etc., even if encoded as neighboring SNS.
 #' @param sample.id Usually the sample id, but defaults to "count".
 #' @import data.table
@@ -571,7 +571,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   vcf$mutation <- paste0(context, vcf$ALT)
 
   # PyrPenta maps to strand-agnostic category
-  # eg ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
+  # e.g. ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
   vcf$pyr.mut <- PyrPenta(vcf$mutation)
 
   # Create part of the 1536 catalog matrix but missing mutation
@@ -674,7 +674,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must
-#'   *not* contain SNS (single nucleotide substituions), or triplet base
+#'   *not* contain SNS (single nucleotide substitutions), or triplet base
 #'   substitutions etc.
 #' @param sample.id Usually the sample id, but defaults to "count".
 #' @import data.table

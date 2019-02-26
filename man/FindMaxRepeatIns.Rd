@@ -14,7 +14,7 @@ inseted at position \code{pos}}
 \item{rep.unit.seq}{The inserted sequence and potention repeat unit}
 
 \item{pos}{\code{rep.unit.seq} is understood to be inserted between
-positions \code{pos} amd \code{pos + 1}.}
+positions \code{pos} and \code{pos + 1}.}
 }
 \value{
 If same sequence as \code{rep.unit.seq} occurs ending at

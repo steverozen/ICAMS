@@ -10,7 +10,7 @@ CreateOneColSNSCatalog(vcf, sample.id = "count")
 \arguments{
 \item{vcf}{An in-memory VCF file annotated by the AddSequence and
 AddTranscript functions. It must *not* contain indels and must *not*
-contain DNS (double nucleotide substituions), or triplet base substitutions
+contain DNS (double nucleotide substitutions), or triplet base substitutions
 etc., even if encoded as neighboring SNS.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}

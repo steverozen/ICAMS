@@ -19,7 +19,7 @@ sequence on each side of the insertion or deletion.}
 \item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-A string that is the canonical represention of the type of the given
+A string that is the canonical representation of the type of the given
  insertion or deletion.
 }
 \description{

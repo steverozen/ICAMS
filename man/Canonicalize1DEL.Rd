@@ -17,7 +17,7 @@ sequence on each side (at least as long as \code{del.seq}).}
 \item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
-A string that is the canonical represention of the given deletion type
+A string that is the canonical representation of the given deletion type
 }
 \description{
 Given a deletion and its sequence context, categorize it.

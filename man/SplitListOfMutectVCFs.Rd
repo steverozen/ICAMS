@@ -12,7 +12,7 @@ SplitListOfMutectVCFs(list.of.vcfs)
 }
 \value{
 A list with 3 in-memory VCFs and two left-over
-VCF-like data frames with rows that were not incorportated
+VCF-like data frames with rows that were not incorporated
 into the first 3 VCFs, as follows:
 
 \enumerate{
@@ -29,7 +29,7 @@ into the first 3 VCFs, as follows:
  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
 
  \item \code{multiple.alternative.alleles} VCF like data.frame with
- rows for varaints with multiple alternative alleles, for example
+ rows for variants with multiple alternative alleles, for example
  ACT mutated to both AGT and ACT at the same position.
 
 }

@@ -15,8 +15,8 @@ A list of 3 in-memory objects with the elements:
 }
 \description{
 SNSs are single nucleotide substitutions,
-eg C>T, A<G,....  DNSs are double nucleotide substitutions,
-eg CC>TT, AT>GG, ...  Variants involving > 2 consecutive
+e.g. C>T, A<G,....  DNSs are double nucleotide substitutions,
+e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 bases are rare, so this function just records them. These
 would be variants such ATG>CCT, AGAT > TCTA, ...
 }

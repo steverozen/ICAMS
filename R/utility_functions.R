@@ -27,7 +27,7 @@ NULL
 #'   can be created using functions \code{\link{CreateDinucAbundance}},
 #'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
 #'   \code{\link{CreatePentanucAbundance}}.
-#'   There are 6 types of predefined abundance matrix which are incoporated
+#'   There are 6 types of predefined abundance matrix which are incorporated
 #'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
 #'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
 #'   User can invoke a specific predefined abundance matrix by typing its name,
@@ -36,7 +36,7 @@ NULL
 #'   can be created using functions \code{\link{CreateDinucAbundance}},
 #'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
 #'   \code{\link{CreatePentanucAbundance}}.
-#'   There are 6 types of predefined abundance matrix which are incoporated
+#'   There are 6 types of predefined abundance matrix which are incorporated
 #'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
 #'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
 #'   User can invoke a specific predefined abundance matrix by typing its name,

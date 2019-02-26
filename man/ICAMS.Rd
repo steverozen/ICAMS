@@ -71,7 +71,7 @@ also work for reading mutational signature profiles.
 \section{Writing catalogs}{
 
 Functions for writing a mutational spectrum catalog to a file on disk.
-These also work for writing mutationl signature profiles.
+These also work for writing mutational signature profiles.
 \code{\link{WriteCatalog}}
 }
 
