@@ -501,7 +501,7 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   }
 }
 
-#' Read Strelka SNS VCF files from paths
+#' Read Strelka SNS (single nucleotide substitutions) VCF files from paths
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
@@ -532,7 +532,7 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
 }
 
 
-#' Read a list of Strelka ID VCF files from path
+#' Read Strelka ID (insertion and deletion) VCF files from paths
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
@@ -541,7 +541,7 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
-ReadListOfStrelkaIDVCFs <- function(vector.of.file.paths) {
+ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
@@ -856,7 +856,7 @@ StrelkaSNSVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.rang
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
-  vcfs <- ReadListOfStrelkaIDVCFs(vector.of.file.paths)
+  vcfs <- ReadStrelkaIDVCFs(vector.of.file.paths)
   return(VCFsToIDCatalogs(vcfs, genome))
 }
 
