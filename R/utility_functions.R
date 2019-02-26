@@ -16,13 +16,16 @@
 #' @name CollapseCatalog
 NULL
 
-#' Transform nucleotide spectra
+#' Transform nucleotide spectra functions
+#'
+#' Transform count spectra from a particular organism region to an inferred
+#' count spectra based on the target nucleotide abundance.
 #'
 #' @param catalog A matrix of mutation counts. Rownames indicate the mutation
 #'   types. Each column contains the mutation counts for one sample.
 #' @param source.abundance An abundance matrix specified by the user, which
-#'   can be created using functions \code{\link{CreateDinucAbundanc}},
-#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundanc}},
+#'   can be created using functions \code{\link{CreateDinucAbundance}},
+#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
 #'   \code{\link{CreatePentanucAbundance}}.
 #'   There are 6 types of predefined abundance matrix which are incoporated
 #'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
@@ -30,19 +33,19 @@ NULL
 #'   User can invoke a specific predefined abundance matrix by typing its name,
 #'   e.g. source.abundance = "GRCh37.genome".
 #' @param target.abundance An abundance matrix specified by the user, which
-#'   can be created using functions \code{\link{CreateDinucAbundanc}},
-#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundanc}},
+#'   can be created using functions \code{\link{CreateDinucAbundance}},
+#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
 #'   \code{\link{CreatePentanucAbundance}}.
 #'   There are 6 types of predefined abundance matrix which are incoporated
 #'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
 #'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
 #'   User can invoke a specific predefined abundance matrix by typing its name,
-#'   e.g. target.abundance = "GRCh37.genome".
+#'   e.g. target.abundance = "GRCm38.genome".
 #' @return A matrix of inferred mutation counts. Rownames indicate the mutation
 #'   types which are the same as those in \code{catalog}.
 #'   Each column contains the inferred mutation counts for one sample based on
 #'   \code{target.abundance}.
-#' @name TransfromSpectra
+#' @name TransformSpectra
 NULL
 
 #' @rdname CollapseCatalog
@@ -180,6 +183,7 @@ TransDinucSpectra <- function(catalog, source.abundance, target.abundance) {
 
   mat <- round(inferred.count, 0)
   rownames(mat) <- rownames(catalog)
+  colnames(mat) <- colnames(catalog)
   return(mat)
 }
 
@@ -278,6 +282,7 @@ TransTrinucSpectra <- function(catalog, source.abundance, target.abundance) {
 
   mat <- round(inferred.count, 0)
   rownames(mat) <- rownames(catalog)
+  colnames(mat) <- colnames(catalog)
   return(mat)
 }
 
@@ -376,6 +381,7 @@ TransTetranucSpectra <- function(catalog, source.abundance, target.abundance) {
 
   mat <- round(inferred.count, 0)
   rownames(mat) <- rownames(catalog)
+  colnames(mat) <- colnames(catalog)
   return(mat)
 }
 
@@ -474,6 +480,7 @@ TransPentanucSpectra <- function(catalog, source.abundance, target.abundance) {
 
   mat <- round(inferred.count, 0)
   rownames(mat) <- rownames(catalog)
+  colnames(mat) <- colnames(catalog)
   return(mat)
 }
 
