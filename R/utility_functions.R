@@ -379,6 +379,104 @@ TransTetranucSpectra <- function(catalog, source.abundance, target.abundance) {
   return(mat)
 }
 
+#' @rdname TransformSpectra
+#' @export
+TransPentanucSpectra <- function(catalog, source.abundance, target.abundance) {
+  if (class(source.abundance) != "matrix" &&
+      !source.abundance %in% c("GRCh37.genome", "GRCh37.exome",
+                               "GRCh38.genome", "GRCh38.exome",
+                               "GRCm38.genome", "GRCm38.exome")) {
+    stop ('source.abundance must be either an abundance matrix created by yourself
+          or a type from
+          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
+          "GRCm38.genome", "GRCm38.exome")')
+  }
+
+  if (class(target.abundance) != "matrix" &&
+      !target.abundance %in% c("GRCh37.genome", "GRCh37.exome",
+                               "GRCh38.genome", "GRCh38.exome",
+                               "GRCm38.genome", "GRCm38.exome")) {
+    stop ('target.abundance must be either an abundance matrix created by yourself
+          or a type from
+          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
+          "GRCm38.genome", "GRCm38.exome")')
+  }
+
+  stopifnot(nrow(catalog) == 1536)
+  stopifnot(all(rownames(catalog) %in% catalog.row.order.SNS.1536) == TRUE)
+  n <- ncol(catalog)
+  per.pentanuc.freq <- matrix(0, nrow = 1536, ncol = n)
+  inferred.count <- matrix(0, nrow = 1536, ncol = n)
+
+  for (i in 1:1536) {
+    for (j in 1:n) {
+      if (class(source.abundance) == "matrix") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          source.abundance[substr(rownames(catalog)[i], 1, 5), ]
+      } else  if (source.abundance == "GRCh37.genome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (source.abundance == "GRCh37.exome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (source.abundance == "GRCh38.genome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (source.abundance == "GRCh38.exome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (source.abundance == "GRCm38.genome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (source.abundance == "GRCm38.exome") {
+        per.pentanuc.freq[i, j] <-
+          catalog[i, j] /
+          abundance.5bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
+      }
+
+      if (class(target.abundance) == "matrix") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          target.abundance[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCh37.genome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCh37.exome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCh38.genome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCh38.exome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCm38.genome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
+      } else if (target.abundance == "GRCm38.exome") {
+        inferred.count[i, j] <-
+          per.pentanuc.freq[i, j] *
+          abundance.5bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
+      }
+    }
+  }
+
+  mat <- round(inferred.count, 0)
+  rownames(mat) <- rownames(catalog)
+  return(mat)
+}
+
 #' Standardize the Chromosome name annotations for a data frame
 #'
 #' @param df A data frame whose first column contains the Chromosome name
