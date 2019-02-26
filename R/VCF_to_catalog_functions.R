@@ -452,15 +452,15 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
-#' @param list.of.vcfs A list of in-memory data frame containing Strelka SNS VCF file contents.
+#' @param list.of.vcfs A list of in-memory data frames containing Strelka SNS VCF file contents.
 #' @return A list of 3 in-memory objects with the elements:
-#    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
-#    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
-#    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
-#    information (reference sequence, alternative sequence, context, etc.)
-#    Additional information not fully implemented at this point because of
-#    limited immediate biological interest.
-#' @export
+#'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
+#'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
+#'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
+#'    information (reference sequence, alternative sequence, context, etc.)
+#'    Additional information not fully implemented at this point because of
+#'    limited immediate biological interest.
+#' @keywords internal
 SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
   split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
   SNS.vcfs <- lapply(split.vcfs, function(x) x$SNS.vcf)
@@ -501,17 +501,36 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   }
 }
 
-#' Read a list of Strelka SNS VCF files from path
+#' Read Strelka SNS VCF files from paths
 #'
 #' @param vector.of.file.paths A vector containing the paths of the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
-#' @export
-ReadListOfStrelkaSNSVCFs <- function(vector.of.file.paths) {
+#' @keywords internal
+ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSNSVCF)
   names(vcfs) <- vector.of.file.paths
   return(vcfs)
 }
+
+#' Read and split Strelka SNS VCF files from paths
+#'
+#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#'
+#' @return A list of 3 in-memory objects with the elements:
+#'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
+#'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
+#'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
+#'    information (reference sequence, alternative sequence, context, etc.)
+#'    Additional information not fully implemented at this point because of
+#'    limited immediate biological interest.
+#' @export
+ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
+  vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
+  return(split.vcfs)
+}
+
 
 #' Read a list of Strelka ID VCF files from path
 #'
@@ -817,7 +836,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #' @export
 StrelkaSNSVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
-  vcfs <- ReadListOfStrelkaSNSVCFs(vector.of.file.paths)
+  vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
            VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
