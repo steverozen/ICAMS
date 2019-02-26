@@ -16,32 +16,17 @@ This alpha version only works with VCFs for human GRCh37, but will work for
 arbitrary \strong{human} catalogs (assuming no major change in "opportunities"
 between GRCh37 and GRCh38).
 }
-\section{Reading VCF files}{
+\section{Reading and splitting VCF files}{
  \enumerate{
 
-\item \code{\link{ReadListOfStrelkaSNSVCFs}} Read Strelka single nucleotide
-substitution (SNS) VCFs (not Strelka indel VCFS).
+\item \code{\link{ReadAndSplitStrelkaSNSVCFs}} Read and split Strelka single
+nucleotide substitution (SNS) VCFs (not Strelka indel VCFS).
 
-\item \code{\link{ReadListOfStrelkaIDVCFs}} Read Strelka indel (ID) VCFs (not Strelka
+\item \code{\link{ReadStrelkaIDVCFs}} Read Strelka indel (ID) VCFs (not Strelka
 SNS VCFS).
 
-\item \code{\link{ReadListOfMutectVCFs}} Read Mutect VCFs, which contain indels and double
-nucleotide substitutions (DNSs) as well and SNSs.
-}
-}
-
-\section{Splitting in-memory VCFs}{
-
-\enumerate{
-\item \code{\link{SplitListOfStrelkaSNSVCFs}} Split Strelka SNS VCFs
-into pairs of SNS and inferred DNS VCFs. This is necessary because Strelka
-does not call DNSs directly. Instead this functions merges adjacent SNSs
-into DNSs provided their VAFs (variant allele frequencies) are similar.
-
-\item \code{\link{SplitListOfMutectVCFs}} Split Mutect VCFs into
- SNS, DNS, and indel components. (Mutect VCFS include SNSs, DNSs, and indels,
- as well as a few other, extremely rare mutation types, such as triplet
- nucleotide substitutions).
+\item \code{\link{ReadAndSplitMutectVCFs}} Read and split Mutect VCFs, which
+contain indels and double nucleotide substitutions (DNSs) as well and SNSs.
 }
 }
 
@@ -75,9 +60,16 @@ These also work for writing mutational signature profiles.
 \code{\link{WriteCatalog}}
 }
 
+\section{Transforming catalogs}{
+
+Functions for transforming count spectra from a particular organism region to
+an inferred count spectra based on the target nucleotide abundance.
+\code{\link{TransformSpectra}}
+}
+
 \section{Collapsing catalogs}{
 
-Functions for collapsing a mutation catalog:
+Functions for collapsing a mutation catalog.
 \code{\link{CollapseCatalog}}
 }
 
