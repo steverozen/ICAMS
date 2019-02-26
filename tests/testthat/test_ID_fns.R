@@ -31,45 +31,45 @@ test_that("FindDelMH", {
   # GAGAGG[CTAGAA]CTAGTT
   #        ----   ----
   expect_equal(
-    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 1),
+    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0),
     4)
 
   # GAGAGGC[TAGAAC]TAGTT
   #       * ---  * ---
   expect_equal(
-    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 1),
+    FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "TAGAAC", 9, trace = 0),
     4)
 
   # AAGGCT[AGAACT]AGTTTT
   #     ** --  ** --
   expect_equal(
-    FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 1),
+    FindDelMH("AAAGGCTAGAACTAGTTTTT", "AGAACT", 8, trace = 0),
     4)
 
   # GGCTA[GAACTA]GTT
   #   *** -  *** -
   expect_equal(
-    FindDelMH("AAAGGCTAGAACTAGTTTTTT", "GAACTA", 9, trace = 1),
+    FindDelMH("AAAGGCTAGAACTAGTTTTTT", "GAACTA", 9, trace = 0),
     4)
 
   # GGCTAG[AACTAG]TT
   #   ****   ****
   expect_equal(
-    FindDelMH("AAAGGCTAGAACTAGTTTTTTT", "AACTAG", 10, trace = 1),
+    FindDelMH("AAAGGCTAGAACTAGTTTTTTT", "AACTAG", 10, trace = 0),
     4)
 
   # Cryptic repeat, return -1
   # TGACTA[GCTA]GTTAA
   #    *** -*** -
   expect_warning(
-    FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 1),
+    FindDelMH("TGACTAGCTAGTTAA", "GCTA", 7, trace = 0),
     regexp = "unhandled cryptic repeat", fixed = TRUE)
 
   # Missed obvious repeat
   # AGATA[GATA]CCCCA
   #  **** ----
   expect_error(
-    FindDelMH("AGATAGATACCCCA", "GATA", 6, trace = 1),
+    FindDelMH("AGATAGATACCCCA", "GATA", 6, trace = 0),
     "There is a repeated GATA to the left of the deleted GATA",
     fixed = TRUE)
 
@@ -77,7 +77,7 @@ test_that("FindDelMH", {
   # ACCCCC[GATA]GATACCCCA
   #        **** ----
   expect_error(
-    FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7, trace = 1),
+    FindDelMH("ACCCCCGATAGATACCCCA", "GATA", 7, trace = 0),
     "There is a repeated GATA to the right of the deleted GATA",
     fixed = TRUE)
 
@@ -85,13 +85,13 @@ test_that("FindDelMH", {
   # AAGATA[GATAG]CCCCAA
   #   **** ----
   expect_equal(
-    FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7, trace = 1),
+    FindDelMH("AAGATAGATAGCCCCAA", "GATAG", 7, trace = 0),
     0)
 
   # AAGATA[GGATA]CCCCAAA
   #   ****  ----
   expect_equal(
-    FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 1),
+    FindDelMH("AAGATAGGATACCCCAAA", "GGATA", 7, trace = 0),
     4)
 })
 
@@ -110,7 +110,7 @@ test_that("CreateOneColIDCatalog insertions", {
   }
   load("create_one_col_insert_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 2),
+    ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 0),
     create.one.col.insert.test)
 })
 
@@ -130,7 +130,7 @@ test_that("CreateOneColIDCatalog deletions", {
   }
   load("create_one_col_delete_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 2),
+    ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 0),
     create.one.col.delete.test)
 })
 
