@@ -16,6 +16,35 @@
 #' @name CollapseCatalog
 NULL
 
+#' Transform nucleotide spectra
+#'
+#' @param catalog A matrix of mutation counts. Rownames indicate the mutation
+#'   types. Each column contains the mutation counts for one sample.
+#' @param source.abundance An abundance matrix specified by the user, which
+#'   can be created using functions \code{\link{CreateDinucAbundanc}},
+#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundanc}},
+#'   \code{\link{CreatePentanucAbundance}}.
+#'   There are 6 types of predefined abundance matrix which are incoporated
+#'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
+#'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
+#'   User can invoke a specific predefined abundance matrix by typing its name,
+#'   e.g. source.abundance = "GRCh37.genome".
+#' @param target.abundance An abundance matrix specified by the user, which
+#'   can be created using functions \code{\link{CreateDinucAbundanc}},
+#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundanc}},
+#'   \code{\link{CreatePentanucAbundance}}.
+#'   There are 6 types of predefined abundance matrix which are incoporated
+#'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
+#'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
+#'   User can invoke a specific predefined abundance matrix by typing its name,
+#'   e.g. target.abundance = "GRCh37.genome".
+#' @return A matrix of inferred mutation counts. Rownames indicate the mutation
+#'   types which are the same as those in \code{catalog}.
+#'   Each column contains the inferred mutation counts for one sample based on
+#'   \code{target.abundance}.
+#' @name TransfromSpectra
+NULL
+
 #' @rdname CollapseCatalog
 #' @export
 Collapse192To96 <- function(catalog) {
