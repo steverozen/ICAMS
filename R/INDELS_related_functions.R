@@ -618,7 +618,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #'
 #' @return An ID (indel) catalog
 #'
-#' @export
+#' @keywords internal
 
 VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
 
