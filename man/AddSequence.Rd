@@ -4,12 +4,19 @@
 \alias{AddSequence}
 \title{Add sequence context to a data frame with mutation records}
 \usage{
-AddSequence(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5)
+AddSequence(df, genome)
 }
 \arguments{
 \item{df}{An input data frame storing mutation records of a VCF file.}
 
-\item{seq}{A particular reference genome.}
+\item{genome}{A particular reference genome(without quotation marks). Use
+\code{BSgenome::available.genomes()} to get the list of "BSgenome data
+packages" curently available. There are 2 types of predefined reference
+genome which are incorporated in this function. User can invoke a
+predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+"GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+\code{genome = "hg19"}.}
 }
 \value{
 A data frame with a new column added to the input data frame,

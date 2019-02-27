@@ -5,7 +5,7 @@
 \title{Add sequence context to a data frame with ID (insertion/deletion) mutation records,
  and confirm that they match the given reference genome.}
 \usage{
-AddAndCheckSequenceID(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5)
+AddAndCheckSequenceID(df, genome = BSgenome.Hsapiens.1000genomes.hs37d5)
 }
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file
@@ -13,7 +13,7 @@ AddAndCheckSequenceID(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5)
  there is a "context base" to the left, for example REF = ACG, ALT = A
 (deletion of CG) or REF = A, ALT = ACC (insertion of CC).}
 
-\item{seq}{A particular reference genome.}
+\item{genome}{A particular reference genome.}
 }
 \value{
 A data frame with 2 new columns added to the input data frame:
