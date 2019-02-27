@@ -230,27 +230,69 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' Add sequence context to a data frame with mutation records
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
-#' @param seq A particular reference genome.
+#' @param genome A particular reference genome(without quotation marks). Use
+#'   \code{BSgenome::available.genomes()} to get the list of "BSgenome data
+#'   packages" curently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @importFrom methods as
-#' @importFrom BSgenome getSeq
+#' @importFrom BSgenome getSeq seqnames
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
+#' @import BSgenome.Hsapiens.UCSC.hg38
 #' @return A data frame with a new column added to the input data frame,
 #'     which contains sequence context information.
 #' @keywords internal
 #' @export
-AddSequence <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
+AddSequence <- function(df, genome) {
   if (0 == nrow(df)) return(df)
 
   # Create a GRanges object with range width equals to 21
-  Ranges <-
-    as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
-       "GRanges")
+
 
   # Extract sequence context from the reference genome
-  df <- dplyr::mutate(df,
-                      seq.21context = getSeq(seq,
-                                             Ranges,
-                                             as.character = TRUE))
+  if (class(genome) != "character") {
+    # Check if the format of sequence names in df and genome are the same
+    if (all(unique(df$CHROM) %in% seqnames(genome))) {
+      # Create a GRanges object with range width equals to 21
+      Ranges <-
+        as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
+           "GRanges")
+    } else {
+      # Create a GRanges object with range width equals to 21
+      Ranges <-
+        as(data.frame(chrom = paste0("chr", df$CHROM),
+                      start = df$POS - 10, end = df$POS + 10),
+           "GRanges")
+    }
+    df <- dplyr::mutate(df,
+                        seq.21context = getSeq(genome,
+                                               Ranges,
+                                               as.character = TRUE))
+  } else if (genome == "GRCh38" || genome == "hg38") {
+    # Create a GRanges object with range width equals to 21
+    Ranges <-
+      as(data.frame(chrom = paste0("chr", df$CHROM),
+                    start = df$POS - 10, end = df$POS + 10),
+         "GRanges")
+    df <- dplyr::mutate(df,
+                        seq.21context = getSeq(BSgenome.Hsapiens.UCSC.hg38,
+                                               Ranges,
+                                               as.character = TRUE))
+
+  } else if (genome == "GRCh37" || genome == "hg19") {
+    # Create a GRanges object with range width equals to 21
+    Ranges <-
+      as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
+         "GRanges")
+    df <- dplyr::mutate(df,
+                        seq.21context = getSeq(BSgenome.Hsapiens.1000genomes.hs37d5,
+                                               Ranges,
+                                               as.character = TRUE))
+  }
+
   return(df)
 }
 
@@ -705,7 +747,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   for (i in 1:ncol) {
     SNS <- list.of.SNS.vcfs[[i]]
 
-    SNS <- AddSequence(SNS, seq = genome)
+    SNS <- AddSequence(SNS, genome = genome)
     CheckSeqContextInVCF(SNS, "seq.21context")
     SNS <- AddTranscript(SNS, trans.ranges)
     SNS.cat <- CreateOneColSNSCatalog(SNS)
@@ -836,7 +878,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   for (i in 1 : ncol) {
     DNS <- list.of.DNS.vcfs[[i]]
 
-    DNS <- AddSequence(DNS, seq = genome)
+    DNS <- AddSequence(DNS, genome = genome)
     DNS <- AddTranscript(DNS, trans.ranges)
     CheckSeqContextInVCF(DNS, "seq.21context")
     DNS.cat <- CreateOneColDNSCatalog(DNS)
