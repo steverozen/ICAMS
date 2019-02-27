@@ -6,7 +6,7 @@
 #'   there is a "context base" to the left, for example REF = ACG, ALT = A
 #'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
 #'
-#' @param seq A particular reference genome.
+#' @param genome A particular reference genome.
 #'
 #' @importFrom methods as
 #'
@@ -22,7 +22,7 @@
 #'     not provide the "context base"?
 #' }
 #' @keywords internal
-AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5) {
+AddAndCheckSequenceID <- function(df, genome = BSgenome.Hsapiens.1000genomes.hs37d5) {
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
@@ -59,7 +59,7 @@ AddAndCheckSequenceID <- function(df, seq = BSgenome.Hsapiens.1000genomes.hs37d5
     "GRanges")
 
   # Extract sequence context from the reference genome
-  df$seq.context <- getSeq(seq, Ranges, as.character = TRUE)
+  df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
 
   seq.to.check <- substr(df$seq.context, df$seq.context.width + 1, df$seq.context.width + var.width.in.genome + 1)
 
@@ -630,7 +630,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
 
   for (i in 1 : ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AddAndCheckSequenceID(ID, seq = genome)
+    ID <- AddAndCheckSequenceID(ID, genome = genome)
     # Unlike the case for SNS and DNS, we do not
     # add transcript information.
     one.ID.column <- CreateOneColIDCatalog(ID)
