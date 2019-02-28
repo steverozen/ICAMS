@@ -57,7 +57,7 @@ Collapse192To96 <- function(catalog) {
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[catalog.row.order.SNS.96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order$SNS96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -73,7 +73,7 @@ Collapse1536To96 <- function(catalog) {
   dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[catalog.row.order.SNS.96, , drop = FALSE]
+  mat96 <- mat96[catalog.row.order$SNS96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -86,7 +86,7 @@ Collapse144To78 <- function(catalog) {
   dt78 <- dt144[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
-  mat78 <- mat78[catalog.row.order.DNS.78, , drop = FALSE]
+  mat78 <- mat78[catalog.row.order$DNS78, , drop = FALSE]
 }
 
 #' @rdname TransformSpectra
@@ -113,7 +113,7 @@ TransDinucSpectra <- function(catalog, source.abundance, target.abundance) {
   }
 
   stopifnot(nrow(catalog) == 78)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order.DNS.78) == TRUE)
+  stopifnot(all(rownames(catalog) %in% catalog.row.order$DNS78) == TRUE)
   n <- ncol(catalog)
   per.dinuc.freq <- matrix(0, nrow = 78, ncol = n)
   inferred.count <- matrix(0, nrow = 78, ncol = n)
@@ -212,7 +212,7 @@ TransTrinucSpectra <- function(catalog, source.abundance, target.abundance) {
   }
 
   stopifnot(nrow(catalog) == 96)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order.SNS.96) == TRUE)
+  stopifnot(all(rownames(catalog) %in% catalog.row.order$SNS96) == TRUE)
   n <- ncol(catalog)
   per.trinuc.freq <- matrix(0, nrow = 96, ncol = n)
   inferred.count <- matrix(0, nrow = 96, ncol = n)
@@ -311,7 +311,7 @@ TransTetranucSpectra <- function(catalog, source.abundance, target.abundance) {
   }
 
   stopifnot(nrow(catalog) == 136)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order.DNS.136) == TRUE)
+  stopifnot(all(rownames(catalog) %in% catalog.row.order$DNS136) == TRUE)
   n <- ncol(catalog)
   per.tetranuc.freq <- matrix(0, nrow = 136, ncol = n)
   inferred.count <- matrix(0, nrow = 136, ncol = n)
@@ -410,7 +410,7 @@ TransPentanucSpectra <- function(catalog, source.abundance, target.abundance) {
   }
 
   stopifnot(nrow(catalog) == 1536)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order.SNS.1536) == TRUE)
+  stopifnot(all(rownames(catalog) %in% catalog.row.order$SNS1536) == TRUE)
   n <- ncol(catalog)
   per.pentanuc.freq <- matrix(0, nrow = 1536, ncol = n)
   inferred.count <- matrix(0, nrow = 1536, ncol = n)
