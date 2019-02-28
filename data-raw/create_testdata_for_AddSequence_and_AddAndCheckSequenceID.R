@@ -8,7 +8,7 @@ sns.vcf <- list.of.vcf$SNS.vcfs[[1]]
 strelka.SNS.vcf.GRCh38 <-
   AddSequence(sns.vcf, genome = BSgenome.Hsapiens.UCSC.hg38)
 
-save(strelka.SNS.vcf.GRCh37, strelka.SNS.vcf.GRCh38, file = "test_AddSequence.Rdata")
+save(strelka.SNS.vcf.GRCh37, strelka.SNS.vcf.GRCh38, file = "data-raw/test_AddSequence.Rdata")
 
 id.vcf <- ReadStrelkaIDVCF("data-raw/Strelka.ID.GRCh37.vcf")
 strelka.ID.vcf.GRCh37 <-
@@ -19,4 +19,4 @@ strelka.ID.vcf.GRCh38 <-
   AddAndCheckSequenceID(id.vcf, genome = BSgenome.Hsapiens.UCSC.hg38)
 
 save(strelka.ID.vcf.GRCh37, strelka.ID.vcf.GRCh38,
-     file = "test_AddAndCheckSequenceID.Rdata")
+     file = "data-raw/test_AddAndCheckSequenceID.Rdata")
