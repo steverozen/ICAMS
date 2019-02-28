@@ -45,6 +45,7 @@ NULL
 #'   types which are the same as those in \code{catalog}.
 #'   Each column contains the inferred mutation counts for one sample based on
 #'   \code{target.abundance}.
+#' @keywords internal
 #' @name TransformSpectra
 NULL
 
@@ -649,7 +650,7 @@ RevcDNS144 <- function(mutstring) {
 #'   start end positions of genomic ranges.
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
-#' @export
+#' @keywords internal
 ReadTranscriptRanges <- function(path) {
   d <- utils::read.table(path)
   colnames(d) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
@@ -691,7 +692,7 @@ ReadBedTranscriptRanges <- function(path) {
 #'
 #' @return A matrix whose row names indicate 32 different types of 3 base pairs
 #'   combinations while its column contains the occurrences of each type.
-#' @export
+#' @keywords internal
 CreateTrinucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("3bp", "occurrences")
@@ -710,7 +711,7 @@ CreateTrinucAbundance <- function(path) {
 #' @import data.table
 #' @return A matrix whose row names indicate 10 different types of 2 base pairs
 #'   combinations while its column contains the occurrences of each type.
-#' @export
+#' @keywords internal
 CreateDinucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
@@ -733,7 +734,7 @@ CreateDinucAbundance <- function(path) {
 #' @import data.table
 #' @return A matrix whose row names indicate 136 different types of 4 base pairs
 #'   combinations while its column contains the occurrences of each type.
-#' @export
+#' @keywords internal
 CreateTetranucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
@@ -751,7 +752,7 @@ CreateTetranucAbundance <- function(path) {
 #' @import data.table
 #' @return A matrix whose row names indicate 512 different types of 5 base
 #'   pairs combinations while its column contains the occurrences of each type.
-#' @export
+#' @keywords internal
 CreatePentanucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("5bp", "occurrences")
