@@ -875,10 +875,10 @@ empty.cats <- list(catSNS96 = emptySNS96,
                    catDNS144 = emptyDNS144,
                    catDNS136 = emptyDNS136)
 
-catalog.row.order <- list(catSNS96 = catalog.row.order.SNS.96,
-                          catSNS192 = catalog.row.order.SNS.192,
-                          catSNS1536 = catalog.row.order.SNS.1536,
-                          catDNS78 = catalog.row.order.DNS.78,
-                          catDNS136 = catalog.row.order.DNS.136,
-                          catDNS144 = catalog.row.order.DNS.144,
-                          catID = catalog.row.order.ID)
+catalog.row.order <- list(SNS96 = catalog.row.order.SNS.96,
+                          SNS192 = catalog.row.order.SNS.192,
+                          SNS1536 = catalog.row.order.SNS.1536,
+                          DNS78 = catalog.row.order.DNS.78,
+                          DNS136 = catalog.row.order.DNS.136,
+                          DNS144 = catalog.row.order.DNS.144,
+                          ID = catalog.row.order.ID)
