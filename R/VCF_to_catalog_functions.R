@@ -245,12 +245,8 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @return A data frame with a new column added to the input data frame,
 #'     which contains sequence context information.
 #' @keywords internal
-#' @export
 AddSequence <- function(df, genome) {
   if (0 == nrow(df)) return(df)
-
-  # Create a GRanges object with range width equals to 21
-
 
   # Extract sequence context from the reference genome
   if (class(genome) != "character") {
@@ -267,30 +263,24 @@ AddSequence <- function(df, genome) {
                       start = df$POS - 10, end = df$POS + 10),
            "GRanges")
     }
-    df <- dplyr::mutate(df,
-                        seq.21context = getSeq(genome,
-                                               Ranges,
-                                               as.character = TRUE))
+    df$seq.21context <- getSeq(genome, Ranges, as.character = TRUE)
+
   } else if (genome == "GRCh38" || genome == "hg38") {
     # Create a GRanges object with range width equals to 21
     Ranges <-
       as(data.frame(chrom = paste0("chr", df$CHROM),
                     start = df$POS - 10, end = df$POS + 10),
          "GRanges")
-    df <- dplyr::mutate(df,
-                        seq.21context = getSeq(BSgenome.Hsapiens.UCSC.hg38,
-                                               Ranges,
-                                               as.character = TRUE))
+    df$seq.21context <-
+      getSeq(BSgenome.Hsapiens.UCSC.hg38, Ranges, as.character = TRUE)
 
   } else if (genome == "GRCh37" || genome == "hg19") {
     # Create a GRanges object with range width equals to 21
     Ranges <-
       as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
          "GRanges")
-    df <- dplyr::mutate(df,
-                        seq.21context = getSeq(BSgenome.Hsapiens.1000genomes.hs37d5,
-                                               Ranges,
-                                               as.character = TRUE))
+    df$seq.21context <-
+      getSeq(BSgenome.Hsapiens.1000genomes.hs37d5, Ranges, as.character = TRUE)
   }
 
   return(df)
