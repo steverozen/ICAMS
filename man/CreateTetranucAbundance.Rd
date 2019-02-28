@@ -17,3 +17,4 @@ A matrix whose row names indicate 136 different types of 4 base pairs
 \description{
 Create tetranucleotide abundance file
 }
+\keyword{internal}

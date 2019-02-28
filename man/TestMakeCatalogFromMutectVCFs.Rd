@@ -11,3 +11,4 @@ TestMakeCatalogFromMutectVCFs()
 This function is to make catalogs from the sample Mutect VCF file
 to compare with the expected catalog information.
 }
+\keyword{internal}

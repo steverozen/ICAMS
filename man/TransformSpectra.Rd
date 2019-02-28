@@ -50,3 +50,4 @@ A matrix of inferred mutation counts. Rownames indicate the mutation
 Transform count spectra from a particular organism region to an inferred
 count spectra based on the target nucleotide abundance.
 }
+\keyword{internal}

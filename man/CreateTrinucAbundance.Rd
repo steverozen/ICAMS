@@ -17,3 +17,4 @@ A matrix whose row names indicate 32 different types of 3 base pairs
 \description{
 Create trinucleotide abundance file
 }
+\keyword{internal}

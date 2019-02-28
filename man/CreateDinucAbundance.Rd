@@ -17,3 +17,4 @@ A matrix whose row names indicate 10 different types of 2 base pairs
 \description{
 Create dinucleotide abundance file
 }
+\keyword{internal}

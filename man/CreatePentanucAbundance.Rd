@@ -17,3 +17,4 @@ A matrix whose row names indicate 512 different types of 5 base
 \description{
 Create pentanucleotide abundance file
 }
+\keyword{internal}

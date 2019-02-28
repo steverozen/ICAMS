@@ -11,3 +11,4 @@ TestMakeCatalogFromStrelkaIDVCFs()
 This function is to make catalogs from the sample Strelka ID VCF files
 to compare with the expected catalog information.
 }
+\keyword{internal}
