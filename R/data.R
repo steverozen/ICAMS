@@ -1,11 +1,11 @@
 #' Canonical order of row names in a catalog
-#' @format A string of characters indicating the canonical order of row names in
-#'   a catalog.
+#' @format A list which containts string of characters indicating the canonical
+#'   order of row names in a catalog.
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #' @name CatalogRowOrder
-NULL
+"catalog.row.order"
 
 #' Row headers information for writing a catalog to disk in standardized format
 #' @format A data frame which contains the row headers information for writing
@@ -13,6 +13,7 @@ NULL
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#' @keywords internal
 #' @name CatalogRowHeaders
 NULL
 
@@ -101,6 +102,7 @@ NULL
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#' @keywords internal
 #' @name Abundance
 NULL
 
@@ -134,27 +136,6 @@ NULL
 #'   for a particular organism.
 #' @name TranscriptRanges
 NULL
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.SNS.96"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.SNS.192"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.SNS.1536"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.DNS.78"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.DNS.144"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.DNS.136"
-
-#' @rdname CatalogRowOrder
-"catalog.row.order.ID"
 
 #' @rdname CatalogRowHeaders
 "catalog.row.headers.SNS.96"

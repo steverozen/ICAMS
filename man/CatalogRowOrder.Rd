@@ -3,30 +3,12 @@
 \docType{data}
 \name{CatalogRowOrder}
 \alias{CatalogRowOrder}
-\alias{catalog.row.order.SNS.96}
-\alias{catalog.row.order.SNS.192}
-\alias{catalog.row.order.SNS.1536}
-\alias{catalog.row.order.DNS.78}
-\alias{catalog.row.order.DNS.144}
-\alias{catalog.row.order.DNS.136}
-\alias{catalog.row.order.ID}
+\alias{catalog.row.order}
 \title{Canonical order of row names in a catalog}
-\format{A string of characters indicating the canonical order of row names in
-  a catalog.}
+\format{A list which containts string of characters indicating the canonical
+  order of row names in a catalog.}
 \usage{
-catalog.row.order.SNS.96
-
-catalog.row.order.SNS.192
-
-catalog.row.order.SNS.1536
-
-catalog.row.order.DNS.78
-
-catalog.row.order.DNS.144
-
-catalog.row.order.DNS.136
-
-catalog.row.order.ID
+catalog.row.order
 }
 \description{
 Canonical order of row names in a catalog
