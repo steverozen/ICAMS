@@ -1095,7 +1095,7 @@ TestStrelkaVCFToDNSCatalog <- function() {
 
 #' This function is to make catalogs from the sample Mutect VCF file
 #' to compare with the expected catalog information.
-#' @export
+#' @keywords internal
 TestMakeCatalogFromMutectVCFs <- function() {
   files <- c(system.file("extdata",
                          "MCF10A_Carb_Low_cl2_Mutect.vcf",
@@ -1256,7 +1256,7 @@ OldTestMakeCatalogFromStrelkaSNSVCFs <- function() {
 
 #' This function is to make catalogs from the sample Strelka SNS VCF files
 #' to compare with the expected catalog information.
-#' @export
+#' @keywords internal
 TestMakeCatalogFromStrelkaSNSVCFs <- function() {
   files <- c(system.file("extdata",
                          "MCF10A_Carb_Low_cl2_Strelka_SNS.vcf",
@@ -1326,7 +1326,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
 
 #' This function is to make catalogs from the sample Strelka ID VCF files
 #' to compare with the expected catalog information.
-#' @export
+#' @keywords internal
 TestMakeCatalogFromStrelkaIDVCFs <- function() {
   files <- c(system.file("extdata",
                          "MCF10A_Carb_Low_cl2_INDELresult.vcf",
