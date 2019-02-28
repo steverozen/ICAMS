@@ -130,7 +130,7 @@ PlotCatSNS96 <-
   function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
     stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == catalog.row.order.SNS.96)
+    stopifnot(rownames(catalog) == catalog.row.order$SNS96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -565,7 +565,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
 
   # Define the theme color for plotting
-  theme.col <- "darkgreen"
+  theme.col <- "palegreen3"
   colPal <- grDevices::colorRampPalette(c("white", theme.col))
 
   scale.col <- function(x, x.max) {
@@ -727,7 +727,7 @@ PlotCatSNS1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance
 PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
                          abundance = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
-  stopifnot(rownames(catalog) == catalog.row.order.DNS.78)
+  stopifnot(rownames(catalog) == catalog.row.order$DNS78)
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))
