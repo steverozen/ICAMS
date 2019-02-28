@@ -5,6 +5,7 @@
 \alias{TranscriptRanges}
 \alias{trans.ranges.GRCh37}
 \alias{old.trans.ranges.GRCh37}
+\alias{trans.ranges.GRCh38}
 \title{Transcript ranges data}
 \format{A data.table which contains transcript range and strand information
   for a particular organism.}
@@ -12,6 +13,8 @@
 trans.ranges.GRCh37
 
 old.trans.ranges.GRCh37
+
+trans.ranges.GRCh38
 }
 \description{
 Transcript ranges and strand information for a particular organism
