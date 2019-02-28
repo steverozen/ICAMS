@@ -11,4 +11,5 @@ test_that("PlotCatSNS192ToPdf function is working properly", {
   type <- c("counts", "signature")
   out <- PlotCatSNS192ToPdf(cat, "PlotCatSNS192.test.pdf", type = rep(type, 4))
   expect_equal(out, TRUE)
+  unlink("PlotCatSNS192.test.pdf")
 })

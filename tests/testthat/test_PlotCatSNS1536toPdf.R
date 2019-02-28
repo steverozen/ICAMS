@@ -7,4 +7,5 @@ test_that("PlotCatSNS1536toPdf function is working properly", {
     PlotCatSNS1536ToPdf(catalog, "PlotCatSNS1536.test.pdf",
                         abundance = abundance.5bp.genome.GRCh37)
   expect_equal(out, TRUE)
+  unlink("PlotCatSNS1536.test.pdf")
 })
