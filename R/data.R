@@ -254,3 +254,6 @@ NULL
 
 #' @rdname TranscriptRanges
 "old.trans.ranges.GRCh37"
+
+#' @rdname TranscriptRanges
+"trans.ranges.GRCh38"
