@@ -6,11 +6,22 @@
 #'   there is a "context base" to the left, for example REF = ACG, ALT = A
 #'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
 #'
-#' @param genome A particular reference genome.
+#' @param genome A particular reference genome(without quotation marks). Use
+#'   \code{BSgenome::available.genomes()} to get the list of "BSgenome data
+#'   packages" curently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #'
 #' @importFrom methods as
 #'
+#' @importFrom BSgenome getSeq seqnames
+#'
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
+#'
+#' @import BSgenome.Hsapiens.UCSC.hg38
 #'
 #' @return A data frame with 2 new columns added to the input data frame:
 #' \enumerate{
@@ -22,7 +33,7 @@
 #'     not provide the "context base"?
 #' }
 #' @keywords internal
-AddAndCheckSequenceID <- function(df, genome = BSgenome.Hsapiens.1000genomes.hs37d5) {
+AddAndCheckSequenceID <- function(df, genome) {
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
@@ -50,17 +61,48 @@ AddAndCheckSequenceID <- function(df, genome = BSgenome.Hsapiens.1000genomes.hs3
   # in up to 5 additonal repeats of the inserted or deleted sequence.
   # Then 6 to avoid possible future issues.
 
-  # Create a GRanges object with the needed width.
-  Ranges <-
-    as(data.frame(chrom = df$CHROM,
-                  start = df$POS - df$seq.context.width, # 10,
-                  end = df$POS + var.width.in.genome + df$seq.context.width # 10
-    ),
-    "GRanges")
-
   # Extract sequence context from the reference genome
-  df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
-
+  if (class(genome) != "character") {
+    # Check if the format of sequence names in df and genome are the same
+    if (all(unique(df$CHROM) %in% seqnames(genome))) {
+      # Create a GRanges object with the needed width.
+      Ranges <-
+        as(data.frame(chrom = df$CHROM,
+                      start = df$POS - df$seq.context.width, # 10,
+                      end = df$POS + var.width.in.genome + df$seq.context.width # 10
+        ),
+        "GRanges")
+    } else {
+      # Create a GRanges object with the needed width.
+      Ranges <-
+        as(data.frame(chrom = paste0("chr", df$CHROM),
+                      start = df$POS - df$seq.context.width, # 10,
+                      end = df$POS + var.width.in.genome + df$seq.context.width # 10
+        ),
+        "GRanges")
+    }
+    df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
+  } else if (genome == "GRCh38" || genome == "hg38") {
+    # Create a GRanges object with the needed width.
+    Ranges <-
+      as(data.frame(chrom = paste0("chr", df$CHROM),
+                    start = df$POS - df$seq.context.width, # 10,
+                    end = df$POS + var.width.in.genome + df$seq.context.width # 10
+      ),
+      "GRanges")
+    df$seq.context <-
+      getSeq(BSgenome.Hsapiens.UCSC.hg38, Ranges, as.character = TRUE)
+  } else if (genome == "GRCh37" || genome == "hg19") {
+    # Create a GRanges object with the needed width.
+    Ranges <-
+      as(data.frame(chrom = df$CHROM,
+                    start = df$POS - df$seq.context.width, # 10,
+                    end = df$POS + var.width.in.genome + df$seq.context.width # 10
+      ),
+      "GRanges")
+    df$seq.context <-
+      getSeq(BSgenome.Hsapiens.1000genomes.hs37d5, Ranges, as.character = TRUE)
+  }
   seq.to.check <- substr(df$seq.context, df$seq.context.width + 1, df$seq.context.width + var.width.in.genome + 1)
 
   stopifnot(seq.to.check == df$REF)
