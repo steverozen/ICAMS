@@ -64,11 +64,6 @@
 #'
 #' \item \code{\link{CatalogRowOrder}} Canonical order of row names in a catalog.
 #'
-#' \item \code{\link{CatalogRowHeaders}} Row headers information for writing a
-#' catalog to disk in standardized format.
-#'
-#' \item \code{\link{Abundance}} Nucleotide abundance information for a particular organism.
-#'
 #'\item \code{\link{TranscriptRanges}} Transcript ranges and strand information
 #'for a particular organism. }
 #' @docType package
