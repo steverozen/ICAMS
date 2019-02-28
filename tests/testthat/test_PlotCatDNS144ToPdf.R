@@ -13,4 +13,5 @@ test_that("PlotCatDNS144ToPdf function is working properly", {
   out <- PlotCatDNS144ToPdf(cat, "PlotCatDNS144.test.pdf", type = rep(type, 2))
   expect_equal(out, TRUE)
   unlink("PlotCatDNS144.test.pdf")
+  graphics.off()
 })

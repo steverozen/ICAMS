@@ -10,4 +10,5 @@ test_that("PlotCatDNS136ToPdf function is working properly", {
                        abundance = abundance.4bp.genome.GRCh37)
   expect_equal(out, TRUE)
   unlink("PlotCatDNS136.test.pdf")
+  graphics.off()
 })
