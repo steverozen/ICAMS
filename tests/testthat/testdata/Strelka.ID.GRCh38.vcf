@@ -3,7 +3,7 @@
 ##source=strelka																		
 ##source_version=2.0.17.strelka1																		
 ##startTime=Fri Nov 23 12:09:41 2018																		
-##reference=file:///gpfs/public/reference_genomes/hs37/hs37d5.fa																		
+##NB: this is a fake hg38 vcf; generated from a hs37 vcf, liftover using the UCSC LiftOver tool"																		
 ##contig=<ID=1,length=249250621>"																		
 ##contig=<ID=2,length=243199373>"																		
 ##contig=<ID=3,length=198022430>"																		
