@@ -904,7 +904,8 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #' @export
-StrelkaSNSVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+StrelkaSNSVCFFilesToCatalog <-
+  function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),

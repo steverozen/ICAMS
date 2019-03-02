@@ -26,4 +26,3 @@ e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 bases are rare, so this function just records them. These
 would be variants such ATG>CCT, AGAT > TCTA, ...
 }
-\keyword{internal}
