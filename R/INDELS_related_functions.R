@@ -15,6 +15,9 @@
 #'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
 #'   \code{genome = "hg19"}.
 #'
+#' @param flag.mismatches If > 0, if there are mismatches to references, print
+#' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
+#'
 #' @importFrom methods as
 #'
 #' @importFrom BSgenome getSeq seqnames
@@ -33,7 +36,7 @@
 #'     not provide the "context base"?
 #' }
 #' @keywords internal
-AddAndCheckSequenceID <- function(df, genome) {
+AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
@@ -71,7 +74,7 @@ AddAndCheckSequenceID <- function(df, genome) {
                       start = df$POS - df$seq.context.width, # 10,
                       end = df$POS + var.width.in.genome + df$seq.context.width # 10
         ),
-        "GRanges")
+        "GRanges")       # TODO(Steve): discuss w/ Nanhai; add another check; fold these 2 arms of the if.else
     } else {
       # Create a GRanges object with the needed width.
       Ranges <-
@@ -105,7 +108,26 @@ AddAndCheckSequenceID <- function(df, genome) {
   }
   seq.to.check <- substr(df$seq.context, df$seq.context.width + 1, df$seq.context.width + var.width.in.genome + 1)
 
-  stopifnot(seq.to.check == df$REF)
+  mismatches <- which(seq.to.check != df$REF)
+  cat("\n\nhuh?", mismatches, "\n\n")
+
+  if (length(mismatches) > 0) {
+    tmp.table <- data.frame(df$CHROM, df$POS, df$REF, df$ALT, df$seq.context, seq.to.check)
+    tmp.table <- tmp.table[mismatches, ]
+    cat("\n\nMismatches between VCF and reference sequence:\n\n")
+    rows.to.print <-
+      ifelse(flag.mismatches == 0,
+             min(10, nrow(tmp.table)),
+             min(nrow(tmp.table), flag.mismatches))
+    cat("Showing", rows.to.print, "rows out of", nrow(tmp.table), "\n\n")
+    print(tmp.table[1:rows.to.print, ])
+    if (flag.mismatches > 0) {
+      cat("\n\nDiscarding rows with mismatches\n\n")
+      df <- df[-mismatches, ]
+    } else {
+      stop("Mismatch to reference genome sequence")
+    }
+  }
 
   return(df)
 }
