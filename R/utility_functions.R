@@ -23,6 +23,7 @@ NULL
 #'
 #' @param catalog A matrix of mutation counts. Rownames indicate the mutation
 #'   types. Each column contains the mutation counts for one sample.
+#'
 #' @param source.abundance An abundance matrix specified by the user, which
 #'   can be created using functions \code{\link{CreateDinucAbundance}},
 #'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
@@ -32,6 +33,7 @@ NULL
 #'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
 #'   User can invoke a specific predefined abundance matrix by typing its name,
 #'   e.g. source.abundance = "GRCh37.genome".
+#'
 #' @param target.abundance An abundance matrix specified by the user, which
 #'   can be created using functions \code{\link{CreateDinucAbundance}},
 #'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
@@ -41,11 +43,14 @@ NULL
 #'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
 #'   User can invoke a specific predefined abundance matrix by typing its name,
 #'   e.g. target.abundance = "GRCm38.genome".
+#'
 #' @return A matrix of inferred mutation counts. Rownames indicate the mutation
 #'   types which are the same as those in \code{catalog}.
 #'   Each column contains the inferred mutation counts for one sample based on
 #'   \code{target.abundance}.
+#'
 #' @keywords internal
+#'
 #' @name TransformSpectra
 NULL
 
@@ -89,28 +94,107 @@ Collapse144To78 <- function(catalog) {
   mat78 <- mat78[catalog.row.order$DNS78, , drop = FALSE]
 }
 
+#' Handle abundance (opportunity) specications uniformly.
+#'
+#' @param abundance Either an abunance variable or string specifying an abundance.
+#'
+#' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
+NormalizeAbundanceArg <- function(abundance, which.n) {
+  if (class(abundance) %in% c("matrix", "numeric")) {
+    # stopifnot .... which.n matches the abundance vector....
+    return (abundance)
+  }
+  if (!which.n %in% 2:5) {
+    stop("Argument which.n must be in the set 2:5, got", which.n)
+  }
+
+  if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
+                               "GRCh38.genome", "GRCh38.exome",
+                               "GRCm38.genome", "GRCm38.exome")) {
+    stop ('abundance must be either an abundance matrix created by yourself
+          or one of
+          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
+          "GRCm38.genome", "GRCm38.exome"), got', abundance)
+  }
+
+  if (abundance == "GRCh37.genome") {
+    if (which.n == 2) return(abundance.2bp.genome.GRCh37)
+    if (which.n == 3) return(abundance.3bp.genome.GRCh37)
+    if (which.n == 4) return(abundance.4bp.genome.GRCh37)
+    if (which.n == 5) return(abundance.5bp.genome.GRCh37)
+  }
+  if (abundance == "GRCh37.exome"){
+    if (which.n == 2) return(abundance.2bp.exome.GRCh37)
+    if (which.n == 3) return(abundance.3bp.exome.GRCh37)
+    if (which.n == 4) return(abundance.4bp.exome.GRCh37)
+    if (which.n == 5) return(abundance.5bp.exome.GRCh37)
+  }
+  if (abundance == "GRCh38.genome") {
+    if (which.n == 2) return(abundance.2bp.genome.GRCh38)
+    if (which.n == 3) return(abundance.3bp.genome.GRCh38)
+    if (which.n == 4) return(abundance.4bp.genome.GRCh38)
+    if (which.n == 5) return(abundance.5bp.genome.GRCh38)
+  }
+  if (abundance == "GRCh38.exome"){
+    if (which.n == 2) return(abundance.2bp.exome.GRCh38)
+    if (which.n == 3) return(abundance.3bp.exome.GRCh38)
+    if (which.n == 4) return(abundance.4bp.exome.GRCh38)
+    if (which.n == 5) return(abundance.5bp.exome.GRCh38)
+  }
+  stop("Programming error: we should never get here")
+}
+
+# TransDinucSpectra <- function(catalog, source.abundance, target.abundance, which.n,
+# type = c("signature", "density", "counts"))
+#  {
+# source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+# target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+# !Do some error checking, something like
+# if (nrow(catalog) == 96 && which.n != 3) stop....
+# if (nrow(catalog) == 192 && which.n != 3) stop...
+#
+# stopifnot(names(source.abudance) == names(target.abundance))
+#
+# out.catalog <- catalog
+#
+# factor <- target.abundance / source.abundance
+# names(factor) <- rownames(target.abundance)
+#
+# # CAUTION: this function depends on how mutations are encoded in
+# the row names!
+# transform.n.mer <- function(source.n.mer) {
+#  # First, get the rows with the given source.n.mer
+#  rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
+#  out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
+# }
+#
+# lapply(rownames(out.op), transform.n.mer)
+#
+# out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
+# # Each colmun in out2 sums to 1
+#
+# if (type = "signature") return(out2)
+#
+# # lazy way to get new matrix in same shape as out2
+# out3's elements will be overwritten
+# out3 <- out2
+#
+# # This going back to counts making sure that the total number
+# # of counts is the same as in the input. I think this
+# # is one of several(?) possible design choices. Alternatively could
+# # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
+# # unchanged.
+# for (i in 1:ncol(out2)) {
+#  out3[ ,i] <- out2[ ,i] * sum(input.sig.mat[ , i])
+#}
+# return(out3)
+#}
+
 #' @rdname TransformSpectra
 #' @export
 TransDinucSpectra <- function(catalog, source.abundance, target.abundance) {
-  if (class(source.abundance) != "matrix" &&
-      !source.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('source.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  if (class(target.abundance) != "matrix" &&
-      !target.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('target.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
+  source.abundance <- NormalizeAbundanceArg(source.abundance, 3)
+  target.abundance <- NormalizeAbundanceArg(target.abundance, 3)
 
   stopifnot(nrow(catalog) == 78)
   stopifnot(all(rownames(catalog) %in% catalog.row.order$DNS78) == TRUE)
