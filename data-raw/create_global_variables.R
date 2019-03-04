@@ -1,6 +1,5 @@
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
-                  old.trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
                   overwrite = TRUE)
 
