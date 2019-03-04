@@ -24,4 +24,5 @@ test_that("Function are working properly to make catalogs from Strelka GRCh38 VC
   expect_equal(cat4, cat5)
   expect_equal(cat4, cat6)
 
+
 })
