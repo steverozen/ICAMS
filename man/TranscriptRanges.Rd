@@ -4,15 +4,12 @@
 \name{TranscriptRanges}
 \alias{TranscriptRanges}
 \alias{trans.ranges.GRCh37}
-\alias{old.trans.ranges.GRCh37}
 \alias{trans.ranges.GRCh38}
 \title{Transcript ranges data}
 \format{A data.table which contains transcript range and strand information
   for a particular organism.}
 \usage{
 trans.ranges.GRCh37
-
-old.trans.ranges.GRCh37
 
 trans.ranges.GRCh38
 }
@@ -37,10 +34,5 @@ retained_intron, processed_transcript and nonsense_mediated_decay. It
 contains chromosome name, start, end position, strand information and gene
 name and is keyed by chrom, chromStart, and chromEnd. It can be used in
 function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
-
-\code{old.trans.ranges.GRCh37} A data.table which contains transcript range
-and strand information for \strong{Human} GRCh37, which is derived from a raw
-\strong{BED} format file and is keyed by chrom, chromStart, and chromEnd.
-This is mostly for testing purpose, may be removed in the future.
 }
 \keyword{datasets}

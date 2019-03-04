@@ -2,20 +2,20 @@
 % Please edit documentation in R/utility_functions.R
 \name{NormalizeGenomeArg}
 \alias{NormalizeGenomeArg}
-\title{Take strings representing a genome and return the \link[BSgenome] object.}
+\title{Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.}
 \usage{
 NormalizeGenomeArg(genome)
 }
 \arguments{
-\item{genome}{Either a variable containing a BSgenome object or
-a character string acting as a genome identifier.}
+\item{genome}{Either a variable containing a \link[BSgenome]{BSgenome} object
+or a character string acting as a genome identifier.}
 }
 \value{
-If \code{genome} is \code{BSgenome} object, return it.
-Otherwise return the \code{BSgenome} object identified by the
+If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
+Otherwise return the \link[BSgenome]{BSgenome} object identified by the
 string \code{genome}.
 }
 \description{
-Take strings representing a genome and return the \link[BSgenome] object.
+Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
 }
 \keyword{internal}

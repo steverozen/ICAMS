@@ -10,7 +10,7 @@ AddSequence(df, genome)
 \item{df}{An input data frame storing mutation records of a VCF file.}
 
 \item{genome}{A particular reference genome(without quotation marks). Use
-\code{BSgenome::available.genomes()} to get the list of "BSgenome data
+\link[BSgenome]{available.genomes} to get the list of "BSgenome data
 packages" curently available. There are 2 types of predefined reference
 genome which are incorporated in this function. User can invoke a
 predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
