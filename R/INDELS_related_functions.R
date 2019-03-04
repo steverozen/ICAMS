@@ -1,3 +1,26 @@
+#' Take strings representing a genome and return the \code{BSgenome} object.
+#'
+#' @param genome Either a variable containing a BSgenome object or
+#' a character string acting as a genome identifier.
+#'
+#' @return If \code{genome} is \code{BSgenome} object, return it.
+#' Otherwise return the \code{BSgenome} object identified by the
+#' string \code{genome}.
+
+StandardGenomeArg <- function(genome) {
+  if (class(genome) == "character") {
+    if (genome %in% c("GRCh38", "hg38")) {
+      genome <- BSgenome.Hsapiens.UCSC.hg38
+    } else if (genome %in% c("GRCh37", "hg19")) {
+      genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+    } else {
+      stop("Unrecoginzed genome identifier:\n", genome,
+           "\nNeed one of GRCh38, hg38, GRCh37, hg19")
+    }
+  }
+  return(genome)
+}
+
 #' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
 #'  and confirm that they match the given reference genome.
 #'
@@ -38,6 +61,8 @@
 #' @keywords internal
 AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
 
+  genome <- NormalizeGenomeArg(genome)
+
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
     # Not sure how to handle this yet; the code may work with minimal adjustment
@@ -48,7 +73,7 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
     stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
     complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
     if (length(complex.indels.to.remove > 0)) {
-      warn("Removing complex indels", complex.indels.to.remove, "\n")
+      warning("Removing complex indels", complex.indels.to.remove, "\n")
       print(df[ complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }
@@ -60,59 +85,49 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
   var.width.in.genome <- ifelse(is.del, var.width, 0)
 
   df$seq.context.width <- var.width * 6
-  # 6 because we need to find if the insertion or deletion is embedded
+  # 6 because we need to find out if the insertion or deletion is embedded
   # in up to 5 additonal repeats of the inserted or deleted sequence.
   # Then 6 to avoid possible future issues.
 
   # Extract sequence context from the reference genome
-  if (class(genome) != "character") {
-    # Check if the format of sequence names in df and genome are the same
-    if (all(unique(df$CHROM) %in% seqnames(genome))) {
-      # Create a GRanges object with the needed width.
-      Ranges <-
-        as(data.frame(chrom = df$CHROM,
-                      start = df$POS - df$seq.context.width, # 10,
-                      end = df$POS + var.width.in.genome + df$seq.context.width # 10
-        ),
-        "GRanges")       # TODO(Steve): discuss w/ Nanhai; add another check; fold these 2 arms of the if.else
-    } else {
-      # Create a GRanges object with the needed width.
-      Ranges <-
-        as(data.frame(chrom = paste0("chr", df$CHROM),
-                      start = df$POS - df$seq.context.width, # 10,
-                      end = df$POS + var.width.in.genome + df$seq.context.width # 10
-        ),
-        "GRanges")
+
+  # Check if the format of sequence names in df and genome are the same.
+  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
+  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
+  # "chr1", "chr2", ....
+  vcf.chr.names <- unique(df$CHROM)
+  if (!all(vcf.chr.names %in% seqnames(genome))) {
+    tmp.chr <- paste0("chr", vcf.chr.names)
+    if (!all(tmp.chr) %in% seqnames(genome)) {
+      stop("Cannot match chromosome names:\n",
+           sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
     }
-    df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
-  } else if (genome == "GRCh38" || genome == "hg38") {
-    # Create a GRanges object with the needed width.
-    Ranges <-
-      as(data.frame(chrom = paste0("chr", df$CHROM),
-                    start = df$POS - df$seq.context.width, # 10,
-                    end = df$POS + var.width.in.genome + df$seq.context.width # 10
-      ),
-      "GRanges")
-    df$seq.context <-
-      getSeq(BSgenome.Hsapiens.UCSC.hg38, Ranges, as.character = TRUE)
-  } else if (genome == "GRCh37" || genome == "hg19") {
-    # Create a GRanges object with the needed width.
-    Ranges <-
-      as(data.frame(chrom = df$CHROM,
-                    start = df$POS - df$seq.context.width, # 10,
-                    end = df$POS + var.width.in.genome + df$seq.context.width # 10
-      ),
-      "GRanges")
-    df$seq.context <-
-      getSeq(BSgenome.Hsapiens.1000genomes.hs37d5, Ranges, as.character = TRUE)
+
+    chr.names <- paste0("chr", df$CHROM)
+  } else {
+    chr.names <- df$CHROM
   }
-  seq.to.check <- substr(df$seq.context, df$seq.context.width + 1, df$seq.context.width + var.width.in.genome + 1)
+  # Create a GRanges object with the needed width.
+  Ranges <-
+    as(data.frame(chrom = chr.names,
+                  start = df$POS - df$seq.context.width, # 10,
+                  end = df$POS + var.width.in.genome + df$seq.context.width # 10
+    ),
+    "GRanges")
+
+  df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
+
+  seq.to.check <-
+    substr(df$seq.context, df$seq.context.width + 1,
+           df$seq.context.width + var.width.in.genome + 1)
 
   mismatches <- which(seq.to.check != df$REF)
   cat("\n\nhuh?", mismatches, "\n\n")
 
   if (length(mismatches) > 0) {
-    tmp.table <- data.frame(df$CHROM, df$POS, df$REF, df$ALT, df$seq.context, seq.to.check)
+    tmp.table <-
+      data.frame(
+        df$CHROM, df$POS, df$REF, df$ALT, df$seq.context, seq.to.check)
     tmp.table <- tmp.table[mismatches, ]
     cat("\n\nMismatches between VCF and reference sequence:\n\n")
     rows.to.print <-
