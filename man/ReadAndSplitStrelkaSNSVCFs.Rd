@@ -21,3 +21,6 @@ A list of 3 in-memory objects with the elements:
 \description{
 Read and split Strelka SNS VCF files from paths
 }
+\seealso{
+\code{\link{StrelkaSNSVCFFilesToCatalog}}
+}

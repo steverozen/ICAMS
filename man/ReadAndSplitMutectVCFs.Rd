@@ -36,3 +36,6 @@ into the first 3 VCFs, as follows:
 \description{
 Read and split Mutect VCF files from paths
 }
+\seealso{
+\code{\link{MutectVCFFilesToCatalog}}
+}

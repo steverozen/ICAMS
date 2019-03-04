@@ -763,3 +763,27 @@ CreatePentanucAbundance <- function(path) {
   rownames(mat) <- dt1[[1]]
   return(mat)
 }
+
+#' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
+#'
+#' @param genome Either a variable containing a \link[BSgenome]{BSgenome} object
+#'   or a character string acting as a genome identifier.
+#'
+#' @return If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
+#' Otherwise return the \link[BSgenome]{BSgenome} object identified by the
+#' string \code{genome}.
+#'
+#' @keywords internal
+NormalizeGenomeArg <- function(genome) {
+  if (class(genome) == "character") {
+    if (genome %in% c("GRCh38", "hg38")) {
+      genome <- BSgenome.Hsapiens.UCSC.hg38
+    } else if (genome %in% c("GRCh37", "hg19")) {
+      genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+    } else {
+      stop("Unrecoginzed genome identifier:\n", genome,
+           "\nNeed one of GRCh38, hg38, GRCh37, hg19")
+    }
+  }
+  return(genome)
+}

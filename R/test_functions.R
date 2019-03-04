@@ -407,7 +407,7 @@ OldTestStrelkaSNSCatalog <- function() {
   stopifnot(nrow(vcf.df) ==  3544)
   SNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$SNS.vcf
 
-  SNS.vcf <- AddSequence(SNS.vcf)
+  SNS.vcf <- AddSequence(SNS.vcf, genome = "GRCh37")
   CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
   SNS.vcf <- AddTranscript(SNS.vcf, trans.ranges.GRCh37)
@@ -842,7 +842,7 @@ TestStrelkaVCFToSNSCatalog <- function() {
   stopifnot(nrow(vcf.df) ==  10293)
   SNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$SNS.vcf
 
-  SNS.vcf <- AddSequence(SNS.vcf)
+  SNS.vcf <- AddSequence(SNS.vcf, genome = "GRCh37")
   CheckSeqContextInVCF(SNS.vcf, "seq.21context")
 
   SNS.vcf <- AddTranscript(SNS.vcf, trans.ranges.GRCh37)
@@ -962,7 +962,7 @@ OldTestStrelkaDNSCatalog <- function() {
   stopifnot(nrow(vcf.df) ==  3544)
   DNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$DNS.vcf
 
-  DNS.vcf <- AddSequence(DNS.vcf)
+  DNS.vcf <- AddSequence(DNS.vcf, genome = "GRCh37")
   CheckSeqContextInVCF(DNS.vcf, "seq.21context")
 
   DNS.vcf <- AddTranscript(DNS.vcf, trans.ranges.GRCh37)
@@ -1075,7 +1075,7 @@ TestStrelkaVCFToDNSCatalog <- function() {
   stopifnot(nrow(vcf.df) ==  10293)
   DNS.vcf <- SplitStrelkaSNSVCF(vcf.df)$DNS.vcf
 
-  DNS.vcf <- AddSequence(DNS.vcf)
+  DNS.vcf <- AddSequence(DNS.vcf, genome = "GRCh37")
   CheckSeqContextInVCF(DNS.vcf, "seq.21context")
 
   DNS.vcf <- AddTranscript(DNS.vcf, trans.ranges.GRCh37)

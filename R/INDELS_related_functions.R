@@ -1,26 +1,3 @@
-#' Take strings representing a genome and return the \link[BSgenome] object.
-#'
-#' @param genome Either a variable containing a BSgenome object or
-#' a character string acting as a genome identifier.
-#'
-#' @return If \code{genome} is \code{BSgenome} object, return it.
-#' Otherwise return the \code{BSgenome} object identified by the
-#' string \code{genome}.
-
-StandardGenomeArg <- function(genome) {
-  if (class(genome) == "character") {
-    if (genome %in% c("GRCh38", "hg38")) {
-      genome <- BSgenome.Hsapiens.UCSC.hg38
-    } else if (genome %in% c("GRCh37", "hg19")) {
-      genome <- BSgenome.Hsapiens.1000genomes.hs37d5
-    } else {
-      stop("Unrecoginzed genome identifier:\n", genome,
-           "\nNeed one of GRCh38, hg38, GRCh37, hg19")
-    }
-  }
-  return(genome)
-}
-
 #' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
 #'  and confirm that they match the given reference genome.
 #'
@@ -98,7 +75,7 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
   vcf.chr.names <- unique(df$CHROM)
   if (!all(vcf.chr.names %in% seqnames(genome))) {
     tmp.chr <- paste0("chr", vcf.chr.names)
-    if (!all(tmp.chr) %in% seqnames(genome)) {
+    if (!all(tmp.chr %in% seqnames(genome))) {
       stop("Cannot match chromosome names:\n",
            sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
     }

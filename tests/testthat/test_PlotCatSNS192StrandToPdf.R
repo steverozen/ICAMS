@@ -13,6 +13,6 @@ test_that("PlotCatSNS192StrandToPdf function is working properly", {
   out <- PlotCatSNS192StrandToPdf(cat, "PlotCatSNS192Strand.test.pdf",
                                   type = rep(type, 2))
   expect_equal(out, TRUE)
-  unlink("PlotCatSNS192Strand.test.pdf")
+  #unlink("PlotCatSNS192Strand.test.pdf")
   graphics.off()
 })
