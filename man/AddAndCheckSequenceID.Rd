@@ -5,7 +5,7 @@
 \title{Add sequence context to a data frame with ID (insertion/deletion) mutation records,
  and confirm that they match the given reference genome.}
 \usage{
-AddAndCheckSequenceID(df, genome)
+AddAndCheckSequenceID(df, genome, flag.mismatches = FALSE)
 }
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file
@@ -21,6 +21,9 @@ predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
 "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
 GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
 \code{genome = "hg19"}.}
+
+\item{flag.mismatches}{If > 0, if there are mismatches to references, print
+out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.}
 }
 \value{
 A data frame with 2 new columns added to the input data frame:
