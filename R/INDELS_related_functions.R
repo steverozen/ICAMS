@@ -1,4 +1,4 @@
-#' Take strings representing a genome and return the \code{BSgenome} object.
+#' Take strings representing a genome and return the \link[BSgenome] object.
 #'
 #' @param genome Either a variable containing a BSgenome object or
 #' a character string acting as a genome identifier.
