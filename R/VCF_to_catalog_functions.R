@@ -234,7 +234,7 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
 #' @param genome A particular reference genome(without quotation marks). Use
-#'   \code{BSgenome::available.genomes()} to get the list of "BSgenome data
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
 #'   packages" curently available. There are 2 types of predefined reference
 #'   genome which are incorporated in this function. User can invoke a
 #'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
@@ -250,41 +250,35 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @keywords internal
 AddSequence <- function(df, genome) {
   if (0 == nrow(df)) return(df)
+  seq.context.width <- 10
+  genome <- NormalizeGenomeArg(genome)
+
+  # Check if the format of sequence names in df and genome are the same.
+  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
+  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
+  # "chr1", "chr2", ....
+  vcf.chr.names <- unique(df$CHROM)
+  if (!all(vcf.chr.names %in% seqnames(genome))) {
+    tmp.chr <- paste0("chr", vcf.chr.names)
+    if (!all(tmp.chr %in% seqnames(genome))) {
+      stop("Cannot match chromosome names:\n",
+           sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
+    }
+
+    chr.names <- paste0("chr", df$CHROM)
+  } else {
+    chr.names <- df$CHROM
+  }
+  # Create a GRanges object with the needed width.
+  Ranges <-
+    as(data.frame(chrom = chr.names,
+                  start = df$POS - seq.context.width, # 10,
+                  end = df$POS + seq.context.width # 10
+    ),
+    "GRanges")
 
   # Extract sequence context from the reference genome
-  if (class(genome) != "character") {
-    # Check if the format of sequence names in df and genome are the same
-    if (all(unique(df$CHROM) %in% seqnames(genome))) {
-      # Create a GRanges object with range width equals to 21
-      Ranges <-
-        as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
-           "GRanges")
-    } else {
-      # Create a GRanges object with range width equals to 21
-      Ranges <-
-        as(data.frame(chrom = paste0("chr", df$CHROM),
-                      start = df$POS - 10, end = df$POS + 10),
-           "GRanges")
-    }
-    df$seq.21context <- getSeq(genome, Ranges, as.character = TRUE)
-
-  } else if (genome == "GRCh38" || genome == "hg38") {
-    # Create a GRanges object with range width equals to 21
-    Ranges <-
-      as(data.frame(chrom = paste0("chr", df$CHROM),
-                    start = df$POS - 10, end = df$POS + 10),
-         "GRanges")
-    df$seq.21context <-
-      getSeq(BSgenome.Hsapiens.UCSC.hg38, Ranges, as.character = TRUE)
-
-  } else if (genome == "GRCh37" || genome == "hg19") {
-    # Create a GRanges object with range width equals to 21
-    Ranges <-
-      as(data.frame(chrom = df$CHROM, start = df$POS - 10, end = df$POS + 10),
-         "GRanges")
-    df$seq.21context <-
-      getSeq(BSgenome.Hsapiens.1000genomes.hs37d5, Ranges, as.character = TRUE)
-  }
+  df$seq.21context <- getSeq(genome, Ranges, as.character = TRUE)
 
   return(df)
 }
@@ -559,6 +553,7 @@ ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
+#' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
 #' @export
 ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
@@ -621,6 +616,7 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #'
 #' }
 #'
+#' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
 #' @export
 ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
