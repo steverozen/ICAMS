@@ -764,13 +764,13 @@ CreatePentanucAbundance <- function(path) {
   return(mat)
 }
 
-#' Take strings representing a genome and return the \link[BSgenome] object.
+#' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
 #'
-#' @param genome Either a variable containing a BSgenome object or
-#' a character string acting as a genome identifier.
+#' @param genome Either a variable containing a \link[BSgenome]{BSgenome} object
+#'   or a character string acting as a genome identifier.
 #'
-#' @return If \code{genome} is \code{BSgenome} object, return it.
-#' Otherwise return the \code{BSgenome} object identified by the
+#' @return If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
+#' Otherwise return the \link[BSgenome]{BSgenome} object identified by the
 #' string \code{genome}.
 #'
 #' @keywords internal
