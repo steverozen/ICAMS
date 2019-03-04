@@ -75,7 +75,7 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
   vcf.chr.names <- unique(df$CHROM)
   if (!all(vcf.chr.names %in% seqnames(genome))) {
     tmp.chr <- paste0("chr", vcf.chr.names)
-    if (!all(tmp.chr) %in% seqnames(genome)) {
+    if (!all(tmp.chr %in% seqnames(genome))) {
       stop("Cannot match chromosome names:\n",
            sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
     }
