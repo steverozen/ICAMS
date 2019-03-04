@@ -122,7 +122,6 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
            df$seq.context.width + var.width.in.genome + 1)
 
   mismatches <- which(seq.to.check != df$REF)
-  cat("\n\nhuh?", mismatches, "\n\n")
 
   if (length(mismatches) > 0) {
     tmp.table <-
