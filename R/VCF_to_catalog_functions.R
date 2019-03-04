@@ -616,7 +616,7 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #'
 #' }
 #'
-#' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
+#' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #' @export
 ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
