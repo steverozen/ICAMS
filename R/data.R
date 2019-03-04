@@ -128,10 +128,6 @@ NULL
 #' name and is keyed by chrom, chromStart, and chromEnd. It can be used in
 #' function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
 #'
-#' \code{old.trans.ranges.GRCh37} A data.table which contains transcript range
-#' and strand information for \strong{Human} GRCh37, which is derived from a raw
-#' \strong{BED} format file and is keyed by chrom, chromStart, and chromEnd.
-#' This is mostly for testing purpose, may be removed in the future.
 #' @format A data.table which contains transcript range and strand information
 #'   for a particular organism.
 #' @name TranscriptRanges
@@ -232,9 +228,6 @@ NULL
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh37"
-
-#' @rdname TranscriptRanges
-"old.trans.ranges.GRCh37"
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh38"
