@@ -59,11 +59,12 @@
 #' sequence of the mutations in the genome.  For example, mutations from
 #' ACG are much rarer in the human genome than mutations from ACC
 #' simply because CG dinucleotides are rare in the genome.
-#' This function can also tranform spectra
+#' This function can also transform spectra
 #' based on observed genome-wide counts to "density"-based
-#' catalogs, where mutations are expressed as mutations per
+#' catalogs. In density-based catalogs
+#' mutations are expressed as mutations per
 #' (million) source sequences. For example,
-#' a "density" based catalog represents
+#' a density-based catalog represents
 #' the proportion of ACCs mutated to
 #' ATCs, the proportion of ACGs mutated to ATGs, etc., as
 #' opposed to number of ACC-to-ATC mutations, the number of
