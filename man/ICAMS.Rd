@@ -82,8 +82,10 @@ mutations are expressed as mutations per
 (million) source sequences. For example,
 a density-based catalog represents
 the proportion of ACCs mutated to
-ATCs, the proportion of ACGs mutated to ATGs, etc., as
-opposed to number of ACC-to-ATC mutations, the number of
+ATCs, the proportion of ACGs mutated to ATGs, etc.
+This is
+opposed count-based catalogs, which
+contain the number of ACC-to-ATC mutations, the number of
 ACG-to-ATG mutations, etc.
 This function can also transform observed-count based
 spectra or signatures from genome to exome based counts,
@@ -100,7 +102,7 @@ based on a fined-grained set of features (for example, single-nucleotide
 substitutions in the context of the preceding and following 2 bases)
 to a catalog based on a coarser-grained set of features
 (for example, single-nucleotide substitutions in the context of the
-immediately precedig and following bases).
+immediately preceding and following bases).
 \code{\link{CollapseCatalog}}
 }
 

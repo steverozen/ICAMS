@@ -84,7 +84,7 @@
 #' substitutions in the context of the preceding and following 2 bases)
 #' to a catalog based on a coarser-grained set of features
 #' (for example, single-nucleotide substitutions in the context of the
-#' immediately precedig and following bases).
+#' immediately preceding and following bases).
 #' \code{\link{CollapseCatalog}}
 #'
 #' @section Exported data: \enumerate{
