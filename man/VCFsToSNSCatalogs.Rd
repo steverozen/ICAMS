@@ -27,4 +27,3 @@ Create a list of 3 catalogs (one each for 96, 192, 1536)
 out of the contents in list.of.SNS.vcfs. The SNS VCFs must not contain
 DNSs, indels, or other types of mutations.
 }
-\keyword{internal}

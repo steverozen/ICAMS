@@ -85,17 +85,6 @@
 #' immediately precedig and following bases).
 #' \code{\link{CollapseCatalog}}
 #'
-#' \item \code{\link{ReadAndSplitStrelkaSNSVCFs}} Read and split Strelka single
-#' nucleotide substitution (SNS) VCFs (not Strelka indel VCFS).
-#'
-#' \item \code{\link{ReadStrelkaIDVCFs}} Read Strelka indel (ID) VCFs (not Strelka
-#' SNS VCFS).
-#'
-#' \item \code{\link{ReadAndSplitMutectVCFs}} Read and split Mutect VCFs, which
-#' contain indels and double nucleotide substitutions (DNSs) as well and SNSs.
-#'}
-#'
-#'
 #' @section Exported data: \enumerate{
 #'
 #' \item \code{\link{CatalogRowOrder}} Canonical order of row names in a catalog.

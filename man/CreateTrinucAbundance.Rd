@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateTrinucAbundance}
 \alias{CreateTrinucAbundance}
-\title{Create trinucleotide abundance file}
+\title{Create trinucleotide abundance}
 \usage{
 CreateTrinucAbundance(path)
 }
@@ -11,10 +11,10 @@ CreateTrinucAbundance(path)
 base pairs.}
 }
 \value{
-A matrix whose row names indicate 32 different types of 3 base pairs
-  combinations while its column contains the occurrences of each type.
+A numeric vector whose names indicate 32 different types of 3 base pairs
+  combinations while its values indicate the occurrences of each type.
 }
 \description{
-Create trinucleotide abundance file
+Create trinucleotide abundance
 }
 \keyword{internal}

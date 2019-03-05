@@ -663,7 +663,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 }
 
 
-#' Create ID (indel) catalog from VCFs
+#' Create ID (insertion and deletion) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
@@ -673,8 +673,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #'
 #' @return An ID (indel) catalog
 #'
-#' @keywords internal
-
+#' @export
 VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
 
   ncol <- length(list.of.vcfs)
