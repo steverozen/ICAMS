@@ -649,7 +649,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 
   stopifnot(nchar(vcf$ALT) == 1)
   stopifnot(nchar(vcf$REF) == 1)
-
+  stopifnot(vcf$ALT != vcf$REF)
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21context, 9, 13)
   vcf$mutation <- paste0(context, vcf$ALT)
