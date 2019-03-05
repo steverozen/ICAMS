@@ -144,51 +144,97 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   stop("Programming error: we should never get here")
 }
 
-# TransDinucSpectra <- function(catalog, source.abundance, target.abundance, which.n,
-# type = c("signature", "density", "counts"))
-#  {
-# source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-# target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-# !Do some error checking, something like
-# if (nrow(catalog) == 96 && which.n != 3) stop....
-# if (nrow(catalog) == 192 && which.n != 3) stop...
-#
-# stopifnot(names(source.abudance) == names(target.abundance))
-#
-# out.catalog <- catalog
-#
-# factor <- target.abundance / source.abundance
-# names(factor) <- rownames(target.abundance)
-#
-# # CAUTION: this function depends on how mutations are encoded in
-# the row names!
-# transform.n.mer <- function(source.n.mer) {
-#  # First, get the rows with the given source.n.mer
-#  rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
-#  out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
-# }
-#
-# lapply(rownames(out.op), transform.n.mer)
-#
-# out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-# # Each colmun in out2 sums to 1
-#
-# if (type = "signature") return(out2)
-#
-# # lazy way to get new matrix in same shape as out2
-# out3's elements will be overwritten
-# out3 <- out2
-#
-# # This going back to counts making sure that the total number
-# # of counts is the same as in the input. I think this
-# # is one of several(?) possible design choices. Alternatively could
-# # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
-# # unchanged.
-# for (i in 1:ncol(out2)) {
-#  out3[ ,i] <- out2[ ,i] * sum(input.sig.mat[ , i])
-#}
-# return(out3)
-#}
+# Proposed tests
+x1 <- NTS(cat, source.abundance = "GRCh37.genome",
+          target.abundance = "GRCh37.exome",
+          source.type = "counts")
+x2 <- NTS(x1, source.abundance = "GRCh37.exome",
+          target.abundance = "GRCh37.exome"
+          source.type = "counts",
+          target.type = "signature")
+x3 <- NTS(cat, source.abundance = "GRCh37.genome",
+          target.abundance = "GRCH37.genome",
+          source.type = "counts",
+          target.type = "signature")
+x4 <- NTS(x3, source.abundance = "GRCh37.genome",
+          target.abundance = "GRCh37.exome",
+          source.type = "signature")
+stopifnot(all.equal(x2, x4))
+
+NTS <-
+  function(catalog, source.abundance, target.abundance = NULL, which.n,
+           source.type, target.type = source.type) {
+
+    stopifnot(source.type %in% c("counts", "signature", "density"))
+    stopifnot(target.type %in% c("counts", "signature", "density"))
+    if (target.type != source.type) {
+      if (source.type != "counts") {
+        stop("Only a \"counts\" type catalog ",
+             "can be transformed to a different type")
+      }
+      if (target.type == "density") {
+        target.abundance <- rep(1, length(source.abundance))
+        names(target.abundance) <- names(source.abundance)
+      }
+    }
+
+    if (is.null(target.abundance)) {
+      stop("explain the problem")
+    }
+    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+
+    # !Add some error checking, something like
+    # if (nrow(catalog) == 96 && which.n != 3) stop....
+    # if (nrow(catalog) == 192 && which.n != 3) stop...
+    #
+    # stopifnot(names(source.abudance) == names(target.abundance))
+
+    out.catalog <- catalog
+
+    factor <- target.abundance / source.abundance
+    names(factor) <- rownames(target.abundance)
+
+    # CAUTION: this function depends on how mutations are encoded in
+    # the row names!
+    transform.n.mer <- function(source.n.mer) {
+      # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the
+      # encoding of ACT > AGT as "ACTG"); for SNS1536
+      # the n-mer for AACAG > AATAG is AACAG, in the
+      # encoding AACAGT. For DNS78 TGGA represents TG >GA, and
+      # the source n-mer is TG. For DNS136 and DNS144, TTGA represents
+      # TTGA > TNNA, and the source n-mer is TTGA.
+      # First, get the rows with the given source.n.mer
+      rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
+      # Then update those rows using the factor for that source.n.mer
+
+      out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
+      # For density, factor = 1/source.abundance, or,
+      # if you want, 10^6/source.abundance
+    }
+
+    n.mers <- magic.function(rownames(out.catalog), which.n)
+    lapply(n.mers, transform.n.mer)
+
+    out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
+    # # Each colmun in out2 sums to 1
+
+    if (target.type = "signature") return(out2)
+
+    # lazy way to get new matrix in same shape as out2
+    # out3's elements will be overwritten
+    out3 <- out2
+
+    # This is going back to counts making sure that the total number
+    # of counts is the same as in the input. I think this
+    # is one of several(?) possible design choices. Alternatively could
+    # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
+    # unchanged.
+    for (i in 1:ncol(out2)) {
+      out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
+    }
+    return(out3)
+  }
 
 #' @rdname TransformSpectra
 #' @export
