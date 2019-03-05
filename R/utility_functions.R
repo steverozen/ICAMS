@@ -144,97 +144,90 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   stop("Programming error: we should never get here")
 }
 
-# Proposed tests
-x1 <- NTS(cat, source.abundance = "GRCh37.genome",
-          target.abundance = "GRCh37.exome",
-          source.type = "counts")
-x2 <- NTS(x1, source.abundance = "GRCh37.exome",
-          target.abundance = "GRCh37.exome",
-          source.type = "counts",
-          target.type = "signature")
-x3 <- NTS(cat, source.abundance = "GRCh37.genome",
-          target.abundance = "GRCH37.genome",
-          source.type = "counts",
-          target.type = "signature")
-x4 <- NTS(x3, source.abundance = "GRCh37.genome",
-          target.abundance = "GRCh37.exome",
-          source.type = "signature")
-stopifnot(all.equal(x2, x4))
+#' NTS
+#'
+#' @param catalog TODO
+#' @param source.abundance TODO
+#' @param target.abundance TODO
+#' @param which.n TODO
+#' @param source.type TODO
+#' @param target.type TODO
+#'
+#' @return TODO
+#' @export
+NTS <- function(catalog, source.abundance, target.abundance = NULL, which.n,
+                source.type, target.type = source.type) {
 
-NTS <-
-  function(catalog, source.abundance, target.abundance = NULL, which.n,
-           source.type, target.type = source.type) {
-
-    stopifnot(source.type %in% c("counts", "signature", "density"))
-    stopifnot(target.type %in% c("counts", "signature", "density"))
-    if (target.type != source.type) {
-      if (source.type != "counts") {
-        stop("Only a \"counts\" type catalog ",
-             "can be transformed to a different type")
-      }
-      if (target.type == "density") {
-        target.abundance <- rep(1, length(source.abundance))
-        names(target.abundance) <- names(source.abundance)
-      }
+  stopifnot(source.type %in% c("counts", "signature", "density"))
+  stopifnot(target.type %in% c("counts", "signature", "density"))
+  if (target.type != source.type) {
+    if (source.type != "counts") {
+      stop("Only a \"counts\" type catalog ",
+           "can be transformed to a different type")
     }
-
-    if (is.null(target.abundance)) {
-      stop("explain the problem")
+    if (target.type == "density") {
+      target.abundance <- rep(1, length(source.abundance))
+      names(target.abundance) <- names(source.abundance)
     }
-    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-
-    # !Add some error checking, something like
-    # if (nrow(catalog) == 96 && which.n != 3) stop....
-    # if (nrow(catalog) == 192 && which.n != 3) stop...
-    #
-    # stopifnot(names(source.abudance) == names(target.abundance))
-
-    out.catalog <- catalog
-
-    factor <- target.abundance / source.abundance
-    names(factor) <- rownames(target.abundance)
-
-    # CAUTION: this function depends on how mutations are encoded in
-    # the row names!
-    transform.n.mer <- function(source.n.mer) {
-      # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the
-      # encoding of ACT > AGT as "ACTG"); for SNS1536
-      # the n-mer for AACAG > AATAG is AACAG, in the
-      # encoding AACAGT. For DNS78 TGGA represents TG >GA, and
-      # the source n-mer is TG. For DNS136 and DNS144, TTGA represents
-      # TTGA > TNNA, and the source n-mer is TTGA.
-      # First, get the rows with the given source.n.mer
-      rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
-      # Then update those rows using the factor for that source.n.mer
-
-      out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
-      # For density, factor = 1/source.abundance, or,
-      # if you want, 10^6/source.abundance
-    }
-
-    n.mers <- magic.function(rownames(out.catalog), which.n)
-    lapply(n.mers, transform.n.mer)
-
-    out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-    # # Each colmun in out2 sums to 1
-
-    if (target.type = "signature") return(out2)
-
-    # lazy way to get new matrix in same shape as out2
-    # out3's elements will be overwritten
-    out3 <- out2
-
-    # This is going back to counts making sure that the total number
-    # of counts is the same as in the input. I think this
-    # is one of several(?) possible design choices. Alternatively could
-    # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
-    # unchanged.
-    for (i in 1:ncol(out2)) {
-      out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
-    }
-    return(out3)
   }
+
+  if (is.null(target.abundance)) {
+    stop("explain the problem")
+  }
+  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+
+  # !Add some error checking, something like
+  # if (nrow(catalog) == 96 && which.n != 3) stop....
+  # if (nrow(catalog) == 192 && which.n != 3) stop...
+  #
+  # stopifnot(names(source.abudance) == names(target.abundance))
+
+  out.catalog <- catalog
+
+  factor <- target.abundance / source.abundance
+  names(factor) <- rownames(target.abundance)
+
+  # CAUTION: this function depends on how mutations are encoded in
+  # the row names!
+  transform.n.mer <- function(source.n.mer) {
+    # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the
+    # encoding of ACT > AGT as "ACTG"); for SNS1536
+    # the n-mer for AACAG > AATAG is AACAG, in the
+    # encoding AACAGT. For DNS78 TGGA represents TG >GA, and
+    # the source n-mer is TG. For DNS136 and DNS144, TTGA represents
+    # TTGA > TNNA, and the source n-mer is TTGA.
+    # First, get the rows with the given source.n.mer
+    rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
+    # Then update those rows using the factor for that source.n.mer
+
+    out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
+    # For density, factor = 1/source.abundance, or,
+    # if you want, 10^6/source.abundance
+  }
+
+  n.mers <- magic.function(rownames(out.catalog), which.n)
+  lapply(n.mers, transform.n.mer)
+
+  out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
+  # # Each colmun in out2 sums to 1
+
+  if (target.type == "signature") return(out2)
+
+  # lazy way to get new matrix in same shape as out2
+  # out3's elements will be overwritten
+  out3 <- out2
+
+  # This is going back to counts making sure that the total number
+  # of counts is the same as in the input. I think this
+  # is one of several(?) possible design choices. Alternatively could
+  # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
+  # unchanged.
+  for (i in 1:ncol(out2)) {
+    out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
+  }
+  return(out3)
+}
 
 #' @rdname TransformSpectra
 #' @export
@@ -815,13 +808,13 @@ ReadBedTranscriptRanges <- function(path) {
   return(bed1)
 }
 
-#' Create trinucleotide abundance file
+#' Create trinucleotide abundance
 #'
 #' @param path Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
 #'
-#' @return A matrix whose row names indicate 32 different types of 3 base pairs
-#'   combinations while its column contains the occurrences of each type.
+#' @return A numeric vector whose names indicate 32 different types of 3 base pairs
+#'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTrinucAbundance <- function(path) {
   dt <- fread(path)
@@ -829,18 +822,18 @@ CreateTrinucAbundance <- function(path) {
   dt$type <-
     ifelse(substr(dt[[1]], 2, 2) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
-  mat <- as.matrix(dt1[, 2])
-  rownames(mat) <- dt1[[1]]
-  return(mat)
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
 }
 
-#' Create dinucleotide abundance file
+#' Create dinucleotide abundance
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return A matrix whose row names indicate 10 different types of 2 base pairs
-#'   combinations while its column contains the occurrences of each type.
+#' @return A numeric vector whose names indicate 10 different types of 2 base pairs
+#'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateDinucAbundance <- function(path) {
   dt <- fread(path)
@@ -852,36 +845,36 @@ CreateDinucAbundance <- function(path) {
            substr(dt[[1]], 2, 3),
            revc(substr(dt[[1]], 2, 3)))
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
-  mat <- as.matrix(dt1[, 2])
-  rownames(mat) <- dt1[[1]]
-  return(mat)
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
 }
 
-#' Create tetranucleotide abundance file
+#' Create tetranucleotide abundance
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return A matrix whose row names indicate 136 different types of 4 base pairs
-#'   combinations while its column contains the occurrences of each type.
+#' @return A numeric vector whose names indicate 136 different types of 4 base pairs
+#'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTetranucAbundance <- function(path) {
   dt <- fread(path)
   colnames(dt) <- c("4bp", "occurrences")
   dt$type <- CanonicalizeQUAD(dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
-  mat <- as.matrix(dt1[, 2])
-  rownames(mat) <- dt1[[1]]
-  return(mat)
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
 }
 
-#' Create pentanucleotide abundance file
+#' Create pentanucleotide abundance
 #'
 #' @param path Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
 #' @import data.table
-#' @return A matrix whose row names indicate 512 different types of 5 base
-#'   pairs combinations while its column contains the occurrences of each type.
+#' @return A numeric vector whose names indicate 512 different types of 5 base
+#'   pairs combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreatePentanucAbundance <- function(path) {
   dt <- fread(path)
@@ -889,9 +882,9 @@ CreatePentanucAbundance <- function(path) {
   dt$type <-
     ifelse(substr(dt[[1]], 3, 3) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
-  mat <- as.matrix(dt1[, 2])
-  rownames(mat) <- dt1[[1]]
-  return(mat)
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
 }
 
 #' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
