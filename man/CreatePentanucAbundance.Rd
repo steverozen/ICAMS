@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreatePentanucAbundance}
 \alias{CreatePentanucAbundance}
-\title{Create pentanucleotide abundance file}
+\title{Create pentanucleotide abundance}
 \usage{
 CreatePentanucAbundance(path)
 }
@@ -11,10 +11,10 @@ CreatePentanucAbundance(path)
 with 5 base pairs.}
 }
 \value{
-A matrix whose row names indicate 512 different types of 5 base
-  pairs combinations while its column contains the occurrences of each type.
+A numeric vector whose names indicate 512 different types of 5 base
+  pairs combinations while its values indicate the occurrences of each type.
 }
 \description{
-Create pentanucleotide abundance file
+Create pentanucleotide abundance
 }
 \keyword{internal}

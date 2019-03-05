@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{VCFsToIDCatalogs}
 \alias{VCFsToIDCatalogs}
-\title{Create ID (indel) catalog from VCFs}
+\title{Create ID (insertion and deletion) catalog from ID VCFs}
 \usage{
 VCFsToIDCatalogs(list.of.vcfs, genome)
 }
@@ -17,6 +17,5 @@ the sample ids in the output catalog.}
 An ID (indel) catalog
 }
 \description{
-Create ID (indel) catalog from VCFs
+Create ID (insertion and deletion) catalog from ID VCFs
 }
-\keyword{internal}

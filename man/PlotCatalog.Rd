@@ -63,8 +63,9 @@ class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
 
-\item{abundance}{A matrix containing nucleotide abundance information and
-strand information (if it exists), to be used only when type = "density".}
+\item{abundance}{A named numeric vector containing nucleotide abundance
+information and strand information (if it exists), to be used only when
+type = "density".}
 }
 \value{
 invisible(TRUE)

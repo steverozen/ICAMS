@@ -14,3 +14,4 @@ NormalizeAbundanceArg(abundance, which.n)
 \description{
 Handle abundance (opportunity) specications uniformly.
 }
+\keyword{internal}

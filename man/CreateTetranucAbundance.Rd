@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateTetranucAbundance}
 \alias{CreateTetranucAbundance}
-\title{Create tetranucleotide abundance file}
+\title{Create tetranucleotide abundance}
 \usage{
 CreateTetranucAbundance(path)
 }
@@ -11,10 +11,10 @@ CreateTetranucAbundance(path)
 base pairs.}
 }
 \value{
-A matrix whose row names indicate 136 different types of 4 base pairs
-  combinations while its column contains the occurrences of each type.
+A numeric vector whose names indicate 136 different types of 4 base pairs
+  combinations while its values indicate the occurrences of each type.
 }
 \description{
-Create tetranucleotide abundance file
+Create tetranucleotide abundance
 }
 \keyword{internal}

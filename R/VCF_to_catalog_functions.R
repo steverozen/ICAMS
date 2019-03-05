@@ -725,7 +725,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   catSNS96
 #'   catSNS192
 #'   catSNS1536
-#' @keywords internal
+#' @export
 VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
@@ -856,7 +856,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   catDNS78
 #'   catDNS144
 #'   catDNS136
-#' @keywords internal
+#' @export
 VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.DNS.vcfs)
 

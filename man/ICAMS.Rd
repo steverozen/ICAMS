@@ -75,11 +75,12 @@ signatures to account for differing abundances of the source
 sequence of the mutations in the genome.  For example, mutations from
 ACG are much rarer in the human genome than mutations from ACC
 simply because CG dinucleotides are rare in the genome.
-This function can also tranform spectra
+This function can also transform spectra
 based on observed genome-wide counts to "density"-based
-catalogs, where mutations are expressed as mutations per
+catalogs. In density-based catalogs
+mutations are expressed as mutations per
 (million) source sequences. For example,
-a "density" based catalog represents
+a density-based catalog represents
 the proportion of ACCs mutated to
 ATCs, the proportion of ACGs mutated to ATGs, etc., as
 opposed to number of ACC-to-ATC mutations, the number of
@@ -90,6 +91,17 @@ or between different species (since the abundances of
 source sequences vary between genome and exome and between
 species).
 \code{\link{TransformCatalog}}
+}
+
+\section{Collapsing catalogs}{
+
+Functions for collapsing a mutational spectrum or signature catalog
+based on a fined-grained set of features (for example, single-nucleotide
+substitutions in the context of the preceding and following 2 bases)
+to a catalog based on a coarser-grained set of features
+(for example, single-nucleotide substitutions in the context of the
+immediately precedig and following bases).
+\code{\link{CollapseCatalog}}
 }
 
 \section{Exported data}{

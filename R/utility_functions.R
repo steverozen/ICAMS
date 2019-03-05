@@ -16,44 +16,6 @@
 #' @name CollapseCatalog
 NULL
 
-#' Transform nucleotide spectra functions
-#'
-#' Transform count spectra from a particular organism region to an inferred
-#' count spectra based on the target nucleotide abundance.
-#'
-#' @param catalog A matrix of mutation counts. Rownames indicate the mutation
-#'   types. Each column contains the mutation counts for one sample.
-#'
-#' @param source.abundance An abundance matrix specified by the user, which
-#'   can be created using functions \code{\link{CreateDinucAbundance}},
-#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
-#'   \code{\link{CreatePentanucAbundance}}.
-#'   There are 6 types of predefined abundance matrix which are incorporated
-#'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
-#'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
-#'   User can invoke a specific predefined abundance matrix by typing its name,
-#'   e.g. source.abundance = "GRCh37.genome".
-#'
-#' @param target.abundance An abundance matrix specified by the user, which
-#'   can be created using functions \code{\link{CreateDinucAbundance}},
-#'   \code{\link{CreateTrinucAbundance}}, \code{\link{CreateTetranucAbundance}},
-#'   \code{\link{CreatePentanucAbundance}}.
-#'   There are 6 types of predefined abundance matrix which are incorporated
-#'   in this function ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
-#'   "GRCh38.exome", "GRCm38.genome", "GRCm38.exome").
-#'   User can invoke a specific predefined abundance matrix by typing its name,
-#'   e.g. target.abundance = "GRCm38.genome".
-#'
-#' @return A matrix of inferred mutation counts. Rownames indicate the mutation
-#'   types which are the same as those in \code{catalog}.
-#'   Each column contains the inferred mutation counts for one sample based on
-#'   \code{target.abundance}.
-#'
-#' @keywords internal
-#'
-#' @name TransformSpectra
-NULL
-
 #' @rdname CollapseCatalog
 #' @export
 Collapse192To96 <- function(catalog) {
@@ -99,6 +61,7 @@ Collapse144To78 <- function(catalog) {
 #' @param abundance Either an abunance variable or string specifying an abundance.
 #'
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
+#' @keywords internal
 NormalizeAbundanceArg <- function(abundance, which.n) {
   if (class(abundance) %in% c("matrix", "numeric")) {
     # stopifnot .... which.n matches the abundance vector....
@@ -109,8 +72,8 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   }
 
   if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
+                        "GRCh38.genome", "GRCh38.exome",
+                        "GRCm38.genome", "GRCm38.exome")) {
     stop ('abundance must be either an abundance matrix created by yourself
           or one of
           ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
@@ -144,49 +107,80 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   stop("Programming error: we should never get here")
 }
 
-#' NTS
+#' Transform catalog function
 #'
-#' @param catalog TODO
-#' @param source.abundance TODO
-#' @param target.abundance TODO
-#' @param which.n TODO
-#' @param source.type TODO
-#' @param target.type TODO
-#'
-#' @return TODO
+#' @param catalog A matrix of mutation counts/signature. Rownames indicate the mutation
+#'   types. Each column contains the mutation counts/signature for one sample.
+#' @param source.abundance Either an abunance variable or string specifying an abundance.
+#' @param target.abundance Either an abunance variable or string specifying an abundance.
+#' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
+#' @param source.type A character specifying the type of the input catalog
+#'   ("counts", "signature" or "density")
+#' @param target.type A character specifying the type of the output catalog
+#'   ("counts", "signature" or "density")
+#' @return A matrix of mutation counts/signature. Rownames indicate the mutation
+#'   types. Each column contains the mutation counts/signature for one sample.
 #' @export
-NTS <- function(catalog, source.abundance, target.abundance = NULL, which.n,
-                source.type, target.type = source.type) {
+TransformCatalog <-
+  function(catalog, source.abundance, target.abundance = NULL, which.n,
+           source.type, target.type = source.type) {
 
   stopifnot(source.type %in% c("counts", "signature", "density"))
   stopifnot(target.type %in% c("counts", "signature", "density"))
-  if (target.type != source.type) {
-    if (source.type != "counts") {
-      stop("Only a \"counts\" type catalog ",
-           "can be transformed to a different type")
-    }
+  if (target.type != source.type && source.type == "signature") {
+    stop("Only a \"counts\" or \"density\" type catalog ",
+         "can be transformed to a different type.")
+  }
+
+  if (target.type == source.type && source.type == "density") {
+    stop("We cannot transform a \"density\" type catalog ",
+         "to \"density\" type catalog as it would require ",
+         "uniform source and target abundances.")
+  }
+
+  # !Add some error checking, something like
+  if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
+    stop("This function can only transform catalogs from the type of ",
+         "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
+  }
+  if (nrow(catalog) == 96 && which.n != 3) {
+    stop("Argument which.n must be 3 for an SNS 96 catalog, got", which.n)
+  }
+  if (nrow(catalog) == 192 && which.n != 3) {
+    stop("Argument which.n must be 3 for an SNS 192 catalog, got", which.n)
+  }
+  if (nrow(catalog) == 1536 && which.n != 5) {
+    stop("Argument which.n must be 5 for an SNS 1536 catalog, got", which.n)
+  }
+  if (nrow(catalog) == 78 && which.n != 2) {
+    stop("Argument which.n must be 2 for a DNS 78 catalog, got", which.n)
+  }
+  if (nrow(catalog) == 136 && which.n != 4) {
+    stop("Argument which.n must be 4 for a DNS 136 catalog, got", which.n)
+  }
+  if (nrow(catalog) == 144 && which.n != 2) {
+    stop("Argument which.n must be 2 for a DNS 144 catalog, got", which.n)
+  }
+
+  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+  stopifnot(all(names(source.abundance) == names(target.abundance)))
+
+  if (FALSE) {
     if (target.type == "density") {
       target.abundance <- rep(1, length(source.abundance))
       names(target.abundance) <- names(source.abundance)
     }
-  }
 
-  if (is.null(target.abundance)) {
-    stop("explain the problem")
+    if (is.null(target.abundance)) {
+      stop("explain the problem")
+    }
   }
-  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-
-  # !Add some error checking, something like
-  # if (nrow(catalog) == 96 && which.n != 3) stop....
-  # if (nrow(catalog) == 192 && which.n != 3) stop...
-  #
-  # stopifnot(names(source.abudance) == names(target.abundance))
 
   out.catalog <- catalog
 
   factor <- target.abundance / source.abundance
-  names(factor) <- rownames(target.abundance)
+  names(factor) <- names(target.abundance)
 
   # CAUTION: this function depends on how mutations are encoded in
   # the row names!
@@ -206,7 +200,11 @@ NTS <- function(catalog, source.abundance, target.abundance = NULL, which.n,
     # if you want, 10^6/source.abundance
   }
 
-  n.mers <- magic.function(rownames(out.catalog), which.n)
+  get.n.mers <- function(catalog, which.n) {
+    return(substr(rownames(catalog), 1, which.n))
+  }
+
+  n.mers <- get.n.mers(out.catalog, which.n)
   lapply(n.mers, transform.n.mer)
 
   out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
@@ -227,385 +225,6 @@ NTS <- function(catalog, source.abundance, target.abundance = NULL, which.n,
     out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
   }
   return(out3)
-}
-
-#' @rdname TransformSpectra
-#' @export
-TransDinucSpectra <- function(catalog, source.abundance, target.abundance) {
-  source.abundance <- NormalizeAbundanceArg(source.abundance, 3)
-  target.abundance <- NormalizeAbundanceArg(target.abundance, 3)
-
-  stopifnot(nrow(catalog) == 78)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order$DNS78) == TRUE)
-  n <- ncol(catalog)
-  per.dinuc.freq <- matrix(0, nrow = 78, ncol = n)
-  inferred.count <- matrix(0, nrow = 78, ncol = n)
-
-  for (i in 1:78) {
-    for (j in 1:n) {
-      if (class(source.abundance) == "matrix") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          source.abundance[substr(rownames(catalog)[i], 1, 2), ]
-      } else  if (source.abundance == "GRCh37.genome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (source.abundance == "GRCh37.exome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (source.abundance == "GRCh38.genome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (source.abundance == "GRCh38.exome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (source.abundance == "GRCm38.genome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (source.abundance == "GRCm38.exome") {
-        per.dinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.2bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 2), ]
-      }
-
-      if (class(target.abundance) == "matrix") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          target.abundance[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCh37.genome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCh37.exome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCh38.genome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCh38.exome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCm38.genome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 2), ]
-      } else if (target.abundance == "GRCm38.exome") {
-        inferred.count[i, j] <-
-          per.dinuc.freq[i, j] *
-          abundance.2bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 2), ]
-      }
-    }
-  }
-
-  mat <- round(inferred.count, 0)
-  rownames(mat) <- rownames(catalog)
-  colnames(mat) <- colnames(catalog)
-  return(mat)
-}
-
-#' @rdname TransformSpectra
-#' @export
-TransTrinucSpectra <- function(catalog, source.abundance, target.abundance) {
-  if (class(source.abundance) != "matrix" &&
-      !source.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('source.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  if (class(target.abundance) != "matrix" &&
-      !target.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('target.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  stopifnot(nrow(catalog) == 96)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order$SNS96) == TRUE)
-  n <- ncol(catalog)
-  per.trinuc.freq <- matrix(0, nrow = 96, ncol = n)
-  inferred.count <- matrix(0, nrow = 96, ncol = n)
-
-  for (i in 1:96) {
-    for (j in 1:n) {
-      if (class(source.abundance) == "matrix") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          source.abundance[substr(rownames(catalog)[i], 1, 3), ]
-      } else  if (source.abundance == "GRCh37.genome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (source.abundance == "GRCh37.exome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (source.abundance == "GRCh38.genome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (source.abundance == "GRCh38.exome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (source.abundance == "GRCm38.genome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (source.abundance == "GRCm38.exome") {
-        per.trinuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.3bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 3), ]
-      }
-
-      if (class(target.abundance) == "matrix") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          target.abundance[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCh37.genome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCh37.exome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCh38.genome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCh38.exome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCm38.genome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 3), ]
-      } else if (target.abundance == "GRCm38.exome") {
-        inferred.count[i, j] <-
-          per.trinuc.freq[i, j] *
-          abundance.3bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 3), ]
-      }
-    }
-  }
-
-  mat <- round(inferred.count, 0)
-  rownames(mat) <- rownames(catalog)
-  colnames(mat) <- colnames(catalog)
-  return(mat)
-}
-
-#' @rdname TransformSpectra
-#' @export
-TransTetranucSpectra <- function(catalog, source.abundance, target.abundance) {
-  if (class(source.abundance) != "matrix" &&
-      !source.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('source.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  if (class(target.abundance) != "matrix" &&
-      !target.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('target.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  stopifnot(nrow(catalog) == 136)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order$DNS136) == TRUE)
-  n <- ncol(catalog)
-  per.tetranuc.freq <- matrix(0, nrow = 136, ncol = n)
-  inferred.count <- matrix(0, nrow = 136, ncol = n)
-
-  for (i in 1:136) {
-    for (j in 1:n) {
-      if (class(source.abundance) == "matrix") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          source.abundance[rownames(catalog)[i], ]
-      } else  if (source.abundance == "GRCh37.genome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.genome.GRCh37[rownames(catalog)[i], ]
-      } else if (source.abundance == "GRCh37.exome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.exome.GRCh37[rownames(catalog)[i], ]
-      } else if (source.abundance == "GRCh38.genome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.genome.GRCh38[rownames(catalog)[i], ]
-      } else if (source.abundance == "GRCh38.exome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.exome.GRCh38[rownames(catalog)[i], ]
-      } else if (source.abundance == "GRCm38.genome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.genome.GRCm38[rownames(catalog)[i], ]
-      } else if (source.abundance == "GRCm38.exome") {
-        per.tetranuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.4bp.exome.GRCm38[rownames(catalog)[i], ]
-      }
-
-      if (class(target.abundance) == "matrix") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          target.abundance[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCh37.genome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.genome.GRCh37[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCh37.exome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.exome.GRCh37[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCh38.genome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.genome.GRCh38[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCh38.exome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.exome.GRCh38[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCm38.genome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.genome.GRCm38[rownames(catalog)[i], ]
-      } else if (target.abundance == "GRCm38.exome") {
-        inferred.count[i, j] <-
-          per.tetranuc.freq[i, j] *
-          abundance.4bp.exome.GRCm38[rownames(catalog)[i], ]
-      }
-    }
-  }
-
-  mat <- round(inferred.count, 0)
-  rownames(mat) <- rownames(catalog)
-  colnames(mat) <- colnames(catalog)
-  return(mat)
-}
-
-#' @rdname TransformSpectra
-#' @export
-TransPentanucSpectra <- function(catalog, source.abundance, target.abundance) {
-  if (class(source.abundance) != "matrix" &&
-      !source.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('source.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  if (class(target.abundance) != "matrix" &&
-      !target.abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                               "GRCh38.genome", "GRCh38.exome",
-                               "GRCm38.genome", "GRCm38.exome")) {
-    stop ('target.abundance must be either an abundance matrix created by yourself
-          or a type from
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome")')
-  }
-
-  stopifnot(nrow(catalog) == 1536)
-  stopifnot(all(rownames(catalog) %in% catalog.row.order$SNS1536) == TRUE)
-  n <- ncol(catalog)
-  per.pentanuc.freq <- matrix(0, nrow = 1536, ncol = n)
-  inferred.count <- matrix(0, nrow = 1536, ncol = n)
-
-  for (i in 1:1536) {
-    for (j in 1:n) {
-      if (class(source.abundance) == "matrix") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          source.abundance[substr(rownames(catalog)[i], 1, 5), ]
-      } else  if (source.abundance == "GRCh37.genome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (source.abundance == "GRCh37.exome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (source.abundance == "GRCh38.genome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (source.abundance == "GRCh38.exome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (source.abundance == "GRCm38.genome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (source.abundance == "GRCm38.exome") {
-        per.pentanuc.freq[i, j] <-
-          catalog[i, j] /
-          abundance.5bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
-      }
-
-      if (class(target.abundance) == "matrix") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          target.abundance[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCh37.genome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.genome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCh37.exome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.exome.GRCh37[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCh38.genome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.genome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCh38.exome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.exome.GRCh38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCm38.genome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.genome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
-      } else if (target.abundance == "GRCm38.exome") {
-        inferred.count[i, j] <-
-          per.pentanuc.freq[i, j] *
-          abundance.5bp.exome.GRCm38[substr(rownames(catalog)[i], 1, 5), ]
-      }
-    }
-  }
-
-  mat <- round(inferred.count, 0)
-  rownames(mat) <- rownames(catalog)
-  colnames(mat) <- colnames(catalog)
-  return(mat)
 }
 
 #' Standardize the Chromosome name annotations for a data frame
