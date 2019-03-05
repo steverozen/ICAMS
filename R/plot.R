@@ -49,8 +49,9 @@
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance A matrix containing nucleotide abundance information and
-#'   strand information (if it exists), to be used only when type = "density".
+#' @param abundance A named numeric vector containing nucleotide abundance
+#'   information and strand information (if it exists), to be used only when
+#'   type = "density".
 #' @return invisible(TRUE)
 #' @name PlotCatalog
 NULL
@@ -112,7 +113,7 @@ NULL
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance A single column matrix, see \link{Abundance}, used only
+#' @param abundance A named numeric vector, see \link{Abundance}, used only
 #'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
@@ -148,7 +149,7 @@ PlotCatSNS96 <-
       rate <- double(96)
       for (i in 1 : 96) {
         rate[i] <-
-          catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3), ]
+          catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3)]
       }
 
       # Get ylim
@@ -612,7 +613,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   for (i in 1 : 1536) {
     penta.names <- substr(mut.type[i], 1, 5)
     rates[i] <-
-      catalog[i] * 1000000 / abundance[penta.names, ]
+      catalog[i] * 1000000 / abundance[penta.names]
   }
 
   # Sort the rates matrix in plotting order
@@ -740,7 +741,7 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
     rate <- double(78)
     for (i in 1 : 78) {
       rate[i] <-
-        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 2), ]
+        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 2)]
     }
 
     # Get ylim
@@ -1016,7 +1017,7 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
       if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
         rates[i] <-
           catalog[order.for.DNS.136.plotting[i], ] /
-          abundance[order.for.DNS.136.plotting[i], ]
+          abundance[order.for.DNS.136.plotting[i]]
       } else {
         rates[i] <- NA
       }
@@ -1175,7 +1176,7 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
         if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
           rates[j] <-
             cat[order.for.DNS.136.plotting[j], ] /
-            abundance[order.for.DNS.136.plotting[j], ]
+            abundance[order.for.DNS.136.plotting[j]]
         } else {
           rates[j] <- NA
         }
