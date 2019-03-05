@@ -35,7 +35,7 @@
 #' @section Plotting catalogs:
 #' Functions for plotting catalogs of mutational spectra or
 #' of mutational signatures to a PDF file. Mutational \emph{signatures}
-#' are similar to spectra, but where spectra consit of
+#' are similar to spectra, but where spectra consist of
 #' counts of mutations in each mutation class
 #' (e.g. ACA > AAA, ACA > AGA, ACA > ATA, ACC > AAC, ...)
 #' signatures consist of
@@ -53,10 +53,27 @@
 #' spectra or of signatures in standardized format.
 #' \code{\link{ReadCatalog}}
 #'
-#' @section Transforming catalogs: TODO(Steve): not done.
-#' Functions for transforming count spectra from a particular organism region to
-#' an inferred count spectra based on the target nucleotide abundance.
-#' \code{\link{TransformSpectra}}
+#' @section Transforming catalogs:
+#' There is a function to transform catalogs of mutational spectra or
+#' signatures to account for differing abundances of the source
+#' sequence of the mutations in the genome.  For example, mutations from
+#' ACG are much rarer in the human genome than mutations from ACC
+#' simply because CG dinucleotides are rare in the genome.
+#' This function can also tranform spectra
+#' based on observed genome-wide counts to "density"-based
+#' catalogs, where mutations are expressed as mutations per
+#' (million) source sequences. For example,
+#' a "density" based catalog represents
+#' the proportion of ACCs mutated to
+#' ATCs, the proportion of ACGs mutated to ATGs, etc., as
+#' opposed to number of ACC-to-ATC mutations, the number of
+#' ACG-to-ATG mutations, etc.
+#' This function can also transform observed-count based
+#' spectra or signatures from genome to exome based counts,
+#' or between different species (since the abundances of
+#' source sequences vary between genome and exome and between
+#' species).
+#' \code{\link{TransformCatalog}}
 #'
 #' @section Collapsing catalogs:
 #' Functions for collapsing a mutational spectrum or signature catalog
@@ -66,15 +83,6 @@
 #' (for example, single-nucleotide substitutions in the context of the
 #' immediately precedig and following bases).
 #' \code{\link{CollapseCatalog}}
-#'
-#' @section Reading and splitting variant call (VCF) files:
-#' These are lower level functions for reading in VCF files
-#' and splitting them into VCFs for SNSs, DNSs, and IDs.
-#' *TODO(steve): why do we need this / or we if we do
-#' need this here, we need to provide the
-#' functions that take the split VCFs files and annotate them
-#' and make catalogs, right?*
-#' \enumerate{
 #'
 #' \item \code{\link{ReadAndSplitStrelkaSNSVCFs}} Read and split Strelka single
 #' nucleotide substitution (SNS) VCFs (not Strelka indel VCFS).
