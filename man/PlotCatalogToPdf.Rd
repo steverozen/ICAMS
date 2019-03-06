@@ -38,7 +38,12 @@ PlotCatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 \arguments{
 \item{catalog}{A matrix of mutation counts. Rownames
 indicate the mutation types. Each column contains the mutation counts for
-one sample.}
+one sample.
+The input catalog must be in \strong{matrix} format, you may use
+\link[base]{data.matrix} to convert a data frame to a numeric matrix. This
+catalog matrix must have rownames to facilitate sorting in the plotting
+functions. You many use \code{\link{CatalogRowOrder}} to give row names to
+your catalog matrix.}
 
 \item{name}{The name of the PDF file to be produced.}
 
