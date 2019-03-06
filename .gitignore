@@ -4,3 +4,4 @@ inst/doc
 .RData
 .Ruserdata
 tests/testthat/error.rows.csv
+error.rows.csv

@@ -11,7 +11,7 @@ AddSequence(df, genome)
 
 \item{genome}{A particular reference genome(without quotation marks). Use
 \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-packages" curently available. There are 2 types of predefined reference
+packages" currently available. There are 2 types of predefined reference
 genome which are incorporated in this function. User can invoke a
 predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
 "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human

@@ -6,7 +6,7 @@ test_that(
     vcf <- ReadStrelkaSNSVCFs("testdata/Strelka.SNS.GRCh37.vcf")
     vcf1 <- ReadStrelkaSNSVCFs("testdata/Strelka.SNS.GRCh38.vcf")
     expect_equal(dim(vcf[[1]]), c(798, 20))
-    expect_equal(dim(vcf1[[1]]), c(997, 12))
+    expect_equal(dim(vcf1[[1]]), c(992, 12))
   } )
 
 test_that(
@@ -15,7 +15,7 @@ test_that(
     vcf <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh37.vcf")
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
     expect_equal(dim(vcf[[1]]), c(408, 19))
-    expect_equal(dim(vcf1[[1]]), c(406, 19))
+    expect_equal(dim(vcf1[[1]]), c(399, 19))
   } )
 
 test_that(

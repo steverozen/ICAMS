@@ -5,7 +5,7 @@
 \alias{CatalogRowOrder}
 \alias{catalog.row.order}
 \title{Canonical order of row names in a catalog}
-\format{A list which containts string of characters indicating the canonical
+\format{A list which contains string of characters indicating the canonical
   order of row names in a catalog.}
 \usage{
 catalog.row.order

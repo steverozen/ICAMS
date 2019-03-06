@@ -19,13 +19,9 @@ test_that("AddAndCheckSequenceID with hg38", {
       id.vcf, genome = BSgenome.Hsapiens.UCSC.hg38,
                           flag.mismatches = 20)
 
-  #????
-  # df3 <- AddAndCheckSequenceID(id.vcf, genome = BSgenome.Hsapiens.1000genomes.hs37d5)
-
-    df3 <- AddAndCheckSequenceID(
-      id.vcf, genome = BSgenome.Hsapiens.UCSC.hg38,
-                                 flag.mismatches = 20)
-
+  df3 <- AddAndCheckSequenceID(
+    id.vcf, genome = BSgenome.Hsapiens.UCSC.hg38,
+    flag.mismatches = 20)
 
   df4 <- AddAndCheckSequenceID(id.vcf, genome = "GRCh38")
   df5 <- AddAndCheckSequenceID(id.vcf, genome = "hg38")

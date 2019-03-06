@@ -50,10 +50,9 @@ Read a catalog in standardized format from path
 
 \code{ReadCatDNS136} Read a 136 DNS catalog from path
 
-\code{ReadCatID} Read a ID (insertion/deletion) catalog from path
-Please take note that deletion repeat size ranges from 0 to 5+
-in the catalog, but for plotting and end user documentation
-it ranges from 1 to 6+.
+\code{ReadCatID} Read a ID (insertion/deletion) catalog from path.
+(Please take note that deletion repeat size ranges from 0 to 5+ in the
+catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 
 See also \code{\link{WriteCatalog}}
 }
