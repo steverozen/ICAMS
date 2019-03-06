@@ -68,7 +68,7 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
     return (abundance)
   }
   if (!which.n %in% 2:5) {
-    stop("Argument which.n must be in the set 2:5, got", which.n)
+    stop("Argument which.n must be in 2:5, got", which.n)
   }
 
   if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
@@ -107,19 +107,58 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   stop("Programming error: we should never get here")
 }
 
-#' Transform catalog function
+#' Transform between count and density catalogs
+#'  and signatures and between different
+#' source sequence abundances.
 #'
-#' @param catalog A matrix of mutation counts/signature. Rownames indicate the mutation
-#'   types. Each column contains the mutation counts/signature for one sample.
-#' @param source.abundance Either an abunance variable or string specifying an abundance.
-#' @param target.abundance Either an abunance variable or string specifying an abundance.
-#' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
-#' @param source.type A character specifying the type of the input catalog
-#'   ("counts", "signature" or "density")
-#' @param target.type A character specifying the type of the output catalog
-#'   ("counts", "signature" or "density")
-#' @return A matrix of mutation counts/signature. Rownames indicate the mutation
-#'   types. Each column contains the mutation counts/signature for one sample.
+#' @details Only certain transformations are legal.
+#' \enumerate{
+#'
+#' \item The type \code{"density"} must always be associated with the
+#' abundance \code{"flat"} or \code{NULL}.
+#"
+#' \item The other types must \strong{not} be associated with
+#'  abundance \code{"flat"} or \code{NULL}.
+#'
+#' \item Otherwise, the following are legal:
+#' \enumerate{
+#' \item \code{counts -> counts}
+#' \item \code{counts -> density}
+#' \item \code{counts -> signature}
+#' \item \code{density -> counts} (in which case the semantics are to
+#' infer the genome-wide or exome wide counts based on the
+#' densities.)
+#' \item \code{density -> signature}
+#' \item \code{signature -> signature}
+#' }
+#'
+#' }
+#'
+#'
+#' @param catalog A catalog as described in \code{\link{ICAMS}}.
+#'
+#' @param source.abundance Either an integer vector with one elment
+#' for each source sequence for the mutation types in \code{catalog}
+#' or a string specifying such a vector, one of \code{"GRCh37.genome"},
+#' XXXXXX, \code{"flat"}.
+#' This is the
+#' abundance upon which the counts, densities, or proportions
+#' in \code{catalog} are based. For example, for SNS in
+#' trinucleotide context, e.g. ACT > AGT or TAC > TTC, the source
+#' sequences are ACT and TAC.
+#'
+#' @param target.abundance Same possibilities as \code{source.abundance}.
+#'
+#' @param which.n The length of the source sequences, one of 2:5.
+#'
+#' @param source.type A character specifying the type of the input catalog,
+#' one of \code{"counts"}, \code{"signature"} or \code{"density"}.
+#'
+#' @param target.type A character specifying the type of the output catalog,
+#' with the same possible values as \code{source.type}.
+#'
+#' @return A catalog as defined in \code{\link{ICAMS}}
+#'
 #' @export
 TransformCatalog <-
   function(catalog, source.abundance, target.abundance = NULL, which.n,
