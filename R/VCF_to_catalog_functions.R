@@ -33,6 +33,7 @@ ReadStrelkaSNSVCF <- function(path) {
 
   df1$POS <- as.integer(df1$POS)
   df1$VAF <- GetStrelkaVAF(df1)
+  stopifnot(df1$REF != df1$ALT)
   return(StandardChromName(df1))
 }
 
@@ -235,7 +236,7 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @param df An input data frame storing mutation records of a VCF file.
 #' @param genome A particular reference genome(without quotation marks). Use
 #'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" curently available. There are 2 types of predefined reference
+#'   packages" currently available. There are 2 types of predefined reference
 #'   genome which are incorporated in this function. User can invoke a
 #'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
 #'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
@@ -661,7 +662,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # Create part of the 1536 catalog matrix but missing mutation
   # types have NA in the count column.
   tab1536 <- table(vcf[, "pyr.mut"])
-  stopifnot(set_equal(
+  stopifnot(setequal(
     setdiff(names(tab1536), catalog.row.order$SNS1536),
     c()))
   dt1536  <- data.table(tab1536)
