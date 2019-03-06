@@ -7,7 +7,7 @@
 NormalizeAbundanceArg(abundance, which.n)
 }
 \arguments{
-\item{abundance}{Either an abunance variable or string specifying an abundance.}
+\item{abundance}{Either an abundance variable or string specifying an abundance.}
 
 \item{which.n}{The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.}
 }

@@ -11,9 +11,9 @@ TransformCatalog(catalog, source.abundance, target.abundance = NULL,
 \item{catalog}{A matrix of mutation counts/signature. Rownames indicate the mutation
 types. Each column contains the mutation counts/signature for one sample.}
 
-\item{source.abundance}{Either an abunance variable or string specifying an abundance.}
+\item{source.abundance}{Either an abundance variable or string specifying an abundance.}
 
-\item{target.abundance}{Either an abunance variable or string specifying an abundance.}
+\item{target.abundance}{Either an abundance variable or string specifying an abundance.}
 
 \item{which.n}{The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.}
 

@@ -1,5 +1,5 @@
 #' Canonical order of row names in a catalog
-#' @format A list which containts string of characters indicating the canonical
+#' @format A list which contains string of characters indicating the canonical
 #'   order of row names in a catalog.
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges

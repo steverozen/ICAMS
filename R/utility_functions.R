@@ -58,7 +58,7 @@ Collapse144To78 <- function(catalog) {
 
 #' Handle abundance (opportunity) specications uniformly.
 #'
-#' @param abundance Either an abunance variable or string specifying an abundance.
+#' @param abundance Either an abundance variable or string specifying an abundance.
 #'
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
 #' @keywords internal
@@ -111,8 +111,8 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @param catalog A matrix of mutation counts/signature. Rownames indicate the mutation
 #'   types. Each column contains the mutation counts/signature for one sample.
-#' @param source.abundance Either an abunance variable or string specifying an abundance.
-#' @param target.abundance Either an abunance variable or string specifying an abundance.
+#' @param source.abundance Either an abundance variable or string specifying an abundance.
+#' @param target.abundance Either an abundance variable or string specifying an abundance.
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
 #' @param source.type A character specifying the type of the input catalog
 #'   ("counts", "signature" or "density")
