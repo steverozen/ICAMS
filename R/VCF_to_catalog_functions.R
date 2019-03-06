@@ -572,6 +572,7 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- vector.of.file.paths
