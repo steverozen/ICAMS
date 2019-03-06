@@ -661,6 +661,9 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # Create part of the 1536 catalog matrix but missing mutation
   # types have NA in the count column.
   tab1536 <- table(vcf[, "pyr.mut"])
+  stopifnot(set_equal(
+    setdiff(names(tab1536), catalog.row.order$SNS1536),
+    c()))
   dt1536  <- data.table(tab1536)
 
   # TODO(steve): document better, but this deals with the case
