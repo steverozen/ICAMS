@@ -65,7 +65,7 @@ class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
 
-\item{abundance}{A named numeric vector, see \link{Abundance}, used only
+\item{abundance}{a named integer vector, see \link{Abundance}, used only
 when \code{type = "density"}.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,

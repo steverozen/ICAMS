@@ -63,9 +63,8 @@ class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
 
-\item{abundance}{A named numeric vector containing nucleotide abundance
-information and strand information (if it exists), to be used only when
-type = "density".}
+\item{abundance}{a named integer vector, see \link{Abundance}, used only
+when \code{type = "density"}.}
 }
 \value{
 invisible(TRUE)
@@ -102,4 +101,3 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 (Please take note that deletion repeat size ranges from 0 to 5+ in the
 catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 }
-\keyword{internal}
