@@ -92,7 +92,7 @@ NULL
 #' \strong{Mouse} GRCm37. Its names indicate 512 different types of 5 base pairs
 #' combinations while its values indicate the occurrences of each type. It can
 #' be used in plotting function \code{\link{PlotCatSNS1536ToPdf}}.
-#' @format A named numeric vector containing the counts of particular sequences
+#' @format A named integer vector containing the counts of particular sequences
 #'   in a genome or part of a genome. This include 2-mers, 3-mers, 4-mers,
 #'   5-mers, stranded or strand-agnostic, and genome-wide, in-transcript, or
 #'   in-exome, for different reference genome versions and for different
