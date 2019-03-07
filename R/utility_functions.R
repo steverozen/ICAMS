@@ -56,14 +56,14 @@ Collapse144To78 <- function(catalog) {
   mat78 <- mat78[catalog.row.order$DNS78, , drop = FALSE]
 }
 
-#' Handle abundance (opportunity) specications uniformly.
+#' Handle abundance (opportunity) specifications uniformly.
 #'
-#' @param abundance Either an abunance variable or string specifying an abundance.
+#' @param abundance Either an abundance variable or string specifying an abundance.
 #'
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
 #' @keywords internal
 NormalizeAbundanceArg <- function(abundance, which.n) {
-  if (class(abundance) %in% c("integer")) {
+  if (class(abundance) %in% c("integer", "numeric")) {
     stopifnot(nchar(names(abundance)[1]) == which.n)
     return (abundance)
   }
@@ -137,7 +137,7 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @param catalog A catalog as described in \code{\link{ICAMS}}.
 #'
-#' @param source.abundance Either an integer vector with one elment
+#' @param source.abundance Either a numeric vector with one element
 #' for each source sequence for the mutation types in \code{catalog}
 #' or a string specifying such a vector, one of \code{"GRCh37.genome"},
 #' XXXXXX, \code{"flat"}.
@@ -471,7 +471,7 @@ ReadBedTranscriptRanges <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
 #'
-#' @return An integer vector whose names indicate 32 different types of 3 base pairs
+#' @return A numeric vector whose names indicate 32 different types of 3 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTrinucAbundance <- function(path) {
@@ -490,7 +490,7 @@ CreateTrinucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return An integer vector whose names indicate 10 different types of 2 base pairs
+#' @return A numeric vector whose names indicate 10 different types of 2 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateDinucAbundance <- function(path) {
@@ -513,7 +513,7 @@ CreateDinucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return An integer vector whose names indicate 136 different types of 4 base pairs
+#' @return A numeric vector whose names indicate 136 different types of 4 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTetranucAbundance <- function(path) {
@@ -531,7 +531,7 @@ CreateTetranucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
 #' @import data.table
-#' @return An integer vector whose names indicate 512 different types of 5 base
+#' @return A numeric vector whose names indicate 512 different types of 5 base
 #'   pairs combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreatePentanucAbundance <- function(path) {
