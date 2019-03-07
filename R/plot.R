@@ -49,9 +49,8 @@
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance A named numeric vector containing nucleotide abundance
-#'   information and strand information (if it exists), to be used only when
-#'   type = "density".
+#' @param abundance a named integer vector, see \link{Abundance}, used only
+#'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalog
 NULL
@@ -118,7 +117,7 @@ NULL
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance A named numeric vector, see \link{Abundance}, used only
+#' @param abundance a named integer vector, see \link{Abundance}, used only
 #'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
@@ -131,7 +130,7 @@ NULL
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatSNS96 <-
   function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
            upper = TRUE, xlabels = TRUE, abundance = NULL) {
@@ -312,7 +311,7 @@ PlotCatSNS96ToPdf <-
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
                        cex = 0.8, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
@@ -453,7 +452,7 @@ PlotCatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts",
                              cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
@@ -562,7 +561,7 @@ PlotCatSNS192StrandToPdf <- function(catalog, name, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(1536, 1))
 
@@ -729,7 +728,7 @@ PlotCatSNS1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
                          abundance = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
@@ -863,7 +862,7 @@ PlotCatDNS78ToPdf <-
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
                           cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(144, 1))
@@ -974,7 +973,7 @@ PlotCatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatDNS136 <- function(catalog, id = colnames(catalog),
                            type = "density", abundance = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
@@ -1283,7 +1282,7 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @keywords internal
+#' @export
 PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
   stopifnot(dim(catalog) == c(83, 1))
 
