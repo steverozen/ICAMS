@@ -29,9 +29,14 @@
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 #' (Please take note that deletion repeat size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
-#' @param catalog A matrix whose rownames indicate the mutation type/sequence
-#'   context(CatDNS136) while its columns contain the counts of each mutation
-#'   type/sequence context(CatDNS136).
+#' @param catalog A one column matrix of mutation counts. Rownames
+#' indicate the mutation types. The column contains the mutation counts for
+#' one sample.
+#' The input catalog must be in \strong{matrix} format, you may use
+#' \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
+#' catalog matrix must have rownames to facilitate sorting in the plotting
+#' functions. You many use \code{\link{CatalogRowOrder}} to give row names to
+#' your catalog matrix.
 #' @param id The identifier of the sample which has mutations.
 #' @param type A value indicating the type of graph. If type = "counts", the
 #'   graph will plot the occurrences of the mutation types in the sample. If
@@ -49,7 +54,7 @@
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance a named integer vector, see \link{Abundance}, used only
+#' @param abundance a named numeric vector, see \link{Abundance}, used only
 #'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalog
@@ -117,7 +122,7 @@ NULL
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance a named integer vector, see \link{Abundance}, used only
+#' @param abundance a named numeric vector, see \link{Abundance}, used only
 #'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
@@ -570,14 +575,8 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
 
   # Define the theme color for plotting
-  theme.col <- "palegreen3"
+  theme.col <- "forestgreen"
   colPal <- grDevices::colorRampPalette(c("white", theme.col))
-
-  scale.col <- function(x, x.max) {
-    idx <- round(x / x.max * 256)
-    col <- colPal(256)[idx]
-    return(col)
-  }
 
   DrawImage <- function(counts, colors) {
     image(1 : 16, 1 : 16, matrix(counts, 16, 16),
@@ -585,34 +584,44 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
 
     # Draw the gridlines
     segments(rep(0.5, 5), c(0.5, 4.5, 8.5, 12.5, 16.5),
-             rep(16.5, 5), c(0.5, 4.5, 8.5, 12.5, 16.5), xpd = T)
+             rep(16.5, 5), c(0.5, 4.5, 8.5, 12.5, 16.5), xpd = NA)
     segments(c(0.5, 4.5, 8.5, 12.5, 16.5), rep(0.5, 5),
-             c(0.5, 4.5, 8.5, 12.5, 16.5), rep(16.5, 5), xpd = T)
+             c(0.5, 4.5, 8.5, 12.5, 16.5), rep(16.5, 5), xpd = NA)
   }
 
   DrawAxisY <- function() {
     text(0, 16 : 1, rep(bases, each = 4), col = rep(base.cols, each = 4),
-         srt = 90, font = 2, xpd = T)
+         srt = 90, font = 2, xpd = NA)
     text(-1, 16 : 1, rep(bases, 4), col = rep(base.cols, 4),
-         srt = 90, font = 2, xpd = T)
-    text(-2.5, 8.5, "Preceding bases", srt = 90, cex = 1.5, xpd = T)
+         srt = 90, font = 2, xpd = NA)
+    text(-2.5, 8.5, "Preceding bases", srt = 90, cex = 1.5, xpd = NA)
     segments(rep(-1.3, 5), c(0.5, 4.5, 8.5, 12.5, 16.5), rep(0.5, 5),
-             c(0.5, 4.5, 8.5, 12.5, 16.5), xpd = T)
+             c(0.5, 4.5, 8.5, 12.5, 16.5), xpd = NA)
   }
 
   DrawAxisX <- function() {
     text(1 : 16, 17, rep(bases, each = 4), col=rep(base.cols, each = 4),
-         font = 2, xpd = T)
+         font = 2, xpd = NA)
     text(1 : 16, 18, rep(bases, 4), col = rep(base.cols, 4),
-         font = 2, xpd = T)
+         font = 2, xpd = NA)
     segments(c(0.5, 4.5, 8.5, 12.5, 16.5), rep(16.5, 5),
-             c(0.5, 4.5, 8.5, 12.5, 16.5), rep(18.3, 5), xpd = T)
+             c(0.5, 4.5, 8.5, 12.5, 16.5), rep(18.3, 5), xpd = NA)
   }
 
-  mut.type <- rownames(catalog)
+  # Calculate the total counts for the six main mutation types?
+  if (colSums(catalog) > 1.5) {
+    df <- data.frame(catalog)
+    df$main.types <-
+      paste0(substr(rownames(df), 3, 3), ">", substr(rownames(df), 6, 6))
+    df1 <-
+      aggregate(df[, 1], by = list(main.types = df$main.types), FUN = sum)
+    main.types.counts <- df1[, 2]
+    names(main.types.counts) <- df1$main.types
+  }
 
   # Calculate pentanucleotide sequence contexts, normalized by pentanucleotide
   # occurrence in the genome
+  mut.type <- rownames(catalog)
   rates <- catalog
   for (i in 1 : 1536) {
     penta.names <- substr(mut.type[i], 1, 5)
@@ -641,63 +650,75 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
 
   # Plot one sample on one page
   old <- par(no.readonly = TRUE)
-  par(mfrow = c(2, 3), oma = c(1, 1, 1, 1))
+  par(mfrow = c(2, 3), oma = c(1, 6, 1, 4), pty = "s")
 
   for (i in 1 : n.types) {
     main.type <- main.types[i]
     sub.rates <- rates[main.mut.type == main.type, 1, drop = FALSE]
-
-    # Do the color scaling
-    max.col <- scale.col(max(sub.rates), max(rates))
-
-    col.ref <- grDevices::colorRampPalette(c("white", max.col))(256)
+    col.ref <- colPal(256)
 
     # Draw the 6 plots on page one by one
     if (i == 1) {
-      par(mar = c(1, 5, 7.5, 1))
+      par(mar = c(0, 1, 7.5, 1))
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
       DrawAxisX()
-      text(8.5, 19, main.type, cex = 1.5, xpd = T)
+      text(8.5, 19, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }
     }
 
     if (i == 2) {
-      par(mar = c(1, 1, 7.5, 1))
+      par(mar = c(0, 1, 7.5, 1))
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
-      text(8.5, 19, main.type, cex = 1.5, xpd = T)
-      text(8.5, 20.5, id, cex = 1.5, xpd = T)
+      text(8.5, 19, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }
+      text(8.5, 20.5, id, cex = 1.5, xpd = NA)
     }
 
     if (i == 3) {
-      par(mar = c(1, 1, 7.5, 3))
+      par(mar = c(0, 1, 7.5, 1))
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
-      text(8.5, 19, main.type, cex = 1.5, xpd = T)
-      text(17.5, 17, '1bp 3\'', xpd = T, cex = 1)
-      text(17.5, 18, '2bp 3\'', xpd = T, cex = 1)
+      text(8.5, 19, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }
+      text(17.5, 17, '1bp 3\'', xpd = NA, cex = 1)
+      text(17.5, 18, '2bp 3\'', xpd = NA, cex = 1)
     }
 
     if (i == 4) {
-      par(mar = c(2.5, 5, 2, 1))
+      par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
-      text(8.5, 17, main.type, cex = 1.5, xpd = T)
-      text(-1, -0.7, '1bp 5\'', xpd = T, srt = 45, adj = 0, cex = 1)
-      text(-2, -0.7, '2bp 5\'', xpd = T, srt = 45, adj = 0, cex = 1)
+      text(8.5, 17, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }
+      text(-1, -0.9, '1bp 5\'', xpd = NA, srt = 45, adj = 0, cex = 1)
+      text(-2, -0.9, '2bp 5\'', xpd = NA, srt = 45, adj = 0, cex = 1)
     }
 
     if (i == 5) {
-      par(mar = c(2.5, 1, 2, 1))
+      par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
-      text(8.5, 17, main.type, cex = 1.5, xpd = T)
-    }
+      text(8.5, 17, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }    }
 
     if (i == 6) {
-      par(mar = c(2.5, 1, 2, 3))
+      par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
-      text(8.5, 17, main.type, cex = 1.5, xpd = T)
-    }
+      text(8.5, 17, main.type, cex = 1.5, xpd = NA)
+      if (colSums(catalog) > 1.5) {
+        text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      }    }
   }
   on.exit(par(old), add = TRUE)
 
@@ -1042,12 +1063,12 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
     if (maximum == 0) {
       col.ref <- "white"
     } else {
-      col.ref <- "palegreen3"
+      col.ref <- "forestgreen"
     }
 
     image(1:4, 1:4, mat,
           col = grDevices::colorRampPalette(c("white", col.ref))(16),
-          asp = 1, axes = FALSE, ann = FALSE)
+          axes = FALSE, ann = FALSE)
 
     # Make the background of the plot grey
     rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
@@ -1055,11 +1076,11 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
     # Plot the image again
     image(1:4, 1:4, mat,
           col = grDevices::colorRampPalette(c("white", col.ref))(16),
-          asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+          axes = FALSE, ann = FALSE, add = TRUE)
   }
 
   for (i in 1:10){
-    par(mar = c(1, 1, 4.5, 1))
+    par(mar = c(1, 2, 2, 0))
 
     if (type == "density") {
       DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
@@ -1070,8 +1091,8 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
     }
 
     # Draw the mutation type and number of occurrences on top of image
-    text(2, 5.3, mut.type[i], font = 2, xpd = NA)
-    text(3.2, 5.3, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
+    text(2, 5.2, mut.type[i], font = 2, xpd = NA)
+    text(3.2, 5.2, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
 
     # Draw a box surrounding the image
     segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
@@ -1126,7 +1147,7 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
-  par(oma = c(3, 2, 2, 3))
+  par(oma = c(2, 1, 2, 1))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
@@ -1201,12 +1222,12 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       if (maximum == 0) {
         col.ref <- "white"
       } else {
-        col.ref <- "palegreen3"
+        col.ref <- "forestgreen"
       }
 
       image(1:4, 1:4, mat,
             col = grDevices::colorRampPalette(c("white", col.ref))(16),
-            asp = 1, axes = FALSE, ann = FALSE)
+            axes = FALSE, ann = FALSE)
 
       # Make the background of the plot grey
       rect(0.5, 0.5, 4.5, 4.5 , col = "grey")
@@ -1214,11 +1235,11 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       # Plot the image again
       image(1:4, 1:4, mat,
             col = grDevices::colorRampPalette(c("white", col.ref))(16),
-            asp = 1, axes = FALSE, ann = FALSE, add = TRUE)
+            axes = FALSE, ann = FALSE, add = TRUE)
     }
 
     for (j in 1:10) {
-      par(mar = c(1, 1, 4.5, 1))
+      par(mar = c(1, 1, 2, 0), pty = "s")
       if (type[i] == "density") {
         DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
       } else if (type[i] == "counts") {
@@ -1228,8 +1249,8 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       }
 
       # Draw the mutation type and number of occurrences on top of image
-      text(2, 5.3, mut.type[j], font = 2, xpd = NA)
-      text(3.2, 5.3, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
+      text(2, 5.1, mut.type[j], font = 2, xpd = NA)
+      text(3.2, 5.1, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
 
       # Draw a box surrounding the image
       segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
