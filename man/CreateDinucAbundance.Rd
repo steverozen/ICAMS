@@ -11,7 +11,7 @@ CreateDinucAbundance(path)
 base pairs.}
 }
 \value{
-An integer vector whose names indicate 10 different types of 2 base pairs
+A numeric vector whose names indicate 10 different types of 2 base pairs
   combinations while its values indicate the occurrences of each type.
 }
 \description{

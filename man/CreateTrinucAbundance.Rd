@@ -11,7 +11,7 @@ CreateTrinucAbundance(path)
 base pairs.}
 }
 \value{
-An integer vector whose names indicate 32 different types of 3 base pairs
+A numeric vector whose names indicate 32 different types of 3 base pairs
   combinations while its values indicate the occurrences of each type.
 }
 \description{

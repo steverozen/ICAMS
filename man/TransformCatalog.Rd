@@ -12,7 +12,7 @@ TransformCatalog(catalog, source.abundance, target.abundance = NULL,
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
 
-\item{source.abundance}{Either an integer vector with one elment
+\item{source.abundance}{Either a numeric vector with one element
 for each source sequence for the mutation types in \code{catalog}
 or a string specifying such a vector, one of \code{"GRCh37.genome"},
 XXXXXX, \code{"flat"}.

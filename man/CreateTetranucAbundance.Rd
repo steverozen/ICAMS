@@ -11,7 +11,7 @@ CreateTetranucAbundance(path)
 base pairs.}
 }
 \value{
-An integer vector whose names indicate 136 different types of 4 base pairs
+A numeric vector whose names indicate 136 different types of 4 base pairs
   combinations while its values indicate the occurrences of each type.
 }
 \description{

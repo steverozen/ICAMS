@@ -36,9 +36,14 @@ PlotCatDNS136(catalog, id = colnames(catalog), type = "density",
 PlotCatID(catalog, id = colnames(catalog), type = "counts")
 }
 \arguments{
-\item{catalog}{A matrix whose rownames indicate the mutation type/sequence
-context(CatDNS136) while its columns contain the counts of each mutation
-type/sequence context(CatDNS136).}
+\item{catalog}{A one column matrix of mutation counts. Rownames
+indicate the mutation types. The column contains the mutation counts for
+one sample.
+The input catalog must be in \strong{matrix} format, you may use
+\link[base]{data.matrix} to convert a data frame to a numeric matrix. This
+catalog matrix must have rownames to facilitate sorting in the plotting
+functions. You many use \code{\link{CatalogRowOrder}} to give row names to
+your catalog matrix.}
 
 \item{id}{The identifier of the sample which has mutations.}
 
@@ -63,7 +68,7 @@ class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
 
-\item{abundance}{a named integer vector, see \link{Abundance}, used only
+\item{abundance}{a named numeric vector, see \link{Abundance}, used only
 when \code{type = "density"}.}
 }
 \value{

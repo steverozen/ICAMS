@@ -20,7 +20,7 @@ densities, or of mutational signatures. XXXXXX MORE XXXXXXXX
 \enumerate{
 \item Matrix of mutation counts (one column per sample),
 
-\item Matrix of mutation densities, i.e. mutations per occurences
+\item Matrix of mutation densities, i.e. mutations per occurrences
  of source sequences (one column per sample), or
 
 \item Mutational signatures (proportions of different mutations, summing

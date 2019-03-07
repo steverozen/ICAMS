@@ -11,7 +11,7 @@ CreatePentanucAbundance(path)
 with 5 base pairs.}
 }
 \value{
-An integer vector whose names indicate 512 different types of 5 base
+A numeric vector whose names indicate 512 different types of 5 base
   pairs combinations while its values indicate the occurrences of each type.
 }
 \description{

@@ -28,7 +28,7 @@
 \alias{abundance.5bp.exome.GRCm38}
 \alias{abundance.5bp.genome.GRCm38}
 \title{Nucleotide abundance}
-\format{A named integer vector containing the counts of particular sequences
+\format{A named numeric vector containing the counts of particular sequences
   in a genome or part of a genome. This include 2-mers, 3-mers, 4-mers,
   5-mers, stranded or strand-agnostic, and genome-wide, in-transcript, or
   in-exome, for different reference genome versions and for different
