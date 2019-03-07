@@ -638,6 +638,7 @@ ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
 #' @return A list of three matrices containing the SNS mutation catalog:
 #'   96, 192, 1536 catalog respectively.
 #' @keywords internal
+#' @note catSNS192 only contains mutations in transcribed regions.
 CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -731,6 +732,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   catSNS192
 #'   catSNS1536
 #' @export
+#' @note catSNS192 only contains mutations in transcribed regions.
 VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
@@ -905,6 +907,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #' @export
+#' @note SNS 192 catalog only contains mutations in transcribed regions.
 StrelkaSNSVCFFilesToCatalog <-
   function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
@@ -946,6 +949,7 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
 #' @export
+#' @note SNS 192 catalog only contains mutations in transcribed regions.
 MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
