@@ -63,12 +63,12 @@ Collapse144To78 <- function(catalog) {
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
 #' @keywords internal
 NormalizeAbundanceArg <- function(abundance, which.n) {
-  if (class(abundance) %in% c("matrix", "numeric")) {
-    # stopifnot .... which.n matches the abundance vector....
+  if (class(abundance) %in% c("integer")) {
+    stopifnot(nchar(names(abundance)[1]) == which.n)
     return (abundance)
   }
   if (!which.n %in% 2:5) {
-    stop("Argument which.n must be in 2:5, got", which.n)
+    stop("Argument which.n must be in 2:5, got ", which.n)
   }
 
   if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
@@ -77,7 +77,7 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
     stop ('abundance must be either an abundance matrix created by yourself
           or one of
           ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome"), got', abundance)
+          "GRCm38.genome", "GRCm38.exome"), got ', abundance)
   }
 
   if (abundance == "GRCh37.genome") {
@@ -177,44 +177,42 @@ TransformCatalog <-
          "uniform source and target abundances.")
   }
 
-  # !Add some error checking, something like
+  # Some error checking
   if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
     stop("This function can only transform catalogs from the type of ",
          "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
   }
   if (nrow(catalog) == 96 && which.n != 3) {
-    stop("Argument which.n must be 3 for an SNS 96 catalog, got", which.n)
+    stop("Argument which.n must be 3 for an SNS 96 catalog, got ", which.n)
   }
   if (nrow(catalog) == 192 && which.n != 3) {
-    stop("Argument which.n must be 3 for an SNS 192 catalog, got", which.n)
+    stop("Argument which.n must be 3 for an SNS 192 catalog, got ", which.n)
   }
   if (nrow(catalog) == 1536 && which.n != 5) {
-    stop("Argument which.n must be 5 for an SNS 1536 catalog, got", which.n)
+    stop("Argument which.n must be 5 for an SNS 1536 catalog, got ", which.n)
   }
   if (nrow(catalog) == 78 && which.n != 2) {
-    stop("Argument which.n must be 2 for a DNS 78 catalog, got", which.n)
+    stop("Argument which.n must be 2 for a DNS 78 catalog, got ", which.n)
   }
   if (nrow(catalog) == 136 && which.n != 4) {
-    stop("Argument which.n must be 4 for a DNS 136 catalog, got", which.n)
+    stop("Argument which.n must be 4 for a DNS 136 catalog, got ", which.n)
   }
   if (nrow(catalog) == 144 && which.n != 2) {
-    stop("Argument which.n must be 2 for a DNS 144 catalog, got", which.n)
+    stop("Argument which.n must be 2 for a DNS 144 catalog, got ", which.n)
+  }
+
+  if (target.type == "density") {
+    target.abundance <- rep(1L, length(source.abundance))
+    names(target.abundance) <- names(source.abundance)
+  }
+
+  if (is.null(target.abundance)) {
+    stop("Please specify the target.abundance")
   }
 
   source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
   target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
   stopifnot(all(names(source.abundance) == names(target.abundance)))
-
-  if (FALSE) {
-    if (target.type == "density") {
-      target.abundance <- rep(1, length(source.abundance))
-      names(target.abundance) <- names(source.abundance)
-    }
-
-    if (is.null(target.abundance)) {
-      stop("explain the problem")
-    }
-  }
 
   out.catalog <- catalog
 
@@ -245,6 +243,8 @@ TransformCatalog <-
 
   n.mers <- get.n.mers(out.catalog, which.n)
   lapply(n.mers, transform.n.mer)
+
+  if (target.type == "density") return(out.catalog)
 
   out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
   # # Each colmun in out2 sums to 1
@@ -471,7 +471,7 @@ ReadBedTranscriptRanges <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
 #'
-#' @return A numeric vector whose names indicate 32 different types of 3 base pairs
+#' @return An integer vector whose names indicate 32 different types of 3 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTrinucAbundance <- function(path) {
@@ -490,7 +490,7 @@ CreateTrinucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return A numeric vector whose names indicate 10 different types of 2 base pairs
+#' @return An integer vector whose names indicate 10 different types of 2 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateDinucAbundance <- function(path) {
@@ -513,7 +513,7 @@ CreateDinucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #' @import data.table
-#' @return A numeric vector whose names indicate 136 different types of 4 base pairs
+#' @return An integer vector whose names indicate 136 different types of 4 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreateTetranucAbundance <- function(path) {
@@ -531,7 +531,7 @@ CreateTetranucAbundance <- function(path) {
 #' @param path Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
 #' @import data.table
-#' @return A numeric vector whose names indicate 512 different types of 5 base
+#' @return An integer vector whose names indicate 512 different types of 5 base
 #'   pairs combinations while its values indicate the occurrences of each type.
 #' @keywords internal
 CreatePentanucAbundance <- function(path) {
