@@ -141,6 +141,26 @@ ReadMutectVCF <- function(path) {
   df1 <- df1[-1, ]
   colnames(df1) <- names
 
+  # Is there any column in df1 with name "strand"?
+  # If there is, change its name to "strand_old" so that it will
+  # conflict with code in other parts of ICAMS package.
+  if ("strand" %in% colnames(df1)) {
+    colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
+    warning('There is column in VCF which has name "strand", ',
+            'it has been renamed to "strand_old" so that it will ',
+            'not conflict with code in other parts of ICAMS package.')
+  }
+
+  # Is there any column in df1 with name "VAF"?
+  # If there is, change its name to "VAF_old" so that it will
+  # conflict with code in other parts of ICAMS package.
+  if ("VAF" %in% colnames(df1)) {
+    colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
+    warning('There is column in VCF which has name "VAF", ',
+            'it has been renamed to "VAF_old" so that it will ',
+            'not conflict with code in other parts of ICAMS package.')
+  }
+
   df1$POS <- as.integer(df1$POS)
   df1$VAF <- GetMutectVAF(df1)
   return(StandardChromName(df1))
