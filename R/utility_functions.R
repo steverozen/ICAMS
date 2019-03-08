@@ -114,11 +114,11 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #' @details Only certain transformations are legal.
 #' \enumerate{
 #'
-#' \item The type \code{"density"} must always be associated with the
-#' abundance \code{"flat"} or \code{NULL}.
+#' \item The type \code{"density"} must always be associated with a \code{NULL}
+#' abundance.
 #"
 #' \item The other types must \strong{not} be associated with
-#'  abundance \code{"flat"} or \code{NULL}.
+#'  the \code{NULL} abundance.
 #'
 #' \item Otherwise, the following are legal:
 #' \enumerate{
@@ -137,10 +137,10 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @param catalog A catalog as described in \code{\link{ICAMS}}.
 #'
-#' @param source.abundance Either a numeric vector with one element
+#' @param source.abundance Either \code{NULL} or a numeric vector with one element
 #' for each source sequence for the mutation types in \code{catalog}
 #' or a string specifying such a vector, one of \code{"GRCh37.genome"},
-#' XXXXXX, \code{"flat"}.
+#' \code{"GRCh37.exome"}, \code{"GRCh38.genome"}, or \code{"GRCh38.exome"}.
 #' This is the
 #' abundance upon which the counts, densities, or proportions
 #' in \code{catalog} are based. For example, for SNS in
@@ -161,7 +161,9 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @export
 TransformCatalog <-
-  function(catalog, source.abundance, target.abundance = NULL, which.n,
+  function(catalog,
+           source.abundance = NULL,
+           target.abundance = NULL, which.n,
            source.type, target.type = source.type) {
 
   stopifnot(source.type %in% c("counts", "signature", "density"))
