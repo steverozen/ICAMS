@@ -23,4 +23,7 @@ A list of three matrices containing the SNS mutation catalog:
 Create single nucleotide mutation catalog for *one* sample from
 a Variant Call Format (VCF) file.
 }
+\note{
+catSNS192 only contains mutations in transcribed regions.
+}
 \keyword{internal}

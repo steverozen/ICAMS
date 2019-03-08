@@ -27,3 +27,6 @@ from the Strelka SNS VCFs specified by vector.of.file.paths
 This function calls \code{\link{VCFsToSNSCatalogs}} and
 \code{\link{VCFsToDNSCatalogs}}
 }
+\note{
+SNS 192 catalog only contains mutations in transcribed regions.
+}

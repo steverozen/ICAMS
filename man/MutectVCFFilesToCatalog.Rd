@@ -27,3 +27,6 @@ from the Mutect VCFs specified by vector.of.file.paths
 This function calls \code{\link{VCFsToSNSCatalogs}},
 \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
+\note{
+SNS 192 catalog only contains mutations in transcribed regions.
+}
