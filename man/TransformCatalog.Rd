@@ -44,10 +44,10 @@ source sequence abundances.
 Only certain transformations are legal.
 \enumerate{
 
-\item The type \code{"density"} must always be associated with the
-abundance \code{"flat"} or \code{NULL}.
+\item The type \code{"density"} must always be associated with a \code{NULL}
+abundance.
 \item The other types must \strong{not} be associated with
- abundance \code{"flat"} or \code{NULL}.
+ the \code{NULL} abundance.
 
 \item Otherwise, the following are legal:
 \enumerate{
