@@ -1,7 +1,7 @@
 context("TransformCatalog")
 
-test_that("TransformCatalog function: going from genome counts to exome signature,
-          from genome signature to exome signature", {
+test_that("TransformCatalog genome counts -> exome signature,
+          and genome signature -> exome signature", {
             cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
 
             x1 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
@@ -23,8 +23,42 @@ test_that("TransformCatalog function: going from genome counts to exome signatur
           })
 
 
-test_that("TransformCatalog function: going from genome counts to exome counts,
-          from exome counts back to genome counts", {
+test_that("TransformCatalog genome-count signature -> denisty signature,
+          and exome counts -> genome counts", {
+            cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
+
+            genome.count.signature <-
+              TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                               target.abundance = "GRCh37.genome",
+                               source.type = "counts",
+                               target.type = "signature", which.n = 3)
+            density.signature <-
+              TransformCatalog(genome.count.signature,
+                               source.abundance = "GRCh37.genome",
+                               target.abundance = "flat", # NULL
+                               source.type = "signature",
+                               target.type = "signature",
+                               which.n = 3)
+            density.cat <-
+              TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                               target.abundance = "flat", #NULL?
+                               source.type = "counts",
+                               target.type = "density",
+                               which.n = 3)
+
+            density.signature2 <-
+              TransformCatalog(density.cat, source.abundance = NULL,
+                               source.type = "density",
+                               target.type = "signature",
+                               which.n = 3)
+
+
+            expect_equal(density.signature2, density.signature)
+
+            })
+
+test_that("TransformCatalog genome counts -> exome counts,
+          and exome counts -> genome counts", {
             cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
 
             x1 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
@@ -37,17 +71,21 @@ test_that("TransformCatalog function: going from genome counts to exome counts,
 
           })
 
-test_that("TransformCatalog function: going from genome counts to genome density,
-          from genome counts to exome density", {
+test_that("TransformCatalog genome counts -> density,
+           and genome counts -> exome count ->density", {
             cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
 
             x1 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
                                    target.abundance = "GRCh37.genome",
                                    source.type = "counts",
                                    target.type = "density", which.n = 3)
+            # x1 should be an error , and need new test with
+            # NULL target.abundance and "density" target type.
+
             x2 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
                                    target.abundance = "GRCh37.exome",
                                    source.type = "counts", which.n = 3)
+
             x3 <- TransformCatalog(x2, source.abundance = "GRCh37.exome",
                                    target.abundance = "GRCh37.exome",
                                    source.type = "counts",
