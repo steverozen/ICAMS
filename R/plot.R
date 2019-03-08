@@ -614,7 +614,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
     df$main.types <-
       paste0(substr(rownames(df), 3, 3), ">", substr(rownames(df), 6, 6))
     df1 <-
-      aggregate(df[, 1], by = list(main.types = df$main.types), FUN = sum)
+      stats::aggregate(df[, 1], by = list(main.types = df$main.types), FUN = sum)
     main.types.counts <- df1[, 2]
     names(main.types.counts) <- df1$main.types
   }
