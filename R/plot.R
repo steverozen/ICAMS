@@ -1412,7 +1412,7 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
   x.left <- bp[c(seq(0, 66, 6), 72, 73, 75, 78) + 1] - 0.5
   x.right <- bp[c(seq(6, 72, 6), 73, 75, 78, 83)] + 0.5
   class.pos <- c((x.left[seq(1, 4, 2)] + x.right[seq(2, 5, 2)]) / 2,
-                 (x.left[c(5, 9)] + x.right[c(8, 12)] - 12) / 2,
+                 (x.left[c(6, 10)] + x.right[c(8, 12)] - 12) / 2,
                  (x.left[13] + x.right[length(x.left)]) / 2)
   category.lab <- c(rep(c("C", "T"), 2), rep(c("2", "3", "4", "5+"), 3))
   category.col <- c(rep(c("black", "white"), 2),
@@ -1425,7 +1425,7 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
        cex = 0.55, col = category.col, xpd = NA)
 
   # Draw mutation class labels at the top of the figure
-  text(class.pos, ymax * 1.23, labels = maj.class.names, cex = 0.75, xpd = NA)
+  text(class.pos, ymax * 1.25, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the ID information of the sample
   text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.85, font = 2)
