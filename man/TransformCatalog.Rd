@@ -6,16 +6,17 @@
  and signatures and between different
 source sequence abundances.}
 \usage{
-TransformCatalog(catalog, source.abundance, target.abundance = NULL,
-  which.n, source.type, target.type = source.type)
+TransformCatalog(catalog, source.abundance = NULL,
+  target.abundance = NULL, which.n, source.type,
+  target.type = source.type)
 }
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
 
-\item{source.abundance}{Either a numeric vector with one element
+\item{source.abundance}{Either \code{NULL} or a numeric vector with one element
 for each source sequence for the mutation types in \code{catalog}
 or a string specifying such a vector, one of \code{"GRCh37.genome"},
-XXXXXX, \code{"flat"}.
+\code{"GRCh37.exome"}, \code{"GRCh38.genome"}, or \code{"GRCh38.exome"}.
 This is the
 abundance upon which the counts, densities, or proportions
 in \code{catalog} are based. For example, for SNS in
