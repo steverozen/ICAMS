@@ -608,15 +608,20 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
              c(0.5, 4.5, 8.5, 12.5, 16.5), rep(18.3, 5), xpd = NA)
   }
 
-  # Calculate the total counts for the six main mutation types?
+  cat <- data.frame(catalog)
+  cat$main.types <-
+    paste0(substr(rownames(cat), 3, 3), ">", substr(rownames(cat), 6, 6))
+  cat1 <-
+    stats::aggregate(cat[, 1], by = list(main.types = cat$main.types), FUN = sum)
+
   if (colSums(catalog) > 1.5) {
-    df <- data.frame(catalog)
-    df$main.types <-
-      paste0(substr(rownames(df), 3, 3), ">", substr(rownames(df), 6, 6))
-    df1 <-
-      stats::aggregate(df[, 1], by = list(main.types = df$main.types), FUN = sum)
-    main.types.counts <- df1[, 2]
-    names(main.types.counts) <- df1$main.types
+    # Get the total counts for the six main mutation types
+    main.types.counts <- cat1[, 2]
+    names(main.types.counts) <- cat1$main.types
+  } else {
+    # Get the total proportion for the six main mutation types
+    main.types.prop <- cat1[, 2]
+    names(main.types.prop) <- cat1$main.types
   }
 
   # Calculate pentanucleotide sequence contexts, normalized by pentanucleotide
@@ -666,6 +671,10 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      } else {
+        text(11.5, 19,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
       }
     }
 
@@ -676,6 +685,10 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      } else {
+        text(11.5, 19,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
       }
       text(8.5, 20.5, id, cex = 1.5, xpd = NA)
     }
@@ -687,6 +700,10 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      } else {
+        text(11.5, 19,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
       }
       text(17.5, 17, '1bp 3\'', xpd = NA, cex = 1)
       text(17.5, 18, '2bp 3\'', xpd = NA, cex = 1)
@@ -699,6 +716,10 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
+      } else {
+        text(11.5, 17,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
       }
       text(-1, -0.9, '1bp 5\'', xpd = NA, srt = 45, adj = 0, cex = 1)
       text(-2, -0.9, '2bp 5\'', xpd = NA, srt = 45, adj = 0, cex = 1)
@@ -710,7 +731,12 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      }    }
+      } else {
+        text(11.5, 17,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
+      }
+      }
 
     if (i == 6) {
       par(mar = c(6, 1, 0, 1))
@@ -718,7 +744,12 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (colSums(catalog) > 1.5) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      }    }
+      } else {
+        text(11.5, 17,
+             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             xpd = NA)
+      }
+      }
   }
   on.exit(par(old), add = TRUE)
 
