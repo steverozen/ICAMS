@@ -1141,13 +1141,13 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
-                            type = "density", abundance = NULL) {
+                               type = "density", abundance = NULL) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
-  par(oma = c(2, 1, 2, 1))
+  par(oma = c(1, 2, 1, 1))
 
   # Do recycling of the function parameters if a vector
   # with length more than one is not specified by the user.
@@ -1156,9 +1156,22 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
   }
 
   # Specify the lay out of the plotting
-  invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2, 3, 11, 18,
-                            19, 20, 21, 15, 16, 17, 22, 12, 13, 14, 22),
-                          6, 4,byrow = TRUE)))
+  invisible(layout(matrix(c(12, 12, 12, 12,
+                            7, 8, 9, 10, 7, 8, 9, 10,
+                            7, 8, 9, 10, 7, 8, 9, 10,
+                            4, 5, 6, 11,  4, 5, 6, 11,
+                            4, 5, 6, 11, 4, 5, 6, 11,
+                            1, 2, 3, 11, 1, 2, 3, 11,
+                            1, 2, 3, 11,  1, 2, 3, 11,
+                            24, 24, 24, 24,
+                            19, 20, 21, 22, 19, 20, 21, 22,
+                            19, 20, 21, 22, 19, 20, 21, 22,
+                            16, 17, 18, 23, 16, 17, 18, 23,
+                            16, 17, 18, 23, 16, 17, 18, 23,
+                            13, 14, 15, 23,  13, 14, 15, 23,
+                            13, 14, 15, 23, 13, 14, 15, 23),
+                          26, 4,byrow = TRUE)))
+
 
   # Define the bases and their colors in plot
   base <- c("A", "C", "G", "T")
@@ -1239,7 +1252,7 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
     }
 
     for (j in 1:10) {
-      par(mar = c(1, 1, 2, 0), pty = "s")
+      par(mar = c(1, 0, 2, 0), pty = "s")
       if (type[i] == "density") {
         DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
       } else if (type[i] == "counts") {
@@ -1249,8 +1262,8 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       }
 
       # Draw the mutation type and number of occurrences on top of image
-      text(2, 5.1, mut.type[j], font = 2, xpd = NA)
-      text(3.2, 5.1, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
+      text(2.3, 5.2, mut.type[j], font = 2, xpd = NA)
+      text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
 
       # Draw a box surrounding the image
       segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
@@ -1259,27 +1272,22 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       # Draw the base information of the plot
       text(rep(0.2, 4), c(4, 3, 2, 1), base, col = base.cols, xpd = NA)
       text(seq(4), rep(4.8, 4), base, col = base.cols, xpd = NA)
-
-      # Draw the ID information of the sample
-      if (j == 8) {
-        mtext(id[i], at = 5, line = 3)
-      }
     }
 
     # Add in additional information
-    plot(c(0, 1), c(0, 1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
-    text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
+    plot.new()
+    text(x = 0.5, y = 1.2, "Maxima per class", cex = 1.6, xpd = NA)
     ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
     if (type[i] == "density") {
-      text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
+      text(x = 0.5, y = 1.07, "(mut/million)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
         maxima[j] <- max.rate.per.class[ref[j], ]
         names(maxima)[j] <- ref[j]
       }
     } else if (type[i] == "counts") {
-      text(x = 0.5, y = 0.8, "(counts)", cex = 1.2)
+      text(x = 0.5, y = 1.07, "(counts)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
         maxima[j] <- max.count.per.class[ref[j], ]
@@ -1288,10 +1296,15 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
     } else {
       stop('Please specify the correct type: "density" or "counts"')
     }
-    text(rep(0, 5), seq(0.7, 0.3, length.out = 5),
-         paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2)
-    text(rep(0.6, 5), seq(0.7, 0.3, length.out = 5),
-         paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2)
+    text(rep(0, 5), seq(0.9, 0.1, length.out = 5),
+         paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
+    text(rep(0.6, 5), seq(0.9, 0.1, length.out = 5),
+         paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
+
+    # Draw the ID information of the sample
+    par(mar = c(0, 0, 0, 0))
+    plot.new()
+    text(0.7, 0.5, id[i], cex = 1.5, xpd = NA)
   }
   invisible(grDevices::dev.off())
   invisible(TRUE)
