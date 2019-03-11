@@ -35,13 +35,13 @@ test_that("TransformCatalog genome-count signature -> denisty signature,
             density.signature <-
               TransformCatalog(genome.count.signature,
                                source.abundance = "GRCh37.genome",
-                               target.abundance = "flat", # NULL
+                               target.abundance = NULL,
                                source.type = "signature",
                                target.type = "signature",
                                which.n = 3)
             density.cat <-
               TransformCatalog(cat, source.abundance = "GRCh37.genome",
-                               target.abundance = "flat", #NULL?
+                               target.abundance = NULL,
                                source.type = "counts",
                                target.type = "density",
                                which.n = 3)
@@ -75,19 +75,22 @@ test_that("TransformCatalog genome counts -> density,
            and genome counts -> exome count ->density", {
             cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
 
+            expect_error(TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                                          target.abundance = "GRCh37.genome",
+                                          source.type = "counts",
+                                          target.type = "density", which.n = 3))
+
             x1 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
-                                   target.abundance = "GRCh37.genome",
+                                   target.abundance = NULL,
                                    source.type = "counts",
                                    target.type = "density", which.n = 3)
-            # x1 should be an error , and need new test with
-            # NULL target.abundance and "density" target type.
 
             x2 <- TransformCatalog(cat, source.abundance = "GRCh37.genome",
                                    target.abundance = "GRCh37.exome",
                                    source.type = "counts", which.n = 3)
 
             x3 <- TransformCatalog(x2, source.abundance = "GRCh37.exome",
-                                   target.abundance = "GRCh37.exome",
+                                   target.abundance = NULL,
                                    source.type = "counts",
                                    target.type = "density", which.n = 3)
             expect_equal(x1, x3)
@@ -145,14 +148,4 @@ test_that("TransformCatalog function: specifying the wrong abundance,
                                           target.abundance = "GRCh37.exome",
                                           source.type = "counts",
                                           target.type = "signature", which.n = 3))
-          })
-
-test_that("TransformCatalog function: abundance is not specified,
-          error message expected", {
-            cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
-
-            expect_error(TransformCatalog(cat, source.abundance = "GRC37.genome",
-                                          source.type = "counts",
-                                          target.type = "signature", which.n = 3),
-                         "Please specify the target.abundance", fixed = TRUE)
           })
