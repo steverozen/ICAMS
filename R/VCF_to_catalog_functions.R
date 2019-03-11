@@ -579,7 +579,8 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #' @keywords internal
 ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSNSVCF)
-  names(vcfs) <- vector.of.file.paths
+  names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
+                     basename(vector.of.file.paths))
   return(vcfs)
 }
 
