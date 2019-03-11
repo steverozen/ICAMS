@@ -168,6 +168,13 @@ TransformCatalog <-
 
   stopifnot(source.type %in% c("counts", "signature", "density"))
   stopifnot(target.type %in% c("counts", "signature", "density"))
+  if (source.type == "density" && !is.null(source.abundance)) {
+    stop('The type "density" must always be associated with a NULL abundance.')
+  }
+  if (target.type == "density" && !is.null(target.abundance)) {
+    stop('The type "density" must always be associated with a NULL abundance.')
+  }
+
   if (target.type != source.type && source.type == "signature") {
     stop("Only a \"counts\" or \"density\" type catalog ",
          "can be transformed to a different type.")
@@ -203,23 +210,47 @@ TransformCatalog <-
     stop("Argument which.n must be 2 for a DNS 144 catalog, got ", which.n)
   }
 
-  if (target.type == "density") {
+  n.mers <- substr(rownames(catalog), 1, which.n)
+
+  if (!is.null(source.abundance) && !is.null(target.abundance)) {
+    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+    stopifnot(all(names(source.abundance) == names(target.abundance)))
+  } else if (is.null(source.abundance) && !is.null(target.abundance)) {
+    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+    source.abundance <- rep(1L, length(target.abundance))
+    names(source.abundance) <- names(target.abundance)
+  } else if (!is.null(source.abundance) && is.null(target.abundance)) {
+    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
     target.abundance <- rep(1L, length(source.abundance))
     names(target.abundance) <- names(source.abundance)
+  } else {
+    if (which.n == 2) {
+      source.abundance <- rep(1L, 10)
+      target.abundance <- rep(1L, 10)
+      names(source.abundance) <- unique(n.mers)
+      names(target.abundance) <- unique(n.mers)
+    } else if (which.n == 3) {
+      source.abundance <- rep(1L, 32)
+      target.abundance <- rep(1L, 32)
+      names(source.abundance) <- unique(n.mers)
+      names(target.abundance) <- unique(n.mers)
+    } else if (which.n == 4) {
+      source.abundance <- rep(1L, 136)
+      target.abundance <- rep(1L, 136)
+      names(source.abundance) <- unique(n.mers)
+      names(target.abundance) <- unique(n.mers)
+    } else if (which.n == 5) {
+      source.abundance <- rep(1L, 512)
+      target.abundance <- rep(1L, 512)
+      names(source.abundance) <- unique(n.mers)
+      names(target.abundance) <- unique(n.mers)
+    }
   }
-
-  if (is.null(target.abundance)) {
-    stop("Please specify the target.abundance")
-  }
-
-  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-  stopifnot(all(names(source.abundance) == names(target.abundance)))
-
-  out.catalog <- catalog
 
   factor <- target.abundance / source.abundance
   names(factor) <- names(target.abundance)
+  out.catalog <- catalog
 
   # CAUTION: this function depends on how mutations are encoded in
   # the row names!
@@ -239,11 +270,6 @@ TransformCatalog <-
     # if you want, 10^6/source.abundance
   }
 
-  get.n.mers <- function(catalog, which.n) {
-    return(substr(rownames(catalog), 1, which.n))
-  }
-
-  n.mers <- get.n.mers(out.catalog, which.n)
   lapply(n.mers, transform.n.mer)
 
   if (target.type == "density") return(out.catalog)
