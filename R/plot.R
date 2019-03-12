@@ -171,10 +171,10 @@ PlotCatSNS96 <-
 
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
-        j <- 13 + 16 * (i - 1)
+        j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-             xpd = NA, cex = cex)
+        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
+             adj = c(1, 1), xpd = NA, cex = cex)
       }
     } else if (type == "counts") {
       # Get ylim
@@ -187,10 +187,10 @@ PlotCatSNS96 <-
 
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
-        j <- 13 + 16 * (i - 1)
+        j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.15, labels = sum(catalog[k : (16 * i), ]),
-             xpd = NA, cex = cex)
+        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
+             adj = c(1, 1), xpd = NA, cex = cex)
       }
     } else if (type == "signature") {
       # Calculate mutation signatures of the input catalog
@@ -209,13 +209,14 @@ PlotCatSNS96 <-
 
     # Draw grid lines?
     if (grid) {
-      segments(bp[1] - 1, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 1,
+      segments(bp[1] - 0.5, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 0.5,
                seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
     }
 
     # Draw the x axis
-    Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
-         labels = FALSE, lwd.tick = 0, lwd = 0.5)
+    #Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
+         #labels = FALSE, lwd.tick = 0, lwd = 0.5)
+    segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, col = 'grey35', lwd = 0.25)
 
     # Draw y axis
     y.axis.values <- seq(0, ymax, ymax/4)
@@ -234,7 +235,7 @@ PlotCatSNS96 <-
     }
 
     # Draw the ID information on top of graph
-    text(bp[2], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
+    text(bp[1], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
 
     # Draw the labels along x axis?
     if (xlabels) {
@@ -247,7 +248,7 @@ PlotCatSNS96 <-
 
       x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
                 bp[xlabel.idx + 2], bp[xlabel.idx + 3])
-      y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.5, -ymax / 2.1)
+      y <- c(-ymax / 3.5, -ymax / 2.8, -ymax / 2.39, -ymax / 2.1)
       # Draw the remaining lines of x axis labels
       for (i in 1 : 4) {
         text(x[[i]], y[i], labels = label[i], cex = cex, adj = 0.5, xpd = NA)
