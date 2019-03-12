@@ -279,19 +279,24 @@ TransformCatalog <-
 
   if (target.type == "signature") return(out2)
 
-  # lazy way to get new matrix in same shape as out2
-  # out3's elements will be overwritten
-  out3 <- out2
+  if (target.type == "counts" && source.type == "counts") {
+    # lazy way to get new matrix in same shape as out2
+    # out3's elements will be overwritten
+    out3 <- out2
 
-  # This is going back to counts making sure that the total number
-  # of counts is the same as in the input. I think this
-  # is one of several(?) possible design choices. Alternatively could
-  # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
-  # unchanged.
-  for (i in 1:ncol(out2)) {
-    out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
+    # This is going back to counts making sure that the total number
+    # of counts is the same as in the input. I think this
+    # is one of several(?) possible design choices. Alternatively could
+    # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
+    # unchanged.
+    for (i in 1:ncol(out2)) {
+      out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
+    }
+    return(out3)
+  } else {
+    return(out.catalog)
   }
-  return(out3)
+
 }
 
 #' Standardize the Chromosome name annotations for a data frame
