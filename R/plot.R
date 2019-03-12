@@ -674,7 +674,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 19,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
     }
@@ -688,7 +688,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 19,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
       text(8.5, 20.5, id, cex = 1.5, xpd = NA)
@@ -703,7 +703,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 19,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
       text(17.5, 17, '1bp 3\'', xpd = NA, cex = 1)
@@ -719,7 +719,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 17,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
       text(-1, -0.9, '1bp 5\'', xpd = NA, srt = 45, adj = 0, cex = 1)
@@ -734,7 +734,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 17,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
       }
@@ -747,7 +747,7 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
       } else {
         text(11.5, 17,
-             paste0("(%=", round(100 * main.types.prop[main.type], 1), ")"),
+             paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
       }
