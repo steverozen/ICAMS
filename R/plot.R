@@ -405,10 +405,10 @@ PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
 
     # Write the mutation counts on top of graph
     for (i in 1 : 6) {
-      j <- 23 + 32 * (i - 1)
+      j <- 32 + 32 * (i - 1)
       k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 7 / 8, labels = sum(counts[k : (32 * i)]),
-           xpd = NA, cex = 0.8)
+      text(bp[j], ymax * 0.92, labels = sum(counts[k : (32 * i)]),
+           adj = c(1, 1), xpd = NA, cex = 0.8)
     }
   }
   text(-0.5, y.axis.values, labels = y.axis.labels,
