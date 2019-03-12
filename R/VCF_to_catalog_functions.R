@@ -616,7 +616,8 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
-  names(vcfs) <- vector.of.file.paths
+  names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
+                     basename(vector.of.file.paths))
   return(vcfs)
 }
 
@@ -628,7 +629,8 @@ ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
 #' @keywords internal
 ReadMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadMutectVCF)
-  names(vcfs) <- vector.of.file.paths
+  names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
+                     basename(vector.of.file.paths))
   return(vcfs)
 }
 
