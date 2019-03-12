@@ -71,7 +71,7 @@ ReadCatSNS96 <- function(path, strict = TRUE) {
   out <- as.matrix(out)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(rownames(out) == catalog.row.order$SNS96)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$SNS96)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[catalog.row.order$SNS96, ]
