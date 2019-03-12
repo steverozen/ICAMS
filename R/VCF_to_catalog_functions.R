@@ -787,6 +787,13 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
     SNS <- list.of.SNS.vcfs[[i]]
 
     SNS <- AddSequence(SNS, genome = genome)
+
+    # Delete the rows of SNS if the extracted sequence contains "N"
+    idx <- grep("N", substr(SNS$seq.21context, 9, 13))
+    if (!length(idx) == 0) {
+      SNS <- SNS[-idx, ]
+    }
+
     CheckSeqContextInVCF(SNS, "seq.21context")
     SNS <- AddTranscript(SNS, trans.ranges)
     SNS.cat <- CreateOneColSNSCatalog(SNS)
@@ -920,6 +927,13 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
     DNS <- list.of.DNS.vcfs[[i]]
 
     DNS <- AddSequence(DNS, genome = genome)
+
+    # Delete the rows of DNS if the extracted sequence contains "N"
+    idx <- grep("N", substr(DNS$seq.21context, 10, 13))
+    if (!length(idx) == 0) {
+      DNS <- DNS[-idx, ]
+    }
+
     DNS <- AddTranscript(DNS, trans.ranges)
     CheckSeqContextInVCF(DNS, "seq.21context")
     DNS.cat <- CreateOneColDNSCatalog(DNS)
