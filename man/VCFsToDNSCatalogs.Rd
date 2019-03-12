@@ -27,3 +27,6 @@ Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)
 out of the contents in list.of.DNS.vcfs. The VCFs must not contain
 any type of mutation other then DNSs.
 }
+\note{
+DNS 144 catalog only contains mutations in transcribed regions.
+}

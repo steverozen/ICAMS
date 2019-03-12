@@ -28,5 +28,5 @@ This function calls \code{\link{VCFsToSNSCatalogs}},
 \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-SNS 192 catalog only contains mutations in transcribed regions.
+SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
 }

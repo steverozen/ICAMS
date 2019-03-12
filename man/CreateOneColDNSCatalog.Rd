@@ -23,4 +23,7 @@ A list of three matrices containing the DNS catalog:
 Create double nucleotide catalog for *one* sample from
 a Variant Call Format (VCF) file
 }
+\note{
+DNS 144 catalog only contains mutations in transcribed regions.
+}
 \keyword{internal}
