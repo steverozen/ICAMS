@@ -811,10 +811,10 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
 
     # Write the mutation counts on top of graph
     for (i in 1 : 10) {
-      j <- c(7, 13, 20, 28, 35, 43, 49, 56, 65, 74)
+      j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
       name <- substr(rownames(catalog), 1, 2)
-      text(bp[j[i]], ymax * 0.9, xpd = NA, cex = 0.8,
-           labels = sum(catalog[name == maj.class.names[i], ]))
+      text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
+           adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
   } else if (type == "counts") {
     # Get ylim
@@ -827,10 +827,10 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
 
     # Write the mutation counts on top of graph
     for (i in 1 : 10) {
-      j <- c(7, 13, 20, 28, 35, 43, 49, 56, 65, 74)
+      j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
       name <- substr(rownames(catalog), 1, 2)
-      text(bp[j[i]], ymax * 0.9, xpd = NA, cex = 0.8,
-           labels = sum(catalog[name == maj.class.names[i], ]))
+      text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
+           adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
   } else if (type == "signature") {
     # Calculate mutation signatures of the input catalog
