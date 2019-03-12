@@ -4,10 +4,10 @@
 \alias{PlotCatalogToPdf}
 \alias{PlotCatSNS96ToPdf}
 \alias{PlotCatSNS192ToPdf}
-\alias{PlotCatSNS192StrandToPdf}
+\alias{PlotSNSClassStrandBiasToPdf}
 \alias{PlotCatSNS1536ToPdf}
 \alias{PlotCatDNS78ToPdf}
-\alias{PlotCatDNS144ToPdf}
+\alias{PlotDNSClassStrandBiasToPdf}
 \alias{PlotCatDNS136ToPdf}
 \alias{PlotCatIDToPdf}
 \title{Plot catalog to pdf functions}
@@ -19,7 +19,7 @@ PlotCatSNS96ToPdf(catalog, name, id = colnames(catalog),
 PlotCatSNS192ToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 0.8, abundance = NULL)
 
-PlotCatSNS192StrandToPdf(catalog, name, id = colnames(catalog),
+PlotSNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
 PlotCatSNS1536ToPdf(catalog, name, id = colnames(catalog), abundance)
@@ -27,7 +27,7 @@ PlotCatSNS1536ToPdf(catalog, name, id = colnames(catalog), abundance)
 PlotCatDNS78ToPdf(catalog, name, id = colnames(catalog),
   type = "density", abundance = NULL)
 
-PlotCatDNS144ToPdf(catalog, name, id = colnames(catalog),
+PlotDNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
 PlotCatDNS136ToPdf(catalog, name, id = colnames(catalog),
@@ -54,9 +54,10 @@ If type = "counts", the graph will plot the occurrences of the mutation
 types in the sample. If type = "signature", the graph will plot mutation
 signatures of the sample. If type = "density", the graph will plot the
 rates of mutations per million nucleotides for each mutation type. (Please
-take note there is no "density" type for PlotCatIDtoPdf function and the option
-of type = "density" is not implemented for function PlotCatSNS192ToPdf,
-PlotCatSNS192StrandToPdf and PlotCatDNS144ToPdf at the current stage.)}
+take note there is no "density" type for PlotCatIDtoPdf function and the
+option of type = "density" is not implemented for function
+PlotCatSNS192ToPdf, PlotSNSClassStrandBiasToPdf and
+PlotDNSClassStrandBiasToPdf at the current stage.)}
 
 \item{grid}{If TRUE, draw grid lines in the graph.}
 
@@ -85,7 +86,7 @@ to a PDF file.
 \code{PlotCatSNS192ToPdf} Plot the SNS 192 mutation catalog of various samples
 to a PDF file.
 
-\code{PlotCatSNS192StrandToPdf} Plot the transcription strand bias graph of
+\code{PlotSNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 of various samples to a PDF file.
 
@@ -98,7 +99,7 @@ refers to the base after mutation.
 \code{PlotCatDNS78ToPdf} Plot the DNS 78 mutation catalog of various samples
 to a PDF file.
 
-\code{PlotCatDNS144ToPdf} Plot the transcription strand bias graph of
+\code{PlotDNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
 10 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
 "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples
 to a PDF file.

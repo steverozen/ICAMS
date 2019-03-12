@@ -6,7 +6,7 @@
 #'
 #' \code{PlotCatSNS192} Plot the SNS 192 mutation catalog of one sample.
 #'
-#' \code{PlotCatSNS192Strand} Plot the transcription strand bias graph of 6 SNS
+#' \code{PlotSNSClassStrandBias} Plot the transcription strand bias graph of 6 SNS
 #' mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
 #'
 #' \code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
@@ -18,7 +18,7 @@
 #'
 #' \code{PlotCatDNS78} Plot the DNS 78 mutation catalog of one sample.
 #'
-#' \code{PlotCatDNS144} Plot the transcription strand bias graph of 10 major DNS
+#' \code{PlotDNSClassStrandBias} Plot the transcription strand bias graph of 10 major DNS
 #' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 #' "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 #'
@@ -44,8 +44,8 @@
 #'   If type = "density", the graph will plot the rates of mutations per million
 #'   nucleotides for each mutation type. (Please take note there is no "density"
 #'   type for PlotCatID function and the option of type = "density" is not
-#'   implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
-#'   the current stage.)
+#'   implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
+#'   PlotDNSClassStrandBias at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
 #'   its annotations(if it exists) sample name and legend(if it exists)
@@ -71,7 +71,7 @@ NULL
 #' \code{PlotCatSNS192ToPdf} Plot the SNS 192 mutation catalog of various samples
 #' to a PDF file.
 #'
-#' \code{PlotCatSNS192StrandToPdf} Plot the transcription strand bias graph of
+#' \code{PlotSNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
 #' 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 #' of various samples to a PDF file.
 #'
@@ -84,7 +84,7 @@ NULL
 #' \code{PlotCatDNS78ToPdf} Plot the DNS 78 mutation catalog of various samples
 #' to a PDF file.
 #'
-#' \code{PlotCatDNS144ToPdf} Plot the transcription strand bias graph of
+#' \code{PlotDNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
 #' 10 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
 #' "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples
 #' to a PDF file.
@@ -112,9 +112,10 @@ NULL
 #'   types in the sample. If type = "signature", the graph will plot mutation
 #'   signatures of the sample. If type = "density", the graph will plot the
 #'   rates of mutations per million nucleotides for each mutation type. (Please
-#'   take note there is no "density" type for PlotCatIDtoPdf function and the option
-#'   of type = "density" is not implemented for function PlotCatSNS192ToPdf,
-#'   PlotCatSNS192StrandToPdf and PlotCatDNS144ToPdf at the current stage.)
+#'   take note there is no "density" type for PlotCatIDtoPdf function and the
+#'   option of type = "density" is not implemented for function
+#'   PlotCatSNS192ToPdf, PlotSNSClassStrandBiasToPdf and
+#'   PlotDNSClassStrandBiasToPdf at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   y axis labels, sample name and legend (if it exists) should be magnified
 #'   relative to the default.
@@ -235,7 +236,8 @@ PlotCatSNS96 <-
     }
 
     # Draw the ID information on top of graph
-    text(bp[1], ymax * 1.08, labels = id, xpd = NA, font = 2, adj = c(0, 0))
+    text(bp[1], ymax * 1.08, labels = id, xpd = NA,
+         cex = cex, font = 2, adj = c(0, 0))
 
     # Draw the labels along x axis?
     if (xlabels) {
@@ -459,7 +461,7 @@ PlotCatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts",
+PlotSNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "counts",
                              cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -541,7 +543,7 @@ PlotCatSNS192Strand <- function(catalog, id = colnames(catalog), type = "counts"
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatSNS192StrandToPdf <- function(catalog, name, id = colnames(catalog),
+PlotSNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
                               type = "counts", cex = 1, abundance = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -556,7 +558,7 @@ PlotCatSNS192StrandToPdf <- function(catalog, name, id = colnames(catalog),
   }
 
   for (i in 1 : n) {
-    PlotCatSNS192Strand(catalog[, i, drop = FALSE],
+    PlotSNSClassStrandBias(catalog[, i, drop = FALSE],
                      id = id[i], type = type[i],
                      cex = cex, abundance = abundance)
   }
@@ -916,7 +918,7 @@ PlotCatDNS78ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
+PlotDNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "counts",
                           cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(144, 1))
 
@@ -1000,7 +1002,7 @@ PlotCatDNS144 <- function(catalog, id = colnames(catalog), type = "counts",
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
+PlotDNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
                            type = "counts", cex = 1, abundance = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -1015,7 +1017,7 @@ PlotCatDNS144ToPdf <- function(catalog, name, id = colnames(catalog),
   }
 
   for (i in 1 : n) {
-    PlotCatDNS144(catalog[, i, drop = FALSE],
+    PlotDNSClassStrandBias(catalog[, i, drop = FALSE],
                   id = id[i], type = type[i],
                   cex = cex, abundance = abundance)
   }
@@ -1429,7 +1431,7 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
   text(class.pos, ymax * 1.25, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the ID information of the sample
-  text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.85, font = 2)
+  text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)

@@ -4,10 +4,10 @@
 \alias{PlotCatalog}
 \alias{PlotCatSNS96}
 \alias{PlotCatSNS192}
-\alias{PlotCatSNS192Strand}
+\alias{PlotSNSClassStrandBias}
 \alias{PlotCatSNS1536}
 \alias{PlotCatDNS78}
-\alias{PlotCatDNS144}
+\alias{PlotDNSClassStrandBias}
 \alias{PlotCatDNS136}
 \alias{PlotCatID}
 \title{Plot catalog functions}
@@ -19,16 +19,16 @@ PlotCatSNS96(catalog, id = colnames(catalog), type = "density",
 PlotCatSNS192(catalog, id = colnames(catalog), type = "counts",
   cex = 0.8, abundance = NULL)
 
-PlotCatSNS192Strand(catalog, id = colnames(catalog), type = "counts",
-  cex = 1, abundance = NULL)
+PlotSNSClassStrandBias(catalog, id = colnames(catalog),
+  type = "counts", cex = 1, abundance = NULL)
 
 PlotCatSNS1536(catalog, abundance, id = colnames(catalog))
 
 PlotCatDNS78(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
 
-PlotCatDNS144(catalog, id = colnames(catalog), type = "counts",
-  cex = 1, abundance = NULL)
+PlotDNSClassStrandBias(catalog, id = colnames(catalog),
+  type = "counts", cex = 1, abundance = NULL)
 
 PlotCatDNS136(catalog, id = colnames(catalog), type = "density",
   abundance = NULL)
@@ -53,8 +53,8 @@ type = "signature", the graph will plot mutation signatures of the sample.
 If type = "density", the graph will plot the rates of mutations per million
 nucleotides for each mutation type. (Please take note there is no "density"
 type for PlotCatID function and the option of type = "density" is not
-implemented for function PlotCatSNS192, PlotCatSNS192Strand and PlotCatDNS144 at
-the current stage.)}
+implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
+PlotDNSClassStrandBias at the current stage.)}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -82,7 +82,7 @@ Plot the catalog of one sample which has mutations
 
 \code{PlotCatSNS192} Plot the SNS 192 mutation catalog of one sample.
 
-\code{PlotCatSNS192Strand} Plot the transcription strand bias graph of 6 SNS
+\code{PlotSNSClassStrandBias} Plot the transcription strand bias graph of 6 SNS
 mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
 
 \code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
@@ -94,7 +94,7 @@ after mutation.
 
 \code{PlotCatDNS78} Plot the DNS 78 mutation catalog of one sample.
 
-\code{PlotCatDNS144} Plot the transcription strand bias graph of 10 major DNS
+\code{PlotDNSClassStrandBias} Plot the transcription strand bias graph of 10 major DNS
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
 
