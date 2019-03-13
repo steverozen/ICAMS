@@ -156,7 +156,7 @@ test_that("TransformCatalog genome GRCh37 counts -> genome GRCh38 counts,
                                     source.type = "density",
                                     target.type = "counts", which.n = 3)
 
-             expect_gt(colSums(x1[, 1, drop = FALSE]), colSums(x3[, 1, drop = FALSE]))
+             expect_equal(x1, x3)
 
            })
 
