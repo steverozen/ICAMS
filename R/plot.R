@@ -1386,6 +1386,23 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
     bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", ylab = "counts")
+
+    # Calculate and draw the total counts for each major type
+    counts <- integer(16)
+    for (i in 1:16) {
+      idx <- c(6 * 1:12, 73, 75, 78, 83)
+      idx2 <- c(8.9, 23, 37.1, 51.2, 65.3, 79.4, 93.5,
+                107.6, 121.7, 135.8, 149.9, 164,
+                172.2, 175.5, 182, 191)
+      if (i == 1) {
+        counts[i] <- sum(catalog[1:idx[1], 1])
+      } else {
+        counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
+      }
+      text(idx2[i], ymax * 0.6, labels = counts[i],
+           cex = 0.75, adj = 1, xpd = NA)
+    }
+
   } else if (type == "signature") {
     # Calculate mutation signatures of the input catalog
     sig <- catalog / sum(catalog)
