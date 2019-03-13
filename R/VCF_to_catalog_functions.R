@@ -37,8 +37,8 @@ ReadStrelkaSNSVCF <- function(path) {
   if ("strand" %in% colnames(df1)) {
     colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
     warning('There is column in VCF which has name "strand", ',
-            'it has been renamed to "strand_old" so that it will ',
-            'not conflict with code in other parts of ICAMS package.')
+            'it has been renamed to "strand_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
   }
 
   # Is there any column in df1 with name "VAF"?
@@ -47,8 +47,8 @@ ReadStrelkaSNSVCF <- function(path) {
   if ("VAF" %in% colnames(df1)) {
     colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
     warning('There is column in VCF which has name "VAF", ',
-            'it has been renamed to "VAF_old" so that it will ',
-            'not conflict with code in other parts of ICAMS package.')
+            'it has been renamed to "VAF_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
   }
 
   df1$POS <- as.integer(df1$POS)
@@ -147,8 +147,8 @@ ReadMutectVCF <- function(path) {
   if ("strand" %in% colnames(df1)) {
     colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
     warning('There is column in VCF which has name "strand", ',
-            'it has been renamed to "strand_old" so that it will ',
-            'not conflict with code in other parts of ICAMS package.')
+            'it has been renamed to "strand_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
   }
 
   # Is there any column in df1 with name "VAF"?
@@ -157,8 +157,8 @@ ReadMutectVCF <- function(path) {
   if ("VAF" %in% colnames(df1)) {
     colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
     warning('There is column in VCF which has name "VAF", ',
-            'it has been renamed to "VAF_old" so that it will ',
-            'not conflict with code in other parts of ICAMS package.')
+            'it has been renamed to "VAF_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
   }
 
   df1$POS <- as.integer(df1$POS)
@@ -792,6 +792,9 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
     idx <- grep("N", substr(SNS$seq.21context, 9, 13))
     if (!length(idx) == 0) {
       SNS <- SNS[-idx, ]
+      cat('There are rows in the SNS vcf where extracted sequence contains "N", ',
+          'these rows have been deleted so as not to conflict with code ',
+          'in other parts of ICAMS package')
     }
 
     CheckSeqContextInVCF(SNS, "seq.21context")
@@ -932,6 +935,9 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
     idx <- grep("N", substr(DNS$seq.21context, 10, 13))
     if (!length(idx) == 0) {
       DNS <- DNS[-idx, ]
+      cat('There are rows in the DNS vcf where extracted sequence contains "N", ',
+          'these rows have been deleted so as not to conflict with code ',
+          'in other parts of ICAMS package')
     }
 
     DNS <- AddTranscript(DNS, trans.ranges)
