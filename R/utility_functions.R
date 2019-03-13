@@ -71,13 +71,31 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
     stop("Argument which.n must be in 2:5, got ", which.n)
   }
 
+  if (is.null(abundance)) {
+    if (which.n == 2) {
+      abundance = rep(1L, 10)
+      names(abundance) <- names(ICAMS:::abundance.2bp.exome.GRCh37)
+      return(abundance)
+    } else if (which.n == 3) {
+      abundance = rep(1L, 32)
+      names(abundance) <- names(ICAMS:::abundance.3bp.exome.GRCh37)
+      return(abundance)
+    } else if (which.n == 4) {
+      abundance = rep(1L, 136)
+      names(abundance) <- names(ICAMS:::abundance.4bp.exome.GRCh37)
+      return(abundance)
+    } else if (which.n == 5) {
+      abundance = rep(1L, 512)
+      names(abundance) <- names(ICAMS:::abundance.5bp.exome.GRCh37)
+      return(abundance)
+    }
+  }
+
   if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                        "GRCh38.genome", "GRCh38.exome",
-                        "GRCm38.genome", "GRCm38.exome")) {
+                        "GRCh38.genome", "GRCh38.exome")) {
     stop ('abundance must be either an abundance matrix created by yourself
-          or one of
-          ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome", "GRCh38.exome",
-          "GRCm38.genome", "GRCm38.exome"), got ', abundance)
+          or one of ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
+          "GRCh38.exome"), got ', abundance)
   }
 
   if (abundance == "GRCh37.genome") {
@@ -116,8 +134,11 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' \item The type \code{"density"} must always be associated with a \code{NULL}
 #' abundance.
-#"
-#' \item The other types must \strong{not} be associated with
+#'
+#' \item The type \code{"signature"} can be associated with a \code{NULL}
+#' abundance.
+#'
+#' \item The type \code{"counts"} must \strong{not} be associated with
 #'  the \code{NULL} abundance.
 #'
 #' \item Otherwise, the following are legal:
@@ -210,43 +231,9 @@ TransformCatalog <-
     stop("Argument which.n must be 2 for a DNS 144 catalog, got ", which.n)
   }
 
-  n.mers <- substr(rownames(catalog), 1, which.n)
-
-  if (!is.null(source.abundance) && !is.null(target.abundance)) {
-    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-    stopifnot(all(names(source.abundance) == names(target.abundance)))
-  } else if (is.null(source.abundance) && !is.null(target.abundance)) {
-    target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-    source.abundance <- rep(1L, length(target.abundance))
-    names(source.abundance) <- names(target.abundance)
-  } else if (!is.null(source.abundance) && is.null(target.abundance)) {
-    source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-    target.abundance <- rep(1L, length(source.abundance))
-    names(target.abundance) <- names(source.abundance)
-  } else {
-    if (which.n == 2) {
-      source.abundance <- rep(1L, 10)
-      target.abundance <- rep(1L, 10)
-      names(source.abundance) <- unique(n.mers)
-      names(target.abundance) <- unique(n.mers)
-    } else if (which.n == 3) {
-      source.abundance <- rep(1L, 32)
-      target.abundance <- rep(1L, 32)
-      names(source.abundance) <- unique(n.mers)
-      names(target.abundance) <- unique(n.mers)
-    } else if (which.n == 4) {
-      source.abundance <- rep(1L, 136)
-      target.abundance <- rep(1L, 136)
-      names(source.abundance) <- unique(n.mers)
-      names(target.abundance) <- unique(n.mers)
-    } else if (which.n == 5) {
-      source.abundance <- rep(1L, 512)
-      target.abundance <- rep(1L, 512)
-      names(source.abundance) <- unique(n.mers)
-      names(target.abundance) <- unique(n.mers)
-    }
-  }
+  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
+  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
+  stopifnot(all(names(source.abundance) == names(target.abundance)))
 
   factor <- target.abundance / source.abundance
   names(factor) <- names(target.abundance)
@@ -255,12 +242,12 @@ TransformCatalog <-
   # CAUTION: this function depends on how mutations are encoded in
   # the row names!
   transform.n.mer <- function(source.n.mer) {
-    # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the
-    # encoding of ACT > AGT as "ACTG"); for SNS1536
-    # the n-mer for AACAG > AATAG is AACAG, in the
-    # encoding AACAGT. For DNS78 TGGA represents TG >GA, and
-    # the source n-mer is TG. For DNS136 and DNS144, TTGA represents
-    # TTGA > TNNA, and the source n-mer is TTGA.
+    # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the encoding of ACT >
+    # AGT as "ACTG"); for SNS1536 the n-mer for AACAG > AATAG is AACAG, in the
+    # encoding AACAGT. For DNS78 and DNS144 TGGA represents TG >GA, and the
+    # source n-mer is TG. For DNS136, TTGA represents TTGA > TNNA, and the
+    # source n-mer is TTGA.
+
     # First, get the rows with the given source.n.mer
     rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
     # Then update those rows using the factor for that source.n.mer
@@ -270,29 +257,14 @@ TransformCatalog <-
     # if you want, 10^6/source.abundance
   }
 
+  # Extract the source sequences from catalog
+  n.mers <- substr(rownames(catalog), 1, which.n)
+
   lapply(n.mers, transform.n.mer)
 
-  if (target.type == "density") return(out.catalog)
-
-  out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-  # # Each colmun in out2 sums to 1
-
-  if (target.type == "signature") return(out2)
-
-  if (target.type == "counts" && source.type == "counts") {
-    # lazy way to get new matrix in same shape as out2
-    # out3's elements will be overwritten
-    out3 <- out2
-
-    # This is going back to counts making sure that the total number
-    # of counts is the same as in the input. I think this
-    # is one of several(?) possible design choices. Alternatively could
-    # be to keep the counts of each major mutation class (e.g. C>A, C>G, C>T...)
-    # unchanged.
-    for (i in 1:ncol(out2)) {
-      out3[ ,i] <- out2[ ,i] * sum(catalog[ , i])
-    }
-    return(out3)
+  if (target.type == "signature") {
+    out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
+    return(out2)
   } else {
     return(out.catalog)
   }
