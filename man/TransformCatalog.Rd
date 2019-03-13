@@ -47,7 +47,11 @@ Only certain transformations are legal.
 
 \item The type \code{"density"} must always be associated with a \code{NULL}
 abundance.
-\item The other types must \strong{not} be associated with
+
+\item The type \code{"signature"} can be associated with a \code{NULL}
+abundance.
+
+\item The type \code{"counts"} must \strong{not} be associated with
  the \code{NULL} abundance.
 
 \item Otherwise, the following are legal:
