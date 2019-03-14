@@ -231,6 +231,15 @@ TransformCatalog <-
     stop("Argument which.n must be 2 for a DNS 144 catalog, got ", which.n)
   }
 
+  if (nrow(catalog) == 192) {
+    if (source.type != "counts" || target.type %in% c("density", "counts")) {
+      stop('For SNS 192 catalog, only transformation from "counts" to "signature" ',
+           'is implemented at the current stage.')
+    } else {
+      return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
+    }
+  }
+
   source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
   target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
   stopifnot(all(names(source.abundance) == names(target.abundance)))
