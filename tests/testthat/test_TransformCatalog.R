@@ -175,6 +175,41 @@ test_that("TransformCatalog function: going from density to genome counts", {
   expect_equal(cat, x2)
 })
 
+test_that("TransformCatalog function: transformation of a SNS 192 catalog", {
+            cat <- ReadCatSNS192("testdata/regress.cat.sns.192.csv")
+
+            expect_error(TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                                          target.abundance = "GRCh37.exome",
+                                          source.type = "counts",
+                                          target.type = "counts", which.n = 3))
+
+            expect_error(TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                                          source.type = "counts",
+                                          target.type = "density", which.n = 3))
+
+            genome.count.signature <-
+              TransformCatalog(cat, source.abundance = "GRCh37.genome",
+                               target.abundance = "GRCh37.genome",
+                               source.type = "counts",
+                               target.type = "signature", which.n = 3)
+            out <- rep(1, 4)
+            expect_equal(sum(colSums(genome.count.signature) == out), 4)
+
+            expect_error(TransformCatalog(genome.count.signature,
+                                          source.abundance = "GRCh37.genome",
+                                          target.abundance = NULL,
+                                          source.type = "signature",
+                                          target.type = "density",
+                                          which.n = 3))
+
+            expect_error(TransformCatalog(genome.count.signature,
+                                          source.abundance = "GRCh37.genome",
+                                          target.abundance = NULL,
+                                          source.type = "signature",
+                                          target.type = "signature",
+                                          which.n = 3))
+          })
+
 test_that("TransformCatalog function: going from density to density,
           error message expected", {
             cat <- ReadCatSNS96("testdata/regress.cat.sns.96.csv")
