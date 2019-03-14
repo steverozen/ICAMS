@@ -297,9 +297,13 @@ PlotCatSNS96ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
+PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
                        cex = 0.8, abundance = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts", ',
+         '"signature" or "density".')
+  }
 
   class.col  <- c("#03bcee",
                   "#010101",
@@ -319,37 +323,32 @@ PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
                   "#e83020")
 
   # Sort data in plotting order
-  counts <- catalog[to.reorder.SNS.192.for.plotting, ]
+  catalog <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
 
-  num.classes <- length(counts)
+  num.classes <- length(catalog)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
   if (type == "counts") {
     # Get ylim
-    ymax <- max(counts) * 1.3
+    ymax <- max(catalog[, 1]) * 1.3
 
     # Barplot: side by side
-    mat <- matrix(counts, nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
   } else if (type == "signature") {
-    # Calculate mutation signatures of the input catalog
-    sig <- counts / sum(counts)
-
     # Get ylim
-    ymax <- ifelse(max(sig) * 1.3 > 1, 1, max(sig) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(sig, nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
   } else if (type == "density") {
     stop('type = "density" not implemented')
-  } else {
-    stop('Please specify the correct type: "counts", "signature" or "density"')
   }
 
   # Draw lines above each class:
@@ -386,7 +385,7 @@ PlotCatSNS192 <- function(catalog, id = colnames(catalog), type = "counts",
     for (i in 1 : 6) {
       j <- 32 + 32 * (i - 1)
       k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 0.92, labels = sum(counts[k : (32 * i)]),
+      text(bp[j], ymax * 0.92, labels = sum(catalog[k : (32 * i), 1]),
            adj = c(1, 1), xpd = NA, cex = 0.8)
     }
   }
