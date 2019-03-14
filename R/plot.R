@@ -29,23 +29,22 @@
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 #' (Please take note that deletion repeat size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
-#' @param catalog A one column matrix of mutation counts. Rownames
-#' indicate the mutation types. The column contains the mutation counts for
-#' one sample.
-#' The input catalog must be in \strong{matrix} format, you may use
-#' \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
-#' catalog matrix must have rownames to facilitate sorting in the plotting
-#' functions. You many use \code{\link{CatalogRowOrder}} to give row names to
-#' your catalog matrix.
-#' @param id The identifier of the sample which has mutations.
-#' @param type A value indicating the type of graph. If type = "counts", the
-#'   graph will plot the occurrences of the mutation types in the sample. If
-#'   type = "signature", the graph will plot mutation signatures of the sample.
-#'   If type = "density", the graph will plot the rates of mutations per million
-#'   nucleotides for each mutation type. (Please take note there is no "density"
-#'   type for PlotCatID function and the option of type = "density" is not
-#'   implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
+#' @param catalog A catalog as described in \code{\link{ICAMS}}. The input
+#'   catalog must be in \strong{matrix} format, you may use
+#'   \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
+#'   catalog matrix must have rownames to facilitate sorting in the plotting
+#'   functions. You many use \code{\link{CatalogRowOrder}} to give row names to
+#'   your catalog matrix.
+#' @param type A character specifying type of the input catalog, one of
+#'   \code{"counts"}, \code{"signature"} or \code{"density"}. If type =
+#'   "counts", the graph will plot the occurrences of the mutation types in the
+#'   sample. If type = "signature", the graph will plot mutation signatures of
+#'   the sample. If type = "density", the graph will plot the rates of mutations
+#'   per million nucleotides for each mutation type. (Please take note there is
+#'   no "density" type for PlotCatID function and the option of type = "density"
+#'   is not implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
 #'   PlotDNSClassStrandBias at the current stage.)
+#' @param id The identifier of the sample which has mutations.
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
 #'   its annotations(if it exists) sample name and legend(if it exists)
@@ -54,8 +53,6 @@
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance a named numeric vector, see \link{Abundance}, used only
-#'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalog
 NULL
@@ -97,25 +94,24 @@ NULL
 #' samples to a PDF file. (Please take note that deletion repeat size
 #' ranges from 0 to 5+ in the catalog, but for plotting and end user
 #' documentation it ranges from 1 to 6+.)
-#' @param catalog A matrix of mutation counts. Rownames
-#' indicate the mutation types. Each column contains the mutation counts for
-#' one sample.
-#' The input catalog must be in \strong{matrix} format, you may use
-#' \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
-#' catalog matrix must have rownames to facilitate sorting in the plotting
-#' functions. You many use \code{\link{CatalogRowOrder}} to give row names to
-#' your catalog matrix.
+#' @param catalog A catalog as described in \code{\link{ICAMS}}. The input
+#'   catalog must be in \strong{matrix} format, you may use
+#'   \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
+#'   catalog matrix must have rownames to facilitate sorting in the plotting
+#'   functions. You many use \code{\link{CatalogRowOrder}} to give row names to
+#'   your catalog matrix.
 #' @param name The name of the PDF file to be produced.
+#' @param type A character specifying type of the input catalog, one of
+#'   \code{"counts"}, \code{"signature"} or \code{"density"}. If type =
+#'   "counts", the graph will plot the occurrences of the mutation types in the
+#'   sample. If type = "signature", the graph will plot mutation signatures of
+#'   the sample. If type = "density", the graph will plot the rates of mutations
+#'   per million nucleotides for each mutation type. (Please take note there is
+#'   no "density" type for PlotCatIDtoPdf function and the option of type =
+#'   "density" is not implemented for function PlotCatSNS192ToPdf,
+#'   PlotSNSClassStrandBiasToPdf and PlotDNSClassStrandBiasToPdf at the current
+#'   stage.)
 #' @param id A vector containing the identifiers of the samples in catalog.
-#' @param type A vector of values indicating the type of plot for each sample.
-#'   If type = "counts", the graph will plot the occurrences of the mutation
-#'   types in the sample. If type = "signature", the graph will plot mutation
-#'   signatures of the sample. If type = "density", the graph will plot the
-#'   rates of mutations per million nucleotides for each mutation type. (Please
-#'   take note there is no "density" type for PlotCatIDtoPdf function and the
-#'   option of type = "density" is not implemented for function
-#'   PlotCatSNS192ToPdf, PlotSNSClassStrandBiasToPdf and
-#'   PlotDNSClassStrandBiasToPdf at the current stage.)
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   y axis labels, sample name and legend (if it exists) should be magnified
 #'   relative to the default.
@@ -123,8 +119,6 @@ NULL
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
 #' @param xlabels If TRUE, draw x axis labels.
-#' @param abundance a named numeric vector, see \link{Abundance}, used only
-#'  when \code{type = "density"}.
 #' @return invisible(TRUE)
 #' @name PlotCatalogToPdf
 NULL
@@ -138,10 +132,14 @@ NULL
 #' @import graphics
 #' @export
 PlotCatSNS96 <-
-  function(catalog, id = colnames(catalog), type = "density", cex = 0.8, grid = TRUE,
-           upper = TRUE, xlabels = TRUE, abundance = NULL) {
+  function(catalog, type, id = colnames(catalog), cex = 0.8,
+           grid = TRUE, upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == catalog.row.order$SNS96)
+    if (missing(type)) {
+      stop('Please specify type of the input catalog, one of "counts", ',
+           '"signature" or "density".')
+    }
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -155,28 +153,13 @@ PlotCatSNS96 <-
     num.classes <- length(catalog)
 
     if (type == "density") {
-      # Calculate rate of mutations per million trinucleotides for the catalog
-      rate <- double(96)
-      for (i in 1 : 96) {
-        rate[i] <-
-          catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 3)]
-      }
-
-      # Get ylim
-      ymax <- max(rate)
-
       # Barplot
-      bp <- barplot(rate, xaxt = "n", yaxt = "n", xaxs = "i",
+      bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
                     xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "mut/million")
 
-      # Write the mutation counts on top of graph
-      for (i in 1 : 6) {
-        j <- 16 + 16 * (i - 1)
-        k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
-             adj = c(1, 1), xpd = NA, cex = cex)
-      }
+      # Get ylim
+      ymax <- max(catalog[, 1] * 1000000)
     } else if (type == "counts") {
       # Get ylim
       ymax <- max(catalog[, 1])
@@ -194,18 +177,13 @@ PlotCatSNS96 <-
              adj = c(1, 1), xpd = NA, cex = cex)
       }
     } else if (type == "signature") {
-      # Calculate mutation signatures of the input catalog
-      sig <- catalog / sum(catalog)
-
       # Get ylim
-      ymax <- max(sig)
+      ymax <- max(catalog[, 1])
 
       # Barplot
-      bp <- barplot(sig[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
+      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
                     lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "proportion")
-    } else {
-      stop('Please specify the correct type: "density", "counts" or "signature"')
     }
 
     # Draw grid lines?
@@ -278,8 +256,8 @@ PlotCatSNS96 <-
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatSNS96ToPdf <-
-  function(catalog, name, id = colnames(catalog), type = "density",
-           grid = FALSE, upper = TRUE, xlabels = TRUE, abundance = NULL) {
+  function(catalog, name, type, id = colnames(catalog),
+           grid = FALSE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -306,12 +284,11 @@ PlotCatSNS96ToPdf <-
 
     for (i in 1 : n) {
       PlotCatSNS96(catalog[, i, drop = FALSE],
-                id = id[i],
-                type = type[i],
-                grid = grid[i],
-                upper = upper[i],
-                xlabels = xlabels[i],
-                abundance = abundance)
+                   type = type[i],
+                   id = id[i],
+                   grid = grid[i],
+                   upper = upper[i],
+                   xlabels = xlabels[i])
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
