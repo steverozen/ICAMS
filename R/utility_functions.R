@@ -260,7 +260,7 @@ TransformCatalog <-
   # Extract the source sequences from catalog
   n.mers <- substr(rownames(catalog), 1, which.n)
 
-  lapply(n.mers, transform.n.mer)
+  lapply(unique(n.mers), transform.n.mer)
 
   if (target.type == "signature") {
     out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
