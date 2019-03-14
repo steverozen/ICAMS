@@ -128,7 +128,7 @@ test_that("TransformCatalog genome GRCh37 counts -> genome GRCh37 density,
                                     source.type = "counts",
                                     target.type = "counts", which.n = 3)
 
-             x3 <- TransformCatalog(x1, source.abundance = "GRCh38.genome",
+             x3 <- TransformCatalog(x2, source.abundance = "GRCh38.genome",
                                     target.abundance = NULL,
                                     source.type = "counts",
                                     target.type = "density", which.n = 3)
