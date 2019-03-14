@@ -172,10 +172,10 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @param which.n The length of the source sequences, one of 2:5.
 #'
-#' @param source.type A character specifying the type of the input catalog,
+#' @param source.type A character specifying type of the input catalog,
 #' one of \code{"counts"}, \code{"signature"} or \code{"density"}.
 #'
-#' @param target.type A character specifying the type of the output catalog,
+#' @param target.type A character specifying type of the output catalog,
 #' with the same possible values as \code{source.type}.
 #'
 #' @return A catalog as defined in \code{\link{ICAMS}}
@@ -253,8 +253,7 @@ TransformCatalog <-
     # Then update those rows using the factor for that source.n.mer
 
     out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
-    # For density, factor = 1/source.abundance, or,
-    # if you want, 10^6/source.abundance
+    # For density, factor = 1/source.abundance
   }
 
   # Extract the source sequences from catalog
