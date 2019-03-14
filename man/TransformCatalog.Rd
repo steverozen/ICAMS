@@ -27,10 +27,10 @@ sequences are ACT and TAC.}
 
 \item{which.n}{The length of the source sequences, one of 2:5.}
 
-\item{source.type}{A character specifying the type of the input catalog,
+\item{source.type}{A character specifying type of the input catalog,
 one of \code{"counts"}, \code{"signature"} or \code{"density"}.}
 
-\item{target.type}{A character specifying the type of the output catalog,
+\item{target.type}{A character specifying type of the output catalog,
 with the same possible values as \code{source.type}.}
 }
 \value{

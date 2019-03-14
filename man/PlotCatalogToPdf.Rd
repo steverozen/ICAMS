@@ -12,9 +12,8 @@
 \alias{PlotCatIDToPdf}
 \title{Plot catalog to pdf functions}
 \usage{
-PlotCatSNS96ToPdf(catalog, name, id = colnames(catalog),
-  type = "density", grid = FALSE, upper = TRUE, xlabels = TRUE,
-  abundance = NULL)
+PlotCatSNS96ToPdf(catalog, name, type, id = colnames(catalog),
+  grid = FALSE, upper = TRUE, xlabels = TRUE)
 
 PlotCatSNS192ToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 0.8, abundance = NULL)
@@ -36,10 +35,8 @@ PlotCatDNS136ToPdf(catalog, name, id = colnames(catalog),
 PlotCatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 }
 \arguments{
-\item{catalog}{A matrix of mutation counts. Rownames
-indicate the mutation types. Each column contains the mutation counts for
-one sample.
-The input catalog must be in \strong{matrix} format, you may use
+\item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input
+catalog must be in \strong{matrix} format, you may use
 \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
 catalog matrix must have rownames to facilitate sorting in the plotting
 functions. You many use \code{\link{CatalogRowOrder}} to give row names to
@@ -47,17 +44,18 @@ your catalog matrix.}
 
 \item{name}{The name of the PDF file to be produced.}
 
-\item{id}{A vector containing the identifiers of the samples in catalog.}
+\item{type}{A character specifying type of the input catalog, one of
+\code{"counts"}, \code{"signature"} or \code{"density"}. If type =
+"counts", the graph will plot the occurrences of the mutation types in the
+sample. If type = "signature", the graph will plot mutation signatures of
+the sample. If type = "density", the graph will plot the rates of mutations
+per million nucleotides for each mutation type. (Please take note there is
+no "density" type for PlotCatIDtoPdf function and the option of type =
+"density" is not implemented for function PlotCatSNS192ToPdf,
+PlotSNSClassStrandBiasToPdf and PlotDNSClassStrandBiasToPdf at the current
+stage.)}
 
-\item{type}{A vector of values indicating the type of plot for each sample.
-If type = "counts", the graph will plot the occurrences of the mutation
-types in the sample. If type = "signature", the graph will plot mutation
-signatures of the sample. If type = "density", the graph will plot the
-rates of mutations per million nucleotides for each mutation type. (Please
-take note there is no "density" type for PlotCatIDtoPdf function and the
-option of type = "density" is not implemented for function
-PlotCatSNS192ToPdf, PlotSNSClassStrandBiasToPdf and
-PlotDNSClassStrandBiasToPdf at the current stage.)}
+\item{id}{A vector containing the identifiers of the samples in catalog.}
 
 \item{grid}{If TRUE, draw grid lines in the graph.}
 
@@ -65,9 +63,6 @@ PlotDNSClassStrandBiasToPdf at the current stage.)}
 class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
-
-\item{abundance}{a named numeric vector, see \link{Abundance}, used only
-when \code{type = "density"}.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 y axis labels, sample name and legend (if it exists) should be magnified

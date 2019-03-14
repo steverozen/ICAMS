@@ -12,12 +12,11 @@
 \alias{PlotCatID}
 \title{Plot catalog functions}
 \usage{
-PlotCatSNS96(catalog, id = colnames(catalog), type = "density",
-  cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE,
-  abundance = NULL)
+PlotCatSNS96(catalog, type, id = colnames(catalog), cex = 0.8,
+  grid = TRUE, upper = TRUE, xlabels = TRUE)
 
-PlotCatSNS192(catalog, id = colnames(catalog), type = "counts",
-  cex = 0.8, abundance = NULL)
+PlotCatSNS192(catalog, type, id = colnames(catalog), cex = 0.8,
+  abundance = NULL)
 
 PlotSNSClassStrandBias(catalog, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
@@ -36,25 +35,24 @@ PlotCatDNS136(catalog, id = colnames(catalog), type = "density",
 PlotCatID(catalog, id = colnames(catalog), type = "counts")
 }
 \arguments{
-\item{catalog}{A one column matrix of mutation counts. Rownames
-indicate the mutation types. The column contains the mutation counts for
-one sample.
-The input catalog must be in \strong{matrix} format, you may use
+\item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input
+catalog must be in \strong{matrix} format, you may use
 \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
 catalog matrix must have rownames to facilitate sorting in the plotting
 functions. You many use \code{\link{CatalogRowOrder}} to give row names to
 your catalog matrix.}
 
-\item{id}{The identifier of the sample which has mutations.}
-
-\item{type}{A value indicating the type of graph. If type = "counts", the
-graph will plot the occurrences of the mutation types in the sample. If
-type = "signature", the graph will plot mutation signatures of the sample.
-If type = "density", the graph will plot the rates of mutations per million
-nucleotides for each mutation type. (Please take note there is no "density"
-type for PlotCatID function and the option of type = "density" is not
-implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
+\item{type}{A character specifying type of the input catalog, one of
+\code{"counts"}, \code{"signature"} or \code{"density"}. If type =
+"counts", the graph will plot the occurrences of the mutation types in the
+sample. If type = "signature", the graph will plot mutation signatures of
+the sample. If type = "density", the graph will plot the rates of mutations
+per million nucleotides for each mutation type. (Please take note there is
+no "density" type for PlotCatID function and the option of type = "density"
+is not implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
 PlotDNSClassStrandBias at the current stage.)}
+
+\item{id}{The identifier of the sample which has mutations.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -67,9 +65,6 @@ should be magnified relative to the default.}
 class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
-
-\item{abundance}{a named numeric vector, see \link{Abundance}, used only
-when \code{type = "density"}.}
 }
 \value{
 invisible(TRUE)
