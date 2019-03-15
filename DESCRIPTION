@@ -37,12 +37,4 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Collate: 
-    'ICAMS.R'
-    'INDELS_related_functions.R'
-    'VCF_to_catalog_functions.R'
-    'data.R'
-    'plot.R'
-    'utility_functions.R'
-    'read_write_catalog.R'
-    'test_functions.R'
+

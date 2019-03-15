@@ -79,7 +79,6 @@ ReadCatSNS96 <- function(path, strict = TRUE) {
 }
 
 #' @rdname ReadCatalog
-#' @include utility_functions.R
 #' @export
 ReadCatSNS192 <- function(path, strict = TRUE) {
   cos <- data.table::fread(path)

@@ -1,6 +1,3 @@
-#' @include utility_functions.R
-NULL
-
 #' Extract the VAFs (variant allele frequencies) from a VCF file.
 #'
 #' @param vcf said VCF as a data.frame.
