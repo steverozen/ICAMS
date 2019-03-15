@@ -761,10 +761,13 @@ PlotCatSNS1536ToPdf <- function(catalog, name, type, id = colnames(catalog)) {
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
-                         abundance = NULL) {
+PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(78, 1))
   stopifnot(rownames(catalog) == catalog.row.order$DNS78)
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts", ',
+         '"signature" or "density".')
+  }
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))
@@ -774,11 +777,7 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
 
   if (type == "density") {
     # Calculate rate of mutations per million nucleotides for the catalog
-    rate <- double(78)
-    for (i in 1 : 78) {
-      rate[i] <-
-        catalog[i] * 1000000 / abundance[substr(rownames(catalog)[i], 1, 2)]
-    }
+    rate <- catalog[, 1] * 1000000
 
     # Get ylim
     ymax <- ifelse(max(rate) * 1.3 > 1, 1, max(rate) * 1.3)
@@ -787,14 +786,6 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
     bp <- barplot(rate, ylim = c(0, ymax), xaxt = "n", yaxt = "n", xaxs = "i",
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million")
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 10) {
-      j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
-      name <- substr(rownames(catalog), 1, 2)
-      text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
-           adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
-    }
   } else if (type == "counts") {
     # Get ylim
     ymax <- max(catalog[, 1]) * 1.3
@@ -812,18 +803,13 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
            adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
   } else if (type == "signature") {
-    # Calculate mutation signatures of the input catalog
-    sig <- catalog / sum(catalog)
-
     # Get ylim
-    ymax <- ifelse(max(sig) * 1.3 > 1, 1, max(sig) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(sig[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
+    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   lwd = 3, space = 1.35, border = NA, xaxs = "i",
                   col = cols, ylab = "proportion")
-  } else {
-    stop('Please specify the correct type: "density", "counts" or "signature"')
   }
 
   # Draw box and grid lines
@@ -867,8 +853,7 @@ PlotCatDNS78 <- function(catalog, id = colnames(catalog), type = "density",
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatDNS78ToPdf <-
-  function(catalog, name, id = colnames(catalog),
-           type = "density", abundance = NULL) {
+  function(catalog, name, type, id = colnames(catalog)) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -884,8 +869,7 @@ PlotCatDNS78ToPdf <-
     for (i in 1 : n) {
       PlotCatDNS78(catalog[, i, drop = FALSE],
                    id = id[i],
-                   type = type[i],
-                   abundance = abundance)
+                   type = type[i])
     }
     invisible(grDevices::dev.off())
 
