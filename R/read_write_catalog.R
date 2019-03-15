@@ -47,7 +47,7 @@ NULL
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
 #'
 #' See also \code{\link{ReadCatalog}}
-#' @param ct A matrix of mutation catalog.
+#' @param ct A catalog as defined in \code{\link{ICAMS}}.
 #' @param path The path of the file to be written on disk.
 #' @param strict If TRUE, do additional checks on the input,
 #'   and stop if the checks fail.

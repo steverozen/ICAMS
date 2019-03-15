@@ -669,8 +669,14 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #'
-#' @param genome Name of a particular reference genome
-#' (without quotations marks).
+#' @param genome A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #'
 #' @return An ID (indel) catalog
 #'

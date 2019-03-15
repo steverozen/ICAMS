@@ -6,13 +6,21 @@
  and signatures and between different
 source sequence abundances.}
 \usage{
-TransformCatalog(catalog, source.abundance = NULL,
-  target.abundance = NULL, which.n, source.type,
-  target.type = source.type)
+TransformCatalog(catalog, which.n, source.type,
+  target.type = source.type, source.abundance = NULL,
+  target.abundance = NULL)
 }
 \arguments{
 \item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
 input catalog can \strong{not} be an ID (indel) catalog.}
+
+\item{which.n}{The length of the source sequences, one of 2:5.}
+
+\item{source.type}{A character specifying type of the input catalog,
+one of \code{"counts"}, \code{"signature"} or \code{"density"}.}
+
+\item{target.type}{A character specifying type of the output catalog,
+with the same possible values as \code{source.type}.}
 
 \item{source.abundance}{Either \code{NULL} or a numeric vector with one element
 for each source sequence for the mutation types in \code{catalog}
@@ -25,14 +33,6 @@ trinucleotide context, e.g. ACT > AGT or TAC > TTC, the source
 sequences are ACT and TAC.}
 
 \item{target.abundance}{Same possibilities as \code{source.abundance}.}
-
-\item{which.n}{The length of the source sequences, one of 2:5.}
-
-\item{source.type}{A character specifying type of the input catalog,
-one of \code{"counts"}, \code{"signature"} or \code{"density"}.}
-
-\item{target.type}{A character specifying type of the output catalog,
-with the same possible values as \code{source.type}.}
 }
 \value{
 A catalog as defined in \code{\link{ICAMS}}

@@ -26,7 +26,7 @@ WriteCatDNS136(ct, path, strict = TRUE)
 WriteCatID(ct, path, strict = TRUE)
 }
 \arguments{
-\item{ct}{A matrix of mutation catalog.}
+\item{ct}{A catalog as defined in \code{\link{ICAMS}}.}
 
 \item{path}{The path of the file to be written on disk.}
 

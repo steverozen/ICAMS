@@ -11,13 +11,19 @@ VCFsToDNSCatalogs(list.of.DNS.vcfs, genome, trans.ranges)
 -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 output catalog.}
 
-\item{genome}{Name of a particular reference genome
-(without quotations marks).}
+\item{genome}{A particular reference genome(without quotation marks). Use
+\link[BSgenome]{available.genomes} to get the list of "BSgenome data
+packages" currently available. There are 2 types of predefined reference
+genome which are incorporated in this function. User can invoke a
+predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+"GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+\code{genome = "hg19"}.}
 
 \item{trans.ranges}{A data frame containing transcript ranges.}
 }
 \value{
-A list of 3 catalogs, one each for DNS78, DNS144, DNS136:
+A list of 3 DNS catalogs, one each for 78, 144, 136:
   catDNS78
   catDNS144
   catDNS136

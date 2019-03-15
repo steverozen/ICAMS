@@ -763,16 +763,22 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
-#' @param genome Name of a particular reference genome (without quotations
-#'   marks).
+#' @param genome A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
-#' @return A list of 3 catalogs, one each for 96, 192, 1536:
+#' @return A list of 3 SNS catalogs, one each for 96, 192, 1536:
 #'   catSNS96
 #'   catSNS192
 #'   catSNS1536
 #' @export
-#' @note catSNS192 only contains mutations in transcribed regions.
+#' @note SNS 192 catalog only contains mutations in transcribed regions.
 VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
@@ -906,11 +912,17 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
-#' @param genome Name of a particular reference genome
-#' (without quotations marks).
+#' @param genome A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
-#' @return A list of 3 catalogs, one each for DNS78, DNS144, DNS136:
+#' @return A list of 3 DNS catalogs, one each for 78, 144, 136:
 #'   catDNS78
 #'   catDNS144
 #'   catDNS136
@@ -962,8 +974,14 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' This function calls \code{\link{VCFsToSNSCatalogs}} and
 #' \code{\link{VCFsToDNSCatalogs}}
 #' @param vector.of.file.paths A vector containing the paths of the Strelka SNS VCF files.
-#' @param genome  Name of a particular reference genome
-#'   (without quotations marks).
+#' @param genome  A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
@@ -984,8 +1002,14 @@ StrelkaSNSVCFFilesToCatalog <-
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}}
 #' @param vector.of.file.paths A vector containing the paths of the Strelka ID VCF files.
-#' @param genome  Name of a particular reference genome
-#'   (without quotations marks).
+#' @param genome  A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @return  An ID (indel) catalog
 #' @export
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
@@ -1004,8 +1028,14 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #' This function calls \code{\link{VCFsToSNSCatalogs}},
 #' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 #' @param vector.of.file.paths A vector containing the paths of the Mutect VCF files.
-#' @param genome  Name of a particular reference genome
-#'   (without quotations marks).
+#' @param genome  A particular reference genome(without quotation marks). Use
+#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
+#'   packages" currently available. There are 2 types of predefined reference
+#'   genome which are incorporated in this function. User can invoke a
+#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
+#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
+#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
+#'   \code{genome = "hg19"}.
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)

@@ -40,7 +40,7 @@ substitutions (SNS), double nucleotide substitutions (DNS),
 and small insertions and deletions (ID). It can also read and
 write these catalogs.
 }
-\section{Creating catalogs from from variant call files (VCF files)}{
+\section{Creating catalogs from variant call files (VCF files)}{
 
 \enumerate{
 \item \code{\link{StrelkaSNSVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
@@ -93,12 +93,12 @@ This function can also transform spectra
 based on observed genome-wide counts to "density"-based
 catalogs. In density-based catalogs
 mutations are expressed as mutations per
-(million) source sequences. For example,
+source sequences. For example,
 a density-based catalog represents
 the proportion of ACCs mutated to
 ATCs, the proportion of ACGs mutated to ATGs, etc.
 This is
-opposed count-based catalogs, which
+opposed to count-based catalogs, which
 contain the number of ACC-to-ATC mutations, the number of
 ACG-to-ATG mutations, etc.
 This function can also transform observed-count based

@@ -14,14 +14,10 @@ Collapse1536To96(catalog)
 Collapse144To78(catalog)
 }
 \arguments{
-\item{catalog}{A catalog matrix to be collapsed whose row names indicate the
-mutation types while its columns show the occurrences of each mutation
-type of different samples.}
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}}}
 }
 \value{
-A canonical catalog matrix whose row names indicate the mutation
-  types while its columns show the occurrences of each mutation type of
-  different samples.
+A catalog as defined in \code{\link{ICAMS}}
 }
 \description{
 Collapse a catalog matrix

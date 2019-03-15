@@ -7,12 +7,8 @@
 #' \code{Collapse1536To96} Collapse a SNS 1536 catalog matrix to a SNS 96 catalog matrix.
 #'
 #' \code{Collapse144To78} Collapse a DNS 144 catalog matrix to a DNS 78 catalog matrix.
-#' @param catalog A catalog matrix to be collapsed whose row names indicate the
-#'   mutation types while its columns show the occurrences of each mutation
-#'   type of different samples.
-#' @return A canonical catalog matrix whose row names indicate the mutation
-#'   types while its columns show the occurrences of each mutation type of
-#'   different samples.
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}
+#' @return A catalog as defined in \code{\link{ICAMS}}
 #' @name CollapseCatalog
 NULL
 
@@ -155,9 +151,16 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' }
 #'
-#'
 #' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
 #'   input catalog can \strong{not} be an ID (indel) catalog.
+#'
+#' @param which.n The length of the source sequences, one of 2:5.
+#'
+#' @param source.type A character specifying type of the input catalog,
+#' one of \code{"counts"}, \code{"signature"} or \code{"density"}.
+#'
+#' @param target.type A character specifying type of the output catalog,
+#' with the same possible values as \code{source.type}.
 #'
 #' @param source.abundance Either \code{NULL} or a numeric vector with one element
 #' for each source sequence for the mutation types in \code{catalog}
@@ -171,22 +174,14 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #'
 #' @param target.abundance Same possibilities as \code{source.abundance}.
 #'
-#' @param which.n The length of the source sequences, one of 2:5.
-#'
-#' @param source.type A character specifying type of the input catalog,
-#' one of \code{"counts"}, \code{"signature"} or \code{"density"}.
-#'
-#' @param target.type A character specifying type of the output catalog,
-#' with the same possible values as \code{source.type}.
-#'
 #' @return A catalog as defined in \code{\link{ICAMS}}
 #'
 #' @export
 TransformCatalog <-
-  function(catalog,
+  function(catalog, which.n, source.type,
+           target.type = source.type,
            source.abundance = NULL,
-           target.abundance = NULL, which.n,
-           source.type, target.type = source.type) {
+           target.abundance = NULL) {
 
   stopifnot(source.type %in% c("counts", "signature", "density"))
   stopifnot(target.type %in% c("counts", "signature", "density"))
