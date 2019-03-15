@@ -9,9 +9,10 @@ FindMaxRepeatIns(context, rep.unit.seq, pos)
 }
 \arguments{
 \item{context}{A string into which \code{rep.unit.seq} was
-inseted at position \code{pos}}
+inserted at position \code{pos}.}
 
-\item{rep.unit.seq}{The inserted sequence and potention repeat unit}
+\item{rep.unit.seq}{The inserted sequence and candidate repeat unit
+sequence.}
 
 \item{pos}{\code{rep.unit.seq} is understood to be inserted between
 positions \code{pos} and \code{pos + 1}.}

@@ -368,9 +368,10 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
 #' is embedded.
 #'
 #' @param context A string into which \code{rep.unit.seq} was
-#'  inseted at position \code{pos}
+#'  inserted at position \code{pos}.
 #'
-#' @param rep.unit.seq The inserted sequence and potention repeat unit
+#' @param rep.unit.seq The inserted sequence and candidate repeat unit
+#' sequence.
 #'
 #' @param pos \code{rep.unit.seq} is understood to be inserted between
 #'   positions \code{pos} and \code{pos + 1}.
