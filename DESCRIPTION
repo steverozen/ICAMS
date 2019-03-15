@@ -37,7 +37,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
 Collate: 
     'ICAMS.R'
     'INDELS_related_functions.R'
