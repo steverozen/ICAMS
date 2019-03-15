@@ -892,32 +892,37 @@ PlotCatDNS78ToPdf <-
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotDNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "counts",
-                          cex = 1, abundance = NULL) {
+PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
+                                   cex = 1, abundance = NULL) {
   stopifnot(dim(catalog) == c(144, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts", ',
+         '"signature" or "density".')
+  }
 
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[to.reorder.DNS.144.for.plotting, ]
+  catalog <- catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
 
-  # Get the counts for each major mutation class
-  counts.strand <- integer(20)
-  for (i in 1 : 10){
-    idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
-    counts.strand[2 * i - 1] <-
-      sum(counts[seq(idx[i] + 1, idx[i + 1], by = 2)])
-    counts.strand[2 * i] <-
-      sum(counts[seq(idx[i] + 2, idx[i + 1], by = 2)])
-  }
-
-  num.classes <- length(counts.strand)
+  num.classes <- 20
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   cols <- rep(strand.col, num.classes / 2)
 
   if (type == "counts") {
+    # Get the counts for each major mutation class
+    counts <- catalog[, 1]
+    counts.strand <- integer(20)
+    for (i in 1 : 10){
+      idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
+      counts.strand[2 * i - 1] <-
+        sum(counts[seq(idx[i] + 1, idx[i + 1], by = 2)])
+      counts.strand[2 * i] <-
+        sum(counts[seq(idx[i] + 2, idx[i + 1], by = 2)])
+    }
+
     # Get ylim
     ymax <- max(counts.strand) * 1.3
 
@@ -928,22 +933,28 @@ PlotDNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "coun
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "signature") {
-    # Calculate mutation signatures of each major mutation class
-    sig <- counts.strand / sum(counts.strand)
+    # Get the proportion for each major mutation class
+    prop <- catalog[, 1]
+    prop.strand <- integer(20)
+    for (i in 1 : 10){
+      idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
+      prop.strand[2 * i - 1] <-
+        sum(prop[seq(idx[i] + 1, idx[i + 1], by = 2)])
+      prop.strand[2 * i] <-
+        sum(prop[seq(idx[i] + 2, idx[i + 1], by = 2)])
+    }
 
     # Get ylim
-    ymax <- ifelse(max(sig) * 1.3 > 1, 1, max(sig) * 1.3)
+    ymax <- ifelse(max(prop.strand) * 1.3 > 1, 1, max(prop.strand) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(sig, nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "density") {
     stop('type = "density" not implemented')
-  } else {
-    stop('Please specify the correct type: "counts", "signature" or "density"')
   }
 
   # Draw y axis
@@ -976,8 +987,9 @@ PlotDNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "coun
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotDNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
-                           type = "counts", cex = 1, abundance = NULL) {
+PlotDNSClassStrandBiasToPdf <- function(catalog, name, type,
+                                        id = colnames(catalog),
+                                        cex = 1) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -993,7 +1005,7 @@ PlotDNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
   for (i in 1 : n) {
     PlotDNSClassStrandBias(catalog[, i, drop = FALSE],
                   id = id[i], type = type[i],
-                  cex = cex, abundance = abundance)
+                  cex = cex)
   }
   invisible(grDevices::dev.off())
 
@@ -1330,8 +1342,12 @@ PlotCatDNS136ToPdf <- function(catalog, name, type, id = colnames(catalog)) {
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
+PlotCatID <- function(catalog, type, id = colnames(catalog)){
   stopifnot(dim(catalog) == c(83, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts"',
+         'or "signature".')
+  }
 
   indel.class.col <- c("#fdbe6f",
                        "#ff8001",
@@ -1379,22 +1395,17 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
         counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
       }
       text(idx2[i], ymax * 0.6, labels = counts[i],
-           cex = 0.75, adj = 1, xpd = NA)
+           cex = 0.6, adj = 1, xpd = NA)
     }
 
   } else if (type == "signature") {
-    # Calculate mutation signatures of the input catalog
-    sig <- catalog / sum(catalog)
-
     # Get ylim
-    ymax <- ifelse(max(sig) * 1.3 > 1, 1, max(sig) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(sig[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", ylab = "proportion")
-  } else {
-    stop('Please specify the correct type: "counts" or "signature"')
   }
 
   # Draw box and grid lines
@@ -1461,7 +1472,7 @@ PlotCatID <- function(catalog, id = colnames(catalog), type = "counts"){
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatIDToPdf <-
-  function(catalog, name, id = colnames(catalog), type = "counts") {
+  function(catalog, name, type, id = colnames(catalog)) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
