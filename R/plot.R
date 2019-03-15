@@ -41,6 +41,7 @@
 #'   sample. If type = "signature", the graph will plot mutation signatures of
 #'   the sample. If type = "density", the graph will plot the rates of mutations
 #'   per million nucleotides for each mutation type. (Please take note there is
+#'   no "signature" type for PlotCatDNS136 function,
 #'   no "density" type for PlotCatID function and the option of type = "density"
 #'   is not implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
 #'   PlotDNSClassStrandBias at the current stage.)
@@ -107,6 +108,7 @@ NULL
 #'   sample. If type = "signature", the graph will plot mutation signatures of
 #'   the sample. If type = "density", the graph will plot the rates of mutations
 #'   per million nucleotides for each mutation type. (Please take note there is
+#'   no "signature" type for PlotCatDNS136ToPdf function,
 #'   no "density" type for PlotCatIDtoPdf function and the option of type =
 #'   "density" is not implemented for function PlotCatSNS192ToPdf,
 #'   PlotSNSClassStrandBiasToPdf and PlotDNSClassStrandBiasToPdf at the current
@@ -990,9 +992,12 @@ PlotDNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatDNS136 <- function(catalog, id = colnames(catalog),
-                           type = "density", abundance = NULL) {
+PlotCatDNS136 <- function(catalog, type, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(136, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts"',
+         'or "density".')
+  }
 
   old <- par(no.readonly = TRUE)
   # Specify the lay out of the plotting
@@ -1006,27 +1011,29 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   mut.type <- paste(ref.order, "NN", sep = ">")
 
-  # Calculate the occurrences of each mutation type for plotting
-  counts <- matrix(0, nrow = 160, ncol = 1)
-  rownames(counts) <- order.for.DNS.136.plotting
-  for (i in 1:160){
-    if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
-      counts[i] <- catalog[order.for.DNS.136.plotting[i], ]
-    } else {
-      counts[i] <- NA
+  if (type == "counts") {
+    # Calculate the occurrences of each mutation type for plotting
+    counts <- matrix(0, nrow = 160, ncol = 1)
+    rownames(counts) <- order.for.DNS.136.plotting
+    for (i in 1:160){
+      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+        counts[i] <- catalog[order.for.DNS.136.plotting[i], ]
+      } else {
+        counts[i] <- NA
+      }
     }
-  }
 
-  # Calculate maximum count and total counts per mutation class
-  df <- data.frame(stats::na.omit(counts))
-  colnames(df) <- "counts"
-  df$Ref <- substr(rownames(df), 2, 3)
-  df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
-  df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
-  max.count.per.class <- matrix(df1$x, 10, 1)
-  counts.per.class <- matrix(df2$x, 10, 1)
-  rownames(max.count.per.class) <- df1$Ref
-  rownames(counts.per.class) <- df2$Ref
+    # Calculate maximum count and total counts per mutation class
+    df <- data.frame(stats::na.omit(counts))
+    colnames(df) <- "counts"
+    df$Ref <- substr(rownames(df), 2, 3)
+    df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
+    df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
+    max.count.per.class <- matrix(df1$x, 10, 1)
+    counts.per.class <- matrix(df2$x, 10, 1)
+    rownames(max.count.per.class) <- df1$Ref
+    rownames(counts.per.class) <- df2$Ref
+  }
 
   if (type == "density") {
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
@@ -1035,9 +1042,7 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
     rownames(rates) <- order.for.DNS.136.plotting
     for (i in 1:160){
       if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
-        rates[i] <-
-          catalog[order.for.DNS.136.plotting[i], ] /
-          abundance[order.for.DNS.136.plotting[i]]
+        rates[i] <- catalog[order.for.DNS.136.plotting[i], ]
       } else {
         rates[i] <- NA
       }
@@ -1081,13 +1086,13 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
       DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
     } else if (type == "counts") {
       DrawImage(matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
-    } else {
-      stop('Please specify the correct type: "density" or "counts"')
     }
 
     # Draw the mutation type and number of occurrences on top of image
     text(2, 5.2, mut.type[i], font = 2, xpd = NA)
-    text(3.2, 5.2, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
+    if (type == "counts") {
+      text(3.2, 5.2, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
+    }
 
     # Draw a box surrounding the image
     segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
@@ -1122,9 +1127,8 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
       maxima[i] <- max.count.per.class[ref[i], ]
       names(maxima)[i] <- ref[i]
     }
-  } else {
-    stop('Please specify the correct type: "density" or "counts"')
   }
+
   text(rep(-0.1, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
@@ -1135,8 +1139,7 @@ PlotCatDNS136 <- function(catalog, id = colnames(catalog),
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
-                               type = "density", abundance = NULL) {
+PlotCatDNS136ToPdf <- function(catalog, name, type, id = colnames(catalog)) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
@@ -1178,27 +1181,29 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
   for (i in 1:n) {
     cat <- catalog[, i, drop = FALSE]
 
-    # Calculate the occurrences of each mutation type for plotting
-    counts <- matrix(0, nrow = 160, ncol = 1)
-    rownames(counts) <- order.for.DNS.136.plotting
-    for (j in 1:160){
-      if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
-        counts[j] <- cat[order.for.DNS.136.plotting[j], ]
-      } else {
-        counts[j] <- NA
+    if (type[i] == "counts") {
+      # Calculate the occurrences of each mutation type for plotting
+      counts <- matrix(0, nrow = 160, ncol = 1)
+      rownames(counts) <- order.for.DNS.136.plotting
+      for (j in 1:160){
+        if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
+          counts[j] <- cat[order.for.DNS.136.plotting[j], ]
+        } else {
+          counts[j] <- NA
+        }
       }
-    }
 
-    # Calculate maximum count and total counts per mutation class
-    df <- data.frame(stats::na.omit(counts))
-    colnames(df) <- "counts"
-    df$Ref <- substr(rownames(df), 2, 3)
-    df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
-    df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
-    max.count.per.class <- matrix(df1$x, 10, 1)
-    counts.per.class <- matrix(df2$x, 10, 1)
-    rownames(max.count.per.class) <- df1$Ref
-    rownames(counts.per.class) <- df2$Ref
+      # Calculate maximum count and total counts per mutation class
+      df <- data.frame(stats::na.omit(counts))
+      colnames(df) <- "counts"
+      df$Ref <- substr(rownames(df), 2, 3)
+      df1 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = max)
+      df2 <- stats::aggregate(df$counts, by = list(Ref = df$Ref), FUN = sum)
+      max.count.per.class <- matrix(df1$x, 10, 1)
+      counts.per.class <- matrix(df2$x, 10, 1)
+      rownames(max.count.per.class) <- df1$Ref
+      rownames(counts.per.class) <- df2$Ref
+    }
 
     if (type[i] == "density") {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
@@ -1207,9 +1212,7 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
       rownames(rates) <- order.for.DNS.136.plotting
       for (j in 1:160){
         if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
-          rates[j] <-
-            cat[order.for.DNS.136.plotting[j], ] /
-            abundance[order.for.DNS.136.plotting[j]]
+          rates[j] <- cat[order.for.DNS.136.plotting[j], ]
         } else {
           rates[j] <- NA
         }
@@ -1258,7 +1261,11 @@ PlotCatDNS136ToPdf <- function(catalog, name, id = colnames(catalog),
 
       # Draw the mutation type and number of occurrences on top of image
       text(2.3, 5.2, mut.type[j], font = 2, xpd = NA)
-      text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"), font = 2, xpd = NA)
+      if (type[i] == "counts") {
+        text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"),
+             font = 2, xpd = NA)
+
+      }
 
       # Draw a box surrounding the image
       segments(c(0.5, 0.5), c(0.5, 4.5), c(4.5, 4.5), c(0.5, 4.5), xpd = NA)
