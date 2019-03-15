@@ -284,7 +284,7 @@ TransformCatalog <-
 
 }
 
-#' Standardize the Chromosome name annotations for a data frame
+#' Standardize the Chromosome name annotations for a data frame.
 #'
 #' @param df A data frame whose first column contains the Chromosome name
 #'

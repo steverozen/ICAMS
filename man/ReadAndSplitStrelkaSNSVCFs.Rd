@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadAndSplitStrelkaSNSVCFs}
 \alias{ReadAndSplitStrelkaSNSVCFs}
-\title{Read and split Strelka SNS VCF files from paths}
+\title{Read and split Strelka SNS VCF files.}
 \usage{
 ReadAndSplitStrelkaSNSVCFs(vector.of.file.paths)
 }
@@ -19,7 +19,7 @@ A list of 3 in-memory objects with the elements:
    limited immediate biological interest.
 }
 \description{
-Read and split Strelka SNS VCF files from paths
+Read and split Strelka SNS VCF files.
 }
 \seealso{
 \code{\link{StrelkaSNSVCFFilesToCatalog}}

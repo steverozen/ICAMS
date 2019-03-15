@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadStrelkaSNSVCFs}
 \alias{ReadStrelkaSNSVCFs}
-\title{Read Strelka SNS (single nucleotide substitutions) VCF files from paths}
+\title{Read Strelka SNS (single nucleotide substitutions) VCF files.}
 \usage{
 ReadStrelkaSNSVCFs(vector.of.file.paths)
 }
@@ -13,6 +13,6 @@ ReadStrelkaSNSVCFs(vector.of.file.paths)
 A list of vcfs from vector.of.file.paths.
 }
 \description{
-Read Strelka SNS (single nucleotide substitutions) VCF files from paths
+Read Strelka SNS (single nucleotide substitutions) VCF files.
 }
 \keyword{internal}

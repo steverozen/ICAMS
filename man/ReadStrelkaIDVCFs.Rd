@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadStrelkaIDVCFs}
 \alias{ReadStrelkaIDVCFs}
-\title{Read Strelka ID (insertion and deletion) VCF files from paths}
+\title{Read Strelka ID (insertion and deletion) VCF files.}
 \usage{
 ReadStrelkaIDVCFs(vector.of.file.paths)
 }
@@ -13,7 +13,7 @@ ReadStrelkaIDVCFs(vector.of.file.paths)
 A list of vcfs from vector.of.file.paths.
 }
 \description{
-Read Strelka ID (insertion and deletion) VCF files from paths
+Read Strelka ID (insertion and deletion) VCF files.
 }
 \note{
 In the ID (insertion and deletion) catalog, deletion repeat size

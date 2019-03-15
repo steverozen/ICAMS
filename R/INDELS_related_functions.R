@@ -182,7 +182,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
-#' @title Return the length of microhomology at a deletion
+#' @title Return the length of microhomology at a deletion.
 #'
 #' @details
 #'
@@ -254,8 +254,6 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' is really a repeat
 #'
 #' \preformatted{
-#'
-#' TODO(Steve): add check in code
 #' GACTAG----TT GACTAGTT GACTAG[CTAG]TT
 #'                         **** ----
 #'
@@ -284,7 +282,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'   sequence on each side (at least as long as \code{del.sequence}).
 #'
 #' @param deleted.seq The deleted sequence in \code{context}.
-#' #'
+#'
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
 #' @param trace If > 0, cat various messages.
@@ -558,7 +556,6 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   } else if (nchar(alt) > nchar(ref)) {
     # An insertion
     return(Canonicalize1INS(context, alt, pos, trace))
-    # TODO(Steve): Make sure pos rather than pos + 1 is correct
   } else {
     cat("Non-insertion / non-deletion found:", ref, alt, context, "\n")
     stop()

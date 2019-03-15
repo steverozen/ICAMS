@@ -4,18 +4,21 @@
 \name{CatalogRowOrder}
 \alias{CatalogRowOrder}
 \alias{catalog.row.order}
-\title{Canonical order of row names in a catalog}
-\format{A list which contains string of characters indicating the canonical
-  order of row names in a catalog.}
+\title{Standard order of row names in a catalog.}
+\format{A list of character vectors indicating the standard
+  orders of row names in catalogs.}
 \usage{
 catalog.row.order
 }
 \description{
-Canonical order of row names in a catalog
+This data is designed for those, including extenders of this package,
+who need to create their own catalogs from formats not
+supported by this package.
 }
 \note{
 In the ID (insertion and deletion) catalog, deletion repeat size
-  ranges from 0 to 5+, but for plotting and end user documentation it ranges
+  is in the range from 0 to 5+, but for plotting
+  and end user documentation it ranges
   from 1 to 6+.
 }
 \keyword{datasets}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadAndSplitMutectVCFs}
 \alias{ReadAndSplitMutectVCFs}
-\title{Read and split Mutect VCF files from paths}
+\title{Read and split Mutect VCF files.}
 \usage{
 ReadAndSplitMutectVCFs(vector.of.file.paths)
 }
@@ -34,7 +34,7 @@ into the first 3 VCFs, as follows:
 }
 }
 \description{
-Read and split Mutect VCF files from paths
+Read and split Mutect VCF files.
 }
 \seealso{
 \code{\link{MutectVCFFilesToCatalog}}

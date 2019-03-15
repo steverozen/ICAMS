@@ -30,12 +30,11 @@ PlotCatDNS136(catalog, type, id = colnames(catalog))
 PlotCatID(catalog, type, id = colnames(catalog))
 }
 \arguments{
-\item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input
-catalog must be in \strong{matrix} format, you may use
-\link[base]{data.matrix} to convert a data frame to a numeric matrix. This
-catalog matrix must have rownames to facilitate sorting in the plotting
-functions. You many use \code{\link{CatalogRowOrder}} to give row names to
-your catalog matrix.}
+\item{catalog}{A catalog as described in \code{\link{ICAMS}}. Please see
+\code{\link{ICAMS}} if you need to create a catalog from a source
+other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
+or \code{\link{StrelkaSNSVCFFilesToCatalog}},
+\code{\link{MutectVCFFilesToCatalog}}, etc.}
 
 \item{type}{A character specifying type of the input catalog, one of
 \code{"counts"}, \code{"signature"} or \code{"density"}. If type =

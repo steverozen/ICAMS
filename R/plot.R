@@ -29,12 +29,13 @@
 #' \code{PlotCatID} Plot the insertion and deletion catalog of one sample.
 #' (Please take note that deletion repeat size ranges from 0 to 5+ in the
 #' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
-#' @param catalog A catalog as described in \code{\link{ICAMS}}. The input
-#'   catalog must be in \strong{matrix} format, you may use
-#'   \link[base]{data.matrix} to convert a data frame to a numeric matrix. This
-#'   catalog matrix must have rownames to facilitate sorting in the plotting
-#'   functions. You many use \code{\link{CatalogRowOrder}} to give row names to
-#'   your catalog matrix.
+#'
+#' @param catalog A catalog as described in \code{\link{ICAMS}}. Please see
+#' \code{\link{ICAMS}} if you need to create a catalog from a source
+#' other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
+#' or \code{\link{StrelkaSNSVCFFilesToCatalog}},
+#' \code{\link{MutectVCFFilesToCatalog}}, etc.
+#'
 #' @param type A character specifying type of the input catalog, one of
 #'   \code{"counts"}, \code{"signature"} or \code{"density"}. If type =
 #'   "counts", the graph will plot the occurrences of the mutation types in the
@@ -45,7 +46,9 @@
 #'   no "density" type for PlotCatID function and the option of type = "density"
 #'   is not implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
 #'   PlotDNSClassStrandBias at the current stage.)
+#'
 #' @param id The identifier of the sample which has mutations.
+#'
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
 #'   its annotations(if it exists) sample name and legend(if it exists)

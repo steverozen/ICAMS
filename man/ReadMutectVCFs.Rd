@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadMutectVCFs}
 \alias{ReadMutectVCFs}
-\title{Read Mutect VCF files from paths}
+\title{Read Mutect VCF files.}
 \usage{
 ReadMutectVCFs(vector.of.file.paths)
 }
@@ -13,6 +13,6 @@ ReadMutectVCFs(vector.of.file.paths)
 A list of vcfs from vector.of.file.paths.
 }
 \description{
-Read Mutect VCF files from paths
+Read Mutect VCF files.
 }
 \keyword{internal}

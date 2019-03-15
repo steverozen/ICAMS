@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{FindDelMH}
 \alias{FindDelMH}
-\title{Return the length of microhomology at a deletion}
+\title{Return the length of microhomology at a deletion.}
 \usage{
 FindDelMH(context, deleted.seq, pos, trace = 0)
 }
@@ -10,8 +10,7 @@ FindDelMH(context, deleted.seq, pos, trace = 0)
 \item{context}{The deleted sequence plus ample surrounding
 sequence on each side (at least as long as \code{del.sequence}).}
 
-\item{deleted.seq}{The deleted sequence in \code{context}.
-#'}
+\item{deleted.seq}{The deleted sequence in \code{context}.}
 
 \item{pos}{The position of \code{del.sequence} in \code{context}.}
 
@@ -22,7 +21,7 @@ The length of the maximum microhomology of \code{del.sequence}
   in \code{context}.
 }
 \description{
-Return the length of microhomology at a deletion
+Return the length of microhomology at a deletion.
 }
 \details{
 This function is primarily for internal use, but we export it so that the
@@ -93,8 +92,6 @@ GACTA----GTT GACTAGTT GACTA[GCTA]GTT
 is really a repeat
 
 \preformatted{
-
-TODO(Steve): add check in code
 GACTAG----TT GACTAGTT GACTAG[CTAG]TT
                         **** ----
 
