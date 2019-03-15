@@ -65,6 +65,10 @@ PlotCatDNS
 PlotCatID
 PlotCatIDtoPdf
 PlotCatSNS
+PlotDNSClassStrandBias
+PlotDNSClassStrandBiasToPdf
+PlotSNSClassStrandBias
+PlotSNSClassStrandBiasToPdf
 POS
 PyrPenta
 PyrTri

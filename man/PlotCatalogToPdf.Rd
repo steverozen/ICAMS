@@ -21,16 +21,14 @@ PlotCatSNS192ToPdf(catalog, name, id = colnames(catalog),
 PlotSNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
-PlotCatSNS1536ToPdf(catalog, name, id = colnames(catalog), abundance)
+PlotCatSNS1536ToPdf(catalog, name, type, id = colnames(catalog))
 
-PlotCatDNS78ToPdf(catalog, name, id = colnames(catalog),
-  type = "density", abundance = NULL)
+PlotCatDNS78ToPdf(catalog, name, type, id = colnames(catalog))
 
 PlotDNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
   type = "counts", cex = 1, abundance = NULL)
 
-PlotCatDNS136ToPdf(catalog, name, id = colnames(catalog),
-  type = "density", abundance = NULL)
+PlotCatDNS136ToPdf(catalog, name, type, id = colnames(catalog))
 
 PlotCatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
 }
@@ -50,6 +48,7 @@ your catalog matrix.}
 sample. If type = "signature", the graph will plot mutation signatures of
 the sample. If type = "density", the graph will plot the rates of mutations
 per million nucleotides for each mutation type. (Please take note there is
+no "signature" type for PlotCatDNS136ToPdf function,
 no "density" type for PlotCatIDtoPdf function and the option of type =
 "density" is not implemented for function PlotCatSNS192ToPdf,
 PlotSNSClassStrandBiasToPdf and PlotDNSClassStrandBiasToPdf at the current
