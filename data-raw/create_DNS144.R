@@ -5,7 +5,7 @@ OLDCanonicalizeDNS <- function(ref.vec, alt.vec) {
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
   Canonicalize1DNS <- function(DNS) {
-    if (DNS %in% .catalog.row.order.DNS.78) {
+    if (DNS %in% catalog.row.order$DNS78) {
       return(DNS)
     } else {
       ref <- substr(DNS, 1, 2)
@@ -15,11 +15,11 @@ OLDCanonicalizeDNS <- function(ref.vec, alt.vec) {
         alt <- revc(alt)
       }
       out <- paste0(ref, alt)
-      if (!out %in% .catalog.row.order.DNS.78) {
+      if (!out %in% catalog.row.order$DNS78) {
         stopifnot(ref == revc(ref))
         out <- paste0(ref, revc(alt))
       }
-      stopifnot(out %in% .catalog.row.order.DNS.78)
+      stopifnot(out %in% catalog.row.order$DNS78)
       return(out)
     }
   }
