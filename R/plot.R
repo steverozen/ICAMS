@@ -235,13 +235,12 @@ PlotCatSNS96 <-
       for (i in 1 : 4) {
         text(x[[i]], y[i], labels = label[i], cex = cex, adj = 0.5, xpd = NA)
       }
+      # Draw the text on the left plane
+      text(1.5, -ymax / 7, labels = "preceded by 5'",
+           pos = 2, xpd = NA, cex = cex)
+      text(1.5, -ymax / 3.5, labels = "followed by 3'",
+           pos = 2, xpd = NA, cex = cex)
     }
-
-    # Draw the text on the left plane
-    text(1.5, -ymax / 7, labels = "preceded by 5'",
-         pos = 2, xpd = NA, cex = cex)
-    text(1.5, -ymax / 3.5, labels = "followed by 3'",
-         pos = 2, xpd = NA, cex = cex)
 
     # Draw horizontal lines and names of major mutation class on top of graph?
     if (upper) {
@@ -259,7 +258,7 @@ PlotCatSNS96 <-
 #' @export
 PlotCatSNS96ToPdf <-
   function(catalog, name, type, id = colnames(catalog),
-           grid = FALSE, upper = TRUE, xlabels = TRUE) {
+           grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -300,7 +299,7 @@ PlotCatSNS96ToPdf <-
 #' @import graphics
 #' @export
 PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
-                       cex = 0.8, abundance = NULL) {
+                          cex = 0.8) {
   stopifnot(dim(catalog) == c(192, 1))
   if (missing(type)) {
     stop('Please specify type of the input catalog, one of "counts", ',
@@ -414,7 +413,7 @@ PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
-                        type = "counts", cex = 0.8, abundance = NULL) {
+                               type = "counts", cex = 0.8) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -430,7 +429,7 @@ PlotCatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
   for (i in 1 : n) {
     PlotCatSNS192(catalog[, i, drop = FALSE],
                id = id[i], type = type[i],
-               cex = cex, abundance = abundance)
+               cex = cex)
   }
   invisible(grDevices::dev.off())
   invisible(TRUE)
@@ -893,7 +892,7 @@ PlotCatDNS78ToPdf <-
 #' @import graphics
 #' @export
 PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
-                                   cex = 1, abundance = NULL) {
+                                   cex = 1) {
   stopifnot(dim(catalog) == c(144, 1))
   if (missing(type)) {
     stop('Please specify type of the input catalog, one of "counts", ',
@@ -1380,7 +1379,7 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
     # Barplot
     bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
-                  xaxs = "i", ylab = "counts")
+                  xaxs = "i", yaxt = "n")
 
     # Calculate and draw the total counts for each major type
     counts <- integer(16)
@@ -1395,7 +1394,7 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
         counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
       }
       text(idx2[i], ymax * 0.6, labels = counts[i],
-           cex = 0.6, adj = 1, xpd = NA)
+           cex = 0.68, adj = 1, xpd = NA)
     }
 
   } else if (type == "signature") {
@@ -1405,7 +1404,7 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
     # Barplot
     bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
-                  xaxs = "i", ylab = "proportion")
+                  xaxs = "i", yaxt = "n")
   }
 
   # Draw box and grid lines
@@ -1429,13 +1428,13 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
                     rep(c("black", "black", "black", "white"), 3))
 
   # Draw lines above each class
-  rect(xleft = x.left, ymax * 1.01, xright = x.right, ymax * 1.09,
+  rect(xleft = x.left, ymax * 1.02, xright = x.right, ymax * 1.11,
        col = indel.class.col, border = NA, xpd = NA)
-  text((x.left + x.right) / 2, ymax * 1.05, labels = category.lab,
-       cex = 0.55, col = category.col, xpd = NA)
+  text((x.left + x.right) / 2, ymax * 1.06, labels = category.lab,
+       cex = 0.65, col = category.col, xpd = NA)
 
   # Draw mutation class labels at the top of the figure
-  text(class.pos, ymax * 1.25, labels = maj.class.names, cex = 0.75, xpd = NA)
+  text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the ID information of the sample
   text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
@@ -1444,11 +1443,14 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
   y.axis.values <- seq(0, ymax, ymax / 4)
   if (type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+    text(-9, ymax / 2, labels = "proportion", srt = 90, xpd = NA)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
+    text(-9, ymax / 2, labels = "counts", srt = 90, xpd = NA)
   }
   text(0, y.axis.values, labels = y.axis.labels,
        las = 1, adj = 1, xpd = NA, cex = 0.75)
+
 
   # Draw x axis labels
   mut.type <- c(rep(c("1", "2", "3", "4", "5", "6+"), 2),
