@@ -74,19 +74,19 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
   if (is.null(abundance)) {
     if (which.n == 2) {
       abundance = rep(1L, 10)
-      names(abundance) <- names(ICAMS:::abundance.2bp.exome.GRCh37)
+      names(abundance) <- names(abundance.2bp.exome.GRCh37)
       return(abundance)
     } else if (which.n == 3) {
       abundance = rep(1L, 32)
-      names(abundance) <- names(ICAMS:::abundance.3bp.exome.GRCh37)
+      names(abundance) <- names(abundance.3bp.exome.GRCh37)
       return(abundance)
     } else if (which.n == 4) {
       abundance = rep(1L, 136)
-      names(abundance) <- names(ICAMS:::abundance.4bp.exome.GRCh37)
+      names(abundance) <- names(abundance.4bp.exome.GRCh37)
       return(abundance)
     } else if (which.n == 5) {
       abundance = rep(1L, 512)
-      names(abundance) <- names(ICAMS:::abundance.5bp.exome.GRCh37)
+      names(abundance) <- names(abundance.5bp.exome.GRCh37)
       return(abundance)
     }
   }
