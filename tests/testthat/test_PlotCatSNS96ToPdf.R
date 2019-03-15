@@ -45,13 +45,11 @@ test_that("PlotCatSNS96ToPdf function is working properly", {
                cat4, cat4.sig, cat4.density)
 
   type <- c("counts", "signature", "density")
-  upper <- c(TRUE, rep(FALSE, 7), TRUE, rep(FALSE, 3))
-  xlabels <- c(rep(FALSE, 7), TRUE, rep(FALSE, 3), TRUE)
   out <-
-    PlotCatSNS96ToPdf(cat, "PlotCatSNS96.test.pdf",
-                      type = rep(type, 4), grid = FALSE,
-                      upper = upper,
-                      xlabels = xlabels)
+    PlotCatSNS96ToPdf(cat, name = "PlotCatSNS96.test.pdf",
+                      type = rep(type, 4), grid = TRUE,
+                      upper = TRUE,
+                      xlabels = TRUE)
   expect_equal(out, TRUE)
   unlink("PlotCatSNS96.test.pdf")
   graphics.off()
