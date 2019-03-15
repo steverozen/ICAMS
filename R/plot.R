@@ -137,7 +137,7 @@ PlotCatSNS96 <-
   function(catalog, type, id = colnames(catalog), cex = 0.8,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == catalog.row.order$SNS96)
+    stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SNS96)
     if (missing(type)) {
       stop('Please specify type of the input catalog, one of "counts", ',
            '"signature" or "density".')
@@ -776,7 +776,7 @@ PlotCatSNS1536ToPdf <- function(catalog, name, type, id = colnames(catalog)) {
 #' @export
 PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(78, 1))
-  stopifnot(rownames(catalog) == catalog.row.order$DNS78)
+  stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DNS78)
   if (missing(type)) {
     stop('Please specify type of the input catalog, one of "counts", ',
          '"signature" or "density".')

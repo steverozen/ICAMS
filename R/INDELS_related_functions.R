@@ -646,7 +646,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
 
-  row.order <- data.table(rn = catalog.row.order$ID)
+  row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
   # TODO(Steve): can reduce use of data.table?
 
   ID.dt <- as.data.table(tab.ID)
@@ -656,11 +656,11 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
   ID.dt2 <-
     merge(row.order, ID.dt, by.x="rn", by.y="canon.ID", all = TRUE)
   ID.dt2[ is.na(N) , N := 0]
-  stopifnot(setequal(unlist(ID.dt2$rn), catalog.row.order$ID))
+  stopifnot(setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID))
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
   rownames(ID.mat) <- ID.dt2$rn
-  return(ID.mat[catalog.row.order$ID, , drop = F])
+  return(ID.mat[ICAMS::catalog.row.order$ID, , drop = F])
 }
 
 
@@ -680,8 +680,8 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
   ncol <- length(list.of.vcfs)
 
   # Create a 0-column matrix with the correct row labels.
-  catID <- matrix(0, nrow = length(catalog.row.order$ID), ncol = 0)
-  rownames(catID) <- catalog.row.order$ID
+  catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
+  rownames(catID) <- ICAMS::catalog.row.order$ID
 
   for (i in 1 : ncol) {
     ID <- list.of.vcfs[[i]]

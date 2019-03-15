@@ -705,7 +705,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # types have NA in the count column.
   tab1536 <- table(vcf[, "pyr.mut"])
   stopifnot(setequal(
-    setdiff(names(tab1536), catalog.row.order$SNS1536),
+    setdiff(names(tab1536), ICAMS::catalog.row.order$SNS1536),
     c()))
   dt1536  <- data.table(tab1536)
 
@@ -713,14 +713,14 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # in which not every mutation class was represented in the
   # VCF, in which case we will fill in with 0.
   colnames(dt1536) <- c("rn", "count")
-  d <- data.table(rn = catalog.row.order$SNS1536)
-  stopifnot(length(catalog.row.order$SNS1536) == 1536)
+  d <- data.table(rn = ICAMS::catalog.row.order$SNS1536)
+  stopifnot(length(ICAMS::catalog.row.order$SNS1536) == 1536)
   x <- merge(d, dt1536, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
   stopifnot(sum(x$count) == nrow(vcf))
   mat1536 <- matrix(x$count)
   rownames(mat1536) <- x$rn
-  mat1536 <- mat1536[catalog.row.order$SNS1536, , drop = FALSE]
+  mat1536 <- mat1536[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
   colnames(mat1536) <- sample.id
 
   # Create the 96 catalog matrix
@@ -729,7 +729,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(nrow(dt96) == 96)
   mat96 <- matrix(dt96$V1)
   rownames(mat96) <- dt96$nrn
-  mat96 <- mat96[catalog.row.order$SNS96, , drop = FALSE]
+  mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
   colnames(mat96) <- sample.id
 
   # Create the 192 catalog matrix
@@ -743,12 +743,12 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   dt192 <- dt192[!is.na(strand)]
   dt192[strand == "-", rn := RevcSNS96(rn)]
   dt192 <- dt192[ , .(count = sum(count)), by = rn]
-  x192 <- data.table(rn = catalog.row.order$SNS192)
+  x192 <- data.table(rn = ICAMS::catalog.row.order$SNS192)
   x <- merge(x192, dt192, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
   mat192 <- matrix(x[, count])
   rownames(mat192) <- unlist(x[, 1])
-  mat192 <- mat192[catalog.row.order$SNS192, , drop = FALSE]
+  mat192 <- mat192[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
   colnames(mat192) <- sample.id
 
   return(list(catSNS96 = mat96, catSNS192 = mat192, catSNS1536 = mat1536))
@@ -841,7 +841,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # Create the 78 DNS catalog matrix
   canon.DNS.78 <- CanonicalizeDNS(vcf$REF, vcf$ALT)
   tab.DNS.78 <- table(canon.DNS.78)
-  row.order.78 <- data.table(rn = catalog.row.order$DNS78)
+  row.order.78 <- data.table(rn = ICAMS::catalog.row.order$DNS78)
   DNS.dt.78 <- as.data.table(tab.DNS.78)
 
   # DNS.dt.78 has two columns, names canon.DNS.78 (from the table() function)
@@ -850,7 +850,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
     merge(row.order.78, DNS.dt.78,
           by.x = "rn", by.y = "canon.DNS.78", all = TRUE)
   DNS.dt.78.2[is.na(N), N := 0]
-  stopifnot(DNS.dt.78.2$rn == catalog.row.order$DNS78)
+  stopifnot(DNS.dt.78.2$rn == ICAMS::catalog.row.order$DNS78)
   DNS.mat.78 <- as.matrix(DNS.dt.78.2[, 2])
   rownames(DNS.mat.78) <- DNS.dt.78.2$rn
   colnames(DNS.mat.78)<- sample.id
@@ -858,7 +858,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # Create the 136 DNS catalog matrix
   canon.DNS.136 <- CanonicalizeQUAD(substr(vcf$seq.21context, 10, 13))
   tab.DNS.136 <- table(canon.DNS.136)
-  row.order.136 <- data.table(rn = catalog.row.order$DNS136)
+  row.order.136 <- data.table(rn = ICAMS::catalog.row.order$DNS136)
   DNS.dt.136 <- as.data.table(tab.DNS.136)
 
   # DNS.dt.136 has two columns, names canon.DNS.136 (from the table() function)
@@ -867,7 +867,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
     merge(row.order.136, DNS.dt.136,
           by.x = "rn", by.y = "canon.DNS.136", all = TRUE)
   DNS.dt.136.2[is.na(N), N := 0]
-  stopifnot(DNS.dt.136.2$rn == catalog.row.order$DNS136)
+  stopifnot(DNS.dt.136.2$rn == ICAMS::catalog.row.order$DNS136)
   DNS.mat.136 <- as.matrix(DNS.dt.136.2[, 2])
   rownames(DNS.mat.136) <- DNS.dt.136.2$rn
   colnames(DNS.mat.136)<- sample.id
@@ -883,12 +883,12 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   DNS.dt.144 <- DNS.dt.144[!is.na(strand)]
   DNS.dt.144[strand == "-", rn := RevcDNS144(rn)]
   DNS.dt.144 <- DNS.dt.144[, .(count = sum(count)), by = rn]
-  row.order.144 <- data.table(rn = catalog.row.order$DNS144)
+  row.order.144 <- data.table(rn = ICAMS::catalog.row.order$DNS144)
 
   # DNS.dt.144 has two columns, names rn and count
   DNS.dt.144.2 <- merge(row.order.144, DNS.dt.144, by = "rn", all.x = TRUE)
   DNS.dt.144.2[is.na(count), count := 0]
-  stopifnot(DNS.dt.144.2$rn == catalog.row.order$DNS144)
+  stopifnot(DNS.dt.144.2$rn == ICAMS::catalog.row.order$DNS144)
   DNS.mat.144 <- as.matrix(DNS.dt.144.2[, 2])
   rownames(DNS.mat.144) <- DNS.dt.144.2$rn
   colnames(DNS.mat.144)<- sample.id
@@ -1033,14 +1033,14 @@ CanonicalizeDNS <- function(ref.vec, alt.vec) {
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   Canonicalize1DNS <- function(DNS) {
-    if (DNS %in% catalog.row.order$DNS78) {
+    if (DNS %in% ICAMS::catalog.row.order$DNS78) {
       return(DNS)
     } else {
       ref <- substr(DNS, 1, 2)
       alt <- substr(DNS, 3, 4)
       out <- paste0(revc(ref), revc(alt))
     }
-    stopifnot(out %in% catalog.row.order$DNS78)
+    stopifnot(out %in% ICAMS::catalog.row.order$DNS78)
     return(out)
   }
   ret <- sapply(paste0(ref.vec, alt.vec), FUN = Canonicalize1DNS)
@@ -1060,11 +1060,11 @@ CanonicalizeQUAD <- function(quad) {
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
   Canonicalize1QUAD <- function(quad) {
-    if (quad %in% catalog.row.order$DNS136) {
+    if (quad %in% ICAMS::catalog.row.order$DNS136) {
       return(quad)
     } else {
       out <- revc(quad)
-      stopifnot(out %in% catalog.row.order$DNS136)
+      stopifnot(out %in% ICAMS::catalog.row.order$DNS136)
       return(out)
     }
   }
