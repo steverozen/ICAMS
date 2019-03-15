@@ -15,22 +15,19 @@
 PlotCatSNS96(catalog, type, id = colnames(catalog), cex = 0.8,
   grid = TRUE, upper = TRUE, xlabels = TRUE)
 
-PlotCatSNS192(catalog, type, id = colnames(catalog), cex = 0.8,
-  abundance = NULL)
+PlotCatSNS192(catalog, type, id = colnames(catalog), cex = 0.8)
 
-PlotSNSClassStrandBias(catalog, id = colnames(catalog),
-  type = "counts", cex = 1, abundance = NULL)
+PlotSNSClassStrandBias(catalog, type, id = colnames(catalog), cex = 1)
 
 PlotCatSNS1536(catalog, type, id = colnames(catalog))
 
 PlotCatDNS78(catalog, type, id = colnames(catalog))
 
-PlotDNSClassStrandBias(catalog, id = colnames(catalog),
-  type = "counts", cex = 1, abundance = NULL)
+PlotDNSClassStrandBias(catalog, type, id = colnames(catalog), cex = 1)
 
 PlotCatDNS136(catalog, type, id = colnames(catalog))
 
-PlotCatID(catalog, id = colnames(catalog), type = "counts")
+PlotCatID(catalog, type, id = colnames(catalog))
 }
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input

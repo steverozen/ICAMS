@@ -46,11 +46,11 @@ write these catalogs.
 \item \code{\link{StrelkaSNSVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
 192, 1536) and 3 DNS catalogs (78, 136, 144) from the Strelka SNS VCFs.
 
-\item \code{\link{StrelkaIDVCFFilesToCatalog}}, which creates ID (indels) catalog
+\item \code{\link{StrelkaIDVCFFilesToCatalog}}, which creates ID (indel) catalog
 from the Strelka ID VCFs.
 
 \item \code{\link{MutectVCFFilesToCatalog}}, which creates 3 SNS catalogs (96,
-192, 1536), 3 DNS catalogs (78, 136, 144) and ID (indels) catalog from the
+192, 1536), 3 DNS catalogs (78, 136, 144) and ID (indel) catalog from the
 Mutect VCFs.
 }
 }

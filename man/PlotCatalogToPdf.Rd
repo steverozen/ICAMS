@@ -13,24 +13,24 @@
 \title{Plot catalog to pdf functions}
 \usage{
 PlotCatSNS96ToPdf(catalog, name, type, id = colnames(catalog),
-  grid = FALSE, upper = TRUE, xlabels = TRUE)
+  grid = TRUE, upper = TRUE, xlabels = TRUE)
 
 PlotCatSNS192ToPdf(catalog, name, id = colnames(catalog),
-  type = "counts", cex = 0.8, abundance = NULL)
+  type = "counts", cex = 0.8)
 
-PlotSNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
-  type = "counts", cex = 1, abundance = NULL)
+PlotSNSClassStrandBiasToPdf(catalog, name, type, id = colnames(catalog),
+  cex = 1)
 
 PlotCatSNS1536ToPdf(catalog, name, type, id = colnames(catalog))
 
 PlotCatDNS78ToPdf(catalog, name, type, id = colnames(catalog))
 
-PlotDNSClassStrandBiasToPdf(catalog, name, id = colnames(catalog),
-  type = "counts", cex = 1, abundance = NULL)
+PlotDNSClassStrandBiasToPdf(catalog, name, type, id = colnames(catalog),
+  cex = 1)
 
 PlotCatDNS136ToPdf(catalog, name, type, id = colnames(catalog))
 
-PlotCatIDToPdf(catalog, name, id = colnames(catalog), type = "counts")
+PlotCatIDToPdf(catalog, name, type, id = colnames(catalog))
 }
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input

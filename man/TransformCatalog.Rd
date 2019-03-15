@@ -11,7 +11,8 @@ TransformCatalog(catalog, source.abundance = NULL,
   target.type = source.type)
 }
 \arguments{
-\item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
+\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
+input catalog can \strong{not} be an ID (indel) catalog.}
 
 \item{source.abundance}{Either \code{NULL} or a numeric vector with one element
 for each source sequence for the mutation types in \code{catalog}
