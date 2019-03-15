@@ -156,7 +156,8 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #' }
 #'
 #'
-#' @param catalog A catalog as described in \code{\link{ICAMS}}.
+#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
+#'   input catalog can \strong{not} be an ID (indel) catalog.
 #'
 #' @param source.abundance Either \code{NULL} or a numeric vector with one element
 #' for each source sequence for the mutation types in \code{catalog}
@@ -234,6 +235,15 @@ TransformCatalog <-
   if (nrow(catalog) == 192) {
     if (source.type != "counts" || target.type %in% c("density", "counts")) {
       stop('For SNS 192 catalog, only transformation from "counts" to "signature" ',
+           'is implemented at the current stage.')
+    } else {
+      return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
+    }
+  }
+
+  if (nrow(catalog) == 144) {
+    if (source.type != "counts" || target.type %in% c("density", "counts")) {
+      stop('For DNS 144 catalog, only transformation from "counts" to "signature" ',
            'is implemented at the current stage.')
     } else {
       return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
