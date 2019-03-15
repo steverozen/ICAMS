@@ -439,30 +439,35 @@ PlotCatSNS192ToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotSNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "counts",
-                             cex = 1, abundance = NULL) {
+PlotSNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
+                                   cex = 1) {
   stopifnot(dim(catalog) == c(192, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts", ',
+         '"signature" or "density".')
+  }
 
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  counts <- catalog[to.reorder.SNS.192.for.plotting, ]
+  catalog <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
 
-  # Get the counts for each major mutation class
-  counts.strand <- integer(12)
-  for (i in 1 : 6){
-    counts.strand[2 * i - 1] <-
-      sum(counts[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
-    counts.strand[2 * i] <-
-      sum(counts[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
-  }
-
-  num.classes <- length(counts.strand)
+  num.classes <- 12
   maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
   if (type == "counts") {
+    # Get the counts for each major mutation class
+    counts <- catalog[, 1]
+    counts.strand <- integer(12)
+    for (i in 1 : 6){
+      counts.strand[2 * i - 1] <-
+        sum(counts[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+      counts.strand[2 * i] <-
+        sum(counts[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+    }
+
     # Get ylim
     ymax <- max(counts.strand) * 1.3
 
@@ -473,22 +478,27 @@ PlotSNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "coun
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "signature") {
-    # Calculate mutation signatures of each major mutation class
-    sig <- counts.strand / sum(counts.strand)
+    # Get the proportion for each major mutation class
+    prop <- catalog[, 1]
+    prop.strand <- integer(12)
+    for (i in 1 : 6){
+      prop.strand[2 * i - 1] <-
+        sum(prop[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+      prop.strand[2 * i] <-
+        sum(prop[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+    }
 
     # Get ylim
-    ymax <- ifelse(max(sig) * 1.3 > 1, 1, max(sig) * 1.3)
+    ymax <- ifelse(max(prop.strand) * 1.3 > 1, 1, max(prop.strand) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(sig, nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (type == "density") {
     stop('type = "density" not implemented')
-  } else {
-    stop('Please specify the correct type: "counts", "signature" or "density"')
   }
 
   # Draw y axis
@@ -521,8 +531,9 @@ PlotSNSClassStrandBias <- function(catalog, id = colnames(catalog), type = "coun
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotSNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
-                              type = "counts", cex = 1, abundance = NULL) {
+PlotSNSClassStrandBiasToPdf <- function(catalog, name, type,
+                                        id = colnames(catalog),
+                                        cex = 1) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(name, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -538,7 +549,7 @@ PlotSNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
   for (i in 1 : n) {
     PlotSNSClassStrandBias(catalog[, i, drop = FALSE],
                      id = id[i], type = type[i],
-                     cex = cex, abundance = abundance)
+                     cex = cex)
   }
   invisible(grDevices::dev.off())
 
