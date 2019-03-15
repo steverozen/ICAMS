@@ -546,8 +546,12 @@ PlotSNSClassStrandBiasToPdf <- function(catalog, name, id = colnames(catalog),
 #' @rdname PlotCatalog
 #' @import graphics
 #' @export
-PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
+PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
   stopifnot(dim(catalog) == c(1536, 1))
+  if (missing(type)) {
+    stop('Please specify type of the input catalog, one of "counts", ',
+         '"signature" or "density".')
+  }
 
   # Define the bases and their colors in plot
   bases <- c("A", "C", "G", "T")
@@ -593,28 +597,19 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
   cat1 <-
     stats::aggregate(cat[, 1], by = list(main.types = cat$main.types), FUN = sum)
 
-  if (colSums(catalog) > 1.5) {
+  if (type == "counts") {
     # Get the total counts for the six main mutation types
     main.types.counts <- cat1[, 2]
     names(main.types.counts) <- cat1$main.types
-  } else {
+  } else if (type == "signature") {
     # Get the total proportion for the six main mutation types
     main.types.prop <- cat1[, 2]
     names(main.types.prop) <- cat1$main.types
   }
 
-  # Calculate pentanucleotide sequence contexts, normalized by pentanucleotide
-  # occurrence in the genome
+  # Sort the catalog matrix in plotting order
+  rates <- as.data.frame(catalog)
   mut.type <- rownames(catalog)
-  rates <- catalog
-  for (i in 1 : 1536) {
-    penta.names <- substr(mut.type[i], 1, 5)
-    rates[i] <-
-      catalog[i] * 1000000 / abundance[penta.names]
-  }
-
-  # Sort the rates matrix in plotting order
-  rates <- as.data.frame(rates)
   rates$mut.type <- mut.type
   rates$ref2alt <- paste0(substr(mut.type, 3, 3), substr(mut.type, 6, 6))
   rates$minus2bs <- substr(mut.type, 1, 1)
@@ -648,9 +643,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       DrawAxisY()
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -662,9 +657,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -677,9 +672,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -693,9 +688,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -708,9 +703,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -721,9 +716,9 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (colSums(catalog) > 1.5) {
+      if (type == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else {
+      } else if (type == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -737,16 +732,22 @@ PlotCatSNS1536 <- function(catalog, abundance, id = colnames(catalog)) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatSNS1536ToPdf <- function(catalog, name, id = colnames(catalog), abundance) {
+PlotCatSNS1536ToPdf <- function(catalog, name, type, id = colnames(catalog)) {
 
   grDevices::cairo_pdf(name, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
 
+  # Do recycling of the function parameters if a vector
+  # with length more than one is not specified by the user.
+  if (n > 1 && length(type) == 1) {
+    type <- rep(type, n)
+  }
+
   for (i in 1 : n) {
     PlotCatSNS1536(catalog[, i, drop = FALSE],
-                id = id[i],
-                abundance = abundance)
+                   type = type[i],
+                   id = id[i])
   }
   invisible(grDevices::dev.off())
 
