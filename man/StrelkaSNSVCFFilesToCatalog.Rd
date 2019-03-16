@@ -10,7 +10,7 @@ StrelkaSNSVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges)
 \item{vector.of.file.paths}{Character vector of
 file paths to Strelka SNS VCF files.}
 
-\item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{genome}{A reference genome as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data.table which contains transcript range and
 strand information.}

@@ -1,8 +1,10 @@
 #' Standard order of row names in a catalog.
 #'
-#' This data is designed for those, including extenders of this package,
+#' This data is designed for those
 #' who need to create their own catalogs from formats not
-#' supported by this package.
+#' supported by this package. The rownames denote the mutation
+#' types.  For example, for SNS96 catalogs, the rowname
+#'  AGAT represents a mutation from AGA > ATA.
 #'
 #' @format A list of character vectors indicating the standard
 #'   orders of row names in catalogs.
@@ -14,8 +16,10 @@
 #' @name CatalogRowOrder
 "catalog.row.order"
 
-#' Row headers information for writing a catalog to disk in standardized format
-#' @format A data frame which contains the row headers information for writing
+
+
+#' Row header information for writing a catalog to disk in standardized format
+#' @format A data frame which contains row header information for writing
 #'   a catalog to disk in standardized format.
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -26,7 +30,7 @@ NULL
 
 #' Nucleotide abundance
 #'
-#' Nucleotide abundance information for a particular organism
+#' Nucleotide n-mer abundance (counts) for a particular reference genome.
 #'
 #' \code{abundance.2bp.genome.GRCh37}, \code{abundance.2bp.exome.GRCh37} A named
 #' numeric vector containing dinucleotide abundance information for

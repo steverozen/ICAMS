@@ -10,8 +10,8 @@
 \alias{catalog.row.headers.DNS.144}
 \alias{catalog.row.headers.DNS.136}
 \alias{catalog.row.headers.ID}
-\title{Row headers information for writing a catalog to disk in standardized format}
-\format{A data frame which contains the row headers information for writing
+\title{Row header information for writing a catalog to disk in standardized format}
+\format{A data frame which contains row header information for writing
   a catalog to disk in standardized format.}
 \usage{
 catalog.row.headers.SNS.96
@@ -29,7 +29,7 @@ catalog.row.headers.DNS.136
 catalog.row.headers.ID
 }
 \description{
-Row headers information for writing a catalog to disk in standardized format
+Row header information for writing a catalog to disk in standardized format
 }
 \note{
 In the ID (insertion and deletion) catalog, deletion repeat size

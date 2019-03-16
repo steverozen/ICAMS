@@ -10,7 +10,7 @@
 \alias{PlotDNSClassStrandBiasToPdf}
 \alias{PlotCatDNS136ToPdf}
 \alias{PlotCatIDToPdf}
-\title{Plot catalog to pdf functions}
+\title{Plot catalogs to a PDF file.}
 \usage{
 PlotCatSNS96ToPdf(catalog, name, type, id = colnames(catalog),
   grid = TRUE, upper = TRUE, xlabels = TRUE)
@@ -33,28 +33,30 @@ PlotCatDNS136ToPdf(catalog, name, type, id = colnames(catalog))
 PlotCatIDToPdf(catalog, name, type, id = colnames(catalog))
 }
 \arguments{
-\item{catalog}{A catalog as described in \code{\link{ICAMS}}. The input
-catalog must be in \strong{matrix} format, you may use
-\link[base]{data.matrix} to convert a data frame to a numeric matrix. This
-catalog matrix must have rownames to facilitate sorting in the plotting
-functions. You many use \code{\link{CatalogRowOrder}} to give row names to
-your catalog matrix.}
+\item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
 
 \item{name}{The name of the PDF file to be produced.}
 
-\item{type}{A character specifying type of the input catalog, one of
-\code{"counts"}, \code{"signature"} or \code{"density"}. If type =
-"counts", the graph will plot the occurrences of the mutation types in the
-sample. If type = "signature", the graph will plot mutation signatures of
-the sample. If type = "density", the graph will plot the rates of mutations
-per million nucleotides for each mutation type. (Please take note there is
-no "signature" type for PlotCatDNS136ToPdf function,
-no "density" type for PlotCatIDtoPdf function and the option of type =
-"density" is not implemented for function PlotCatSNS192ToPdf,
-PlotSNSClassStrandBiasToPdf and PlotDNSClassStrandBiasToPdf at the current
-stage.)}
+\item{type}{A string specifying the type of the input catalog, one of:
+\enumerate{
 
-\item{id}{A vector containing the identifiers of the samples in catalog.}
+  \item "counts", show the counts of each mutation type.
+
+  \item "density", show the rates of mutations
+  per million source n-mers for each mutation type;
+  not supported
+  for \code{\link{PlotCatIDToPdf}},
+  \code{\link{PlotCatSNS192ToPdf}},
+  \code{\link{PlotSNSClassStrandBiasToPdf}}, and
+  \code{\link{PlotDNSClassStrandBiasToPdf}}.
+  \item "signature", show the proportions of each
+  mutation type; not supported for
+  \code{\link{PlotCatDNS136ToPdf}}.
+
+}}
+
+\item{id}{A vector containing the identifiers of the samples
+or signatures in \code{catalog}.}
 
 \item{grid}{If TRUE, draw grid lines in the graph.}
 
@@ -68,29 +70,29 @@ y axis labels, sample name and legend (if it exists) should be magnified
 relative to the default.}
 }
 \value{
-invisible(TRUE)
+\code{invisible(TRUE)}
 }
 \description{
-Plot mutation catalogs of various samples to a PDF file
+Plot catalogs to a PDF file.
 }
 \details{
-\code{PlotCatSNS96ToPdf} Plot the SNS 96 mutation catalog of various samples
+\code{PlotCatSNS96ToPdf} Plot an SNS 96 catalog
 to a PDF file.
 
-\code{PlotCatSNS192ToPdf} Plot the SNS 192 mutation catalog of various samples
+\code{PlotCatSNS192ToPdf} Plot an SNS 192 catalog
 to a PDF file.
 
 \code{PlotSNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
 of various samples to a PDF file.
 
-\code{PlotCatSNS1536ToPdf} Plot the 1536 mutation catalog of >= 1 samples to a PDF
+\code{PlotCatSNS1536ToPdf} Plot a 1536 mutation catalog to a PDF
 file. The mutation types are in six-letters like CATTAT, first 2-letters CA
 refers to (-2, -1) position, third letter T refers to the base which has
 mutation, next second 2-letters TA refers to (+1, +2) position, last letter T
 refers to the base after mutation.
 
-\code{PlotCatDNS78ToPdf} Plot the DNS 78 mutation catalog of various samples
+\code{PlotCatDNS78ToPdf} Plot a DNS 78 mutation catalog
 to a PDF file.
 
 \code{PlotDNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
@@ -102,8 +104,9 @@ to a PDF file.
 DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples to a PDF file.
 
-\code{PlotCatIDToPdf} Plot the insertion and deletion catalog of various
-samples to a PDF file. (Please take note that deletion repeat size
-ranges from 0 to 5+ in the catalog, but for plotting and end user
-documentation it ranges from 1 to 6+.)
+\code{PlotCatIDToPdf} Plot a insertion and deletion catalog to a PDF file.
+(Note that sizes of repeats involved in deletions
+range from 0 to 5+ in the catalog rownames,
+but for plotting and end user
+documentation they ranges from 1 to 6+.)
 }

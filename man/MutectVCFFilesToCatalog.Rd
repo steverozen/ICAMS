@@ -7,23 +7,16 @@
 MutectVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges)
 }
 \arguments{
-\item{vector.of.file.paths}{A vector containing the paths of the Mutect VCF files.}
+\item{vector.of.file.paths}{A character vector of paths to Mutect VCF files.}
 
-\item{genome}{A particular reference genome(without quotation marks). Use
-\link[BSgenome]{available.genomes} to get the list of "BSgenome data
-packages" currently available. There are 2 types of predefined reference
-genome which are incorporated in this function. User can invoke a
-predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-"GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-\code{genome = "hg19"}.}
+\item{genome}{A reference genome as described in \code{\link{ICAMS}},}
 
-\item{trans.ranges}{A data.table which contains transcript range and
+\item{trans.ranges}{A \code{data.table} containing transcript range and
 strand information.}
 }
 \value{
-A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-  , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+A list of 3 SNS catalogs (one each for 96, 192, and 1536),
+3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
 }
 \description{
 Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
@@ -34,5 +27,5 @@ This function calls \code{\link{VCFsToSNSCatalogs}},
 \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
 }

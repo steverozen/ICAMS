@@ -7,7 +7,7 @@
 ReadStrelkaIDVCFs(vector.of.file.paths)
 }
 \arguments{
-\item{vector.of.file.paths}{A vector containing the paths of the VCF files.}
+\item{vector.of.file.paths}{A character vector of paths to VCF files.}
 }
 \value{
 A list of vcfs from vector.of.file.paths.

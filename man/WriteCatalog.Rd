@@ -9,7 +9,7 @@
 \alias{WriteCatDNS144}
 \alias{WriteCatDNS136}
 \alias{WriteCatID}
-\title{Write Catalog Functions}
+\title{Write catalog.}
 \usage{
 WriteCatSNS96(ct, path, strict = TRUE)
 
@@ -30,28 +30,25 @@ WriteCatID(ct, path, strict = TRUE)
 
 \item{path}{The path of the file to be written on disk.}
 
-\item{strict}{If TRUE, do additional checks on the input,
-and stop if the checks fail.}
+\item{strict}{If TRUE, then fail if additional checks on the input fail.}
 }
 \description{
-Write a mutation catalog to a file on disk
+Write a catalog to a file on disk.
 }
 \details{
-\code{WriteCatSNS96} Write a SNS 96 mutation catalog to a file on disk
+\code{WriteCatSNS96} Write an SNS 96 catalog.
 
-\code{WriteCatSNS192} Write a SNS 192 mutation catalog to a file on disk
+\code{WriteCatSNS192} Write a SNS 192 catalog.
 
-\code{WriteCatSNS1536} Write a SNS 1536 mutation catalog to a file on disk
+\code{WriteCatSNS1536} Write a SNS 1536 catalog.
 
-\code{WriteCatDNS78} Write a DNS 78 mutation catalog to a file on disk
+\code{WriteCatDNS78} Write a DNS 78 catalog.
 
-\code{WriteCatDNS144} Write a DNS 144 mutation catalog to a file on disk
+\code{WriteCatDNS144} Write a DNS 144 catalog.
 
 \code{WriteCatDNS136} Write a 136 DNS catalog from path
 
-\code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk.
-(Please take note that deletion repeat size ranges from 0 to 5+ in the
-catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+\code{WriteCatID} Write a ID (insertion/deletion) catalog.
 
 See also \code{\link{ReadCatalog}}
 }

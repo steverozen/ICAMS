@@ -1,14 +1,21 @@
-#' Collapse catalog functions
+#' "Collapse" a catalog.
 #'
-#' Collapse a catalog matrix
+#' "Collapse" a catalog. Do not use this function for
+#' signature catalogs.
 #'
-#' \code{Collapse192To96} Collapse a SNS 192 catalog matrix to a SNS 96 catalog matrix.
+#' \code{Collapse192To96} Collapse an SNS 192 catalog
+#' to an SNS 96 catalog.
 #'
-#' \code{Collapse1536To96} Collapse a SNS 1536 catalog matrix to a SNS 96 catalog matrix.
+#' \code{Collapse1536To96} Collapse an SNS 1536 catalog
+#'  to an SNS 96 catalog.
 #'
-#' \code{Collapse144To78} Collapse a DNS 144 catalog matrix to a DNS 78 catalog matrix.
-#' @param catalog A catalog as defined in \code{\link{ICAMS}}
-#' @return A catalog as defined in \code{\link{ICAMS}}
+#' \code{Collapse144To78} Collapse a DNS 144 catalog
+#' to a DNS 78 catalog.
+#'
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#'
+#' @return A catalog as defined in \code{\link{ICAMS}}.
+#'
 #' @name CollapseCatalog
 NULL
 
@@ -123,21 +130,25 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 
 #' Transform between count and density catalogs
 #'  and signatures and between different
-#' source sequence abundances.
+#' source-sequence abundances.
 #'
-#' @details Only certain transformations are legal.
+#' @details
+#' Only certain parings of type and abundance are legal, as follows:
 #' \enumerate{
 #'
 #' \item The type \code{"density"} must always be associated with a \code{NULL}
 #' abundance.
 #'
-#' \item The type \code{"signature"} can be associated with a \code{NULL}
-#' abundance.
+#' \item The type \code{"signature"} is allowed to be associated with a \code{NULL}
+#' abundance. A \code{NULL} abundance indicates that the signature
+#' is a "density-based" signature (see \code{\link{ICAMS}}).
 #'
 #' \item The type \code{"counts"} must \strong{not} be associated with
 #'  the \code{NULL} abundance.
+#'}
 #'
-#' \item Otherwise, the following are legal:
+#' Only the following transformations are legal:
+#'
 #' \enumerate{
 #' \item \code{counts -> counts}
 #' \item \code{counts -> density}
@@ -149,10 +160,8 @@ NormalizeAbundanceArg <- function(abundance, which.n) {
 #' \item \code{signature -> signature}
 #' }
 #'
-#' }
-#'
-#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
-#'   input catalog can \strong{not} be an ID (indel) catalog.
+#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}};
+#'  must \strong{not} be an ID (indel) catalog.
 #'
 #' @param which.n The length of the source sequences, one of 2:5.
 #'

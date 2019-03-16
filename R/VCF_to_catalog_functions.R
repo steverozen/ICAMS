@@ -271,20 +271,17 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' Add sequence context to a data frame with mutation records
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
-#' @param genome A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#'
+#' @param genome A reference genome as described in \code{\link{ICAMS}}.
+#'
 #' @importFrom methods as
 #' @importFrom BSgenome getSeq seqnames
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #' @import BSgenome.Hsapiens.UCSC.hg38
-#' @return A data frame with a new column added to the input data frame,
-#'     which contains sequence context information.
+#'
+#' @return A copy of the input data.frame with a new column added
+#'     that contains sequence context information.
+#'
 #' @keywords internal
 AddSequence <- function(df, genome) {
   if (0 == nrow(df)) return(df)
@@ -570,7 +567,8 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 
 #' Read Strelka SNS (single nucleotide substitutions) VCF files.
 #'
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' @param vector.of.file.paths Character vector of
+#' file paths to VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @keywords internal
@@ -583,16 +581,22 @@ ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
 
 #' Read and split Strelka SNS VCF files.
 #'
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' @param vector.of.file.paths Character vector of
+#' file paths to Strelka VCF files.
 #'
-#' @return A list of 3 in-memory objects with the elements:
-#'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
-#'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
-#'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
-#'    information (reference sequence, alternative sequence, context, etc.)
-#'    Additional information not fully implemented at this point because of
-#'    limited immediate biological interest.
+#' @return A list of 3 in-memory objects as follows:
+#' \enumerate{
+#'    \item \code{SNS.vcfs} List of data.frames of pure SNS mutations -- no DNS or 3+BS mutations.
+#'
+#'    \item \code{DNS.vcfs} List of data.frames of pure DNS mutations -- no SNS or 3+BS mutations.
+#'
+#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
+#'    rows that that in the input that did not represent SNSs or DNSs.
+#'
+#'    }
+#'
 #' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
+#'
 #' @export
 ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
@@ -603,7 +607,7 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
 
 #' Read Strelka ID (insertion and deletion) VCF files.
 #'
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' @param vector.of.file.paths A character vector of paths to VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @export
@@ -620,7 +624,7 @@ ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
 
 #' Read Mutect VCF files.
 #'
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' @param vector.of.file.paths A character vector of paths to VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #' @keywords internal
@@ -633,7 +637,7 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 
 #' Read and split Mutect VCF files.
 #'
-#' @param vector.of.file.paths A vector containing the paths of the VCF files.
+#' @param vector.of.file.paths A character vector of paths to VCF files.
 #'
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -763,14 +767,9 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
-#' @param genome A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#'
+#' @param genome A reference genome as described in \code{\link{ICAMS}},
+#'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
 #' @return A list of 3 SNS catalogs, one each for 96, 192, 1536:
@@ -912,14 +911,9 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
-#' @param genome A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#'
+#' @param genome A reference genome as described in \code{\link{ICAMS}},
+#'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
 #' @return A list of 3 DNS catalogs, one each for 78, 144, 136:
@@ -977,7 +971,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @param vector.of.file.paths Character vector of
 #' file paths to Strelka SNS VCF files.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param genome A reference genome as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
@@ -1001,15 +995,11 @@ StrelkaSNSVCFFilesToCatalog <-
 #' Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}}
-#' @param vector.of.file.paths A vector containing the paths of the Strelka ID VCF files.
-#' @param genome  A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#'
+#' @param vector.of.file.paths A character vector of paths to Strelka ID VCF files.
+#'
+#' @param genome A reference genome as described in \code{\link{ICAMS}},
+#'
 #' @return  An ID (indel) catalog
 #' @export
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
@@ -1027,21 +1017,21 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #'
 #' This function calls \code{\link{VCFsToSNSCatalogs}},
 #' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
-#' @param vector.of.file.paths A vector containing the paths of the Mutect VCF files.
-#' @param genome  A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
-#' @param trans.ranges A data.table which contains transcript range and
+#'
+#' @param vector.of.file.paths A character vector of paths to Mutect VCF files.
+#'
+#' @param genome A reference genome as described in \code{\link{ICAMS}},
+#'
+#' @param trans.ranges A \code{data.table} containing transcript range and
 #'   strand information.
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-#'   , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#'
+#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536),
+#' 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#'
 #' @export
-#' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
+
 MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)

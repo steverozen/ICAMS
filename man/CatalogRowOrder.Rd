@@ -11,9 +11,11 @@
 catalog.row.order
 }
 \description{
-This data is designed for those, including extenders of this package,
+This data is designed for those
 who need to create their own catalogs from formats not
-supported by this package.
+supported by this package. The rownames denote the mutation
+types.  For example, for SNS96 catalogs, the rowname
+ AGAT represents a mutation from AGA > ATA.
 }
 \note{
 In the ID (insertion and deletion) catalog, deletion repeat size

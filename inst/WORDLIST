@@ -54,6 +54,7 @@ indel
 indels
 intron
 MakeVCFDNSdf
+mer
 mers
 microhomology
 mutect
@@ -74,6 +75,7 @@ PlotSNSClassStrandBiasToPdf
 POS
 PyrPenta
 PyrTri
+rowname
 SNS
 SNSs
 StrandToPdf
