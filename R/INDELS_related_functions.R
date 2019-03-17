@@ -6,14 +6,7 @@
 #'   there is a "context base" to the left, for example REF = ACG, ALT = A
 #'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
 #'
-#' @param genome A particular reference genome(without quotation marks). Use
-#'   \code{BSgenome::available.genomes()} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#' @param genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param flag.mismatches If > 0, if there are mismatches to references, print
 #' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
@@ -666,14 +659,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #'
-#' @param genome A particular reference genome(without quotation marks). Use
-#'   \link[BSgenome]{available.genomes} to get the list of "BSgenome data
-#'   packages" currently available. There are 2 types of predefined reference
-#'   genome which are incorporated in this function. User can invoke a
-#'   predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-#'   "GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-#'   GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-#'   \code{genome = "hg19"}.
+#' @param genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @return An ID (indel) catalog
 #'

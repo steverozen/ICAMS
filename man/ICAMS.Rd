@@ -64,6 +64,26 @@ Mutect VCFs.
 }
 }
 
+\section{The \code{genome} argument}{
+
+Many functions take a the argument \code{genome}.
+This can be either
+\enumerate{
+  \item A variable from the Bioconductor \link[BSgenome]{BSgenome} package
+  that contains a particular reference genome, for example
+  \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
+  \code{\link{BSgenome::available.genomes()}} returns the available
+  genomes.
+
+ \item The strings \code{"hg38"} or \code{"GRCh38"}
+ are shorthand for
+ \code{BSgenome.Hsapiens.UCSC.hg38},
+ and the string \code{"hg19"} or \code{"GRCh37"}
+ are shorthand for
+ \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
+}
+}
+
 \section{The Bioconductor \code{BSgenome} package}{
 
  This package is installed automatically if \code{\link{ICAMS}}
@@ -81,14 +101,17 @@ Mutect VCFs.
 \section{Plotting catalogs}{
 
 Functions for plotting catalogs of mutational spectra or
-of mutational signatures to a PDF file. Mutational \emph{signatures}
+of mutational signatures of \strong{one} sample. \code{\link{PlotCatalog}}
+
+Functions for plotting catalogs of mutational spectra or
+of mutational signatures of various samples to a PDF file. \code{\link{PlotCatalogToPdf}}
+Mutational \emph{signatures}
 are similar to spectra, but where spectra consist of
 counts of mutations in each mutation class
 (e.g. ACA > AAA, ACA > AGA, ACA > ATA, ACC > AAC, ...)
 signatures consist of
 the proportions of mutations in each class (with all the
 proportions summing to 1).
-\code{\link{PlotCatalogToPdf}}
 }
 
 \section{Writing catalogs}{

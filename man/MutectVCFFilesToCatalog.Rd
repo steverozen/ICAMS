@@ -7,16 +7,10 @@
 MutectVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges)
 }
 \arguments{
-\item{vector.of.file.paths}{A vector containing the paths of the Mutect VCF files.}
+\item{vector.of.file.paths}{Character vector of
+file paths to the Mutect VCF files.}
 
-\item{genome}{A particular reference genome(without quotation marks). Use
-\link[BSgenome]{available.genomes} to get the list of "BSgenome data
-packages" currently available. There are 2 types of predefined reference
-genome which are incorporated in this function. User can invoke a
-predefined human GRCh38/hg38 BSgenome data package by typing \code{genome =
-"GRCh38"} or \code{genome = "hg38"}. User can invoke a predefined human
-GRCh37/hg19 BSgenome data package by typing \code{genome = "GRCh37"} or
-\code{genome = "hg19"}.}
+\item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data.table which contains transcript range and
 strand information.}
