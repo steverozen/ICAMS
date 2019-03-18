@@ -13,13 +13,13 @@ test_that("AddSequence for GRCh37", {
 })
 
 test_that("AddSequence for GRCh38", {
-
+  load("testdata/test_AddSequence.Rdata")
   list.of.vcf <- ReadAndSplitStrelkaSNSVCFs("testdata/Strelka.SNS.GRCh38.vcf")
   sns.vcf <- list.of.vcf$SNS.vcfs[[1]]
   df3 <- AddSequence(sns.vcf, genome = BSgenome.Hsapiens.UCSC.hg38)
   df4 <- AddSequence(sns.vcf, genome = "GRCh38")
   df5 <- AddSequence(sns.vcf, genome = "hg38")
-  # expect_equal(df3, strelka.SNS.vcf.GRCh38)
+  expect_equal(df3, strelka.SNS.vcf.GRCh38)
   expect_equal(df3, df4)
   expect_equal(df3, df5)
 })
