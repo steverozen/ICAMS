@@ -754,9 +754,6 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
     c()))
   dt1536  <- data.table(tab1536)
 
-  # TODO(steve): document better, but this deals with the case
-  # in which not every mutation class was represented in the
-  # VCF, in which case we will fill in with 0.
   colnames(dt1536) <- c("rn", "count")
   d <- data.table(rn = ICAMS::catalog.row.order$SNS1536)
   stopifnot(length(ICAMS::catalog.row.order$SNS1536) == 1536)
