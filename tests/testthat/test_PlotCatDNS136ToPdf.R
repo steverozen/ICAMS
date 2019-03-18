@@ -31,7 +31,7 @@ test_that("PlotCatDNS136ToPdf function is working properly", {
 
   type <- c("counts", "density")
   out <-
-    PlotCatDNS136ToPdf(cat, name = "PlotCatDNS136.test.pdf",
+    PlotCatDNS136ToPdf(cat, filename = "PlotCatDNS136.test.pdf",
                        type = rep(type, 4))
   expect_equal(out, TRUE)
   unlink("PlotCatDNS136.test.pdf")

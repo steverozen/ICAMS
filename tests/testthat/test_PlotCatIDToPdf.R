@@ -22,7 +22,7 @@ test_that("PlotCatIDToPdf function is working properly", {
                cat4, cat4.sig)
 
   type <- c("counts", "signature")
-  out <- PlotCatIDToPdf(cat, name = "PlotCatID.test.pdf", type = rep(type, 4))
+  out <- PlotCatIDToPdf(cat, filename = "PlotCatID.test.pdf", type = rep(type, 4))
   expect_equal(out, TRUE)
   unlink("PlotCatID.test.pdf")
 })

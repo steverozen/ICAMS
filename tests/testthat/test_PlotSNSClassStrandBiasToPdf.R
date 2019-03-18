@@ -32,7 +32,7 @@ test_that("PlotSNSClassStrandBiasToPdf function is working properly", {
   type <- c("counts", "signature")
   out <-
     PlotSNSClassStrandBiasToPdf(cat,
-                                name = "PlotSNSClassStrandBias.test.pdf",
+                                filename = "PlotSNSClassStrandBias.test.pdf",
                                 type = rep(type, 4))
   expect_equal(out, TRUE)
   unlink("PlotSNSClassStrandBias.test.pdf")

@@ -46,7 +46,7 @@ test_that("PlotCatSNS96ToPdf function is working properly", {
 
   type <- c("counts", "signature", "density")
   out <-
-    PlotCatSNS96ToPdf(cat, name = "PlotCatSNS96.test.pdf",
+    PlotCatSNS96ToPdf(cat, filename = "PlotCatSNS96.test.pdf",
                       type = rep(type, 4), grid = TRUE,
                       upper = TRUE,
                       xlabels = TRUE)

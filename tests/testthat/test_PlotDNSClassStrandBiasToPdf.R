@@ -31,7 +31,7 @@ test_that("PlotDNSClassStrandBiasToPdf function is working properly", {
 
   type <- c("counts", "signature")
   out <- PlotDNSClassStrandBiasToPdf(cat,
-                                     name = "PlotDNSClassStrandBias.test.pdf",
+                                     filename = "PlotDNSClassStrandBias.test.pdf",
                                      type = rep(type, 4))
   expect_equal(out, TRUE)
   unlink("PlotDNSClassStrandBias.test.pdf")
