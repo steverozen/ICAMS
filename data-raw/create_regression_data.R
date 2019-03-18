@@ -1,6 +1,6 @@
 # Source this file from ICAMS top level directory.
 
-cat(getwd(), "/n")
+cat(getwd(), "\n")
 
 files <- c("data-raw/VCF/HepG2_Cis_1_SNVresult_rmDup.vcf",
            "data-raw/VCF/HepG2_Cis_2_SNVresult_rmDup.vcf",
