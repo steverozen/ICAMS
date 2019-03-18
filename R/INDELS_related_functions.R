@@ -24,13 +24,10 @@
 #'  \item \code{seq.context} The sequence embedding the variant.
 #'
 #'  \item \code{seq.context.width} The width of \code{seq.context} to the left
-#'     of the variant. Does not include the "context base". TODO(Steve): do we need
-#'     to modify this function so that it can handle indel callers that do
-#'     not provide the "context base"?
 #' }
+#'
 #' @keywords internal
 AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
-
   genome <- NormalizeGenomeArg(genome)
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
@@ -287,7 +284,6 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'   in \code{context}.
 #'
 #' @export
-#'
 FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   n <- nchar(deleted.seq)
 
@@ -404,9 +400,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
 #' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
 #'
 #' @keywords internal
-#'
 FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
-
   n <- nchar(rep.unit.seq)
 
   # If rep.unit.seq is in context adjacent to pos, it might start at pos + 1 -
@@ -502,7 +496,6 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
 #' @return A string that is the canonical representation of the given insertion type
 #'
 #' @keywords internal
-
 Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
   if (trace > 0) {
    cat("Canonicalize1ID(", context, ",", ins.sequence, ",", pos, "\n")
@@ -578,7 +571,6 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @keywords internal
 CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
-
   if (trace > 1) {
     print(head(data.frame(
       context, left.pad = substr(context, 1, pos), pos, ref, alt,
@@ -628,8 +620,6 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @keywords internal
 CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
-  # TODO(Steve): more checking of the ID VCF here
-
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
                              ID.vcf$ALT,
@@ -640,7 +630,6 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
   tab.ID <- table(canon.ID)
 
   row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
-  # TODO(Steve): can reduce use of data.table?
 
   ID.dt <- as.data.table(tab.ID)
   # ID.dt has two columns, names cannon.dt (from the table() function
@@ -656,7 +645,6 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
   return(ID.mat[ICAMS::catalog.row.order$ID, , drop = F])
 }
 
-
 #' Create ID (insertion and deletion) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
@@ -668,7 +656,6 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #'
 #' @export
 VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
-
   ncol <- length(list.of.vcfs)
 
   # Create a 0-column matrix with the correct row labels.
@@ -688,4 +675,3 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
   colnames(catID) <- names(list.of.vcfs)
   return(catID)
 }
-
