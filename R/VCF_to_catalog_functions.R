@@ -3,14 +3,18 @@
 #' @param vcf said VCF as a data.frame.
 #'
 #' @return A vector of VAFs, one for each row of \code{vcf}.
+#'
 #' @name GetVAF
 NULL
 
 #' Read in the data lines of an SNS VCF created by Strelka version 1
+#'
 #' @importFrom utils read.csv
+#'
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
+#'
 #' @keywords internal
 ReadStrelkaSNSVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
@@ -55,14 +59,18 @@ ReadStrelkaSNSVCF <- function(path) {
 }
 
 #' Read in the data lines of an ID VCF created by Strelka version 1
+#'
 #' @importFrom utils read.csv
+#'
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
-#' @keywords internal
+#'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#'
+#' @keywords internal
 ReadStrelkaIDVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
@@ -84,6 +92,7 @@ ReadStrelkaIDVCF <- function(path) {
 }
 
 #' @rdname GetVAF
+#'
 #' @export
 GetStrelkaVAF <-function(vcf) {
   stopifnot(class(vcf) == "data.frame")
@@ -117,10 +126,13 @@ GetStrelkaVAF <-function(vcf) {
 
 #' Read in the data lines of a Variant Call Format (VCF) file created by
 #'     MuTect
+#'
 #' @importFrom utils read.csv
+#'
 #' @param path The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
+#'
 #' @keywords internal
 ReadMutectVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
@@ -164,6 +176,7 @@ ReadMutectVCF <- function(path) {
 }
 
 #' @rdname GetVAF
+#'
 #' @export
 GetMutectVAF <-function(vcf) {
   stopifnot(class(vcf) == "data.frame")
@@ -200,7 +213,6 @@ GetMutectVAF <-function(vcf) {
 #'
 #' @keywords internal
 SplitOneMutectVCF <- function(vcf.df) {
-
   # Mutect VCFs can represent multiple non-reference alleles at the
   # same site; the alleles are separated by commas in the ALT columm;
   # these are quite rare and often dubious, so we ignore them.
@@ -271,10 +283,15 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' Add sequence context to a data frame with mutation records
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
+#'
 #' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#'
 #' @importFrom methods as
+#'
 #' @importFrom BSgenome getSeq seqnames
+#'
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
+#'
 #' @import BSgenome.Hsapiens.UCSC.hg38
 #'
 #' @return A copy of the input data.frame with a new column added
@@ -319,12 +336,15 @@ AddSequence <- function(df, genome) {
 #' Add transcript information to a data frame with mutation records
 #'
 #' @param df A data frame storing mutation records of a VCF file.
+#'
 #' @param trans.ranges A data.table with the genomic ranges and
 #'     strands of transcripts.
+#'
 #' @import data.table
+#'
 #' @return A data frame with new columns added to the input data frame,
 #'     which contain the mutated gene's name, range and strand information.
-#' @export
+#'
 #' @keywords internal
 AddTranscript <- function(df, trans.ranges) {
   if (nrow(df) == 0) {
@@ -354,9 +374,6 @@ AddTranscript <- function(df, trans.ranges) {
 #' MakeVCFDNSdf Take DNS ranges and the original VCF and generate a VCF with
 #' dinucleotide REF and ALT alleles.
 #'
-#' @return A minimal VCF with only the columns \code{CHROM},
-#' \code{POS}, \code{ID}, \code{REF}, \code{ALT}.
-#'
 #' @param DNS.range.df Data frame with columns CHROM, LOW, HIGH
 #'
 #' @param SNS.vcf.dt A data table containing the VCF from which
@@ -364,10 +381,11 @@ AddTranscript <- function(df, trans.ranges) {
 #'
 #' @import data.table
 #'
+#' @return A minimal VCF with only the columns \code{CHROM},
+#' \code{POS}, \code{ID}, \code{REF}, \code{ALT}.
+#'
 #' @keywords internal
 MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
-  # TODO(Steve): add average VAF to the output.
-
   tmpvcf <- SNS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
   DNS.range.dt <- as.data.table(DNS.range.df)
   tmp1 <- merge(DNS.range.dt, tmpvcf,
@@ -391,10 +409,15 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
+#'
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
+#'
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
+#'
 #' @import data.table
+#'
 #' @importFrom GenomicRanges reduce
+#'
 #' @return A list of 3 in-memory objects with the elements:
 #' \enumerate{
 #'    \item \code{SNS.vcf}:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
@@ -404,6 +427,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
 #'    }
+#'
 #' @keywords internal
 SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot(class(vcf.df) == "data.frame")
@@ -514,7 +538,9 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
+#'
 #' @param list.of.vcfs A list of in-memory data frames containing Strelka SNS VCF file contents.
+#'
 #' @return A list of 3 in-memory objects with the elements:
 #'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
 #'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
@@ -522,6 +548,7 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
+#'
 #' @keywords internal
 SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
   split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
@@ -535,12 +562,15 @@ SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
 #' the column REF.
 #'
 #' @param vcf In-memory VCF as a data.frame; must be an SNS or DNS VCF.
+#'
 #' @param column.to.use The column name as a string of the column in the VCF
-#'   with the context information
+#'   with the context information.
+#'
 #' @return Throws error with location information if the value of REF is
 #'   inconsistent with the value of seq.21context. Assumes the first base of the
 #'   reference allele is at position (size(<context string>)-1)/2, and generates
 #'   error if this is not an integer. Indices are 1-based.
+#'
 #' @keywords internal
 CheckSeqContextInVCF <- function(vcf, column.to.use) {
   if (0 == nrow(vcf)) return()
@@ -569,6 +599,7 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #' file paths to the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
+#'
 #' @keywords internal
 ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSNSVCF)
@@ -602,18 +633,20 @@ ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
   return(split.vcfs)
 }
 
-
 #' Read Strelka ID (insertion and deletion) VCF files.
 #'
 #' @param vector.of.file.paths Character vector of
 #' file paths to the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
-#' @export
+#'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#'
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
+#'
+#' @export
 ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
@@ -627,6 +660,7 @@ ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
 #' file paths to the VCF files.
 #'
 #' @return A list of vcfs from vector.of.file.paths.
+#'
 #' @keywords internal
 ReadMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- lapply(vector.of.file.paths, FUN = ReadMutectVCF)
@@ -664,6 +698,7 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #' }
 #'
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
+#'
 #' @export
 ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
@@ -678,12 +713,17 @@ ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
 #'   AddTranscript functions. It must *not* contain indels and must *not*
 #'   contain DNS (double nucleotide substitutions), or triplet base substitutions
 #'   etc., even if encoded as neighboring SNS.
+#'
 #' @param sample.id Usually the sample id, but defaults to "count".
+#'
 #' @import data.table
+#'
 #' @return A list of three matrices containing the SNS mutation catalog:
 #'   96, 192, 1536 catalog respectively.
-#' @keywords internal
+#'
 #' @note catSNS192 only contains mutations in transcribed regions.
+#'
+#' @keywords internal
 CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -768,15 +808,19 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
+#'
 #' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
 #' @return A list of 3 SNS catalogs, one each for 96, 192, 1536:
 #'   catSNS96
 #'   catSNS192
 #'   catSNS1536
-#' @export
+#'
 #' @note SNS 192 catalog only contains mutations in transcribed regions.
+#'
+#' @export
 VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.SNS.vcfs)
 
@@ -821,12 +865,17 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
 #'   AddTranscript functions. It must *not* contain indels and must
 #'   *not* contain SNS (single nucleotide substitutions), or triplet base
 #'   substitutions etc.
+#'
 #' @param sample.id Usually the sample id, but defaults to "count".
+#'
 #' @import data.table
+#'
 #' @return A list of three matrices containing the DNS catalog:
 #'   catDNS78, catDNS144, catDNS136 respectively.
-#' @keywords internal
+#'
 #' @note DNS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @keywords internal
 CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -910,15 +959,19 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
+#'
 #' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
 #' @return A list of 3 DNS catalogs, one each for 78, 144, 136:
 #'   catDNS78
 #'   catDNS144
 #'   catDNS136
-#' @export
+#'
 #' @note DNS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @export
 VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   ncol <- length(list.of.DNS.vcfs)
 
@@ -976,9 +1029,9 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
 #'   and 3 DNS catalogs (one each for 78, 136, and 144)
 #'
-#' @export
-#'
 #' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @export
 StrelkaSNSVCFFilesToCatalog <-
   function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
@@ -992,14 +1045,19 @@ StrelkaSNSVCFFilesToCatalog <-
 #' Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}}
+#'
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Strelka ID VCF files.
+#'
 #' @param genome  A genome argument as described in \code{\link{ICAMS}}.
+#'
 #' @return  An ID (indel) catalog
-#' @export
+#'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
+#'
+#' @export
 StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
   vcfs <- ReadStrelkaIDVCFs(vector.of.file.paths)
   return(VCFsToIDCatalogs(vcfs, genome))
@@ -1012,19 +1070,21 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #'
 #' This function calls \code{\link{VCFsToSNSCatalogs}},
 #' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
+#'
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Mutect VCF files.
+#'
 #' @param genome  A genome argument as described in \code{\link{ICAMS}}.
+#'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
 #'
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536),
 #' 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
 #'
-#' @export
-#'
 #' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
-
+#'
+#' @export
 MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
@@ -1033,16 +1093,8 @@ MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) 
            list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome))))
 }
 
-#' CanonicalizeDNS
-#'
-#' @param ref.vec TODO
-#' @param alt.vec TODO
-#'
-#' @return TODO
 #' @keywords internal
 CanonicalizeDNS <- function(ref.vec, alt.vec) {
-  # TODO document
-
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   Canonicalize1DNS <- function(DNS) {
@@ -1060,15 +1112,8 @@ CanonicalizeDNS <- function(ref.vec, alt.vec) {
   return(ret)
 }
 
-#' CanonicalizeQUAD
-#'
-#' @param quad TODO
-#'
-#' @return TODO
 #' @keywords internal
 CanonicalizeQUAD <- function(quad) {
-  # TODO document
-
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
