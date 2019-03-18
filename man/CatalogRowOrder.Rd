@@ -9,6 +9,8 @@
   orders of row names in catalogs.}
 \usage{
 catalog.row.order
+
+catalog.row.order
 }
 \description{
 This data is designed for those
