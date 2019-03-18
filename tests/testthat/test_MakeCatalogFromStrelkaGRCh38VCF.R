@@ -1,7 +1,6 @@
-context("Making catalogs from Strelka VCFs")
+context("Making catalogs from Strelka GRCh38 VCFs")
 
 test_that("StrelkaSNSVCFFilesToCatalog", {
-
   cat1 <- StrelkaSNSVCFFilesToCatalog("testdata/Strelka.SNS.GRCh38.vcf",
                                       genome = BSgenome.Hsapiens.UCSC.hg38,
                                       trans.ranges = trans.ranges.GRCh38)
@@ -17,7 +16,6 @@ test_that("StrelkaSNSVCFFilesToCatalog", {
 
 
 test_that("StrelkaIDVCFFilesToCatalog", {
-
   cat4 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
                                        genome = BSgenome.Hsapiens.UCSC.hg38)
   cat5 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
