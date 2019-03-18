@@ -108,7 +108,7 @@ test_that("CreateOneColIDCatalog insertions", {
       stringsAsFactors = FALSE
     ))
   }
-  load("create_one_col_insert_test.Rdata")
+  load("testdata/create_one_col_insert_test.Rdata")
   expect_equal(
     ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 0),
     create.one.col.insert.test)
@@ -128,7 +128,7 @@ test_that("CreateOneColIDCatalog deletions", {
         seq.context.width = c(54, 24, 6, 6),
         stringsAsFactors = FALSE))
   }
-  load("create_one_col_delete_test.Rdata")
+  load("testdata/create_one_col_delete_test.Rdata")
   expect_equal(
     ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 0),
     create.one.col.delete.test)

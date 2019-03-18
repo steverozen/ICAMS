@@ -19,6 +19,6 @@ MakeTestDelVCF <- function() {
 create.one.col.delete.test <-
   CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 2)
 save(create.one.col.delete.test,
-     file="tests/testthat/create_one_col_delete_test.Rdata")
+     file="tests/testthat/testdata/create_one_col_delete_test.Rdata")
 
 
