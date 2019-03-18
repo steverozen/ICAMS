@@ -4,10 +4,10 @@
 \alias{WriteCat}
 \title{Write a catalog to a file.}
 \usage{
-WriteCat(ct, path, num.row, row.order, row.header, strict)
+WriteCat(catalog, path, num.row, row.order, row.header, strict)
 }
 \arguments{
-\item{ct}{A catalog.}
+\item{catalog}{A catalog.}
 
 \item{path}{The path of the file to be written.}
 

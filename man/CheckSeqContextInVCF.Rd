@@ -11,7 +11,7 @@ CheckSeqContextInVCF(vcf, column.to.use)
 \item{vcf}{In-memory VCF as a data.frame; must be an SNS or DNS VCF.}
 
 \item{column.to.use}{The column name as a string of the column in the VCF
-with the context information}
+with the context information.}
 }
 \value{
 Throws error with location information if the value of REF is

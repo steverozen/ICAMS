@@ -11,22 +11,22 @@
 \alias{WriteCatID}
 \title{Write catalog.}
 \usage{
-WriteCatSNS96(ct, path, strict = TRUE)
+WriteCatSNS96(catalog, path, strict = TRUE)
 
-WriteCatSNS192(ct, path, strict = TRUE)
+WriteCatSNS192(catalog, path, strict = TRUE)
 
-WriteCatSNS1536(ct, path, strict = TRUE)
+WriteCatSNS1536(catalog, path, strict = TRUE)
 
-WriteCatDNS78(ct, path, strict = TRUE)
+WriteCatDNS78(catalog, path, strict = TRUE)
 
-WriteCatDNS144(ct, path, strict = TRUE)
+WriteCatDNS144(catalog, path, strict = TRUE)
 
-WriteCatDNS136(ct, path, strict = TRUE)
+WriteCatDNS136(catalog, path, strict = TRUE)
 
-WriteCatID(ct, path, strict = TRUE)
+WriteCatID(catalog, path, strict = TRUE)
 }
 \arguments{
-\item{ct}{A catalog as defined in \code{\link{ICAMS}}.}
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
 
 \item{path}{The path of the file to be written on disk.}
 

@@ -24,9 +24,6 @@ A data frame with 2 new columns added to the input data frame:
  \item \code{seq.context} The sequence embedding the variant.
 
  \item \code{seq.context.width} The width of \code{seq.context} to the left
-    of the variant. Does not include the "context base". TODO(Steve): do we need
-    to modify this function so that it can handle indel callers that do
-    not provide the "context base"?
 }
 }
 \description{
