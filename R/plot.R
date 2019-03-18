@@ -60,9 +60,12 @@
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
 #'   its annotations(if it exists) sample name and legend(if it exists)
 #'   should be magnified relative to the default.
+#'
 #' @param grid If TRUE, draw grid lines in the graph.
+#'
 #' @param upper If TRUE, draw horizontal lines and the names of major mutation
 #'   class on top of graph.
+#'
 #' @param xlabels If TRUE, draw x axis labels.
 #'
 #' @return invisible(TRUE)
@@ -150,7 +153,6 @@ NULL
 #'
 #' @name PlotCatalogToPdf
 NULL
-
 
 ###############################################################################
 # Plotting functions for SNS96, SNS192 and SNS1536 catalog start here
