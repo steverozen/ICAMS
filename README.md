@@ -3,7 +3,7 @@
 ICAMS
 =====
 
-The goal of ICAMS is to do in-depth characterization and analysis of mutational signatures
+The goal of ICAMS is to do in-depth characterization and analysis of mutational signatures.
 
 Installation
 ------------
@@ -17,4 +17,4 @@ devtools::install_github(repo = "steverozen/ICAMS", ref = "version_1.0.0")
 Reference manual
 ----------------
 
-You can download the PDF manual from: (<https://github.com/steverozen/ICAMS/blob/version_1.0.0/data-raw/ICAMS_1.0.0.9000.pdf>)
+You can download the PDF manual from: <https://github.com/steverozen/ICAMS/blob/version_1.0.0/data-raw/ICAMS_1.0.0.9000.pdf>
