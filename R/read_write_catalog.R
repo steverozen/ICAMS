@@ -24,6 +24,10 @@
 #'
 #' @return A catalog in standard in-memory format.
 #'
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+#'
 #' @name ReadCatalog
 NULL
 
@@ -52,6 +56,10 @@ NULL
 #' @param path The path of the file to be written on disk.
 #'
 #' @param strict If TRUE, then fail if additional checks on the input fail.
+#'
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
 #'
 #' @name WriteCatalog
 NULL
