@@ -64,6 +64,7 @@ Collapse144To78 <- function(catalog) {
 #' @param abundance Either an abundance variable or string specifying an abundance.
 #'
 #' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
+#'
 #' @keywords internal
 NormalizeAbundanceArg <- function(abundance, which.n) {
   if (class(abundance) %in% c("integer", "numeric")) {
@@ -299,6 +300,7 @@ TransformCatalog <-
 #'
 #' @return A data frame whose Chromosome names are only in the form of 1:22, "X"
 #'   and "Y".
+#'
 #' @keywords internal
 StandardChromName <- function(df) {
   # Is there any row in df whose Chromosome names start with "GL"?
@@ -330,6 +332,7 @@ StandardChromName <- function(df) {
 #'   strand information and gene name. Only the following four gene types are
 #'   kept to facilitate transcriptional strand bias analysis: protein_coding,
 #'   retained_intron, processed_transcript and nonsense_mediated_decay.
+#'
 #' @keywords internal
 CreateTransRange <- function(path) {
   df <- read.csv(path, header = FALSE, fill = TRUE, nrows = 20)
@@ -367,14 +370,8 @@ CreateTransRange <- function(path) {
   return(StandardChromName(dt2[, c(1, 4, 5, 7, 9)]))
 }
 
-#' PyrTri
-#'
-#' @param mutstring TODO
-#'
-#' @return TODO
 #' @keywords internal
 PyrTri <- function(mutstring) {
-  # TODO (Steve) document
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 2, 2) %in% c("A", "G"),
@@ -384,14 +381,8 @@ PyrTri <- function(mutstring) {
   return(output)
 }
 
-#' PyrPenta
-#'
-#' @param mutstring TODO
-#'
-#' @return TODO
 #' @keywords internal
 PyrPenta <- function(mutstring) {
-  # TODO (Steve) document
   stopifnot(nchar(mutstring) == rep(6, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 3, 3) %in% c("A", "G"),
@@ -404,9 +395,12 @@ PyrPenta <- function(mutstring) {
 #' Reverse complement every string in \code{string.vec}.
 #'
 #' @param string.vec a vector of type character.
+#'
 #' @importFrom Biostrings reverseComplement DNAStringSet
+#'
 #' @return A vector of type characters with the reverse complement of every
 #'   string in \code{string.vec}.
+#'
 #' @export
 revc <- function(string.vec) {
   return(
@@ -458,6 +452,7 @@ RevcDNS144 <- function(mutstring) {
 #'   start end positions of genomic ranges.
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
+#'
 #' @keywords internal
 ReadTranscriptRanges <- function(path) {
   d <- utils::read.table(path)
@@ -474,7 +469,7 @@ ReadTranscriptRanges <- function(path) {
 #' @param path Path to the file with the transcript information (in bed format).
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
-#' @export
+#'
 #' @keywords internal
 ReadBedTranscriptRanges <- function(path) {
   names <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand")
@@ -500,6 +495,7 @@ ReadBedTranscriptRanges <- function(path) {
 #'
 #' @return A numeric vector whose names indicate 32 different types of 3 base pairs
 #'   combinations while its values indicate the occurrences of each type.
+#'
 #' @keywords internal
 CreateTrinucAbundance <- function(path) {
   dt <- fread(path)
@@ -516,9 +512,12 @@ CreateTrinucAbundance <- function(path) {
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
+#'
 #' @import data.table
+#'
 #' @return A numeric vector whose names indicate 10 different types of 2 base pairs
 #'   combinations while its values indicate the occurrences of each type.
+#'
 #' @keywords internal
 CreateDinucAbundance <- function(path) {
   dt <- fread(path)
@@ -539,9 +538,12 @@ CreateDinucAbundance <- function(path) {
 #'
 #' @param path Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
+#'
 #' @import data.table
+#'
 #' @return A numeric vector whose names indicate 136 different types of 4 base pairs
 #'   combinations while its values indicate the occurrences of each type.
+#'
 #' @keywords internal
 CreateTetranucAbundance <- function(path) {
   dt <- fread(path)
@@ -557,9 +559,12 @@ CreateTetranucAbundance <- function(path) {
 #'
 #' @param path Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
+#'
 #' @import data.table
+#'
 #' @return A numeric vector whose names indicate 512 different types of 5 base
 #'   pairs combinations while its values indicate the occurrences of each type.
+#'
 #' @keywords internal
 CreatePentanucAbundance <- function(path) {
   dt <- fread(path)
