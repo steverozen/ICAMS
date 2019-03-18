@@ -1,4 +1,4 @@
-Quad,data/HepG2_Cis_1_SNVresult_rmDup.vcf,data/HepG2_Cis_2_SNVresult_rmDup.vcf,data/HepG2_Cis_3_SNVresult_rmDup.vcf,data/HepG2_Cis_4_SNVresult_rmDup.vcf
+Quad,HepG2_Cis_1_SNVresult_rmDup,HepG2_Cis_2_SNVresult_rmDup,HepG2_Cis_3_SNVresult_rmDup,HepG2_Cis_4_SNVresult_rmDup
 AACA,0,0,1,0
 AACC,0,0,0,0
 AACG,0,0,0,0

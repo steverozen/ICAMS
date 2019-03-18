@@ -1,4 +1,4 @@
-Ref,Var,data/HepG2_Cis_1_SNVresult_rmDup.vcf,data/HepG2_Cis_2_SNVresult_rmDup.vcf,data/HepG2_Cis_3_SNVresult_rmDup.vcf,data/HepG2_Cis_4_SNVresult_rmDup.vcf
+Ref,Var,HepG2_Cis_1_SNVresult_rmDup,HepG2_Cis_2_SNVresult_rmDup,HepG2_Cis_3_SNVresult_rmDup,HepG2_Cis_4_SNVresult_rmDup
 AC,CA,0,0,1,0
 AC,CG,0,0,0,0
 AC,CT,0,1,1,0

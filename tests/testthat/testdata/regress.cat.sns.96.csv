@@ -1,4 +1,4 @@
-Mutation type,Trinucleotide,data/HepG2_Cis_1_SNVresult_rmDup.vcf,data/HepG2_Cis_2_SNVresult_rmDup.vcf,data/HepG2_Cis_3_SNVresult_rmDup.vcf,data/HepG2_Cis_4_SNVresult_rmDup.vcf
+Mutation type,Trinucleotide,HepG2_Cis_1_SNVresult_rmDup,HepG2_Cis_2_SNVresult_rmDup,HepG2_Cis_3_SNVresult_rmDup,HepG2_Cis_4_SNVresult_rmDup
 C>A,ACA,123,137,96,94
 C>A,ACC,390,389,415,252
 C>A,ACG,15,9,9,6

@@ -1,4 +1,4 @@
-Mutation type,Pentanucleotide,data/HepG2_Cis_1_SNVresult_rmDup.vcf,data/HepG2_Cis_2_SNVresult_rmDup.vcf,data/HepG2_Cis_3_SNVresult_rmDup.vcf,data/HepG2_Cis_4_SNVresult_rmDup.vcf
+Mutation type,Pentanucleotide,HepG2_Cis_1_SNVresult_rmDup,HepG2_Cis_2_SNVresult_rmDup,HepG2_Cis_3_SNVresult_rmDup,HepG2_Cis_4_SNVresult_rmDup
 C>A,AACAA,18,18,12,13
 C>A,AACAC,9,5,4,1
 C>A,AACAG,9,11,6,3
