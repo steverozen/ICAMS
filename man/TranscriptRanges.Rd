@@ -7,14 +7,14 @@
 \alias{trans.ranges.GRCh38}
 \title{Transcript ranges data}
 \format{A data.table which contains transcript range and strand information
-  for a particular organism.}
+  for a particular reference genome.}
 \usage{
 trans.ranges.GRCh37
 
 trans.ranges.GRCh38
 }
 \description{
-Transcript ranges and strand information for a particular organism
+Transcript ranges and strand information for a particular reference genome.
 }
 \details{
 \code{trans.ranges.GRCh37} A data.table which contains transcript range and

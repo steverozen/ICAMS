@@ -22,15 +22,19 @@ one of \code{"counts"}, \code{"signature"} or \code{"density"}.}
 \item{target.type}{A character specifying type of the output catalog,
 with the same possible values as \code{source.type}.}
 
-\item{source.abundance}{Either \code{NULL} or a numeric vector with one element
-for each source sequence for the mutation types in \code{catalog}
-or a string specifying such a vector, one of \code{"GRCh37.genome"},
+\item{source.abundance}{One of \enumerate{
+\item \code{NULL}, which indicates that the source type is
+a catalog of density-based spectra or signatures.
+\item A numeric vector with one element
+for each source sequence for the mutation types in \code{catalog},
+where by source we mean, for example, ACT as the source sequence
+for ACT > AGT mutations.
+\item A string specifying such a vector, one of \code{"GRCh37.genome"},
 \code{"GRCh37.exome"}, \code{"GRCh38.genome"}, or \code{"GRCh38.exome"}.
-This is the
-abundance upon which the counts, densities, or proportions
-in \code{catalog} are based. For example, for SNS in
-trinucleotide context, e.g. ACT > AGT or TAC > TTC, the source
-sequences are ACT and TAC.}
+}
+For the last two options, the numerical vector contains the
+abundance upon which the counts or proportions
+in \code{catalog} are based.}
 
 \item{target.abundance}{Same possibilities as \code{source.abundance}.}
 }

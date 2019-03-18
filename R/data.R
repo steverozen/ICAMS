@@ -19,7 +19,7 @@
 
 #' Transcript ranges data
 #'
-#' Transcript ranges and strand information for a particular organism
+#' Transcript ranges and strand information for a particular reference genome.
 #'
 #' \code{trans.ranges.GRCh37} A data.table which contains transcript range and
 #' strand information for \strong{Human} GRCh37. It is derived from a raw \strong{GFF3}
@@ -40,7 +40,7 @@
 #' function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
 #'
 #' @format A data.table which contains transcript range and strand information
-#'   for a particular organism.
+#'   for a particular reference genome.
 #'
 #' @name TranscriptRanges
 NULL

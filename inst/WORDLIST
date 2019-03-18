@@ -76,6 +76,7 @@ POS
 PyrPenta
 PyrTri
 rowname
+sanger
 SNS
 SNSs
 StrandToPdf
@@ -93,6 +94,7 @@ TT
 TTC
 TTGA
 undeleted
+uk
 VAF
 VAFs
 vcfs

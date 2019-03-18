@@ -2,13 +2,13 @@
 % Please edit documentation in R/test_functions.R
 \name{TestMakeCatalogFromMutectVCFs}
 \alias{TestMakeCatalogFromMutectVCFs}
-\title{This function is to make catalogs from the sample Mutect VCF file
-to compare with the expected catalog information.}
+\title{This function makes catalogs from the sample Mutect VCF file
+and compares it with the expected catalog information.}
 \usage{
 TestMakeCatalogFromMutectVCFs()
 }
 \description{
-This function is to make catalogs from the sample Mutect VCF file
-to compare with the expected catalog information.
+This function makes catalogs from the sample Mutect VCF file
+and compares it with the expected catalog information.
 }
 \keyword{internal}
