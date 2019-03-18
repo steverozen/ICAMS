@@ -20,6 +20,5 @@ test_that("AddAndCheckSequenceID with hg38", {
   expect_equal(df3, strelka.ID.vcf.GRCh38)
   expect_equal(df3, df4)
   expect_equal(df3, df5)
-
 })
 
