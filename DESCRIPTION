@@ -9,8 +9,9 @@ Description: A toolkit for analysis and visualization of experimentally
     presented in Boot et al., "In-depth characterization of the cisplatin
     mutational signature in human cell lines and in esophageal and liver 
     tumors", 2018, https://genome.cshlp.org/content/28/5/654.short. This 
-    package has functions to read in variant call files and to collate and
-    plot the mutational spectra. 
+    package has functions to read in variant call files and to collate the
+    corresponding catalog of mutational spectra and to plot catalogs of 
+    mutational spectra or signatures.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -27,13 +28,10 @@ Imports: Biostrings,
     grDevices,
     methods,
     RColorBrewer,
-    RCurl,
     stats,
     stringr,
     utils
 Depends: R (>= 3.5),
 RoxygenNote: 6.1.1
 Suggests: 
-    knitr,
-    rmarkdown,
     testthat
