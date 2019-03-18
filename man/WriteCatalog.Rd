@@ -52,3 +52,8 @@ Write a catalog to a file on disk.
 
 See also \code{\link{ReadCatalog}}
 }
+\note{
+In the ID (insertion and deletion) catalog, deletion repeat size
+  ranges from 0 to 5+, but for plotting and end user documentation it ranges
+  from 1 to 6+.
+}
