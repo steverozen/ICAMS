@@ -111,7 +111,7 @@ NULL
 #'
 #' @param catalog A catalog as described in \code{\link{ICAMS}}.
 #'
-#' @param name The name of the PDF file to be produced.
+#' @param filename The name of the PDF file to be produced.
 #'
 #' @param type A string specifying the type of the input catalog, one of:
 #' \enumerate{

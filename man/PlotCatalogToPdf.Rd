@@ -12,30 +12,30 @@
 \alias{PlotCatIDToPdf}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatSNS96ToPdf(catalog, name, type, id = colnames(catalog),
+PlotCatSNS96ToPdf(catalog, filename, type, id = colnames(catalog),
   grid = TRUE, upper = TRUE, xlabels = TRUE)
 
-PlotCatSNS192ToPdf(catalog, name, id = colnames(catalog),
+PlotCatSNS192ToPdf(catalog, filename, id = colnames(catalog),
   type = "counts", cex = 0.8)
 
-PlotSNSClassStrandBiasToPdf(catalog, name, type, id = colnames(catalog),
-  cex = 1)
+PlotSNSClassStrandBiasToPdf(catalog, filename, type,
+  id = colnames(catalog), cex = 1)
 
-PlotCatSNS1536ToPdf(catalog, name, type, id = colnames(catalog))
+PlotCatSNS1536ToPdf(catalog, filename, type, id = colnames(catalog))
 
-PlotCatDNS78ToPdf(catalog, name, type, id = colnames(catalog))
+PlotCatDNS78ToPdf(catalog, filename, type, id = colnames(catalog))
 
-PlotDNSClassStrandBiasToPdf(catalog, name, type, id = colnames(catalog),
-  cex = 1)
+PlotDNSClassStrandBiasToPdf(catalog, filename, type,
+  id = colnames(catalog), cex = 1)
 
-PlotCatDNS136ToPdf(catalog, name, type, id = colnames(catalog))
+PlotCatDNS136ToPdf(catalog, filename, type, id = colnames(catalog))
 
-PlotCatIDToPdf(catalog, name, type, id = colnames(catalog))
+PlotCatIDToPdf(catalog, filename, type, id = colnames(catalog))
 }
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
 
-\item{name}{The name of the PDF file to be produced.}
+\item{filename}{The name of the PDF file to be produced.}
 
 \item{type}{A string specifying the type of the input catalog, one of:
 \enumerate{
