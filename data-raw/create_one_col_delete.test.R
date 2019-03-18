@@ -1,4 +1,4 @@
-# Source this file from the top level directory.
+# Source this file from ICAMS top level directory.
 
 cat(getwd(), "\n")
 
