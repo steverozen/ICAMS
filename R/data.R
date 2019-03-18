@@ -13,6 +13,7 @@
 #'   is in the range from 0 to 5+, but for plotting
 #'   and end user documentation it ranges
 #'   from 1 to 6+.
+#'
 #' @name CatalogRowOrder
 "catalog.row.order"
 
@@ -40,6 +41,7 @@
 #'
 #' @format A data.table which contains transcript range and strand information
 #'   for a particular organism.
+#'
 #' @name TranscriptRanges
 NULL
 
