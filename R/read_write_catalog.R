@@ -1,56 +1,58 @@
-#' Read Catalog Functions
+#' Read catalog.
 #'
-#' Read a catalog in standardized format from path
+#' Read a catalog in standardized format from path.
 #'
-#' \code{ReadCatSNS96} Read a 96 SNS catalog from path
+#' \code{ReadCatSNS96} Read a 96 SNS catalog.
 #'
-#' \code{ReadCatSNS192} Read a 192 SNS catalog from path
+#' \code{ReadCatSNS192} Read a 192 SNS catalog.
 #'
-#' \code{ReadCatSNS1536} Read a 1536 SNS catalog from path
+#' \code{ReadCatSNS1536} Read a 1536 SNS catalog.
 #'
-#' \code{ReadCatDNS78} Read a 78 DNS catalog from path
+#' \code{ReadCatDNS78} Read a 78 DNS catalog.
 #'
-#' \code{ReadCatDNS144} Read a 144 DNS catalog from path
+#' \code{ReadCatDNS144} Read a 144 DNS catalog.
 #'
-#' \code{ReadCatDNS136} Read a 136 DNS catalog from path
+#' \code{ReadCatDNS136} Read a 136 DNS catalog.
 #'
-#' \code{ReadCatID} Read a ID (insertion/deletion) catalog from path.
-#' (Please take note that deletion repeat size ranges from 0 to 5+ in the
-#' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+#' \code{ReadCatID} Read an ID (insertion/deletion) catalog.
 #'
 #' See also \code{\link{WriteCatalog}}
+#'
 #' @param path Path to a catalog on disk in the standardized format.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#' @return A catalog in canonical in-memory format.
+#'
+#' @param strict If TRUE, then stop if additional checks on the input fail.
+#'
+#' @return A catalog in standard in-memory format.
+#'
 #' @name ReadCatalog
 NULL
 
-#' Write Catalog Functions
+#' Write catalog.
 #'
-#' Write a mutation catalog to a file on disk
+#' Write a catalog to a file on disk.
 #'
-#' \code{WriteCatSNS96} Write a SNS 96 mutation catalog to a file on disk
+#' \code{WriteCatSNS96} Write an SNS 96 catalog.
 #'
-#' \code{WriteCatSNS192} Write a SNS 192 mutation catalog to a file on disk
+#' \code{WriteCatSNS192} Write a SNS 192 catalog.
 #'
-#' \code{WriteCatSNS1536} Write a SNS 1536 mutation catalog to a file on disk
+#' \code{WriteCatSNS1536} Write a SNS 1536 catalog.
 #'
-#' \code{WriteCatDNS78} Write a DNS 78 mutation catalog to a file on disk
+#' \code{WriteCatDNS78} Write a DNS 78 catalog.
 #'
-#' \code{WriteCatDNS144} Write a DNS 144 mutation catalog to a file on disk
+#' \code{WriteCatDNS144} Write a DNS 144 catalog.
 #'
 #' \code{WriteCatDNS136} Write a 136 DNS catalog from path
 #'
-#' \code{WriteCatID} Write a ID (insertion/deletion) catalog to a file on disk.
-#' (Please take note that deletion repeat size ranges from 0 to 5+ in the
-#' catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+#' \code{WriteCatID} Write a ID (insertion/deletion) catalog.
 #'
 #' See also \code{\link{ReadCatalog}}
+#'
 #' @param ct A catalog as defined in \code{\link{ICAMS}}.
+#'
 #' @param path The path of the file to be written on disk.
-#' @param strict If TRUE, do additional checks on the input,
-#'   and stop if the checks fail.
+#'
+#' @param strict If TRUE, then fail if additional checks on the input fail.
+#'
 #' @name WriteCatalog
 NULL
 
@@ -245,19 +247,24 @@ ReadCatID <- function(path, strict = TRUE) {
   return(out)
 }
 
-#' @title Write a mutation catalog to a file on disk
+#' @title Write a catalog to a file.
 #'
-#' @description Called by exported functions to do the
-#' actual writing of the catalog to disk.
+#' @description This internal function is called by exported functions to do the
+#' actual writing of the catalog.
 #'
-#' @param ct A matrix of mutation catalog.
-#' @param path The path of the file to be written on disk.
+#' @param ct A catalog.
+#'
+#' @param path The path of the file to be written.
+#'
 #' @param num.row The number of rows in the file to be written.
+#'
 #' @param row.order The row order to be used for writing the file.
+#'
 #' @param row.header The row header to be used for writing the file.
-#' @param strict If TRUE, do additional checks on the input, and stop if the
-#'   checks fail.
-#' @return A catalog in canonical in-memory format.
+#'
+#' @param strict If TRUE, then stop if additional checks on the input fail.
+#'
+#' @return A catalog in standard in-memory format.
 #' @keywords internal
 WriteCat <- function(ct, path, num.row, row.order, row.header, strict) {
   mut.categories <- rownames(ct)

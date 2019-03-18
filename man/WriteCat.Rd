@@ -2,14 +2,14 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCat}
 \alias{WriteCat}
-\title{Write a mutation catalog to a file on disk}
+\title{Write a catalog to a file.}
 \usage{
 WriteCat(ct, path, num.row, row.order, row.header, strict)
 }
 \arguments{
-\item{ct}{A matrix of mutation catalog.}
+\item{ct}{A catalog.}
 
-\item{path}{The path of the file to be written on disk.}
+\item{path}{The path of the file to be written.}
 
 \item{num.row}{The number of rows in the file to be written.}
 
@@ -17,14 +17,13 @@ WriteCat(ct, path, num.row, row.order, row.header, strict)
 
 \item{row.header}{The row header to be used for writing the file.}
 
-\item{strict}{If TRUE, do additional checks on the input, and stop if the
-checks fail.}
+\item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
 \value{
-A catalog in canonical in-memory format.
+A catalog in standard in-memory format.
 }
 \description{
-Called by exported functions to do the
-actual writing of the catalog to disk.
+This internal function is called by exported functions to do the
+actual writing of the catalog.
 }
 \keyword{internal}

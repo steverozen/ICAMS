@@ -179,8 +179,8 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' @details
 #'
-#' This function is primarily for internal use, but we export it so that the
-#' logic behind it will be documented for users.
+#' This function is primarily for internal use, but we export it
+#' to document the underlying logic.
 #'
 #' Example:
 #'
@@ -214,7 +214,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' }
 #'
-#' The deletion caller can represent the
+#' Variant-caller software can represent the
 #' same deletion in several
 #' different, but completely equivalent, ways.
 #'
@@ -254,17 +254,20 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'                         ** --** --
 #' }
 #'
-#' \strong{But the function only flags this with a -1 return; it does not figure
+#' \strong{This function only flags this
+#' case with a -1 return; it does not figure
 #' out the repeat extent.}
 #'
-#' In the implementation, the function finds:
+#' This function finds:
 #'
 #' \enumerate{
 #'
-#' \item The maximum match of undeleted sequence on left that is
+#' \item The maximum match of undeleted sequence to the left
+#' of the deletion that is
 #' identical to the right end of the deleted sequence, and
 #'
-#' \item The maximum match of undeleted sequence on the right this
+#' \item The maximum match of undeleted sequence to the right
+#' of the deletion that
 #' is identical to the left end of the deleted sequence.
 #'}
 #'

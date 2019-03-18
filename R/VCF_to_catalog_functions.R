@@ -276,8 +276,10 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @importFrom BSgenome getSeq seqnames
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #' @import BSgenome.Hsapiens.UCSC.hg38
-#' @return A data frame with a new column added to the input data frame,
-#'     which contains sequence context information.
+#'
+#' @return A copy of the input data.frame with a new column added
+#'     that contains sequence context information.
+#'
 #' @keywords internal
 AddSequence <- function(df, genome) {
   if (0 == nrow(df)) return(df)
@@ -578,16 +580,21 @@ ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
 #' Read and split Strelka SNS VCF files.
 #'
 #' @param vector.of.file.paths Character vector of
-#' file paths to the VCF files.
+#' file paths to the Strelka SNS VCF files.
 #'
-#' @return A list of 3 in-memory objects with the elements:
-#'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
-#'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
-#'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
-#'    information (reference sequence, alternative sequence, context, etc.)
-#'    Additional information not fully implemented at this point because of
-#'    limited immediate biological interest.
+#' @return A list of 3 in-memory objects as follows:
+#' \enumerate{
+#'    \item \code{SNS.vcfs} List of data.frames of pure SNS mutations -- no DNS or 3+BS mutations.
+#'
+#'    \item \code{DNS.vcfs} List of data.frames of pure DNS mutations -- no SNS or 3+BS mutations.
+#'
+#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
+#'    rows that that in the input that did not represent SNSs or DNSs.
+#'
+#'    }
+#'
 #' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
+#'
 #' @export
 ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
@@ -631,7 +638,7 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #' Read and split Mutect VCF files.
 #'
 #' @param vector.of.file.paths Character vector of
-#' file paths to the VCF files.
+#' file paths to the Mutect VCF files.
 #'
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -959,9 +966,9 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' \code{\link{VCFsToDNSCatalogs}}.
 #'
 #' @param vector.of.file.paths Character vector of
-#' file paths to Strelka SNS VCF files.
+#' file paths to the Strelka SNS VCF files.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param genome A reference genome as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
@@ -1010,10 +1017,14 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #' @param genome  A genome argument as described in \code{\link{ICAMS}}.
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-#'   , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#'
+#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536),
+#' 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#'
 #' @export
-#' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
+
 MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)

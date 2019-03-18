@@ -5,7 +5,7 @@
 \alias{Collapse192To96}
 \alias{Collapse1536To96}
 \alias{Collapse144To78}
-\title{Collapse catalog functions}
+\title{"Collapse" a catalog.}
 \usage{
 Collapse192To96(catalog)
 
@@ -14,18 +14,22 @@ Collapse1536To96(catalog)
 Collapse144To78(catalog)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}}}
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
 }
 \value{
-A catalog as defined in \code{\link{ICAMS}}
+A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-Collapse a catalog matrix
+"Collapse" a catalog. Do not use this function for
+signature catalogs.
 }
 \details{
-\code{Collapse192To96} Collapse a SNS 192 catalog matrix to a SNS 96 catalog matrix.
+\code{Collapse192To96} Collapse an SNS 192 catalog
+to an SNS 96 catalog.
 
-\code{Collapse1536To96} Collapse a SNS 1536 catalog matrix to a SNS 96 catalog matrix.
+\code{Collapse1536To96} Collapse an SNS 1536 catalog
+ to an SNS 96 catalog.
 
-\code{Collapse144To78} Collapse a DNS 144 catalog matrix to a DNS 78 catalog matrix.
+\code{Collapse144To78} Collapse a DNS 144 catalog
+to a DNS 78 catalog.
 }

@@ -4,15 +4,15 @@
 \alias{TransformCatalog}
 \title{Transform between count and density catalogs
  and signatures and between different
-source sequence abundances.}
+source-sequence abundances.}
 \usage{
 TransformCatalog(catalog, which.n, source.type,
   target.type = source.type, source.abundance = NULL,
   target.abundance = NULL)
 }
 \arguments{
-\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}}. The
-input catalog can \strong{not} be an ID (indel) catalog.}
+\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
+must \strong{not} be an ID (indel) catalog.}
 
 \item{which.n}{The length of the source sequences, one of 2:5.}
 
@@ -40,22 +40,25 @@ A catalog as defined in \code{\link{ICAMS}}
 \description{
 Transform between count and density catalogs
  and signatures and between different
-source sequence abundances.
+source-sequence abundances.
 }
 \details{
-Only certain transformations are legal.
+Only certain parings of type and abundance are legal, as follows:
 \enumerate{
 
 \item The type \code{"density"} must always be associated with a \code{NULL}
 abundance.
 
-\item The type \code{"signature"} can be associated with a \code{NULL}
-abundance.
+\item The type \code{"signature"} is allowed to be associated with a \code{NULL}
+abundance. A \code{NULL} abundance indicates that the signature
+is a "density-based" signature (see \code{\link{ICAMS}}).
 
 \item The type \code{"counts"} must \strong{not} be associated with
  the \code{NULL} abundance.
+}
 
-\item Otherwise, the following are legal:
+Only the following transformations are legal:
+
 \enumerate{
 \item \code{counts -> counts}
 \item \code{counts -> density}
@@ -65,7 +68,5 @@ infer the genome-wide or exome wide counts based on the
 densities.)
 \item \code{density -> signature}
 \item \code{signature -> signature}
-}
-
 }
 }

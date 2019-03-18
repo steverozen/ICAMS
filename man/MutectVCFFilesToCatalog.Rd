@@ -16,8 +16,8 @@ file paths to the Mutect VCF files.}
 strand information.}
 }
 \value{
-A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-  , 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+A list of 3 SNS catalogs (one each for 96, 192, and 1536),
+3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
 }
 \description{
 Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
@@ -28,5 +28,5 @@ This function calls \code{\link{VCFsToSNSCatalogs}},
 \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
 }

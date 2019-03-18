@@ -83,7 +83,7 @@ abundance.5bp.exome.GRCm38
 abundance.5bp.genome.GRCm38
 }
 \description{
-Nucleotide abundance information for a particular organism
+Nucleotide n-mer abundance (counts) for a particular reference genome.
 }
 \details{
 \code{abundance.2bp.genome.GRCh37}, \code{abundance.2bp.exome.GRCh37} A named

@@ -8,16 +8,19 @@ ReadAndSplitStrelkaSNSVCFs(vector.of.file.paths)
 }
 \arguments{
 \item{vector.of.file.paths}{Character vector of
-file paths to the VCF files.}
+file paths to the Strelka SNS VCF files.}
 }
 \value{
-A list of 3 in-memory objects with the elements:
-   SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
-   DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
-   ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
-   information (reference sequence, alternative sequence, context, etc.)
-   Additional information not fully implemented at this point because of
-   limited immediate biological interest.
+A list of 3 in-memory objects as follows:
+\enumerate{
+   \item \code{SNS.vcfs} List of data.frames of pure SNS mutations -- no DNS or 3+BS mutations.
+
+   \item \code{DNS.vcfs} List of data.frames of pure DNS mutations -- no SNS or 3+BS mutations.
+
+   \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
+   rows that that in the input that did not represent SNSs or DNSs.
+
+   }
 }
 \description{
 Read and split Strelka SNS VCF files.

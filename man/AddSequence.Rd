@@ -12,8 +12,8 @@ AddSequence(df, genome)
 \item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
 }
 \value{
-A data frame with a new column added to the input data frame,
-    which contains sequence context information.
+A copy of the input data.frame with a new column added
+    that contains sequence context information.
 }
 \description{
 Add sequence context to a data frame with mutation records

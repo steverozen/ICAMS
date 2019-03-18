@@ -9,7 +9,7 @@
 \alias{ReadCatDNS144}
 \alias{ReadCatDNS136}
 \alias{ReadCatID}
-\title{Read Catalog Functions}
+\title{Read catalog.}
 \usage{
 ReadCatSNS96(path, strict = TRUE)
 
@@ -28,31 +28,28 @@ ReadCatID(path, strict = TRUE)
 \arguments{
 \item{path}{Path to a catalog on disk in the standardized format.}
 
-\item{strict}{If TRUE, do additional checks on the input, and stop if the
-checks fail.}
+\item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
 \value{
-A catalog in canonical in-memory format.
+A catalog in standard in-memory format.
 }
 \description{
-Read a catalog in standardized format from path
+Read a catalog in standardized format from path.
 }
 \details{
-\code{ReadCatSNS96} Read a 96 SNS catalog from path
+\code{ReadCatSNS96} Read a 96 SNS catalog.
 
-\code{ReadCatSNS192} Read a 192 SNS catalog from path
+\code{ReadCatSNS192} Read a 192 SNS catalog.
 
-\code{ReadCatSNS1536} Read a 1536 SNS catalog from path
+\code{ReadCatSNS1536} Read a 1536 SNS catalog.
 
-\code{ReadCatDNS78} Read a 78 DNS catalog from path
+\code{ReadCatDNS78} Read a 78 DNS catalog.
 
-\code{ReadCatDNS144} Read a 144 DNS catalog from path
+\code{ReadCatDNS144} Read a 144 DNS catalog.
 
-\code{ReadCatDNS136} Read a 136 DNS catalog from path
+\code{ReadCatDNS136} Read a 136 DNS catalog.
 
-\code{ReadCatID} Read a ID (insertion/deletion) catalog from path.
-(Please take note that deletion repeat size ranges from 0 to 5+ in the
-catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+\code{ReadCatID} Read an ID (insertion/deletion) catalog.
 
 See also \code{\link{WriteCatalog}}
 }

@@ -10,7 +10,7 @@
 \alias{PlotDNSClassStrandBias}
 \alias{PlotCatDNS136}
 \alias{PlotCatID}
-\title{Plot catalog functions}
+\title{Plot one spectrum or signature.}
 \usage{
 PlotCatSNS96(catalog, type, id = colnames(catalog), cex = 0.8,
   grid = TRUE, upper = TRUE, xlabels = TRUE)
@@ -30,24 +30,32 @@ PlotCatDNS136(catalog, type, id = colnames(catalog))
 PlotCatID(catalog, type, id = colnames(catalog))
 }
 \arguments{
-\item{catalog}{A catalog as described in \code{\link{ICAMS}}. Please see
+\item{catalog}{A one-column catalog as described in \code{\link{ICAMS}}. Please see
 \code{\link{ICAMS}} if you need to create a catalog from a source
 other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
 or \code{\link{StrelkaSNSVCFFilesToCatalog}},
 \code{\link{MutectVCFFilesToCatalog}}, etc.}
 
-\item{type}{A character specifying type of the input catalog, one of
-\code{"counts"}, \code{"signature"} or \code{"density"}. If type =
-"counts", the graph will plot the occurrences of the mutation types in the
-sample. If type = "signature", the graph will plot mutation signatures of
-the sample. If type = "density", the graph will plot the rates of mutations
-per million nucleotides for each mutation type. (Please take note there is
-no "signature" type for PlotCatDNS136 function,
-no "density" type for PlotCatID function and the option of type = "density"
-is not implemented for function PlotCatSNS192, PlotSNSClassStrandBias and
-PlotDNSClassStrandBias at the current stage.)}
+\item{type}{A string specifying the type of the input catalog, one of:
+\enumerate{
 
-\item{id}{The identifier of the sample which has mutations.}
+  \item "counts": show the counts of each mutation type.
+
+  \item "density", show the rates of mutations
+  per million source n-mers for each mutation type;
+  not supported
+  for \code{\link{PlotCatIDToPdf}},
+  \code{\link{PlotCatSNS192ToPdf}},
+  \code{\link{PlotSNSClassStrandBiasToPdf}}, and
+  \code{\link{PlotDNSClassStrandBiasToPdf}}.
+  \item "signature", show the proportions of each
+  mutation type; not supported for
+  \code{\link{PlotCatDNS136ToPdf}}.
+
+}}
+
+\item{id}{A vector containing the identifiers of the samples
+or signatures in \code{catalog}.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -65,12 +73,12 @@ class on top of graph.}
 invisible(TRUE)
 }
 \description{
-Plot the catalog of one sample which has mutations
+Plot the spectrum of one sample or plot one signature.
 }
 \details{
-\code{PlotCatSNS96} Plot the SNS 96 mutation catalog of one sample.
+\code{PlotCatSNS96} Plot an SNS 96 spectrum or signature.
 
-\code{PlotCatSNS192} Plot the SNS 192 mutation catalog of one sample.
+\code{PlotCatSNS192} Plot an SNS 192 spectrum or signature.
 
 \code{PlotSNSClassStrandBias} Plot the transcription strand bias graph of 6 SNS
 mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
@@ -82,7 +90,7 @@ position, third letter T refers to the base which has mutation, next second
 2-letters TA refers to (+1, +2) position, last letter T refers to the base
 after mutation.
 
-\code{PlotCatDNS78} Plot the DNS 78 mutation catalog of one sample.
+\code{PlotCatDNS78} Plot a DNS 78 spectrum or signature.
 
 \code{PlotDNSClassStrandBias} Plot the transcription strand bias graph of 10 major DNS
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
@@ -92,7 +100,5 @@ mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
 "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
 
-\code{PlotCatID} Plot the insertion and deletion catalog of one sample.
-(Please take note that deletion repeat size ranges from 0 to 5+ in the
-catalog, but for plotting and end user documentation it ranges from 1 to 6+.)
+\code{PlotCatID} Plot an insertion and deletion spectrum or signature.
 }

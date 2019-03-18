@@ -8,7 +8,7 @@ ReadAndSplitMutectVCFs(vector.of.file.paths)
 }
 \arguments{
 \item{vector.of.file.paths}{Character vector of
-file paths to the VCF files.}
+file paths to the Mutect VCF files.}
 }
 \value{
 A list with 3 in-memory VCFs and two left-over
