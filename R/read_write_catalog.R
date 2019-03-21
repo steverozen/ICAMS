@@ -2,23 +2,18 @@
 #'
 #' Read a catalog in standardized format from path.
 #'
-#' \code{ReadCatSNS96} Read a 96 SNS catalog.
-#'
-#' \code{ReadCatSNS192} Read a 192 SNS catalog.
-#'
-#' \code{ReadCatSNS1536} Read a 1536 SNS catalog.
-#'
-#' \code{ReadCatDNS78} Read a 78 DNS catalog.
-#'
-#' \code{ReadCatDNS144} Read a 144 DNS catalog.
-#'
-#' \code{ReadCatDNS136} Read a 136 DNS catalog.
-#'
-#' \code{ReadCatID} Read an ID (insertion/deletion) catalog.
-#'
 #' See also \code{\link{WriteCatalog}}
 #'
 #' @param path Path to a catalog on disk in the standardized format.
+#'
+#' @param ref.genome A character string acting as a genome identifier, one of
+#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "signature".
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
@@ -28,8 +23,102 @@
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #'
-#' @name ReadCatalog
-NULL
+#' @export
+ReadCatalog <- function(path, ref.genome, region, type, strict = TRUE) {
+  if (CheckCatalogAttribute(ref.genome, region, type)) {
+    class.of.catalog <- CheckClassOfCatalog(path)
+    UseMethod(generic = "ReadCatalog", object = class.of.catalog)
+  }
+}
+
+#' Check attributes of catalog specified by user
+#'
+#' @param ref.genome A character string acting as a genome identifier, one of
+#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "signature".
+#'
+#' @return TRUE
+#'
+#' @keywords internal
+CheckCatalogAttribute <- function(ref.genome, region, type) {
+  if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38")) {
+    stop("Unrecoginzed reference genome identifier: ", ref.genome,
+         "\nNeed one of GRCh38, hg38, GRCh37, hg19")
+  }
+  if (!region %in% c("genome", "exome")) {
+    stop("Unrecoginzed region identifier: ", region,
+         "\nNeed one of genome, exome")
+  }
+  if (!type %in% c("counts", "density", "signature")) {
+    stop("Unrecoginzed catalog type identifier: ", type,
+         "\nNeed one of counts, density, signature")
+  }
+  return(TRUE)
+}
+
+#' Create a S3 object of class "catalog"
+#'
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#'
+#' @param ref.genome A character string acting as a genome identifier, one of
+#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "signature".
+#'
+#' @return A S3 object of class "catalog".
+#'
+#' @keywords internal
+CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
+  if (type == "counts") {
+    catalog <- list(catalog = catalog, ref.genome = ref.genome,
+                    region = region, type = type, counts = list(catalog))
+    names(catalog$counts) <-
+      paste0("ref.genome: ", ref.genome, " region: ", region)
+  } else {
+    catalog <- list(catalog = catalog, ref.genome = ref.genome,
+                    region = region, type = type, counts = NULL)
+  }
+  class(catalog) <- "catalog"
+  return(catalog)
+}
+
+#' Check the class of catalog
+#'
+#' @param path Path to a catalog on disk in the standardized format.
+#'
+#' @return an object with the corresponding class type of catalog.
+#'
+#' @keywords internal
+CheckClassOfCatalog <- function(path) {
+  cos <- data.table::fread(path)
+  if (nrow(cos) == 96) {
+    structure("catalog", class = "SNS96")
+  } else if (nrow(cos) == 192) {
+    structure("catalog", class = "SNS192")
+  } else if (nrow(cos) == 1536) {
+    structure("catalog", class = "SNS1536")
+  } else if (nrow(cos) == 78) {
+    structure("catalog", class = "DNS78")
+  } else if (nrow(cos) == 144) {
+    structure("catalog", class = "DNS144")
+  } else if (nrow(cos) == 136) {
+    structure("catalog", class = "DNS136")
+  } else if (nrow(cos) == 83) {
+    structure("catalog", class = "ID")
+  } else {
+    stop("The catalog seems not to be a standard catalog supported by ICAMS",
+         "number of rows is ", nrow(cos))
+  }
+}
 
 #' Write catalog
 #'
@@ -52,9 +141,7 @@ WriteCatalog <- function(catalog, path, strict = TRUE) {
   UseMethod("WriteCatalog")
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatSNS96 <- function(path, strict = TRUE) {
+ReadCatalog.SNS96 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -73,12 +160,10 @@ ReadCatSNS96 <- function(path, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS96, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatSNS192 <- function(path, strict = TRUE) {
+ReadCatalog.SNS192 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
@@ -108,12 +193,10 @@ ReadCatSNS192 <- function(path, strict = TRUE) {
   out <- as.matrix(out)
   rownames(out) <- tmp
   out <- out[ICAMS::catalog.row.order$SNS192, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatSNS1536 <- function(path, strict = TRUE) {
+ReadCatalog.SNS1536 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -132,12 +215,10 @@ ReadCatSNS1536 <- function(path, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS1536, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatDNS78 <- function(path, strict = TRUE) {
+ReadCatalog.DNS78 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 78)
   if (strict) {
@@ -179,12 +260,10 @@ ReadCatDNS78 <- function(path, strict = TRUE) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS78)
   }
   out <- out[ICAMS::catalog.row.order$DNS78, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatDNS144 <- function(path, strict = TRUE) {
+ReadCatalog.DNS144 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 144)
   if (strict) {
@@ -199,12 +278,10 @@ ReadCatDNS144 <- function(path, strict = TRUE) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS144)
   }
   out <- out[ICAMS::catalog.row.order$DNS144, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatDNS136 <- function(path, strict = TRUE) {
+ReadCatalog.DNS136 <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -218,12 +295,10 @@ ReadCatDNS136 <- function(path, strict = TRUE) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS136)
   }
   out <- out[ICAMS::catalog.row.order$DNS136, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
-#' @rdname ReadCatalog
-#' @export
-ReadCatID <- function(path, strict = TRUE) {
+ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 83)
   cn <- names(cos)
@@ -240,7 +315,7 @@ ReadCatID <- function(path, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$ID, ]
-  return(out)
+  return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
 #' @title Write a catalog to a file.
@@ -268,7 +343,7 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
   if (strict) {
     stopifnot(mut.categories == row.order)
   }
-  catalog <- catalog[row.order, ]
+  catalog <- catalog[row.order, , drop = FALSE]
   DT <- as.data.table(catalog)
   fwrite(cbind(row.header, DT), file = path)
 }
