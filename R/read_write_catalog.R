@@ -17,7 +17,8 @@
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
-#' @return A catalog in standard in-memory format.
+#' @return An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -37,7 +38,8 @@ ReadCatalog <- function(path, ref.genome, region, type, strict = TRUE) {
 #'
 #' See also \code{\link{ReadCatalog}}
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param path The path of the file to be written on disk.
 #'
@@ -49,7 +51,8 @@ ReadCatalog <- function(path, ref.genome, region, type, strict = TRUE) {
 #'
 #' @export
 WriteCatalog <- function(catalog, path, strict = TRUE) {
-  UseMethod("WriteCatalog")
+  class.of.catalog <- CheckClassOfCatalog(catalog)
+  UseMethod(generic = "WriteCatalog", object = class.of.catalog)
 }
 
 ReadCatalog.SNS96 <- function(path, ref.genome, region, type, strict = TRUE) {
@@ -234,7 +237,8 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #' @description This internal function is called by exported functions to do the
 #' actual writing of the catalog.
 #'
-#' @param catalog A catalog.
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param path The path of the file to be written.
 #'
@@ -247,14 +251,15 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
 #' @return A catalog in standard in-memory format.
+#'
 #' @keywords internal
 WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
-  mut.categories <- rownames(catalog)
-  stopifnot(num.row == nrow(catalog))
+  mut.categories <- rownames(catalog$catalog)
+  stopifnot(num.row == nrow(catalog$catalog))
   if (strict) {
     stopifnot(mut.categories == row.order)
   }
-  catalog <- catalog[row.order, , drop = FALSE]
+  catalog <- catalog$catalog[row.order, , drop = FALSE]
   DT <- as.data.table(catalog)
   fwrite(cbind(row.header, DT), file = path)
 }
