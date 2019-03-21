@@ -604,3 +604,33 @@ NormalizeGenomeArg <- function(genome) {
   }
   return(genome)
 }
+
+#' Check attributes of catalog specified by user
+#'
+#' @param ref.genome A character string acting as a genome identifier, one of
+#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "signature".
+#'
+#' @return TRUE
+#'
+#' @keywords internal
+CheckCatalogAttribute <- function(ref.genome, region, type) {
+  if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38")) {
+    stop("Unrecoginzed reference genome identifier: ", ref.genome,
+         "\nNeed one of GRCh38, hg38, GRCh37, hg19")
+  }
+  if (!region %in% c("genome", "exome")) {
+    stop("Unrecoginzed region identifier: ", region,
+         "\nNeed one of genome, exome")
+  }
+  if (!type %in% c("counts", "density", "signature")) {
+    stop("Unrecoginzed catalog type identifier: ", type,
+         "\nNeed one of counts, density, signature")
+  }
+  return(TRUE)
+}
