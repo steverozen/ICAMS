@@ -2,23 +2,22 @@ context("Read and Write Catalog")
 
 test_that("Functions for reading and writing catalog are working properly", {
   read.fn <-
-    c(ReadCatSNS96,
-      ReadCatSNS192,
-      ReadCatSNS1536,
-      ReadCatDNS78,
-      ReadCatDNS144,
-      ReadCatDNS136,
-      ReadCatID
-    )
+    c(ReadCatalog,
+      ReadCatalog,
+      ReadCatalog,
+      ReadCatalog,
+      ReadCatalog,
+      ReadCatalog,
+      ReadCatalog)
 
   write.fn <-
-    c(WriteCatSNS96,
-      WriteCatSNS192,
-      WriteCatSNS1536,
-      WriteCatDNS78,
-      WriteCatDNS144,
-      WriteCatDNS136,
-      WriteCatID)
+    c(WriteCatalog,
+      WriteCatalog,
+      WriteCatalog,
+      WriteCatalog,
+      WriteCatalog,
+      WriteCatalog,
+      WriteCatalog)
 
   fl <-
     c("testdata/BTSG_WGS_PCAWG.sns.96.csv",
@@ -31,9 +30,11 @@ test_that("Functions for reading and writing catalog are working properly", {
     )
 
   Test1Cat <- function(my.read, my.write, my.file) {
-    ct1 <- my.read(my.file)
+    ct1 <- my.read(my.file, ref.genome = "GRCh37",
+                   region = "genome", type = "counts")
     my.write(ct1, "tmp.ct.txt")
-    ct2 <- my.read("tmp.ct.txt")
+    ct2 <- my.read("tmp.ct.txt", ref.genome = "GRCh37",
+                   region = "genome", type = "counts")
     expect_equal(ct1, ct2)
   }
 
