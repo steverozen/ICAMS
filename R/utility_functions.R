@@ -634,3 +634,33 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
   }
   return(TRUE)
 }
+
+#' Create a S3 object of class "catalog"
+#'
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#'
+#' @param ref.genome A character string acting as a genome identifier, one of
+#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "signature".
+#'
+#' @return A S3 object of class "catalog".
+#'
+#' @keywords internal
+CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
+  if (type == "counts") {
+    catalog <- list(catalog = catalog, ref.genome = ref.genome,
+                    region = region, type = type, counts = list(catalog))
+    names(catalog$counts) <-
+      paste0("ref.genome: ", ref.genome, " region: ", region)
+  } else {
+    catalog <- list(catalog = catalog, ref.genome = ref.genome,
+                    region = region, type = type, counts = NULL)
+  }
+  class(catalog) <- "catalog"
+  return(catalog)
+}
