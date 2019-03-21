@@ -635,6 +635,35 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
   return(TRUE)
 }
 
+#' Check the class of catalog
+#'
+#' @param path Path to a catalog on disk in the standardized format.
+#'
+#' @return an object with the corresponding class type of catalog.
+#'
+#' @keywords internal
+CheckClassOfCatalog <- function(path) {
+  cos <- data.table::fread(path)
+  if (nrow(cos) == 96) {
+    structure("catalog", class = "SNS96")
+  } else if (nrow(cos) == 192) {
+    structure("catalog", class = "SNS192")
+  } else if (nrow(cos) == 1536) {
+    structure("catalog", class = "SNS1536")
+  } else if (nrow(cos) == 78) {
+    structure("catalog", class = "DNS78")
+  } else if (nrow(cos) == 144) {
+    structure("catalog", class = "DNS144")
+  } else if (nrow(cos) == 136) {
+    structure("catalog", class = "DNS136")
+  } else if (nrow(cos) == 83) {
+    structure("catalog", class = "ID")
+  } else {
+    stop("The catalog seems not to be a standard catalog supported by ICAMS",
+         "number of rows is ", nrow(cos))
+  }
+}
+
 #' Create a S3 object of class "catalog"
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
