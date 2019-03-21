@@ -635,6 +635,34 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
   return(TRUE)
 }
 
+#' Check the class of catalog
+#'
+#' @param catalog An S3 object with class "catalog".
+#'
+#' @return an object with the corresponding class type of catalog.
+#'
+#' @keywords internal
+CheckClassOfCatalog <- function(catalog) {
+  if (nrow(catalog$catalog) == 96) {
+    structure("catalog", class = "SNS96")
+  } else if (nrow(catalog$catalog) == 192) {
+    structure("catalog", class = "SNS192")
+  } else if (nrow(catalog$catalog) == 1536) {
+    structure("catalog", class = "SNS1536")
+  } else if (nrow(catalog$catalog) == 78) {
+    structure("catalog", class = "DNS78")
+  } else if (nrow(catalog$catalog) == 144) {
+    structure("catalog", class = "DNS144")
+  } else if (nrow(catalog$catalog) == 136) {
+    structure("catalog", class = "DNS136")
+  } else if (nrow(catalog$catalog) == 83) {
+    structure("catalog", class = "ID")
+  } else {
+    stop("The catalog seems not to be a standard catalog supported by ICAMS",
+         "number of rows is ", nrow(catalog$catalog))
+  }
+}
+
 #' Check the class of catalog from path
 #'
 #' @param path Path to a catalog on disk in the standardized format.
@@ -679,7 +707,7 @@ CheckClassOfCatalogFromPath <- function(path) {
 #'
 #' @return A S3 object of class "catalog".
 #'
-#' @keywords internal
+#' @export
 CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
   if (type == "counts") {
     catalog <- list(catalog = catalog, ref.genome = ref.genome,
