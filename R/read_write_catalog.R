@@ -31,23 +31,9 @@
 #' @name ReadCatalog
 NULL
 
-#' Write catalog.
+#' Write catalog
 #'
 #' Write a catalog to a file on disk.
-#'
-#' \code{WriteCatSNS96} Write an SNS 96 catalog.
-#'
-#' \code{WriteCatSNS192} Write a SNS 192 catalog.
-#'
-#' \code{WriteCatSNS1536} Write a SNS 1536 catalog.
-#'
-#' \code{WriteCatDNS78} Write a DNS 78 catalog.
-#'
-#' \code{WriteCatDNS144} Write a DNS 144 catalog.
-#'
-#' \code{WriteCatDNS136} Write a 136 DNS catalog from path
-#'
-#' \code{WriteCatID} Write a ID (insertion/deletion) catalog.
 #'
 #' See also \code{\link{ReadCatalog}}
 #'
@@ -61,8 +47,10 @@ NULL
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #'
-#' @name WriteCatalog
-NULL
+#' @export
+WriteCatalog <- function(catalog, path, strict = TRUE) {
+  UseMethod("WriteCatalog")
+}
 
 #' @rdname ReadCatalog
 #' @export
@@ -285,51 +273,37 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
   fwrite(cbind(row.header, DT), file = path)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatSNS96 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS96 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SNS96,
            catalog.row.headers.SNS.96, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatSNS192 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS192 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SNS192,
            catalog.row.headers.SNS.192, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatSNS1536 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS1536 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SNS1536,
            catalog.row.headers.SNS.1536, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatDNS78 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS78 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DNS78,
            catalog.row.headers.DNS.78, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatDNS144 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS144 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DNS144,
            catalog.row.headers.DNS.144, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatDNS136 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS136 <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DNS136,
            catalog.row.headers.DNS.136, strict)
 }
 
-#' @rdname WriteCatalog
-#' @export
-WriteCatID <- function(catalog, path, strict = TRUE) {
+WriteCatalog.ID <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 83, ICAMS::catalog.row.order$ID,
            catalog.row.headers.ID, strict)
 }

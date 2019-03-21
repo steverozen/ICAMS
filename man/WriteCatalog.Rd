@@ -2,28 +2,9 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCatalog}
 \alias{WriteCatalog}
-\alias{WriteCatSNS96}
-\alias{WriteCatSNS192}
-\alias{WriteCatSNS1536}
-\alias{WriteCatDNS78}
-\alias{WriteCatDNS144}
-\alias{WriteCatDNS136}
-\alias{WriteCatID}
 \title{Write catalog.}
 \usage{
-WriteCatSNS96(catalog, path, strict = TRUE)
-
-WriteCatSNS192(catalog, path, strict = TRUE)
-
-WriteCatSNS1536(catalog, path, strict = TRUE)
-
-WriteCatDNS78(catalog, path, strict = TRUE)
-
-WriteCatDNS144(catalog, path, strict = TRUE)
-
-WriteCatDNS136(catalog, path, strict = TRUE)
-
-WriteCatID(catalog, path, strict = TRUE)
+WriteCatalog(catalog, path, strict = TRUE)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
@@ -36,20 +17,6 @@ WriteCatID(catalog, path, strict = TRUE)
 Write a catalog to a file on disk.
 }
 \details{
-\code{WriteCatSNS96} Write an SNS 96 catalog.
-
-\code{WriteCatSNS192} Write a SNS 192 catalog.
-
-\code{WriteCatSNS1536} Write a SNS 1536 catalog.
-
-\code{WriteCatDNS78} Write a DNS 78 catalog.
-
-\code{WriteCatDNS144} Write a DNS 144 catalog.
-
-\code{WriteCatDNS136} Write a 136 DNS catalog from path
-
-\code{WriteCatID} Write a ID (insertion/deletion) catalog.
-
 See also \code{\link{ReadCatalog}}
 }
 \note{
