@@ -2,55 +2,32 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{ReadCatalog}
 \alias{ReadCatalog}
-\alias{ReadCatSNS96}
-\alias{ReadCatSNS192}
-\alias{ReadCatSNS1536}
-\alias{ReadCatDNS78}
-\alias{ReadCatDNS144}
-\alias{ReadCatDNS136}
-\alias{ReadCatID}
 \title{Read catalog.}
 \usage{
-ReadCatSNS96(path, strict = TRUE)
-
-ReadCatSNS192(path, strict = TRUE)
-
-ReadCatSNS1536(path, strict = TRUE)
-
-ReadCatDNS78(path, strict = TRUE)
-
-ReadCatDNS144(path, strict = TRUE)
-
-ReadCatDNS136(path, strict = TRUE)
-
-ReadCatID(path, strict = TRUE)
+ReadCatalog(path, ref.genome, region, type, strict = TRUE)
 }
 \arguments{
 \item{path}{Path to a catalog on disk in the standardized format.}
 
+\item{ref.genome}{A character string acting as a genome identifier, one of
+"GRCh37", "hg19", "GRCh38", "hg38".}
+
+\item{region}{A character string acting as a region identifier, one of
+"genome", "exome".}
+
+\item{type}{A character string acting as a catalog type identifier, one of
+"counts", "density", "signature".}
+
 \item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
 \value{
-A catalog in standard in-memory format.
+An S3 object with class "catalog".
+See \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{
 Read a catalog in standardized format from path.
 }
 \details{
-\code{ReadCatSNS96} Read a 96 SNS catalog.
-
-\code{ReadCatSNS192} Read a 192 SNS catalog.
-
-\code{ReadCatSNS1536} Read a 1536 SNS catalog.
-
-\code{ReadCatDNS78} Read a 78 DNS catalog.
-
-\code{ReadCatDNS144} Read a 144 DNS catalog.
-
-\code{ReadCatDNS136} Read a 136 DNS catalog.
-
-\code{ReadCatID} Read an ID (insertion/deletion) catalog.
-
 See also \code{\link{WriteCatalog}}
 }
 \note{

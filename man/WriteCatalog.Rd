@@ -2,12 +2,13 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCatalog}
 \alias{WriteCatalog}
-\title{Write catalog.}
+\title{Write catalog}
 \usage{
 WriteCatalog(catalog, path, strict = TRUE)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
+\item{catalog}{An S3 object with class "catalog".
+See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{path}{The path of the file to be written on disk.}
 
