@@ -635,14 +635,14 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
   return(TRUE)
 }
 
-#' Check the class of catalog
+#' Check the class of catalog from path
 #'
 #' @param path Path to a catalog on disk in the standardized format.
 #'
 #' @return an object with the corresponding class type of catalog.
 #'
 #' @keywords internal
-CheckClassOfCatalog <- function(path) {
+CheckClassOfCatalogFromPath <- function(path) {
   cos <- data.table::fread(path)
   if (nrow(cos) == 96) {
     structure("catalog", class = "SNS96")
