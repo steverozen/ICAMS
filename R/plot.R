@@ -426,7 +426,8 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
 
 #' @rdname PlotCatalog
 #' @import graphics
-PlotCatalog.SNSStrandBias <- function(catalog, cex = 1) {
+#' @export
+PlotSNSClassStrandBias <- function(catalog, cex = 1) {
   stopifnot(dim(catalog$catalog) == c(192, 1))
 
   strand.col <- c('#394398',
@@ -505,7 +506,7 @@ PlotCatalog.SNSStrandBias <- function(catalog, cex = 1) {
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
   # Draw the ID information on top of graph
-  text(bp[5], ymax * 1.02, labels = id, xpd = NA,
+  text(bp[5], ymax * 1.02, labels = colnames(catalog$catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
   invisible(TRUE)
@@ -513,25 +514,17 @@ PlotCatalog.SNSStrandBias <- function(catalog, cex = 1) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotSNSClassStrandBiasToPdf <- function(catalog, filename, type,
-                                        id = colnames(catalog),
-                                        cex = 1) {
+PlotSNSClassStrandBiasToPdf <- function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog)
+  n <- ncol(catalog$catalog)
   graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
-  # Do recycling of the function parameters if a vector
-  # with length more than one is not specified by the user.
-  if (n > 1 && length(type) == 1) {
-    type <- rep(type, n)
-  }
-
   for (i in 1 : n) {
-    PlotSNSClassStrandBias(catalog[, i, drop = FALSE],
-                     id = id[i], type = type[i],
-                     cex = cex)
+    cat <- catalog
+    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    PlotSNSClassStrandBias(cat)
   }
   invisible(grDevices::dev.off())
 
