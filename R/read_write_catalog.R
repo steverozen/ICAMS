@@ -7,7 +7,8 @@
 #' @param path Path to a catalog on disk in the standardized format.
 #'
 #' @param ref.genome A character string acting as a genome identifier, one of
-#' "GRCh37", "hg19", "GRCh38", "hg38".
+#'   "GRCh37", "hg19", "GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38",
+#'   "BSgenome.Hsapiens.1000genomes.hs37d5".
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
