@@ -714,26 +714,17 @@ PlotCatalog.SNS1536 <- function(catalog) {
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotCatSNS1536ToPdf <- function(catalog, filename, type, id = colnames(catalog)) {
-
+PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
   grDevices::cairo_pdf(filename, width = 11.6929, height = 9.2677, onefile = TRUE)
 
-  n <- ncol(catalog)
-
-  # Do recycling of the function parameters if a vector
-  # with length more than one is not specified by the user.
-  if (n > 1 && length(type) == 1) {
-    type <- rep(type, n)
-  }
+  n <- ncol(catalog$catalog)
 
   for (i in 1 : n) {
-    PlotCatSNS1536(catalog[, i, drop = FALSE],
-                   type = type[i],
-                   id = id[i])
+    cat <- catalog
+    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
-
   invisible(TRUE)
 }
 
