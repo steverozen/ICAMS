@@ -13,7 +13,8 @@ See \code{\link{CreateCatalogAttribute}} for more details.}
 \item{filename}{The name of the PDF file to be produced.}
 
 \item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144
-catalog to a PDF file.}
+catalog. Leave out this parameter if you don't intend to plot strand bias
+graph.}
 
 \item{...}{Arguments to be passed to methods.}
 }

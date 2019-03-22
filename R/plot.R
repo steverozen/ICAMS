@@ -5,7 +5,9 @@
 #' @param catalog An S3 object with class "catalog".
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
-#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144 catalog.
+#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
+#'   catalog. Leave out this parameter if you don't intend to plot strand bias
+#'   graph.
 #'
 #' @param ... Arguments to be passed to methods.
 #'
@@ -36,7 +38,8 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @param filename The name of the PDF file to be produced.
 #'
 #' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
-#'   catalog to a PDF file.
+#'   catalog. Leave out this parameter if you don't intend to plot strand bias
+#'   graph.
 #'
 #' @param ... Arguments to be passed to methods.
 #'
