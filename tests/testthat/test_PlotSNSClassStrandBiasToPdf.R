@@ -1,11 +1,12 @@
-context("PlotSNSClassStrandBiasToPdf")
+context("PlotCatalogToPdf.SNSClassStrandBias")
 
-test_that("PlotSNSClassStrandBiasToPdf function is working properly", {
+test_that("PlotCatalogToPdf.SNSClassStrandBias function is working properly", {
   catalog <- ReadCatalog("testdata/regress.cat.sns.192.csv", ref.genome = "GRCh37",
                          region = "genome", type = "counts")
   colnames(catalog$catalog) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotSNSClassStrandBiasToPdf(catalog, filename = "PlotSNSClassStrandBias.test.pdf")
+    PlotCatalogToPdf(catalog, filename = "PlotSNSClassStrandBias.test.pdf",
+                     strandbias = TRUE)
   expect_equal(out, TRUE)
   unlink("PlotSNSClassStrandBias.test.pdf")
   graphics.off()
