@@ -2,8 +2,8 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
-\alias{PlotCatSNS96ToPdf}
-\alias{PlotCatSNS192ToPdf}
+\alias{PlotCatalogToPdf.SNS96}
+\alias{PlotCatalogToPdf.SNS192}
 \alias{PlotSNSClassStrandBiasToPdf}
 \alias{PlotCatSNS1536ToPdf}
 \alias{PlotCatDNS78ToPdf}
@@ -12,11 +12,12 @@
 \alias{PlotCatIDToPdf}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatSNS96ToPdf(catalog, filename, type, id = colnames(catalog),
-  grid = TRUE, upper = TRUE, xlabels = TRUE)
+PlotCatalogToPdf(catalog, filename, ...)
 
-PlotCatSNS192ToPdf(catalog, filename, id = colnames(catalog),
-  type = "counts", cex = 0.8)
+\method{PlotCatalogToPdf}{SNS96}(catalog, filename, grid = TRUE,
+  upper = TRUE, xlabels = TRUE)
+
+\method{PlotCatalogToPdf}{SNS192}(catalog, filename)
 
 PlotSNSClassStrandBiasToPdf(catalog, filename, type,
   id = colnames(catalog), cex = 1)
@@ -36,6 +37,13 @@ PlotCatIDToPdf(catalog, filename, type, id = colnames(catalog))
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
 
 \item{filename}{The name of the PDF file to be produced.}
+
+\item{grid}{If TRUE, draw grid lines in the graph.}
+
+\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
+class on top of graph.}
+
+\item{xlabels}{If TRUE, draw x axis labels.}
 
 \item{type}{A string specifying the type of the input catalog, one of:
 \enumerate{
@@ -57,13 +65,6 @@ PlotCatIDToPdf(catalog, filename, type, id = colnames(catalog))
 
 \item{id}{A vector containing the identifiers of the samples
 or signatures in \code{catalog}.}
-
-\item{grid}{If TRUE, draw grid lines in the graph.}
-
-\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
-class on top of graph.}
-
-\item{xlabels}{If TRUE, draw x axis labels.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 y axis labels, sample name and legend (if it exists) should be magnified

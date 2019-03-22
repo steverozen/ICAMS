@@ -2,9 +2,9 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
-\alias{PlotCatSNS96}
-\alias{PlotCatSNS192}
-\alias{PlotSNSClassStrandBias}
+\alias{PlotCatalog.SNS96}
+\alias{PlotCatalog.SNS192}
+\alias{PlotCatalog.SNSStrandBias}
 \alias{PlotCatSNS1536}
 \alias{PlotCatDNS78}
 \alias{PlotDNSClassStrandBias}
@@ -12,12 +12,14 @@
 \alias{PlotCatID}
 \title{Plot one spectrum or signature.}
 \usage{
-PlotCatSNS96(catalog, type, id = colnames(catalog), cex = 0.8,
-  grid = TRUE, upper = TRUE, xlabels = TRUE)
+PlotCatalog(catalog, ...)
 
-PlotCatSNS192(catalog, type, id = colnames(catalog), cex = 0.8)
+\method{PlotCatalog}{SNS96}(catalog, cex = 0.8, grid = TRUE,
+  upper = TRUE, xlabels = TRUE)
 
-PlotSNSClassStrandBias(catalog, type, id = colnames(catalog), cex = 1)
+\method{PlotCatalog}{SNS192}(catalog, cex = 0.8)
+
+\method{PlotCatalog}{SNSStrandBias}(catalog, cex = 1)
 
 PlotCatSNS1536(catalog, type, id = colnames(catalog))
 
@@ -35,6 +37,18 @@ PlotCatID(catalog, type, id = colnames(catalog))
 other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
 or \code{\link{StrelkaSNSVCFFilesToCatalog}},
 \code{\link{MutectVCFFilesToCatalog}}, etc.}
+
+\item{cex}{A numerical value giving the amount by which mutation class labels,
+mutation counts(if it exists), y axis and its labels, x axis labels and
+its annotations(if it exists) sample name and legend(if it exists)
+should be magnified relative to the default.}
+
+\item{grid}{If TRUE, draw grid lines in the graph.}
+
+\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
+class on top of graph.}
+
+\item{xlabels}{If TRUE, draw x axis labels.}
 
 \item{type}{A string specifying the type of the input catalog, one of:
 \enumerate{
@@ -56,18 +70,6 @@ or \code{\link{StrelkaSNSVCFFilesToCatalog}},
 
 \item{id}{A vector containing the identifiers of the samples
 or signatures in \code{catalog}.}
-
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-mutation counts(if it exists), y axis and its labels, x axis labels and
-its annotations(if it exists) sample name and legend(if it exists)
-should be magnified relative to the default.}
-
-\item{grid}{If TRUE, draw grid lines in the graph.}
-
-\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
-class on top of graph.}
-
-\item{xlabels}{If TRUE, draw x axis labels.}
 }
 \value{
 invisible(TRUE)
