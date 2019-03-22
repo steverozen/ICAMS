@@ -734,24 +734,19 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
-  stopifnot(dim(catalog) == c(78, 1))
-  stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DNS78)
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts", ',
-         '"signature" or "density".')
-  }
+PlotCatalog.DNS78 <- function(catalog) {
+  stopifnot(dim(catalog$catalog) == c(78, 1))
+  stopifnot(rownames(catalog$catalog) == ICAMS::catalog.row.order$DNS78)
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))
-  num.classes <- length(catalog)
+  num.classes <- length(catalog$catalog)
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
-  if (type == "density") {
+  if (catalog$type == "density") {
     # Calculate rate of mutations per million nucleotides for the catalog
-    rate <- catalog[, 1] * 1000000
+    rate <- catalog$catalog[, 1] * 1000000
 
     # Get ylim
     ymax <- ifelse(max(rate) * 1.3 > 1, 1, max(rate) * 1.3)
@@ -760,28 +755,28 @@ PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
     bp <- barplot(rate, ylim = c(0, ymax), xaxt = "n", yaxt = "n", xaxs = "i",
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million")
-  } else if (type == "counts") {
+  } else if (catalog$type == "counts") {
     # Get ylim
-    ymax <- max(catalog[, 1]) * 1.3
+    ymax <- max(catalog$catalog[, 1]) * 1.3
 
     # Barplot
-    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
+    bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   xaxs = "i", lwd = 3, space = 1.35, border = NA, xaxs = "i",
                   col = cols, ylab = "counts")
 
     # Write the mutation counts on top of graph
     for (i in 1 : 10) {
       j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
-      name <- substr(rownames(catalog), 1, 2)
+      name <- substr(rownames(catalog$catalog), 1, 2)
       text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
-           adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
+           adj = c(1, 1), labels = sum(catalog$catalog[name == maj.class.names[i], ]))
     }
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
+    bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   lwd = 3, space = 1.35, border = NA, xaxs = "i",
                   col = cols, ylab = "proportion")
   }
@@ -803,11 +798,11 @@ PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
        labels = paste(maj.class.names, "NN", sep = ">"), cex = 0.7, xpd = NA)
 
   # Draw the sample name information on top of graph
-  text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog), adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (type != "counts") {
+  if (catalog$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -816,9 +811,9 @@ PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
        las = 1, adj = 1, xpd = NA, cex = 0.75)
 
   # Draw x axis labels
-  text(bp, -ymax / 80, labels = substr(rownames(catalog), 4, 4),
+  text(bp, -ymax / 80, labels = substr(rownames(catalog$catalog), 4, 4),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
-  text(bp, -ymax / 15, labels = substr(rownames(catalog), 3, 3),
+  text(bp, -ymax / 15, labels = substr(rownames(catalog$catalog), 3, 3),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
   invisible(TRUE)
