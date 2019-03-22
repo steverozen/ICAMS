@@ -4,32 +4,34 @@
 \alias{PlotCatalog}
 \alias{PlotCatalog.SNS96}
 \alias{PlotCatalog.SNS192}
-\alias{PlotCatalog.SNSStrandBias}
-\alias{PlotCatSNS1536}
-\alias{PlotCatDNS78}
-\alias{PlotDNSClassStrandBias}
-\alias{PlotCatDNS136}
-\alias{PlotCatID}
+\alias{PlotCatalog.SNSClassStrandBias}
+\alias{PlotCatalog.SNS1536}
+\alias{PlotCatalog.DNS78}
+\alias{PlotCatalog.DNSClassStrandBias}
+\alias{PlotCatalog.DNS136}
+\alias{PlotCatalog.ID}
 \title{Plot one spectrum or signature.}
 \usage{
-PlotCatalog(catalog, ...)
+PlotCatalog(catalog, strandbias = FALSE, ...)
 
 \method{PlotCatalog}{SNS96}(catalog, cex = 0.8, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
 \method{PlotCatalog}{SNS192}(catalog, cex = 0.8)
 
-\method{PlotCatalog}{SNSStrandBias}(catalog, cex = 1)
+\method{PlotCatalog}{SNSClassStrandBias}(catalog, strandbias = TRUE,
+  cex = 1)
 
-PlotCatSNS1536(catalog, type, id = colnames(catalog))
+\method{PlotCatalog}{SNS1536}(catalog)
 
-PlotCatDNS78(catalog, type, id = colnames(catalog))
+\method{PlotCatalog}{DNS78}(catalog)
 
-PlotDNSClassStrandBias(catalog, type, id = colnames(catalog), cex = 1)
+\method{PlotCatalog}{DNSClassStrandBias}(catalog, strandbias = TRUE,
+  cex = 1)
 
-PlotCatDNS136(catalog, type, id = colnames(catalog))
+\method{PlotCatalog}{DNS136}(catalog)
 
-PlotCatID(catalog, type, id = colnames(catalog))
+\method{PlotCatalog}{ID}(catalog)
 }
 \arguments{
 \item{catalog}{A one-column catalog as described in \code{\link{ICAMS}}. Please see

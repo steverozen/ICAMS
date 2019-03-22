@@ -4,34 +4,34 @@
 \alias{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf.SNS96}
 \alias{PlotCatalogToPdf.SNS192}
-\alias{PlotSNSClassStrandBiasToPdf}
-\alias{PlotCatSNS1536ToPdf}
-\alias{PlotCatDNS78ToPdf}
-\alias{PlotDNSClassStrandBiasToPdf}
-\alias{PlotCatDNS136ToPdf}
-\alias{PlotCatIDToPdf}
+\alias{PlotCatalogToPdf.SNSClassStrandBias}
+\alias{PlotCatalogToPdf.SNS1536}
+\alias{PlotCatalogToPdf.DNS78}
+\alias{PlotCatalogToPdf.DNSClassStrandBias}
+\alias{PlotCatalogToPdf.DNS136}
+\alias{PlotCatalogToPdf.ID}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, filename, ...)
+PlotCatalogToPdf(catalog, filename, strandbias = FALSE, ...)
 
 \method{PlotCatalogToPdf}{SNS96}(catalog, filename, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
 \method{PlotCatalogToPdf}{SNS192}(catalog, filename)
 
-PlotSNSClassStrandBiasToPdf(catalog, filename, type,
-  id = colnames(catalog), cex = 1)
+\method{PlotCatalogToPdf}{SNSClassStrandBias}(catalog, filename,
+  strandbias = TRUE)
 
-PlotCatSNS1536ToPdf(catalog, filename, type, id = colnames(catalog))
+\method{PlotCatalogToPdf}{SNS1536}(catalog, filename)
 
-PlotCatDNS78ToPdf(catalog, filename, type, id = colnames(catalog))
+\method{PlotCatalogToPdf}{DNS78}(catalog, filename)
 
-PlotDNSClassStrandBiasToPdf(catalog, filename, type,
-  id = colnames(catalog), cex = 1)
+\method{PlotCatalogToPdf}{DNSClassStrandBias}(catalog, filename,
+  strandbias = TRUE, cex = 1)
 
-PlotCatDNS136ToPdf(catalog, filename, type, id = colnames(catalog))
+\method{PlotCatalogToPdf}{DNS136}(catalog, filename)
 
-PlotCatIDToPdf(catalog, filename, type, id = colnames(catalog))
+\method{PlotCatalogToPdf}{ID}(catalog, filename)
 }
 \arguments{
 \item{catalog}{A catalog as described in \code{\link{ICAMS}}.}
@@ -44,6 +44,10 @@ PlotCatIDToPdf(catalog, filename, type, id = colnames(catalog))
 class on top of graph.}
 
 \item{xlabels}{If TRUE, draw x axis labels.}
+
+\item{cex}{A numerical value giving the amount by which mutation class labels,
+y axis labels, sample name and legend (if it exists) should be magnified
+relative to the default.}
 
 \item{type}{A string specifying the type of the input catalog, one of:
 \enumerate{
@@ -65,10 +69,6 @@ class on top of graph.}
 
 \item{id}{A vector containing the identifiers of the samples
 or signatures in \code{catalog}.}
-
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-y axis labels, sample name and legend (if it exists) should be magnified
-relative to the default.}
 }
 \value{
 \code{invisible(TRUE)}
