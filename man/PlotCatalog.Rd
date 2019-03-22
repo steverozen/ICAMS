@@ -2,107 +2,21 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
-\alias{PlotCatalog.SNS96}
-\alias{PlotCatalog.SNS192}
-\alias{PlotCatalog.SNSClassStrandBias}
-\alias{PlotCatalog.SNS1536}
-\alias{PlotCatalog.DNS78}
-\alias{PlotCatalog.DNSClassStrandBias}
-\alias{PlotCatalog.DNS136}
-\alias{PlotCatalog.ID}
-\title{Plot one spectrum or signature.}
+\title{Plot \strong{one} spectrum or signature.}
 \usage{
 PlotCatalog(catalog, strandbias = FALSE, ...)
-
-\method{PlotCatalog}{SNS96}(catalog, cex = 0.8, grid = TRUE,
-  upper = TRUE, xlabels = TRUE)
-
-\method{PlotCatalog}{SNS192}(catalog, cex = 0.8)
-
-\method{PlotCatalog}{SNSClassStrandBias}(catalog, strandbias = TRUE,
-  cex = 1)
-
-\method{PlotCatalog}{SNS1536}(catalog)
-
-\method{PlotCatalog}{DNS78}(catalog)
-
-\method{PlotCatalog}{DNSClassStrandBias}(catalog, strandbias = TRUE,
-  cex = 1)
-
-\method{PlotCatalog}{DNS136}(catalog)
-
-\method{PlotCatalog}{ID}(catalog)
 }
 \arguments{
-\item{catalog}{A one-column catalog as described in \code{\link{ICAMS}}. Please see
-\code{\link{ICAMS}} if you need to create a catalog from a source
-other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
-or \code{\link{StrelkaSNSVCFFilesToCatalog}},
-\code{\link{MutectVCFFilesToCatalog}}, etc.}
+\item{catalog}{An S3 object with class "catalog".
+See \code{\link{CreateCatalogAttribute}} for more details.}
 
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-mutation counts(if it exists), y axis and its labels, x axis labels and
-its annotations(if it exists) sample name and legend(if it exists)
-should be magnified relative to the default.}
+\item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144 catalog.}
 
-\item{grid}{If TRUE, draw grid lines in the graph.}
-
-\item{upper}{If TRUE, draw horizontal lines and the names of major mutation
-class on top of graph.}
-
-\item{xlabels}{If TRUE, draw x axis labels.}
-
-\item{type}{A string specifying the type of the input catalog, one of:
-\enumerate{
-
-  \item "counts": show the counts of each mutation type.
-
-  \item "density", show the rates of mutations
-  per million source n-mers for each mutation type;
-  not supported
-  for \code{\link{PlotCatIDToPdf}},
-  \code{\link{PlotCatSNS192ToPdf}},
-  \code{\link{PlotSNSClassStrandBiasToPdf}}, and
-  \code{\link{PlotDNSClassStrandBiasToPdf}}.
-  \item "signature", show the proportions of each
-  mutation type; not supported for
-  \code{\link{PlotCatDNS136ToPdf}}.
-
-}}
-
-\item{id}{A vector containing the identifiers of the samples
-or signatures in \code{catalog}.}
+\item{...}{Arguments to be passed to methods.}
 }
 \value{
-invisible(TRUE)
+\code{invisible(TRUE)}
 }
 \description{
-Plot the spectrum of one sample or plot one signature.
-}
-\details{
-\code{PlotCatSNS96} Plot an SNS 96 spectrum or signature.
-
-\code{PlotCatSNS192} Plot an SNS 192 spectrum or signature.
-
-\code{PlotSNSClassStrandBias} Plot the transcription strand bias graph of 6 SNS
-mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
-
-\code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
-normalized by pentanucleotide occurrence in the genome. The mutation types
-are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
-position, third letter T refers to the base which has mutation, next second
-2-letters TA refers to (+1, +2) position, last letter T refers to the base
-after mutation.
-
-\code{PlotCatDNS78} Plot a DNS 78 spectrum or signature.
-
-\code{PlotDNSClassStrandBias} Plot the transcription strand bias graph of 10 major DNS
-mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-"TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
-
-\code{PlotCatDNS136} Plot the tetranucleotide sequence context of 10 major DNS
-mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-"TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
-
-\code{PlotCatID} Plot an insertion and deletion spectrum or signature.
+Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
 }

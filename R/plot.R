@@ -1,74 +1,15 @@
-#' Plot one spectrum or signature.
+#' Plot \strong{one} spectrum or signature.
 #'
-#' Plot the spectrum of one sample or plot one signature.
+#' Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
 #'
-#' \code{PlotCatSNS96} Plot an SNS 96 spectrum or signature.
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
-#' \code{PlotCatSNS192} Plot an SNS 192 spectrum or signature.
+#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144 catalog.
 #'
-#' \code{PlotSNSClassStrandBias} Plot the transcription strand bias graph of 6 SNS
-#' mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
+#' @param ... Arguments to be passed to methods.
 #'
-#' \code{PlotCatSNS1536} Plot the pentanucleotide sequence contexts for one sample,
-#' normalized by pentanucleotide occurrence in the genome. The mutation types
-#' are in six-letters like CATTAT, first 2-letters CA refers to (-2, -1)
-#' position, third letter T refers to the base which has mutation, next second
-#' 2-letters TA refers to (+1, +2) position, last letter T refers to the base
-#' after mutation.
-#'
-#' \code{PlotCatDNS78} Plot a DNS 78 spectrum or signature.
-#'
-#' \code{PlotDNSClassStrandBias} Plot the transcription strand bias graph of 10 major DNS
-#' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-#' "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
-#'
-#' \code{PlotCatDNS136} Plot the tetranucleotide sequence context of 10 major DNS
-#' mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-#' "TA>NN", "TC>NN", "TG>NN", "TT>NN") for one sample.
-#'
-#' \code{PlotCatID} Plot an insertion and deletion spectrum or signature.
-#'
-#' @param catalog A one-column catalog as described in \code{\link{ICAMS}}. Please see
-#' \code{\link{ICAMS}} if you need to create a catalog from a source
-#' other than the current package, i.e. a source other than \code{\link{ReadCatalog}}
-#' or \code{\link{StrelkaSNSVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalog}}, etc.
-#'
-#' @param type A string specifying the type of the input catalog, one of:
-#' \enumerate{
-#'
-#'   \item "counts": show the counts of each mutation type.
-#'
-#'   \item "density", show the rates of mutations
-#'   per million source n-mers for each mutation type;
-#'   not supported
-#'   for \code{\link{PlotCatIDToPdf}},
-#'   \code{\link{PlotCatSNS192ToPdf}},
-#'   \code{\link{PlotSNSClassStrandBiasToPdf}}, and
-#'   \code{\link{PlotDNSClassStrandBiasToPdf}}.
-#
-#'   \item "signature", show the proportions of each
-#'   mutation type; not supported for
-#'   \code{\link{PlotCatDNS136ToPdf}}.
-#'
-#' }
-#'
-#' @param id A vector containing the identifiers of the samples
-#' or signatures in \code{catalog}.
-#'
-#' @param cex A numerical value giving the amount by which mutation class labels,
-#'   mutation counts(if it exists), y axis and its labels, x axis labels and
-#'   its annotations(if it exists) sample name and legend(if it exists)
-#'   should be magnified relative to the default.
-#'
-#' @param grid If TRUE, draw grid lines in the graph.
-#'
-#' @param upper If TRUE, draw horizontal lines and the names of major mutation
-#'   class on top of graph.
-#'
-#' @param xlabels If TRUE, draw x axis labels.
-#'
-#' @return invisible(TRUE)
+#' @return \code{invisible(TRUE)}
 #'
 #' @name PlotCatalog
 PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
@@ -89,76 +30,15 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #'
 #' Plot catalogs to a PDF file.
 #'
-#' \code{PlotCatSNS96ToPdf} Plot an SNS 96 catalog
-#' to a PDF file.
-#'
-#' \code{PlotCatSNS192ToPdf} Plot an SNS 192 catalog
-#' to a PDF file.
-#'
-#' \code{PlotSNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
-#' 6 SNS mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-#' of various samples to a PDF file.
-#'
-#' \code{PlotCatSNS1536ToPdf} Plot a 1536 mutation catalog to a PDF
-#' file. The mutation types are in six-letters like CATTAT, first 2-letters CA
-#' refers to (-2, -1) position, third letter T refers to the base which has
-#' mutation, next second 2-letters TA refers to (+1, +2) position, last letter T
-#' refers to the base after mutation.
-#'
-#' \code{PlotCatDNS78ToPdf} Plot a DNS 78 mutation catalog
-#' to a PDF file.
-#'
-#' \code{PlotDNSClassStrandBiasToPdf} Plot the transcription strand bias graph of
-#' 10 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
-#' "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples
-#' to a PDF file.
-#'
-#' \code{PlotCatDNS136ToPdf} Plot the tetranucleotide sequence contexts of 10 major
-#' DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN",
-#' "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples to a PDF file.
-#'
-#' \code{PlotCatIDToPdf} Plot a insertion and deletion catalog to a PDF file.
-#' (Note that sizes of repeats involved in deletions
-#' range from 0 to 5+ in the catalog rownames,
-#' but for plotting and end user
-#' documentation they ranges from 1 to 6+.)
-#'
-#' @param catalog A catalog as described in \code{\link{ICAMS}}.
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
-#' @param type A string specifying the type of the input catalog, one of:
-#' \enumerate{
+#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
+#'   catalog to a PDF file.
 #'
-#'   \item "counts", show the counts of each mutation type.
-#'
-#'   \item "density", show the rates of mutations
-#'   per million source n-mers for each mutation type;
-#'   not supported
-#'   for \code{\link{PlotCatIDToPdf}},
-#'   \code{\link{PlotCatSNS192ToPdf}},
-#'   \code{\link{PlotSNSClassStrandBiasToPdf}}, and
-#'   \code{\link{PlotDNSClassStrandBiasToPdf}}.
-#
-#'   \item "signature", show the proportions of each
-#'   mutation type; not supported for
-#'   \code{\link{PlotCatDNS136ToPdf}}.
-#'
-#' }
-#'
-#' @param id A vector containing the identifiers of the samples
-#' or signatures in \code{catalog}.
-#'
-#' @param cex A numerical value giving the amount by which mutation class labels,
-#'   y axis labels, sample name and legend (if it exists) should be magnified
-#'   relative to the default.
-#'
-#' @param grid If TRUE, draw grid lines in the graph.
-#'
-#' @param upper If TRUE, draw horizontal lines and the names of major mutation
-#'   class on top of graph.
-#'
-#' @param xlabels If TRUE, draw x axis labels.
+#' @param ... Arguments to be passed to methods.
 #'
 #' @return \code{invisible(TRUE)}
 #'
@@ -180,8 +60,28 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
 # Plotting functions for SNS96, SNS192 and SNS1536 catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
+#' Plot the SNS 96 spectrum or signature of \strong{one} sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists) sample name and legend(if it exists)
+#'   should be magnified relative to the default.
+#'
+#' @param grid If TRUE, draw grid lines in the graph.
+#'
+#' @param upper If TRUE, draw horizontal lines and the names of major mutation
+#'   class on top of graph.
+#'
+#' @param xlabels If TRUE, draw x axis labels.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.SNS96 <-
   function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog$catalog) == c(96, 1))
@@ -296,7 +196,23 @@ PlotCatalog.SNS96 <-
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalogToPdf
+#' Plot an SNS 96 catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @param grid If TRUE, draw grid lines in the graph.
+#'
+#' @param upper If TRUE, draw horizontal lines and the names of major mutation
+#'   class on top of graph.
+#'
+#' @param xlabels If TRUE, draw x axis labels.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.SNS96 <-
   function(catalog, filename,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
@@ -315,8 +231,21 @@ PlotCatalogToPdf.SNS96 <-
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalog
+#' Plot the SNS 192 spectrum or signature of \strong{one} sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists) sample name and legend(if it exists)
+#'   should be magnified relative to the default.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
   stopifnot(dim(catalog$catalog) == c(192, 1))
 
@@ -424,7 +353,16 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot an SNS 192 catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -441,8 +379,24 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalog
+#' Plot the strand bias graph of SNS 192 spectrum or signature of \strong{one} sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param strandbias If TRUE, Plot the transcription strand bias graph of 6 SNS
+#'   mutation types("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
+#'
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists) sample name and legend(if it exists)
+#'   should be magnified relative to the default.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                                            cex = 1) {
   stopifnot(dim(catalog$catalog) == c(192, 1))
@@ -529,7 +483,20 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot the strand bias graph of SNS 192 catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @param strandbias If TRUE, Plot the transcription strand bias graph of 6 SNS
+#'   mutation types ("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") of various
+#'   samples to a PDF file.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
                                                 strandbias = TRUE) {
   # Setting the width and length for A4 size plotting
@@ -548,8 +515,21 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalog
+#' Plot the SNS 1536 spectrum or signature of \strong{one} sample
+#'
+#' Plot a 1536 mutation catalog to a PDF file. The mutation types are in six-
+#' letters like CATTAT, first 2-letters CA refers to (-2, -1) position, third
+#' letter T refers to the base which has mutation, next second 2-letters TA
+#' refers to (+1, +2) position, last letter T refers to the base after mutation.
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.SNS1536 <- function(catalog) {
   stopifnot(dim(catalog$catalog) == c(1536, 1))
 
@@ -730,7 +710,21 @@ PlotCatalog.SNS1536 <- function(catalog) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot an SNS 1536 catalog to a PDF file
+#'
+#' Plot a 1536 mutation catalog to a PDF file. The mutation types are in six-
+#' letters like CATTAT, first 2-letters CA refers to (-2, -1) position, third
+#' letter T refers to the base which has mutation, next second 2-letters TA
+#' refers to (+1, +2) position, last letter T refers to the base after mutation.
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
   grDevices::cairo_pdf(filename, width = 11.6929, height = 9.2677, onefile = TRUE)
 
@@ -749,8 +743,16 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 # Plotting functions for DNS78, DNS144 and DNS136 catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
+#' Plot the DNS 78 spectrum or signature of \strong{one} sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.DNS78 <- function(catalog) {
   stopifnot(dim(catalog$catalog) == c(78, 1))
   stopifnot(rownames(catalog$catalog) == ICAMS::catalog.row.order$DNS78)
@@ -836,7 +838,16 @@ PlotCatalog.DNS78 <- function(catalog) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot a DNS 78 catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.DNS78 <-
   function(catalog, filename) {
     # Setting the width and length for A4 size plotting
@@ -854,8 +865,25 @@ PlotCatalogToPdf.DNS78 <-
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalog
+#' Plot the strand bias graph of DNS 144 spectrum or signature of \strong{one} sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param strandbias If TRUE, plot the transcription strand bias graph of 10
+#'   major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
+#'   "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") in one sample.
+#'
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists) sample name and legend(if it exists)
+#'   should be magnified relative to the default.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                                            cex = 1) {
   stopifnot(dim(catalog$catalog) == c(144, 1))
@@ -944,7 +972,21 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot the strand bias graph of DNS 144 catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @param strandbias If TRUE, plot the transcription strand bias graph of 10
+#'   major DNS mutation types("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
+#'   "GC>NN", "TA>NN", "TC>NN", "TG>NN", "TT>NN") of various samples to a PDF
+#'   file.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.DNSClassStrandBias <-
   function(catalog, filename, strandbias = TRUE, cex = 1) {
     # Setting the width and length for A4 size plotting
@@ -962,8 +1004,20 @@ PlotCatalogToPdf.DNSClassStrandBias <-
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalog
+#' Plot the DNS 136 spectrum of \strong{one} sample
+#'
+#' Plotthetetranucleotidesequencecontextof10majorDNSmutationtypes("AC>NN",
+#' "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN", "TG>NN",
+#' "TT>NN") for one sample.
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalog.DNS136 <- function(catalog) {
   stopifnot(dim(catalog$catalog) == c(136, 1))
 
@@ -1105,7 +1159,20 @@ PlotCatalog.DNS136 <- function(catalog) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot a DNS 136 catalog to a PDF file
+#'
+#' Plot the tetranucleotide sequence contexts of 10 major DNS mutation types
+#' ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN",
+#' "TG>NN", "TT>NN") of various samples to a PDF file.
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
 PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
   stopifnot(nrow(catalog$catalog) == 136)
   n <- ncol(catalog$catalog)
@@ -1277,8 +1344,21 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 # Plotting functions for ID(insertion and deletion) catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
+#' Plot the indel(insertion and deletion) spectrum or signature of \strong{one}
+#' sample
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
 #' @import graphics
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @note  The sizes of repeats involved in deletions range from 0 to 5+ in the
+#'   catalog rownames, but for plotting and end user documentation they ranges
+#'   from 1 to 6+.
+#'
+#' @keywords internal
 PlotCatalog.ID <- function(catalog){
   stopifnot(dim(catalog$catalog) == c(83, 1))
 
@@ -1406,7 +1486,20 @@ PlotCatalog.ID <- function(catalog){
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalogToPdf
+#' Plot an indel(insertion and deletion) catalog to a PDF file
+#'
+#' @param catalog An S3 object with class "catalog".
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param filename The name of the PDF file to be produced.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @note  The sizes of repeats involved in deletions range from 0 to 5+ in the
+#'   catalog rownames, but for plotting and end user documentation they ranges
+#'   from 1 to 6+.
+#'
+#' @keywords internal
 PlotCatalogToPdf.ID <-function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
