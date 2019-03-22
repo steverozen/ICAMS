@@ -71,9 +71,17 @@
 #' @return invisible(TRUE)
 #'
 #' @name PlotCatalog
-PlotCatalog <- function(catalog, ...) {
+PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
   class.of.catalog <- CheckClassOfCatalog(catalog)
-  UseMethod(generic = "PlotCatalog", object = class.of.catalog)
+  type.of.plot <- character()
+  if (strandbias == TRUE && attributes(class.of.catalog) == "SNS192") {
+    class(type.of.plot) <- "SNSClassStrandBias"
+  } else if (class.of.catalog == "DNS144") {
+    class(type.of.plot) <- "DNSClassStrandBias"
+  } else {
+    class(type.of.plot) <- attributes(class.of.catalog)
+  }
+  UseMethod(generic = "PlotCatalog", object = type.of.plot)
 }
 
 
@@ -155,7 +163,7 @@ PlotCatalog <- function(catalog, ...) {
 #' @return \code{invisible(TRUE)}
 #'
 #' @name PlotCatalogToPdf
-PlotCatalogToPdf <- function(catalog, filename, ...) {
+PlotCatalogToPdf <- function(catalog, filename, strandbias, ...) {
   class.of.catalog <- CheckClassOfCatalog(catalog)
   UseMethod(generic = "PlotCatalogToPdf", object = class.of.catalog)
 }
@@ -426,8 +434,8 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotSNSClassStrandBias <- function(catalog, cex = 1) {
+PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
+                                           cex = 1) {
   stopifnot(dim(catalog$catalog) == c(192, 1))
 
   strand.col <- c('#394398',
@@ -513,8 +521,7 @@ PlotSNSClassStrandBias <- function(catalog, cex = 1) {
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotSNSClassStrandBiasToPdf <- function(catalog, filename) {
+PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
