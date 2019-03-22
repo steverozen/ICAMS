@@ -608,7 +608,8 @@ NormalizeGenomeArg <- function(genome) {
 #' Check attributes of catalog specified by user
 #'
 #' @param ref.genome A character string acting as a genome identifier, one of
-#' "GRCh37", "hg19", "GRCh38", "hg38".
+#' "GRCh37", "hg19", "GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38",
+#' "BSgenome.Hsapiens.1000genomes.hs37d5".
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -620,9 +621,13 @@ NormalizeGenomeArg <- function(genome) {
 #'
 #' @keywords internal
 CheckCatalogAttribute <- function(ref.genome, region, type) {
-  if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38")) {
+  if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38",
+                         "BSgenome.Hsapiens.UCSC.hg38",
+                         "BSgenome.Hsapiens.1000genomes.hs37d5")) {
     stop("Unrecoginzed reference genome identifier: ", ref.genome,
-         "\nNeed one of GRCh38, hg38, GRCh37, hg19")
+         "\nNeed one of GRCh38, hg38, GRCh37, hg19",
+         "BSgenome.Hsapiens.UCSC.hg38, ",
+         "BSgenome.Hsapiens.1000genomes.hs37d5")
   }
   if (!region %in% c("genome", "exome")) {
     stop("Unrecoginzed region identifier: ", region,
@@ -696,8 +701,7 @@ CheckClassOfCatalogFromPath <- function(path) {
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
-#' @param ref.genome A character string acting as a genome identifier, one of
-#' "GRCh37", "hg19", "GRCh38", "hg38".
+#' @param ref.genome A reference genome as described in \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -709,6 +713,10 @@ CheckClassOfCatalogFromPath <- function(path) {
 #'
 #' @export
 CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
+  if (class(ref.genome) != "character") {
+    ref.genome <- ref.genome@pkgname
+  }
+
   if (type == "counts") {
     catalog <- list(catalog = catalog, ref.genome = ref.genome,
                     region = region, type = type, counts = list(catalog))
