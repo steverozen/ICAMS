@@ -8,7 +8,8 @@ CheckCatalogAttribute(ref.genome, region, type)
 }
 \arguments{
 \item{ref.genome}{A character string acting as a genome identifier, one of
-"GRCh37", "hg19", "GRCh38", "hg38".}
+"GRCh37", "hg19", "GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38",
+"BSgenome.Hsapiens.1000genomes.hs37d5".}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
