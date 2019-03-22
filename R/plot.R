@@ -1279,13 +1279,8 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotCatID <- function(catalog, type, id = colnames(catalog)){
-  stopifnot(dim(catalog) == c(83, 1))
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts"',
-         'or "signature".')
-  }
+PlotCatalog.ID <- function(catalog){
+  stopifnot(dim(catalog$catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
                        "#ff8001",
@@ -1304,19 +1299,19 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
                        "#8683bd",
                        "#61409b")
 
-  num.classes <- length(catalog)
+  num.classes <- length(catalog$catalog)
   cols <- rep(indel.class.col,
               c(6, 6, 6, 6,
                 6, 6, 6, 6,
                 6, 6, 6, 6,
                 1, 2, 3, 5))
 
-  if (type == "counts") {
+  if (catalog$type == "counts") {
     # Get ylim
-    ymax <- max(catalog) * 1.3
+    ymax <- max(catalog$catalog) * 1.3
 
     # Barplot
-    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+    bp <- barplot(catalog$catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", yaxt = "n")
 
@@ -1328,20 +1323,20 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
                 107.6, 121.7, 135.8, 149.9, 164,
                 172.2, 175.5, 182, 191)
       if (i == 1) {
-        counts[i] <- sum(catalog[1:idx[1], 1])
+        counts[i] <- sum(catalog$catalog[1:idx[1], 1])
       } else {
-        counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
+        counts[i] <- sum(catalog$catalog[(idx[i - 1] + 1):idx[i], 1])
       }
       text(idx2[i], ymax * 0.6, labels = counts[i],
            cex = 0.68, adj = 1, xpd = NA)
     }
 
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+    bp <- barplot(catalog$catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", yaxt = "n")
   }
@@ -1376,11 +1371,12 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
   text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the sample name information of the sample
-  text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog),
+       adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (type != "counts") {
+  if (catalog$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     text(-9, ymax / 2, labels = "proportion", srt = 90, xpd = NA)
   } else {
