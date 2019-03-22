@@ -172,12 +172,13 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
       genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5)
 
   prev.catalog.indels<-
-    ReadCatID(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.indels.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cat.ID == prev.catalog.indels)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cat.ID == prev.catalog.indels$catalog)
 
   cat("ok\n")
 
