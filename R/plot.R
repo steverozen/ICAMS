@@ -76,7 +76,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
   type.of.plot <- character()
   if (strandbias == TRUE && attributes(class.of.catalog) == "SNS192") {
     class(type.of.plot) <- "SNSClassStrandBias"
-  } else if (class.of.catalog == "DNS144") {
+  } else if (attributes(class.of.catalog) == "DNS144") {
     class(type.of.plot) <- "DNSClassStrandBias"
   } else {
     class(type.of.plot) <- attributes(class.of.catalog)
@@ -855,29 +855,23 @@ PlotCatalogToPdf.DNS78 <-
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
-                                   cex = 1) {
-  stopifnot(dim(catalog) == c(144, 1))
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts", ',
-         '"signature" or "density".')
-  }
-
+PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
+                                           cex = 1) {
+  stopifnot(dim(catalog$catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  catalog <- catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
+  catalog$catalog <- catalog$catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
 
   num.classes <- 20
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (type == "counts") {
+  if (catalog$type == "counts") {
     # Get the counts for each major mutation class
-    counts <- catalog[, 1]
+    counts <- catalog$catalog[, 1]
     counts.strand <- integer(20)
     for (i in 1 : 10){
       idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
@@ -896,9 +890,9 @@ PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get the proportion for each major mutation class
-    prop <- catalog[, 1]
+    prop <- catalog$catalog[, 1]
     prop.strand <- integer(20)
     for (i in 1 : 10){
       idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
@@ -917,13 +911,13 @@ PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (type == "density") {
+  } else if (catalog$type == "density") {
     stop('type = "density" not implemented')
   }
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (type != "counts") {
+  if (catalog$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -943,7 +937,7 @@ PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
   # Draw the sample name information on top of graph
-  text(bp[8], ymax, labels = id, xpd = NA,
+  text(bp[8], ymax, labels = colnames(catalog$catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
   invisible(TRUE)
