@@ -1113,7 +1113,7 @@ MutectVCFFilesToCatalog <-
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges, region),
            VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges, region),
-           list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome))))
+           list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome, region))))
 }
 
 #' @keywords internal
