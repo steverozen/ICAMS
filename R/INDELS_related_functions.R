@@ -652,10 +652,14 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #'
 #' @param genome A genome argument as described in \code{\link{ICAMS}}.
 #'
-#' @return An ID (indel) catalog
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return An S3 object containing an ID (indel) catalog with class
+#'   "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @export
-VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
+VCFsToIDCatalogs <- function(list.of.vcfs, genome, region) {
   ncol <- length(list.of.vcfs)
 
   # Create a 0-column matrix with the correct row labels.
@@ -673,5 +677,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome) {
   }
 
   colnames(catID) <- names(list.of.vcfs)
-  return(catID)
+  return(CreateCatalogAttribute(catID, ref.genome = genome,
+                                region = region, type = "counts"))
 }
