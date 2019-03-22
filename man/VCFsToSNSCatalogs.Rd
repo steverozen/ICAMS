@@ -4,7 +4,7 @@
 \alias{VCFsToSNSCatalogs}
 \title{Create SNS catalogs from SNS VCFs}
 \usage{
-VCFsToSNSCatalogs(list.of.SNS.vcfs, genome, trans.ranges)
+VCFsToSNSCatalogs(list.of.SNS.vcfs, genome, trans.ranges, region)
 }
 \arguments{
 \item{list.of.SNS.vcfs}{List of in-memory data frames of pure SNS mutations
@@ -14,12 +14,14 @@ output catalog.}
 \item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data frame containing transcript ranges.}
+
+\item{region}{A character string acting as a region identifier, one of
+"genome", "exome".}
 }
 \value{
-A list of 3 SNS catalogs, one each for 96, 192, 1536:
-  catSNS96
-  catSNS192
-  catSNS1536
+A list of S3 objects with class "catalog", one each for SNS 96, 192,
+  1536: catSNS96 catSNS192 catSNS1536. See
+  \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{
 Create a list of 3 catalogs (one each for 96, 192, 1536)

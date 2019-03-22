@@ -10,7 +10,7 @@ CheckClassOfCatalogFromPath(path)
 \item{path}{Path to a catalog on disk in the standardized format.}
 }
 \value{
-an object with the corresponding class type of catalog.
+An object with the corresponding class type of catalog.
 }
 \description{
 Check the class of catalog from path

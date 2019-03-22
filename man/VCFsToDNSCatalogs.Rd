@@ -4,7 +4,7 @@
 \alias{VCFsToDNSCatalogs}
 \title{Create DNS catalogs from VCFs}
 \usage{
-VCFsToDNSCatalogs(list.of.DNS.vcfs, genome, trans.ranges)
+VCFsToDNSCatalogs(list.of.DNS.vcfs, genome, trans.ranges, region)
 }
 \arguments{
 \item{list.of.DNS.vcfs}{List of in-memory data frames of pure DNS mutations
@@ -14,12 +14,14 @@ output catalog.}
 \item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data frame containing transcript ranges.}
+
+\item{region}{A character string acting as a region identifier, one of
+"genome", "exome".}
 }
 \value{
-A list of 3 DNS catalogs, one each for 78, 144, 136:
-  catDNS78
-  catDNS144
-  catDNS136
+A list of S3 objects with class "catalog", one each for DNS 78, 144,
+  136: catDNS78, catDNS144, catDNS136. See
+  \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{
 Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)

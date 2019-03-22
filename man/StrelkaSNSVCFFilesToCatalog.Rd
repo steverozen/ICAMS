@@ -4,7 +4,8 @@
 \alias{StrelkaSNSVCFFilesToCatalog}
 \title{Create SNS and DNS catalogs from Strelka SNS VCF files.}
 \usage{
-StrelkaSNSVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges)
+StrelkaSNSVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges,
+  region)
 }
 \arguments{
 \item{vector.of.file.paths}{Character vector of
@@ -14,10 +15,15 @@ file paths to the Strelka SNS VCF files.}
 
 \item{trans.ranges}{A data.table which contains transcript range and
 strand information.}
+
+\item{region}{A character string acting as a region identifier, one of
+"genome", "exome".}
 }
 \value{
-A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-  and 3 DNS catalogs (one each for 78, 136, and 144)
+A list of S3 objects with class "catalog". See
+  \code{\link{CreateCatalogAttribute}} for more details. There are 3 SNS
+  catalogs (one each for 96, 192, and 1536) and 3 DNS catalogs (one each for
+  78, 136, and 144)
 }
 \description{
 Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)

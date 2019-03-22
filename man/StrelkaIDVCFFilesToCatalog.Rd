@@ -4,16 +4,20 @@
 \alias{StrelkaIDVCFFilesToCatalog}
 \title{Create ID (indel) catalog from Strelka ID VCF files}
 \usage{
-StrelkaIDVCFFilesToCatalog(vector.of.file.paths, genome)
+StrelkaIDVCFFilesToCatalog(vector.of.file.paths, genome, region)
 }
 \arguments{
 \item{vector.of.file.paths}{Character vector of
 file paths to the Strelka ID VCF files.}
 
 \item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
+
+\item{region}{A character string acting as a region identifier, one of
+"genome", "exome".}
 }
 \value{
-An ID (indel) catalog
+An S3 object containing an ID (indel) catalog with class
+  "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{
 Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths

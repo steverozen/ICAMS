@@ -10,7 +10,7 @@ CheckClassOfCatalog(catalog)
 \item{catalog}{An S3 object with class "catalog".}
 }
 \value{
-an object with the corresponding class type of catalog.
+An object with the corresponding class type of catalog.
 }
 \description{
 Check the class of catalog
