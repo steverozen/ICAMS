@@ -241,7 +241,7 @@ PlotCatalog.SNS96 <-
            las = 1, adj = 1, xpd = NA)
     }
 
-    # Draw the ID information on top of graph
+    # Draw the sample name information on top of graph
     text(bp[1], ymax * 1.08, labels = colnames(catalog$catalog), xpd = NA,
          cex = cex, font = 2, adj = c(0, 0))
 
@@ -505,7 +505,7 @@ PlotSNSClassStrandBias <- function(catalog, cex = 1) {
          xpd = NA, bty = "n",
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
-  # Draw the ID information on top of graph
+  # Draw the sample name information on top of graph
   text(bp[5], ymax * 1.02, labels = colnames(catalog$catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
@@ -533,13 +533,8 @@ PlotSNSClassStrandBiasToPdf <- function(catalog, filename) {
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
-  stopifnot(dim(catalog) == c(1536, 1))
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts", ',
-         '"signature" or "density".')
-  }
+PlotCatalog.SNS1536 <- function(catalog) {
+  stopifnot(dim(catalog$catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
   bases <- c("A", "C", "G", "T")
@@ -579,25 +574,25 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
              c(0.5, 4.5, 8.5, 12.5, 16.5), rep(18.3, 5), xpd = NA)
   }
 
-  cat <- data.frame(catalog)
+  cat <- data.frame(catalog$catalog)
   cat$main.types <-
     paste0(substr(rownames(cat), 3, 3), ">", substr(rownames(cat), 6, 6))
   cat1 <-
     stats::aggregate(cat[, 1], by = list(main.types = cat$main.types), FUN = sum)
 
-  if (type == "counts") {
+  if (catalog$type == "counts") {
     # Get the total counts for the six main mutation types
     main.types.counts <- cat1[, 2]
     names(main.types.counts) <- cat1$main.types
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get the total proportion for the six main mutation types
     main.types.prop <- cat1[, 2]
     names(main.types.prop) <- cat1$main.types
   }
 
   # Sort the catalog matrix in plotting order
-  rates <- as.data.frame(catalog)
-  mut.type <- rownames(catalog)
+  rates <- as.data.frame(catalog$catalog)
+  mut.type <- rownames(catalog$catalog)
   rates$mut.type <- mut.type
   rates$ref2alt <- paste0(substr(mut.type, 3, 3), substr(mut.type, 6, 6))
   rates$minus2bs <- substr(mut.type, 1, 1)
@@ -631,9 +626,9 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
       DrawAxisY()
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -645,14 +640,14 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
-      text(8.5, 20.5, id, cex = 1.5, xpd = NA)
+      text(8.5, 20.5, colnames(catalog$catalog), cex = 1.5, xpd = NA)
     }
 
     if (i == 3) {
@@ -660,9 +655,9 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -676,9 +671,9 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -691,27 +686,27 @@ PlotCatSNS1536 <- function(catalog, type, id = colnames(catalog)) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
-      }
+    }
 
     if (i == 6) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (type == "counts") {
+      if (catalog$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (type == "signature") {
+      } else if (catalog$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
-      }
+    }
   }
   on.exit(par(old), add = TRUE)
 
@@ -816,7 +811,7 @@ PlotCatDNS78 <- function(catalog, type, id = colnames(catalog)) {
   text((x.left + x.right) / 2, ymax * 1.123,
        labels = paste(maj.class.names, "NN", sep = ">"), cex = 0.7, xpd = NA)
 
-  # Draw the ID information on top of graph
+  # Draw the sample name information on top of graph
   text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
@@ -953,7 +948,7 @@ PlotDNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
          xpd = NA, bty = "n",
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
-  # Draw the ID information on top of graph
+  # Draw the sample name information on top of graph
   text(bp[8], ymax, labels = id, xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
@@ -1100,7 +1095,7 @@ PlotCatDNS136 <- function(catalog, type, id = colnames(catalog)) {
     text(rep(0.2, 4), c(4, 3, 2, 1), base, col = base.cols, xpd = NA)
     text(seq(4), rep(4.8, 4), base, col = base.cols, xpd = NA)
 
-    # Draw the ID information of the sample
+    # Draw the sample name information of the sample
     if (i == 8) {
       mtext(id, at = 5, line =3)
     }
@@ -1301,7 +1296,7 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
     text(rep(0.6, 5), seq(0.9, 0.1, length.out = 5),
          paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
 
-    # Draw the ID information of the sample
+    # Draw the sample name information of the sample
     par(mar = c(0, 0, 0, 0))
     plot.new()
     text(0.7, 0.5, id[i], cex = 1.5, xpd = NA)
@@ -1412,7 +1407,7 @@ PlotCatID <- function(catalog, type, id = colnames(catalog)){
   # Draw mutation class labels at the top of the figure
   text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
 
-  # Draw the ID information of the sample
+  # Draw the sample name information of the sample
   text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
