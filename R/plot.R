@@ -163,7 +163,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @return \code{invisible(TRUE)}
 #'
 #' @name PlotCatalogToPdf
-PlotCatalogToPdf <- function(catalog, filename, strandbias, ...) {
+PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
   class.of.catalog <- CheckClassOfCatalog(catalog)
   type.of.plot <- character()
   if (strandbias == TRUE && attributes(class.of.catalog) == "SNS192") {
@@ -298,7 +298,8 @@ PlotCatalog.SNS96 <-
 
 #' @rdname PlotCatalogToPdf
 PlotCatalogToPdf.SNS96 <-
-  function(catalog, filename, grid = TRUE, upper = TRUE, xlabels = TRUE) {
+  function(catalog, filename,
+           grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -1105,20 +1106,13 @@ PlotCatalog.DNS136 <- function(catalog) {
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) {
-  stopifnot(nrow(catalog) == 136)
-  n <- ncol(catalog)
+PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
+  stopifnot(nrow(catalog$catalog) == 136)
+  n <- ncol(catalog$catalog)
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
   par(oma = c(1, 2, 1, 1))
-
-  # Do recycling of the function parameters if a vector
-  # with length more than one is not specified by the user.
-  if (n > 1 && length(type) == 1) {
-    type <- rep(type, n)
-  }
 
   # Specify the lay out of the plotting
   invisible(layout(matrix(c(12, 12, 12, 12,
@@ -1146,9 +1140,9 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
   mut.type <- paste(ref.order, "NN", sep = ">")
 
   for (i in 1:n) {
-    cat <- catalog[, i, drop = FALSE]
+    cat <- catalog$catalog[, i, drop = FALSE]
 
-    if (type[i] == "counts") {
+    if (catalog$type == "counts") {
       # Calculate the occurrences of each mutation type for plotting
       counts <- matrix(0, nrow = 160, ncol = 1)
       rownames(counts) <- order.for.DNS.136.plotting
@@ -1172,7 +1166,7 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
       rownames(counts.per.class) <- df2$Ref
     }
 
-    if (type[i] == "density") {
+    if (catalog$type == "density") {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
@@ -1218,9 +1212,9 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
 
     for (j in 1:10) {
       par(mar = c(1, 0, 2, 0), pty = "s")
-      if (type[i] == "density") {
+      if (catalog$type == "density") {
         DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
-      } else if (type[i] == "counts") {
+      } else if (catalog$type == "counts") {
         DrawImage(matrix(counts[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
       } else {
         stop('Please specify the correct type: "density" or "counts"')
@@ -1228,7 +1222,7 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
 
       # Draw the mutation type and number of occurrences on top of image
       text(2.3, 5.2, mut.type[j], font = 2, xpd = NA)
-      if (type[i] == "counts") {
+      if (catalog$type == "counts") {
         text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"),
              font = 2, xpd = NA)
 
@@ -1248,14 +1242,14 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
     text(x = 0.5, y = 1.2, "Maxima per class", cex = 1.6, xpd = NA)
     ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
-    if (type[i] == "density") {
+    if (catalog$type == "density") {
       text(x = 0.5, y = 1.07, "(mut/million)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
         maxima[j] <- max.rate.per.class[ref[j], ]
         names(maxima)[j] <- ref[j]
       }
-    } else if (type[i] == "counts") {
+    } else if (catalog$type == "counts") {
       text(x = 0.5, y = 1.07, "(counts)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
@@ -1273,7 +1267,7 @@ PlotCatDNS136ToPdf <- function(catalog, filename, type, id = colnames(catalog)) 
     # Draw the sample name information of the sample
     par(mar = c(0, 0, 0, 0))
     plot.new()
-    text(0.7, 0.5, id[i], cex = 1.5, xpd = NA)
+    text(0.7, 0.5, colnames(catalog$catalog)[i], cex = 1.5, xpd = NA)
   }
   invisible(grDevices::dev.off())
   invisible(TRUE)
