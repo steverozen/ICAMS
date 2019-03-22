@@ -168,7 +168,7 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias, ...) {
   type.of.plot <- character()
   if (strandbias == TRUE && attributes(class.of.catalog) == "SNS192") {
     class(type.of.plot) <- "SNSClassStrandBias"
-  } else if (class.of.catalog == "DNS144") {
+  } else if (attributes(class.of.catalog) == "DNS144") {
     class(type.of.plot) <- "DNSClassStrandBias"
   } else {
     class(type.of.plot) <- attributes(class.of.catalog)
@@ -944,31 +944,22 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotDNSClassStrandBiasToPdf <- function(catalog, filename, type,
-                                        id = colnames(catalog),
-                                        cex = 1) {
-  # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+PlotCatalogToPdf.DNSClassStrandBias <-
+  function(catalog, filename, strandbias = TRUE, cex = 1) {
+    # Setting the width and length for A4 size plotting
+    grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog)
-  graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+    n <- ncol(catalog$catalog)
+    graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
-  # Do recycling of the function parameters if a vector
-  # with length more than one is not specified by the user.
-  if (n > 1 && length(type) == 1) {
-    type <- rep(type, n)
+    for (i in 1 : n) {
+      cat <- catalog
+      cat$catalog <- catalog$catalog[, i, drop = FALSE]
+      PlotCatalog(cat, strandbias = TRUE)
+    }
+    invisible(grDevices::dev.off())
+    invisible(TRUE)
   }
-
-  for (i in 1 : n) {
-    PlotDNSClassStrandBias(catalog[, i, drop = FALSE],
-                  id = id[i], type = type[i],
-                  cex = cex)
-  }
-  invisible(grDevices::dev.off())
-
-  invisible(TRUE)
-}
 
 #' @rdname PlotCatalog
 #' @import graphics
