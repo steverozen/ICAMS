@@ -1064,16 +1064,20 @@ StrelkaSNSVCFFilesToCatalog <-
 #'
 #' @param genome  A genome argument as described in \code{\link{ICAMS}}.
 #'
-#' @return  An ID (indel) catalog
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return An S3 object containing an ID (indel) catalog with class
+#'   "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
 #'   from 1 to 6+.
 #'
 #' @export
-StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
+StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome, region) {
   vcfs <- ReadStrelkaIDVCFs(vector.of.file.paths)
-  return(VCFsToIDCatalogs(vcfs, genome))
+  return(VCFsToIDCatalogs(vcfs, genome, region))
 }
 
 #' Create SNS and DNS catalogs from Mutect VCF files
