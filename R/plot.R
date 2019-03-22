@@ -820,28 +820,20 @@ PlotCatalog.DNS78 <- function(catalog) {
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotCatDNS78ToPdf <-
-  function(catalog, filename, type, id = colnames(catalog)) {
+PlotCatalogToPdf.DNS78 <-
+  function(catalog, filename) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog)
+    n <- ncol(catalog$catalog)
     graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
 
-    # Do recycling of the function parameters if a vector
-    # with length more than one is not specified by the user.
-    if (n > 1 && length(type) == 1) {
-      type <- rep(type, n)
-    }
-
     for (i in 1 : n) {
-      PlotCatDNS78(catalog[, i, drop = FALSE],
-                   id = id[i],
-                   type = type[i])
+      cat <- catalog
+      cat$catalog <- catalog$catalog[, i, drop = FALSE]
+      PlotCatalog(cat)
     }
     invisible(grDevices::dev.off())
-
     invisible(TRUE)
   }
 
