@@ -99,52 +99,58 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
       trans.ranges = trans.ranges.GRCh37)
 
   prev.catalog.192 <-
-    ReadCatSNS192(
-      system.file("extdata",
-                  "new.regress.cat.sns.192.csv",
-                  package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catSNS192 == prev.catalog.192)
+    ReadCatalog(system.file("extdata",
+                            "new.regress.cat.sns.192.csv",
+                            package = "ICAMS",
+                            mustWork = TRUE),
+                ref.genome = "GRCh37", region = "genome", type = "counts")
+
+  stopifnot(cats$catSNS192 == prev.catalog.192$catalog)
 
   prev.catalog.96 <-
-    ReadCatSNS96(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.sns.96.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catSNS96 == prev.catalog.96)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cats$catSNS96 == prev.catalog.96$catalog)
 
   prev.catalog.1536 <-
-    ReadCatSNS1536(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.sns.1536.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catSNS1536 == prev.catalog.1536)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cats$catSNS1536 == prev.catalog.1536$catalog)
 
   prev.catalog.DNS.78<-
-    ReadCatDNS78(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.dns.78.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cats$catDNS78 == prev.catalog.DNS.78$catalog)
 
   prev.catalog.DNS.136<-
-    ReadCatDNS136(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.dns.136.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136$catalog)
 
   prev.catalog.DNS.144<-
-    ReadCatDNS144(
+    ReadCatalog(
       system.file("extdata",
                   "new.regress.cat.dns.144.csv",
                   package = "ICAMS",
-                  mustWork = TRUE))
-  stopifnot(cats$catDNS144 == prev.catalog.DNS.144)
+                  mustWork = TRUE),
+      ref.genome = "GRCh37", region = "genome", type = "counts")
+  stopifnot(cats$catDNS144 == prev.catalog.DNS.144$catalog)
 
   cat("ok\n")
 
