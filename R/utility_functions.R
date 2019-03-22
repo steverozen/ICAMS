@@ -639,7 +639,7 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
 #'
 #' @param catalog An S3 object with class "catalog".
 #'
-#' @return an object with the corresponding class type of catalog.
+#' @return An object with the corresponding class type of catalog.
 #'
 #' @keywords internal
 CheckClassOfCatalog <- function(catalog) {
@@ -667,7 +667,7 @@ CheckClassOfCatalog <- function(catalog) {
 #'
 #' @param path Path to a catalog on disk in the standardized format.
 #'
-#' @return an object with the corresponding class type of catalog.
+#' @return An object with the corresponding class type of catalog.
 #'
 #' @keywords internal
 CheckClassOfCatalogFromPath <- function(path) {
@@ -692,7 +692,7 @@ CheckClassOfCatalogFromPath <- function(path) {
   }
 }
 
-#' Create a S3 object of class "catalog"
+#' Create an S3 object of class "catalog"
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
@@ -705,7 +705,7 @@ CheckClassOfCatalogFromPath <- function(path) {
 #' @param type A character string acting as a catalog type identifier, one of
 #' "counts", "density", "signature".
 #'
-#' @return A S3 object of class "catalog".
+#' @return An S3 object of class "catalog".
 #'
 #' @export
 CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
