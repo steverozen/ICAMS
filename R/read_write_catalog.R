@@ -66,14 +66,14 @@ ReadCatalog.SNS96 <- function(path, ref.genome, region, type, strict = TRUE) {
   ref.gt.var       <- unlist(cos[, 1])
   before.ref.after <- unlist(cos[, 2])
   var <- substring(ref.gt.var, 3, 3)
-  out <- cos[, -(1 : 2)]
+  out <- cos[, -(1 : 2), drop = FALSE]
   out <- as.matrix(out)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$SNS96)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[ICAMS::catalog.row.order$SNS96, ]
+  out <- out[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -106,7 +106,7 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region, type, strict = TRUE) {
   out <- cos[, -(1 : 3), drop = FALSE]
   out <- as.matrix(out)
   rownames(out) <- tmp
-  out <- out[ICAMS::catalog.row.order$SNS192, ]
+  out <- out[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -122,13 +122,13 @@ ReadCatalog.SNS1536 <- function(path, ref.genome, region, type, strict = TRUE) {
   ref.gt.var       <- cos[["Mutation type"]]
   before.ref.after <- cos[["Pentanucleotide"]]
   var <- substring(ref.gt.var, 3, 3)
-  out <- as.matrix(cos[ , -(1 : 2)])
+  out <- as.matrix(cos[ , -(1 : 2)], drop = FALSE)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$SNS1536)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[ICAMS::catalog.row.order$SNS1536, ]
+  out <- out[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -139,7 +139,7 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region, type, strict = TRUE) {
     stopifnot(names(cos)[1 : 2] == c("Ref", "Var"))
   }
   names(cos)[1 : 2] <- c("Ref", "Var")
-  out <- cos[, -(1 : 2)]
+  out <- cos[, -(1 : 2), drop = FALSE]
   out <- as.matrix(out)
   rn <- paste0(cos$Ref, cos$Var)
   diff1 <- sort(setdiff(rn, ICAMS::catalog.row.order$DNS78))
@@ -173,7 +173,7 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region, type, strict = TRUE) {
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS78)
   }
-  out <- out[ICAMS::catalog.row.order$DNS78, ]
+  out <- out[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -184,14 +184,14 @@ ReadCatalog.DNS144 <- function(path, ref.genome, region, type, strict = TRUE) {
     stopifnot(names(cos)[1 : 2] == c("Ref", "Var"))
   }
   names(cos)[1 : 2] <- c("Ref", "Var")
-  out <- cos[, -(1 : 2)]
+  out <- cos[, -(1 : 2), drop = FALSE]
   out <- as.matrix(out)
   rn <- paste0(cos$Ref, cos$Var)
   rownames(out) <- rn
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS144)
   }
-  out <- out[ICAMS::catalog.row.order$DNS144, ]
+  out <- out[ICAMS::catalog.row.order$DNS144, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -202,13 +202,13 @@ ReadCatalog.DNS136 <- function(path, ref.genome, region, type, strict = TRUE) {
     stopifnot(names(cos)[1] %in% c("Quad", "quad", "QUAD"))
   }
   names(cos)[1] <- "Quad"
-  out <- cos[, -1]
+  out <- cos[, -1, drop = FALSE]
   out <- as.matrix(out)
   rownames(out) <- cos$Quad
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS136)
   }
-  out <- out[ICAMS::catalog.row.order$DNS136, ]
+  out <- out[ICAMS::catalog.row.order$DNS136, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
@@ -222,13 +222,13 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
   names(cos)[1 : 4] <- ex.cn
   rn <- apply(cos[, 1 : 4], MARGIN = 1, paste, collapse = ":")
   # View(data.frame(mini=rn, good=ICAMS::catalog.row.order$ID))
-  out <- as.matrix(cos[ , -(1 : 4)])
+  out <- as.matrix(cos[ , -(1 : 4)], drop = FALSE)
   rownames(out) <- rn
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$ID)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[ICAMS::catalog.row.order$ID, ]
+  out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
   return(CreateCatalogAttribute(out, ref.genome, region, type))
 }
 
