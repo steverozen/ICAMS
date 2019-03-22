@@ -810,15 +810,17 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
-#' @return A list of 3 SNS catalogs, one each for 96, 192, 1536:
-#'   catSNS96
-#'   catSNS192
-#'   catSNS1536
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return A list of S3 objects with class "catalog", one each for SNS 96, 192,
+#'   1536: catSNS96 catSNS192 catSNS1536. See
+#'   \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @note SNS 192 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
+VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges, region) {
   ncol <- length(list.of.SNS.vcfs)
 
   catSNS96 <- empty.cats$catSNS96
@@ -852,7 +854,11 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges) {
   colnames(catSNS192) <- names(list.of.SNS.vcfs)
   colnames(catSNS1536) <- names(list.of.SNS.vcfs)
 
-  return(list(catSNS96 = catSNS96, catSNS192 = catSNS192, catSNS1536 = catSNS1536))
+  list.of.catalogs <- list(catSNS96 = catSNS96,
+                           catSNS192 = catSNS192,
+                           catSNS1536 = catSNS1536)
+  return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
+                ref.genome = genome, region = region, type = "counts"))
 }
 
 #' Create double nucleotide catalog for *one* sample from
@@ -961,15 +967,17 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
-#' @return A list of 3 DNS catalogs, one each for 78, 144, 136:
-#'   catDNS78
-#'   catDNS144
-#'   catDNS136
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return A list of S3 objects with class "catalog", one each for DNS 78, 144,
+#'   136: catDNS78, catDNS144, catDNS136. See
+#'   \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @note DNS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
+VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
   ncol <- length(list.of.DNS.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
@@ -1003,8 +1011,11 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
   colnames(catDNS144) <- names(list.of.DNS.vcfs)
   colnames(catDNS136) <- names(list.of.DNS.vcfs)
 
-  return(list(catDNS78  = catDNS78, catDNS144  = catDNS144,
-              catDNS136  = catDNS136))
+  list.of.catalogs <- list(catDNS78  = catDNS78,
+                           catDNS144  = catDNS144,
+                           catDNS136  = catDNS136)
+  return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
+                ref.genome = genome, region = region, type = "counts"))
 }
 
 #' Create SNS and DNS catalogs from Strelka SNS VCF files.
@@ -1023,18 +1034,23 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges) {
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
 #'
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536)
-#'   and 3 DNS catalogs (one each for 78, 136, and 144)
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return  A list of S3 objects with class "catalog". See
+#'   \code{\link{CreateCatalogAttribute}} for more details. There are 3 SNS
+#'   catalogs (one each for 96, 192, and 1536) and 3 DNS catalogs (one each for
+#'   78, 136, and 144)
 #'
 #' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
 StrelkaSNSVCFFilesToCatalog <-
-  function(vector.of.file.paths, genome, trans.ranges) {
+  function(vector.of.file.paths, genome, trans.ranges, region) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges),
-           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges)))
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges, region),
+           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges, region)))
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files
@@ -1076,17 +1092,23 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome) {
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
 #'
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536),
-#' 3 DNS catalogs (one each for 78, 136, and 144) and ID catalog.
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return  A list of S3 objects with class "catalog". See
+#'   \code{\link{CreateCatalogAttribute}} for more details. There are 3 SNS
+#'   catalogs (one each for 96, 192, and 1536), 3 DNS catalogs (one each for
+#'   78, 136, and 144) and an ID (indel) catalog.
 #'
 #' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
-MutectVCFFilesToCatalog <- function(vector.of.file.paths, genome, trans.ranges) {
+MutectVCFFilesToCatalog <-
+  function(vector.of.file.paths, genome, trans.ranges, region) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges),
-           VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges),
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges, region),
+           VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges, region),
            list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome))))
 }
 
