@@ -8,11 +8,10 @@ TestMakeCatalogFromMutectVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    MutectVCFFilesToCatalog(
-      files,
-      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
-      # Use default transcript ranges
-      trans.ranges = trans.ranges.GRCh37)
+    MutectVCFFilesToCatalog(files, genome = "GRCh37",
+                            # Use default transcript ranges
+                            trans.ranges = trans.ranges.GRCh37,
+                            region = "genome")
 
   prev.catalog.192 <-
     ReadCatalog(system.file("extdata",
@@ -21,7 +20,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                             mustWork = TRUE),
                 ref.genome = "GRCh37", region = "genome", type = "counts")
 
-  stopifnot(cats$catSNS192 == prev.catalog.192$catalog)
+  stopifnot(cats$catSNS192$catalog == prev.catalog.192$catalog)
 
   prev.catalog.96 <-
     ReadCatalog(
@@ -30,7 +29,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catSNS96 == prev.catalog.96$catalog)
+  stopifnot(cats$catSNS96$catalog == prev.catalog.96$catalog)
 
   prev.catalog.1536 <-
     ReadCatalog(
@@ -39,7 +38,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catSNS1536 == prev.catalog.1536$catalog)
+  stopifnot(cats$catSNS1536$catalog == prev.catalog.1536$catalog)
 
   prev.catalog.DNS.78<-
     ReadCatalog(
@@ -48,7 +47,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catDNS78 == prev.catalog.DNS.78$catalog)
+  stopifnot(cats$catDNS78$catalog == prev.catalog.DNS.78$catalog)
 
   prev.catalog.DNS.136<-
     ReadCatalog(
@@ -57,7 +56,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136$catalog)
+  stopifnot(cats$catDNS136$catalog == prev.catalog.DNS.136$catalog)
 
   prev.catalog.DNS.144<-
     ReadCatalog(
@@ -66,7 +65,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catDNS144 == prev.catalog.DNS.144$catalog)
+  stopifnot(cats$catDNS144$catalog == prev.catalog.DNS.144$catalog)
 
   prev.catalog.indels<-
     ReadCatalog(
@@ -75,7 +74,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catID == prev.catalog.indels$catalog)
+  stopifnot(cats$catID$catalog == prev.catalog.indels$catalog)
 
   cat("ok\n")
 
@@ -92,11 +91,10 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    StrelkaSNSVCFFilesToCatalog(
-      files,
-      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
-      # Use default transcript ranges
-      trans.ranges = trans.ranges.GRCh37)
+    StrelkaSNSVCFFilesToCatalog(files, genome = "GRCh37",
+                                # Use default transcript ranges
+                                trans.ranges = trans.ranges.GRCh37,
+                                region = "genome")
 
   prev.catalog.192 <-
     ReadCatalog(system.file("extdata",
@@ -105,7 +103,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                             mustWork = TRUE),
                 ref.genome = "GRCh37", region = "genome", type = "counts")
 
-  stopifnot(cats$catSNS192 == prev.catalog.192$catalog)
+  stopifnot(cats$catSNS192$catalog == prev.catalog.192$catalog)
 
   prev.catalog.96 <-
     ReadCatalog(
@@ -114,7 +112,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catSNS96 == prev.catalog.96$catalog)
+  stopifnot(cats$catSNS96$catalog == prev.catalog.96$catalog)
 
   prev.catalog.1536 <-
     ReadCatalog(
@@ -123,7 +121,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catSNS1536 == prev.catalog.1536$catalog)
+  stopifnot(cats$catSNS1536$catalog == prev.catalog.1536$catalog)
 
   prev.catalog.DNS.78<-
     ReadCatalog(
@@ -132,7 +130,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catDNS78 == prev.catalog.DNS.78$catalog)
+  stopifnot(cats$catDNS78$catalog == prev.catalog.DNS.78$catalog)
 
   prev.catalog.DNS.136<-
     ReadCatalog(
@@ -141,7 +139,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catQUAD136 == prev.catalog.DNS.136$catalog)
+  stopifnot(cats$catDNS136$catalog == prev.catalog.DNS.136$catalog)
 
   prev.catalog.DNS.144<-
     ReadCatalog(
@@ -150,7 +148,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cats$catDNS144 == prev.catalog.DNS.144$catalog)
+  stopifnot(cats$catDNS144$catalog == prev.catalog.DNS.144$catalog)
 
   cat("ok\n")
 
@@ -166,10 +164,8 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
                          package = "ICAMS",
                          mustWork = TRUE))
 
-  cat.ID <-
-    StrelkaIDVCFFilesToCatalog(
-      files,
-      genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5)
+  cat.ID <- StrelkaIDVCFFilesToCatalog(files, genome = "GRCh37",
+                                       region = "genome")
 
   prev.catalog.indels<-
     ReadCatalog(
@@ -178,7 +174,7 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", type = "counts")
-  stopifnot(cat.ID == prev.catalog.indels$catalog)
+  stopifnot(cat.ID$catalog == prev.catalog.indels$catalog)
 
   cat("ok\n")
 
