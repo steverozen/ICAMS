@@ -71,7 +71,10 @@
 #' @return invisible(TRUE)
 #'
 #' @name PlotCatalog
-NULL
+PlotCatalog <- function(catalog, ...) {
+  class.of.catalog <- CheckClassOfCatalog(catalog)
+  UseMethod(generic = "PlotCatalog", object = class.of.catalog)
+}
 
 
 #' Plot catalogs to a PDF file.
@@ -152,7 +155,10 @@ NULL
 #' @return \code{invisible(TRUE)}
 #'
 #' @name PlotCatalogToPdf
-NULL
+PlotCatalogToPdf <- function(catalog, filename, ...) {
+  class.of.catalog <- CheckClassOfCatalog(catalog)
+  UseMethod(generic = "PlotCatalogToPdf", object = class.of.catalog)
+}
 
 ###############################################################################
 # Plotting functions for SNS96, SNS192 and SNS1536 catalog start here
@@ -160,16 +166,10 @@ NULL
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotCatSNS96 <-
-  function(catalog, type, id = colnames(catalog), cex = 0.8,
-           grid = TRUE, upper = TRUE, xlabels = TRUE) {
-    stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SNS96)
-    if (missing(type)) {
-      stop('Please specify type of the input catalog, one of "counts", ',
-           '"signature" or "density".')
-    }
+PlotCatalog.SNS96 <-
+  function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
+    stopifnot(dim(catalog$catalog) == c(96, 1))
+    stopifnot(rownames(catalog$catalog) == ICAMS::catalog.row.order$SNS96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -180,22 +180,22 @@ PlotCatSNS96 <-
 
     cols <- rep(class.col, each = 16)
     maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-    num.classes <- length(catalog)
+    num.classes <- length(catalog$catalog)
 
-    if (type == "density") {
+    if (catalog$type == "density") {
       # Barplot
-      bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
+      bp <- barplot(catalog$catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
                     xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "mut/million")
 
       # Get ylim
-      ymax <- max(catalog[, 1] * 1000000)
-    } else if (type == "counts") {
+      ymax <- max(catalog$catalog[, 1] * 1000000)
+    } else if (catalog$type == "counts") {
       # Get ylim
-      ymax <- max(catalog[, 1])
+      ymax <- max(catalog$catalog[, 1])
 
       # Barplot
-      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
+      bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
                     xaxs = "i", lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "counts")
 
@@ -203,15 +203,15 @@ PlotCatSNS96 <-
       for (i in 1 : 6) {
         j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
+        text(bp[j], ymax * 1.20, labels = sum(catalog$catalog[k : (16 * i), ]),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
-    } else if (type == "signature") {
+    } else if (catalog$type == "signature") {
       # Get ylim
-      ymax <- max(catalog[, 1])
+      ymax <- max(catalog$catalog[, 1])
 
       # Barplot
-      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
+      bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
                     lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "proportion")
     }
@@ -223,13 +223,11 @@ PlotCatSNS96 <-
     }
 
     # Draw the x axis
-    #Axis(side = 1, at = c(bp[seq(1, 93, 4)] - 0.5, bp[96] + 0.5),
-         #labels = FALSE, lwd.tick = 0, lwd = 0.5)
     segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, col = 'grey35', lwd = 0.25)
 
     # Draw y axis
     y.axis.values <- seq(0, ymax, ymax/4)
-    if (type != "counts") {
+    if (catalog$type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
       y.axis.labels <- round(y.axis.values, 0)
@@ -244,7 +242,7 @@ PlotCatSNS96 <-
     }
 
     # Draw the ID information on top of graph
-    text(bp[1], ymax * 1.08, labels = id, xpd = NA,
+    text(bp[1], ymax * 1.08, labels = colnames(catalog$catalog), xpd = NA,
          cex = cex, font = 2, adj = c(0, 0))
 
     # Draw the labels along x axis?
@@ -283,41 +281,18 @@ PlotCatSNS96 <-
   }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotCatSNS96ToPdf <-
-  function(catalog, filename, type, id = colnames(catalog),
-           grid = TRUE, upper = TRUE, xlabels = TRUE) {
+PlotCatalogToPdf.SNS96 <-
+  function(catalog, filename, grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog)
+    n <- ncol(catalog$catalog)
     graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
-    # Do recycling of the function parameters if a vector
-    # with length more than one is not specified by the user.
-    if (n > 1 && length(type) == 1) {
-      type <- rep(type, n)
-    }
-
-    if (n > 1 && length(grid) == 1) {
-      grid <- rep(grid, n)
-    }
-
-    if (n > 1 && length(upper) == 1) {
-      upper <- rep(upper, n)
-    }
-
-    if (n > 1 && length(xlabels) == 1) {
-      xlabels <- rep(xlabels, n)
-    }
-
     for (i in 1 : n) {
-      PlotCatSNS96(catalog[, i, drop = FALSE],
-                   type = type[i],
-                   id = id[i],
-                   grid = grid[i],
-                   upper = upper[i],
-                   xlabels = xlabels[i])
+      cat <- catalog
+      cat$catalog <- catalog$catalog[, i, drop = FALSE]
+      PlotCatalog(cat)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
@@ -325,14 +300,8 @@ PlotCatSNS96ToPdf <-
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
-                          cex = 0.8) {
-  stopifnot(dim(catalog) == c(192, 1))
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts", ',
-         '"signature" or "density".')
-  }
+PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
+  stopifnot(dim(catalog$catalog) == c(192, 1))
 
   class.col  <- c("#03bcee",
                   "#010101",
@@ -352,31 +321,31 @@ PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
                   "#e83020")
 
   # Sort data in plotting order
-  catalog <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  catalog$catalog <- catalog$catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
 
-  num.classes <- length(catalog)
+  num.classes <- length(catalog$catalog)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (type == "counts") {
+  if (catalog$type == "counts") {
     # Get ylim
-    ymax <- max(catalog[, 1]) * 1.3
+    ymax <- max(catalog$catalog[, 1]) * 1.3
 
     # Barplot: side by side
-    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog$catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog$catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
-  } else if (type == "density") {
+  } else if (catalog$type == "density") {
     stop('type = "density" not implemented')
   }
 
@@ -405,7 +374,7 @@ PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
 
   # Draw y axis and write mutation counts on top of graph(if applicable)
   y.axis.values <- seq(0, ymax, ymax/4)
-  if (type != "counts") {
+  if (catalog$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -414,7 +383,7 @@ PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
     for (i in 1 : 6) {
       j <- 32 + 32 * (i - 1)
       k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 0.92, labels = sum(catalog[k : (32 * i), 1]),
+      text(bp[j], ymax * 0.92, labels = sum(catalog$catalog[k : (32 * i), 1]),
            adj = c(1, 1), xpd = NA, cex = 0.8)
     }
   }
@@ -433,31 +402,23 @@ PlotCatSNS192 <- function(catalog, type, id = colnames(catalog),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
   # Write the name of the sample
-  text(1.5, ymax * 7 / 8, labels = id, adj = 0, cex = cex, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog), adj = 0, cex = cex, font = 2)
 
   invisible(TRUE)
 }
 
 #' @rdname PlotCatalogToPdf
-#' @export
-PlotCatSNS192ToPdf <- function(catalog, filename, id = colnames(catalog),
-                               type = "counts", cex = 0.8) {
+PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog)
+  n <- ncol(catalog$catalog)
   graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
 
-  # Do recycling of the function parameters if a vector
-  # with length more than one is not specified by the user.
-  if (n > 1 && length(type) == 1) {
-    type <- rep(type, n)
-  }
-
   for (i in 1 : n) {
-    PlotCatSNS192(catalog[, i, drop = FALSE],
-               id = id[i], type = type[i],
-               cex = cex)
+    cat <- catalog
+    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
   invisible(TRUE)
@@ -465,28 +426,22 @@ PlotCatSNS192ToPdf <- function(catalog, filename, id = colnames(catalog),
 
 #' @rdname PlotCatalog
 #' @import graphics
-#' @export
-PlotSNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
-                                   cex = 1) {
-  stopifnot(dim(catalog) == c(192, 1))
-  if (missing(type)) {
-    stop('Please specify type of the input catalog, one of "counts", ',
-         '"signature" or "density".')
-  }
+PlotCatalog.SNSStrandBias <- function(catalog, cex = 1) {
+  stopifnot(dim(catalog$catalog) == c(192, 1))
 
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  catalog <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  catalog$catalog <- catalog$catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
 
   num.classes <- 12
   maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (type == "counts") {
+  if (catalog$type == "counts") {
     # Get the counts for each major mutation class
-    counts <- catalog[, 1]
+    counts <- catalog$catalog[, 1]
     counts.strand <- integer(12)
     for (i in 1 : 6){
       counts.strand[2 * i - 1] <-
@@ -504,9 +459,9 @@ PlotSNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (type == "signature") {
+  } else if (catalog$type == "signature") {
     # Get the proportion for each major mutation class
-    prop <- catalog[, 1]
+    prop <- catalog$catalog[, 1]
     prop.strand <- integer(12)
     for (i in 1 : 6){
       prop.strand[2 * i - 1] <-
@@ -524,13 +479,13 @@ PlotSNSClassStrandBias <- function(catalog, type, id = colnames(catalog),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (type == "density") {
+  } else if (catalog$type == "density") {
     stop('type = "density" not implemented')
   }
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (type != "counts") {
+  if (catalog$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
