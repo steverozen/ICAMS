@@ -646,19 +646,19 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
 #' @keywords internal
 CheckClassOfCatalog <- function(catalog) {
   if (nrow(catalog$catalog) == 96) {
-    structure("catalog", class = "SNS96")
+    structure("ClassofCatalog", class = "SNS96")
   } else if (nrow(catalog$catalog) == 192) {
-    structure("catalog", class = "SNS192")
+    structure("ClassofCatalog", class = "SNS192")
   } else if (nrow(catalog$catalog) == 1536) {
-    structure("catalog", class = "SNS1536")
+    structure("ClassofCatalog", class = "SNS1536")
   } else if (nrow(catalog$catalog) == 78) {
-    structure("catalog", class = "DNS78")
+    structure("ClassofCatalog", class = "DNS78")
   } else if (nrow(catalog$catalog) == 144) {
-    structure("catalog", class = "DNS144")
+    structure("ClassofCatalog", class = "DNS144")
   } else if (nrow(catalog$catalog) == 136) {
-    structure("catalog", class = "DNS136")
+    structure("ClassofCatalog", class = "DNS136")
   } else if (nrow(catalog$catalog) == 83) {
-    structure("catalog", class = "ID")
+    structure("ClassofCatalog", class = "ID")
   } else {
     stop("The catalog seems not to be a standard catalog supported by ICAMS",
          "number of rows is ", nrow(catalog$catalog))
@@ -675,19 +675,19 @@ CheckClassOfCatalog <- function(catalog) {
 CheckClassOfCatalogFromPath <- function(path) {
   cos <- data.table::fread(path)
   if (nrow(cos) == 96) {
-    structure("catalog", class = "SNS96")
+    structure("ClassofCatalog", class = "SNS96")
   } else if (nrow(cos) == 192) {
-    structure("catalog", class = "SNS192")
+    structure("ClassofCatalog", class = "SNS192")
   } else if (nrow(cos) == 1536) {
-    structure("catalog", class = "SNS1536")
+    structure("ClassofCatalog", class = "SNS1536")
   } else if (nrow(cos) == 78) {
-    structure("catalog", class = "DNS78")
+    structure("ClassofCatalog", class = "DNS78")
   } else if (nrow(cos) == 144) {
-    structure("catalog", class = "DNS144")
+    structure("ClassofCatalog", class = "DNS144")
   } else if (nrow(cos) == 136) {
-    structure("catalog", class = "DNS136")
+    structure("ClassofCatalog", class = "DNS136")
   } else if (nrow(cos) == 83) {
-    structure("catalog", class = "ID")
+    structure("ClassofCatalog", class = "ID")
   } else {
     stop("The catalog seems not to be a standard catalog supported by ICAMS",
          "number of rows is ", nrow(cos))
