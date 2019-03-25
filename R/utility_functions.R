@@ -709,25 +709,25 @@ CreateCatalogClass <- function(catalog) {
          'The number of rows of the input catalog is ', nrow(catalog))
   }
   if(nrow(catalog) == 96) {
-    class(catalog) <- append(class(catalog), "SNS96Catalog")
+    class(catalog) <- append(class(catalog), "SNS96Catalog", after = 0)
   }
   if(nrow(catalog) == 192) {
-    class(catalog) <- append(class(catalog), "SNS192Catalog")
+    class(catalog) <- append(class(catalog), "SNS192Catalog", after = 0)
   }
   if(nrow(catalog) == 1536) {
-    class(catalog) <- append(class(catalog), "SNS1536Catalog")
+    class(catalog) <- append(class(catalog), "SNS1536Catalog", after = 0)
   }
   if(nrow(catalog) == 78) {
-    class(catalog) <- append(class(catalog), "DNS78Catalog")
+    class(catalog) <- append(class(catalog), "DNS78Catalog", after = 0)
   }
   if(nrow(catalog) == 144) {
-    class(catalog) <- append(class(catalog), "DNS144Catalog")
+    class(catalog) <- append(class(catalog), "DNS144Catalog", after = 0)
   }
   if(nrow(catalog) == 136) {
-    class(catalog) <- append(class(catalog), "DNS136Catalog")
+    class(catalog) <- append(class(catalog), "DNS136Catalog", after = 0)
   }
   if(nrow(catalog) == 83) {
-    class(catalog) <- append(class(catalog), "ID(indel)Catalog")
+    class(catalog) <- append(class(catalog), "ID(indel)Catalog", after = 0)
   }
   return(catalog)
 }
