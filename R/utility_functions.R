@@ -732,6 +732,116 @@ CreateCatalogClass <- function(catalog) {
   return(catalog)
 }
 
+#' Create the abundance attribute of a catalog
+#'
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#'
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return The original catalog with abundance attribute added.
+#'
+#' @keywords internal
+CreateCatalogAbundance <- function(catalog, ref.genome, region) {
+  if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+    stop('This is not a catalog supported by ICAMS. The input catalog must
+         be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
+         "DNS136", "ID(indel)"',
+         'The number of rows of the input catalog is ', nrow(catalog))
+  }
+
+  if(nrow(catalog) == 96) {
+    if (ref.genome %in%
+        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.3bp.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.3bp.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh38
+      }
+    }
+  }
+
+  if(nrow(catalog) == 192) {
+    attr(catalog, "abundance") <- NULL
+    cat('The abundance for SNS192 catalog is not created at the current stage.')
+  }
+
+  if(nrow(catalog) == 1536) {
+    if (ref.genome %in%
+        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.5bp.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.5bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.5bp.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.5bp.exome.GRCh38
+      }
+    }
+  }
+
+  if(nrow(catalog) == 78) {
+    if (ref.genome %in%
+        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.2bp.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.2bp.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh38
+      }
+    }
+  }
+
+  if(nrow(catalog) == 144) {
+    attr(catalog, "abundance") <- NULL
+    cat('The abundance for DNS144 catalog is not created at the current stage.')
+  }
+
+  if(nrow(catalog) == 136) {
+    if (ref.genome %in%
+        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.4bp.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.4bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.4bp.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.4bp.exome.GRCh38
+      }
+    }
+  }
+
+  if(nrow(catalog) == 83) {
+    attr(catalog, "abundance") <- NULL
+    cat('The abundance for ID(indel) catalog is not created at the current stage.')
+  }
+
+  return(catalog)
+}
+
 #' Create an S3 object of class "catalog"
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
