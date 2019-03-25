@@ -842,6 +842,25 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   return(catalog)
 }
 
+#' Preserve attributes of the input catalog
+#'
+#' @param pre.catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
+#' See \code{\link{CreateCatalogAttribute}} for more details.
+#'
+#' @param new.catalog A new catalog which needs to inherit the necessary attributes from
+#' \code{pre.catalog}.
+#'
+#' @return The new catalog that has inherited the necessary attributes from
+#' \code{pre.catalog}
+#'
+#' @export
+PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
+  ref.genome <- attributes(pre.catalog)$ref.genome
+  region <- attributes(pre.catalog)$region
+  type <- attributes(pre.catalog)$type
+  new.catalog <- CreateCatalogAttribute(new.catalog, ref.genome, region, type)
+}
+
 #' Create attributes of a catalog
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
