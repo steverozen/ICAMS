@@ -694,6 +694,44 @@ CheckClassOfCatalogFromPath <- function(path) {
   }
 }
 
+#' Create the class attribute of a catalog
+#'
+#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#'
+#' @return The original catalog with class attribute added.
+#'
+#' @keywords internal
+CreateCatalogClass <- function(catalog) {
+  if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+    stop('This is not a catalog supported by ICAMS. The input catalog must
+         be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
+         "DNS136", "ID(indel)"',
+         'The number of rows of the input catalog is ', nrow(catalog))
+  }
+  if(nrow(catalog) == 96) {
+    class(catalog) <- append(class(catalog), "SNS96Catalog")
+  }
+  if(nrow(catalog) == 192) {
+    class(catalog) <- append(class(catalog), "SNS192Catalog")
+  }
+  if(nrow(catalog) == 1536) {
+    class(catalog) <- append(class(catalog), "SNS1536Catalog")
+  }
+  if(nrow(catalog) == 78) {
+    class(catalog) <- append(class(catalog), "DNS78Catalog")
+  }
+  if(nrow(catalog) == 144) {
+    class(catalog) <- append(class(catalog), "DNS144Catalog")
+  }
+  if(nrow(catalog) == 136) {
+    class(catalog) <- append(class(catalog), "DNS136Catalog")
+  }
+  if(nrow(catalog) == 83) {
+    class(catalog) <- append(class(catalog), "ID(indel)Catalog")
+  }
+  return(catalog)
+}
+
 #' Create an S3 object of class "catalog"
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
