@@ -295,7 +295,7 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
   } else if (catalog$type == "density") {
-    stop('type = "density" not implemented')
+    stop('type = "density" not implemented\n')
   }
 
   # Draw lines above each class:
@@ -455,7 +455,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (catalog$type == "density") {
-    stop('type = "density" not implemented')
+    stop('type = "density" not implemented\n')
   }
 
   # Draw y axis
@@ -944,7 +944,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (catalog$type == "density") {
-    stop('type = "density" not implemented')
+    stop('type = "density" not implemented\n')
   }
 
   # Draw y axis
