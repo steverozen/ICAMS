@@ -16,7 +16,7 @@
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
-#' @return An S3 object with class "catalog".
+#' @return A catalog in standard in-memory format with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
@@ -37,7 +37,7 @@ ReadCatalog <- function(path, ref.genome, region, type, strict = TRUE) {
 #'
 #' See also \code{\link{ReadCatalog}}
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param path The path of the file to be written on disk.
@@ -236,7 +236,7 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #' @description This internal function is called by exported functions to do the
 #' actual writing of the catalog.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param path The path of the file to be written.
@@ -248,8 +248,6 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #' @param row.header The row header to be used for writing the file.
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
-#'
-#' @return A catalog in standard in-memory format.
 #'
 #' @keywords internal
 WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
