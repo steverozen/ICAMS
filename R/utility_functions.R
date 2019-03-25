@@ -244,7 +244,7 @@ TransformCatalog <-
   if (nrow(catalog) == 192) {
     if (source.type != "counts" || target.type %in% c("density", "counts")) {
       stop('For SNS 192 catalog, only transformation from "counts" to "signature" ',
-           'is implemented at the current stage.')
+           'is implemented at the current stage.\n')
     } else {
       return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
     }
@@ -253,7 +253,7 @@ TransformCatalog <-
   if (nrow(catalog) == 144) {
     if (source.type != "counts" || target.type %in% c("density", "counts")) {
       stop('For DNS 144 catalog, only transformation from "counts" to "signature" ',
-           'is implemented at the current stage.')
+           'is implemented at the current stage.\n')
     } else {
       return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
     }
@@ -772,7 +772,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 192) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for SNS192 catalog is not created at the current stage.')
+    cat('The abundance for SNS192 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 1536) {
@@ -813,7 +813,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 144) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for DNS144 catalog is not created at the current stage.')
+    cat('The abundance for DNS144 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 136) {
@@ -836,7 +836,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 83) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for ID(indel) catalog is not created at the current stage.')
+    cat('The abundance for ID(indel) catalog is not created at the current stage.\n')
   }
 
   return(catalog)
