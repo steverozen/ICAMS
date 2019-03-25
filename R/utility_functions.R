@@ -842,7 +842,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   return(catalog)
 }
 
-#' Create an S3 object of class "catalog"
+#' Create attributes of a catalog
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
@@ -854,7 +854,8 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 #' @param type A character string acting as a catalog type identifier, one of
 #' "counts", "density", "signature".
 #'
-#' @return An S3 object of class "catalog".
+#' @return The original catalog with the following attributes added: ref.genome,
+#'   region, type, abundance, class.
 #'
 #' @export
 CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
@@ -862,15 +863,11 @@ CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
     ref.genome <- ref.genome@pkgname
   }
 
-  if (type == "counts") {
-    catalog <- list(catalog = catalog, ref.genome = ref.genome,
-                    region = region, type = type, counts = list(catalog))
-    names(catalog$counts) <-
-      paste0("ref.genome: ", ref.genome, " region: ", region)
-  } else {
-    catalog <- list(catalog = catalog, ref.genome = ref.genome,
-                    region = region, type = type, counts = NULL)
+  if (CheckCatalogAttribute(ref.genome, region, type)) {
+    attr(catalog, "ref.genome") <- ref.genome
+    attr(catalog, "region") <- region
+    attr(catalog, "type") <- type
+    catalog <- CreateCatalogAbundance(catalog, ref.genome, region)
+    catalog <- CreateCatalogClass(catalog)
   }
-  class(catalog) <- "catalog"
-  return(catalog)
 }
