@@ -645,23 +645,23 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
 #'
 #' @keywords internal
 CheckClassOfCatalog <- function(catalog) {
-  if (nrow(catalog$catalog) == 96) {
+  if (nrow(catalog) == 96) {
     structure("ClassofCatalog", class = "SNS96")
-  } else if (nrow(catalog$catalog) == 192) {
+  } else if (nrow(catalog) == 192) {
     structure("ClassofCatalog", class = "SNS192")
-  } else if (nrow(catalog$catalog) == 1536) {
+  } else if (nrow(catalog) == 1536) {
     structure("ClassofCatalog", class = "SNS1536")
-  } else if (nrow(catalog$catalog) == 78) {
+  } else if (nrow(catalog) == 78) {
     structure("ClassofCatalog", class = "DNS78")
-  } else if (nrow(catalog$catalog) == 144) {
+  } else if (nrow(catalog) == 144) {
     structure("ClassofCatalog", class = "DNS144")
-  } else if (nrow(catalog$catalog) == 136) {
+  } else if (nrow(catalog) == 136) {
     structure("ClassofCatalog", class = "DNS136")
-  } else if (nrow(catalog$catalog) == 83) {
+  } else if (nrow(catalog) == 83) {
     structure("ClassofCatalog", class = "ID")
   } else {
     stop("The catalog seems not to be a standard catalog supported by ICAMS",
-         "number of rows is ", nrow(catalog$catalog))
+         "number of rows is ", nrow(catalog))
   }
 }
 
@@ -772,7 +772,6 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 192) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance attribute for SNS192 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 1536) {
@@ -813,7 +812,6 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 144) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance attribute for DNS144 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 136) {
@@ -836,7 +834,6 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 83) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance attribute for ID(indel) catalog is not created at the current stage.\n')
   }
 
   return(catalog)
