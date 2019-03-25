@@ -251,12 +251,12 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #'
 #' @keywords internal
 WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
-  mut.categories <- rownames(catalog$catalog)
-  stopifnot(num.row == nrow(catalog$catalog))
+  mut.categories <- rownames(catalog)
+  stopifnot(num.row == nrow(catalog))
   if (strict) {
     stopifnot(mut.categories == row.order)
   }
-  catalog <- catalog$catalog[row.order, , drop = FALSE]
+  catalog <- catalog[row.order, , drop = FALSE]
   DT <- as.data.table(catalog)
   fwrite(cbind(row.header, DT), file = path)
 }
