@@ -772,7 +772,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 192) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for SNS192 catalog is not created at the current stage.\n')
+    cat('The abundance attribute for SNS192 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 1536) {
@@ -813,7 +813,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 144) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for DNS144 catalog is not created at the current stage.\n')
+    cat('The abundance attribute for DNS144 catalog is not created at the current stage.\n')
   }
 
   if(nrow(catalog) == 136) {
@@ -836,7 +836,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
 
   if(nrow(catalog) == 83) {
     attr(catalog, "abundance") <- NULL
-    cat('The abundance for ID(indel) catalog is not created at the current stage.\n')
+    cat('The abundance attribute for ID(indel) catalog is not created at the current stage.\n')
   }
 
   return(catalog)
