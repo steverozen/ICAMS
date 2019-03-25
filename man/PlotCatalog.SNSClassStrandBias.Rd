@@ -8,7 +8,7 @@
   cex = 1)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{strandbias}{If TRUE, Plot the transcription strand bias graph of 6 SNS

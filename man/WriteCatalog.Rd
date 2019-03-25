@@ -7,7 +7,7 @@
 WriteCatalog(catalog, path, strict = TRUE)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{path}{The path of the file to be written on disk.}

@@ -8,7 +8,7 @@ sample}
 \method{PlotCatalog}{ID}(catalog)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 }
 \value{

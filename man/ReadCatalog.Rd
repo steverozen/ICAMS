@@ -20,7 +20,7 @@ ReadCatalog(path, ref.genome, region, type, strict = TRUE)
 \item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
 \value{
-An S3 object with class "catalog".
+A catalog in standard in-memory format with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{

@@ -19,8 +19,8 @@ output catalog.}
 "genome", "exome".}
 }
 \value{
-A list of S3 objects with class "catalog", one each for DNS 78, 144,
-  136: catDNS78, catDNS144, catDNS136. See
+A list of 3 DNS catalogs, one each for 78, 144, 136: catDNS78
+  catDNS144 catDNS136. Each catalog has attributes added. See
   \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{

@@ -19,8 +19,8 @@ output catalog.}
 "genome", "exome".}
 }
 \value{
-A list of S3 objects with class "catalog", one each for SNS 96, 192,
-  1536: catSNS96 catSNS192 catSNS1536. See
+A list of 3 SNS catalogs, one each for 96, 192, 1536: catSNS96
+  catSNS192 catSNS1536. Each catalog has attributes added. See
   \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{

@@ -7,7 +7,7 @@
 WriteCat(catalog, path, num.row, row.order, row.header, strict)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{path}{The path of the file to be written.}
@@ -19,9 +19,6 @@ See \code{\link{CreateCatalogAttribute}} for more details.}
 \item{row.header}{The row header to be used for writing the file.}
 
 \item{strict}{If TRUE, then stop if additional checks on the input fail.}
-}
-\value{
-A catalog in standard in-memory format.
 }
 \description{
 This internal function is called by exported functions to do the

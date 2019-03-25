@@ -8,7 +8,7 @@
   upper = TRUE, xlabels = TRUE)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,

@@ -16,8 +16,8 @@ file paths to the Strelka ID VCF files.}
 "genome", "exome".}
 }
 \value{
-An S3 object containing an ID (indel) catalog with class
-  "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
+An ID (indel) catalog with attributes added. See
+  \code{\link{CreateCatalogAttribute}} for more details.
 }
 \description{
 Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths

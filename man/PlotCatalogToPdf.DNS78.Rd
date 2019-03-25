@@ -7,7 +7,7 @@
 \method{PlotCatalogToPdf}{DNS78}(catalog, filename)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{filename}{The name of the PDF file to be produced.}

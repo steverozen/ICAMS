@@ -7,7 +7,7 @@
 PlotCatalog(catalog, strandbias = FALSE, ...)
 }
 \arguments{
-\item{catalog}{An S3 object with class "catalog".
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{CreateCatalogAttribute}} for more details.}
 
 \item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144

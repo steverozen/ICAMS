@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateCatalogAttribute}
 \alias{CreateCatalogAttribute}
-\title{Create an S3 object of class "catalog"}
+\title{Create attributes of a catalog}
 \usage{
 CreateCatalogAttribute(catalog, ref.genome, region, type)
 }
@@ -18,8 +18,9 @@ CreateCatalogAttribute(catalog, ref.genome, region, type)
 "counts", "density", "signature".}
 }
 \value{
-An S3 object of class "catalog".
+The original catalog with the following attributes added: ref.genome,
+  region, type, abundance, class.
 }
 \description{
-Create an S3 object of class "catalog"
+Create attributes of a catalog
 }
