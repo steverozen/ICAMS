@@ -875,9 +875,7 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 #'
 #' @export
 CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
-  if (class(ref.genome) != "character") {
-    ref.genome <- ref.genome@pkgname
-  }
+    ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
 
   if (CheckCatalogAttribute(ref.genome, region, type)) {
     attr(catalog, "ref.genome") <- ref.genome
