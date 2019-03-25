@@ -5,7 +5,8 @@ test_that("PlotCatalog.ID function is working properly", {
   catalog <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                        ref.genome = "GRCh37",
                        region = "genome", type = "counts")
-  catalog$catalog <- catalog$catalog[, 1, drop = FALSE]
-  out <- PlotCatalog(catalog)
+  cat <- catalog[, 1, drop = FALSE]
+  cat <- PreserveCatalogAttribute(catalog, cat)
+  out <- PlotCatalog(cat)
   expect_equal(out, TRUE)
 })

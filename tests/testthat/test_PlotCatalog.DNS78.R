@@ -5,7 +5,8 @@ test_that("PlotCatalog.DNS78 function is working properly", {
   catalog <- ReadCatalog("testdata/regress.cat.dns.78.csv",
                           ref.genome = "GRCh37",
                           region = "genome", type = "counts")
-  catalog$catalog <- catalog$catalog[, 1, drop = FALSE]
-  out <- PlotCatalog(catalog)
+  cat <- catalog[, 1, drop = FALSE]
+  cat <- PreserveCatalogAttribute(catalog, cat)
+  out <- PlotCatalog(cat)
   expect_equal(out, TRUE)
 })

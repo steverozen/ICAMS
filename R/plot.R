@@ -2,7 +2,7 @@
 #'
 #' Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
@@ -32,7 +32,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #'
 #' Plot catalogs to a PDF file.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -65,7 +65,7 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
 
 #' Plot the SNS 96 spectrum or signature of \strong{one} sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
@@ -87,8 +87,8 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
 #' @keywords internal
 PlotCatalog.SNS96 <-
   function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
-    stopifnot(dim(catalog$catalog) == c(96, 1))
-    stopifnot(rownames(catalog$catalog) == ICAMS::catalog.row.order$SNS96)
+    stopifnot(dim(catalog) == c(96, 1))
+    stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SNS96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -99,22 +99,22 @@ PlotCatalog.SNS96 <-
 
     cols <- rep(class.col, each = 16)
     maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-    num.classes <- length(catalog$catalog)
+    num.classes <- length(catalog)
 
-    if (catalog$type == "density") {
+    if (attributes(catalog)$type == "density") {
       # Barplot
-      bp <- barplot(catalog$catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
+      bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
                     xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "mut/million")
 
       # Get ylim
-      ymax <- max(catalog$catalog[, 1] * 1000000)
-    } else if (catalog$type == "counts") {
+      ymax <- max(catalog[, 1] * 1000000)
+    } else if (attributes(catalog)$type == "counts") {
       # Get ylim
-      ymax <- max(catalog$catalog[, 1])
+      ymax <- max(catalog[, 1])
 
       # Barplot
-      bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
+      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
                     xaxs = "i", lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "counts")
 
@@ -122,15 +122,15 @@ PlotCatalog.SNS96 <-
       for (i in 1 : 6) {
         j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.20, labels = sum(catalog$catalog[k : (16 * i), ]),
+        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
-    } else if (catalog$type == "signature") {
+    } else if (attributes(catalog)$type == "signature") {
       # Get ylim
-      ymax <- max(catalog$catalog[, 1])
+      ymax <- max(catalog[, 1])
 
       # Barplot
-      bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
+      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
                     lwd = 3, space = 1.35, border = NA,
                     col = cols, ylab = "proportion")
     }
@@ -146,7 +146,7 @@ PlotCatalog.SNS96 <-
 
     # Draw y axis
     y.axis.values <- seq(0, ymax, ymax/4)
-    if (catalog$type != "counts") {
+    if (attributes(catalog)$type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
       y.axis.labels <- round(y.axis.values, 0)
@@ -161,7 +161,7 @@ PlotCatalog.SNS96 <-
     }
 
     # Draw the sample name information on top of graph
-    text(bp[1], ymax * 1.08, labels = colnames(catalog$catalog), xpd = NA,
+    text(bp[1], ymax * 1.08, labels = colnames(catalog), xpd = NA,
          cex = cex, font = 2, adj = c(0, 0))
 
     # Draw the labels along x axis?
@@ -201,7 +201,7 @@ PlotCatalog.SNS96 <-
 
 #' Plot an SNS 96 catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -222,12 +222,12 @@ PlotCatalogToPdf.SNS96 <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog$catalog)
+    n <- ncol(catalog)
     graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
     for (i in 1 : n) {
-      cat <- catalog
-      cat$catalog <- catalog$catalog[, i, drop = FALSE]
+      cat <- catalog[, i, drop = FALSE]
+      cat <- PreserveCatalogAttribute(catalog, cat)
       PlotCatalog(cat)
     }
     invisible(grDevices::dev.off())
@@ -236,7 +236,7 @@ PlotCatalogToPdf.SNS96 <-
 
 #' Plot the SNS 192 spectrum or signature of \strong{one} sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
@@ -250,7 +250,7 @@ PlotCatalogToPdf.SNS96 <-
 #'
 #' @keywords internal
 PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
-  stopifnot(dim(catalog$catalog) == c(192, 1))
+  stopifnot(dim(catalog) == c(192, 1))
 
   class.col  <- c("#03bcee",
                   "#010101",
@@ -270,31 +270,32 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
                   "#e83020")
 
   # Sort data in plotting order
-  catalog$catalog <- catalog$catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- PreserveCatalogAttribute(catalog, cat)
 
-  num.classes <- length(catalog$catalog)
+  num.classes <- length(cat)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (catalog$type == "counts") {
+  if (attributes(cat)$type == "counts") {
     # Get ylim
-    ymax <- max(catalog$catalog[, 1]) * 1.3
+    ymax <- max(catalog[, 1]) * 1.3
 
     # Barplot: side by side
-    mat <- matrix(catalog$catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
-  } else if (catalog$type == "signature") {
+  } else if (attributes(cat)$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(catalog$catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
-  } else if (catalog$type == "density") {
+  } else if (attributes(cat)$type == "density") {
     stop('type = "density" not implemented\n')
   }
 
@@ -323,7 +324,7 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
 
   # Draw y axis and write mutation counts on top of graph(if applicable)
   y.axis.values <- seq(0, ymax, ymax/4)
-  if (catalog$type != "counts") {
+  if (attributes(cat)$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -332,7 +333,7 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
     for (i in 1 : 6) {
       j <- 32 + 32 * (i - 1)
       k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 0.92, labels = sum(catalog$catalog[k : (32 * i), 1]),
+      text(bp[j], ymax * 0.92, labels = sum(catalog[k : (32 * i), 1]),
            adj = c(1, 1), xpd = NA, cex = 0.8)
     }
   }
@@ -351,14 +352,14 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
   # Write the name of the sample
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog), adj = 0, cex = cex, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog), adj = 0, cex = cex, font = 2)
 
   invisible(TRUE)
 }
 
 #' Plot an SNS 192 catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -370,12 +371,12 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog$catalog)
+  n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
 
   for (i in 1 : n) {
-    cat <- catalog
-    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    cat <- catalog[, i, drop = FALSE]
+    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
@@ -384,7 +385,7 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
 
 #' Plot the strand bias graph of SNS 192 spectrum or signature of \strong{one} sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param strandbias If TRUE, Plot the transcription strand bias graph of 6 SNS
@@ -402,21 +403,22 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
 #' @keywords internal
 PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                                            cex = 1) {
-  stopifnot(dim(catalog$catalog) == c(192, 1))
+  stopifnot(dim(catalog) == c(192, 1))
 
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  catalog$catalog <- catalog$catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- PreserveCatalogAttribute(catalog, cat)
 
   num.classes <- 12
   maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (catalog$type == "counts") {
+  if (attributes(cat)$type == "counts") {
     # Get the counts for each major mutation class
-    counts <- catalog$catalog[, 1]
+    counts <- catalog[, 1]
     counts.strand <- integer(12)
     for (i in 1 : 6){
       counts.strand[2 * i - 1] <-
@@ -434,9 +436,9 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (catalog$type == "signature") {
+  } else if (attributes(cat)$type == "signature") {
     # Get the proportion for each major mutation class
-    prop <- catalog$catalog[, 1]
+    prop <- catalog[, 1]
     prop.strand <- integer(12)
     for (i in 1 : 6){
       prop.strand[2 * i - 1] <-
@@ -454,13 +456,13 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (catalog$type == "density") {
+  } else if (attributes(cat)$type == "density") {
     stop('type = "density" not implemented\n')
   }
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (catalog$type != "counts") {
+  if (attributes(cat)$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -480,7 +482,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
   # Draw the sample name information on top of graph
-  text(bp[5], ymax * 1.02, labels = colnames(catalog$catalog), xpd = NA,
+  text(bp[5], ymax * 1.02, labels = colnames(catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
   invisible(TRUE)
@@ -488,7 +490,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
 #' Plot the strand bias graph of SNS 192 catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -505,12 +507,12 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog$catalog)
+  n <- ncol(catalog)
   graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
   for (i in 1 : n) {
-    cat <- catalog
-    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    cat <- catalog[, i, drop = FALSE]
+    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat, strandbias = TRUE)
   }
   invisible(grDevices::dev.off())
@@ -525,7 +527,7 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
 #' letter T refers to the base which has mutation, next second 2-letters TA
 #' refers to (+1, +2) position, last letter T refers to the base after mutation.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @import graphics
@@ -534,7 +536,7 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
 #'
 #' @keywords internal
 PlotCatalog.SNS1536 <- function(catalog) {
-  stopifnot(dim(catalog$catalog) == c(1536, 1))
+  stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
   bases <- c("A", "C", "G", "T")
@@ -574,25 +576,25 @@ PlotCatalog.SNS1536 <- function(catalog) {
              c(0.5, 4.5, 8.5, 12.5, 16.5), rep(18.3, 5), xpd = NA)
   }
 
-  cat <- data.frame(catalog$catalog)
+  cat <- data.frame(catalog)
   cat$main.types <-
     paste0(substr(rownames(cat), 3, 3), ">", substr(rownames(cat), 6, 6))
   cat1 <-
     stats::aggregate(cat[, 1], by = list(main.types = cat$main.types), FUN = sum)
 
-  if (catalog$type == "counts") {
+  if (attributes(catalog)$type == "counts") {
     # Get the total counts for the six main mutation types
     main.types.counts <- cat1[, 2]
     names(main.types.counts) <- cat1$main.types
-  } else if (catalog$type == "signature") {
+  } else if (attributes(catalog)$type == "signature") {
     # Get the total proportion for the six main mutation types
     main.types.prop <- cat1[, 2]
     names(main.types.prop) <- cat1$main.types
   }
 
   # Sort the catalog matrix in plotting order
-  rates <- as.data.frame(catalog$catalog)
-  mut.type <- rownames(catalog$catalog)
+  rates <- as.data.frame(catalog)
+  mut.type <- rownames(catalog)
   rates$mut.type <- mut.type
   rates$ref2alt <- paste0(substr(mut.type, 3, 3), substr(mut.type, 6, 6))
   rates$minus2bs <- substr(mut.type, 1, 1)
@@ -626,9 +628,9 @@ PlotCatalog.SNS1536 <- function(catalog) {
       DrawAxisY()
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type == "counts") {
+      if (attributes(catalog)$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type == "signature") {
+      } else if (attributes(catalog)$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -640,14 +642,14 @@ PlotCatalog.SNS1536 <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type == "counts") {
+      if (attributes(catalog)$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type == "signature") {
+      } else if (attributes(catalog)$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
       }
-      text(8.5, 20.5, colnames(catalog$catalog), cex = 1.5, xpd = NA)
+      text(8.5, 20.5, colnames(catalog), cex = 1.5, xpd = NA)
     }
 
     if (i == 3) {
@@ -655,9 +657,9 @@ PlotCatalog.SNS1536 <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type == "counts") {
+      if (attributes(catalog)$type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type == "signature") {
+      } else if (attributes(catalog)$type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -671,9 +673,9 @@ PlotCatalog.SNS1536 <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type  == "counts") {
+      if (attributes(catalog)$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type  == "signature") {
+      } else if (attributes(catalog)$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -686,9 +688,9 @@ PlotCatalog.SNS1536 <- function(catalog) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type  == "counts") {
+      if (attributes(catalog)$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type  == "signature") {
+      } else if (attributes(catalog)$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -699,9 +701,9 @@ PlotCatalog.SNS1536 <- function(catalog) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (catalog$type  == "counts") {
+      if (attributes(catalog)$type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (catalog$type  == "signature") {
+      } else if (attributes(catalog)$type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -720,7 +722,7 @@ PlotCatalog.SNS1536 <- function(catalog) {
 #' letter T refers to the base which has mutation, next second 2-letters TA
 #' refers to (+1, +2) position, last letter T refers to the base after mutation.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -731,11 +733,11 @@ PlotCatalog.SNS1536 <- function(catalog) {
 PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
   grDevices::cairo_pdf(filename, width = 11.6929, height = 9.2677, onefile = TRUE)
 
-  n <- ncol(catalog$catalog)
+  n <- ncol(catalog)
 
   for (i in 1 : n) {
-    cat <- catalog
-    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    cat <- catalog[, i, drop = FALSE]
+    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
@@ -748,7 +750,7 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 
 #' Plot the DNS 78 spectrum or signature of \strong{one} sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @import graphics
@@ -757,18 +759,18 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 #'
 #' @keywords internal
 PlotCatalog.DNS78 <- function(catalog) {
-  stopifnot(dim(catalog$catalog) == c(78, 1))
-  stopifnot(rownames(catalog$catalog) == ICAMS::catalog.row.order$DNS78)
+  stopifnot(dim(catalog) == c(78, 1))
+  stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DNS78)
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))
-  num.classes <- length(catalog$catalog)
+  num.classes <- length(catalog)
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
-  if (catalog$type == "density") {
+  if (attributes(catalog)$type == "density") {
     # Calculate rate of mutations per million nucleotides for the catalog
-    rate <- catalog$catalog[, 1] * 1000000
+    rate <- catalog[, 1] * 1000000
 
     # Get ylim
     ymax <- ifelse(max(rate) * 1.3 > 1, 1, max(rate) * 1.3)
@@ -777,28 +779,28 @@ PlotCatalog.DNS78 <- function(catalog) {
     bp <- barplot(rate, ylim = c(0, ymax), xaxt = "n", yaxt = "n", xaxs = "i",
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million")
-  } else if (catalog$type == "counts") {
+  } else if (attributes(catalog)$type == "counts") {
     # Get ylim
-    ymax <- max(catalog$catalog[, 1]) * 1.3
+    ymax <- max(catalog[, 1]) * 1.3
 
     # Barplot
-    bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
+    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   xaxs = "i", lwd = 3, space = 1.35, border = NA, xaxs = "i",
                   col = cols, ylab = "counts")
 
     # Write the mutation counts on top of graph
     for (i in 1 : 10) {
       j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
-      name <- substr(rownames(catalog$catalog), 1, 2)
+      name <- substr(rownames(catalog), 1, 2)
       text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
-           adj = c(1, 1), labels = sum(catalog$catalog[name == maj.class.names[i], ]))
+           adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
-  } else if (catalog$type == "signature") {
+  } else if (attributes(catalog)$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(catalog$catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
+    bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   lwd = 3, space = 1.35, border = NA, xaxs = "i",
                   col = cols, ylab = "proportion")
   }
@@ -820,11 +822,11 @@ PlotCatalog.DNS78 <- function(catalog) {
        labels = paste(maj.class.names, "NN", sep = ">"), cex = 0.7, xpd = NA)
 
   # Draw the sample name information on top of graph
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog), adj = 0, cex = 0.8, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog), adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (catalog$type != "counts") {
+  if (attributes(catalog)$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -833,9 +835,9 @@ PlotCatalog.DNS78 <- function(catalog) {
        las = 1, adj = 1, xpd = NA, cex = 0.75)
 
   # Draw x axis labels
-  text(bp, -ymax / 80, labels = substr(rownames(catalog$catalog), 4, 4),
+  text(bp, -ymax / 80, labels = substr(rownames(catalog), 4, 4),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
-  text(bp, -ymax / 15, labels = substr(rownames(catalog$catalog), 3, 3),
+  text(bp, -ymax / 15, labels = substr(rownames(catalog), 3, 3),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
   invisible(TRUE)
@@ -843,7 +845,7 @@ PlotCatalog.DNS78 <- function(catalog) {
 
 #' Plot a DNS 78 catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -856,12 +858,12 @@ PlotCatalogToPdf.DNS78 <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog$catalog)
+    n <- ncol(catalog)
     graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
 
     for (i in 1 : n) {
-      cat <- catalog
-      cat$catalog <- catalog$catalog[, i, drop = FALSE]
+      cat <- catalog[, i, drop = FALSE]
+      cat <- PreserveCatalogAttribute(catalog, cat)
       PlotCatalog(cat)
     }
     invisible(grDevices::dev.off())
@@ -870,7 +872,7 @@ PlotCatalogToPdf.DNS78 <-
 
 #' Plot the strand bias graph of DNS 144 spectrum or signature of \strong{one} sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param strandbias If TRUE, plot the transcription strand bias graph of 10
@@ -889,21 +891,21 @@ PlotCatalogToPdf.DNS78 <-
 #' @keywords internal
 PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                                            cex = 1) {
-  stopifnot(dim(catalog$catalog) == c(144, 1))
+  stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  catalog$catalog <- catalog$catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
 
   num.classes <- 20
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (catalog$type == "counts") {
+  if (attributes(catalog)$type == "counts") {
     # Get the counts for each major mutation class
-    counts <- catalog$catalog[, 1]
+    counts <- cat[, 1]
     counts.strand <- integer(20)
     for (i in 1 : 10){
       idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
@@ -922,9 +924,9 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (catalog$type == "signature") {
+  } else if (attributes(catalog)$type == "signature") {
     # Get the proportion for each major mutation class
-    prop <- catalog$catalog[, 1]
+    prop <- cat[, 1]
     prop.strand <- integer(20)
     for (i in 1 : 10){
       idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
@@ -943,13 +945,13 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (catalog$type == "density") {
+  } else if (attributes(catalog)$type == "density") {
     stop('type = "density" not implemented\n')
   }
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (catalog$type != "counts") {
+  if (attributes(catalog)$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -969,7 +971,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
          legend = c("Transcribed", "Untranscribed"), cex = cex)
 
   # Draw the sample name information on top of graph
-  text(bp[8], ymax, labels = colnames(catalog$catalog), xpd = NA,
+  text(bp[8], ymax, labels = colnames(catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
   invisible(TRUE)
@@ -977,7 +979,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
 #' Plot the strand bias graph of DNS 144 catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -995,13 +997,13 @@ PlotCatalogToPdf.DNSClassStrandBias <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog$catalog)
+    n <- ncol(catalog)
     graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
 
     for (i in 1 : n) {
-      cat <- catalog
-      cat$catalog <- catalog$catalog[, i, drop = FALSE]
-      PlotCatalog(cat, strandbias = TRUE)
+      cat <- catalog[, i, drop = FALSE]
+      cat <- PreserveCatalogAttribute(catalog, cat)
+      PlotCatalog(cat)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
@@ -1013,7 +1015,7 @@ PlotCatalogToPdf.DNSClassStrandBias <-
 #' "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN", "TG>NN",
 #' "TT>NN") for one sample.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @import graphics
@@ -1022,7 +1024,7 @@ PlotCatalogToPdf.DNSClassStrandBias <-
 #'
 #' @keywords internal
 PlotCatalog.DNS136 <- function(catalog) {
-  stopifnot(dim(catalog$catalog) == c(136, 1))
+  stopifnot(dim(catalog) == c(136, 1))
 
   old <- par(no.readonly = TRUE)
   # Specify the lay out of the plotting
@@ -1036,13 +1038,13 @@ PlotCatalog.DNS136 <- function(catalog) {
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   mut.type <- paste(ref.order, "NN", sep = ">")
 
-  if (catalog$type == "counts") {
+  if (attributes(catalog)$type == "counts") {
     # Calculate the occurrences of each mutation type for plotting
     counts <- matrix(0, nrow = 160, ncol = 1)
     rownames(counts) <- order.for.DNS.136.plotting
     for (i in 1:160){
-      if (order.for.DNS.136.plotting[i] %in% rownames(catalog$catalog)) {
-        counts[i] <- catalog$catalog[order.for.DNS.136.plotting[i], ]
+      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+        counts[i] <- catalog[order.for.DNS.136.plotting[i], ]
       } else {
         counts[i] <- NA
       }
@@ -1060,14 +1062,14 @@ PlotCatalog.DNS136 <- function(catalog) {
     rownames(counts.per.class) <- df2$Ref
   }
 
-  if (catalog$type == "density") {
+  if (attributes(catalog)$type == "density") {
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
     rownames(rates) <- order.for.DNS.136.plotting
     for (i in 1:160){
-      if (order.for.DNS.136.plotting[i] %in% rownames(catalog$catalog)) {
-        rates[i] <- catalog$catalog[order.for.DNS.136.plotting[i], ]
+      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
+        rates[i] <- catalog[order.for.DNS.136.plotting[i], ]
       } else {
         rates[i] <- NA
       }
@@ -1107,15 +1109,15 @@ PlotCatalog.DNS136 <- function(catalog) {
   for (i in 1:10){
     par(mar = c(1, 2, 2, 0))
 
-    if (catalog$type == "density") {
+    if (attributes(catalog)$type == "density") {
       DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
-    } else if (catalog$type == "counts") {
+    } else if (attributes(catalog)$type == "counts") {
       DrawImage(matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
     }
 
     # Draw the mutation type and number of occurrences on top of image
     text(2, 5.2, mut.type[i], font = 2, xpd = NA)
-    if (catalog$type == "counts") {
+    if (attributes(catalog)$type == "counts") {
       text(3.2, 5.2, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
     }
 
@@ -1129,7 +1131,7 @@ PlotCatalog.DNS136 <- function(catalog) {
 
     # Draw the sample name information of the sample
     if (i == 8) {
-      mtext(colnames(catalog$catalog), at = 5, line =3)
+      mtext(colnames(catalog), at = 5, line =3)
     }
   }
 
@@ -1138,14 +1140,14 @@ PlotCatalog.DNS136 <- function(catalog) {
   text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
   ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
-  if (catalog$type == "density") {
+  if (attributes(catalog)$type == "density") {
     text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
     maxima <- numeric(0)
     for (i in 1:10) {
       maxima[i] <- max.rate.per.class[ref[i], ]
       names(maxima)[i] <- ref[i]
     }
-  } else if (catalog$type == "counts") {
+  } else if (attributes(catalog)$type == "counts") {
     text(x = 0.5, y = 0.8, "(counts)", cex = 1.2)
     maxima <- numeric(0)
     for (i in 1:10) {
@@ -1168,7 +1170,7 @@ PlotCatalog.DNS136 <- function(catalog) {
 #' ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN",
 #' "TG>NN", "TT>NN") of various samples to a PDF file.
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -1177,8 +1179,8 @@ PlotCatalog.DNS136 <- function(catalog) {
 #'
 #' @keywords internal
 PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
-  stopifnot(nrow(catalog$catalog) == 136)
-  n <- ncol(catalog$catalog)
+  stopifnot(nrow(catalog) == 136)
+  n <- ncol(catalog)
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -1210,9 +1212,9 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
   mut.type <- paste(ref.order, "NN", sep = ">")
 
   for (i in 1:n) {
-    cat <- catalog$catalog[, i, drop = FALSE]
+    cat <- catalog[, i, drop = FALSE]
 
-    if (catalog$type == "counts") {
+    if (attributes(catalog)$type == "counts") {
       # Calculate the occurrences of each mutation type for plotting
       counts <- matrix(0, nrow = 160, ncol = 1)
       rownames(counts) <- order.for.DNS.136.plotting
@@ -1236,7 +1238,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
       rownames(counts.per.class) <- df2$Ref
     }
 
-    if (catalog$type == "density") {
+    if (attributes(catalog)$type == "density") {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
@@ -1282,9 +1284,9 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 
     for (j in 1:10) {
       par(mar = c(1, 0, 2, 0), pty = "s")
-      if (catalog$type == "density") {
+      if (attributes(catalog)$type == "density") {
         DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
-      } else if (catalog$type == "counts") {
+      } else if (attributes(catalog)$type == "counts") {
         DrawImage(matrix(counts[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
       } else {
         stop('Please specify the correct type: "density" or "counts"')
@@ -1292,7 +1294,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 
       # Draw the mutation type and number of occurrences on top of image
       text(2.3, 5.2, mut.type[j], font = 2, xpd = NA)
-      if (catalog$type == "counts") {
+      if (attributes(catalog)$type == "counts") {
         text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"),
              font = 2, xpd = NA)
 
@@ -1312,14 +1314,14 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
     text(x = 0.5, y = 1.2, "Maxima per class", cex = 1.6, xpd = NA)
     ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
-    if (catalog$type == "density") {
+    if (attributes(catalog)$type == "density") {
       text(x = 0.5, y = 1.07, "(mut/million)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
         maxima[j] <- max.rate.per.class[ref[j], ]
         names(maxima)[j] <- ref[j]
       }
-    } else if (catalog$type == "counts") {
+    } else if (attributes(catalog)$type == "counts") {
       text(x = 0.5, y = 1.07, "(counts)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
@@ -1337,7 +1339,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
     # Draw the sample name information of the sample
     par(mar = c(0, 0, 0, 0))
     plot.new()
-    text(0.7, 0.5, colnames(catalog$catalog)[i], cex = 1.5, xpd = NA)
+    text(0.7, 0.5, colnames(catalog)[i], cex = 1.5, xpd = NA)
   }
   invisible(grDevices::dev.off())
   invisible(TRUE)
@@ -1350,7 +1352,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 #' Plot the indel(insertion and deletion) spectrum or signature of \strong{one}
 #' sample
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @import graphics
@@ -1363,7 +1365,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 #'
 #' @keywords internal
 PlotCatalog.ID <- function(catalog){
-  stopifnot(dim(catalog$catalog) == c(83, 1))
+  stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
                        "#ff8001",
@@ -1382,19 +1384,19 @@ PlotCatalog.ID <- function(catalog){
                        "#8683bd",
                        "#61409b")
 
-  num.classes <- length(catalog$catalog)
+  num.classes <- length(catalog)
   cols <- rep(indel.class.col,
               c(6, 6, 6, 6,
                 6, 6, 6, 6,
                 6, 6, 6, 6,
                 1, 2, 3, 5))
 
-  if (catalog$type == "counts") {
+  if (attributes(catalog)$type == "counts") {
     # Get ylim
-    ymax <- max(catalog$catalog) * 1.3
+    ymax <- max(catalog) * 1.3
 
     # Barplot
-    bp <- barplot(catalog$catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", yaxt = "n")
 
@@ -1406,20 +1408,20 @@ PlotCatalog.ID <- function(catalog){
                 107.6, 121.7, 135.8, 149.9, 164,
                 172.2, 175.5, 182, 191)
       if (i == 1) {
-        counts[i] <- sum(catalog$catalog[1:idx[1], 1])
+        counts[i] <- sum(catalog[1:idx[1], 1])
       } else {
-        counts[i] <- sum(catalog$catalog[(idx[i - 1] + 1):idx[i], 1])
+        counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
       }
       text(idx2[i], ymax * 0.6, labels = counts[i],
            cex = 0.68, adj = 1, xpd = NA)
     }
 
-  } else if (catalog$type == "signature") {
+  } else if (attributes(catalog)$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog$catalog[, 1]) * 1.3 > 1, 1, max(catalog$catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
     # Barplot
-    bp <- barplot(catalog$catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
                   lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
                   xaxs = "i", yaxt = "n")
   }
@@ -1454,12 +1456,12 @@ PlotCatalog.ID <- function(catalog){
   text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the sample name information of the sample
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog$catalog),
+  text(1.5, ymax * 7 / 8, labels = colnames(catalog),
        adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (catalog$type != "counts") {
+  if (attributes(catalog)$type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     text(-9, ymax / 2, labels = "proportion", srt = 90, xpd = NA)
   } else {
@@ -1491,7 +1493,7 @@ PlotCatalog.ID <- function(catalog){
 
 #' Plot an indel(insertion and deletion) catalog to a PDF file
 #'
-#' @param catalog An S3 object with class "catalog".
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
@@ -1507,12 +1509,12 @@ PlotCatalogToPdf.ID <-function(catalog, filename) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  n <- ncol(catalog$catalog)
+  n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
 
   for (i in 1 : n) {
-    cat <- catalog
-    cat$catalog <- catalog$catalog[, i, drop = FALSE]
+    cat <- catalog[, i, drop = FALSE]
+    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
