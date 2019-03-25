@@ -4,14 +4,14 @@
 \alias{VCFsToDNSCatalogs}
 \title{Create DNS catalogs from VCFs}
 \usage{
-VCFsToDNSCatalogs(list.of.DNS.vcfs, genome, trans.ranges, region)
+VCFsToDNSCatalogs(list.of.DNS.vcfs, ref.genome, trans.ranges, region)
 }
 \arguments{
 \item{list.of.DNS.vcfs}{List of in-memory data frames of pure DNS mutations
 -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 output catalog.}
 
-\item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data frame containing transcript ranges.}
 

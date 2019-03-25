@@ -9,7 +9,7 @@ CreateCatalogAttribute(catalog, ref.genome, region, type)
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
 
-\item{ref.genome}{A reference genome as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}

@@ -6,7 +6,7 @@
 #'   there is a "context base" to the left, for example REF = ACG, ALT = A
 #'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param flag.mismatches If > 0, if there are mismatches to references, print
 #' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
@@ -27,8 +27,8 @@
 #' }
 #'
 #' @keywords internal
-AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
-  genome <- NormalizeGenomeArg(genome)
+AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = FALSE) {
+  ref.genome <- NormalizeGenomeArg(ref.genome)
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
@@ -63,11 +63,11 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
   # "chr1", "chr2", ....
   vcf.chr.names <- unique(df$CHROM)
-  if (!all(vcf.chr.names %in% seqnames(genome))) {
+  if (!all(vcf.chr.names %in% seqnames(ref.genome))) {
     tmp.chr <- paste0("chr", vcf.chr.names)
-    if (!all(tmp.chr %in% seqnames(genome))) {
+    if (!all(tmp.chr %in% seqnames(ref.genome))) {
       stop("Cannot match chromosome names:\n",
-           sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
+           sort(vcf.chr.names), "\nversus\n", sort(seqnames(ref.genome)))
     }
 
     chr.names <- paste0("chr", df$CHROM)
@@ -82,7 +82,7 @@ AddAndCheckSequenceID <- function(df, genome, flag.mismatches = FALSE) {
     ),
     "GRanges")
 
-  df$seq.context <- getSeq(genome, Ranges, as.character = TRUE)
+  df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
 
   seq.to.check <-
     substr(df$seq.context, df$seq.context.width + 1,
@@ -650,7 +650,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -659,7 +659,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #'   "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
 #'
 #' @export
-VCFsToIDCatalogs <- function(list.of.vcfs, genome, region) {
+VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
   ncol <- length(list.of.vcfs)
 
   # Create a 0-column matrix with the correct row labels.
@@ -668,7 +668,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome, region) {
 
   for (i in 1 : ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AddAndCheckSequenceID(ID, genome = genome)
+    ID <- AddAndCheckSequenceID(ID, ref.genome = ref.genome)
     # Unlike the case for SNS and DNS, we do not
     # add transcript information.
     one.ID.column <- CreateOneColIDCatalog(ID)
@@ -677,6 +677,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, genome, region) {
   }
 
   colnames(catID) <- names(list.of.vcfs)
-  return(CreateCatalogAttribute(catID, ref.genome = genome,
+  return(CreateCatalogAttribute(catID, ref.genome = ref.genome,
                                 region = region, type = "counts"))
 }

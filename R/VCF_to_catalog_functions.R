@@ -284,7 +284,7 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @importFrom methods as
 #'
@@ -298,21 +298,21 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'     that contains sequence context information.
 #'
 #' @keywords internal
-AddSequence <- function(df, genome) {
+AddSequence <- function(df, ref.genome) {
   if (0 == nrow(df)) return(df)
   seq.context.width <- 10
-  genome <- NormalizeGenomeArg(genome)
+  ref.genome <- NormalizeGenomeArg(ref.genome)
 
   # Check if the format of sequence names in df and genome are the same.
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
   # "chr1", "chr2", ....
   vcf.chr.names <- unique(df$CHROM)
-  if (!all(vcf.chr.names %in% seqnames(genome))) {
+  if (!all(vcf.chr.names %in% seqnames(ref.genome))) {
     tmp.chr <- paste0("chr", vcf.chr.names)
-    if (!all(tmp.chr %in% seqnames(genome))) {
+    if (!all(tmp.chr %in% seqnames(ref.genome))) {
       stop("Cannot match chromosome names:\n",
-           sort(vcf.chr.names), "\nversus\n", sort(seqnames(genome)))
+           sort(vcf.chr.names), "\nversus\n", sort(seqnames(ref.genome)))
     }
 
     chr.names <- paste0("chr", df$CHROM)
@@ -328,7 +328,7 @@ AddSequence <- function(df, genome) {
     "GRanges")
 
   # Extract sequence context from the reference genome
-  df$seq.21context <- getSeq(genome, Ranges, as.character = TRUE)
+  df$seq.21context <- getSeq(ref.genome, Ranges, as.character = TRUE)
 
   return(df)
 }
@@ -806,7 +806,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
@@ -820,7 +820,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @note SNS 192 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges, region) {
+VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region) {
   ncol <- length(list.of.SNS.vcfs)
 
   catSNS96 <- empty.cats$catSNS96
@@ -830,7 +830,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges, region) {
   for (i in 1:ncol) {
     SNS <- list.of.SNS.vcfs[[i]]
 
-    SNS <- AddSequence(SNS, genome = genome)
+    SNS <- AddSequence(SNS, ref.genome = ref.genome)
 
     # Delete the rows of SNS if the extracted sequence contains "N"
     idx <- grep("N", substr(SNS$seq.21context, 9, 13))
@@ -858,7 +858,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, genome, trans.ranges, region) {
                            catSNS192 = catSNS192,
                            catSNS1536 = catSNS1536)
   return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
-                ref.genome = genome, region = region, type = "counts"))
+                ref.genome = ref.genome, region = region, type = "counts"))
 }
 
 #' Create double nucleotide catalog for *one* sample from
@@ -963,7 +963,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
@@ -977,7 +977,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @note DNS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
+VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region) {
   ncol <- length(list.of.DNS.vcfs)
 
   catDNS78 <- empty.cats$catDNS78
@@ -987,7 +987,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
   for (i in 1 : ncol) {
     DNS <- list.of.DNS.vcfs[[i]]
 
-    DNS <- AddSequence(DNS, genome = genome)
+    DNS <- AddSequence(DNS, ref.genome = ref.genome)
 
     # Delete the rows of DNS if the extracted sequence contains "N"
     idx <- grep("N", substr(DNS$seq.21context, 10, 13))
@@ -1015,7 +1015,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
                            catDNS144  = catDNS144,
                            catDNS136  = catDNS136)
   return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
-                ref.genome = genome, region = region, type = "counts"))
+                ref.genome = ref.genome, region = region, type = "counts"))
 }
 
 #' Create SNS and DNS catalogs from Strelka SNS VCF files.
@@ -1029,7 +1029,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Strelka SNS VCF files.
 #'
-#' @param genome A reference genome as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
@@ -1046,11 +1046,11 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, genome, trans.ranges, region) {
 #'
 #' @export
 StrelkaSNSVCFFilesToCatalog <-
-  function(vector.of.file.paths, genome, trans.ranges, region) {
+  function(vector.of.file.paths, ref.genome, trans.ranges, region) {
   vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, genome, trans.ranges, region),
-           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, genome, trans.ranges, region)))
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, ref.genome, trans.ranges, region),
+           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, ref.genome, trans.ranges, region)))
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files
@@ -1062,7 +1062,7 @@ StrelkaSNSVCFFilesToCatalog <-
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Strelka ID VCF files.
 #'
-#' @param genome  A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome  A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1075,9 +1075,9 @@ StrelkaSNSVCFFilesToCatalog <-
 #'   from 1 to 6+.
 #'
 #' @export
-StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome, region) {
+StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region) {
   vcfs <- ReadStrelkaIDVCFs(vector.of.file.paths)
-  return(VCFsToIDCatalogs(vcfs, genome, region))
+  return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
 #' Create SNS and DNS catalogs from Mutect VCF files
@@ -1091,7 +1091,7 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome, region) {
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Mutect VCF files.
 #'
-#' @param genome  A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome  A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
@@ -1108,12 +1108,12 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, genome, region) {
 #'
 #' @export
 MutectVCFFilesToCatalog <-
-  function(vector.of.file.paths, genome, trans.ranges, region) {
+  function(vector.of.file.paths, ref.genome, trans.ranges, region) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, genome, trans.ranges, region),
-           VCFsToDNSCatalogs(split.vcfs$DNS, genome, trans.ranges, region),
-           list(catID = VCFsToIDCatalogs(split.vcfs$ID, genome, region))))
+  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, ref.genome, trans.ranges, region),
+           VCFsToDNSCatalogs(split.vcfs$DNS, ref.genome, trans.ranges, region),
+           list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, region))))
 }
 
 #' @keywords internal

@@ -8,7 +8,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    MutectVCFFilesToCatalog(files, genome = "GRCh37",
+    MutectVCFFilesToCatalog(files, ref.genome = "GRCh37",
                             # Use default transcript ranges
                             trans.ranges = trans.ranges.GRCh37,
                             region = "genome")
@@ -91,7 +91,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                          mustWork = TRUE))
 
   cats <-
-    StrelkaSNSVCFFilesToCatalog(files, genome = "GRCh37",
+    StrelkaSNSVCFFilesToCatalog(files, ref.genome = "GRCh37",
                                 # Use default transcript ranges
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome")
@@ -164,7 +164,7 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
                          package = "ICAMS",
                          mustWork = TRUE))
 
-  cat.ID <- StrelkaIDVCFFilesToCatalog(files, genome = "GRCh37",
+  cat.ID <- StrelkaIDVCFFilesToCatalog(files, ref.genome = "GRCh37",
                                        region = "genome")
 
   prev.catalog.indels<-

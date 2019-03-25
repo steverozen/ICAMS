@@ -4,13 +4,14 @@
 \alias{MutectVCFFilesToCatalog}
 \title{Create SNS and DNS catalogs from Mutect VCF files}
 \usage{
-MutectVCFFilesToCatalog(vector.of.file.paths, genome, trans.ranges, region)
+MutectVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges,
+  region)
 }
 \arguments{
 \item{vector.of.file.paths}{Character vector of
 file paths to the Mutect VCF files.}
 
-\item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data.table which contains transcript range and
 strand information.}

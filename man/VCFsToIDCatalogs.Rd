@@ -4,13 +4,13 @@
 \alias{VCFsToIDCatalogs}
 \title{Create ID (insertion and deletion) catalog from ID VCFs}
 \usage{
-VCFsToIDCatalogs(list.of.vcfs, genome, region)
+VCFsToIDCatalogs(list.of.vcfs, ref.genome, region)
 }
 \arguments{
 \item{list.of.vcfs}{List of in-memory VCFs. The list names will be
 the sample ids in the output catalog.}
 
-\item{genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}

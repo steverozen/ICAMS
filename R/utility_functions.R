@@ -583,33 +583,30 @@ CreatePentanucAbundance <- function(path) {
 
 #' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
 #'
-#' @param genome Either a variable containing a \link[BSgenome]{BSgenome} object
-#'   or a character string acting as a genome identifier.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @return If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
 #' Otherwise return the \link[BSgenome]{BSgenome} object identified by the
 #' string \code{genome}.
 #'
 #' @keywords internal
-NormalizeGenomeArg <- function(genome) {
-  if (class(genome) == "character") {
-    if (genome %in% c("GRCh38", "hg38")) {
-      genome <- BSgenome.Hsapiens.UCSC.hg38
-    } else if (genome %in% c("GRCh37", "hg19")) {
-      genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+NormalizeGenomeArg <- function(ref.genome) {
+  if (class(ref.genome) == "character") {
+    if (ref.genome %in% c("GRCh38", "hg38")) {
+      ref.genome <- BSgenome.Hsapiens.UCSC.hg38
+    } else if (ref.genome %in% c("GRCh37", "hg19")) {
+      ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
     } else {
-      stop("Unrecoginzed genome identifier:\n", genome,
+      stop("Unrecoginzed genome identifier:\n", ref.genome,
            "\nNeed one of GRCh38, hg38, GRCh37, hg19")
     }
   }
-  return(genome)
+  return(ref.genome)
 }
 
 #' Check attributes of catalog specified by user
 #'
-#' @param ref.genome A character string acting as a genome identifier, one of
-#' "GRCh37", "hg19", "GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38",
-#' "BSgenome.Hsapiens.1000genomes.hs37d5".
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -701,7 +698,7 @@ CheckClassOfCatalogFromPath <- function(path) {
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
-#' @param ref.genome A reference genome as described in \code{\link{ICAMS}}.
+#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".

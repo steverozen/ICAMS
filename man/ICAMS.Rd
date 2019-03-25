@@ -80,9 +80,9 @@ Mutect VCFs.
 }
 }
 
-\section{The \code{genome} argument}{
+\section{The \code{ref.genome} argument}{
 
-Many functions take the argument \code{genome}.
+Many functions take the argument \code{ref.genome}.
 This can be either
 \enumerate{
   \item A variable from the Bioconductor \link[BSgenome]{BSgenome} package

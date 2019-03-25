@@ -4,11 +4,10 @@
 \alias{NormalizeGenomeArg}
 \title{Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.}
 \usage{
-NormalizeGenomeArg(genome)
+NormalizeGenomeArg(ref.genome)
 }
 \arguments{
-\item{genome}{Either a variable containing a \link[BSgenome]{BSgenome} object
-or a character string acting as a genome identifier.}
+\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 }
 \value{
 If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
