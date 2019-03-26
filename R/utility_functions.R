@@ -59,209 +59,63 @@ Collapse144To78 <- function(catalog) {
   mat78 <- mat78[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
 }
 
-#' Handle abundance (opportunity) specifications uniformly.
+#' TODO
 #'
-#' @param abundance Either an abundance variable or string specifying an abundance.
+#' @param catalog TODO
+#' @param target.ref.genome TODO
+#' @param target.region TODO
+#' @param target.type TODO
 #'
-#' @param which.n The n for the n-mers, one of 2, 3, 4, 5 for 2-mers, 3-mers, etc.
-#'
-#' @keywords internal
-NormalizeAbundanceArg <- function(abundance, which.n) {
-  if (class(abundance) %in% c("integer", "numeric")) {
-    stopifnot(nchar(names(abundance)[1]) == which.n)
-    return (abundance)
-  }
-  if (!which.n %in% 2:5) {
-    stop("Argument which.n must be in 2:5, got ", which.n)
-  }
-
-  if (is.null(abundance)) {
-    if (which.n == 2) {
-      abundance = rep(1L, 10)
-      names(abundance) <- names(abundance.2bp.exome.GRCh37)
-      return(abundance)
-    } else if (which.n == 3) {
-      abundance = rep(1L, 32)
-      names(abundance) <- names(abundance.3bp.exome.GRCh37)
-      return(abundance)
-    } else if (which.n == 4) {
-      abundance = rep(1L, 136)
-      names(abundance) <- names(abundance.4bp.exome.GRCh37)
-      return(abundance)
-    } else if (which.n == 5) {
-      abundance = rep(1L, 512)
-      names(abundance) <- names(abundance.5bp.exome.GRCh37)
-      return(abundance)
-    }
-  }
-
-  if (!abundance %in% c("GRCh37.genome", "GRCh37.exome",
-                        "GRCh38.genome", "GRCh38.exome")) {
-    stop ('abundance must be either an abundance matrix created by yourself
-          or one of ("GRCh37.genome", "GRCh37.exome", "GRCh38.genome",
-          "GRCh38.exome"), got ', abundance)
-  }
-
-  if (abundance == "GRCh37.genome") {
-    if (which.n == 2) return(abundance.2bp.genome.GRCh37)
-    if (which.n == 3) return(abundance.3bp.genome.GRCh37)
-    if (which.n == 4) return(abundance.4bp.genome.GRCh37)
-    if (which.n == 5) return(abundance.5bp.genome.GRCh37)
-  }
-  if (abundance == "GRCh37.exome"){
-    if (which.n == 2) return(abundance.2bp.exome.GRCh37)
-    if (which.n == 3) return(abundance.3bp.exome.GRCh37)
-    if (which.n == 4) return(abundance.4bp.exome.GRCh37)
-    if (which.n == 5) return(abundance.5bp.exome.GRCh37)
-  }
-  if (abundance == "GRCh38.genome") {
-    if (which.n == 2) return(abundance.2bp.genome.GRCh38)
-    if (which.n == 3) return(abundance.3bp.genome.GRCh38)
-    if (which.n == 4) return(abundance.4bp.genome.GRCh38)
-    if (which.n == 5) return(abundance.5bp.genome.GRCh38)
-  }
-  if (abundance == "GRCh38.exome"){
-    if (which.n == 2) return(abundance.2bp.exome.GRCh38)
-    if (which.n == 3) return(abundance.3bp.exome.GRCh38)
-    if (which.n == 4) return(abundance.4bp.exome.GRCh38)
-    if (which.n == 5) return(abundance.5bp.exome.GRCh38)
-  }
-  stop("Programming error: we should never get here")
-}
-
-#' Transform between count and density catalogs
-#'  and signatures and between different
-#' source-sequence abundances.
-#'
-#' @details
-#' Only certain parings of type and abundance are legal, as follows:
-#' \enumerate{
-#'
-#' \item The type \code{"density"} must always be associated with a \code{NULL}
-#' abundance.
-#'
-#' \item The type \code{"signature"} is allowed to be associated with a \code{NULL}
-#' abundance. A \code{NULL} abundance indicates that the signature
-#' is a "density-based" signature (see \code{\link{ICAMS}}).
-#'
-#' \item The type \code{"counts"} must \strong{not} be associated with
-#'  the \code{NULL} abundance.
-#'}
-#'
-#' Only the following transformations are legal:
-#'
-#' \enumerate{
-#' \item \code{counts -> counts}
-#' \item \code{counts -> density}
-#' \item \code{counts -> signature}
-#' \item \code{density -> counts} (in which case the semantics are to
-#' infer the genome-wide or exome wide counts based on the
-#' densities.)
-#' \item \code{density -> signature}
-#' \item \code{signature -> signature}
-#' }
-#'
-#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}};
-#'  must \strong{not} be an ID (indel) catalog.
-#'
-#' @param which.n The length of the source sequences, one of 2:5.
-#'
-#' @param source.type A character specifying type of the input catalog,
-#' one of \code{"counts"}, \code{"signature"} or \code{"density"}.
-#'
-#' @param target.type A character specifying type of the output catalog,
-#' with the same possible values as \code{source.type}.
-#'
-#' @param source.abundance One of \enumerate{
-#' \item \code{NULL}, which indicates that the source type is
-#' a catalog of density-based spectra or signatures.
-#' \item A numeric vector with one element
-#' for each source sequence for the mutation types in \code{catalog},
-#' where by source we mean, for example, ACT as the source sequence
-#' for ACT > AGT mutations.
-#' \item A string specifying such a vector, one of \code{"GRCh37.genome"},
-#' \code{"GRCh37.exome"}, \code{"GRCh38.genome"}, or \code{"GRCh38.exome"}.
-#' }
-#' For the last two options, the numerical vector contains the
-#' abundance upon which the counts or proportions
-#' in \code{catalog} are based.
-#'
-#' @param target.abundance Same possibilities as \code{source.abundance}.
-#'
-#' @return A catalog as defined in \code{\link{ICAMS}}
-#'
+#' @return TODO
 #' @export
-TransformCatalog <-
-  function(catalog, which.n, source.type,
-           target.type = source.type,
-           source.abundance = NULL,
-           target.abundance = NULL) {
+TransformCatalog <- function(catalog, target.ref.genome, target.region, target.type) {
+  # Some error checking
+  stopifnot(target.type %in% c("counts", "density",
+                               "counts.signature", "density.signature"))
 
-  stopifnot(source.type %in% c("counts", "signature", "density"))
-  stopifnot(target.type %in% c("counts", "signature", "density"))
-  if (source.type == "density" && !is.null(source.abundance)) {
-    stop('The type "density" must always be associated with a NULL abundance.')
-  }
-  if (target.type == "density" && !is.null(target.abundance)) {
-    stop('The type "density" must always be associated with a NULL abundance.')
-  }
-
-  if (target.type != source.type && source.type == "signature") {
+  if (attributes(catalog)$type %in% c("counts.signature", "density.signature") &&
+      !target.type %in% c("counts.signature", "density.signature")) {
     stop("Only a \"counts\" or \"density\" type catalog ",
          "can be transformed to a different type.")
   }
 
-  if (target.type == source.type && source.type == "density") {
+  if (attributes(catalog)$type == "density" && target.type == "density") {
     stop("We cannot transform a \"density\" type catalog ",
          "to \"density\" type catalog as it would require ",
          "uniform source and target abundances.")
   }
 
-  # Some error checking
   if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
     stop("This function can only transform catalogs from the type of ",
          "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
   }
-  if (nrow(catalog) == 96 && which.n != 3) {
-    stop("Argument which.n must be 3 for an SNS 96 catalog, got ", which.n)
-  }
-  if (nrow(catalog) == 192 && which.n != 3) {
-    stop("Argument which.n must be 3 for an SNS 192 catalog, got ", which.n)
-  }
-  if (nrow(catalog) == 1536 && which.n != 5) {
-    stop("Argument which.n must be 5 for an SNS 1536 catalog, got ", which.n)
-  }
-  if (nrow(catalog) == 78 && which.n != 2) {
-    stop("Argument which.n must be 2 for a DNS 78 catalog, got ", which.n)
-  }
-  if (nrow(catalog) == 136 && which.n != 4) {
-    stop("Argument which.n must be 4 for a DNS 136 catalog, got ", which.n)
-  }
-  if (nrow(catalog) == 144 && which.n != 2) {
-    stop("Argument which.n must be 2 for a DNS 144 catalog, got ", which.n)
-  }
 
   if (nrow(catalog) == 192) {
-    if (source.type != "counts" || target.type %in% c("density", "counts")) {
-      stop('For SNS 192 catalog, only transformation from "counts" to "signature" ',
+    if (attributes(catalog)$type != "counts" ||
+        target.type %in% c("density", "counts", "density.signature")) {
+      stop('For SNS 192 catalog, only transformation from "counts" to "counts.signature" ',
            'is implemented at the current stage.\n')
     } else {
-      return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
+      cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
+      return(CreateCatalogAttribute(cat, target.ref.genome, target.region, target.type))
     }
   }
 
   if (nrow(catalog) == 144) {
-    if (source.type != "counts" || target.type %in% c("density", "counts")) {
-      stop('For DNS 144 catalog, only transformation from "counts" to "signature" ',
+    if (attributes(catalog)$type != "counts" ||
+        target.type %in% c("density", "counts", "density.signature")) {
+      stop('For DNS 144 catalog, only transformation from "counts" to "counts.signature" ',
            'is implemented at the current stage.\n')
     } else {
-      return(apply(catalog, MARGIN = 2, function (x) x / sum(x)))
+      cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
+      return(CreateCatalogAttribute(cat, target.ref.genome, target.region, target.type))
     }
   }
 
-  source.abundance <- NormalizeAbundanceArg(source.abundance, which.n)
-  target.abundance <- NormalizeAbundanceArg(target.abundance, which.n)
-  stopifnot(all(names(source.abundance) == names(target.abundance)))
+  source.abundance <- attributes(catalog)$abundance
+  cat <- CreateCatalogAbundance(catalog, target.ref.genome, target.region, target.type)
+  target.abundance <- attributes(cat)$abundance
+  stopifnot(names(source.abundance) == names(target.abundance))
 
   factor <- target.abundance / source.abundance
   names(factor) <- names(target.abundance)
@@ -281,21 +135,18 @@ TransformCatalog <-
     # Then update those rows using the factor for that source.n.mer
 
     out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
-    # For density, factor = 1/source.abundance
   }
 
-  # Extract the source sequences from catalog
-  n.mers <- substr(rownames(catalog), 1, which.n)
+  lapply(names(source.abundance), transform.n.mer)
 
-  lapply(unique(n.mers), transform.n.mer)
-
-  if (target.type == "signature") {
+  if (target.type %in% c("counts.signature", "density.signature")) {
     out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-    return(out2)
+    return(CreateCatalogAttribute(out2, target.ref.genome,
+                                  target.region, target.type))
   } else {
-    return(out.catalog)
+    return(CreateCatalogAttribute(out.catalog, target.ref.genome,
+                                  target.region, target.type))
   }
-
 }
 
 #' Standardize the Chromosome name annotations for a data frame.
