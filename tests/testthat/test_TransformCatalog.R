@@ -1,5 +1,6 @@
 context("TransformCatalog")
-  test_that("TransformCatalog genome counts -> exome counts.signature,
+
+  test_that("Legal transformations 3 and 6; genome counts -> exome counts.signature,
           and genome counts.signature -> exome counts.signature", {
             cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                ref.genome = "GRCh37", region = "genome",
@@ -31,7 +32,7 @@ context("TransformCatalog")
           })
 
 
-  test_that("TransformCatalog genome counts.signature -> denisty.signature,
+  test_that("Legal transformation 6; counts.signature -> denisty.signature,
             and genome counts -> exome counts.signature", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
@@ -86,7 +87,7 @@ context("TransformCatalog")
 
             })
 
-  test_that("TransformCatalog genome counts -> exome counts,
+  test_that("Legal transformation 1, counts -> counts; genome counts -> exome counts,
             and exome counts -> genome counts", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                   ref.genome = "GRCh37", region = "genome",
@@ -104,7 +105,7 @@ context("TransformCatalog")
 
             })
 
-  test_that("TransformCatalog genome counts -> density,
+  test_that("Legal transformation 2, counts -> density; genome counts -> density,
             and genome counts -> exome count -> density", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
@@ -128,7 +129,7 @@ context("TransformCatalog")
 
             })
 
-  test_that("TransformCatalog genome GRCh37 counts -> genome GRCh37 density,
+  test_that("Legal transformation 2, counts -> density; genome GRCh37 counts -> genome GRCh37 density,
             and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
@@ -152,7 +153,7 @@ context("TransformCatalog")
 
             })
 
-  test_that("TransformCatalog genome GRCh37 counts -> genome GRCh38 counts,
+  test_that("Legal transformations 1, 2, and 4; genome GRCh37 counts -> genome GRCh38 counts,
             and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
@@ -174,7 +175,7 @@ context("TransformCatalog")
 
             })
 
-  test_that("TransformCatalog function: going from density to genome counts", {
+  test_that("Legal transformation 4, density -> (genome) counts", {
     cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                        ref.genome = "GRCh37", region = "genome",
                        type = "counts")
@@ -190,7 +191,7 @@ context("TransformCatalog")
     expect_equal(cat, x2)
   })
 
-  test_that("TransformCatalog function: transformation of a SNS 192 catalog", {
+  test_that("Error test: transformation of a SNS 192 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.sns.192.csv",
                        ref.genome = "GRCh37", region = "genome",
                        type = "counts")
@@ -221,7 +222,7 @@ context("TransformCatalog")
                                  target.type = "density.signature"))
   })
 
-  test_that("TransformCatalog function: transformation of a DNS 144 catalog", {
+  test_that("Error test: transformation of a DNS 144 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                          ref.genome = "GRCh37", region = "genome",
                          type = "counts")
@@ -252,7 +253,7 @@ context("TransformCatalog")
                                   target.type = "density.signature"))
   })
 
-  test_that("TransformCatalog function: going from density to density,
+  test_that("CHANGE THIS TO A WARNING: going from density to density,
             error message expected", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                   ref.genome = "GRCh37", region = "genome",
@@ -267,7 +268,7 @@ context("TransformCatalog")
                                                target.type = "density"))
             })
 
-  test_that("TransformCatalog function: going from counts.singature to counts or density,
+  test_that("Error test: counts.singature -> counts or density,
             error message expected", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
