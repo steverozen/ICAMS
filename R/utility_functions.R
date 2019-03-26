@@ -626,13 +626,13 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
          "BSgenome.Hsapiens.UCSC.hg38, ",
          "BSgenome.Hsapiens.1000genomes.hs37d5")
   }
-  if (!region %in% c("genome", "exome")) {
+  if (!region %in% c("genome", "exome", "transcription")) {
     stop("Unrecoginzed region identifier: ", region,
-         "\nNeed one of genome, exome")
+         "\nNeed one of genome, exome, transcription")
   }
-  if (!type %in% c("counts", "density", "signature")) {
+  if (!type %in% c("counts", "density", "counts.signature", "density.signature")) {
     stop("Unrecoginzed catalog type identifier: ", type,
-         "\nNeed one of counts, density, signature")
+         "\nNeed one of counts, density, counts.signature, density.signature")
   }
   return(TRUE)
 }
@@ -710,24 +710,31 @@ CreateCatalogClass <- function(catalog) {
   }
   if(nrow(catalog) == 96) {
     class(catalog) <- append(class(catalog), "SNS96Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 192) {
     class(catalog) <- append(class(catalog), "SNS192Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 1536) {
     class(catalog) <- append(class(catalog), "SNS1536Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 78) {
     class(catalog) <- append(class(catalog), "DNS78Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 144) {
     class(catalog) <- append(class(catalog), "DNS144Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 136) {
     class(catalog) <- append(class(catalog), "DNS136Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 83) {
     class(catalog) <- append(class(catalog), "ID(indel)Catalog", after = 0)
+    class(catalog) <- unique(attributes(catalog)$class)
   }
   return(catalog)
 }
