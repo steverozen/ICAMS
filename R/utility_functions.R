@@ -59,14 +59,38 @@ Collapse144To78 <- function(catalog) {
   mat78 <- mat78[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
 }
 
-#' TODO
+#' Transform between count and density catalogs
+#' and signatures.
 #'
-#' @param catalog TODO
-#' @param target.ref.genome TODO
-#' @param target.region TODO
-#' @param target.type TODO
+#' Only the following transformations are legal:
 #'
-#' @return TODO
+#' \enumerate{
+#' \item \code{counts -> counts}
+#' \item \code{counts -> density}
+#' \item \code{counts -> (counts.signature, density.signature)}
+#' \item \code{density -> counts} (in which case the semantics are to
+#' infer the genome-wide or exome-wide counts based on the
+#' densities.)
+#' \item \code{density -> (counts.signature, density.signature)}
+#' \item \preformatted{(counts.signature, density.signature) ->
+#'  (counts.signature, density.signature)}
+#' (\code{density.signature -> density.signature} is a null operation.)
+#' \item \code{density -> density} (A null operation.)
+#' }
+#'
+#'
+#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}};
+#'  must \strong{not} be an ID (indel) catalog.
+#'
+#' @param target.ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
+#'
+#' @param target.region One of "genome", "exome".
+#'
+#' @param target.type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "counts.signature", "density.signature".
+#'
+#' @return A catalog as defined in \code{\link{ICAMS}}.
+#'
 #' @export
 TransformCatalog <- function(catalog, target.ref.genome, target.region, target.type) {
   # Some error checking

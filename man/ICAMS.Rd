@@ -29,7 +29,7 @@ write these catalogs.
 A key data type in \code{ICAMS} is a "catalog" of mutation counts, of
 mutation densities, or of mutational signatures.
 
-A catalog is one of the following:
+A catalog has one of the following types:
 \enumerate{
 \item Matrix of mutation counts (one column per sample), representing
 (count-based) mutational spectra.
@@ -46,23 +46,31 @@ signatures consist of
 the proportions of mutations in each class (with all the
 proportions summing to 1).#' A mutational signature can be based
 on either:
-\enumerate{
-  \item mutation counts (a "count-based mutational signature"), or
+\itemize{
+  \item 3.1 mutation counts (a "count-based mutational signature"), or
+  \item 3.2 mutation densities (a "density-based mutational signature").
 
-  \item mutation densities (a "density-based mutational signature").
+
+}
 
 }
 
-}
+Many functions take the argument \code{catalog.type}, with possible
+values \code{"counts"}, \code{"density"}, \code{"counts.signature"},
+or \code{"density.signature"}, corresponding to the types of catalogs above.
+
+Catalogs are implemented as S3 objects of class \code{matrix} and
+one of the ICAMS classes \code{SNS96Catalog}, \code{SNS192Catalog}
 
 If you need to create a catalog from a source other than
 this package (i.e. other than with
 \code{\link{ReadCatalog}}
 or \code{\link{StrelkaSNSVCFFilesToCatalog}},
-\code{\link{MutectVCFFilesToCatalog}}, etc.), then
-you must ensure that the rows are in the expected order and have
-the expected rownames. See \code{\link{CatalogRowOrder}}
-for the expected rownames and order.
+\code{\link{MutectVCFFilesToCatalog}}, etc.), then use
+\code{\link{as.catalog}}.
+
+Nanhai: put this in the doc for as.catalog: you must ensure that the rows are in the expected order and have
+the expected rownames.
 }
 
 \section{Creating catalogs from variant call files (VCF files)}{

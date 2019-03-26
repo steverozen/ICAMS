@@ -8,11 +8,10 @@
 #'
 #' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region One of "genome", "exome".
 #'
-#' @param type A character string acting as a catalog type identifier, one of
-#' "counts", "density", "signature".
+#' @param catalog.type One of "counts", "density",
+#' "counts.signature", "density.signature".
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
@@ -24,23 +23,23 @@
 #'   from 1 to 6+.
 #'
 #' @export
-ReadCatalog <- function(path, ref.genome, region, type, strict = TRUE) {
-  if (CheckCatalogAttribute(ref.genome, region, type)) {
+ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
+  if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
     class.of.catalog <- CheckClassOfCatalogFromPath(path)
     UseMethod(generic = "ReadCatalog", object = class.of.catalog)
   }
 }
 
-#' Write catalog
+#' Write a catalog
 #'
-#' Write a catalog to a file on disk.
+#' Write a catalog to a file.
 #'
-#' See also \code{\link{ReadCatalog}}
+#' See also \code{\link{ReadCatalog}}.
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' @param catalog A catalog as defined in \code{\link{ICAMS}};
+#' see also \code{\link{CreateCatalogAttribute}}.
 #'
-#' @param path The path of the file to be written on disk.
+#' @param path The path to the file to be created .
 #'
 #' @param strict If TRUE, then fail if additional checks on the input fail.
 #'

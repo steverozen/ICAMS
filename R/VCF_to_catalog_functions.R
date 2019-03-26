@@ -284,7 +284,7 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
 #'
 #' @importFrom methods as
 #'

@@ -9,7 +9,7 @@ AddSequence(df, ref.genome)
 \arguments{
 \item{df}{An input data frame storing mutation records of a VCF file.}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in \code{\link{ICAMS}}.}
 }
 \value{
 A copy of the input data.frame with a new column added

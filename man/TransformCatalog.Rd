@@ -2,22 +2,40 @@
 % Please edit documentation in R/utility_functions.R
 \name{TransformCatalog}
 \alias{TransformCatalog}
-\title{TODO}
+\title{Transform between count and density catalogs
+and signatures.}
 \usage{
 TransformCatalog(catalog, target.ref.genome, target.region, target.type)
 }
 \arguments{
-\item{catalog}{TODO}
+\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
+must \strong{not} be an ID (indel) catalog.}
 
-\item{target.ref.genome}{TODO}
+\item{target.ref.genome}{A \code{ref.genome} argument as described in \code{\link{ICAMS}}.}
 
-\item{target.region}{TODO}
+\item{target.region}{One of "genome", "exome".}
 
-\item{target.type}{TODO}
+\item{target.type}{A character string acting as a catalog type identifier, one of
+"counts", "density", "counts.signature", "density.signature".}
 }
 \value{
-TODO
+A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-TODO
+Only the following transformations are legal:
+}
+\details{
+\enumerate{
+\item \code{counts -> counts}
+\item \code{counts -> density}
+\item \code{counts -> (counts.signature, density.signature)}
+\item \code{density -> counts} (in which case the semantics are to
+infer the genome-wide or exome-wide counts based on the
+densities.)
+\item \code{density -> (counts.signature, density.signature)}
+\item \preformatted{(counts.signature, density.signature) ->
+ (counts.signature, density.signature)}
+(\code{density.signature -> density.signature} is a null operation.)
+\item \code{density -> density} (A null operation.)
+}
 }

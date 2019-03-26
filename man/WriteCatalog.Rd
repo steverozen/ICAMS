@@ -2,23 +2,23 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{WriteCatalog}
 \alias{WriteCatalog}
-\title{Write catalog}
+\title{Write a catalog}
 \usage{
 WriteCatalog(catalog, path, strict = TRUE)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}};
+see also \code{\link{CreateCatalogAttribute}}.}
 
-\item{path}{The path of the file to be written on disk.}
+\item{path}{The path to the file to be created .}
 
 \item{strict}{If TRUE, then fail if additional checks on the input fail.}
 }
 \description{
-Write a catalog to a file on disk.
+Write a catalog to a file.
 }
 \details{
-See also \code{\link{ReadCatalog}}
+See also \code{\link{ReadCatalog}}.
 }
 \note{
 In the ID (insertion and deletion) catalog, deletion repeat size

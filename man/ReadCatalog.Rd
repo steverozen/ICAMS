@@ -4,18 +4,17 @@
 \alias{ReadCatalog}
 \title{Read catalog.}
 \usage{
-ReadCatalog(path, ref.genome, region, type, strict = TRUE)
+ReadCatalog(path, ref.genome, region, catalog.type, strict = TRUE)
 }
 \arguments{
 \item{path}{Path to a catalog on disk in the standardized format.}
 
 \item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+\item{region}{One of "genome", "exome".}
 
-\item{type}{A character string acting as a catalog type identifier, one of
-"counts", "density", "signature".}
+\item{catalog.type}{One of "counts", "density",
+"counts.signature", "density.signature".}
 
 \item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
