@@ -4,7 +4,7 @@
 \alias{CreateCatalogAbundance}
 \title{Create the abundance attribute of a catalog}
 \usage{
-CreateCatalogAbundance(catalog, ref.genome, region)
+CreateCatalogAbundance(catalog, ref.genome, region, type)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
@@ -13,6 +13,9 @@ CreateCatalogAbundance(catalog, ref.genome, region)
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
+
+\item{type}{A character string acting as a catalog type identifier, one of
+"counts", "density", "counts.signature" and "density.signature".}
 }
 \value{
 The original catalog with abundance attribute added.

@@ -15,7 +15,7 @@ CreateCatalogAttribute(catalog, ref.genome, region, type)
 "genome", "exome".}
 
 \item{type}{A character string acting as a catalog type identifier, one of
-"counts", "density", "signature".}
+"counts", "density", "counts.signature" and "density.signature".}
 }
 \value{
 The original catalog with the following attributes added: ref.genome,

@@ -741,10 +741,13 @@ CreateCatalogClass <- function(catalog) {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
+#' @param type A character string acting as a catalog type identifier, one of
+#' "counts", "density", "counts.signature" and "density.signature".
+#'
 #' @return The original catalog with abundance attribute added.
 #'
 #' @keywords internal
-CreateCatalogAbundance <- function(catalog, ref.genome, region) {
+CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
   if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
     stop('This is not a catalog supported by ICAMS. The input catalog must
          be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
@@ -753,8 +756,11 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   }
 
   if(nrow(catalog) == 96) {
-    if (ref.genome %in%
-        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.3bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
         attr(catalog, "abundance") <- abundance.3bp.genome.GRCh37
       } else if (region == "exome") {
@@ -775,8 +781,11 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   }
 
   if(nrow(catalog) == 1536) {
-    if (ref.genome %in%
-        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.3bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
         attr(catalog, "abundance") <- abundance.5bp.genome.GRCh37
       } else if (region == "exome") {
@@ -793,8 +802,11 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   }
 
   if(nrow(catalog) == 78) {
-    if (ref.genome %in%
-        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.3bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
         attr(catalog, "abundance") <- abundance.2bp.genome.GRCh37
       } else if (region == "exome") {
@@ -815,8 +827,11 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region) {
   }
 
   if(nrow(catalog) == 136) {
-    if (ref.genome %in%
-        c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.3bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
         attr(catalog, "abundance") <- abundance.4bp.genome.GRCh37
       } else if (region == "exome") {
@@ -870,7 +885,7 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 #' "genome", "exome".
 #'
 #' @param type A character string acting as a catalog type identifier, one of
-#' "counts", "density", "signature".
+#' "counts", "density", "counts.signature" and "density.signature".
 #'
 #' @return The original catalog with the following attributes added: ref.genome,
 #'   region, type, abundance, class.
@@ -883,7 +898,7 @@ CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
     attr(catalog, "ref.genome") <- ref.genome
     attr(catalog, "region") <- region
     attr(catalog, "type") <- type
-    catalog <- CreateCatalogAbundance(catalog, ref.genome, region)
+    catalog <- CreateCatalogAbundance(catalog, ref.genome, region, type)
     catalog <- CreateCatalogClass(catalog)
   }
 }
