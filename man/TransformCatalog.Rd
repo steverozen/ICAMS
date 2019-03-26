@@ -2,75 +2,22 @@
 % Please edit documentation in R/utility_functions.R
 \name{TransformCatalog}
 \alias{TransformCatalog}
-\title{Transform between count and density catalogs
- and signatures and between different
-source-sequence abundances.}
+\title{TODO}
 \usage{
-TransformCatalog(catalog, which.n, source.type,
-  target.type = source.type, source.abundance = NULL,
-  target.abundance = NULL)
+TransformCatalog(catalog, target.ref.genome, target.region, target.type)
 }
 \arguments{
-\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
-must \strong{not} be an ID (indel) catalog.}
+\item{catalog}{TODO}
 
-\item{which.n}{The length of the source sequences, one of 2:5.}
+\item{target.ref.genome}{TODO}
 
-\item{source.type}{A character specifying type of the input catalog,
-one of \code{"counts"}, \code{"signature"} or \code{"density"}.}
+\item{target.region}{TODO}
 
-\item{target.type}{A character specifying type of the output catalog,
-with the same possible values as \code{source.type}.}
-
-\item{source.abundance}{One of \enumerate{
-\item \code{NULL}, which indicates that the source type is
-a catalog of density-based spectra or signatures.
-\item A numeric vector with one element
-for each source sequence for the mutation types in \code{catalog},
-where by source we mean, for example, ACT as the source sequence
-for ACT > AGT mutations.
-\item A string specifying such a vector, one of \code{"GRCh37.genome"},
-\code{"GRCh37.exome"}, \code{"GRCh38.genome"}, or \code{"GRCh38.exome"}.
-}
-For the last two options, the numerical vector contains the
-abundance upon which the counts or proportions
-in \code{catalog} are based.}
-
-\item{target.abundance}{Same possibilities as \code{source.abundance}.}
+\item{target.type}{TODO}
 }
 \value{
-A catalog as defined in \code{\link{ICAMS}}
+TODO
 }
 \description{
-Transform between count and density catalogs
- and signatures and between different
-source-sequence abundances.
-}
-\details{
-Only certain parings of type and abundance are legal, as follows:
-\enumerate{
-
-\item The type \code{"density"} must always be associated with a \code{NULL}
-abundance.
-
-\item The type \code{"signature"} is allowed to be associated with a \code{NULL}
-abundance. A \code{NULL} abundance indicates that the signature
-is a "density-based" signature (see \code{\link{ICAMS}}).
-
-\item The type \code{"counts"} must \strong{not} be associated with
- the \code{NULL} abundance.
-}
-
-Only the following transformations are legal:
-
-\enumerate{
-\item \code{counts -> counts}
-\item \code{counts -> density}
-\item \code{counts -> signature}
-\item \code{density -> counts} (in which case the semantics are to
-infer the genome-wide or exome wide counts based on the
-densities.)
-\item \code{density -> signature}
-\item \code{signature -> signature}
-}
+TODO
 }
