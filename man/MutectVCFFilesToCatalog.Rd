@@ -11,7 +11,8 @@ MutectVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges,
 \item{vector.of.file.paths}{Character vector of
 file paths to the Mutect VCF files.}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data.table which contains transcript range and
 strand information.}

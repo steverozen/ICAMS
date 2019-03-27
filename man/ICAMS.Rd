@@ -24,7 +24,7 @@ substitutions (SNS), double nucleotide substitutions (DNS),
 and small insertions and deletions (ID). It can also read and
 write these catalogs.
 }
-\section{Catalogs and signatures}{
+\section{Catalogs}{
 
 A key data type in \code{ICAMS} is a "catalog" of mutation counts, of
 mutation densities, or of mutational signatures.
@@ -44,23 +44,23 @@ counts or densities of mutations in each mutation class
 (e.g. ACA > AAA, ACA > AGA, ACA > ATA, ACC > AAC, ...),
 signatures consist of
 the proportions of mutations in each class (with all the
-proportions summing to 1).#' A mutational signature can be based
+proportions summing to 1). A mutational signature can be based
 on either:
 \itemize{
   \item 3.1 mutation counts (a "count-based mutational signature"), or
   \item 3.2 mutation densities (a "density-based mutational signature").
-
-
 }
-
 }
 
 Many functions take the argument \code{catalog.type}, with possible
 values \code{"counts"}, \code{"density"}, \code{"counts.signature"},
-or \code{"density.signature"}, corresponding to the types of catalogs above.
+or \code{"density.signature"}, corresponding to the types of catalogs
+in items 1, 2, 3.1, and 3.2, above.
 
 Catalogs are implemented as S3 objects of class \code{matrix} and
-one of the ICAMS classes \code{SNS96Catalog}, \code{SNS192Catalog}
+one of the ICAMS classes \code{SNS96Catalog}, \code{SNS192Catalog},
+\code{SNS1536Catalog}, \code{DNS78Catalog}, \code{DNS144Catalog},
+\code{DNS136Catalog}, \code{IndelCatalog}.
 
 If you need to create a catalog from a source other than
 this package (i.e. other than with

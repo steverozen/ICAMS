@@ -7,7 +7,8 @@
 NormalizeGenomeArg(ref.genome)
 }
 \arguments{
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 }
 \value{
 If \code{genome} is \link[BSgenome]{BSgenome} object, return it.

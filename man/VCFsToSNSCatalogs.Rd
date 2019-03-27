@@ -11,7 +11,8 @@ VCFsToSNSCatalogs(list.of.SNS.vcfs, ref.genome, trans.ranges, region)
 -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 output catalog.}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{trans.ranges}{A data frame containing transcript ranges.}
 

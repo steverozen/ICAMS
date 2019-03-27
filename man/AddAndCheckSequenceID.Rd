@@ -13,7 +13,8 @@ AddAndCheckSequenceID(df, ref.genome, flag.mismatches = FALSE)
  there is a "context base" to the left, for example REF = ACG, ALT = A
 (deletion of CG) or REF = A, ALT = ACC (insertion of CC).}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{flag.mismatches}{If > 0, if there are mismatches to references, print
 out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.}

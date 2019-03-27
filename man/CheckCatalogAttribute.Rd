@@ -4,16 +4,17 @@
 \alias{CheckCatalogAttribute}
 \title{Check attributes of catalog specified by user}
 \usage{
-CheckCatalogAttribute(ref.genome, region, type)
+CheckCatalogAttribute(ref.genome, region, catalog.type)
 }
 \arguments{
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
 
-\item{type}{A character string acting as a catalog type identifier, one of
-"counts", "density", "signature".}
+\item{catalog.type}{One of "counts", "density", "counts.signature",
+"density.signature".}
 }
 \value{
 TRUE

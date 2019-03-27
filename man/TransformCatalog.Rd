@@ -11,7 +11,8 @@ TransformCatalog(catalog, target.ref.genome, target.region, target.type)
 \item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
 must \strong{not} be an ID (indel) catalog.}
 
-\item{target.ref.genome}{A \code{ref.genome} argument as described in \code{\link{ICAMS}}.}
+\item{target.ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{target.region}{One of "genome", "exome".}
 

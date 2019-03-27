@@ -9,7 +9,8 @@ as.catalog(catalog, ref.genome, region, catalog.type)
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
