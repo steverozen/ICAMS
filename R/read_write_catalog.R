@@ -49,11 +49,11 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #'
 #' @export
 WriteCatalog <- function(catalog, path, strict = TRUE) {
-  class.of.catalog <- CheckClassOfCatalog(catalog)
-  UseMethod(generic = "WriteCatalog", object = class.of.catalog)
+  UseMethod(generic = "WriteCatalog")
 }
 
-ReadCatalog.SNS96 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.SNS96 <- function(path, ref.genome, region,
+                              catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -72,10 +72,11 @@ ReadCatalog.SNS96 <- function(path, ref.genome, region, type, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.SNS192 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.SNS192 <- function(path, ref.genome, region,
+                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
@@ -105,10 +106,11 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region, type, strict = TRUE) {
   out <- as.matrix(out)
   rownames(out) <- tmp
   out <- out[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.SNS1536 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.SNS1536 <- function(path, ref.genome, region,
+                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -127,10 +129,11 @@ ReadCatalog.SNS1536 <- function(path, ref.genome, region, type, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.DNS78 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.DNS78 <- function(path, ref.genome, region,
+                              catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 78)
   if (strict) {
@@ -172,10 +175,11 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region, type, strict = TRUE) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS78)
   }
   out <- out[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.DNS144 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.DNS144 <- function(path, ref.genome, region,
+                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 144)
   if (strict) {
@@ -190,10 +194,11 @@ ReadCatalog.DNS144 <- function(path, ref.genome, region, type, strict = TRUE) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS144)
   }
   out <- out[ICAMS::catalog.row.order$DNS144, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.DNS136 <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.DNS136 <- function(path, ref.genome, region,
+                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -227,7 +232,7 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
 }
 
 #' @title Write a catalog to a file.
@@ -260,37 +265,37 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
   fwrite(cbind(row.header, DT), file = path)
 }
 
-WriteCatalog.SNS96 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS96Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SNS96,
            catalog.row.headers.SNS.96, strict)
 }
 
-WriteCatalog.SNS192 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS192Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SNS192,
            catalog.row.headers.SNS.192, strict)
 }
 
-WriteCatalog.SNS1536 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.SNS1536Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SNS1536,
            catalog.row.headers.SNS.1536, strict)
 }
 
-WriteCatalog.DNS78 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS78Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DNS78,
            catalog.row.headers.DNS.78, strict)
 }
 
-WriteCatalog.DNS144 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS144Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DNS144,
            catalog.row.headers.DNS.144, strict)
 }
 
-WriteCatalog.DNS136 <- function(catalog, path, strict = TRUE) {
+WriteCatalog.DNS136Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DNS136,
            catalog.row.headers.DNS.136, strict)
 }
 
-WriteCatalog.ID <- function(catalog, path, strict = TRUE) {
+WriteCatalog.IndelCatalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 83, ICAMS::catalog.row.order$ID,
            catalog.row.headers.ID, strict)
 }
