@@ -82,7 +82,8 @@ Collapse144To78 <- function(catalog) {
 #' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}};
 #'  must \strong{not} be an ID (indel) catalog.
 #'
-#' @param target.ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
+#' @param target.ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param target.region One of "genome", "exome".
 #'
@@ -458,7 +459,8 @@ CreatePentanucAbundance <- function(path) {
 
 #' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @return If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
 #' Otherwise return the \link[BSgenome]{BSgenome} object identified by the
@@ -481,7 +483,8 @@ NormalizeGenomeArg <- function(ref.genome) {
 
 #' Check attributes of catalog specified by user
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -590,7 +593,8 @@ CreateCatalogClass <- function(catalog) {
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -733,7 +737,8 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".

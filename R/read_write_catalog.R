@@ -6,7 +6,8 @@
 #'
 #' @param path Path to a catalog on disk in the standardized format.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region One of "genome", "exome".
 #'

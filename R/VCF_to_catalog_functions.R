@@ -284,7 +284,8 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @param df An input data frame storing mutation records of a VCF file.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @importFrom methods as
 #'
@@ -806,7 +807,8 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
@@ -963,7 +965,8 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data frame containing transcript ranges.
 #'
@@ -1029,7 +1032,8 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Strelka SNS VCF files.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.
@@ -1061,7 +1065,8 @@ StrelkaSNSVCFFilesToCatalog <-
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Strelka ID VCF files.
 #'
-#' @param ref.genome  A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1090,7 +1095,8 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Mutect VCF files.
 #'
-#' @param ref.genome  A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges A data.table which contains transcript range and
 #'   strand information.

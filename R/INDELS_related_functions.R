@@ -6,7 +6,8 @@
 #'   there is a "context base" to the left, for example REF = ACG, ALT = A
 #'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param flag.mismatches If > 0, if there are mismatches to references, print
 #' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
@@ -650,7 +651,8 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
