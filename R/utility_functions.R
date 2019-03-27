@@ -580,7 +580,7 @@ CreateCatalogClass <- function(catalog) {
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 83) {
-    class(catalog) <- append(class(catalog), "ID(indel)Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "IndelCatalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   return(catalog)
