@@ -17,7 +17,7 @@ the sample ids in the output catalog.}
 }
 \value{
 An S3 object containing an ID (indel) catalog with class
-  "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
+  "catalog". See \code{\link{as.catalog}} for more details.
 }
 \description{
 Create ID (insertion and deletion) catalog from ID VCFs

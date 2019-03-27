@@ -121,7 +121,7 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
            'is implemented at the current stage.\n')
     } else {
       cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-      return(CreateCatalogAttribute(cat, target.ref.genome, target.region, target.type))
+      return(as.catalog(cat, target.ref.genome, target.region, target.type))
     }
   }
 
@@ -132,7 +132,7 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
            'is implemented at the current stage.\n')
     } else {
       cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-      return(CreateCatalogAttribute(cat, target.ref.genome, target.region, target.type))
+      return(as.catalog(cat, target.ref.genome, target.region, target.type))
     }
   }
 
@@ -165,10 +165,10 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
 
   if (target.type %in% c("counts.signature", "density.signature")) {
     out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-    return(CreateCatalogAttribute(out2, target.ref.genome,
+    return(as.catalog(out2, target.ref.genome,
                                   target.region, target.type))
   } else {
-    return(CreateCatalogAttribute(out.catalog, target.ref.genome,
+    return(as.catalog(out.catalog, target.ref.genome,
                                   target.region, target.type))
   }
 }
@@ -711,7 +711,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
 #' Preserve attributes of the input catalog
 #'
 #' @param pre.catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param new.catalog A new catalog which needs to inherit the necessary attributes from
 #' \code{pre.catalog}.
@@ -738,15 +738,15 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @param type A character string acting as a catalog type identifier, one of
-#' "counts", "density", "counts.signature" and "density.signature".
+#' @param catalog.type One of "counts", "density", "counts.signature",
+#'   "density.signature".
 #'
 #' @return The original catalog with the following attributes added: ref.genome,
 #'   region, type, abundance, class.
 #'
 #' @export
-CreateCatalogAttribute <- function(catalog, ref.genome, region, type) {
-    ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
+as.catalog <- function(catalog, ref.genome, region, catalog.type) {
+  ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
 
   if (CheckCatalogAttribute(ref.genome, region, type)) {
     attr(catalog, "ref.genome") <- ref.genome

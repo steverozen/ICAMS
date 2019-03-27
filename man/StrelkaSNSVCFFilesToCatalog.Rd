@@ -22,7 +22,7 @@ strand information.}
 \value{
 A list of 3 SNS catalogs (one each for 96, 192, and 1536) and 3 DNS
   catalogs (one each for 78, 136, and 144). Each catalog has attributes
-  added. See \code{\link{CreateCatalogAttribute}} for more details.
+  added. See \code{\link{as.catalog}} for more details.
 }
 \description{
 Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)

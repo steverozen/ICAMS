@@ -17,7 +17,7 @@ file paths to the Strelka ID VCF files.}
 }
 \value{
 An ID (indel) catalog with attributes added. See
-  \code{\link{CreateCatalogAttribute}} for more details.
+  \code{\link{as.catalog}} for more details.
 }
 \description{
 Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths

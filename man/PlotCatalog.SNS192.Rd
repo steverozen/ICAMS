@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 mutation counts(if it exists), y axis and its labels, x axis labels and

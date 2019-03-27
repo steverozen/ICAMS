@@ -8,7 +8,7 @@ WriteCat(catalog, path, num.row, row.order, row.header, strict)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 
 \item{path}{The path of the file to be written.}
 

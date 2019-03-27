@@ -6,17 +6,17 @@
 #'
 #' @param path Path to a catalog on disk in the standardized format.
 #'
-#' @param ref.genome A genome argument as described in \code{\link{ICAMS}}.
+#' @param ref.genome A \code{ref.genome} argument as described in \code{\link{ICAMS}}.
 #'
 #' @param region One of "genome", "exome".
 #'
-#' @param catalog.type One of "counts", "density",
-#' "counts.signature", "density.signature".
+#' @param catalog.type One of "counts", "density", "counts.signature",
+#'   "density.signature".
 #'
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
 #' @return A catalog in standard in-memory format with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -37,7 +37,7 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #' See also \code{\link{ReadCatalog}}.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}};
-#' see also \code{\link{CreateCatalogAttribute}}.
+#' see also \code{\link{as.catalog}}.
 #'
 #' @param path The path to the file to be created .
 #'
@@ -72,7 +72,7 @@ ReadCatalog.SNS96 <- function(path, ref.genome, region,
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 ReadCatalog.SNS192 <- function(path, ref.genome, region,
@@ -106,7 +106,7 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region,
   out <- as.matrix(out)
   rownames(out) <- tmp
   out <- out[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 ReadCatalog.SNS1536 <- function(path, ref.genome, region,
@@ -129,7 +129,7 @@ ReadCatalog.SNS1536 <- function(path, ref.genome, region,
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 ReadCatalog.DNS78 <- function(path, ref.genome, region,
@@ -175,7 +175,7 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region,
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS78)
   }
   out <- out[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 ReadCatalog.DNS144 <- function(path, ref.genome, region,
@@ -194,7 +194,7 @@ ReadCatalog.DNS144 <- function(path, ref.genome, region,
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS144)
   }
   out <- out[ICAMS::catalog.row.order$DNS144, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 ReadCatalog.DNS136 <- function(path, ref.genome, region,
@@ -212,7 +212,7 @@ ReadCatalog.DNS136 <- function(path, ref.genome, region,
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS136)
   }
   out <- out[ICAMS::catalog.row.order$DNS136, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, type))
+  return(as.catalog(out, ref.genome, region, type))
 }
 
 ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
@@ -232,7 +232,7 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
   out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
-  return(CreateCatalogAttribute(out, ref.genome, region, catalog.type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @title Write a catalog to a file.
@@ -241,7 +241,7 @@ ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
 #' actual writing of the catalog.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param path The path of the file to be written.
 #'

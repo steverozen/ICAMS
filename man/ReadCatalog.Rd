@@ -9,18 +9,18 @@ ReadCatalog(path, ref.genome, region, catalog.type, strict = TRUE)
 \arguments{
 \item{path}{Path to a catalog on disk in the standardized format.}
 
-\item{ref.genome}{A genome argument as described in \code{\link{ICAMS}}.}
+\item{ref.genome}{A \code{ref.genome} argument as described in \code{\link{ICAMS}}.}
 
 \item{region}{One of "genome", "exome".}
 
-\item{catalog.type}{One of "counts", "density",
-"counts.signature", "density.signature".}
+\item{catalog.type}{One of "counts", "density", "counts.signature",
+"density.signature".}
 
 \item{strict}{If TRUE, then stop if additional checks on the input fail.}
 }
 \value{
 A catalog in standard in-memory format with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.
+See \code{\link{as.catalog}} for more details.
 }
 \description{
 Read a catalog in standardized format from path.

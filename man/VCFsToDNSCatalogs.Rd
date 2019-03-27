@@ -21,7 +21,7 @@ output catalog.}
 \value{
 A list of 3 DNS catalogs, one each for 78, 144, 136: catDNS78
   catDNS144 catDNS136. Each catalog has attributes added. See
-  \code{\link{CreateCatalogAttribute}} for more details.
+  \code{\link{as.catalog}} for more details.
 }
 \description{
 Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)

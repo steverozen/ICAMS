@@ -9,7 +9,7 @@
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 
 \item{filename}{The name of the PDF file to be produced.}
 

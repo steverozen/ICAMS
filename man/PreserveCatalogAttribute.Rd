@@ -8,7 +8,7 @@ PreserveCatalogAttribute(pre.catalog, new.catalog)
 }
 \arguments{
 \item{pre.catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 
 \item{new.catalog}{A new catalog which needs to inherit the necessary attributes from
 \code{pre.catalog}.}

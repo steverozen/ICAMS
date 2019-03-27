@@ -9,7 +9,7 @@
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 
 \item{strandbias}{If TRUE, plot the transcription strand bias graph of 10
 major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",

@@ -656,7 +656,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
 #' "genome", "exome".
 #'
 #' @return An S3 object containing an ID (indel) catalog with class
-#'   "catalog". See \code{\link{CreateCatalogAttribute}} for more details.
+#'   "catalog". See \code{\link{as.catalog}} for more details.
 #'
 #' @export
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
@@ -677,6 +677,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
   }
 
   colnames(catID) <- names(list.of.vcfs)
-  return(CreateCatalogAttribute(catID, ref.genome = ref.genome,
+  return(as.catalog(catID, ref.genome = ref.genome,
                                 region = region, type = "counts"))
 }

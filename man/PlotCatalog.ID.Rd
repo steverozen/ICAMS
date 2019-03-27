@@ -9,7 +9,7 @@ sample}
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{CreateCatalogAttribute}} for more details.}
+See \code{\link{as.catalog}} for more details.}
 }
 \value{
 \code{invisible(TRUE)}

@@ -815,7 +815,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #'
 #' @return A list of 3 SNS catalogs, one each for 96, 192, 1536: catSNS96
 #'   catSNS192 catSNS1536. Each catalog has attributes added. See
-#'   \code{\link{CreateCatalogAttribute}} for more details.
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note SNS 192 catalog only contains mutations in transcribed regions.
 #'
@@ -857,7 +857,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region
   list.of.catalogs <- list(catSNS96 = catSNS96,
                            catSNS192 = catSNS192,
                            catSNS1536 = catSNS1536)
-  return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
+  return(lapply(list.of.catalogs, FUN = as.catalog,
                 ref.genome = ref.genome, region = region, type = "counts"))
 }
 
@@ -972,7 +972,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #'
 #' @return A list of 3 DNS catalogs, one each for 78, 144, 136: catDNS78
 #'   catDNS144 catDNS136. Each catalog has attributes added. See
-#'   \code{\link{CreateCatalogAttribute}} for more details.
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note DNS 144 catalog only contains mutations in transcribed regions.
 #'
@@ -1014,7 +1014,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
   list.of.catalogs <- list(catDNS78  = catDNS78,
                            catDNS144  = catDNS144,
                            catDNS136  = catDNS136)
-  return(lapply(list.of.catalogs, FUN = CreateCatalogAttribute,
+  return(lapply(list.of.catalogs, FUN = as.catalog,
                 ref.genome = ref.genome, region = region, type = "counts"))
 }
 
@@ -1039,7 +1039,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
 #'
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536) and 3 DNS
 #'   catalogs (one each for 78, 136, and 144). Each catalog has attributes
-#'   added. See \code{\link{CreateCatalogAttribute}} for more details.
+#'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
 #'
@@ -1067,7 +1067,7 @@ StrelkaSNSVCFFilesToCatalog <-
 #' "genome", "exome".
 #'
 #' @return An ID (indel) catalog with attributes added. See
-#'   \code{\link{CreateCatalogAttribute}} for more details.
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -1100,7 +1100,7 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #'
 #' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536), 3 DNS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. Each catalog has
-#'   attributes added. See \code{\link{CreateCatalogAttribute}} for more
+#'   attributes added. See \code{\link{as.catalog}} for more
 #'   details.
 #'
 #' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.

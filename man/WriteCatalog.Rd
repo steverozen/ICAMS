@@ -8,7 +8,7 @@ WriteCatalog(catalog, path, strict = TRUE)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}};
-see also \code{\link{CreateCatalogAttribute}}.}
+see also \code{\link{as.catalog}}.}
 
 \item{path}{The path to the file to be created .}
 

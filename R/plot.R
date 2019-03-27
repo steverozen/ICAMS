@@ -3,7 +3,7 @@
 #' Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
 #'   catalog. Leave out this parameter if you don't intend to plot strand bias
@@ -33,7 +33,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' Plot catalogs to a PDF file.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -66,7 +66,7 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
 #' Plot the SNS 96 spectrum or signature of \strong{one} sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -202,7 +202,7 @@ PlotCatalog.SNS96 <-
 #' Plot an SNS 96 catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -237,7 +237,7 @@ PlotCatalogToPdf.SNS96 <-
 #' Plot the SNS 192 spectrum or signature of \strong{one} sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -360,7 +360,7 @@ PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
 #' Plot an SNS 192 catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -386,7 +386,7 @@ PlotCatalogToPdf.SNS192 <- function(catalog, filename) {
 #' Plot the strand bias graph of SNS 192 spectrum or signature of \strong{one} sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param strandbias If TRUE, Plot the transcription strand bias graph of 6 SNS
 #'   mutation types("C>A", "C>G", "C>T", "T>A", "T>C", "T>G") in one sample.
@@ -491,7 +491,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
 #' Plot the strand bias graph of SNS 192 catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -528,7 +528,7 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
 #' refers to (+1, +2) position, last letter T refers to the base after mutation.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @import graphics
 #'
@@ -723,7 +723,7 @@ PlotCatalog.SNS1536 <- function(catalog) {
 #' refers to (+1, +2) position, last letter T refers to the base after mutation.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -751,7 +751,7 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 #' Plot the DNS 78 spectrum or signature of \strong{one} sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @import graphics
 #'
@@ -846,7 +846,7 @@ PlotCatalog.DNS78 <- function(catalog) {
 #' Plot a DNS 78 catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -873,7 +873,7 @@ PlotCatalogToPdf.DNS78 <-
 #' Plot the strand bias graph of DNS 144 spectrum or signature of \strong{one} sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param strandbias If TRUE, plot the transcription strand bias graph of 10
 #'   major DNS mutation types ("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN",
@@ -980,7 +980,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 #' Plot the strand bias graph of DNS 144 catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -1016,7 +1016,7 @@ PlotCatalogToPdf.DNSClassStrandBias <-
 #' "TT>NN") for one sample.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @import graphics
 #'
@@ -1171,7 +1171,7 @@ PlotCatalog.DNS136 <- function(catalog) {
 #' "TG>NN", "TT>NN") of various samples to a PDF file.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
@@ -1353,7 +1353,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 #' sample
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @import graphics
 #'
@@ -1494,7 +1494,7 @@ PlotCatalog.ID <- function(catalog){
 #' Plot an indel(insertion and deletion) catalog to a PDF file
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{CreateCatalogAttribute}} for more details.
+#' See \code{\link{as.catalog}} for more details.
 #'
 #' @param filename The name of the PDF file to be produced.
 #'
