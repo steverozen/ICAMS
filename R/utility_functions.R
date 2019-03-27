@@ -489,13 +489,13 @@ NormalizeGenomeArg <- function(ref.genome) {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @param type A character string acting as a catalog type identifier, one of
-#' "counts", "density", "signature".
+#' @param catalog.type One of "counts", "density", "counts.signature",
+#'   "density.signature".
 #'
 #' @return TRUE
 #'
 #' @keywords internal
-CheckCatalogAttribute <- function(ref.genome, region, type) {
+CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
   if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38",
                          "BSgenome.Hsapiens.UCSC.hg38",
                          "BSgenome.Hsapiens.1000genomes.hs37d5")) {
@@ -508,8 +508,9 @@ CheckCatalogAttribute <- function(ref.genome, region, type) {
     stop("Unrecoginzed region identifier: ", region,
          "\nNeed one of genome, exome, transcription")
   }
-  if (!type %in% c("counts", "density", "counts.signature", "density.signature")) {
-    stop("Unrecoginzed catalog type identifier: ", type,
+  if (!catalog.type %in% c("counts", "density",
+                           "counts.signature", "density.signature")) {
+    stop("Unrecoginzed catalog type identifier: ", catalog.type,
          "\nNeed one of counts, density, counts.signature, density.signature")
   }
   return(TRUE)
@@ -599,13 +600,13 @@ CreateCatalogClass <- function(catalog) {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @param type A character string acting as a catalog type identifier, one of
-#' "counts", "density", "counts.signature" and "density.signature".
+#' @param catalog.type One of "counts", "density", "counts.signature",
+#'   "density.signature".
 #'
 #' @return The original catalog with abundance attribute added.
 #'
 #' @keywords internal
-CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
+CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
   if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
     stop('This is not a catalog supported by ICAMS. The input catalog must
          be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
@@ -614,7 +615,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
   }
 
   if(nrow(catalog) == 96) {
-    if (type %in% c("density", "density.signature")) {
+    if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
       return(catalog)
     } else if (ref.genome %in%
@@ -639,7 +640,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
   }
 
   if(nrow(catalog) == 1536) {
-    if (type %in% c("density", "density.signature")) {
+    if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
       return(catalog)
     } else if (ref.genome %in%
@@ -660,7 +661,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
   }
 
   if(nrow(catalog) == 78) {
-    if (type %in% c("density", "density.signature")) {
+    if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
       return(catalog)
     } else if (ref.genome %in%
@@ -685,7 +686,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, type) {
   }
 
   if(nrow(catalog) == 136) {
-    if (type %in% c("density", "density.signature")) {
+    if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
       return(catalog)
     } else if (ref.genome %in%
@@ -753,11 +754,11 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 as.catalog <- function(catalog, ref.genome, region, catalog.type) {
   ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
 
-  if (CheckCatalogAttribute(ref.genome, region, type)) {
+  if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
     attr(catalog, "ref.genome") <- ref.genome
     attr(catalog, "region") <- region
-    attr(catalog, "type") <- type
-    catalog <- CreateCatalogAbundance(catalog, ref.genome, region, type)
+    attr(catalog, "type") <- catalog.type
+    catalog <- CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
     catalog <- CreateCatalogClass(catalog)
   }
 }

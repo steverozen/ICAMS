@@ -213,10 +213,11 @@ ReadCatalog.DNS136 <- function(path, ref.genome, region,
     stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS136)
   }
   out <- out[ICAMS::catalog.row.order$DNS136, , drop = FALSE]
-  return(as.catalog(out, ref.genome, region, type))
+  return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
-ReadCatalog.ID <- function(path, ref.genome, region, type, strict = TRUE) {
+ReadCatalog.ID <- function(path, ref.genome, region,
+                           catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 83)
   cn <- names(cos)
