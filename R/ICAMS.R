@@ -50,8 +50,9 @@
 #' in items 1, 2, 3.1, and 3.2, above.
 #'
 #' Catalogs are implemented as S3 objects of class \code{matrix} and
-#' one of the ICAMS classes \code{SNS96Catalog}, \code{SNS192Catalog}, NANHAI
-#' add all the classes.
+#' one of the ICAMS classes \code{SNS96Catalog}, \code{SNS192Catalog},
+#' \code{SNS1536Catalog}, \code{DNS78Catalog}, \code{DNS144Catalog},
+#' \code{DNS136Catalog}, \code{IndelCatalog}.
 #'
 #' If you need to create a catalog from a source other than
 #' this package (i.e. other than with
