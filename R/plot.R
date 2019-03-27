@@ -15,14 +15,13 @@
 #'
 #' @name PlotCatalog
 PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
-  class.of.catalog <- CheckClassOfCatalog(catalog)
   type.of.plot <- character()
-  if (strandbias == TRUE && attributes(class.of.catalog) == "SNS192") {
+  if (strandbias == TRUE && "SNS192Catalog" %in% class(catalog)) {
     class(type.of.plot) <- "SNSClassStrandBias"
-  } else if (attributes(class.of.catalog) == "DNS144") {
+  } else if ("DNS144Catalog" %in% class(catalog)) {
     class(type.of.plot) <- "DNSClassStrandBias"
   } else {
-    class(type.of.plot) <- attributes(class.of.catalog)
+    class(type.of.plot) <- class(catalog)
   }
   UseMethod(generic = "PlotCatalog", object = type.of.plot)
 }
@@ -85,7 +84,7 @@ PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
 #' @return \code{invisible(TRUE)}
 #'
 #' @keywords internal
-PlotCatalog.SNS96 <-
+PlotCatalog.SNS96Catalog <-
   function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SNS96)
@@ -249,7 +248,7 @@ PlotCatalogToPdf.SNS96 <-
 #' @return \code{invisible(TRUE)}
 #'
 #' @keywords internal
-PlotCatalog.SNS192 <- function(catalog, cex = 0.8) {
+PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
   stopifnot(dim(catalog) == c(192, 1))
 
   class.col  <- c("#03bcee",
@@ -535,7 +534,7 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
 #' @return \code{invisible(TRUE)}
 #'
 #' @keywords internal
-PlotCatalog.SNS1536 <- function(catalog) {
+PlotCatalog.SNS1536Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -758,7 +757,7 @@ PlotCatalogToPdf.SNS1536 <- function(catalog, filename) {
 #' @return \code{invisible(TRUE)}
 #'
 #' @keywords internal
-PlotCatalog.DNS78 <- function(catalog) {
+PlotCatalog.DNS78Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(78, 1))
   stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DNS78)
 
@@ -1023,7 +1022,7 @@ PlotCatalogToPdf.DNSClassStrandBias <-
 #' @return \code{invisible(TRUE)}
 #'
 #' @keywords internal
-PlotCatalog.DNS136 <- function(catalog) {
+PlotCatalog.DNS136Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(136, 1))
 
   old <- par(no.readonly = TRUE)
@@ -1364,7 +1363,7 @@ PlotCatalogToPdf.DNS136 <- function(catalog, filename) {
 #'   from 1 to 6+.
 #'
 #' @keywords internal
-PlotCatalog.ID <- function(catalog){
+PlotCatalog.IndelCatalog <- function(catalog){
   stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
