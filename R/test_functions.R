@@ -18,7 +18,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                             "mutect.regress.cat.sns.192.csv",
                             package = "ICAMS",
                             mustWork = TRUE),
-                ref.genome = "GRCh37", region = "genome", type = "counts")
+                ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
 
   stopifnot(cats$catSNS192 == prev.catalog.192)
 
@@ -28,7 +28,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.sns.96.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catSNS96 == prev.catalog.96)
 
   prev.catalog.1536 <-
@@ -37,7 +37,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.sns.1536.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catSNS1536 == prev.catalog.1536)
 
   prev.catalog.DNS.78<-
@@ -46,7 +46,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.dns.78.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
 
   prev.catalog.DNS.136<-
@@ -55,7 +55,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.dns.136.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS136 == prev.catalog.DNS.136)
 
   prev.catalog.DNS.144<-
@@ -64,7 +64,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.dns.144.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS144 == prev.catalog.DNS.144)
 
   prev.catalog.indels<-
@@ -73,7 +73,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.indels.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catID == prev.catalog.indels)
 
   cat("ok\n")
@@ -101,7 +101,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                             "new.regress.cat.sns.192.csv",
                             package = "ICAMS",
                             mustWork = TRUE),
-                ref.genome = "GRCh37", region = "genome", type = "counts")
+                ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
 
   stopifnot(cats$catSNS192 == prev.catalog.192)
 
@@ -111,7 +111,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   "new.regress.cat.sns.96.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catSNS96 == prev.catalog.96)
 
   prev.catalog.1536 <-
@@ -120,7 +120,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   "new.regress.cat.sns.1536.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catSNS1536 == prev.catalog.1536)
 
   prev.catalog.DNS.78<-
@@ -129,7 +129,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   "new.regress.cat.dns.78.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS78 == prev.catalog.DNS.78)
 
   prev.catalog.DNS.136<-
@@ -138,7 +138,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   "new.regress.cat.dns.136.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS136 == prev.catalog.DNS.136)
 
   prev.catalog.DNS.144<-
@@ -147,7 +147,7 @@ TestMakeCatalogFromStrelkaSNSVCFs <- function() {
                   "new.regress.cat.dns.144.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catDNS144 == prev.catalog.DNS.144)
 
   cat("ok\n")
@@ -173,7 +173,7 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
                   "new.regress.cat.indels.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", type = "counts")
+      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cat.ID == prev.catalog.indels)
 
   cat("ok\n")

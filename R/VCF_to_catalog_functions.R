@@ -860,7 +860,7 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region
                            catSNS192 = catSNS192,
                            catSNS1536 = catSNS1536)
   return(lapply(list.of.catalogs, FUN = as.catalog,
-                ref.genome = ref.genome, region = region, type = "counts"))
+                ref.genome = ref.genome, region = region, catalog.type = "counts"))
 }
 
 #' Create double nucleotide catalog for *one* sample from
@@ -1018,7 +1018,7 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
                            catDNS144  = catDNS144,
                            catDNS136  = catDNS136)
   return(lapply(list.of.catalogs, FUN = as.catalog,
-                ref.genome = ref.genome, region = region, type = "counts"))
+                ref.genome = ref.genome, region = region, catalog.type = "counts"))
 }
 
 #' Create SNS and DNS catalogs from Strelka SNS VCF files.

@@ -31,10 +31,10 @@ test_that("Functions for reading and writing catalog are working properly", {
 
   Test1Cat <- function(my.read, my.write, my.file) {
     ct1 <- my.read(my.file, ref.genome = "GRCh37",
-                   region = "genome", type = "counts")
+                   region = "genome", catalog.type = "counts")
     my.write(ct1, "tmp.ct.txt")
     ct2 <- my.read("tmp.ct.txt", ref.genome = "GRCh37",
-                   region = "genome", type = "counts")
+                   region = "genome", catalog.type = "counts")
     expect_equal(ct1, ct2)
   }
 

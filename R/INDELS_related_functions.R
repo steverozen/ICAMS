@@ -680,5 +680,5 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
 
   colnames(catID) <- names(list.of.vcfs)
   return(as.catalog(catID, ref.genome = ref.genome,
-                                region = region, type = "counts"))
+                                region = region, catalog.type = "counts"))
 }

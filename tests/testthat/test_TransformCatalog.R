@@ -4,7 +4,7 @@ context("TransformCatalog")
           and genome counts.signature -> exome counts.signature", {
             cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                ref.genome = "GRCh37", region = "genome",
-                               type = "counts")
+                               catalog.type = "counts")
 
             x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                       target.region = "exome", target.type = "counts")
@@ -36,7 +36,7 @@ context("TransformCatalog")
             and genome counts -> exome counts.signature", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
-                                 type = "counts")
+                                 catalog.type = "counts")
 
               genome.counts.signature <-
                 TransformCatalog(cat, target.ref.genome = "GRCh37",
@@ -91,7 +91,7 @@ context("TransformCatalog")
             and exome counts -> genome counts", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                   ref.genome = "GRCh37", region = "genome",
-                                  type = "counts")
+                                  catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                         target.region = "exome",
@@ -109,7 +109,7 @@ context("TransformCatalog")
             and genome counts -> exome count -> density", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
-                                 type = "counts")
+                                 catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                         target.region = "genome",
@@ -133,7 +133,7 @@ context("TransformCatalog")
             and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
-                                 type = "counts")
+                                 catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                         target.region = "genome",
@@ -157,7 +157,7 @@ context("TransformCatalog")
             and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
-                                 type = "counts")
+                                 catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh38",
                                         target.region = "genome",
@@ -178,7 +178,7 @@ context("TransformCatalog")
   test_that("Legal transformation 4, density -> (genome) counts", {
     cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                        ref.genome = "GRCh37", region = "genome",
-                       type = "counts")
+                       catalog.type = "counts")
 
     x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                               target.region = "genome",
@@ -194,7 +194,7 @@ context("TransformCatalog")
   test_that("Error test: transformation of a SNS 192 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.sns.192.csv",
                        ref.genome = "GRCh37", region = "genome",
-                       type = "counts")
+                       catalog.type = "counts")
 
     expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
                                      target.region = "exome",
@@ -225,7 +225,7 @@ context("TransformCatalog")
   test_that("Error test: transformation of a DNS 144 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                          ref.genome = "GRCh37", region = "genome",
-                         type = "counts")
+                         catalog.type = "counts")
 
     expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
                                      target.region = "exome",
@@ -257,7 +257,7 @@ context("TransformCatalog")
             error message expected", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                   ref.genome = "GRCh37", region = "genome",
-                                  type = "counts")
+                                  catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                         target.region = "genome",
@@ -272,7 +272,7 @@ context("TransformCatalog")
             error message expected", {
               cat <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
-                                 type = "counts")
+                                 catalog.type = "counts")
 
               x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                         target.region = "exome",
