@@ -62,7 +62,7 @@ Collapse144To78 <- function(catalog) {
 #' Transform between count and density catalogs
 #' and signatures.
 #'
-#' Only the following transformations are legal:
+#' @details Only the following transformations are legal:
 #'
 #' \enumerate{
 #' \item \code{counts -> counts}
@@ -104,10 +104,13 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
          "can be transformed to a different type.")
   }
 
+  if (attributes(catalog)$type == "density.signature" &&
+      target.type == "density.signature") {
+    return(catalog)
+  }
+
   if (attributes(catalog)$type == "density" && target.type == "density") {
-    stop("We cannot transform a \"density\" type catalog ",
-         "to \"density\" type catalog as it would require ",
-         "uniform source and target abundances.")
+    return(catalog)
   }
 
   if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
