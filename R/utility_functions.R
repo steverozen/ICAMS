@@ -765,3 +765,157 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
     catalog <- CreateCatalogClass(catalog)
   }
 }
+
+#' Generate permuation of k mers
+#'
+#' @param k Length of kmers (k>=2)
+#'
+#' @return A vector of characters which have all the permuations of k mers
+#'
+#' @keywords internal
+GenerateKmer <- function(k) {
+  base <- c("A", "C", "G", "T")
+  list.of.base <- list()
+  for (i in 1:k){
+    list.of.base[[i]] <- base
+  }
+  permutation <- expand.grid(list.of.base, stringsAsFactors = FALSE)
+  all.kmer.list <- character(nrow(permutation))
+  for (i in 1:k) {
+    all.kmer.list <- stringi::stri_c(all.kmer.list, permutation[[i]])
+  }
+  all.kmer.list <- stringi::stri_sort(all.kmer.list)
+}
+
+#' Generate kmer abundances from a given genome
+#'
+#' @param k Length of kmers (k>=2)
+#'
+#' @param genome Name of a particular reference genome
+#'   (without quotations marks)
+#'
+#' @param homopolymer.filter Optional. If TRUE, homopolymers will be masked from
+#'   genome(sequence)
+#'
+#' @return Matrix of the counts of each kmer across the genome
+#'
+#' @keywords internal
+GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE){
+
+  all.kmer.list <- GenerateKmer(k)
+
+  #Maybe only for human? get chrs except decoyed chrs (Chr1-Chr22, X,Y)
+  chr.list <- names(genome)[1:24]
+  kmer.counts <- data.frame(all.kmer.list, row.names = all.kmer.list)
+  kmer.counts$Freq <- 0
+
+  print("Start counting by chromosomes")
+  for(idx in 1:length(chr.list)){
+    print(chr.list[idx])
+    genome.seq <- getSeq(genome, chr.list[idx], as.character = TRUE)
+
+    #Optional, read homopolymer filter
+    if(homopolymer.filter == TRUE){
+      for(pattern in c("AAAAA+","CCCCC+","GGGGG+","TTTTT+")){
+        genome.seq <- gsub(pattern, "N", genome.seq)
+      }
+    }
+
+    for(start_idx in 1:k){
+      temp.seq <- substring(genome.seq, start_idx, nchar(genome.seq))
+      temp.kmers <-
+        stri_extract_all_regex(temp.seq,
+                               pattern = paste(rep(".", each = k), collapse = ""))
+      #can I directly transfrom this into a count table???
+
+      temp.kmers.counts <- data.frame(table(temp.kmers))
+      row.names(temp.kmers.counts) <- temp.kmers.counts[, 1]
+
+      temp.kmers.counts <-
+        temp.kmers.counts[-which(grepl("N", temp.kmers.counts[, 1])), ]
+
+      kmer.counts[row.names(temp.kmers.counts),"Freq"] <-
+        kmer.counts[row.names(temp.kmers.counts),"Freq"]  +
+        temp.kmers.counts$Freq
+    }
+  }
+  colnames(kmer.counts)[1] <- paste("All.", k, "mers", sep = "")
+  return(kmer.counts)
+}
+
+#' Generate stranded kmer abundances from a given genome and gene annotation file
+#'
+#' @param k Length of kmers (k>=2)
+#'
+#' @param genome Name of a particular reference genome
+#'   (without quotations marks)
+#'
+#' @param homopolymer.filter Optional. If TRUE, homopolymers will be masked from
+#'   genome(sequence)
+#'
+#' @param trans.range A GFF3 trans.range.file
+#'
+#' @return Matrix of the counts of each kmer across the genome
+#'
+#' @keywords internal
+GetStrandedKmers <- function(k, genome, trans.ranges,
+                             homopolymer.filter = FALSE){
+  stranded.ranges <- StandardChromName(trans.ranges) ##necessary?
+
+  # Check if the format of sequence names in stranded.ranges and genome are the same.
+  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
+  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
+  # "chr1", "chr2", ....
+  stranded.ranges.chr.names <- unique(stranded.ranges$chrom)
+  if (!all(stranded.ranges.chr.names %in% seqnames(genome))) {
+    tmp.chr <- paste0("chr", stranded.ranges.chr.names)
+    if (!all(tmp.chr %in% seqnames(genome))) {
+      stop("Cannot match chromosome names:\n",
+           sort(stranded.ranges.chr.names), "\nversus\n", sort(seqnames(genome)))
+    }
+
+    chr.names <- paste0("chr", stranded.ranges$chrom)
+  } else {
+    chr.names <- stranded.ranges$chrom
+  }
+
+  stranded.ranges <- GRanges(seqnames = chr.names,
+                             ranges = IRanges(start = stranded.ranges$chromStart,
+                                              end = stranded.ranges$chromEnd),
+                             strand = stranded.ranges$strand)
+
+  stranded.seqs <- getSeq(genome, stranded.ranges, as.character = TRUE)
+
+  all.kmer.list <- GenerateKmer(k)
+
+  stranded.kmers.list <- data.frame(all.kmer.list, row.names = all.kmer.list)
+  stranded.kmers.list$Freq <- 0
+
+  #If homopolymer.filter is TRUE, filtering out homopolymer regions
+  if(homopolymer.filter == TRUE){
+    for(pattern in c("AAAAA+","CCCCC+","GGGGG+","TTTTT+")){
+      stranded.seqs <- gsub(pattern, "N", stranded.seqs)
+    }
+  }
+
+  for(start_idx in 1:k){
+    temp.seqs <- substring(stranded.seqs, start_idx, nchar(stranded.seqs))
+    temp.kmers <-
+      stri_extract_all_regex(temp.seqs,
+                             pattern = paste(rep(".", each = k), collapse = ""))
+
+    temp.kmers <- unlist(temp.kmers)
+    temp.kmers.counts <- data.frame(table(temp.kmers))
+    row.names(temp.kmers.counts) <- temp.kmers.counts[, 1]
+    temp.kmers.counts <-
+      temp.kmers.counts[-which(grepl("N", temp.kmers.counts[, 1])), ]
+
+    stranded.kmers.list[row.names(temp.kmers.counts), "Freq"] <-
+      stranded.kmers.list[row.names(temp.kmers.counts), "Freq"]  +
+      temp.kmers.counts$Freq
+  }
+
+  colnames(stranded.kmers.list)[1] <-  paste("Stranded.", k, "mers", sep = "")
+
+  return(stranded.kmers.list)
+}
