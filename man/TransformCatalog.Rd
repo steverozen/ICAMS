@@ -23,9 +23,12 @@ must \strong{not} be an ID (indel) catalog.}
 A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-Only the following transformations are legal:
+Transform between count and density catalogs
+and signatures.
 }
 \details{
+Only the following transformations are legal:
+
 \enumerate{
 \item \code{counts -> counts}
 \item \code{counts -> density}
