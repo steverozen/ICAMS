@@ -766,11 +766,11 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
   }
 }
 
-#' Generate permuation of k mers
+#' Generate all possible k-mers of length k.
 #'
 #' @param k Length of kmers (k>=2)
 #'
-#' @return A vector of characters which have all the permuations of k mers
+#' @return Character vector containing all possible k-mers.
 #'
 #' @keywords internal
 GenerateKmer <- function(k) {
@@ -787,9 +787,9 @@ GenerateKmer <- function(k) {
   all.kmer.list <- stringi::stri_sort(all.kmer.list)
 }
 
-#' Generate kmer abundances from a given genome
+#' Generate k-mer abundances from a given genome
 #'
-#' @param k Length of kmers (k>=2)
+#' @param k Length of k-mers (k>=2)
 #'
 #' @param genome Name of a particular reference genome
 #'   (without quotations marks)
@@ -800,7 +800,7 @@ GenerateKmer <- function(k) {
 #' @return Matrix of the counts of each kmer across the genome
 #'
 #' @keywords internal
-GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE){
+GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE) {
 
   all.kmer.list <- GenerateKmer(k)
 
@@ -814,8 +814,11 @@ GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE){
     print(chr.list[idx])
     genome.seq <- getSeq(genome, chr.list[idx], as.character = TRUE)
 
-    #Optional, read homopolymer filter
-    if(homopolymer.filter == TRUE){
+    if(homopolymer.filter == TRUE) {
+      # Replace all homopolymers of length >= 5 with a single N.
+      # CAUTION: this genome string should not be used for
+      # matching to annotations, because coordinates have
+      # been shifted.
       for(pattern in c("AAAAA+","CCCCC+","GGGGG+","TTTTT+")){
         genome.seq <- gsub(pattern, "N", genome.seq)
       }
@@ -824,9 +827,8 @@ GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE){
     for(start_idx in 1:k){
       temp.seq <- substring(genome.seq, start_idx, nchar(genome.seq))
       temp.kmers <-
-        stri_extract_all_regex(temp.seq,
-                               pattern = paste(rep(".", each = k), collapse = ""))
-      #can I directly transfrom this into a count table???
+        stringi::stri_extract_all_regex(
+          temp.seq, pattern = paste(rep(".", each = k), collapse = ""))
 
       temp.kmers.counts <- data.frame(table(temp.kmers))
       row.names(temp.kmers.counts) <- temp.kmers.counts[, 1]
@@ -843,12 +845,11 @@ GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE){
   return(kmer.counts)
 }
 
-#' Generate stranded kmer abundances from a given genome and gene annotation file
+#' Get stranded k-mer abundances from a given genome and gene annotation file
 #'
-#' @param k Length of kmers (k>=2)
+#' @param k Length of k-mers (k>=2)
 #'
 #' @param genome Name of a particular reference genome
-#'   (without quotations marks)
 #'
 #' @param homopolymer.filter Optional. If TRUE, homopolymers will be masked from
 #'   genome(sequence)
@@ -879,10 +880,12 @@ GetStrandedKmers <- function(k, genome, trans.ranges,
     chr.names <- stranded.ranges$chrom
   }
 
-  stranded.ranges <- GRanges(seqnames = chr.names,
-                             ranges = IRanges(start = stranded.ranges$chromStart,
-                                              end = stranded.ranges$chromEnd),
-                             strand = stranded.ranges$strand)
+  stranded.ranges <-
+    GenomicRanges::GRanges(
+      seqnames = chr.names,
+      ranges = IRanges::IRanges(start = stranded.ranges$chromStart,
+                                end = stranded.ranges$chromEnd),
+      strand = stranded.ranges$strand)
 
   stranded.seqs <- getSeq(genome, stranded.ranges, as.character = TRUE)
 
@@ -901,8 +904,8 @@ GetStrandedKmers <- function(k, genome, trans.ranges,
   for(start_idx in 1:k){
     temp.seqs <- substring(stranded.seqs, start_idx, nchar(stranded.seqs))
     temp.kmers <-
-      stri_extract_all_regex(temp.seqs,
-                             pattern = paste(rep(".", each = k), collapse = ""))
+      stringi::stri_extract_all_regex(
+        temp.seqs, pattern = paste(rep(".", each = k), collapse = ""))
 
     temp.kmers <- unlist(temp.kmers)
     temp.kmers.counts <- data.frame(table(temp.kmers))
