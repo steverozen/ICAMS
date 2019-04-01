@@ -1084,10 +1084,10 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
-#' Create SNS and DNS catalogs from Mutect VCF files
+#' Create SNS, DNS and Indel catalogs from Mutect VCF files
 #'
-#' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-#' from the Mutect VCFs specified by vector.of.file.paths
+#' Create 3 SNS catalogs (96, 192, 1536), 3 DNS catalogs (78, 136, 144) and
+#' Indel catalog from the Mutect VCFs specified by vector.of.file.paths
 #'
 #' This function calls \code{\link{VCFsToSNSCatalogs}},
 #' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
