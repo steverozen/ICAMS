@@ -277,19 +277,19 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
 
   if (attributes(cat)$type == "counts") {
     # Get ylim
-    ymax <- max(catalog[, 1]) * 1.3
+    ymax <- max(cat[, 1]) * 1.3
 
     # Barplot: side by side
-    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
   } else if (attributes(cat)$type == "signature") {
     # Get ylim
-    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
+    ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
 
     # Barplot: side by side
-    mat <- matrix(catalog[, 1], nrow = 2, ncol = num.classes / 2)
+    mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
@@ -331,7 +331,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
     for (i in 1 : 6) {
       j <- 32 + 32 * (i - 1)
       k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 0.92, labels = sum(catalog[k : (32 * i), 1]),
+      text(bp[j], ymax * 0.92, labels = sum(cat[k : (32 * i), 1]),
            adj = c(1, 1), xpd = NA, cex = 0.8)
     }
   }
@@ -350,7 +350,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
   # Write the name of the sample
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog), adj = 0, cex = cex, font = 2)
+  text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
 
   invisible(TRUE)
 }
