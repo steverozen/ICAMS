@@ -804,8 +804,10 @@ GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE) {
 
   all.kmer.list <- GenerateKmer(k)
 
-  #Maybe only for human? get chrs except decoyed chrs (Chr1-Chr22, X,Y)
+  #Remove decoyed chromosomes and mitochondrial DNA
   chr.list <- seqnames(genome)[which(nchar(seqnames(genome)) <= 5)]
+  chr.list <- chr.list[-grep("M", chr.list)]
+
   kmer.counts <- data.frame(all.kmer.list, row.names = all.kmer.list)
   kmer.counts$Freq <- 0
 
