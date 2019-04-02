@@ -8,6 +8,3 @@ trans.ranges.GRCh38 <-
 trans.ranges.GRCh37 <-
   ReadTranscriptRanges("data-raw/TranscriptRanges.GRCh37.csv")
 
-trans.ranges.GRCm38 <-
-  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCm38.csv")
-
