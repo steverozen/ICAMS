@@ -948,8 +948,8 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges,
     temp.stranded.ranges <-
       GenomicRanges::GRanges(
         seqnames = chr,
-        ranges = IRanges::IRanges(start = temp.stranded.ranges$chromStart,
-                                  end = temp.stranded.ranges$chromEnd),
+        ranges = IRanges(start = temp.stranded.ranges$chromStart,
+                         end = temp.stranded.ranges$chromEnd),
         strand = temp.stranded.ranges$strand)
 
     stranded.seqs <- getSeq(genome, temp.stranded.ranges, as.character = TRUE)
