@@ -3,8 +3,11 @@
 cat(getwd(), "\n")
 
 trans.ranges.GRCh38 <-
-  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCh38.tsv")
+  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCh38.csv")
 
 trans.ranges.GRCh37 <-
-  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCh37.tsv")
+  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCh37.csv")
+
+trans.ranges.GRCm38 <-
+  ReadTranscriptRanges("data-raw/TranscriptRanges.GRCm38.csv")
 
