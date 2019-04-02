@@ -211,10 +211,11 @@ StandardChromName <- function(df) {
 #'
 #' @param path The name/path of the raw GFF3 File, or a complete URL.
 #'
-#' @return A data frame which contains chromosome name, start, end position,
-#'   strand information and gene name. Only the following four gene types are
-#'   kept to facilitate transcriptional strand bias analysis: protein_coding,
-#'   retained_intron, processed_transcript and nonsense_mediated_decay.
+#' @return A data table which contains chromosome name, start, end position,
+#'   strand information and gene name. It is keyed by chrom, chromStart, and
+#'   chromEnd. Only the following four gene types are kept to facilitate
+#'   transcriptional strand bias analysis: protein_coding, retained_intron,
+#'   processed_transcript and nonsense_mediated_decay.
 #'
 #' @keywords internal
 CreateTransRange <- function(path) {
@@ -223,7 +224,7 @@ CreateTransRange <- function(path) {
   n <- sum(grepl("#", df[, 1]))
 
   # Read in the raw GFF3 File while skipping the comment lines
-  dt <- fread(path, header = FALSE, sep = "\t", fill = TRUE, skip = n)
+  dt <- data.table::fread(path, header = FALSE, sep = "\t", fill = TRUE, skip = n)
 
   dt1 <- dt[dt$V3 == "gene", ]
 
@@ -236,10 +237,10 @@ CreateTransRange <- function(path) {
   dt2 <- dt1[idx, ]
 
   # Split the 9th column of dt2 according to separator ";" and get a list
-  list <- stringr::str_split(dt2$V9, ";")
+  list <- stringi::stri_split_fixed(dt2$V9, ";")
 
   # Extract the character string which contains gene name information
-  names <- sapply(list, stringr::str_subset, "gene_name")
+  names <- sapply(list, stringi::stri_subset_fixed, "gene_name")
 
   # Remove the "gene_name" characters
   names <- sub(pattern = "gene_name.", replacement = "", names)
@@ -250,7 +251,13 @@ CreateTransRange <- function(path) {
   # Remove the whitespace
   dt2$V9 <- gsub(pattern = "\\s", replacement = "", names)
 
-  return(StandardChromName(dt2[, c(1, 4, 5, 7, 9)]))
+  # Select the necessary columns and standardize the chromosome names
+  dt3 <- StandardChromName(dt2[, c(1, 4, 5, 7, 9)])
+
+  colnames(dt3) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
+  chrOrder <-c((1:22), "X", "Y")
+  dt3$chrom <- factor(dt3$chrom, chrOrder, ordered = TRUE)
+  return(data.table::setkeyv(dt3, c("chrom", "chromStart", "chromEnd")))
 }
 
 #' @keywords internal
@@ -338,11 +345,12 @@ RevcDNS144 <- function(mutstring) {
 #'
 #' @keywords internal
 ReadTranscriptRanges <- function(path) {
-  d <- utils::read.table(path)
-  colnames(d) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
-  bed1 <- data.table(d)
-  data.table::setkeyv(bed1, c("chrom", "chromStart", "chromEnd"))
-  return(bed1)
+  df <- utils::read.csv(path)
+  dt <- data.table(df)
+  chrOrder <-c((1:22), "X", "Y")
+  dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
+  data.table::setkeyv(dt, c("chrom", "chromStart", "chromEnd"))
+  return(dt)
 }
 
 #' Read transcript ranges and strands from a bed format file.
