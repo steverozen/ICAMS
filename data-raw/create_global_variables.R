@@ -1,6 +1,7 @@
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
+                  trans.ranges.GRCm38,
                   overwrite = TRUE)
 
 usethis::use_data(to.reorder.SNS.192.for.plotting,
