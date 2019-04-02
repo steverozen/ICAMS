@@ -412,13 +412,11 @@ CreateTrinucAbundance <- function(path) {
 #' @keywords internal
 CreateDinucAbundance <- function(path) {
   dt <- fread(path)
-  colnames(dt) <- c("4bp", "occurrences")
+  colnames(dt) <- c("2bp", "occurrences")
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   dt$type <-
-    ifelse(substr(dt[[1]], 2, 3) %in% canonical.ref,
-           substr(dt[[1]], 2, 3),
-           revc(substr(dt[[1]], 2, 3)))
+    ifelse((dt[[1]]) %in% canonical.ref, dt[[1]], revc(dt[[1]]))
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   abundance <- dt1$counts
   names(abundance) <- dt1$type
@@ -903,30 +901,16 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges,
                                    homopolymer.filter = FALSE){
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
-
-  # Check if the format of sequence names in stranded.ranges and genome are the same.
-  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
-  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
-  # "chr1", "chr2", ....
-  stranded.ranges.chr.names <- unique(stranded.ranges$chrom)
-  if (!all(stranded.ranges.chr.names %in% seqnames(genome))) {
-    tmp.chr <- paste0("chr", stranded.ranges.chr.names)
-    if (!all(tmp.chr %in% seqnames(genome))) {
-      stop("Cannot match chromosome names:\n",
-           sort(stranded.ranges.chr.names), "\nversus\n", sort(seqnames(genome)))
-    }
-    chr.names <- paste0("chr", stranded.ranges$chrom)
-  } else {
-    chr.names <- stranded.ranges$chrom
-  }
-
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
   print("Start counting by chromosomes")
 
-  for(chr in unique(chr.names)){
+  for(chr in unique(stranded.ranges$chrom)){
+    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
+    if (!chr %in% seqnames(genome)) {
+      chr <- paste0("chr", chr)
+    }
     print(chr)
-    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr,]
     temp.stranded.ranges <-
       GenomicRanges::GRanges(
         seqnames = chr,
