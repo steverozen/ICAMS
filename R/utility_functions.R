@@ -645,7 +645,24 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
   }
 
   if(nrow(catalog) == 192) {
-    attr(catalog, "abundance") <- NULL
+    if (catalog.type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.3bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.3bp.stranded.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.3bp.stranded.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh38
+      }
+    }
   }
 
   if(nrow(catalog) == 1536) {
@@ -691,7 +708,24 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
   }
 
   if(nrow(catalog) == 144) {
-    attr(catalog, "abundance") <- NULL
+    if (catalog.type %in% c("density", "density.signature")) {
+      attr(catalog, "abundance") <- abundance.2bp.flat
+      return(catalog)
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.2bp.stranded.genome.GRCh37
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh37
+      }
+    } else if (ref.genome %in%
+               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+      if (region == "genome") {
+        attr(catalog, "abundance") <- abundance.2bp.stranded.genome.GRCh38
+      } else if (region == "exome") {
+        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh38
+      }
+    }
   }
 
   if(nrow(catalog) == 136) {
