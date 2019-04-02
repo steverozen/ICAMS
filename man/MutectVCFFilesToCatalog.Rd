@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MutectVCFFilesToCatalog}
 \alias{MutectVCFFilesToCatalog}
-\title{Create SNS and DNS catalogs from Mutect VCF files}
+\title{Create SNS, DNS and Indel catalogs from Mutect VCF files}
 \usage{
 MutectVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges,
   region)
@@ -27,8 +27,8 @@ A list of 3 SNS catalogs (one each for 96, 192, and 1536), 3 DNS
   details.
 }
 \description{
-Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-from the Mutect VCFs specified by vector.of.file.paths
+Create 3 SNS catalogs (96, 192, 1536), 3 DNS catalogs (78, 136, 144) and
+Indel catalog from the Mutect VCFs specified by vector.of.file.paths
 }
 \details{
 This function calls \code{\link{VCFsToSNSCatalogs}},

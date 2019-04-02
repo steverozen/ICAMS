@@ -10,10 +10,11 @@ CreateTransRange(path)
 \item{path}{The name/path of the raw GFF3 File, or a complete URL.}
 }
 \value{
-A data frame which contains chromosome name, start, end position,
-  strand information and gene name. Only the following four gene types are
-  kept to facilitate transcriptional strand bias analysis: protein_coding,
-  retained_intron, processed_transcript and nonsense_mediated_decay.
+A data table which contains chromosome name, start, end position,
+  strand information and gene name. It is keyed by chrom, chromStart, and
+  chromEnd. Only the following four gene types are kept to facilitate
+  transcriptional strand bias analysis: protein_coding, retained_intron,
+  processed_transcript and nonsense_mediated_decay.
 }
 \description{
 Create a Transcript Range file from the raw GFF3 File

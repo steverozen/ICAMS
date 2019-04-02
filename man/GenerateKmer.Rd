@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{GenerateKmer}
 \alias{GenerateKmer}
-\title{Generate permuation of k mers}
+\title{Generate all possible k-mers of length k.}
 \usage{
 GenerateKmer(k)
 }
@@ -10,9 +10,9 @@ GenerateKmer(k)
 \item{k}{Length of kmers (k>=2)}
 }
 \value{
-A vector of characters which have all the permuations of k mers
+Character vector containing all possible k-mers.
 }
 \description{
-Generate permuation of k mers
+Generate all possible k-mers of length k.
 }
 \keyword{internal}
