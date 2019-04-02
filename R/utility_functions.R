@@ -795,29 +795,74 @@ GenerateKmer <- function(k) {
   all.kmer.list <- stringi::stri_sort(all.kmer.list)
 }
 
-#' Generate k-mer abundances from a given genome
+#' Generate an empty matrix of k-mer abundance
 #'
 #' @param k Length of k-mers (k>=2)
 #'
-#' @param genome Name of a particular reference genome
-#'   (without quotations marks)
-#'
-#' @param homopolymer.filter Optional. If TRUE, homopolymers will be masked from
-#'   genome(sequence)
-#'
-#' @return Matrix of the counts of each kmer across the genome
+#' @return An empty matrix of k-mer abundance
 #'
 #' @keywords internal
-GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE) {
-
+GenerateEmptyKmerCounts <- function(k) {
   all.kmer.list <- GenerateKmer(k)
+  kmer.counts <- matrix(0, nrow = length(all.kmer.list))
+  rownames(kmer.counts) <- all.kmer.list
+  colnames(kmer.counts) <- "Freq"
+  return(kmer.counts)
+}
+
+#' Generate k-mer abundance from given nucleotide sequences
+#'
+#' @param sequences A vector of nucleotide sequences
+#'
+#' @param k Length of k-mers (k>=2)
+#'
+#' @return Matrix of the counts of each k-mer inside \code{sequences}
+#'
+#' @keywords  internal
+GetSequenceKmerCounts <- function(sequences, k) {
+  kmer.counts <- GenerateEmptyKmerCounts(k)
+
+  for(start_idx in 1:k){
+    temp.seqs <- substring(sequences, start_idx, nchar(sequences))
+    temp.kmers <-
+      stringi::stri_extract_all_regex(
+        temp.seqs, pattern = paste(rep(".", each = k), collapse = ""))
+    temp.kmers <- unlist(temp.kmers)
+    temp.kmer.counts <- data.frame(table(temp.kmers))
+    row.names(temp.kmer.counts) <- temp.kmer.counts[, 1]
+    if (any(grepl("N", temp.kmer.counts[, 1]))) {
+      temp.kmer.counts <- temp.kmer.counts[-grep("N", temp.kmer.counts[, 1]), ]
+    }
+
+    kmer.counts[row.names(temp.kmer.counts), ] <-
+      kmer.counts[row.names(temp.kmer.counts), ]  +
+      temp.kmer.counts$Freq
+  }
+  return(kmer.counts)
+}
+
+#' Generate k-mer abundance from a given genome
+#'
+#' @param k Length of k-mers (k>=2)
+#'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param homopolymer.filter If TRUE, homopolymers will be masked from
+#'   genome(sequence)
+#'
+#' @return Matrix of the counts of each k-mer across the \code{ref.genome}
+#'
+#' @keywords internal
+GetGenomeKmerCounts <- function(k, ref.genome, homopolymer.filter = FALSE) {
+  kmer.counts <- GenerateEmptyKmerCounts(k)
+  genome <- NormalizeGenomeArg(ref.genome)
 
   #Remove decoyed chromosomes and mitochondrial DNA
   chr.list <- seqnames(genome)[which(nchar(seqnames(genome)) <= 5)]
-  chr.list <- chr.list[-grep("M", chr.list)]
-
-  kmer.counts <- data.frame(all.kmer.list, row.names = all.kmer.list)
-  kmer.counts$Freq <- 0
+  if (any(grepl("M", chr.list))) {
+    chr.list <- chr.list[-grep("M", chr.list)]
+  }
 
   print("Start counting by chromosomes")
   for(idx in 1:length(chr.list)){
@@ -834,44 +879,30 @@ GetGenomeKmers <- function(k, genome, homopolymer.filter = FALSE) {
       }
     }
 
-    for(start_idx in 1:k){
-      temp.seq <- substring(genome.seq, start_idx, nchar(genome.seq))
-      temp.kmers <-
-        stringi::stri_extract_all_regex(
-          temp.seq, pattern = paste(rep(".", each = k), collapse = ""))
-
-      temp.kmers.counts <- data.frame(table(temp.kmers))
-      row.names(temp.kmers.counts) <- temp.kmers.counts[, 1]
-
-      temp.kmers.counts <-
-        temp.kmers.counts[-which(grepl("N", temp.kmers.counts[, 1])), ]
-
-      kmer.counts[row.names(temp.kmers.counts),"Freq"] <-
-        kmer.counts[row.names(temp.kmers.counts),"Freq"]  +
-        temp.kmers.counts$Freq
-    }
+  kmer.counts <- kmer.counts + GetSequenceKmerCounts(genome.seq, k)
   }
-  colnames(kmer.counts)[1] <- paste("All.", k, "mers", sep = "")
   return(kmer.counts)
 }
 
-#' Get stranded k-mer abundances from a given genome and gene annotation file
+#' Generate stranded k-mer abundance from a given genome and gene annotation file
 #'
 #' @param k Length of k-mers (k>=2)
 #'
-#' @param genome Name of a particular reference genome
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
 #'
-#' @param homopolymer.filter Optional. If TRUE, homopolymers will be masked from
+#' @param homopolymer.filter If TRUE, homopolymers will be masked from
 #'   genome(sequence)
 #'
 #' @param trans.range A GFF3 trans.range.file
 #'
-#' @return Matrix of the counts of each kmer across the genome
+#' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetStrandedKmers <- function(k, genome, trans.ranges,
-                             homopolymer.filter = FALSE){
-  stranded.ranges <- StandardChromName(trans.ranges) ##necessary?
+GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges,
+                                   homopolymer.filter = FALSE){
+  stranded.ranges <- StandardChromName(trans.ranges)
+  genome <- NormalizeGenomeArg(ref.genome)
 
   # Check if the format of sequence names in stranded.ranges and genome are the same.
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
@@ -884,51 +915,35 @@ GetStrandedKmers <- function(k, genome, trans.ranges,
       stop("Cannot match chromosome names:\n",
            sort(stranded.ranges.chr.names), "\nversus\n", sort(seqnames(genome)))
     }
-
     chr.names <- paste0("chr", stranded.ranges$chrom)
   } else {
     chr.names <- stranded.ranges$chrom
   }
 
-  stranded.ranges <-
-    GenomicRanges::GRanges(
-      seqnames = chr.names,
-      ranges = IRanges::IRanges(start = stranded.ranges$chromStart,
-                                end = stranded.ranges$chromEnd),
-      strand = stranded.ranges$strand)
+  kmer.counts <- GenerateEmptyKmerCounts(k)
 
-  stranded.seqs <- getSeq(genome, stranded.ranges, as.character = TRUE)
+  print("Start counting by chromosomes")
 
-  all.kmer.list <- GenerateKmer(k)
+  for(chr in unique(chr.names)){
+    print(chr)
+    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr,]
+    temp.stranded.ranges <-
+      GenomicRanges::GRanges(
+        seqnames = chr,
+        ranges = IRanges::IRanges(start = temp.stranded.ranges$chromStart,
+                                  end = temp.stranded.ranges$chromEnd),
+        strand = temp.stranded.ranges$strand)
 
-  stranded.kmers.list <- data.frame(all.kmer.list, row.names = all.kmer.list)
-  stranded.kmers.list$Freq <- 0
+    stranded.seqs <- getSeq(genome, temp.stranded.ranges, as.character = TRUE)
 
-  #If homopolymer.filter is TRUE, filtering out homopolymer regions
-  if(homopolymer.filter == TRUE){
-    for(pattern in c("AAAAA+","CCCCC+","GGGGG+","TTTTT+")){
-      stranded.seqs <- gsub(pattern, "N", stranded.seqs)
+    #If homopolymer.filter is TRUE, filtering out homopolymer regions
+    if(homopolymer.filter == TRUE){
+      for(pattern in c("AAAAA+","CCCCC+","GGGGG+","TTTTT+")){
+        stranded.seqs <- gsub(pattern, "N", stranded.seqs)
+      }
     }
+
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seqs, k)
   }
-
-  for(start_idx in 1:k){
-    temp.seqs <- substring(stranded.seqs, start_idx, nchar(stranded.seqs))
-    temp.kmers <-
-      stringi::stri_extract_all_regex(
-        temp.seqs, pattern = paste(rep(".", each = k), collapse = ""))
-
-    temp.kmers <- unlist(temp.kmers)
-    temp.kmers.counts <- data.frame(table(temp.kmers))
-    row.names(temp.kmers.counts) <- temp.kmers.counts[, 1]
-    temp.kmers.counts <-
-      temp.kmers.counts[-which(grepl("N", temp.kmers.counts[, 1])), ]
-
-    stranded.kmers.list[row.names(temp.kmers.counts), "Freq"] <-
-      stranded.kmers.list[row.names(temp.kmers.counts), "Freq"]  +
-      temp.kmers.counts$Freq
-  }
-
-  colnames(stranded.kmers.list)[1] <-  paste("Stranded.", k, "mers", sep = "")
-
-  return(stranded.kmers.list)
+  return(kmer.counts)
 }
