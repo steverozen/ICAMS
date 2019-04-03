@@ -22,25 +22,31 @@
 #' Transcript ranges and strand information for a particular reference genome.
 #'
 #' \code{trans.ranges.GRCh37} A data.table which contains transcript range and
-#' strand information for \strong{Human} GRCh37. It is derived from a raw \strong{GFF3}
-#' format file, from which only the following four gene types are kept to
-#' facilitate transcriptional strand bias analysis: protein_coding,
-#' retained_intron, processed_transcript and nonsense_mediated_decay. It
-#' contains chromosome name, start, end position, strand information and gene
-#' name and is keyed by chrom, chromStart, and chromEnd. It can be used in
-#' function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
+#' strand information for \strong{Human} GRCh37. It is derived from a raw
+#' \strong{GFF3} format file
+#' (https://www.gencodegenes.org/human/release_29lift37.html), from which only
+#' the following four gene types are kept to facilitate transcriptional strand
+#' bias analysis: protein_coding, retained_intron, processed_transcript and
+#' nonsense_mediated_decay. It can be used in function
+#' \code{\link{StrelkaSNSVCFFilesToCatalog}},
+#' \code{\link{MutectVCFFilesToCatalog}}, \code{\link{VCFsToSNSCatalogs}} and
+#' \code{\link{VCFsToDNSCatalogs}}.
 #'
 #' \code{trans.ranges.GRCh38} A data.table which contains transcript range and
-#' strand information for \strong{Human} GRCh38. It is derived from a raw \strong{GFF3}
-#' format file, from which only the following four gene types are kept to
-#' facilitate transcriptional strand bias analysis: protein_coding,
-#' retained_intron, processed_transcript and nonsense_mediated_decay. It
-#' contains chromosome name, start, end position, strand information and gene
-#' name and is keyed by chrom, chromStart, and chromEnd. It can be used in
-#' function \code{\link{StrelkaSNSVCFFilesToCatalog}}.
+#' strand information for \strong{Human} GRCh38. It is derived from a raw
+#' \strong{GFF3} format file
+#' (https://www.gencodegenes.org/human/release_29.html), from which only the
+#' following four gene types are kept to facilitate transcriptional strand bias
+#' analysis: protein_coding, retained_intron, processed_transcript and
+#' nonsense_mediated_decay. It can be used in function
+#' \code{\link{StrelkaSNSVCFFilesToCatalog}},
+#' \code{\link{MutectVCFFilesToCatalog}}, \code{\link{VCFsToSNSCatalogs}} and
+#' \code{\link{VCFsToDNSCatalogs}}.
 #'
 #' @format A data.table which contains transcript range and strand information
-#'   for a particular reference genome.
+#'   for a particular reference genome. It contains chromosome name, start, end
+#'   position, strand information and gene name and is keyed by chrom,
+#'   chromStart, and chromEnd.
 #'
 #' @name TranscriptRanges
 NULL
