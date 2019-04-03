@@ -14,8 +14,9 @@ file paths to the Strelka SNS VCF files.}
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{trans.ranges}{A data.table which contains transcript range and
-strand information.}
+\item{trans.ranges}{A data.table which contains transcript range and strand
+information. Please refer to \code{\link{TranscriptRanges}} for more
+details.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
