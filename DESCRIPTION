@@ -1,8 +1,8 @@
 Package: ICAMS
 Type: Package
 Title: In-depth Characterization and Analysis of Mutational Signatures
-Version: 2.0.0.9002
-Author: Steve Rozen, Nanhai Jiang, Arnoud Boot
+Version: 2.0.0.9003
+Author: Steve Rozen, Nanhai Jiang, Arnoud Boot, Mo Liu
 Maintainer: Steve Rozen <steverozen@gmail.com>
 Description: A toolkit for analysis and visualization of experimentally
     elucidated mutational signatures -- the kind of analysis and visualization
