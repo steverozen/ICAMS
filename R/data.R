@@ -29,7 +29,7 @@
 #' bias analysis: protein_coding, retained_intron, processed_transcript and
 #' nonsense_mediated_decay. It can be used in function
 #' \code{\link{StrelkaSNSVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalog}}, \code{\link{VCFsToSNSCatalogs}} and
+#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
 #' \code{\link{VCFsToDNSCatalogs}}.
 #'
 #' \code{trans.ranges.GRCh38} A data.table which contains transcript range and
@@ -40,7 +40,7 @@
 #' analysis: protein_coding, retained_intron, processed_transcript and
 #' nonsense_mediated_decay. It can be used in function
 #' \code{\link{StrelkaSNSVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalog}}, \code{\link{VCFsToSNSCatalogs}} and
+#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
 #' \code{\link{VCFsToDNSCatalogs}}.
 #'
 #' @format A data.table which contains transcript range and strand information
