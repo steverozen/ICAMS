@@ -338,8 +338,9 @@ AddSequence <- function(df, ref.genome) {
 #'
 #' @param df A data frame storing mutation records of a VCF file.
 #'
-#' @param trans.ranges A data.table with the genomic ranges and
-#'     strands of transcripts.
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
 #'
 #' @import data.table
 #'
@@ -810,7 +811,9 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data frame containing transcript ranges.
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -968,7 +971,9 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data frame containing transcript ranges.
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1035,8 +1040,9 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and
-#'   strand information.
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1098,8 +1104,9 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and
-#'   strand information.
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
