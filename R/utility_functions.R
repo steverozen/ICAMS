@@ -883,28 +883,27 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simplerepeat masking is accepted now.
 #'
+#' @importFrom GenomicRanges GRanges
+#'
+#' @importFrom IRanges IRanges
+#'
 #' @return Matrix of the counts of each k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-#'
-#'
 GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
   genome <- NormalizeGenomeArg(ref.genome)
 
   # Remove decoyed chromosomes and mitochondrial DNA
-  chr.list <- seqnames(genome)[which(nchar(seqnames(genome)) <= 5)]
+  chr.list <- seqnames(genome)[which(nchar(GenomeInfoDb::seqnames(genome)) <= 5)]
   if (any(grepl("M", chr.list))) {
     chr.list <- chr.list[-grep("M", chr.list)]
   }
 
   if (!missing(filter.path)) {
-
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
-
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
-
   }
 
   print("Start counting by chromosomes")
@@ -912,30 +911,21 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   for (idx in 1:length(chr.list)) {
     print(chr.list[idx])
 
-    if (!missing(homopolymer.filter.path)) {
-
-      chr.filter.df <- filter.df[which(filter.df$chrom == chr.list[idx]),
-                                 ]
-
-      filter.bed <- with(chr.filter.df, GenomicRanges::GRanges(V2,
-                                                               GenomicRanges::IRanges(V3 + 1, V4)))
-
-      genome.bed <- GenomicRanges::GRanges(chr.list[idx], IRanges::IRanges(1,
-                                                                           as.numeric(seqlengths(genome)[idx])))
-
+    if (!missing(filter.path)) {
+      chr.filter.df <- filter.df[which(filter.df$chrom == chr.list[idx]), ]
+      filter.bed <-
+        with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      genome.bed <-
+        GRanges(chr.list[idx],
+                IRanges(1, as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
       filtered.genome.bed <- GenomicRanges::setdiff(genome.bed, filter.bed)
-
       genome.seq <- BSgenome::getSeq(genome, filtered.genome.bed,
                                      as.character = TRUE)
-
     } else {
-
       genome.seq <- BSgenome::getSeq(genome, chr.list[idx], as.character = TRUE)
-
     }
 
-    kmer.counts <- kmer.counts + GetSequenceKmerCounts(genome.seq,
-                                                       k)
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(genome.seq, k)
   }
   return(kmer.counts)
 }
@@ -952,11 +942,14 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 #'
 #' @param trans.range A GFF3 trans.range.file
 #'
+#' @importFrom GenomicRanges GRanges
+#'
+#' @importFrom IRanges IRanges
+#'
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
 GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
-
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
@@ -964,39 +957,30 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
     # colnames for singlerepeat only
-
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
   }
 
   print("Start counting by chromosomes")
 
   for (chr in unique(stranded.ranges$chrom)) {
-    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom ==
-                                              chr, ]
+    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
     if (!chr %in% seqnames(genome)) {
       chr <- paste0("chr", chr)
     }
+    print(chr)
 
-    if (!missing(homopolymer.filter.path)) {
-
+    if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$chrom == chr), ]
-
-      filter.bed <- with(chr.filter.df, GenomicRanges::GRanges(V2,
-                                                               IRanges::IRanges(V3 + 1, V4)))
-
-      trans.range.bed <- with(temp.stranded.ranges, GenomicRanges::GRanges(chrom,
-                                                                           IRanges::IRanges(chromStart, chromEnd), strand = strand))
-
-      filtered.trans.range.bed <- GenomicRanges::setdiff(trans.range.bed,
-                                                         filter.bed)
-
+      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      trans.range.bed <-
+        with(temp.stranded.ranges,
+             GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
+      filtered.trans.range.bed <- GenomicRanges::setdiff(trans.range.bed, filter.bed)
       stranded.seq <- BSgenome::getSeq(genome, filtered.trans.range.bed,
                                        as.character = TRUE)
 
     }
-
-    kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq,
-                                                       k)
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq, k)
   }
   return(kmer.counts)
 }
