@@ -87,29 +87,30 @@ Collapse144To78 <- function(catalog) {
 #'
 #' @param target.region One of "genome", "exome".
 #'
-#' @param target.type A character string acting as a catalog type identifier, one of
+#' @param target.catalog.type A character string acting as a catalog type identifier, one of
 #' "counts", "density", "counts.signature", "density.signature".
 #'
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
 #' @export
-TransformCatalog <- function(catalog, target.ref.genome, target.region, target.type) {
+TransformCatalog <- function(catalog, target.ref.genome,
+                             target.region, target.catalog.type) {
   # Some error checking
-  stopifnot(target.type %in% c("counts", "density",
-                               "counts.signature", "density.signature"))
+  stopifnot(target.catalog.type %in% c("counts", "density",
+                                       "counts.signature", "density.signature"))
 
   if (attributes(catalog)$type %in% c("counts.signature", "density.signature") &&
-      !target.type %in% c("counts.signature", "density.signature")) {
+      !target.catalog.type %in% c("counts.signature", "density.signature")) {
     stop("Only a \"counts\" or \"density\" type catalog ",
          "can be transformed to a different type.")
   }
 
   if (attributes(catalog)$type == "density.signature" &&
-      target.type == "density.signature") {
+      target.catalog.type == "density.signature") {
     return(catalog)
   }
 
-  if (attributes(catalog)$type == "density" && target.type == "density") {
+  if (attributes(catalog)$type == "density" && target.catalog.type == "density") {
     return(catalog)
   }
 
@@ -120,28 +121,29 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
 
   if (nrow(catalog) == 192) {
     if (attributes(catalog)$type != "counts" ||
-        target.type %in% c("density", "counts", "density.signature")) {
+        target.catalog.type %in% c("density", "counts", "density.signature")) {
       stop('For SNS 192 catalog, only transformation from "counts" to "counts.signature" ',
            'is implemented at the current stage.\n')
     } else {
       cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-      return(as.catalog(cat, target.ref.genome, target.region, target.type))
+      return(as.catalog(cat, target.ref.genome, target.region, target.catalog.type))
     }
   }
 
   if (nrow(catalog) == 144) {
     if (attributes(catalog)$type != "counts" ||
-        target.type %in% c("density", "counts", "density.signature")) {
+        target.catalog.type %in% c("density", "counts", "density.signature")) {
       stop('For DNS 144 catalog, only transformation from "counts" to "counts.signature" ',
            'is implemented at the current stage.\n')
     } else {
       cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-      return(as.catalog(cat, target.ref.genome, target.region, target.type))
+      return(as.catalog(cat, target.ref.genome, target.region, target.catalog.type))
     }
   }
 
   source.abundance <- attributes(catalog)$abundance
-  cat <- CreateCatalogAbundance(catalog, target.ref.genome, target.region, target.type)
+  cat <- CreateCatalogAbundance(catalog, target.ref.genome,
+                                target.region, target.catalog.type)
   target.abundance <- attributes(cat)$abundance
   stopifnot(names(source.abundance) == names(target.abundance))
 
@@ -167,13 +169,13 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
 
   lapply(names(source.abundance), transform.n.mer)
 
-  if (target.type %in% c("counts.signature", "density.signature")) {
+  if (target.catalog.type %in% c("counts.signature", "density.signature")) {
     out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
     return(as.catalog(out2, target.ref.genome,
-                                  target.region, target.type))
+                      target.region, target.catalog.type))
   } else {
     return(as.catalog(out.catalog, target.ref.genome,
-                                  target.region, target.type))
+                      target.region, target.catalog.type))
   }
 }
 
@@ -667,7 +669,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 
   if(nrow(catalog) == 1536) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat
+      attr(catalog, "abundance") <- abundance.5bp.flat
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
@@ -688,7 +690,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 
   if(nrow(catalog) == 78) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat
+      attr(catalog, "abundance") <- abundance.2bp.flat
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
@@ -730,7 +732,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 
   if(nrow(catalog) == 136) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat
+      attr(catalog, "abundance") <- abundance.4bp.flat
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
