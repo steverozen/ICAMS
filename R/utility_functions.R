@@ -903,7 +903,6 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #' @keywords internal
 GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
-
   genome <- NormalizeGenomeArg(ref.genome)
 
   # Remove decoyed chromosomes and mitochondrial DNA
@@ -914,6 +913,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
+    # colnames for singlerepeat only
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
   }
 
@@ -923,9 +923,8 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
     print(chr.list[idx])
 
     if (!missing(filter.path)) {
-      chr.filter.df <- filter.df[which(filter.df$chrom == chr.list[idx]), ]
-      filter.bed <-
-        with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      chr.filter.df <- filter.df[which(filter.df$V2 == chr.list[idx]), ]
+      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
       genome.bed <-
         GRanges(chr.list[idx],
                 IRanges(1, as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
@@ -965,23 +964,30 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
+  # Check whether chromosome names in stranded.ranges are the same as in ref.genome
+  if (!all(stranded.ranges$chrom %in% seqnames(genome))){
+    stranded.ranges$chrom <- paste0("chr", stranded.ranges$chrom)
+  }
+
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
     # colnames for singlerepeat only
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
   }
 
+  # Check whether chromosome names in filter.df are the same as in ref.genome
+  if (!all(filter.df$V2 %in% seqnames(genome))){
+    filter.df$V2 <- paste0("chr", filter.df$V2)
+  }
+
   print("Start counting by chromosomes")
 
   for (chr in unique(stranded.ranges$chrom)) {
-    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
-    if (!chr %in% seqnames(genome)) {
-      chr <- paste0("chr", chr)
-    }
     print(chr)
+    temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
 
     if (!missing(filter.path)) {
-      chr.filter.df <- filter.df[which(filter.df$chrom == chr), ]
+      chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
       filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
       trans.range.bed <-
         with(temp.stranded.ranges,
