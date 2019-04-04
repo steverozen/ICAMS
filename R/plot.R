@@ -1058,9 +1058,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     counts.per.class <- matrix(df2$x, 10, 1)
     rownames(max.count.per.class) <- df1$Ref
     rownames(counts.per.class) <- df2$Ref
-  }
-
-  if (attributes(catalog)$type == "density") {
+  } else if (attributes(catalog)$type == "density") {
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
@@ -1080,6 +1078,9 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     df4 <- stats::aggregate(df3$rates, by = list(Ref = df3$Ref), FUN = max)
     max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
     rownames(max.rate.per.class) <- df4$Ref
+  } else {
+    stop ('Plotting for DNS136 catlaog with type "', attributes(catalog)$type,
+          '" is not implemented at the current stage.')
   }
 
   DrawImage <- function(mat) {
