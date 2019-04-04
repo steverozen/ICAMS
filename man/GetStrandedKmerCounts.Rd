@@ -4,7 +4,7 @@
 \alias{GetStrandedKmerCounts}
 \title{Generate stranded k-mer abundance from a given genome and gene annotation file}
 \usage{
-GetStrandedKmerCounts(k, ref.genome, trans.ranges, homopolymer.filter.path)
+GetStrandedKmerCounts(k, ref.genome, trans.ranges, filter.path)
 }
 \arguments{
 \item{k}{Length of k-mers (k>=2)}
@@ -12,7 +12,7 @@ GetStrandedKmerCounts(k, ref.genome, trans.ranges, homopolymer.filter.path)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{homopolymer.filter.path}{If given, homopolymers will be masked from
+\item{filter.path}{If given, homopolymers will be masked from
 genome(sequence). Only simplerepeat masking is accepted now.}
 
 \item{trans.range}{A GFF3 trans.range.file}
