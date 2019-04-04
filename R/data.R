@@ -46,7 +46,7 @@
 #' @format A data.table which contains transcript range and strand information
 #'   for a particular reference genome. It contains chromosome name, start, end
 #'   position, strand information and gene name and is keyed by chrom,
-#'   chromStart, and chromEnd.
+#'   chromStart, and chromEnd. It uses one-based coordinate system.
 #'
 #' @name TranscriptRanges
 NULL
