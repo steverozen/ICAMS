@@ -186,9 +186,19 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
 #'
 #' @keywords internal
 StandardChromName <- function(df) {
-  # Is there any row in df whose Chromosome names start with "GL"?
-  if (sum(grepl("^GL", df[[1]])) > 0) {
-    df <- df[-grep("^GL", df[[1]]), ]
+  # Is there any row in df whose Chromosome names have "GL"?
+  if (sum(grepl("GL", df[[1]])) > 0) {
+    df <- df[-grep("GL", df[[1]]), ]
+  }
+
+  # Is there any row in df whose Chromosome names have "KI"?
+  if (sum(grepl("KI", df[[1]])) > 0) {
+    df <- df[-grep("KI", df[[1]]), ]
+  }
+
+  # Is there any row in df whose Chromosome names have "random"?
+  if (sum(grepl("random", df[[1]])) > 0) {
+    df <- df[-grep("random", df[[1]]), ]
   }
 
   # Is there any row in df whose Chromosome names are "Hs37D5"?
@@ -353,30 +363,31 @@ ReadTranscriptRanges <- function(path) {
   return(dt)
 }
 
-#' Read transcript ranges and strands from a bed format file.
+#' Read chromosome and position information from a bed format file.
 #'
-#' This function is mostly for testing purpose, may be removed in the future.
-#'
-#' @param path Path to the file with the transcript information (in bed format).
+#' @param path Path to the file in bed format.
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #'
 #' @keywords internal
-ReadBedTranscriptRanges <- function(path) {
-  names <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand")
-  bed <- utils::read.table(path, col.names = names, as.is = TRUE)
+ReadBedRanges <- function(path) {
+  df <- utils::read.table(path, as.is = TRUE)
+  df1 <- StandardChromName(df[, 1:3])
+  colnames(df1) <- c("chrom", "chromStart", "chromEnd")
 
   # Delete duplicate entries in the BED file
-  bed <- dplyr::distinct(bed, chrom, chromStart, chromEnd, strand, .keep_all = TRUE)
+  df2 <- dplyr::distinct(df1, chrom, chromStart, chromEnd, .keep_all = TRUE)
 
   # Bed file are 0 based start and 1 based end (an oversimplification).
   # We need to add 1L and not 1, otherwise the column turns to a double
   # we get a warning from data.table.
-  bed$chromStart <- bed$chromStart + 1L
+  df2$chromStart <- df2$chromStart + 1L
 
-  bed1 <- data.table(bed)
-  data.table::setkeyv(bed1, c("chrom", "chromStart", "chromEnd"))
-  return(bed1)
+  dt <- data.table(df2)
+  chrOrder <- c((1:22), "X", "Y")
+  dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
+  data.table::setkeyv(dt, c("chrom", "chromStart", "chromEnd"))
+  return(dt)
 }
 
 #' Create trinucleotide abundance
