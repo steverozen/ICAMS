@@ -793,7 +793,8 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
       text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
            adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
-  } else if (attributes(catalog)$type == "signature") {
+  } else if (attributes(catalog)$type %in%
+             c("counts.signature", "density.signature")) {
     # Get ylim
     ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
