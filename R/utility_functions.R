@@ -371,7 +371,7 @@ ReadTranscriptRanges <- function(path) {
 #'
 #' @keywords internal
 ReadBedRanges <- function(path) {
-  df <- utils::read.table(path, as.is = TRUE)
+  df <- data.table::fread(path)
   df1 <- StandardChromName(df[, 1:3])
   colnames(df1) <- c("chrom", "chromStart", "chromEnd")
 
@@ -992,6 +992,68 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 
     }
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq, k)
+  }
+  return(kmer.counts)
+}
+
+#' Generate exome k-mer abundance from a given reference genome
+#'
+#' @param k Length of k-mers (k>=2)
+#'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param exome.range A keyed data table which has exome ranges information.
+#' It has three columns: chrom, chromStart and chromEnd.
+#'
+#' @param filter.path If given, homopolymers will be masked from
+#'   genome(sequence). Only simplerepeat masking is accepted now.
+#'
+#' @importFrom GenomicRanges GRanges
+#'
+#' @importFrom IRanges IRanges
+#'
+#' @return Matrix of the counts of exome k-mer across the \code{ref.genome}
+#'
+#' @keywords internal
+GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
+  exome.ranges <- StandardChromName(exome.ranges)
+  genome <- NormalizeGenomeArg(ref.genome)
+  kmer.counts <- GenerateEmptyKmerCounts(k)
+
+  # Check whether chromosome names in exome.ranges are the same as in ref.genome
+  if (!all(exome.ranges$chrom %in% seqnames(genome))){
+    exome.ranges$chrom <- paste0("chr", exome.ranges$chrom)
+  }
+
+  if (!missing(filter.path)) {
+    filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
+    # colnames for singlerepeat only
+    filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
+  }
+
+  # Check whether chromosome names in filter.df are the same as in ref.genome
+  if (!all(filter.df$V2 %in% seqnames(genome))){
+    filter.df$V2 <- paste0("chr", filter.df$V2)
+  }
+
+  print("Start counting by chromosomes")
+
+  for (chr in unique(exome.ranges$chrom)) {
+    print(chr)
+    temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
+
+    if (!missing(filter.path)) {
+      chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
+      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      exome.range.bed <-
+        with(temp.exome.ranges, GRanges(chrom, IRanges(chromStart, chromEnd)))
+      filtered.exome.range.bed <- GenomicRanges::setdiff(exome.range.bed, filter.bed)
+      exome.seq <- BSgenome::getSeq(genome, filtered.exome.range.bed,
+                                    as.character = TRUE)
+
+    }
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(exome.seq, k)
   }
   return(kmer.counts)
 }
