@@ -35,7 +35,7 @@ Collapse192To96 <- function(catalog) {
 Collapse1536To96 <- function(catalog) {
   dt <- data.table(catalog)
   rn <- rownames(catalog)
-  
+
   # The next gsub replaces the string representing a
   # single-base mutation in pentanucleotide with the corresponding
   # sring for that mutation in a trinucleotide context.
@@ -97,27 +97,27 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
   # Some error checking
   stopifnot(target.type %in% c("counts", "density",
                                "counts.signature", "density.signature"))
-  
+
   if (attributes(catalog)$type %in% c("counts.signature", "density.signature") &&
       !target.type %in% c("counts.signature", "density.signature")) {
     stop("Only a \"counts\" or \"density\" type catalog ",
          "can be transformed to a different type.")
   }
-  
+
   if (attributes(catalog)$type == "density.signature" &&
       target.type == "density.signature") {
     return(catalog)
   }
-  
+
   if (attributes(catalog)$type == "density" && target.type == "density") {
     return(catalog)
   }
-  
+
   if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
     stop("This function can only transform catalogs from the type of ",
          "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
   }
-  
+
   if (nrow(catalog) == 192) {
     if (attributes(catalog)$type != "counts" ||
         target.type %in% c("density", "counts", "density.signature")) {
@@ -128,7 +128,7 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
       return(as.catalog(cat, target.ref.genome, target.region, target.type))
     }
   }
-  
+
   if (nrow(catalog) == 144) {
     if (attributes(catalog)$type != "counts" ||
         target.type %in% c("density", "counts", "density.signature")) {
@@ -139,16 +139,16 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
       return(as.catalog(cat, target.ref.genome, target.region, target.type))
     }
   }
-  
+
   source.abundance <- attributes(catalog)$abundance
   cat <- CreateCatalogAbundance(catalog, target.ref.genome, target.region, target.type)
   target.abundance <- attributes(cat)$abundance
   stopifnot(names(source.abundance) == names(target.abundance))
-  
+
   factor <- target.abundance / source.abundance
   names(factor) <- names(target.abundance)
   out.catalog <- catalog
-  
+
   # CAUTION: this function depends on how mutations are encoded in
   # the row names!
   transform.n.mer <- function(source.n.mer) {
@@ -157,16 +157,16 @@ TransformCatalog <- function(catalog, target.ref.genome, target.region, target.t
     # encoding AACAGT. For DNS78 and DNS144 TGGA represents TG >GA, and the
     # source n-mer is TG. For DNS136, TTGA represents TTGA > TNNA, and the
     # source n-mer is TTGA.
-    
+
     # First, get the rows with the given source.n.mer
     rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
     # Then update those rows using the factor for that source.n.mer
-    
+
     out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
   }
-  
+
   lapply(names(source.abundance), transform.n.mer)
-  
+
   if (target.type %in% c("counts.signature", "density.signature")) {
     out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
     return(as.catalog(out2, target.ref.genome,
@@ -190,20 +190,20 @@ StandardChromName <- function(df) {
   if (sum(grepl("^GL", df[[1]])) > 0) {
     df <- df[-grep("^GL", df[[1]]), ]
   }
-  
+
   # Is there any row in df whose Chromosome names are "Hs37D5"?
   if (sum(grepl("^Hs", df[[1]])) > 0) {
     df <- df[-grep("^Hs", df[[1]]), ]
   }
-  
+
   # Is there any row in df whose Chromosome names contain "M"?
   if (sum(grepl("M", df[[1]])) > 0) {
     df <- df[-grep("M", df[[1]]), ]
   }
-  
+
   # Remove the "chr" character in the Chromosome's name
   df[, 1] <- sub(pattern = "chr", replacement = "", df[[1]])
-  
+
   return(df)
 }
 
@@ -222,12 +222,12 @@ CreateTransRange <- function(path) {
   df <- read.csv(path, header = FALSE, fill = TRUE, nrows = 20)
   # Count the number of comment lines
   n <- sum(grepl("#", df[, 1]))
-  
+
   # Read in the raw GFF3 File while skipping the comment lines
   dt <- data.table::fread(path, header = FALSE, sep = "\t", fill = TRUE, skip = n)
-  
+
   dt1 <- dt[dt$V3 == "gene", ]
-  
+
   # Select out the four gene types for transcriptional strand bias analysis
   idx <-
     grepl("protein_coding", dt1$V9) |
@@ -235,25 +235,25 @@ CreateTransRange <- function(path) {
     grepl("processed_transcript", dt1$V9) |
     grepl("nonsense_mediated_decay", dt1$V9)
   dt2 <- dt1[idx, ]
-  
+
   # Split the 9th column of dt2 according to separator ";" and get a list
   list <- stringi::stri_split_fixed(dt2$V9, ";")
-  
+
   # Extract the character string which contains gene name information
   names <- sapply(list, stringi::stri_subset_fixed, "gene_name")
-  
+
   # Remove the "gene_name" characters
   names <- sub(pattern = "gene_name.", replacement = "", names)
-  
+
   # Remove the quotation marks
   names <- gsub(pattern = '\"', replacement = "", names)
-  
+
   # Remove the whitespace
   dt2$V9 <- gsub(pattern = "\\s", replacement = "", names)
-  
+
   # Select the necessary columns and standardize the chromosome names
   dt3 <- StandardChromName(dt2[, c(1, 4, 5, 7, 9)])
-  
+
   colnames(dt3) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
   chrOrder <-c((1:22), "X", "Y")
   dt3$chrom <- factor(dt3$chrom, chrOrder, ordered = TRUE)
@@ -353,30 +353,31 @@ ReadTranscriptRanges <- function(path) {
   return(dt)
 }
 
-#' Read transcript ranges and strands from a bed format file.
+#' Read chromosome and position information from a bed format file.
 #'
-#' This function is mostly for testing purpose, may be removed in the future.
-#'
-#' @param path Path to the file with the transcript information (in bed format).
+#' @param path Path to the file in bed format
 #'
 #' @return A data.table keyed by chrom, chromStart, and chromEnd.
 #'
 #' @keywords internal
-ReadBedTranscriptRanges <- function(path) {
-  names <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand")
-  bed <- utils::read.table(path, col.names = names, as.is = TRUE)
-  
+ReadBedRanges <- function(path) {
+  df <- utils::read.table(path, as.is = TRUE)
+  df1 <- StandardChromName(df[, 1:3])
+  colnames(df1) <- c("chrom", "chromStart", "chromEnd")
+
   # Delete duplicate entries in the BED file
-  bed <- dplyr::distinct(bed, chrom, chromStart, chromEnd, strand, .keep_all = TRUE)
-  
+  df2 <- dplyr::distinct(df1, chrom, chromStart, chromEnd, .keep_all = TRUE)
+
   # Bed file are 0 based start and 1 based end (an oversimplification).
   # We need to add 1L and not 1, otherwise the column turns to a double
   # we get a warning from data.table.
-  bed$chromStart <- bed$chromStart + 1L
-  
-  bed1 <- data.table(bed)
-  data.table::setkeyv(bed1, c("chrom", "chromStart", "chromEnd"))
-  return(bed1)
+  df2$chromStart <- df2$chromStart + 1L
+
+  dt <- data.table(df2)
+  chrOrder <- c((1:22), "X", "Y")
+  dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
+  data.table::setkeyv(dt, c("chrom", "chromStart", "chromEnd"))
+  return(dt)
 }
 
 #' Create trinucleotide abundance
@@ -622,7 +623,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
          "DNS136", "ID(indel)"',
          'The number of rows of the input catalog is ', nrow(catalog))
   }
-  
+
   if(nrow(catalog) == 96) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
@@ -643,7 +644,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 192) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
@@ -664,7 +665,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 1536) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
@@ -685,7 +686,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 78) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
@@ -706,7 +707,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 144) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.2bp.flat
@@ -727,7 +728,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 136) {
     if (catalog.type %in% c("density", "density.signature")) {
       attr(catalog, "abundance") <- abundance.3bp.flat
@@ -748,11 +749,11 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       }
     }
   }
-  
+
   if(nrow(catalog) == 83) {
     attr(catalog, "abundance") <- NULL
   }
-  
+
   return(catalog)
 }
 
@@ -796,7 +797,7 @@ PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
 #' @export
 as.catalog <- function(catalog, ref.genome, region, catalog.type) {
   ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
-  
+
   if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
     attr(catalog, "ref.genome") <- ref.genome
     attr(catalog, "region") <- region
@@ -853,7 +854,7 @@ GenerateEmptyKmerCounts <- function(k) {
 #' @keywords  internal
 GetSequenceKmerCounts <- function(sequences, k) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
-  
+
   for(start_idx in 1:k){
     temp.seqs <- substring(sequences, start_idx, nchar(sequences))
     temp.kmers <-
@@ -865,7 +866,7 @@ GetSequenceKmerCounts <- function(sequences, k) {
     if (any(grepl("N", temp.kmer.counts[, 1]))) {
       temp.kmer.counts <- temp.kmer.counts[-grep("N", temp.kmer.counts[, 1]), ]
     }
-    
+
     kmer.counts[row.names(temp.kmer.counts), ] <-
       kmer.counts[row.names(temp.kmer.counts), ]  +
       temp.kmer.counts$Freq
@@ -890,51 +891,51 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #'
 GetGenomeKmerCounts <- function(k, ref.genome, homopolymer.filter.path) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
-  
+
   genome <- NormalizeGenomeArg(ref.genome)
-  
+
   #Remove decoyed chromosomes and mitochondrial DNA
   chr.list <- seqnames(genome)[which(nchar(seqnames(genome)) <= 5)]
   if (any(grepl("M", chr.list))){
     chr.list <- chr.list[-grep("M", chr.list)]
   }
-  
+
   if(!missing(homopolymer.filter.path)){
     filter.df <- fread(homopolymer.filter.path,header=F,stringsAsFactors = F)
-    
+
     colnames(filter.df) <- c("bin","chrom","chromStart","chromEnd",
                              "name","period","copyNum","consensusSize",
                              "perMatch","perIndel","score","A","C",
                              "G","T","entropy","Sequence")
-    
+
     filter.df <- StandardChromName(filter.df[,2:ncol(filter.df)])
-    
+
   }
-  
+
   print("Start counting by chromosomes")
-  
+
   for(idx in 1:length(chr.list)){
     print(chr.list[idx])
-    
+
     if(!missing(homopolymer.filter.path)){
-      
+
       chr.filter.df <- filter.df[which(filter.df$chrom==chr.list[idx]),]
-      
-      filter.bed <- with(chr.filter.df,GenomicRanges::GRanges(chrom,GenomicRanges::IRanges(chromStart+1,chromEnd)))
-      
+
+      filter.bed <- with(chr.filter.df,GenomicRanges::GRanges(chrom,IRanges::IRanges(chromStart+1,chromEnd)))
+
       genome.bed <- GenomicRanges::GRanges(chr.list[idx],
-                                           GenomicRanges::IRanges(1,as.numeric(seqlengths(genome)[idx])))
-      
+                                           IRanges::IRanges(1,as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
+
       filtered.genome.bed <- GenomicRanges::setdiff(genome.bed,filter.bed)
-      
+
       genome.seq <- BSgenome::getSeq(genome,filtered.genome.bed,as.character = TRUE)
-      
+
     }else{
-      
+
       genome.seq <- BSgenome::getSeq(genome, chr.list[idx], as.character = TRUE)
-      
+
     }
-    
+
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(genome.seq, k)
   }
   return(kmer.counts)
@@ -956,12 +957,12 @@ GetGenomeKmerCounts <- function(k, ref.genome, homopolymer.filter.path) {
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges,homopolymer.filter.path){
-  
+GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, homopolymer.filter.path){
+
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
-  
+
   if(!missing(homopolymer.filter.path)){
     filter.df <- fread(homopolymer.filter.path,header=F,stringsAsFactors = F)
     #colnames for singlerepeat only
@@ -971,37 +972,34 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges,homopolymer.filter
                              "G","T","entropy","Sequence")
     filter.df <- StandardChromName(filter.df[,2:ncol(filter.df)])
   }
-  
+
   print("Start counting by chromosomes")
-  
+
   for(chr in unique(stranded.ranges$chrom)){
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
     if (!chr %in% seqnames(genome)) {
       chr <- paste0("chr", chr)
-      
+
     }
-    
+    print(chr)
+
     if(!missing(homopolymer.filter.path)){
-      
+
       chr.filter.df <- filter.df[which(filter.df$chrom== chr),]
-      
+
       filter.bed <- with(chr.filter.df
-                         ,GenomicRanges::GRanges(chrom,IRanges(chromStart+1,chromEnd)))
-      
+                         ,GenomicRanges::GRanges(chrom,IRanges::IRanges(chromStart+1,chromEnd)))
+
       trans.range.bed <- with(temp.stranded.ranges,
-                              GenomicRanges::GRanges(chrom,IRanges(chromStart,chromEnd),strand = strand))
-      
+                              GenomicRanges::GRanges(chrom,IRanges::IRanges(chromStart,chromEnd),strand = strand))
+
       filtered.trans.range.bed <- GenomicRanges::setdiff(trans.range.bed,filter.bed)
-      
+
       stranded.seq <- BSgenome::getSeq(genome,filtered.trans.range.bed,as.character = TRUE)
-      
+
     }
-    
-    #stranded.seqs <- stringi::stri_sub(genome.seq, stranded.ranges$chromStart,stranded.ranges$chromEnd)
-    
-    #stranded.seqs[which(stranded.ranges$strand=="-")] <- revc(stranded.seqs[which(stranded.ranges$strand=="-")])
-    
-    kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seqs, k)
+
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq, k)
   }
   return(kmer.counts)
 }
