@@ -4,7 +4,7 @@
 \alias{GetGenomeKmerCounts}
 \title{Generate k-mer abundance from a given genome}
 \usage{
-GetGenomeKmerCounts(k, ref.genome, homopolymer.filter = FALSE)
+GetGenomeKmerCounts(k, ref.genome, homopolymer.filter.path)
 }
 \arguments{
 \item{k}{Length of k-mers (k>=2)}
@@ -12,8 +12,8 @@ GetGenomeKmerCounts(k, ref.genome, homopolymer.filter = FALSE)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{homopolymer.filter}{If TRUE, homopolymers will be masked from
-genome(sequence)}
+\item{homopolymer.filter.path}{If given, homopolymers will be masked from
+genome(sequence). Only simplerepeat masking is accepted now.}
 }
 \value{
 Matrix of the counts of each k-mer across the \code{ref.genome}
