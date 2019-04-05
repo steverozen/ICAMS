@@ -974,12 +974,13 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
+    # Check whether chromosome names in filter.df are the same as in ref.genome
+    if (!all(filter.df$V2 %in% seqnames(genome))){
+      filter.df$V2 <- paste0("chr", filter.df$V2)
+    }
   }
 
-  # Check whether chromosome names in filter.df are the same as in ref.genome
-  if (!all(filter.df$V2 %in% seqnames(genome))){
-    filter.df$V2 <- paste0("chr", filter.df$V2)
-  }
+
 
   print("Start counting by chromosomes")
 
@@ -1041,12 +1042,13 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
+    # Check whether chromosome names in filter.df are the same as in ref.genome
+    if (!all(filter.df$V2 %in% seqnames(genome))){
+      filter.df$V2 <- paste0("chr", filter.df$V2)
+    }
+
   }
 
-  # Check whether chromosome names in filter.df are the same as in ref.genome
-  if (!all(filter.df$V2 %in% seqnames(genome))){
-    filter.df$V2 <- paste0("chr", filter.df$V2)
-  }
 
   print("Start counting by chromosomes")
 
