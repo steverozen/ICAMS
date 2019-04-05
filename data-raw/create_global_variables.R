@@ -1,3 +1,8 @@
+source("data-raw/create_abundance_files.R")
+source("data-raw/create_catalogs.R")
+source("data-raw/create_order_for_DNS136_plotting.R")
+source("data-raw/create_ranges.R")
+
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
@@ -44,5 +49,7 @@ usethis::use_data(to.reorder.SNS.192.for.plotting,
                   abundance.3bp.flat,
                   abundance.4bp.flat,
                   abundance.5bp.flat,
+                  homopolymer.ms.regex.pattern,
                   internal = TRUE,
                   overwrite = TRUE)
+
