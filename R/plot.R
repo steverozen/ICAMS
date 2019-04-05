@@ -945,7 +945,26 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
   } else if (attributes(catalog)$type == "density") {
-    stop('type = "density" not implemented\n')
+    # Get the rate of mutations per million dinucleotides for each major mutation class
+    rate <- cat[, 1] * 1000000
+    rate.strand <- integer(20)
+    for (i in 1 : 10){
+      idx <- c(0, 18, 24, 42, 48, 66, 72, 78, 96, 114, 132)
+      rate.strand[2 * i - 1] <-
+        sum(rate[seq(idx[i] + 1, idx[i + 1], by = 2)])
+      rate.strand[2 * i] <-
+        sum(rate[seq(idx[i] + 2, idx[i + 1], by = 2)])
+    }
+
+    # Get ylim
+    ymax <- max(rate.strand)
+
+    # Barplot: side by side
+    mat <- matrix(rate.strand, nrow = 2, ncol = num.classes / 2)
+    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
+                  width = 0.3, xaxs = "i", yaxs = "i",
+                  axes = FALSE, ann = FALSE, ylab = "mut/million",
+                  border = NA, col = cols, xpd = NA)
   }
 
   # Draw y axis
