@@ -861,11 +861,24 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region
   colnames(catSNS192) <- names(list.of.SNS.vcfs)
   colnames(catSNS1536) <- names(list.of.SNS.vcfs)
 
-  list.of.catalogs <- list(catSNS96 = catSNS96,
-                           catSNS192 = catSNS192,
-                           catSNS1536 = catSNS1536)
-  return(lapply(list.of.catalogs, FUN = as.catalog,
-                ref.genome = ref.genome, region = region, catalog.type = "counts"))
+  catSNS96 <-
+    as.catalog(catSNS96, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
+
+  if (region == "genome") {
+    catSNS192 <-
+      as.catalog(catSNS192, ref.genome = ref.genome,
+                 region = "transcript", catalog.type = "counts")
+  } else if (region == "exome") {
+    catSNS192 <-
+      as.catalog(catSNS192, ref.genome = ref.genome,
+                 region = "exome", catalog.type = "counts")
+  }
+
+  catSNS1536 <-
+    as.catalog(catSNS1536, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
+  return(list(catSNS96 = catSNS96, catSNS192 = catSNS192, catSNS96 = catSNS1536))
 }
 
 #' Create double nucleotide catalog for *one* sample from
