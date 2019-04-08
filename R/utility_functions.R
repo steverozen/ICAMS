@@ -131,17 +131,6 @@ TransformCatalog <-
       }
     }
 
-    if (nrow(catalog) == 144) {
-      if (attributes(catalog)$type != "counts" ||
-          target.catalog.type %in% c("density", "counts", "density.signature")) {
-        stop('For DNS 144 catalog, only transformation from "counts" to "counts.signature" ',
-             'is implemented at the current stage.\n')
-      } else {
-        cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-        return(as.catalog(cat, target.ref.genome, target.region, target.catalog.type))
-      }
-    }
-
     source.abundance <- attributes(catalog)$abundance
     cat <- CreateCatalogAbundance(catalog, target.ref.genome,
                                   target.region, target.catalog.type)
