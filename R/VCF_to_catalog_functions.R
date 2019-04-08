@@ -287,7 +287,9 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @importFrom methods as
+#' @importFrom GenomicRanges GRanges
+#'
+#' @importFrom IRanges IRanges
 #'
 #' @importFrom BSgenome getSeq seqnames
 #'
@@ -322,11 +324,10 @@ AddSequence <- function(df, ref.genome) {
   }
   # Create a GRanges object with the needed width.
   Ranges <-
-    as(data.frame(chrom = chr.names,
-                  start = df$POS - seq.context.width, # 10,
-                  end = df$POS + seq.context.width # 10
-    ),
-    "GRanges")
+    GRanges(chr.names,
+            IRanges(start = df$POS - seq.context.width, # 10,
+                    end = df$POS + seq.context.width) # 10
+    )
 
   # Extract sequence context from the reference genome
   df$seq.21context <- getSeq(ref.genome, Ranges, as.character = TRUE)
@@ -418,7 +419,9 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #'
 #' @import data.table
 #'
-#' @importFrom GenomicRanges reduce
+#' @importFrom GenomicRanges GRanges reduce
+#'
+#' @importFrom IRanges IRanges
 #'
 #' @return A list of 3 in-memory objects with the elements:
 #' \enumerate{
@@ -504,8 +507,7 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   # For ease of testing, keep only the genomic range information.
   non.SNS <- non.SNS[, c("CHROM", "LOW", "HIGH")]
   ranges <-
-    as(data.frame(chrom = non.SNS$CHROM, start = non.SNS$LOW, end = non.SNS$HIGH),
-       "GRanges")
+    GRanges(non.SNS$CHROM, IRanges(start = non.SNS$LOW, end = non.SNS$HIGH))
   rranges <- reduce(ranges) # Merge overlapping ranges
   DNS.plus <- as.data.frame(rranges)
   if ((sum(DNS.plus$width) + num.SNS.out) != num.in) {

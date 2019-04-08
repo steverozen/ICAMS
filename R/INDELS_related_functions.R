@@ -12,7 +12,9 @@
 #' @param flag.mismatches If > 0, if there are mismatches to references, print
 #' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
 #'
-#' @importFrom methods as
+#' @importFrom GenomicRanges GRanges
+#'
+#' @importFrom IRanges IRanges
 #'
 #' @importFrom BSgenome getSeq seqnames
 #'
@@ -77,11 +79,10 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = FALSE) {
   }
   # Create a GRanges object with the needed width.
   Ranges <-
-    as(data.frame(chrom = chr.names,
-                  start = df$POS - df$seq.context.width, # 10,
-                  end = df$POS + var.width.in.genome + df$seq.context.width # 10
-    ),
-    "GRanges")
+    GRanges(chr.names,
+            IRanges(start = df$POS - df$seq.context.width, # 10,
+                    end = df$POS + var.width.in.genome + df$seq.context.width) # 10
+    )
 
   df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
 
