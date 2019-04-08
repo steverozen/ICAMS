@@ -901,6 +901,9 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #'
 #' @importFrom IRanges IRanges
 #'
+#' @note It will take about 30 minutes to generate k-mer abundance for
+#' human reference genome (k <= 5).
+#'
 #' @return Matrix of the counts of each k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
@@ -916,7 +919,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
-    filter.df <- filter.df[filter.df$V6<=6]
+    filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
   }
 
@@ -962,6 +965,9 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 #'
 #' @importFrom IRanges IRanges
 #'
+#' @note It will take about 15 minutes to generate stranded k-mer abundance for
+#'   human reference genome (k <= 5).
+#'
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
@@ -977,15 +983,13 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
-    filter.df <- filter.df[filter.df$V6<=6]
+    filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
     if (!all(filter.df$V2 %in% seqnames(genome))){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
   }
-
-
 
   print("Start counting by chromosomes")
 
@@ -1031,6 +1035,9 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 #'
 #' @importFrom IRanges IRanges
 #'
+#' @note It will take about 1 minute to generate exome k-mer abundance for human
+#'   reference genome (k <= 5).
+#'
 #' @return Matrix of the counts of exome k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
@@ -1046,7 +1053,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
 
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
-    filter.df <- filter.df[filter.df$V6<=6]
+    filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
     if (!all(filter.df$V2 %in% seqnames(genome))){
