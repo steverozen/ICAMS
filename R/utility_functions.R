@@ -415,7 +415,7 @@ CreateTrinucAbundance <- function(path) {
 
 #' Create dinucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 4
+#' @param path Path to the file with the nucleotide abundance information with 2
 #'   base pairs.
 #'
 #' @import data.table
@@ -431,6 +431,27 @@ CreateDinucAbundance <- function(path) {
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   dt$type <-
     ifelse((dt[[1]]) %in% canonical.ref, dt[[1]], revc(dt[[1]]))
+  dt1 <- dt[, .(counts = sum(occurrences)), by = type]
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
+}
+
+#' Create stranded dinucleotide abundance
+#'
+#' @param path Path to the file with the nucleotide abundance information with 2
+#'   base pairs.
+#'
+#' @import data.table
+#'
+#' @return A numeric vector whose names indicate 16 different types of 2 base pairs
+#'   combinations while its values indicate the occurrences of each type.
+#'
+#' @keywords internal
+CreateStrandedDinucAbundance <- function(path) {
+  dt <- fread(path)
+  colnames(dt) <- c("2bp", "occurrences")
+  dt$type <- dt[[1]]
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   abundance <- dt1$counts
   names(abundance) <- dt1$type
