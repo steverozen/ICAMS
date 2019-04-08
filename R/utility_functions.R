@@ -567,9 +567,9 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
          "BSgenome.Hsapiens.UCSC.hg38, ",
          "BSgenome.Hsapiens.1000genomes.hs37d5")
   }
-  if (!region %in% c("genome", "exome", "transcription")) {
+  if (!region %in% c("genome", "exome", "transcript")) {
     stop("Unrecoginzed region identifier: ", region,
-         "\nNeed one of genome, exome, transcription")
+         "\nNeed one of genome, exome, transcript")
   }
   if (!catalog.type %in% c("counts", "density",
                            "counts.signature", "density.signature")) {
