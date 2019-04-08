@@ -884,12 +884,14 @@ catalog.row.order <- list(SNS96 = catalog.row.order.SNS.96,
                           ID = catalog.row.order.ID)
 
 #Create regex pattern for FilterWithHomopolymerMS
-homopolymer.ms.regex.pattern <- c("A","C","G","T",
-                                  "(AC)","(AG)","(AT)","(CA)","(CG)","(CT)",
-                                  "(GA)","(GC)","(GT)","(TA)","(TC)","(TG)")
+homopolymer.ms.regex.pattern <-
+  c("A", "C", "G", "T", "(AC)", "(AG)", "(AT)", "(CA)",
+    "(CG)", "(CT)", "(GA)", "(GC)", "(GT)", "(TA)", "(TC)", "(TG)")
 
-homopolymer.ms.regex.pattern <- unlist(lapply(homopolymer.ms.regex.pattern,function(x){
-  return(paste(paste(rep(x,each=5),collapse=""),"+",sep=""))
-}))
+homopolymer.ms.regex.pattern <-
+  unlist(lapply(homopolymer.ms.regex.pattern, function(x) {
+    return(paste(paste(rep(x, each = 5), collapse = ""), "+", sep = ""))
+  }))
 
-homopolymer.ms.regex.pattern <- paste(homopolymer.ms.regex.pattern,collapse="|")
+homopolymer.ms.regex.pattern <-
+  paste(homopolymer.ms.regex.pattern, collapse = "|")
