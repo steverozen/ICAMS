@@ -24,4 +24,8 @@ Matrix of the counts of exome k-mer across the \code{ref.genome}
 \description{
 Generate exome k-mer abundance from a given reference genome
 }
+\note{
+It will take about 1 minute to generate exome k-mer abundance for human
+  reference genome (k <= 5).
+}
 \keyword{internal}

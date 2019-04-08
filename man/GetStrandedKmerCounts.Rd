@@ -23,4 +23,8 @@ Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 \description{
 Generate stranded k-mer abundance from a given genome and gene annotation file
 }
+\note{
+It will take about 15 minutes to generate stranded k-mer abundance for
+  human reference genome (k <= 5).
+}
 \keyword{internal}

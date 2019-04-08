@@ -5,7 +5,8 @@
 \title{Transform between count and density catalogs
 and signatures.}
 \usage{
-TransformCatalog(catalog, target.ref.genome, target.region, target.type)
+TransformCatalog(catalog, target.ref.genome, target.region,
+  target.catalog.type)
 }
 \arguments{
 \item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
@@ -16,8 +17,9 @@ must \strong{not} be an ID (indel) catalog.}
 
 \item{target.region}{One of "genome", "exome".}
 
-\item{target.type}{A character string acting as a catalog type identifier, one of
-"counts", "density", "counts.signature", "density.signature".}
+\item{target.catalog.type}{A character string acting as a catalog type
+identifier, one of "counts", "density", "counts.signature",
+"density.signature".}
 }
 \value{
 A catalog as defined in \code{\link{ICAMS}}.
