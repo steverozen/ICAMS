@@ -923,7 +923,8 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (attributes(catalog)$type == "signature") {
+  } else if (attributes(catalog)$type %in%
+             c("counts.signature", "density.signature")) {
     # Get the proportion for each major mutation class
     prop <- cat[, 1]
     prop.strand <- integer(20)
