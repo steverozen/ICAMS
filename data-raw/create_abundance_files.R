@@ -14,7 +14,7 @@ abundance.5bp.genome.GRCh37 <-
   CreatePentanucAbundance("data-raw/new_abundance/hs37d5_masked_5bp.csv")
 
 abundance.2bp.stranded.genome.GRCh37 <-
-  CreateDinucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_2bp.csv")
+  CreateStrandedDinucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_2bp.csv")
 abundance.3bp.stranded.genome.GRCh37 <-
   CreateDinucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_3bp.csv")
 abundance.4bp.stranded.genome.GRCh37 <-

@@ -413,6 +413,25 @@ CreateTrinucAbundance <- function(path) {
   return(abundance)
 }
 
+#' Create stranded trinucleotide abundance
+#'
+#' @param path Path to the file with the nucleotide abundance information with 3
+#'   base pairs.
+#'
+#' @return A numeric vector whose names indicate 64 different types of 3 base pairs
+#'   combinations while its values indicate the occurrences of each type.
+#'
+#' @keywords internal
+CreateStrandedTrinucAbundance <- function(path) {
+  dt <- fread(path)
+  colnames(dt) <- c("3bp", "occurrences")
+  dt$type <- dt[[1]]
+  dt1 <- dt[, .(counts = sum(occurrences)), by = type]
+  abundance <- dt1$counts
+  names(abundance) <- dt1$type
+  return(abundance)
+}
+
 #' Create dinucleotide abundance
 #'
 #' @param path Path to the file with the nucleotide abundance information with 2
