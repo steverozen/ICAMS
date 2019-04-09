@@ -294,7 +294,17 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
   } else if (attributes(cat)$type == "density") {
-    stop('type = "density" not implemented\n')
+    # Get the rate of mutations per million trinucleotides
+    rate <- cat[, 1] * 1000000
+
+    # Get ylim
+    ymax <- rate * 1.3
+
+    # Barplot: side by side
+    mat <- matrix(rate, nrow = 2, ncol = num.classes / 2)
+    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
+                  axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
+                  border = NA, col = cols, xpd = NA, ylab = "mut/million")
   }
 
   # Draw lines above each class:
@@ -958,7 +968,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
     }
 
     # Get ylim
-    ymax <- max(rate.strand)
+    ymax <- max(rate.strand) * 1.3
 
     # Barplot: side by side
     mat <- matrix(rate.strand, nrow = 2, ncol = num.classes / 2)
