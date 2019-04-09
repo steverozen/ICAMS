@@ -1436,7 +1436,7 @@ PlotCatalog.IndelCatalog <- function(catalog){
            cex = 0.68, adj = 1, xpd = NA)
     }
 
-  } else if (attributes(catalog)$type == "signature") {
+  } else if (attributes(catalog)$type == "counts.signature") {
     # Get ylim
     ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 

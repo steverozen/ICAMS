@@ -9,4 +9,11 @@ test_that("PlotCatalog.ID function is working properly", {
   cat <- PreserveCatalogAttribute(catalog, cat)
   out <- PlotCatalog(cat)
   expect_equal(out, TRUE)
+
+  cat.counts.signature <- apply(cat, MARGIN = 2, function(x) x / sum(x))
+  cat.counts.signature <-
+    as.catalog(cat.counts.signature, ref.genome = "GRCh37",
+               region = "genome", catalog.type = "counts.signature")
+  out <- PlotCatalog(cat.counts.signature)
+  expect_equal(out, TRUE)
 })
