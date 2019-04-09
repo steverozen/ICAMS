@@ -137,6 +137,15 @@ TransformCatalog <-
     target.abundance <- attributes(cat)$abundance
     stopifnot(names(source.abundance) == names(target.abundance))
 
+    # Check whether any value in source.abundance equals to 0
+    if (any(source.abundance == 0)) {
+      idx1 <- which(source.abundance == 0)
+      idx2 <- which(target.abundance == 0)
+      stopifnot(all(idx1 == idx2))
+      source.abundance[idx1] <- 1
+      target.abundance[idx2] <- 1
+    }
+
     factor <- target.abundance / source.abundance
     names(factor) <- names(target.abundance)
     out.catalog <- catalog
@@ -914,9 +923,6 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #'
 #' @importFrom IRanges IRanges
 #'
-#' @note It will take about 30 minutes to generate k-mer abundance for
-#' human reference genome (k <= 5).
-#'
 #' @return Matrix of the counts of each k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
@@ -977,9 +983,6 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
-#'
-#' @note It will take about 15 minutes to generate stranded k-mer abundance for
-#'   human reference genome (k <= 5).
 #'
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
@@ -1047,9 +1050,6 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
-#'
-#' @note It will take about 1 minute to generate exome k-mer abundance for human
-#'   reference genome (k <= 5).
 #'
 #' @return Matrix of the counts of exome k-mer across the \code{ref.genome}
 #'
