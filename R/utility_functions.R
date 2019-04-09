@@ -120,17 +120,6 @@ TransformCatalog <-
            "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
     }
 
-    if (nrow(catalog) == 192) {
-      if (attributes(catalog)$type != "counts" ||
-          target.catalog.type %in% c("density", "counts", "density.signature")) {
-        stop('For SNS 192 catalog, only transformation from "counts" to "counts.signature" ',
-             'is implemented at the current stage.\n')
-      } else {
-        cat <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-        return(as.catalog(cat, target.ref.genome, target.region, target.catalog.type))
-      }
-    }
-
     source.abundance <- attributes(catalog)$abundance
     cat <- CreateCatalogAbundance(catalog, target.ref.genome,
                                   target.region, target.catalog.type)
@@ -1025,7 +1014,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
       #Filter shorter homopolymer and microsatellites by regex
       stranded.seq <- gsub(homopolymer.ms.regex.pattern, "N",stranded.seq)
 
-    }else{
+    } else {
       stranded.seq <- BSgenome::getSeq(genome, filtered.trans.range.bed,
                                        as.character = TRUE)
     }
@@ -1091,7 +1080,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
       #Filter shorter homopolymer and microsatellites by regex
       exome.seq <- gsub(homopolymer.ms.regex.pattern, "N",exome.seq)
 
-    }else{
+    } else {
       exome.seq <- BSgenome::getSeq(genome, exome.range.bed,
                                     as.character = TRUE)
     }
