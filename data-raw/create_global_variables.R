@@ -1,3 +1,7 @@
+# Source this file from ICAMS top level directory.
+
+cat(getwd(), "\n")
+
 source("data-raw/create_abundance_files.R")
 source("data-raw/create_catalogs.R")
 source("data-raw/create_order_for_DNS136_plotting.R")
