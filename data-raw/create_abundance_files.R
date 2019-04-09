@@ -5,59 +5,59 @@ cat(getwd(), "\n")
 ######################################################################################
 
 abundance.2bp.genome.GRCh37 <-
-  CreateDinucAbundance("data-raw/new_abundance/hs37d5_masked_2bp.csv")
+  CreateDinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_genome_2bp.csv")
 abundance.3bp.genome.GRCh37 <-
-  CreateTrinucAbundance("data-raw/new_abundance/hs37d5_masked_3bp.csv")
+  CreateTrinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_genome_3bp.csv")
 abundance.4bp.genome.GRCh37 <-
-  CreateTetranucAbundance("data-raw/new_abundance/hs37d5_masked_4bp.csv")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/hs37d5_masked_genome_4bp.csv")
 abundance.5bp.genome.GRCh37 <-
-  CreatePentanucAbundance("data-raw/new_abundance/hs37d5_masked_5bp.csv")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/hs37d5_masked_genome_5bp.csv")
 
 abundance.2bp.stranded.GRCh37 <-
-  CreateStrandedDinucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_2bp.csv")
+  CreateStrandedDinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_stranded_2bp.csv")
 abundance.3bp.stranded.GRCh37 <-
-  CreateStrandedTrinucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_3bp.csv")
+  CreateStrandedTrinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_stranded_3bp.csv")
 abundance.4bp.stranded.GRCh37 <-
-  CreateTetranucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_4bp.csv")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/hs37d5_masked_stranded_4bp.csv")
 abundance.5bp.stranded.GRCh37 <-
-  CreatePentanucAbundance("data-raw/new_abundance/hs37d5_masked_stranded_5bp.csv")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/hs37d5_masked_stranded_5bp.csv")
 
 abundance.2bp.exome.GRCh37 <-
-  CreateDinucAbundance("data-raw/nucleotide_abundance/hs37d5_masked_AgilentV6_4bp.txt")
+  CreateDinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_exome_2bp.csv")
 abundance.3bp.exome.GRCh37 <-
-  CreateTrinucAbundance("data-raw/nucleotide_abundance/hs37d5_masked_AgilentV6_3bp.txt")
+  CreateTrinucAbundance("data-raw/new_masked_abundance/hs37d5_masked_exome_3bp.csv")
 abundance.4bp.exome.GRCh37 <-
-  CreateTetranucAbundance("data-raw/nucleotide_abundance/hs37d5_masked_AgilentV6_4bp.txt")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/hs37d5_masked_exome_4bp.csv")
 abundance.5bp.exome.GRCh37 <-
-  CreatePentanucAbundance("data-raw/nucleotide_abundance/hs37d5_masked_AgilentV6_5bp.txt")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/hs37d5_masked_exome_5bp.csv")
 
 #######################################################################################
 abundance.2bp.genome.GRCh38 <-
-  CreateDinucAbundance("data-raw/new_abundance/GRCh38_masked_2bp.csv")
+  CreateDinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_genome_2bp.csv")
 abundance.3bp.genome.GRCh38 <-
-  CreateTrinucAbundance("data-raw/new_abundance/GRCh38_masked_3bp.csv")
+  CreateTrinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_genome_3bp.csv")
 abundance.4bp.genome.GRCh38 <-
-  CreateTetranucAbundance("data-raw/new_abundance/GRCh38_masked_4bp.csv")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/GRCh38_masked_genome_4bp.csv")
 abundance.5bp.genome.GRCh38 <-
-  CreatePentanucAbundance("data-raw/new_abundance/GRCh38_masked_5bp.csv")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/GRCh38_masked_genome_5bp.csv")
 
 abundance.2bp.stranded.GRCh38 <-
-  CreateStrandedDinucAbundance("data-raw/new_abundance/GRCh38_masked_stranded_2bp.csv")
+  CreateStrandedDinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_stranded_2bp.csv")
 abundance.3bp.stranded.GRCh38 <-
-  CreateStrandedTrinucAbundance("data-raw/new_abundance/GRCh38_masked_stranded_3bp.csv")
+  CreateStrandedTrinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_stranded_3bp.csv")
 abundance.4bp.stranded.GRCh38 <-
-  CreateTetranucAbundance("data-raw/new_abundance/GRCh38_masked_stranded_4bp.csv")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/GRCh38_masked_stranded_4bp.csv")
 abundance.5bp.stranded.GRCh38 <-
-  CreatePentanucAbundance("data-raw/new_abundance/GRCh38_masked_stranded_5bp.csv")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/GRCh38_masked_stranded_5bp.csv")
 
 abundance.2bp.exome.GRCh38 <-
-  CreateDinucAbundance("data-raw/nucleotide_abundance/hg38_masked_AgilentV6_4bp.txt")
+  CreateDinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_exome_2bp.csv")
 abundance.3bp.exome.GRCh38 <-
-  CreateTrinucAbundance("data-raw/nucleotide_abundance/hg38_masked_AgilentV6_3bp.txt")
+  CreateTrinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_exome_3bp.csv")
 abundance.4bp.exome.GRCh38 <-
-  CreateTetranucAbundance("data-raw/nucleotide_abundance/hg38_masked_AgilentV6_4bp.txt")
+  CreateTetranucAbundance("data-raw/new_masked_abundance/GRCh38_masked_exome_4bp.csv")
 abundance.5bp.exome.GRCh38 <-
-  CreatePentanucAbundance("data-raw/nucleotide_abundance/hg38_masked_AgilentV6_5bp.txt")
+  CreatePentanucAbundance("data-raw/new_masked_abundance/GRCh38_masked_exome_5bp.csv")
 
 #########################################################################################
 
