@@ -982,7 +982,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
   # Check whether chromosome names in stranded.ranges are the same as in ref.genome
-  if (!all(stranded.ranges$chrom %in% seqnames(genome))){
+  if (!(seqnames(genome)[1] %in% stranded.ranges$chrom)) {
     stranded.ranges$chrom <- paste0("chr", stranded.ranges$chrom)
   }
 
