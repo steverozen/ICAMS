@@ -1049,7 +1049,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
   # Check whether chromosome names in exome.ranges are the same as in ref.genome
-  if (!all(exome.ranges$chrom %in% seqnames(genome))){
+  if (!(seqnames(genome)[1] %in% exome.ranges$chrom)) {
     exome.ranges$chrom <- paste0("chr", exome.ranges$chrom)
   }
 
@@ -1058,7 +1058,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
-    if (!all(filter.df$V2 %in% seqnames(genome))){
+    if (!(seqnames(genome)[1] %in% filter.df$V2)){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
 
