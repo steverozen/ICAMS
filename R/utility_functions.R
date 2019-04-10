@@ -929,6 +929,10 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
     filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
+    # Check whether chromosome names in filter.df are the same as in ref.genome
+    if (!(seqnames(genome)[1] %in% filter.df$V2)){
+      filter.df$V2 <- paste0("chr", filter.df$V2)
+    }
   }
 
   print("Start counting by chromosomes")
