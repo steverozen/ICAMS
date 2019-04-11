@@ -221,37 +221,39 @@ and genome counts -> exome counts.signature", {
 
 })
 
+if (FALSE) {
+  test_that("Error test: transformation of a SNS 192 catalog", {
+    cat <- ReadCatalog("testdata/regress.cat.sns.192.csv",
+                       ref.genome = "GRCh37", region = "genome",
+                       catalog.type = "counts")
 
-test_that("Error test: transformation of a SNS 192 catalog", {
-  cat <- ReadCatalog("testdata/regress.cat.sns.192.csv",
-                     ref.genome = "GRCh37", region = "genome",
-                     catalog.type = "counts")
+    expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
+                                  target.region = "exome",
+                                  target.catalog.type = "counts"))
 
-  expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
-                                target.region = "exome",
-                                target.catalog.type = "counts"))
+    expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
+                                  target.region = "genome",
+                                  target.catalog.type = "density"))
 
-  expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
-                                target.region = "genome",
-                                target.catalog.type = "density"))
+    genome.counts.signature <-
+      TransformCatalog(cat, target.ref.genome = "GRCh37",
+                       target.region = "genome",
+                       target.catalog.type = "counts.signature")
+    out <- rep(1, 4)
+    expect_equal(sum(colSums(genome.counts.signature) == out), 4)
 
-  genome.counts.signature <-
-    TransformCatalog(cat, target.ref.genome = "GRCh37",
-                     target.region = "genome",
-                     target.catalog.type = "counts.signature")
-  out <- rep(1, 4)
-  expect_equal(sum(colSums(genome.counts.signature) == out), 4)
+    expect_error(TransformCatalog(genome.counts.signature,
+                                  target.ref.genome = "GRCh37",
+                                  target.region = "genome",
+                                  target.catalog.type = "density"))
 
-  expect_error(TransformCatalog(genome.counts.signature,
-                                target.ref.genome = "GRCh37",
-                                target.region = "genome",
-                                target.catalog.type = "density"))
+    expect_error(TransformCatalog(genome.counts.signature,
+                                  target.ref.genome = "GRCh37",
+                                  target.region = "genome",
+                                  target.catalog.type = "density.signature"))
+  })
+}
 
-  expect_error(TransformCatalog(genome.counts.signature,
-                                target.ref.genome = "GRCh37",
-                                target.region = "genome",
-                                target.catalog.type = "density.signature"))
-})
 
 if (FALSE) {
   test_that("Transformation of a DNS 144 catalog", {
