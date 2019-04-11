@@ -218,7 +218,7 @@ StandardChromName <- function(df) {
 #'   processed_transcript and nonsense_mediated_decay.
 #'
 #' @keywords internal
-CreateTransRange <- function(path) {
+CreateTransRanges <- function(path) {
   df <- read.csv(path, header = FALSE, fill = TRUE, nrows = 20)
   # Count the number of comment lines
   n <- sum(grepl("#", df[, 1]))
@@ -339,7 +339,7 @@ RevcDNS144 <- function(mutstring) {
   return(paste0(context, target))
 }
 
-#' Read transcript ranges and strands from a gff3 format file.
+#' Read transcript ranges and strand information from a gff3 format file.
 #' Use this one for the new, cut down gff3 file (2018 11 24)
 #'
 #' @param path Path to the file with the transcript information with 1-based
