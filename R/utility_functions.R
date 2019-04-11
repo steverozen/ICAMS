@@ -1072,20 +1072,20 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   for (chr in unique(exome.ranges$chrom)) {
     print(chr)
     temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
-    exome.range.bed <-
+    exome.range.chr <-
       with(temp.exome.ranges, GRanges(chrom, IRanges(chromStart, chromEnd)))
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
-      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
 
-      filtered.exome.range.bed <- GenomicRanges::setdiff(exome.range.bed, filter.bed)
-      exome.seq <- BSgenome::getSeq(genome, filtered.exome.range.bed,
+      filtered.exome.range.chr <- GenomicRanges::setdiff(exome.range.chr, filter.chr)
+      exome.seq <- BSgenome::getSeq(genome, filtered.exome.range.chr,
                                     as.character = TRUE)
       #Filter shorter homopolymer and microsatellites by regex
-      exome.seq <- gsub(homopolymer.ms.regex.pattern, "N",exome.seq)
+      exome.seq <- gsub(homopolymer.ms.regex.pattern, "N", exome.seq)
 
     } else {
-      exome.seq <- BSgenome::getSeq(genome, exome.range.bed,
+      exome.seq <- BSgenome::getSeq(genome, exome.range.chr,
                                     as.character = TRUE)
     }
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(exome.seq, k)
