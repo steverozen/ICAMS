@@ -1005,21 +1005,21 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   for (chr in unique(stranded.ranges$chrom)) {
     print(chr)
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
-    trans.range.bed <-
+    trans.ranges.chr <-
       with(temp.stranded.ranges,
            GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
 
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
-      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
-      filtered.trans.range.bed <- GenomicRanges::setdiff(trans.range.bed, filter.bed)
-      stranded.seq <- BSgenome::getSeq(genome, filtered.trans.range.bed,
+      filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      filtered.trans.ranges.chr <- GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
+      stranded.seq <- BSgenome::getSeq(genome, filtered.trans.ranges.chr,
                                        as.character = TRUE)
-      #Filter shorter homopolymer and microsatellites by regex
-      stranded.seq <- gsub(homopolymer.ms.regex.pattern, "N",stranded.seq)
+      # Filter shorter homopolymer and microsatellites by regex
+      stranded.seq <- gsub(homopolymer.ms.regex.pattern, "N", stranded.seq)
 
     } else {
-      stranded.seq <- BSgenome::getSeq(genome, filtered.trans.range.bed,
+      stranded.seq <- BSgenome::getSeq(genome, trans.ranges.chr,
                                        as.character = TRUE)
     }
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq, k)
