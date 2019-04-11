@@ -837,7 +837,7 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
 
 #' Generate all possible k-mers of length k.
 #'
-#' @param k Length of kmers (k>=2)
+#' @param k Length of k-mers (k>=2)
 #'
 #' @return Character vector containing all possible k-mers.
 #'
@@ -910,7 +910,7 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #'   \code{\link{ICAMS}}.
 #'
 #' @param filter.path If given, homopolymers will be masked from
-#'   genome(sequence). Only simplerepeat masking is accepted now.
+#'   genome(sequence). Only simple repeat masking is accepted now.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -973,7 +973,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 #'   \code{\link{ICAMS}}.
 #'
 #' @param filter.path If given, homopolymers will be masked from
-#'   genome(sequence). Only simplerepeat masking is accepted now.
+#'   genome(sequence). Only simple repeat masking is accepted now.
 #'
 #' @param trans.range A GFF3 trans.range.file
 #'
@@ -1042,7 +1042,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 #' It has three columns: chrom, chromStart and chromEnd.
 #'
 #' @param filter.path If given, homopolymers will be masked from
-#'   genome(sequence). Only simplerepeat masking is accepted now.
+#'   genome(sequence). Only simple repeat masking is accepted now.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
