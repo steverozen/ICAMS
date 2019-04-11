@@ -257,6 +257,10 @@ CreateTransRange <- function(path) {
   colnames(dt3) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
   chrOrder <-c((1:22), "X", "Y")
   dt3$chrom <- factor(dt3$chrom, chrOrder, ordered = TRUE)
+
+  # Remove the duplicated entries
+  dt3 <- unique(dt3)
+
   return(data.table::setkeyv(dt3, c("chrom", "chromStart", "chromEnd")))
 }
 
@@ -1092,5 +1096,3 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
   return(kmer.counts)
 }
-
-
