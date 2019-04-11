@@ -7,7 +7,7 @@
 GenerateKmer(k)
 }
 \arguments{
-\item{k}{Length of kmers (k>=2)}
+\item{k}{Length of k-mers (k>=2)}
 }
 \value{
 Character vector containing all possible k-mers.

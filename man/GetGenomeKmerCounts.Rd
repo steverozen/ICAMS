@@ -13,16 +13,12 @@ GetGenomeKmerCounts(k, ref.genome, filter.path)
 \code{\link{ICAMS}}.}
 
 \item{filter.path}{If given, homopolymers will be masked from
-genome(sequence). Only simplerepeat masking is accepted now.}
+genome(sequence). Only simple repeat masking is accepted now.}
 }
 \value{
 Matrix of the counts of each k-mer across the \code{ref.genome}
 }
 \description{
 Generate k-mer abundance from a given genome
-}
-\note{
-It will take about 30 minutes to generate k-mer abundance for
-human reference genome (k <= 5).
 }
 \keyword{internal}

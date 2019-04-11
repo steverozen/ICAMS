@@ -13,7 +13,7 @@ GetStrandedKmerCounts(k, ref.genome, trans.ranges, filter.path)
 \code{\link{ICAMS}}.}
 
 \item{filter.path}{If given, homopolymers will be masked from
-genome(sequence). Only simplerepeat masking is accepted now.}
+genome(sequence). Only simple repeat masking is accepted now.}
 
 \item{trans.range}{A GFF3 trans.range.file}
 }
@@ -22,9 +22,5 @@ Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 }
 \description{
 Generate stranded k-mer abundance from a given genome and gene annotation file
-}
-\note{
-It will take about 15 minutes to generate stranded k-mer abundance for
-  human reference genome (k <= 5).
 }
 \keyword{internal}

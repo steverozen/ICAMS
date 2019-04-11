@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{ReadTranscriptRanges}
 \alias{ReadTranscriptRanges}
-\title{Read transcript ranges and strands from a gff3 format file.
+\title{Read transcript ranges and strand information from a gff3 format file.
 Use this one for the new, cut down gff3 file (2018 11 24)}
 \usage{
 ReadTranscriptRanges(path)
@@ -15,7 +15,7 @@ start end positions of genomic ranges.}
 A data.table keyed by chrom, chromStart, and chromEnd.
 }
 \description{
-Read transcript ranges and strands from a gff3 format file.
+Read transcript ranges and strand information from a gff3 format file.
 Use this one for the new, cut down gff3 file (2018 11 24)
 }
 \keyword{internal}

@@ -13,7 +13,7 @@ GetExomeKmerCounts(k, ref.genome, exome.ranges, filter.path)
 \code{\link{ICAMS}}.}
 
 \item{filter.path}{If given, homopolymers will be masked from
-genome(sequence). Only simplerepeat masking is accepted now.}
+genome(sequence). Only simple repeat masking is accepted now.}
 
 \item{exome.range}{A keyed data table which has exome ranges information.
 It has three columns: chrom, chromStart and chromEnd.}
@@ -23,9 +23,5 @@ Matrix of the counts of exome k-mer across the \code{ref.genome}
 }
 \description{
 Generate exome k-mer abundance from a given reference genome
-}
-\note{
-It will take about 1 minute to generate exome k-mer abundance for human
-  reference genome (k <= 5).
 }
 \keyword{internal}

@@ -14,8 +14,8 @@ See \code{\link{as.catalog}} for more details.}
 \code{invisible(TRUE)}
 }
 \description{
-Plotthetetranucleotidesequencecontextof10majorDNSmutationtypes("AC>NN",
-"AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN", "TG>NN",
-"TT>NN") for one sample.
+Plot the tetranucleotide sequence context of 10 major DNS mutation
+types("AC>NN", "AT>NN", "CC>NN", "CG>NN", "CT>NN", "GC>NN", "TA>NN", "TC>NN",
+"TG>NN", "TT>NN") for one sample.
 }
 \keyword{internal}
