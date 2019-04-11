@@ -942,15 +942,15 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr.list[idx]), ]
-      filter.bed <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
-      genome.bed <-
+      filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      genome.ranges.chr <-
         GRanges(chr.list[idx],
                 IRanges(1, as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
-      filtered.genome.bed <- GenomicRanges::setdiff(genome.bed, filter.bed)
-      genome.seq <- BSgenome::getSeq(genome, filtered.genome.bed,
+      filtered.genome.ranges.chr <- GenomicRanges::setdiff(genome.ranges.chr, filter.chr)
+      genome.seq <- BSgenome::getSeq(genome, filtered.genome.ranges.chr,
                                      as.character = TRUE)
       #Filter shorter homopolymer and microsatellites by regex
-      genome.seq <- gsub(homopolymer.ms.regex.pattern, "N",genome.seq)
+      genome.seq <- gsub(homopolymer.ms.regex.pattern, "N", genome.seq)
 
     } else {
       genome.seq <- BSgenome::getSeq(genome, chr.list[idx], as.character = TRUE)
