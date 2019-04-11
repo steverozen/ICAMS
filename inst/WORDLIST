@@ -38,9 +38,12 @@ cshlp
 dinucleotide
 DNS
 DNSs
+ebi
 et
 exome
 GATK
+gencode
+Gencode
 GC
 GG
 GGTA
@@ -48,7 +51,9 @@ gff
 GFF
 GRCh
 GRCm
+gz
 hg
+homopolymers
 https
 indel
 indels
