@@ -3,7 +3,7 @@
 cat(getwd(), "\n")
 
 #########################################################################################
-# Code for generating exome k-mer counts
+# Code for generating masked exome k-mer counts
 tmp <- proc.time()
 hs37d5_masked_exome_2bp <-
   GetExomeKmerCounts(k = 2, ref.genome = "hg19",
@@ -78,7 +78,7 @@ write.csv(GRCh38_masked_exome_5bp,
           "data-raw/new_masked_abundance/GRCh38_masked_exome_5bp.csv")
 
 #########################################################################################
-# Code for generating stranded k-mer counts
+# Code for generating masked stranded k-mer counts
 tmp <- proc.time()
 hs37d5_masked_stranded_2bp <-
   GetStrandedKmerCounts(k = 2, ref.genome = "hg19",
@@ -153,7 +153,7 @@ write.csv(GRCh38_masked_stranded_5bp,
           "data-raw/new_masked_abundance/GRCh38_masked_stranded_5bp.csv")
 
 #########################################################################################
-# Code for generating genome k-mer counts
+# Code for generating masked genome k-mer counts
 tmp <- proc.time()
 hs37d5_masked_genome_2bp <-
   GetGenomeKmerCounts(k = 2, ref.genome = "hg19",
