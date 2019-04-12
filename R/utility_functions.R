@@ -1012,12 +1012,15 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
     trans.ranges.chr <-
       with(temp.stranded.ranges,
            GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
-    trans.ranges.chr <- reduce(trans.ranges.chr)
+    trans.ranges.chr <- IRanges::reduce(trans.ranges.chr)
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
-      #Add strand info for SimpleRepeat annotation to keep the strand info after setdiff
-      filter.chr <- c(with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4),strand="+")),
-                      with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4),strand="-")))
+
+      # Add strand info for SimpleRepeat annotation to keep the
+      # strand info after setdiff
+      filter.chr <-
+        c(with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "+")),
+          with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "-")))
       filtered.trans.ranges.chr <- GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
       stranded.seq <- BSgenome::getSeq(genome, filtered.trans.ranges.chr,
                                        as.character = TRUE)
