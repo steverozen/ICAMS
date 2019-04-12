@@ -1015,7 +1015,8 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
-      filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
+      filter.chr <- c(with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4),strand="+")),
+                      with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4),strand="-")))
       filtered.trans.ranges.chr <- GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
       stranded.seq <- BSgenome::getSeq(genome, filtered.trans.ranges.chr,
                                        as.character = TRUE)
