@@ -24,8 +24,12 @@ ReadStrelkaSNSVCF <- function(path) {
   df <- df[!sapply(df, function(x) all(is.na(x)))]
 
   # Delete meta-information lines which start with "##"
-  idx <- grep("^##", df[, 1])
-  df1 <- df[-idx, ]
+  if (any(grepl("^##", df[, 1]))) {
+    idx <- grep("^##", df[, 1])
+    df1 <- df[-idx, ]
+  } else {
+    df1 <- df
+  }
 
   # Extract the names of columns in the VCF file
   names <- c("CHROM", as.character(df1[1, ])[-1])
