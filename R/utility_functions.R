@@ -1012,21 +1012,25 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
     trans.ranges.chr <-
       with(temp.stranded.ranges,
            GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
+
+    # Remove the overlapping ranges in trans.ranges.chr
     trans.ranges.chr <- IRanges::reduce(trans.ranges.chr)
+
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
 
-      # Add strand info for SimpleRepeat annotation to keep the
-      # strand info after setdiff
+      # Add strand information to chr.filter.df because
+      # the setdiff function is strand specific
       filter.chr <-
         c(with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "+")),
           with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "-")))
-      filtered.trans.ranges.chr <- GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
+      filtered.trans.ranges.chr <-
+        GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
+
       stranded.seq <- BSgenome::getSeq(genome, filtered.trans.ranges.chr,
                                        as.character = TRUE)
       # Filter shorter homopolymer and microsatellites by regex
       stranded.seq <- gsub(homopolymer.ms.regex.pattern, "N", stranded.seq)
-
     } else {
       stranded.seq <- BSgenome::getSeq(genome, trans.ranges.chr,
                                        as.character = TRUE)
@@ -1083,11 +1087,15 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
     exome.range.chr <-
       with(temp.exome.ranges, GRanges(chrom, IRanges(chromStart, chromEnd)))
+
+    # Remove the overlapping ranges in exome.range.chr
+    exome.range.chr <- IRanges::reduce(exome.range.chr)
+
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
       filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
-
-      filtered.exome.range.chr <- GenomicRanges::setdiff(exome.range.chr, filter.chr)
+      filtered.exome.range.chr <-
+        GenomicRanges::setdiff(exome.range.chr, filter.chr)
       exome.seq <- BSgenome::getSeq(genome, filtered.exome.range.chr,
                                     as.character = TRUE)
       #Filter shorter homopolymer and microsatellites by regex
