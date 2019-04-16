@@ -800,7 +800,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 PreserveCatalogAttribute <- function(pre.catalog, new.catalog) {
   attr(new.catalog, "ref.genome") <- attributes(pre.catalog)$ref.genome
   attr(new.catalog, "region") <- attributes(pre.catalog)$region
-  attr(new.catalog, "type") <- attributes(pre.catalog)$type
+  attr(new.catalog, "catalog.type") <- attributes(pre.catalog)$catalog.type
   attr(new.catalog, "abundance") <- attributes(pre.catalog)$abundance
   attr(new.catalog, "class") <- attributes(pre.catalog)$class
   return(new.catalog)
