@@ -829,7 +829,7 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
   if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
     attr(catalog, "ref.genome") <- ref.genome
     attr(catalog, "region") <- region
-    attr(catalog, "type") <- catalog.type
+    attr(catalog, "catalog.type") <- catalog.type
     catalog <- CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
     catalog <- CreateCatalogClass(catalog)
   }
