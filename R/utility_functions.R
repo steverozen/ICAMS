@@ -100,18 +100,18 @@ TransformCatalog <-
     stopifnot(target.catalog.type %in% c("counts", "density",
                                          "counts.signature", "density.signature"))
 
-    if (attributes(catalog)$type %in% c("counts.signature", "density.signature") &&
+    if (attributes(catalog)$catalog.type %in% c("counts.signature", "density.signature") &&
         !target.catalog.type %in% c("counts.signature", "density.signature")) {
       stop("Only a \"counts\" or \"density\" type catalog ",
            "can be transformed to a different type.")
     }
 
-    if (attributes(catalog)$type == "density.signature" &&
+    if (attributes(catalog)$catalog.type == "density.signature" &&
         target.catalog.type == "density.signature") {
       return(catalog)
     }
 
-    if (attributes(catalog)$type == "density" && target.catalog.type == "density") {
+    if (attributes(catalog)$catalog.type == "density" && target.catalog.type == "density") {
       return(catalog)
     }
 
