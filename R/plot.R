@@ -99,7 +99,7 @@ PlotCatalog.SNS96Catalog <-
     maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
     num.classes <- length(catalog)
 
-    if (attributes(catalog)$type == "density") {
+    if (attributes(catalog)$catalog.type == "density") {
       # Barplot
       bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
                     xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
@@ -107,7 +107,7 @@ PlotCatalog.SNS96Catalog <-
 
       # Get ylim
       ymax <- max(catalog[, 1] * 1000000)
-    } else if (attributes(catalog)$type == "counts") {
+    } else if (attributes(catalog)$catalog.type == "counts") {
       # Get ylim
       ymax <- max(catalog[, 1])
 
@@ -123,7 +123,7 @@ PlotCatalog.SNS96Catalog <-
         text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
-    } else if (attributes(catalog)$type == "signature") {
+    } else if (attributes(catalog)$catalog.type == "signature") {
       # Get ylim
       ymax <- max(catalog[, 1])
 
@@ -144,7 +144,7 @@ PlotCatalog.SNS96Catalog <-
 
     # Draw y axis
     y.axis.values <- seq(0, ymax, ymax/4)
-    if (attributes(catalog)$type != "counts") {
+    if (attributes(catalog)$catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
       y.axis.labels <- round(y.axis.values, 0)
@@ -275,7 +275,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (attributes(cat)$type == "counts") {
+  if (attributes(cat)$catalog.type == "counts") {
     # Get ylim
     ymax <- max(cat[, 1]) * 1.3
 
@@ -284,7 +284,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
-  } else if (attributes(cat)$type == "signature") {
+  } else if (attributes(cat)$catalog.type == "signature") {
     # Get ylim
     ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
 
@@ -293,7 +293,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "proportion")
-  } else if (attributes(cat)$type == "density") {
+  } else if (attributes(cat)$catalog.type == "density") {
     # Get the rate of mutations per million trinucleotides
     rate <- cat[, 1] * 1000000
 
@@ -332,7 +332,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
 
   # Draw y axis and write mutation counts on top of graph(if applicable)
   y.axis.values <- seq(0, ymax, ymax/4)
-  if (attributes(cat)$type != "counts") {
+  if (attributes(cat)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -424,7 +424,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
   maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (attributes(cat)$type == "counts") {
+  if (attributes(cat)$catalog.type == "counts") {
     # Get the counts for each major mutation class
     counts <- catalog[, 1]
     counts.strand <- integer(12)
@@ -444,7 +444,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (attributes(cat)$type == "signature") {
+  } else if (attributes(cat)$catalog.type == "signature") {
     # Get the proportion for each major mutation class
     prop <- catalog[, 1]
     prop.strand <- integer(12)
@@ -464,13 +464,13 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (attributes(cat)$type == "density") {
+  } else if (attributes(cat)$catalog.type == "density") {
     stop('type = "density" not implemented\n')
   }
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (attributes(cat)$type != "counts") {
+  if (attributes(cat)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -590,11 +590,11 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
   cat1 <-
     stats::aggregate(cat[, 1], by = list(main.types = cat$main.types), FUN = sum)
 
-  if (attributes(catalog)$type == "counts") {
+  if (attributes(catalog)$catalog.type == "counts") {
     # Get the total counts for the six main mutation types
     main.types.counts <- cat1[, 2]
     names(main.types.counts) <- cat1$main.types
-  } else if (attributes(catalog)$type == "signature") {
+  } else if (attributes(catalog)$catalog.type == "signature") {
     # Get the total proportion for the six main mutation types
     main.types.prop <- cat1[, 2]
     names(main.types.prop) <- cat1$main.types
@@ -636,9 +636,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       DrawAxisY()
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type == "counts") {
+      if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type == "signature") {
+      } else if (attributes(catalog)$catalog.type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -650,9 +650,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type == "counts") {
+      if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type == "signature") {
+      } else if (attributes(catalog)$catalog.type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -665,9 +665,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisX()
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type == "counts") {
+      if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type == "signature") {
+      } else if (attributes(catalog)$catalog.type == "signature") {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -681,9 +681,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       DrawImage(sub.rates, col.ref)
       DrawAxisY()
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type  == "counts") {
+      if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type  == "signature") {
+      } else if (attributes(catalog)$catalog.type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -696,9 +696,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type  == "counts") {
+      if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type  == "signature") {
+      } else if (attributes(catalog)$catalog.type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -709,9 +709,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       par(mar = c(6, 1, 0, 1))
       DrawImage(sub.rates, col.ref)
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
-      if (attributes(catalog)$type  == "counts") {
+      if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$type  == "signature") {
+      } else if (attributes(catalog)$catalog.type  == "signature") {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -776,7 +776,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
   maj.class.names <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
-  if (attributes(catalog)$type == "density") {
+  if (attributes(catalog)$catalog.type == "density") {
     # Calculate rate of mutations per million nucleotides for the catalog
     rate <- catalog[, 1] * 1000000
 
@@ -787,7 +787,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
     bp <- barplot(rate, ylim = c(0, ymax), xaxt = "n", yaxt = "n", xaxs = "i",
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million")
-  } else if (attributes(catalog)$type == "counts") {
+  } else if (attributes(catalog)$catalog.type == "counts") {
     # Get ylim
     ymax <- max(catalog[, 1]) * 1.3
 
@@ -803,7 +803,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
       text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
            adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
-  } else if (attributes(catalog)$type %in%
+  } else if (attributes(catalog)$catalog.type %in%
              c("counts.signature", "density.signature")) {
     # Get ylim
     ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
@@ -835,7 +835,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (attributes(catalog)$type != "counts") {
+  if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -912,7 +912,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   cols <- rep(strand.col, num.classes / 2)
 
-  if (attributes(catalog)$type == "counts") {
+  if (attributes(catalog)$catalog.type == "counts") {
     # Get the counts for each major mutation class
     counts <- cat[, 1]
     counts.strand <- integer(20)
@@ -933,7 +933,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
-  } else if (attributes(catalog)$type %in%
+  } else if (attributes(catalog)$catalog.type %in%
              c("counts.signature", "density.signature")) {
     # Get the proportion for each major mutation class
     prop <- cat[, 1]
@@ -955,7 +955,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ann = FALSE, ylab = "proportion",
                   border = NA, col = cols, xpd = NA)
-  } else if (attributes(catalog)$type == "density") {
+  } else if (attributes(catalog)$catalog.type == "density") {
     # Get the rate of mutations per million dinucleotides for each major mutation class
     rate <- cat[, 1] * 1000000
     rate.strand <- integer(20)
@@ -980,7 +980,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, length.out = 5)
-  if (attributes(catalog)$type != "counts") {
+  if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
@@ -1067,7 +1067,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   mut.type <- paste(ref.order, "NN", sep = ">")
 
-  if (attributes(catalog)$type == "counts") {
+  if (attributes(catalog)$catalog.type == "counts") {
     # Calculate the occurrences of each mutation type for plotting
     counts <- matrix(0, nrow = 160, ncol = 1)
     rownames(counts) <- order.for.DNS.136.plotting
@@ -1089,7 +1089,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     counts.per.class <- matrix(df2$x, 10, 1)
     rownames(max.count.per.class) <- df1$Ref
     rownames(counts.per.class) <- df2$Ref
-  } else if (attributes(catalog)$type == "density") {
+  } else if (attributes(catalog)$catalog.type == "density") {
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
@@ -1110,7 +1110,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
     rownames(max.rate.per.class) <- df4$Ref
   } else {
-    stop ('Plotting for DNS136 catlaog with type "', attributes(catalog)$type,
+    stop ('Plotting for DNS136 catlaog with type "', attributes(catalog)$catalog.type,
           '" is not implemented at the current stage.')
   }
 
@@ -1139,15 +1139,15 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
   for (i in 1:10){
     par(mar = c(1, 2, 2, 0))
 
-    if (attributes(catalog)$type == "density") {
+    if (attributes(catalog)$catalog.type == "density") {
       DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
-    } else if (attributes(catalog)$type == "counts") {
+    } else if (attributes(catalog)$catalog.type == "counts") {
       DrawImage(matrix(counts[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
     }
 
     # Draw the mutation type and number of occurrences on top of image
     text(2, 5.2, mut.type[i], font = 2, xpd = NA)
-    if (attributes(catalog)$type == "counts") {
+    if (attributes(catalog)$catalog.type == "counts") {
       text(3.2, 5.2, paste0("(", counts.per.class[ref.order[i], ], ")"), font = 2, xpd = NA)
     }
 
@@ -1170,14 +1170,14 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
   text(x = 0.5, y = 0.9, "Maxima per class", cex = 1.6)
   ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
-  if (attributes(catalog)$type == "density") {
+  if (attributes(catalog)$catalog.type == "density") {
     text(x = 0.5, y = 0.8, "(mut/million)", cex = 1.2)
     maxima <- numeric(0)
     for (i in 1:10) {
       maxima[i] <- max.rate.per.class[ref[i], ]
       names(maxima)[i] <- ref[i]
     }
-  } else if (attributes(catalog)$type == "counts") {
+  } else if (attributes(catalog)$catalog.type == "counts") {
     text(x = 0.5, y = 0.8, "(counts)", cex = 1.2)
     maxima <- numeric(0)
     for (i in 1:10) {
@@ -1244,7 +1244,7 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
   for (i in 1:n) {
     cat <- catalog[, i, drop = FALSE]
 
-    if (attributes(catalog)$type == "counts") {
+    if (attributes(catalog)$catalog.type == "counts") {
       # Calculate the occurrences of each mutation type for plotting
       counts <- matrix(0, nrow = 160, ncol = 1)
       rownames(counts) <- order.for.DNS.136.plotting
@@ -1268,7 +1268,7 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
       rownames(counts.per.class) <- df2$Ref
     }
 
-    if (attributes(catalog)$type == "density") {
+    if (attributes(catalog)$catalog.type == "density") {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
@@ -1314,9 +1314,9 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
 
     for (j in 1:10) {
       par(mar = c(1, 0, 2, 0), pty = "s")
-      if (attributes(catalog)$type == "density") {
+      if (attributes(catalog)$catalog.type == "density") {
         DrawImage(matrix(rates[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
-      } else if (attributes(catalog)$type == "counts") {
+      } else if (attributes(catalog)$catalog.type == "counts") {
         DrawImage(matrix(counts[(16 * (j - 1) + 1) : (16 * j)], 4, 4))
       } else {
         stop('Please specify the correct type: "density" or "counts"')
@@ -1324,7 +1324,7 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
 
       # Draw the mutation type and number of occurrences on top of image
       text(2.3, 5.2, mut.type[j], font = 2, xpd = NA)
-      if (attributes(catalog)$type == "counts") {
+      if (attributes(catalog)$catalog.type == "counts") {
         text(3.5, 5.2, paste0("(", counts.per.class[ref.order[j], ], ")"),
              font = 2, xpd = NA)
 
@@ -1344,14 +1344,14 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
     text(x = 0.5, y = 1.2, "Maxima per class", cex = 1.6, xpd = NA)
     ref <- c("TA", "TC", "TG", "TT", "CC", "CG", "CT", "AC", "AT", "GC")
 
-    if (attributes(catalog)$type == "density") {
+    if (attributes(catalog)$catalog.type == "density") {
       text(x = 0.5, y = 1.07, "(mut/million)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
         maxima[j] <- max.rate.per.class[ref[j], ]
         names(maxima)[j] <- ref[j]
       }
-    } else if (attributes(catalog)$type == "counts") {
+    } else if (attributes(catalog)$catalog.type == "counts") {
       text(x = 0.5, y = 1.07, "(counts)", cex = 1.2, xpd = NA)
       maxima <- numeric(0)
       for (j in 1:10) {
@@ -1421,7 +1421,7 @@ PlotCatalog.IndelCatalog <- function(catalog){
                 6, 6, 6, 6,
                 1, 2, 3, 5))
 
-  if (attributes(catalog)$type == "counts") {
+  if (attributes(catalog)$catalog.type == "counts") {
     # Get ylim
     ymax <- max(catalog) * 1.3
 
@@ -1446,7 +1446,7 @@ PlotCatalog.IndelCatalog <- function(catalog){
            cex = 0.68, adj = 1, xpd = NA)
     }
 
-  } else if (attributes(catalog)$type == "counts.signature") {
+  } else if (attributes(catalog)$catalog.type == "counts.signature") {
     # Get ylim
     ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
 
@@ -1491,7 +1491,7 @@ PlotCatalog.IndelCatalog <- function(catalog){
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
-  if (attributes(catalog)$type != "counts") {
+  if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     text(-9, ymax / 2, labels = "proportion", srt = 90, xpd = NA)
   } else {
