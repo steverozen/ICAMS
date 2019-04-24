@@ -77,6 +77,81 @@ t.GRCh38_masked_exome_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_5bp,
           "data-raw/new_masked_abundance/GRCh38_masked_exome_5bp.csv")
 
+########################################################################################
+# Code for generating masked stranded exome k-mer counts
+tmp <- proc.time()
+hs37d5_masked_stranded_exome_2bp <-
+  GetStrandedKmerCounts(k = 2, ref.genome = "hg19",
+                        trans.ranges = exom.ranges.GRCh37,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
+t.hs37d5_masked_stranded_exome_2bp <- proc.time() - tmp
+write.csv(hs37d5_masked_stranded_exome_2bp,
+          "data-raw/new_masked_abundance/hs37d5_masked_stranded_exome_2bp.csv")
+
+tmp <- proc.time()
+hs37d5_masked_stranded_exome_3bp <-
+  GetStrandedKmerCounts(k = 3, ref.genome = "hg19",
+                        trans.ranges = exom.ranges.GRCh37,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
+t.hs37d5_masked_stranded_exome_3bp <- proc.time() - tmp
+write.csv(hs37d5_masked_stranded_exome_3bp,
+          "data-raw/new_masked_abundance/hs37d5_masked_stranded_exome_3bp.csv")
+
+tmp <- proc.time()
+hs37d5_masked_stranded_exome_4bp <-
+  GetStrandedKmerCounts(k = 4, ref.genome = "hg19",
+                        trans.ranges = exom.ranges.GRCh37,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
+t.hs37d5_masked_stranded_exome_4bp <- proc.time() - tmp
+write.csv(hs37d5_masked_stranded_exome_4bp,
+          "data-raw/new_masked_abundance/hs37d5_masked_stranded_exome_4bp.csv")
+
+tmp <- proc.time()
+hs37d5_masked_stranded_exome_5bp <-
+  GetStrandedKmerCounts(k = 5, ref.genome = "hg19",
+                        trans.ranges = exom.ranges.GRCh37,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
+t.hs37d5_masked_stranded_exome_5bp <- proc.time() - tmp
+write.csv(hs37d5_masked_stranded_exome_5bp,
+          "data-raw/new_masked_abundance/hs37d5_masked_stranded_exome_5bp.csv")
+
+#########################################################################################
+tmp <- proc.time()
+GRCh38_masked_stranded_exome_2bp <-
+  GetStrandedKmerCounts(k = 2, ref.genome = "hg38",
+                        trans.ranges = exom.ranges.GRCh38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
+t.GRCh38_masked_stranded_exome_2bp <- proc.time() - tmp
+write.csv(GRCh38_masked_stranded_exome_2bp,
+          "data-raw/new_masked_abundance/GRCh38_masked_stranded_exome_2bp.csv")
+
+tmp <- proc.time()
+GRCh38_masked_stranded_exome_3bp <-
+  GetStrandedKmerCounts(k = 3, ref.genome = "hg38",
+                        trans.ranges = exom.ranges.GRCh38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
+t.GRCh38_masked_stranded_exome_3bp <- proc.time() - tmp
+write.csv(GRCh38_masked_stranded_exome_3bp,
+          "data-raw/new_masked_abundance/GRCh38_masked_stranded_exome_3bp.csv")
+
+tmp <- proc.time()
+GRCh38_masked_stranded_exome_4bp <-
+  GetStrandedKmerCounts(k = 4, ref.genome = "hg38",
+                        trans.ranges = exom.ranges.GRCh38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
+t.GRCh38_masked_stranded_exome_4bp <- proc.time() - tmp
+write.csv(GRCh38_masked_stranded_exome_4bp,
+          "data-raw/new_masked_abundance/GRCh38_masked_stranded_exome_4bp.csv")
+
+tmp <- proc.time()
+GRCh38_masked_stranded_exome_5bp <-
+  GetStrandedKmerCounts(k = 5, ref.genome = "hg38",
+                        trans.ranges = exom.ranges.GRCh38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
+t.GRCh38_masked_stranded_exome_5bp <- proc.time() - tmp
+write.csv(GRCh38_masked_stranded_exome_5bp,
+          "data-raw/new_masked_abundance/GRCh38_masked_stranded_exome_5bp.csv")
+
 #########################################################################################
 # Code for generating masked stranded k-mer counts
 tmp <- proc.time()
