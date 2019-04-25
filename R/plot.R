@@ -127,7 +127,8 @@ PlotCatalog.SNS96Catalog <-
         text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
-    } else if (attributes(catalog)$catalog.type== c("counts.signature", "density.signature")) {
+    } else if (attributes(catalog)$catalog.type %in%
+               c("counts.signature", "density.signature")) {
       # Get ylim
       ymax <- max(catalog[, 1])
 
@@ -600,7 +601,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
     # Get the total counts for the six main mutation types
     main.types.counts <- cat1[, 2]
     names(main.types.counts) <- cat1$main.types
-  } else if (attributes(catalog)$catalog.type ==  c("counts.signature", "density.signature")) {
+  } else if (attributes(catalog)$catalog.type  %in%
+             c("counts.signature", "density.signature")) {
     # Get the total proportion for the six main mutation types
     main.types.prop <- cat1[, 2]
     names(main.types.prop) <- cat1$main.types
@@ -644,7 +646,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -658,7 +661,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -673,7 +677,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 19, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type == "counts") {
         text(11.5, 19, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -689,7 +694,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -704,7 +710,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
@@ -717,7 +724,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
       text(8.5, 17, main.type, cex = 1.5, xpd = NA)
       if (attributes(catalog)$catalog.type  == "counts") {
         text(11.5, 17, paste0("(N=", main.types.counts[main.type], ")"), xpd = NA)
-      } else if (attributes(catalog)$catalog.type == c("counts.signature", "density.signature")) {
+      } else if (attributes(catalog)$catalog.type %in%
+                 c("counts.signature", "density.signature")) {
         text(11.5, 17,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
