@@ -12,7 +12,8 @@ see also \code{\link{as.catalog}}.}
 
 \item{path}{The path to the file to be created .}
 
-\item{strict}{If TRUE, then fail if additional checks on the input fail.}
+\item{strict}{If TRUE, do additional checks on the input, and stop if the
+checks fail.}
 }
 \description{
 Write a catalog to a file.
