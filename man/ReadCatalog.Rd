@@ -17,7 +17,8 @@ ReadCatalog(path, ref.genome, region, catalog.type, strict = TRUE)
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
 
-\item{strict}{If TRUE, then stop if additional checks on the input fail.}
+\item{strict}{If TRUE, do additional checks on the input, and stop if the
+checks fail.}
 }
 \value{
 A catalog in standard in-memory format with attributes added.

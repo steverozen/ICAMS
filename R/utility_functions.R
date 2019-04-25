@@ -924,7 +924,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   genome <- NormalizeGenomeArg(ref.genome)
 
   # Remove decoyed chromosomes and mitochondrial DNA
-  chr.list <- seqnames(genome)[which(nchar(GenomeInfoDb::seqnames(genome)) <= 5)]
+  chr.list <- seqnames(genome)[which(nchar(seqnames(genome)) <= 5)]
   if (any(grepl("M", chr.list))) {
     chr.list <- chr.list[-grep("M", chr.list)]
   }
@@ -949,7 +949,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
       filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
       genome.ranges.chr <-
         GRanges(chr.list[idx],
-                IRanges(1, as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
+                IRanges(1, as.numeric(seqlengths(genome)[idx])))
       filtered.genome.ranges.chr <- GenomicRanges::setdiff(genome.ranges.chr, filter.chr)
       genome.seq <- BSgenome::getSeq(genome, filtered.genome.ranges.chr,
                                      as.character = TRUE)

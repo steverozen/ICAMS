@@ -2,9 +2,36 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
+\alias{PlotCatalogToPdf.SNS96Catalog}
+\alias{PlotCatalogToPdf.SNS192Catalog}
+\alias{PlotCatalogToPdf.SNSClassStrandBias}
+\alias{PlotCatalogToPdf.SNS1536Catalog}
+\alias{PlotCatalogToPdf.DNS78Catalog}
+\alias{PlotCatalogToPdf.DNSClassStrandBias}
+\alias{PlotCatalogToPdf.DNS136Catalog}
+\alias{PlotCatalogToPdf.IndelCatalog}
 \title{Plot catalogs to a PDF file.}
 \usage{
 PlotCatalogToPdf(catalog, filename, strandbias = FALSE, ...)
+
+\method{PlotCatalogToPdf}{SNS96Catalog}(catalog, filename, grid = TRUE,
+  upper = TRUE, xlabels = TRUE)
+
+\method{PlotCatalogToPdf}{SNS192Catalog}(catalog, filename)
+
+\method{PlotCatalogToPdf}{SNSClassStrandBias}(catalog, filename,
+  strandbias = TRUE)
+
+\method{PlotCatalogToPdf}{SNS1536Catalog}(catalog, filename)
+
+\method{PlotCatalogToPdf}{DNS78Catalog}(catalog, filename)
+
+\method{PlotCatalogToPdf}{DNSClassStrandBias}(catalog, filename,
+  strandbias = TRUE, cex = 1)
+
+\method{PlotCatalogToPdf}{DNS136Catalog}(catalog, filename)
+
+\method{PlotCatalogToPdf}{IndelCatalog}(catalog, filename)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
@@ -16,11 +43,16 @@ See \code{\link{as.catalog}} for more details.}
 catalog. Leave out this parameter if you don't intend to plot strand bias
 graph.}
 
-\item{...}{Arguments to be passed to methods.}
+\item{...}{Additional arguments to be passed to methods.}
 }
 \value{
 \code{invisible(TRUE)}
 }
 \description{
 Plot catalogs to a PDF file.
+}
+\note{
+The sizes of repeats involved in deletions range from 0 to 5+ in the
+  catalog rownames, but for plotting and end user documentation they ranges
+  from 1 to 6+.
 }

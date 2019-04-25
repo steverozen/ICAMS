@@ -2,9 +2,36 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
+\alias{PlotCatalog.SNS96Catalog}
+\alias{PlotCatalog.SNS192Catalog}
+\alias{PlotCatalog.SNSClassStrandBias}
+\alias{PlotCatalog.SNS1536Catalog}
+\alias{PlotCatalog.DNS78Catalog}
+\alias{PlotCatalog.DNSClassStrandBias}
+\alias{PlotCatalog.DNS136Catalog}
+\alias{PlotCatalog.IndelCatalog}
 \title{Plot \strong{one} spectrum or signature.}
 \usage{
 PlotCatalog(catalog, strandbias = FALSE, ...)
+
+\method{PlotCatalog}{SNS96Catalog}(catalog, cex = 0.8, grid = TRUE,
+  upper = TRUE, xlabels = TRUE)
+
+\method{PlotCatalog}{SNS192Catalog}(catalog, cex = 0.8)
+
+\method{PlotCatalog}{SNSClassStrandBias}(catalog, strandbias = TRUE,
+  cex = 1)
+
+\method{PlotCatalog}{SNS1536Catalog}(catalog)
+
+\method{PlotCatalog}{DNS78Catalog}(catalog)
+
+\method{PlotCatalog}{DNSClassStrandBias}(catalog, strandbias = TRUE,
+  cex = 1)
+
+\method{PlotCatalog}{DNS136Catalog}(catalog)
+
+\method{PlotCatalog}{IndelCatalog}(catalog)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
@@ -14,11 +41,16 @@ See \code{\link{as.catalog}} for more details.}
 catalog. Leave out this parameter if you don't intend to plot strand bias
 graph.}
 
-\item{...}{Arguments to be passed to methods.}
+\item{...}{Additional arguments to be passed to methods.}
 }
 \value{
 \code{invisible(TRUE)}
 }
 \description{
 Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
+}
+\note{
+The sizes of repeats involved in deletions range from 0 to 5+ in the
+  catalog rownames, but for plotting and end user documentation they ranges
+  from 1 to 6+.
 }
