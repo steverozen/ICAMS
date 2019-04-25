@@ -13,6 +13,8 @@
 #'
 #' @return \code{invisible(TRUE)}
 #'
+#' @export
+#'
 #' @name PlotCatalog
 PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
   type.of.plot <- character()
@@ -43,6 +45,8 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @param ... Arguments to be passed to methods.
 #'
 #' @return \code{invisible(TRUE)}
+#'
+#' @export
 #'
 #' @name PlotCatalogToPdf
 PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
