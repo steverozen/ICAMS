@@ -370,7 +370,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
   if (attributes(cat)$catalog.type == "counts") {
     # Get the counts for each major mutation class
-    counts <- catalog[, 1]
+    counts <- cat[, 1]
     counts.strand <- integer(12)
     for (i in 1 : 6){
       counts.strand[2 * i - 1] <-
@@ -391,7 +391,7 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
   } else if (attributes(cat)$catalog.type %in%
              c("counts.signature", "density.signature")) {
     # Get the proportion for each major mutation class
-    prop <- catalog[, 1]
+    prop <- cat[, 1]
     prop.strand <- integer(12)
     for (i in 1 : 6){
       prop.strand[2 * i - 1] <-
