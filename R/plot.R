@@ -284,7 +284,8 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                   axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
-  } else if (attributes(cat)$catalog.type == "signature") {
+  } else if (attributes(cat)$catalog.type %in%
+             c("counts.signature", "density.signature")) {
     # Get ylim
     ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
 
