@@ -14,7 +14,8 @@
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
 #'
-#' @param strict If TRUE, then stop if additional checks on the input fail.
+#' @param strict If TRUE, do additional checks on the input, and stop if the
+#'   checks fail.
 #'
 #' @return A catalog in standard in-memory format with attributes added.
 #' See \code{\link{as.catalog}} for more details.
@@ -42,7 +43,8 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #'
 #' @param path The path to the file to be created .
 #'
-#' @param strict If TRUE, then fail if additional checks on the input fail.
+#' @param strict If TRUE, do additional checks on the input, and stop if the
+#'   checks fail.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -53,6 +55,7 @@ WriteCatalog <- function(catalog, path, strict = TRUE) {
   UseMethod(generic = "WriteCatalog")
 }
 
+#' @export
 ReadCatalog.SNS96 <- function(path, ref.genome, region,
                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -76,6 +79,7 @@ ReadCatalog.SNS96 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.SNS192 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -110,6 +114,7 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.SNS1536 <- function(path, ref.genome, region,
                                 catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -133,6 +138,7 @@ ReadCatalog.SNS1536 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.DNS78 <- function(path, ref.genome, region,
                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -179,6 +185,7 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.DNS144 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -198,6 +205,7 @@ ReadCatalog.DNS144 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.DNS136 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -216,6 +224,7 @@ ReadCatalog.DNS136 <- function(path, ref.genome, region,
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @export
 ReadCatalog.ID <- function(path, ref.genome, region,
                            catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
@@ -267,36 +276,43 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
   fwrite(cbind(row.header, DT), file = path)
 }
 
+#' @export
 WriteCatalog.SNS96Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SNS96,
            catalog.row.headers.SNS.96, strict)
 }
 
+#' @export
 WriteCatalog.SNS192Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SNS192,
            catalog.row.headers.SNS.192, strict)
 }
 
+#' @export
 WriteCatalog.SNS1536Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SNS1536,
            catalog.row.headers.SNS.1536, strict)
 }
 
+#' @export
 WriteCatalog.DNS78Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DNS78,
            catalog.row.headers.DNS.78, strict)
 }
 
+#' @export
 WriteCatalog.DNS144Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DNS144,
            catalog.row.headers.DNS.144, strict)
 }
 
+#' @export
 WriteCatalog.DNS136Catalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DNS136,
            catalog.row.headers.DNS.136, strict)
 }
 
+#' @export
 WriteCatalog.IndelCatalog <- function(catalog, path, strict = TRUE) {
   WriteCat(catalog, path, 83, ICAMS::catalog.row.order$ID,
            catalog.row.headers.ID, strict)
