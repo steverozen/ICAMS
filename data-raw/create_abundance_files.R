@@ -31,6 +31,10 @@ abundance.4bp.exome.GRCh37 <-
 abundance.5bp.exome.GRCh37 <-
   CreatePentanucAbundance("data-raw/new_masked_abundance/hs37d5_masked_exome_5bp.csv")
 
+abundance.3bp.transcript.unstranded.GRCh37 <-
+  Collapse192AbundanceTo96(abundance.3bp.stranded.GRCh37)
+abundance.2bp.transcript.unstranded.GRCh37 <-
+  Collapse144AbundanceTo78(abundance.2bp.stranded.GRCh37)
 #######################################################################################
 abundance.2bp.genome.GRCh38 <-
   CreateDinucAbundance("data-raw/new_masked_abundance/GRCh38_masked_genome_2bp.csv")
@@ -59,6 +63,10 @@ abundance.4bp.exome.GRCh38 <-
 abundance.5bp.exome.GRCh38 <-
   CreatePentanucAbundance("data-raw/new_masked_abundance/GRCh38_masked_exome_5bp.csv")
 
+abundance.3bp.transcript.unstranded.GRCh38 <-
+  Collapse192AbundanceTo96(abundance.3bp.stranded.GRCh38)
+abundance.2bp.transcript.unstranded.GRCh38 <-
+  Collapse144AbundanceTo78(abundance.2bp.stranded.GRCh38)
 #########################################################################################
 
 abundance.2bp.flat <- rep(1, length(abundance.2bp.genome.GRCh37))
