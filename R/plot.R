@@ -763,22 +763,21 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS78Catalog <-
-  function(catalog, filename) {
-    # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+PlotCatalogToPdf.DNS78Catalog <- function(catalog, filename) {
+  # Setting the width and length for A4 size plotting
+  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-    n <- ncol(catalog)
-    graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
+  n <- ncol(catalog)
+  graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
 
-    for (i in 1 : n) {
-      cat <- catalog[, i, drop = FALSE]
-      cat <- PreserveCatalogAttribute(catalog, cat)
-      PlotCatalog(cat)
-    }
-    invisible(grDevices::dev.off())
-    invisible(TRUE)
+  for (i in 1 : n) {
+    cat <- catalog[, i, drop = FALSE]
+    cat <- PreserveCatalogAttribute(catalog, cat)
+    PlotCatalog(cat)
   }
+  invisible(grDevices::dev.off())
+  invisible(TRUE)
+}
 
 #' @rdname PlotCatalog
 #' @export
@@ -904,7 +903,7 @@ PlotCatalogToPdf.DNSClassStrandBias <-
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       cat <- PreserveCatalogAttribute(catalog, cat)
-      PlotCatalog(cat)
+      PlotCatalog(cat, cex = cex)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
