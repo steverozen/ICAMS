@@ -6,7 +6,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
   colnames(catalog) <- paste0("HepG2_", 1 : 4)
   out <- PlotCatalogToPdf(catalog,
                           filename = "PlotDNSClassStrandBias.test.pdf",
-                          strandbias = TRUE)
+                          cex = 1)
   expect_equal(out, TRUE)
   unlink("PlotDNSClassStrandBias.test.pdf")
   graphics.off()
