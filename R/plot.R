@@ -205,7 +205,7 @@ PlotCatalogToPdf.SNS96Catalog <-
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       cat <- PreserveCatalogAttribute(catalog, cat)
-      PlotCatalog(cat)
+      PlotCatalog(cat, grid = grid, upper = upper, xlabels = xlabels)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
