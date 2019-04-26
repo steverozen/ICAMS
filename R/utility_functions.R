@@ -708,6 +708,8 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
         attr(catalog, "abundance") <- abundance.3bp.genome.GRCh37
       } else if (region == "exome") {
         attr(catalog, "abundance") <- abundance.3bp.exome.GRCh37
+      } else if (region == "transcript") {
+        attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
@@ -715,6 +717,8 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
         attr(catalog, "abundance") <- abundance.3bp.genome.GRCh38
       } else if (region == "exome") {
         attr(catalog, "abundance") <- abundance.3bp.exome.GRCh38
+      } else if (region == "transcript") {
+        attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh38
       }
     }
   }
@@ -763,6 +767,8 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
         attr(catalog, "abundance") <- abundance.2bp.genome.GRCh37
       } else if (region == "exome") {
         attr(catalog, "abundance") <- abundance.2bp.exome.GRCh37
+      } else if (region == "transcript") {
+        attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
@@ -770,6 +776,8 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
         attr(catalog, "abundance") <- abundance.2bp.genome.GRCh38
       } else if (region == "exome") {
         attr(catalog, "abundance") <- abundance.2bp.exome.GRCh38
+      } else if (region == "transcript") {
+        attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh38
       }
     }
   }
