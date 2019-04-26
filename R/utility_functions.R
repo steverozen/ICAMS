@@ -85,6 +85,17 @@ Collapse144CatalogTo78 <- function(catalog) {
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
   mat78 <- mat78[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
+
+  attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
+  attr(mat78, "region") <- attributes(catalog)$region
+  attr(mat78, "catalog.type") <- attributes(catalog)$catalog.type
+  cat78 <-
+    CreateCatalogAbundance(mat78,
+                           ref.genome = attributes(catalog)$ref.genome,
+                           region = attributes(catalog)$region,
+                           catalog.type = attributes(catalog)$catalog.type)
+  cat78 <- CreateCatalogClass(cat78)
+  return(cat78)
 }
 
 #' @keywords internal
