@@ -3,13 +3,13 @@
 #' "Collapse" a catalog. Do not use this function for
 #' signature catalogs.
 #'
-#' \code{Collapse192To96} Collapse an SNS 192 catalog
+#' \code{Collapse192CatalogTo96} Collapse an SNS 192 catalog
 #' to an SNS 96 catalog.
 #'
-#' \code{Collapse1536To96} Collapse an SNS 1536 catalog
+#' \code{Collapse1536CatalogTo96} Collapse an SNS 1536 catalog
 #'  to an SNS 96 catalog.
 #'
-#' \code{Collapse144To78} Collapse a DNS 144 catalog
+#' \code{Collapse144CatalogTo78} Collapse a DNS 144 catalog
 #' to a DNS 78 catalog.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
@@ -21,13 +21,24 @@ NULL
 
 #' @rdname CollapseCatalog
 #' @export
-Collapse192To96 <- function(catalog) {
+Collapse192CatalogTo96 <- function(catalog) {
   dt192 <- data.table(catalog)
   dt192$rn <- PyrTri(rownames(catalog))
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
+
+  attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
+  attr(mat96, "region") <- attributes(catalog)$region
+  attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
+  cat96 <-
+    CreateCatalogAbundance(mat96,
+                           ref.genome = attributes(catalog)$ref.genome,
+                           region = attributes(catalog)$region,
+                           catalog.type = attributes(catalog)$catalog.type)
+  cat96 <- CreateCatalogClass(cat96)
+  return(cat96)
 }
 
 #' @keywords internal
@@ -49,7 +60,7 @@ Collapse192AbundanceTo96 <- function(abundance192) {
 
 #' @rdname CollapseCatalog
 #' @export
-Collapse1536To96 <- function(catalog) {
+Collapse1536CatalogTo96 <- function(catalog) {
   dt <- data.table(catalog)
   rn <- rownames(catalog)
 
@@ -65,7 +76,7 @@ Collapse1536To96 <- function(catalog) {
 
 #' @rdname CollapseCatalog
 #' @export
-Collapse144To78 <- function(catalog) {
+Collapse144CatalogTo78 <- function(catalog) {
   dt144 <- data.table(catalog)
   ref <- substr(rownames(catalog), 1, 2)
   alt <- substr(rownames(catalog), 3, 4)
