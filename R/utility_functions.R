@@ -30,6 +30,23 @@ Collapse192To96 <- function(catalog) {
   mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
 }
 
+#' @keywords internal
+Collapse192AbundanceTo96 <- function(abundance192) {
+  PyrTri <- function(string) {
+    stopifnot(nchar(string) == rep(3, length(string)))
+    output <-
+      ifelse(substr(string, 2, 2) %in% c("A", "G"), revc(string), string)
+    return(output)
+  }
+  dt <- data.table(abundance192)
+  rownames(dt) <- names(abundance192)
+  dt$rn <- PyrTri(rownames(dt))
+  dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
+  abundance96 <- unlist(dt1[, -1])
+  names(abundance96) <- dt1$rn
+  return(abundance96)
+}
+
 #' @rdname CollapseCatalog
 #' @export
 Collapse1536To96 <- function(catalog) {
