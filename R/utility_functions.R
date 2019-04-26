@@ -76,6 +76,19 @@ Collapse144To78 <- function(catalog) {
   mat78 <- mat78[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
 }
 
+#' @keywords internal
+Collapse144AbundanceTo78 <- function(abundance144) {
+  canonical.ref <-
+    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
+  dt <- data.table(abundance144)
+  rownames(dt) <- names(abundance144)
+  dt$rn <- ifelse(rownames(dt) %in% canonical.ref, rownames(dt), revc(rownames(dt)))
+  dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
+  abundance78 <- unlist(dt1[, -1])
+  names(abundance78) <- dt1$rn
+  return(abundance78)
+}
+
 #' Transform between count and density catalogs
 #' and signatures.
 #'
