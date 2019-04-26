@@ -2,16 +2,16 @@
 % Please edit documentation in R/utility_functions.R
 \name{CollapseCatalog}
 \alias{CollapseCatalog}
-\alias{Collapse192To96}
-\alias{Collapse1536To96}
-\alias{Collapse144To78}
+\alias{Collapse192CatalogTo96}
+\alias{Collapse1536CatalogTo96}
+\alias{Collapse144CatalogTo78}
 \title{"Collapse" a catalog.}
 \usage{
-Collapse192To96(catalog)
+Collapse192CatalogTo96(catalog)
 
-Collapse1536To96(catalog)
+Collapse1536CatalogTo96(catalog)
 
-Collapse144To78(catalog)
+Collapse144CatalogTo78(catalog)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
@@ -24,12 +24,12 @@ A catalog as defined in \code{\link{ICAMS}}.
 signature catalogs.
 }
 \details{
-\code{Collapse192To96} Collapse an SNS 192 catalog
+\code{Collapse192CatalogTo96} Collapse an SNS 192 catalog
 to an SNS 96 catalog.
 
-\code{Collapse1536To96} Collapse an SNS 1536 catalog
+\code{Collapse1536CatalogTo96} Collapse an SNS 1536 catalog
  to an SNS 96 catalog.
 
-\code{Collapse144To78} Collapse a DNS 144 catalog
+\code{Collapse144CatalogTo78} Collapse a DNS 144 catalog
 to a DNS 78 catalog.
 }
