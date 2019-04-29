@@ -1,0 +1,2 @@
+#tax_id	ncbi_release_number	ensembl_release_number	assembly_name	assembly_id	ccds_release_number	date_made_public
+9606	105	74	GRCh37.p13	GCF_000001405.25	15	20131129
