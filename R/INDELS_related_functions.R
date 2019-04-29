@@ -622,6 +622,13 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @keywords internal
 CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
+  if (nrow(ID.vcf) == 0) {
+    # Create 1-column matrix with all values being 0 and the correct row labels.
+    catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
+    rownames(catID) <- ICAMS::catalog.row.order$ID
+    return(catID)
+  }
+
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
                              ID.vcf$ALT,
@@ -681,5 +688,5 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
 
   colnames(catID) <- names(list.of.vcfs)
   return(as.catalog(catID, ref.genome = ref.genome,
-                                region = region, catalog.type = "counts"))
+                    region = region, catalog.type = "counts"))
 }
