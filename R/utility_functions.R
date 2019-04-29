@@ -307,7 +307,7 @@ CreateTransRanges <- function(path) {
   dt3 <- StandardChromName(dt2[, c(1, 4, 5, 7, 9)])
 
   colnames(dt3) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
-  chrOrder <-c((1:22), "X", "Y")
+  chrOrder <- c((1:22), "X", "Y")
   dt3$chrom <- factor(dt3$chrom, chrOrder, ordered = TRUE)
 
   # Remove the duplicated entries
