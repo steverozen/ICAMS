@@ -739,8 +739,19 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # before calling the function. This function does not detect DNSs.
 
   if (0 == nrow(vcf)) {
-    return(list(catSNS96 = empty.cats$catSNS96, catSNS192 = empty.cats$catSNS192,
-                catSNS1536 = empty.cats$catSNS1536))
+    # Create 1-column matrix with all values being 0 and the correct row labels.
+    catSNS96 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS96), ncol = 1)
+    rownames(catSNS96) <- ICAMS::catalog.row.order$SNS96
+    catSNS192 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS192), ncol = 1)
+    rownames(catSNS192) <- ICAMS::catalog.row.order$SNS192
+    catSNS1536 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS1536), ncol = 1)
+    rownames(catSNS1536) <- ICAMS::catalog.row.order$SNS1536
+
+    return(list(catSNS96 = catSNS96, catSNS192 = catSNS192,
+                catSNS1536 = catSNS1536))
   }
 
   stopifnot(nchar(vcf$ALT) == 1)
@@ -910,9 +921,20 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   # before calling the function. This function does not detect SNSs.
 
   if (0 == nrow(vcf)) {
-    return(list(catDNS78 = empty.cats$catDNS78,
-                catDNS144 = empty.cats$catDNS144,
-                catDNS136 = empty.cats$catDNS136))
+    # Create 1-column matrix with all values being 0 and the correct row labels.
+    catDNS78 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS78), ncol = 1)
+    rownames(catDNS78) <- ICAMS::catalog.row.order$DNS78
+    catDNS144 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS144), ncol = 1)
+    rownames(catDNS144) <- ICAMS::catalog.row.order$DNS144
+    catDNS136 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS136), ncol = 1)
+    rownames(catDNS136) <- ICAMS::catalog.row.order$DNS136
+
+    return(list(catDNS78 = catDNS78,
+                catDNS144 = catDNS144,
+                catDNS136 = catDNS136))
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
