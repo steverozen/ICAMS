@@ -178,16 +178,12 @@ TransformCatalog <-
     target.abundance <- attributes(cat)$abundance
     stopifnot(names(source.abundance) == names(target.abundance))
 
-    # Check whether any value in source.abundance equals to 0
-    if (any(source.abundance == 0)) {
-      idx1 <- which(source.abundance == 0)
-      idx2 <- which(target.abundance == 0)
-      stopifnot(all(idx1 == idx2))
-      source.abundance[idx1] <- 1
-      target.abundance[idx2] <- 1
+    factor <- target.abundance / source.abundance
+    if (any(is.infinite(factor)) || any(is.na(factor))) {
+      factor[is.infinite(factor)] <- 0
+      factor[is.na(factor)] <- 0
     }
 
-    factor <- target.abundance / source.abundance
     names(factor) <- names(target.abundance)
     out.catalog <- catalog
 
