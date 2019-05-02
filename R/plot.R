@@ -599,6 +599,9 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
         text(11.5, 19,
              paste0("(", round(100 * main.types.prop[main.type], 1), "%)"),
              xpd = NA)
+        legend <- ifelse(attributes(catalog)$catalog.type == "counts.signature",
+                         "counts proportion", "density proportion")
+        text(10.3, 20.3, paste0("%: ", legend), xpd = NA)
       }
       text(17.5, 17, '1bp 3\'', xpd = NA, cex = 1)
       text(17.5, 18, '2bp 3\'', xpd = NA, cex = 1)
