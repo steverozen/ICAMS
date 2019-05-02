@@ -22,11 +22,9 @@ Transcript ranges and strand information for a particular reference genome.
 \code{trans.ranges.GRCh37} A data.table which contains transcript range and
 strand information for \strong{Human} GRCh37. It is derived from a raw
 \strong{GFF3} format file
-(ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh37_mapping/gencode.v29lift37.annotation.gff3.gz),
-from which only
-the following four gene types are kept to facilitate transcriptional strand
-bias analysis: protein_coding, retained_intron, processed_transcript and
-nonsense_mediated_decay. Needed for
+(ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_19/gencode.v19.annotation.gff3.gz),
+only genes that are associated with a CCDS ID are kept for
+transcriptional strand bias analysis. Needed for
 \code{\link{StrelkaSNSVCFFilesToCatalog}},
 \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
 \code{\link{VCFsToDNSCatalogs}}.
@@ -34,11 +32,9 @@ nonsense_mediated_decay. Needed for
 \code{trans.ranges.GRCh38} A data.table which contains transcript range and
 strand information for \strong{Human} GRCh38. It is derived from a raw
 \strong{GFF3} format file
-(ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz), from which only the
-following four gene types are kept to facilitate transcriptional strand bias
-analysis: protein_coding, retained_intron, processed_transcript and
-nonsense_mediated_decay.
-Needed for
+(ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_28/gencode.v28.annotation.gff3.gz),
+only genes that are associated with a CCDS ID are kept for
+transcriptional strand bias analysis. Needed for
 \code{\link{StrelkaSNSVCFFilesToCatalog}},
 \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
 \code{\link{VCFsToDNSCatalogs}}.

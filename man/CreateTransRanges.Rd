@@ -11,10 +11,9 @@ CreateTransRanges(path)
 }
 \value{
 A data table which contains chromosome name, start, end position,
-  strand information and gene name. It is keyed by chrom, chromStart, and
-  chromEnd. Only the following four gene types are kept to facilitate
-  transcriptional strand bias analysis: protein_coding, retained_intron,
-  processed_transcript and nonsense_mediated_decay.
+  strand information and gene name. It is keyed by chrom, start, and
+  end. Only genes that are associated with a CCDS ID are kept for
+  transcriptional strand bias analysis.
 }
 \description{
 Create a Transcript Range file from the raw GFF3 File
