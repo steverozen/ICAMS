@@ -95,7 +95,7 @@ PlotCatalog.SNS96Catalog <-
       # Barplot
       bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
                     xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = "mut/million")
+                    col = cols, ylab = "mut/million", cex.lab = 0.8)
 
       # Get ylim
       ymax <- max(catalog[, 1] * 1000000)
@@ -106,7 +106,7 @@ PlotCatalog.SNS96Catalog <-
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
                     xaxs = "i", lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = "counts")
+                    col = cols, ylab = "counts", cex.lab = 0.8)
 
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
@@ -126,7 +126,7 @@ PlotCatalog.SNS96Catalog <-
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
                     lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = yaxislabel)
+                    col = cols, ylab = yaxislabel, cex.lab = 0.8)
     }
 
     # Draw grid lines?
