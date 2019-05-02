@@ -1,13 +1,23 @@
 context("PlotCatalogToPdf.DNS136")
 
 test_that("PlotCatalogToPdf.DNS136 function is working properly", {
-  catalog <- ReadCatalog("testdata/regress.cat.dns.136.csv",
-                           ref.genome = "GRCh37",
-                           region = "genome", catalog.type = "counts")
-  colnames(catalog) <- paste0("HepG2_", 1 : 4)
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.136.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog, filename = "PlotCatDNS136.test.pdf")
+    PlotCatalogToPdf(catalog.counts, filename = "PlotCatDNS136.counts.test.pdf")
   expect_equal(out, TRUE)
-  unlink("PlotCatDNS136.test.pdf")
+
+  catalog.density <-
+    TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
+                     target.region = "genome",
+                     target.catalog.type = "density")
+  out <-
+    PlotCatalogToPdf(catalog.density, filename = "PlotCatDNS136.density.test.pdf")
+  expect_equal(out, TRUE)
+
+  unlink("PlotCatDNS136.counts.test.pdf")
+  unlink("PlotCatDNS136.density.test.pdf")
   graphics.off()
 })
