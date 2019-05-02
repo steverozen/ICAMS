@@ -263,11 +263,12 @@ StandardChromName <- function(df) {
 #'
 #' @param path The name/path of the raw GFF3 File, or a complete URL.
 #'
+#' @importFrom  stringi stri_split_fixed
+#'
 #' @return A data table which contains chromosome name, start, end position,
-#'   strand information and gene name. It is keyed by chrom, chromStart, and
-#'   chromEnd. Only the following four gene types are kept to facilitate
-#'   transcriptional strand bias analysis: protein_coding, retained_intron,
-#'   processed_transcript and nonsense_mediated_decay.
+#'   strand information and gene name. It is keyed by chrom, start, and
+#'   end. Only genes that are associated with a CCDS ID are kept for
+#'   transcriptional strand bias analysis.
 #'
 #' @keywords internal
 CreateTransRanges <- function(path) {
@@ -278,42 +279,63 @@ CreateTransRanges <- function(path) {
   # Read in the raw GFF3 File while skipping the comment lines
   dt <- data.table::fread(path, header = FALSE, sep = "\t", fill = TRUE, skip = n)
 
-  dt1 <- dt[dt$V3 == "gene", ]
+  # Extract the gene ID associated with CCDS ID
+  dt1 <- dt[grep("CCDS", dt$V9), ]
+  info <- stri_split_fixed(dt1$V9, ";")
+  gene.id.CCDS.idx <- lapply(info, grep, pattern = "gene_id")
+  ExtractInfo <- function(idx, list1, list2) {
+    return(list1[[idx]][list2[[idx]]])
+  }
+  gene.id.CCDS <-
+    unique(sapply(1:length(info), ExtractInfo,
+                  list1 = info, list2 = gene.id.CCDS.idx))
+  gene.id.CCDS <- sapply(stri_split_fixed(gene.id.CCDS, "="), "[", 2)
 
-  # Select out the four gene types for transcriptional strand bias analysis
-  idx <-
-    grepl("protein_coding", dt1$V9) |
-    grepl("retained_intron", dt1$V9) |
-    grepl("processed_transcript", dt1$V9) |
-    grepl("nonsense_mediated_decay", dt1$V9)
-  dt2 <- dt1[idx, ]
+  # Extract the gene ID and gene name from entries in dt which belong to the
+  # type "gene"
+  dt2 <- dt[dt$V3 == "gene", ]
+  attributes.info <- stri_split_fixed(dt2$V9, ";")
+  gene.id.idx <- lapply(attributes.info, grep, pattern = "gene_id")
+  gene.name.idx <- lapply(attributes.info, grep, pattern = "gene_name")
+  len <- length(attributes.info)
+  gene.id <-
+    sapply(1:len, ExtractInfo, list1 = attributes.info, list2 = gene.id.idx)
+  gene.id <- sapply(stri_split_fixed(gene.id, "="), "[", 2)
+  gene.name <-
+    sapply(1:len, ExtractInfo, list1 = attributes.info, list2 = gene.name.idx)
+  gene.name <- sapply(stri_split_fixed(gene.name, "="), "[", 2)
+  dt3 <- dt2[, c("gene.id", "gene.name") := .(gene.id, gene.name)]
 
-  # Split the 9th column of dt2 according to separator ";" and get a list
-  list <- stringi::stri_split_fixed(dt2$V9, ";")
+  # Only keep the entries in dt3 with gene ID that is associated with CCDS ID.
+  # Select the necessary columns and standardize the chromosome names.
+  dt4 <- dt3[gene.id %in% gene.id.CCDS, c(1, 4, 5, 7, 11)]
+  colnames(dt4) <- c("chrom", "start", "end", "strand", "gene.name")
+  dt5 <- StandardChromName(dt4)
 
-  # Extract the character string which contains gene name information
-  names <- sapply(list, stringi::stri_subset_fixed, "gene_name")
-
-  # Remove the "gene_name" characters
-  names <- sub(pattern = "gene_name.", replacement = "", names)
-
-  # Remove the quotation marks
-  names <- gsub(pattern = '\"', replacement = "", names)
-
-  # Remove the whitespace
-  dt2$V9 <- gsub(pattern = "\\s", replacement = "", names)
-
-  # Select the necessary columns and standardize the chromosome names
-  dt3 <- StandardChromName(dt2[, c(1, 4, 5, 7, 9)])
-
-  colnames(dt3) <- c("chrom", "chromStart", "chromEnd", "strand", "name")
+  # Reorder dt5 according to chromosome name, start and end position
   chrOrder <- c((1:22), "X", "Y")
-  dt3$chrom <- factor(dt3$chrom, chrOrder, ordered = TRUE)
+  dt5$chrom <- factor(dt5$chrom, chrOrder, ordered = TRUE)
+  setkeyv(dt5, c("chrom", "start", "end"))
 
-  # Remove the duplicated entries
-  dt3 <- unique(dt3)
-
-  return(data.table::setkeyv(dt3, c("chrom", "chromStart", "chromEnd")))
+  # Combine the overlapping ranges of the same gene if there is any
+  dt6 <- dt5[, count := .N, by = .(chrom, gene.name)]
+  dt7 <- dt6[count == 1, ]
+  dt8 <- dt6[count != 1, ]
+  if (nrow(dt8) == 0) {
+    return(dt7[, c(1:5)])
+  } else {
+    gr <- GenomicRanges::makeGRangesFromDataFrame(dt8, keep.extra.columns = TRUE)
+    gr1 <- GenomicRanges::reduce(gr, with.revmap = TRUE)
+    GetGeneName <- function(idx, names){
+      return(names[idx])
+    }
+    mat <- t(sapply(gr1$revmap, FUN = GetGeneName, names = gr$gene.name))
+    unique.gene.name <- apply(mat, MARGIN = 1, FUN = unique)
+    GenomicRanges::mcols(gr1) <- unique.gene.name
+    dt9 <- as.data.table(gr1)[, c(1:3, 5:6)]
+    dt10 <- rbind(dt7[, c(1:5)], dt9, use.names = FALSE)
+    return(setkeyv(dt10, c("chrom", "start", "end")))
+  }
 }
 
 #' @keywords internal
@@ -403,9 +425,10 @@ RevcDNS144 <- function(mutstring) {
 ReadTranscriptRanges <- function(path) {
   df <- utils::read.csv(path)
   dt <- data.table(df)
-  chrOrder <-c((1:22), "X", "Y")
+  colnames(dt) <- c("chrom", "start", "end", "strand", "gene.name")
+  chrOrder <- c((1:22), "X", "Y")
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
-  data.table::setkeyv(dt, c("chrom", "chromStart", "chromEnd"))
+  data.table::setkeyv(dt, c("chrom", "start", "end"))
   return(dt)
 }
 
