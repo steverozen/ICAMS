@@ -117,13 +117,16 @@ PlotCatalog.SNS96Catalog <-
       }
     } else if (attributes(catalog)$catalog.type %in%
                c("counts.signature", "density.signature")) {
+      # Determine the y axis label
+      yaxislabel <- ifelse(attributes(catalog)$catalog.type == "counts.signature",
+                           "counts proportion", "density proportion")
       # Get ylim
       ymax <- max(catalog[, 1])
 
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
                     lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = "proportion")
+                    col = cols, ylab = yaxislabel)
     }
 
     # Draw grid lines?
