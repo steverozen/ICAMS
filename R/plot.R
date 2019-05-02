@@ -248,29 +248,32 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
     # Barplot: side by side
     mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
+                  axes = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "counts")
   } else if (attributes(cat)$catalog.type %in%
              c("counts.signature", "density.signature")) {
+    # Determine the y axis label
+    yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
+                         "counts proportion", "density proportion")
     # Get ylim
     ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
 
     # Barplot: side by side
     mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
-                  border = NA, col = cols, xpd = NA, ylab = "proportion")
+                  axes = FALSE, lwd = 3, xaxs = "i",
+                  border = NA, col = cols, xpd = NA, ylab = yaxislabel)
   } else if (attributes(cat)$catalog.type == "density") {
     # Get the rate of mutations per million trinucleotides
     rate <- cat[, 1] * 1000000
 
     # Get ylim
-    ymax <- rate * 1.3
+    ymax <- max(rate) * 1.3
 
     # Barplot: side by side
     mat <- matrix(rate, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, ann = FALSE, lwd = 3, xaxs = "i",
+                  axes = FALSE, lwd = 3, xaxs = "i",
                   border = NA, col = cols, xpd = NA, ylab = "mut/million")
   }
 
