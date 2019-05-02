@@ -726,7 +726,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
     # Barplot
     bp <- barplot(rate, ylim = c(0, ymax), xaxt = "n", yaxt = "n", xaxs = "i",
                   lwd = 3, space = 1.35, border = NA, col = cols,
-                  xpd = NA, ylab = "mut/million")
+                  xpd = NA, ylab = "mut/million", cex.lab = 0.8)
   } else if (attributes(catalog)$catalog.type == "counts") {
     # Get ylim
     ymax <- max(catalog[, 1]) * 1.3
@@ -734,7 +734,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
     # Barplot
     bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   xaxs = "i", lwd = 3, space = 1.35, border = NA, xaxs = "i",
-                  col = cols, ylab = "counts")
+                  col = cols, ylab = "counts", cex.lab = 0.8)
 
     # Write the mutation counts on top of graph
     for (i in 1 : 10) {
@@ -755,7 +755,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
     # Barplot
     bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
                   lwd = 3, space = 1.35, border = NA, xaxs = "i",
-                  col = cols, ylab = yaxislabel)
+                  col = cols, ylab = yaxislabel, cex.lab = 0.8)
   }
 
   # Draw box and grid lines
