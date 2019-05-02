@@ -821,10 +821,14 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
     mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ann = FALSE, ylab = "counts",
+                  axes = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
   } else if (attributes(catalog)$catalog.type %in%
              c("counts.signature", "density.signature")) {
+    # Determine the y axis label
+    yaxislabel <- ifelse(attributes(catalog)$catalog.type == "counts.signature",
+                         "counts proportion", "density proportion")
+
     # Get the proportion for each major mutation class
     prop <- cat[, 1]
     prop.strand <- integer(20)
@@ -843,7 +847,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
     mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ann = FALSE, ylab = "proportion",
+                  axes = FALSE, ylab = yaxislabel,
                   border = NA, col = cols, xpd = NA)
   } else if (attributes(catalog)$catalog.type == "density") {
     # Get the rate of mutations per million dinucleotides for each major mutation class
@@ -864,7 +868,7 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
     mat <- matrix(rate.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ann = FALSE, ylab = "mut/million",
+                  axes = FALSE, ylab = "mut/million",
                   border = NA, col = cols, xpd = NA)
   }
 
