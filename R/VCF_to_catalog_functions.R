@@ -366,8 +366,8 @@ AddTranscript <- function(df, trans.ranges) {
                   type = "within", mult = "all")
 
   # Get the lower and upper bounds of the gene location range
-  dt1 <- dt[, .(Start = min(chromStart), End = max(chromEnd),
-                Name = name[1], strand = strand[1]),
+  dt1 <- dt[, .(Start = min(start), End = max(end),
+                Name = gene.name[1], strand = strand[1]),
             by = .(CHROM, ALT, POS)] # Note that is important to have
   # ALT in the by list because in a few cases
   # there are multiple ALT alleles at one POS.
