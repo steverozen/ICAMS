@@ -392,10 +392,14 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
     mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                   width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ann = FALSE, ylab = "counts",
+                  axes = FALSE, ylab = "counts",
                   border = NA, col = cols, xpd = NA)
   } else if (attributes(cat)$catalog.type %in%
              c("counts.signature", "density.signature")) {
+    # Determine the y axis label
+    yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
+                         "counts proportion", "density proportion")
+
     # Get the proportion for each major mutation class
     prop <- cat[, 1]
     prop.strand <- integer(12)
@@ -413,10 +417,29 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
     mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                   width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ann = FALSE, ylab = "proportion",
+                  axes = FALSE, ylab = yaxislabel,
                   border = NA, col = cols, xpd = NA)
   } else if (attributes(cat)$catalog.type == "density") {
-    stop('type = "density" not implemented\n')
+    # Get the rate of mutations per million trinucleotides
+    rates <- cat[, 1] * 1000000
+
+    rates.strand <- integer(12)
+    for (i in 1 : 6){
+      rates.strand[2 * i - 1] <-
+        sum(rates[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+      rates.strand[2 * i] <-
+        sum(rates[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+    }
+
+    # Get ylim
+    ymax <- max(rates.strand) * 1.3
+
+    # Barplot: side by side
+    mat <- matrix(rates.strand, nrow = 2, ncol = num.classes / 2)
+    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
+                  width = 0.3, xaxs = "i", yaxs = "i",
+                  axes = FALSE, ylab = "mut/million",
+                  border = NA, col = cols, xpd = NA)
   }
 
   # Draw y axis
