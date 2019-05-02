@@ -1368,10 +1368,12 @@ PlotCatalog.IndelCatalog <- function(catalog){
   y.axis.values <- seq(0, ymax, ymax / 4)
   if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
-    text(-9, ymax / 2, labels = "counts proportion", srt = 90, xpd = NA)
+    text(-9, ymax / 2, labels = "counts proportion",
+         srt = 90, xpd = NA, cex = 0.8)
   } else {
     y.axis.labels <- round(y.axis.values, 0)
-    text(-9, ymax / 2, labels = "counts", srt = 90, xpd = NA)
+    text(-9, ymax / 2, labels = "counts",
+         srt = 90, xpd = NA, cex = 0.8)
   }
   text(0, y.axis.values, labels = y.axis.labels,
        las = 1, adj = 1, xpd = NA, cex = 0.75)
