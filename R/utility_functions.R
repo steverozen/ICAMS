@@ -454,8 +454,7 @@ ReadBedRanges <- function(path) {
 
   chrOrder <- c((1:22), "X", "Y")
   dt2$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
-  data.table::setkeyv(dt2, c("chrom", "start", "end"))
-  return(dt)
+  return(data.table::setkeyv(dt2, c("chrom", "start", "end")))
 }
 
 #' Create trinucleotide abundance
