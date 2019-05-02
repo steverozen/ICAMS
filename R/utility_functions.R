@@ -436,26 +436,25 @@ ReadTranscriptRanges <- function(path) {
 #'
 #' @param path Path to the file in bed format.
 #'
-#' @return A data.table keyed by chrom, chromStart, and chromEnd.
+#' @return A data.table keyed by chrom, start, and end.
 #'
 #' @keywords internal
 ReadBedRanges <- function(path) {
-  df <- data.table::fread(path)
-  df1 <- StandardChromName(df[, 1:3])
-  colnames(df1) <- c("chrom", "chromStart", "chromEnd")
+  dt <- data.table::fread(path)
+  dt1 <- StandardChromName(dt[, 1:3])
+  colnames(dt1) <- c("chrom", "start", "end")
 
   # Delete duplicate entries in the BED file
-  df2 <- dplyr::distinct(df1, chrom, chromStart, chromEnd, .keep_all = TRUE)
+  dt2 <- dplyr::distinct(dt1, chrom, start, end, .keep_all = TRUE)
 
   # Bed file are 0 based start and 1 based end (an oversimplification).
   # We need to add 1L and not 1, otherwise the column turns to a double
   # we get a warning from data.table.
-  df2$chromStart <- df2$chromStart + 1L
+  dt2$start <- dt2$start + 1L
 
-  dt <- data.table(df2)
   chrOrder <- c((1:22), "X", "Y")
-  dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
-  data.table::setkeyv(dt, c("chrom", "chromStart", "chromEnd"))
+  dt2$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
+  data.table::setkeyv(dt2, c("chrom", "start", "end"))
   return(dt)
 }
 
