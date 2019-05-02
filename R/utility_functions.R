@@ -905,11 +905,16 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
 
   if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
     attr(catalog, "ref.genome") <- ref.genome
-    attr(catalog, "region") <- region
     attr(catalog, "catalog.type") <- catalog.type
     catalog <- CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
     catalog <- CreateCatalogClass(catalog)
+    if (attributes(catalog)$class[1] %in% c("SNS192Catalog", "DNS144Catalog")) {
+      attr(catalog, "region") <- ifelse(region == "genome", "transcript", "exome")
+    } else {
+      attr(catalog, "region") <- region
+    }
   }
+  return(catalog)
 }
 
 #' Generate all possible k-mers of length k.
