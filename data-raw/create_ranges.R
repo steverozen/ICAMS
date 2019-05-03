@@ -3,10 +3,10 @@
 cat(getwd(), "\n")
 
 trans.ranges.GRCh37 <-
-  ReadTranscriptRanges("data-raw/ranges/TranscriptRanges.GRCh37.GENECODEv19.csv")
+  ReadTranscriptRanges("data-raw/ranges/TranscriptRanges.GRCh37.GENECODEv30.csv")
 
 trans.ranges.GRCh38 <-
-  ReadTranscriptRanges("data-raw/ranges/TranscriptRanges.GRCh38.GENECODEv28.csv")
+  ReadTranscriptRanges("data-raw/ranges/TranscriptRanges.GRCh38.GENECODEv30.csv")
 
 #exome.ranges.GRCh37 <-
   #ReadBedRanges("data-raw/ranges/SureSelect_Human_All_Exon_V6.hg19.bed")
