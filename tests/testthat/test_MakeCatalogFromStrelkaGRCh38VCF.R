@@ -17,7 +17,6 @@ test_that("StrelkaSNSVCFFilesToCatalog", {
   expect_equal(cat1$catSNS96, cat3$catSNS96)
 })
 
-
 test_that("StrelkaIDVCFFilesToCatalog", {
   cat4 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
                                      ref.genome = BSgenome.Hsapiens.UCSC.hg38,
