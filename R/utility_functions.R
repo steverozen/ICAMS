@@ -1047,6 +1047,46 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   return(kmer.counts)
 }
 
+#' Remove ranges that have transcripts on both strands from a trans.ranges file
+#'
+#' @param trans.ranges A GFF3 trans.range.file
+#'
+#' @return A data table which has removed ranges that have transcripts on both
+#' strands from the input \code{trans.ranges}.
+#'
+#' @keywords internal
+RemoveTransRangesOnBothStrand <- function(trans.ranges) {
+  dt <- as.data.table(trans.ranges)
+  dt.plus <- dt[strand == "+", ]
+  dt.minus <- dt[strand == "-", ]
+  gr.plus <-
+    GenomicRanges::makeGRangesFromDataFrame(dt.plus, keep.extra.columns = TRUE)
+  gr.minus <-
+    GenomicRanges::makeGRangesFromDataFrame(dt.minus, keep.extra.columns = TRUE)
+  gr.plus.reduced <- GenomicRanges::reduce(gr.plus, with.revmap = TRUE)
+  gr.minus.reduced <- GenomicRanges::reduce(gr.minus, with.revmap = TRUE)
+
+  # Find ranges that have transcripts on both strands and remove these
+  # ranges from each strand
+  gr <-
+    GenomicRanges::intersect(gr.plus.reduced, gr.minus.reduced,
+                             ignore.strand = TRUE)
+  gr1 <- gr
+  gr1@strand@values <- "+"
+  gr2 <- gr
+  gr2@strand@values <- "-"
+  gr3 <- GenomicRanges::setdiff(gr.plus.reduced, gr1)
+  gr4 <- GenomicRanges::setdiff(gr.minus.reduced, gr2)
+
+  # Get a new data table which does not have ranges on both strands
+  dt1 <- as.data.table(gr3)
+  dt2 <- as.data.table(gr4)
+  dt3 <- rbind(dt1, dt2)
+  dt4 <- dt3[, c(1:3, 5)]
+  colnames(dt4) <- c("chrom", "start", "end", "strand")
+  return(dt4)
+}
+
 #' Generate stranded k-mer abundance from a given genome and gene annotation file
 #'
 #' @param k Length of k-mers (k>=2)
