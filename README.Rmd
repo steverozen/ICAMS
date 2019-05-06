@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of ICAMS is to do in-depth characterization and analysis of mutational signatures.
+ICAMS: In-depth Characterization and Analysis of Mutational Signatures
 
 ## Purpose
 
