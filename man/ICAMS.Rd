@@ -68,9 +68,6 @@ this package (i.e. other than with
 or \code{\link{StrelkaSNSVCFFilesToCatalog}},
 \code{\link{MutectVCFFilesToCatalog}}, etc.), then use
 \code{\link{as.catalog}}.
-
-Nanhai: put this in the doc for as.catalog: you must ensure that the rows are in the expected order and have
-the expected rownames.
 }
 
 \section{Creating catalogs from variant call files (VCF files)}{
