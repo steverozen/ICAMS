@@ -5,7 +5,16 @@ ICAMS
 
 <!-- badges: start -->
 <!-- badges: end -->
-The goal of ICAMS is to do in-depth characterization and analysis of mutational signatures.
+ICAMS: In-depth Characterization and Analysis of Mutational Signatures
+
+Purpose
+-------
+
+A toolkit for analysis and visualization of experimentally elucidated mutational signatures -- 
+the kind of analysis and visualization presented in Boot et al., ``In-depth characterization of the cisplatin 
+mutational signature in human cell lines and in esophageal and liver tumors'', 
+2018, https://genome.cshlp.org/content/28/5/654.short. This package has functions to read in variant call files and to collate 
+the corresponding catalog of mutational spectra and to analyze and plot catalogs of mutational spectra and signatures.
 
 Installation
 ------------
