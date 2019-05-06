@@ -28,6 +28,7 @@ catDNS
 CatDNS
 catSNS
 CATTAT
+CCDS
 CCT
 chrom
 CHROM
@@ -49,6 +50,7 @@ GG
 GGTA
 gff
 GFF
+github
 GRCh
 GRCm
 gz
@@ -84,6 +86,7 @@ rowname
 sanger
 SNS
 SNSs
+steverozen
 StrandToPdf
 Strelka
 TAC
