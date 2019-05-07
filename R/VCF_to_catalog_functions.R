@@ -858,8 +858,8 @@ VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region
     idx <- grep("N", substr(SNS$seq.21context, 9, 13))
     if (!length(idx) == 0) {
       SNS <- SNS[-idx, ]
-      cat('There are rows in the SNS vcf where extracted sequence contains "N", ',
-          'these rows have been deleted so as not to conflict with code ',
+      cat('There are rows in the SNS vcf where extracted sequence contains "N",',
+          'these rows have been deleted so as not to conflict with code',
           'in other parts of ICAMS package')
     }
 
