@@ -14,7 +14,7 @@ A toolkit for analysis and visualization of experimentally elucidated mutational
 the kind of analysis and visualization presented in Boot et al., ``In-depth characterization of the cisplatin 
 mutational signature in human cell lines and in esophageal and liver tumors'', 
 2018, https://genome.cshlp.org/content/28/5/654.short. This package has functions to read in variant call files and to collate 
-the corresponding catalog of mutational spectra and to analyze and plot catalogs of mutational spectra and signatures.
+the corresponding catalogs of mutational spectra and to analyze and plot catalogs of mutational spectra and signatures.
 
 Installation
 ------------
