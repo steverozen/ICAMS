@@ -10,7 +10,7 @@ Description: A toolkit for analysis and visualization of experimentally
     mutational signature in human cell lines and in esophageal and liver 
     tumors", 2018, https://genome.cshlp.org/content/28/5/654.short. This 
     package has functions to read in variant call files and to collate 
-    the corresponding catalog of mutational spectra and to analyze and plot 
+    the corresponding catalogs of mutational spectra and to analyze and plot 
     catalogs of mutational spectra and signatures.
 License: GPL-3
 Encoding: UTF-8
