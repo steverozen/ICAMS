@@ -365,17 +365,28 @@ AddTranscript <- function(df, trans.ranges) {
                   by.x = c("CHROM", "POS", "POS2"),
                   type = "within", mult = "all")
 
-  # Get the lower and upper bounds of the gene location range
-  dt1 <- dt[, .(Start = min(start), End = max(end),
-                Name = gene.name[1], strand = strand[1]),
+  # Find out mutations that fall on transcripts on both strands
+  dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
             by = .(CHROM, ALT, POS)] # Note that is important to have
   # ALT in the by list because in a few cases
   # there are multiple ALT alleles at one POS.
 
-  # Swap gene location according to strand information
-  dt2 <- dt1[strand == "-", c("End", "Start") := .(Start, End)]
+  # Count the number of transcript ranges where a particular mutation
+  # falls into
+  dt2 <- dt1[, count := .N, by = .(CHROM, ALT, POS)]
 
-  return(cbind(df, dt2))
+  # Swap gene location according to strand information
+  dt3 <- dt2[strand == "-", c("end", "start") := .(start, end)]
+
+  # Reorder the columns of dt3
+  df.colnames <- colnames(df)
+  trans.ranges.colnames <- colnames(trans.ranges)[-1]
+  setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
+
+  # Delete redundant column in dt3
+  dt4 <- dt3[, POS2 := NULL]
+
+  return(dt4)
 }
 
 #' MakeVCFDNSdf Take DNS ranges and the original VCF and generate a VCF with
