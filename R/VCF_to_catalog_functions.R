@@ -776,9 +776,16 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # e.g. ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
   vcf$pyr.mut <- PyrPenta(vcf$mutation)
 
+  # One mutation can be represented by more than 1 row in vcf after annotated by
+  # AddTranscript function if the mutation position falls into the range of
+  # multiple transcripts. When creating the 1536 and 96 catalog, we only need to
+  # count these mutations once.
+  vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
+              by = .(CHROM, ALT, POS)]
+
   # Create part of the 1536 catalog matrix but missing mutation
   # types have NA in the count column.
-  tab1536 <- table(vcf[, "pyr.mut"])
+  tab1536 <- table(vcf1[, "pyr.mut"])
   stopifnot(setequal(
     setdiff(names(tab1536), ICAMS::catalog.row.order$SNS1536),
     c()))
@@ -789,7 +796,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(length(ICAMS::catalog.row.order$SNS1536) == 1536)
   x <- merge(d, dt1536, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
-  stopifnot(sum(x$count) == nrow(vcf))
+  stopifnot(sum(x$count) == nrow(vcf1))
   mat1536 <- matrix(x$count)
   rownames(mat1536) <- x$rn
   mat1536 <- mat1536[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
@@ -804,12 +811,22 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
   colnames(mat96) <- sample.id
 
+  # There are some mutations in vcf which fall on transcripts on both strands.
+  # We do not consider those mutations when generating the 192 catalog.
+  vcf2 <- vcf[bothstrand == FALSE, ]
+
+  # One mutation can be represented by more than 1 row in vcf2 if the mutation
+  # position falls into the range of multiple transcripts. When creating the
+  # 192 catalog, we only need to count these mutations once.
+  vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], strand = strand[1]),
+              by = .(CHROM, ALT, POS)]
+
   # Create the 192 catalog matrix
-  tab192  <- table(paste0(substr(vcf$mutation, 2, 4),
-                          substr(vcf$mutation, 6, 6)),
-                   vcf[, "strand"],
+  tab192  <- table(paste0(substr(vcf3$mutation, 2, 4),
+                          substr(vcf3$mutation, 6, 6)),
+                   vcf3$strand,
                    useNA = "ifany")
-  stopifnot(sum(tab192) == nrow(vcf))
+  stopifnot(sum(tab192) == nrow(vcf3))
   dt192 <- as.data.table(tab192)
   colnames(dt192) <- c("rn", "strand", "count")
   dt192 <- dt192[!is.na(strand)]
