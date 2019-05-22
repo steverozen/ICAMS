@@ -13,9 +13,9 @@
 #'
 #' @return \code{invisible(TRUE)}
 #'
-#' @note  The sizes of repeats involved in deletions range from 0 to 5+ in the
-#'   catalog rownames, but for plotting and end user documentation they ranges
-#'   from 1 to 6+.
+#' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
+#'   mutational-specta and signature catalog rownames, but for plotting and
+#'   end-user documentation they range from 1 to 6+.
 #'
 #' @export
 #'
@@ -50,9 +50,9 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #'
 #' @return \code{invisible(TRUE)}
 #'
-#' @note  The sizes of repeats involved in deletions range from 0 to 5+ in the
-#'   catalog rownames, but for plotting and end user documentation they ranges
-#'   from 1 to 6+.
+#' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
+#'   mutational-specta and signature catalog rownames, but for plotting and
+#'   end-user documentation they range from 1 to 6+.
 #'
 #' @export
 #'

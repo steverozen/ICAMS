@@ -51,6 +51,6 @@ Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
 }
 \note{
 The sizes of repeats involved in deletions range from 0 to 5+ in the
-  catalog rownames, but for plotting and end user documentation they ranges
-  from 1 to 6+.
+  mutational-specta and signature catalog rownames, but for plotting and
+  end-user documentation they range from 1 to 6+.
 }
