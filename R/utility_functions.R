@@ -419,8 +419,7 @@ RevcDNS144 <- function(mutstring) {
 #'
 #' @keywords internal
 ReadTranscriptRanges <- function(path) {
-  df <- utils::read.csv(path)
-  dt <- data.table(df)
+  dt <- data.table::fread(path)
   colnames(dt) <- c("chrom", "start", "end", "strand", "gene.name")
   chrOrder <- c((1:22), "X", "Y")
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
@@ -1107,6 +1106,7 @@ RemoveTransRangesOnBothStrand <- function(trans.ranges) {
 #'
 #' @keywords internal
 GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
+  trans.ranges <- RemoveTransRangesOnBothStrand(trans.ranges)
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
@@ -1133,7 +1133,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
     trans.ranges.chr <-
       with(temp.stranded.ranges,
-           GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
+           GRanges(chrom, IRanges(start, end), strand = strand))
 
     # Remove the overlapping ranges in trans.ranges.chr
     trans.ranges.chr <- IRanges::reduce(trans.ranges.chr)
@@ -1208,7 +1208,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     print(chr)
     temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
     exome.range.chr <-
-      with(temp.exome.ranges, GRanges(chrom, IRanges(chromStart, chromEnd)))
+      with(temp.exome.ranges, GRanges(chrom, IRanges(start, end)))
 
     # Remove the overlapping ranges in exome.range.chr
     exome.range.chr <- IRanges::reduce(exome.range.chr)

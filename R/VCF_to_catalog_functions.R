@@ -598,9 +598,9 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   stopifnot(nchar(vcf$REF) == nchar(vcf$ALT))
   stopifnot(!any(vcf$REF == '-'))
   stopifnot(!any(vcf$ALT == '-'))
-  cut.pos <- 1 + (nchar(vcf[, column.to.use]) - 1) / 2
+  cut.pos <- 1 + (nchar(vcf$column.to.use) - 1) / 2
   stopifnot(cut.pos == round(cut.pos))
-  cut.from.ref <- substr(vcf[, column.to.use], cut.pos,
+  cut.from.ref <- substr(vcf$column.to.use, cut.pos,
                          (cut.pos + nchar(vcf$REF)) - 1)
   error.rows <- which(vcf$REF != cut.from.ref)
   if (any(error.rows > 0)) {
@@ -776,9 +776,16 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # e.g. ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
   vcf$pyr.mut <- PyrPenta(vcf$mutation)
 
+  # One SNS mutation can be represented by more than 1 row in vcf after annotated by
+  # AddTranscript function if the mutation position falls into the range of
+  # multiple transcripts. When creating the 1536 and 96 catalog, we only need to
+  # count these mutations once.
+  vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
+              by = .(CHROM, ALT, POS)]
+
   # Create part of the 1536 catalog matrix but missing mutation
   # types have NA in the count column.
-  tab1536 <- table(vcf[, "pyr.mut"])
+  tab1536 <- table(vcf1[, "pyr.mut"])
   stopifnot(setequal(
     setdiff(names(tab1536), ICAMS::catalog.row.order$SNS1536),
     c()))
@@ -789,7 +796,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(length(ICAMS::catalog.row.order$SNS1536) == 1536)
   x <- merge(d, dt1536, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
-  stopifnot(sum(x$count) == nrow(vcf))
+  stopifnot(sum(x$count) == nrow(vcf1))
   mat1536 <- matrix(x$count)
   rownames(mat1536) <- x$rn
   mat1536 <- mat1536[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
@@ -804,12 +811,22 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
   colnames(mat96) <- sample.id
 
+  # There may be some mutations in vcf which fall on transcripts on both
+  # strands. We do not consider those mutations when generating the 192 catalog.
+  vcf2 <- vcf[bothstrand == FALSE, ]
+
+  # One SNS mutation can be represented by more than 1 row in vcf2 if the mutation
+  # position falls into the range of multiple transcripts. When creating the
+  # 192 catalog, we only need to count these mutations once.
+  vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], strand = strand[1]),
+              by = .(CHROM, ALT, POS)]
+
   # Create the 192 catalog matrix
-  tab192  <- table(paste0(substr(vcf$mutation, 2, 4),
-                          substr(vcf$mutation, 6, 6)),
-                   vcf[, "strand"],
+  tab192  <- table(paste0(substr(vcf3$mutation, 2, 4),
+                          substr(vcf3$mutation, 6, 6)),
+                   vcf3$strand,
                    useNA = "ifany")
-  stopifnot(sum(tab192) == nrow(vcf))
+  stopifnot(sum(tab192) == nrow(vcf3))
   dt192 <- as.data.table(tab192)
   colnames(dt192) <- c("rn", "strand", "count")
   dt192 <- dt192[!is.na(strand)]
@@ -951,8 +968,15 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(nchar(vcf$ALT) == 2)
   stopifnot(nchar(vcf$REF) == 2)
 
+  # One DNS mutation can be represented by more than 1 row in vcf after annotated by
+  # AddTranscript function if the mutation position falls into the range of
+  # multiple transcripts. When creating the 78 and 136 catalog, we only need to
+  # count these mutations once.
+  vcf1 <- vcf[, .(REF = REF[1], seq.21context = seq.21context[1]),
+              by = .(CHROM, ALT, POS)]
+
   # Create the 78 DNS catalog matrix
-  canon.DNS.78 <- CanonicalizeDNS(vcf$REF, vcf$ALT)
+  canon.DNS.78 <- CanonicalizeDNS(vcf1$REF, vcf1$ALT)
   tab.DNS.78 <- table(canon.DNS.78)
   row.order.78 <- data.table(rn = ICAMS::catalog.row.order$DNS78)
   DNS.dt.78 <- as.data.table(tab.DNS.78)
@@ -969,7 +993,7 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   colnames(DNS.mat.78)<- sample.id
 
   # Create the 136 DNS catalog matrix
-  canon.DNS.136 <- CanonicalizeQUAD(substr(vcf$seq.21context, 10, 13))
+  canon.DNS.136 <- CanonicalizeQUAD(substr(vcf1$seq.21context, 10, 13))
   tab.DNS.136 <- table(canon.DNS.136)
   row.order.136 <- data.table(rn = ICAMS::catalog.row.order$DNS136)
   DNS.dt.136 <- as.data.table(tab.DNS.136)
@@ -985,12 +1009,22 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
   rownames(DNS.mat.136) <- DNS.dt.136.2$rn
   colnames(DNS.mat.136)<- sample.id
 
+  # There may be some mutations in vcf which fall on transcripts on both
+  # strands. We do not consider those mutations when generating the 144 catalog.
+  vcf2 <- vcf[bothstrand == FALSE, ]
+
+  # One DNS mutation can be represented by more than 1 row in vcf2 if the mutation
+  # position falls into the range of multiple transcripts. When creating the
+  # 144 catalog, we only need to count these mutations once.
+  vcf3 <- vcf2[, .(REF = REF[1], strand = strand[1]),
+               by = .(CHROM, ALT, POS)]
+
   # Create the 144 DNS catalog matrix
   # There are 144 stranded DNSs: 4 X 4 sources and 3 X 3 alternates;
   # 4 x 4 x 3 x 3 = 144.
   tab.DNS.144  <-
-    table(paste0(vcf$REF, vcf$ALT), vcf[, "strand"], useNA = "ifany")
-  stopifnot(sum(tab.DNS.144) == nrow(vcf))
+    table(paste0(vcf3$REF, vcf3$ALT), vcf3$strand, useNA = "ifany")
+  stopifnot(sum(tab.DNS.144) == nrow(vcf3))
   DNS.dt.144 <- as.data.table(tab.DNS.144)
   colnames(DNS.dt.144) <- c("rn", "strand", "count")
   DNS.dt.144 <- DNS.dt.144[!is.na(strand)]
