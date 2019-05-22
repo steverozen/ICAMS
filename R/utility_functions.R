@@ -1208,7 +1208,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     print(chr)
     temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
     exome.range.chr <-
-      with(temp.exome.ranges, GRanges(chrom, IRanges(chromStart, chromEnd)))
+      with(temp.exome.ranges, GRanges(chrom, IRanges(start, end)))
 
     # Remove the overlapping ranges in exome.range.chr
     exome.range.chr <- IRanges::reduce(exome.range.chr)
