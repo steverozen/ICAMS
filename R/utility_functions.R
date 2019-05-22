@@ -1106,6 +1106,7 @@ RemoveTransRangesOnBothStrand <- function(trans.ranges) {
 #'
 #' @keywords internal
 GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
+  trans.ranges <- RemoveTransRangesOnBothStrand(trans.ranges)
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
@@ -1132,7 +1133,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
     trans.ranges.chr <-
       with(temp.stranded.ranges,
-           GRanges(chrom, IRanges(chromStart, chromEnd), strand = strand))
+           GRanges(chrom, IRanges(start, end), strand = strand))
 
     # Remove the overlapping ranges in trans.ranges.chr
     trans.ranges.chr <- IRanges::reduce(trans.ranges.chr)
