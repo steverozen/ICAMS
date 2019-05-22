@@ -419,8 +419,7 @@ RevcDNS144 <- function(mutstring) {
 #'
 #' @keywords internal
 ReadTranscriptRanges <- function(path) {
-  df <- utils::read.csv(path)
-  dt <- data.table(df)
+  dt <- data.table::fread(path)
   colnames(dt) <- c("chrom", "start", "end", "strand", "gene.name")
   chrOrder <- c((1:22), "X", "Y")
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
