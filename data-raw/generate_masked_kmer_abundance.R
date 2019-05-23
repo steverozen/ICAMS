@@ -161,7 +161,7 @@ hs37d5_masked_stranded_2bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_stranded_2bp <- proc.time() - tmp
 write.csv(hs37d5_masked_stranded_2bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_stranded_2bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_stranded_2bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_stranded_3bp <-
@@ -170,7 +170,7 @@ hs37d5_masked_stranded_3bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_stranded_3bp <- proc.time() - tmp
 write.csv(hs37d5_masked_stranded_3bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_stranded_3bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_stranded_3bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_stranded_4bp <-
@@ -179,7 +179,7 @@ hs37d5_masked_stranded_4bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_stranded_4bp <- proc.time() - tmp
 write.csv(hs37d5_masked_stranded_4bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_stranded_4bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_stranded_4bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_stranded_5bp <-
@@ -188,7 +188,7 @@ hs37d5_masked_stranded_5bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_stranded_5bp <- proc.time() - tmp
 write.csv(hs37d5_masked_stranded_5bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_stranded_5bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_stranded_5bp.csv")
 
 #########################################################################################
 tmp <- proc.time()
@@ -198,7 +198,7 @@ GRCh38_masked_stranded_2bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_stranded_2bp <- proc.time() - tmp
 write.csv(GRCh38_masked_stranded_2bp,
-          "data-raw/new_masked_abundance/GRCh38_masked_stranded_2bp.csv")
+          "data-raw/new_masked_abundance/GRCh38_masked_genome_stranded_2bp.csv")
 
 tmp <- proc.time()
 GRCh38_masked_stranded_3bp <-
@@ -207,7 +207,7 @@ GRCh38_masked_stranded_3bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_stranded_3bp <- proc.time() - tmp
 write.csv(GRCh38_masked_stranded_3bp,
-          "data-raw/new_masked_abundance/GRCh38_masked_stranded_3bp.csv")
+          "data-raw/new_masked_abundance/GRCh38_masked_genome_stranded_3bp.csv")
 
 tmp <- proc.time()
 GRCh38_masked_stranded_4bp <-
@@ -216,7 +216,7 @@ GRCh38_masked_stranded_4bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_stranded_4bp <- proc.time() - tmp
 write.csv(GRCh38_masked_stranded_4bp,
-          "data-raw/new_masked_abundance/GRCh38_masked_stranded_4bp.csv")
+          "data-raw/new_masked_abundance/GRCh38_masked_genome_stranded_4bp.csv")
 
 tmp <- proc.time()
 GRCh38_masked_stranded_5bp <-
@@ -225,7 +225,7 @@ GRCh38_masked_stranded_5bp <-
                         filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_stranded_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_stranded_5bp,
-          "data-raw/new_masked_abundance/GRCh38_masked_stranded_5bp.csv")
+          "data-raw/new_masked_abundance/GRCh38_masked_genome_stranded_5bp.csv")
 
 #########################################################################################
 # Code for generating masked genome k-mer counts
@@ -235,7 +235,7 @@ hs37d5_masked_genome_2bp <-
                       filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_genome_2bp <- proc.time() - tmp
 write.csv(hs37d5_masked_genome_2bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_genome_2bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_unstranded_2bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_genome_3bp <-
@@ -243,7 +243,7 @@ hs37d5_masked_genome_3bp <-
                       filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_genome_3bp <- proc.time() - tmp
 write.csv(hs37d5_masked_genome_3bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_genome_3bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_unstranded_3bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_genome_4bp <-
@@ -251,7 +251,7 @@ hs37d5_masked_genome_4bp <-
                       filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_genome_4bp <- proc.time() - tmp
 write.csv(hs37d5_masked_genome_4bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_genome_4bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_unstranded_4bp.csv")
 
 tmp <- proc.time()
 hs37d5_masked_genome_5bp <-
@@ -259,7 +259,7 @@ hs37d5_masked_genome_5bp <-
                       filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_genome_5bp <- proc.time() - tmp
 write.csv(hs37d5_masked_genome_5bp,
-          "data-raw/new_masked_abundance/hs37d5_masked_genome_5bp.csv")
+          "data-raw/new_masked_abundance/hs37d5_masked_genome_unstranded_5bp.csv")
 
 #########################################################################################
 tmp <- proc.time()
