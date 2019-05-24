@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{StandardChromName}
 \alias{StandardChromName}
-\title{Standardize the Chromosome name annotations for a data frame.}
+\title{Standardize the chromosome name annotations for a data frame.}
 \usage{
 StandardChromName(df)
 }
@@ -14,6 +14,6 @@ A data frame whose Chromosome names are only in the form of 1:22, "X"
   and "Y".
 }
 \description{
-Standardize the Chromosome name annotations for a data frame.
+Standardize the chromosome name annotations for a data frame.
 }
 \keyword{internal}
