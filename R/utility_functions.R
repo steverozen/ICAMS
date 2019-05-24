@@ -1275,3 +1275,16 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+`[.DNS78Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+                                  1) {
+  y <- NextMethod("[")
+  if (class(y) %in% c("integer", "numeric")) {
+    return(y)
+  } else {
+    class(y) <- class(x)
+    for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+      attr(y, at) <- attr(x, at, exact = TRUE)
+    }
+    return(y)
+  }
+}
