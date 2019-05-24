@@ -215,7 +215,7 @@ TransformCatalog <-
     }
   }
 
-#' Standardize the Chromosome name annotations for a data frame.
+#' Standardize the chromosome name annotations for a data frame.
 #'
 #' @param df A data frame whose first column contains the Chromosome name
 #'
@@ -255,7 +255,7 @@ StandardChromName <- function(df) {
   return(df)
 }
 
-#' Create a Transcript Range file from the raw GFF3 File
+#' Create a transcript range file from the raw GFF3 File
 #'
 #' @param path The name/path of the raw GFF3 File, or a complete URL.
 #'
@@ -1030,7 +1030,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
       filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
       genome.ranges.chr <-
         GRanges(chr.list[idx],
-                IRanges(1, as.numeric(seqlengths(genome)[idx])))
+                IRanges(1, as.numeric(GenomeInfoDb::seqlengths(genome)[idx])))
       filtered.genome.ranges.chr <- GenomicRanges::setdiff(genome.ranges.chr, filter.chr)
       genome.seq <- BSgenome::getSeq(genome, filtered.genome.ranges.chr,
                                      as.character = TRUE)
@@ -1083,7 +1083,7 @@ RemoveTransRangesOnBothStrand <- function(trans.ranges) {
   dt3 <- rbind(dt1, dt2)
   dt4 <- dt3[, c(1:3, 5)]
   colnames(dt4) <- c("chrom", "start", "end", "strand")
-  return(dt4)
+  return(setkeyv(dt4, c("chrom", "start", "end")))
 }
 
 #' Generate stranded k-mer abundance from a given genome and gene annotation file
@@ -1230,4 +1230,19 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(exome.seq, k)
   }
   return(kmer.counts)
+}
+
+# Redefine the [ method for catalogs
+`[.SNS96Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+                                1) {
+  y <- NextMethod("[")
+  if (class(y) %in% c("integer", "numeric")) {
+    return(y)
+  } else {
+    class(y) <- class(x)
+    for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+      attr(y, at) <- attr(x, at, exact = TRUE)
+    }
+    return(y)
+  }
 }
