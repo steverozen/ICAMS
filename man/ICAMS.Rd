@@ -32,7 +32,7 @@ mutation densities, or of mutational signatures.
 A catalog has one of the following types:
 \enumerate{
 \item Matrix of mutation counts (one column per sample), representing
-(count-based) mutational spectra.
+(counts-based) mutational spectra.
 
 \item Matrix of mutation densities, i.e. mutations per occurrences
  of source sequences (one column per sample), representing
@@ -47,8 +47,8 @@ the proportions of mutations in each class (with all the
 proportions summing to 1). A mutational signature can be based
 on either:
 \itemize{
-  \item 3.1 mutation counts (a "count-based mutational signature"), or
-  \item 3.2 mutation densities (a "density-based mutational signature").
+  \item mutation counts (a "counts-based mutational signature"), or
+  \item mutation densities (a "density-based mutational signature").
 }
 }
 
@@ -163,8 +163,8 @@ based on mutation counts as observed in a given genome,
 and this approach is widely used, as, for example, at
 https://cancer.sanger.ac.uk/cosmic/signatures, which
 presents signatures based on observed mutation counts
-in the human genome. We call these "count-based spectra"
-or "count-based signatures".
+in the human genome. We call these "counts-based spectra"
+or "counts-based signatures".
 
 Alternatively,
 mutational spectra or signatures can be represented as
@@ -182,7 +182,7 @@ a density-based catalog represents
 the proportion of ACCs mutated to
 ATCs, the proportion of ACGs mutated to ATGs, etc.
 This is
-different from count-based catalogs, which
+different from counts-based mutational spectra catalogs, which
 contain the number of ACC > ATC mutations, the number of
 ACG > ATG mutations, etc.
 
