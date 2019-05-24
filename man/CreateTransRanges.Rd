@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateTransRanges}
 \alias{CreateTransRanges}
-\title{Create a Transcript Range file from the raw GFF3 File}
+\title{Create a transcript range file from the raw GFF3 File}
 \usage{
 CreateTransRanges(path)
 }
@@ -16,6 +16,6 @@ A data table which contains chromosome name, start, end position,
   transcriptional strand bias analysis.
 }
 \description{
-Create a Transcript Range file from the raw GFF3 File
+Create a transcript range file from the raw GFF3 File
 }
 \keyword{internal}
