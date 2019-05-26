@@ -688,7 +688,6 @@ PlotCatalogToPdf.SNS1536Catalog <- function(catalog, file) {
 
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
-    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat)
   }
   invisible(grDevices::dev.off())
