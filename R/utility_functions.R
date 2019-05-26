@@ -464,7 +464,7 @@ RevcDBS144 <- function(mutstring) {
 #' @param path Path to the file with the transcript information with 1-based
 #'   start end positions of genomic ranges.
 #'
-#' @return A data.table keyed by chrom, chromStart, and chromEnd.
+#' @return A data.table keyed by chrom, start, and end.
 #'
 #' @keywords internal
 ReadTranscriptRanges <- function(path) {
