@@ -3,7 +3,7 @@
 #' This data is designed for those
 #' who need to create their own catalogs from formats not
 #' supported by this package. The rownames denote the mutation
-#' types.  For example, for SNS96 catalogs, the rowname
+#' types.  For example, for SBS96 catalogs, the rowname
 #'  AGAT represents a mutation from AGA > ATA.
 #'
 #' @format A list of character vectors indicating the standard
@@ -27,9 +27,9 @@
 #' (ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gff3.gz),
 #' only genes that are associated with a CCDS ID are kept for
 #' transcriptional strand bias analysis. Needed for
-#' \code{\link{StrelkaSNSVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
-#' \code{\link{VCFsToDNSCatalogs}}.
+#' \code{\link{StrelkaSBSVCFFilesToCatalog}},
+#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSBSCatalogs}} and
+#' \code{\link{VCFsToDBSCatalogs}}.
 #'
 #' \code{trans.ranges.GRCh38} A data.table which contains transcript range and
 #' strand information for \strong{Human} GRCh38. It is derived from a raw
@@ -37,9 +37,9 @@
 #' (ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/gencode.v30.annotation.gff3.gz),
 #' only genes that are associated with a CCDS ID are kept for
 #' transcriptional strand bias analysis. Needed for
-#' \code{\link{StrelkaSNSVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSNSCatalogs}} and
-#' \code{\link{VCFsToDNSCatalogs}}.
+#' \code{\link{StrelkaSBSVCFFilesToCatalog}},
+#' \code{\link{MutectVCFFilesToCatalog}},  \code{\link{VCFsToSBSCatalogs}} and
+#' \code{\link{VCFsToDBSCatalogs}}.
 #'
 #' @format A data.table which contains transcript range and strand information
 #'   for a particular reference genome. It contains chromosome name, start, end
