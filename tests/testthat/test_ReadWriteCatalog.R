@@ -20,12 +20,12 @@ test_that("Functions for reading and writing catalog are working properly", {
       WriteCatalog)
 
   fl <-
-    c("testdata/BTSG_WGS_PCAWG.sns.96.csv",
-      "testdata/BTSG_WGS_PCAWG.sns.192.csv",
-      "testdata/BTSG_WGS_PCAWG.sns.1536.csv",
-      "testdata/BTSG_WGS_PCAWG.dns.78.csv",
-      "testdata/HepG2.dns.144.csv",
-      "testdata/HepG2.dns.136.csv",
+    c("testdata/BTSG_WGS_PCAWG.sbs.96.csv",
+      "testdata/BTSG_WGS_PCAWG.sbs.192.csv",
+      "testdata/BTSG_WGS_PCAWG.sbs.1536.csv",
+      "testdata/BTSG_WGS_PCAWG.dbs.78.csv",
+      "testdata/HepG2.dbs.144.csv",
+      "testdata/HepG2.dbs.136.csv",
       "testdata/BTSG_WGS_PCAWG.indels.csv"
     )
 
