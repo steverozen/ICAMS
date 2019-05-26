@@ -6,7 +6,6 @@ test_that("PlotCatalog.SNSClassStrandBias function is working properly", {
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
-  cat.counts <- PreserveCatalogAttribute(catalog.counts, cat.counts)
   out <- PlotCatalog(cat.counts, strandbias = TRUE)
   expect_equal(out, TRUE)
 
