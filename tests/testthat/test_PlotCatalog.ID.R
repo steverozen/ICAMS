@@ -6,7 +6,6 @@ test_that("PlotCatalog.ID function is working properly", {
                        ref.genome = "GRCh37",
                        region = "genome", catalog.type = "counts")
   cat <- catalog[, 1, drop = FALSE]
-  cat <- PreserveCatalogAttribute(catalog, cat)
   out <- PlotCatalog(cat)
   expect_equal(out, TRUE)
 
