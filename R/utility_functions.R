@@ -1075,16 +1075,17 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   return(kmer.counts)
 }
 
-#' Remove ranges that have transcripts on both strands from a trans.ranges file
+#' Remove ranges that fall on both strands
 #'
-#' @param trans.ranges A GFF3 trans.range.file
+#' @param stranded.ranges A keyed data table which has stranded ranges information.
+#' It has four columns: chrom, start, end and strand.
 #'
-#' @return A data table which has removed ranges that have transcripts on both
-#' strands from the input \code{trans.ranges}.
+#' @return A data table which has removed ranges that fall on both
+#' strands from the input \code{stranded.ranges}.
 #'
 #' @keywords internal
-RemoveTransRangesOnBothStrand <- function(trans.ranges) {
-  dt <- as.data.table(trans.ranges)
+RemoveRangesOnBothStrand <- function(stranded.ranges) {
+  dt <- as.data.table(stranded.ranges)
   dt.plus <- dt[strand == "+", ]
   dt.minus <- dt[strand == "-", ]
   gr.plus <-
