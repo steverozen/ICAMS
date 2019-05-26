@@ -1,12 +1,12 @@
-context("PlotCatalogToPdf.SNS192")
+context("PlotCatalogToPdf.SBS192")
 
-test_that("PlotCatalogToPdf.SNS192 function is working properly", {
+test_that("PlotCatalogToPdf.SBS192 function is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, file = "PlotCatSNS192.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, file = "PlotCatSBS192.counts.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,7 +14,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, file = "PlotCatSNS192.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, file = "PlotCatSBS192.density.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -23,7 +23,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = "PlotCatSNS192.counts.signature.test.pdf")
+                     file = "PlotCatSBS192.counts.signature.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -32,12 +32,12 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = "PlotCatSNS192.density.signature.test.pdf")
+                     file = "PlotCatSBS192.density.signature.test.pdf")
   expect_equal(out, TRUE)
 
-  unlink("PlotCatSNS192.counts.test.pdf")
-  unlink("PlotCatSNS192.density.test.pdf")
-  unlink("PlotCatSNS192.counts.signature.test.pdf")
-  unlink("PlotCatSNS192.density.signature.test.pdf")
+  unlink("PlotCatSBS192.counts.test.pdf")
+  unlink("PlotCatSBS192.density.test.pdf")
+  unlink("PlotCatSBS192.counts.signature.test.pdf")
+  unlink("PlotCatSBS192.density.signature.test.pdf")
   graphics.off()
 })
