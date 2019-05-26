@@ -1,5 +1,5 @@
-context("RevcDNS144")
+context("RevcDBS144")
 
-test_that("RevcDNS144 function is working properly", {
-  expect_equal(RevcDNS144(c("ACGT", "CTGA")), c("GTAC", "AGTC"))
+test_that("RevcDBS144 function is working properly", {
+  expect_equal(RevcDBS144(c("ACGT", "CTGA")), c("GTAC", "AGTC"))
 })
