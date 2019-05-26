@@ -1,12 +1,12 @@
-context("PlotCatalogToPdf.DNS78")
+context("PlotCatalogToPdf.DBS78")
 
-test_that("PlotCatalogToPdf.DNS78 function is working properly", {
-  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.78.csv",
+test_that("PlotCatalogToPdf.DBS78 function is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, file = "PlotCatDNS78.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, file = "PlotCatDBS78.counts.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,7 +14,7 @@ test_that("PlotCatalogToPdf.DNS78 function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, file = "PlotCatDNS78.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, file = "PlotCatDBS78.density.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -23,7 +23,7 @@ test_that("PlotCatalogToPdf.DNS78 function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = "PlotCatDNS78.counts.signature.test.pdf")
+                     file = "PlotCatDBS78.counts.signature.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -32,12 +32,12 @@ test_that("PlotCatalogToPdf.DNS78 function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = "PlotCatDNS78.density.signature.test.pdf")
+                     file = "PlotCatDBS78.density.signature.test.pdf")
   expect_equal(out, TRUE)
 
-  unlink("PlotCatDNS78.counts.test.pdf")
-  unlink("PlotCatDNS78.density.test.pdf")
-  unlink("PlotCatDNS78.counts.signature.test.pdf")
-  unlink("PlotCatDNS78.density.signature.test.pdf")
+  unlink("PlotCatDBS78.counts.test.pdf")
+  unlink("PlotCatDBS78.density.test.pdf")
+  unlink("PlotCatDBS78.counts.signature.test.pdf")
+  unlink("PlotCatDBS78.density.signature.test.pdf")
   graphics.off()
 })
