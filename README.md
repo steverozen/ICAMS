@@ -13,12 +13,12 @@ ICAMS: In-depth Characterization and Analysis of Mutational Signatures
 
 A toolkit for analysis and visualization of experimentally elucidated
 mutational signatures – the kind of analysis and visualization presented
-in Boot et al., \`\`In-depth characterization of the cisplatin
-mutational signature in human cell lines and in esophageal and liver
-tumors’’, 2018, <https://genome.cshlp.org/content/28/5/654.short>. This
-package has functions to read in variant call files and to collate the
-corresponding catalogs of mutational spectra and to analyze and plot
-catalogs of mutational spectra and signatures.
+in Boot et al., “In-depth characterization of the cisplatin mutational
+signature in human cell lines and in esophageal and liver tumors”, 2018,
+<https://genome.cshlp.org/content/28/5/654.short>. This package has
+functions to read in variant call files and to collate the corresponding
+catalogs of mutational spectra and to analyze and plot catalogs of
+mutational spectra and signatures.
 
 ## Installation
 
