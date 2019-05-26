@@ -1211,7 +1211,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(kmer.counts)
 }
 
-# Redefine the [ method for catalogs
+# Redefine the [ methods for catalogs
 `[.SNS96Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
@@ -1308,4 +1308,14 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     }
     return(y)
   }
+}
+
+# Redefine the cbind methods for catalogs
+`cbind.SNS96Catalog` <- function (..., deparse.level = 1) {
+  x <- as.matrix(data.frame(..., check.names = FALSE))
+  class(x) <- class(..1)
+  for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+    attr(x, at) <- attr(..1, at, exact = TRUE)
+  }
+  return(x)
 }
