@@ -1,6 +1,6 @@
 context("cbind methods for catalogs")
 
-test_that("cbind method for SNS96Catalog is working properly", {
+test_that("cbind method for SBS96Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sns.96.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -14,7 +14,7 @@ test_that("cbind method for SNS96Catalog is working properly", {
   unlink("test.pdf")
 })
 
-test_that("cbind method for SNS192Catalog is working properly", {
+test_that("cbind method for SBS192Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sns.192.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -28,7 +28,7 @@ test_that("cbind method for SNS192Catalog is working properly", {
   unlink("test.pdf")
 })
 
-test_that("cbind method for SNS1536Catalog is working properly", {
+test_that("cbind method for SBS1536Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sns.1536.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -42,7 +42,7 @@ test_that("cbind method for SNS1536Catalog is working properly", {
   unlink("test.pdf")
 })
 
-test_that("cbind method for DNS78Catalog is working properly", {
+test_that("cbind method for DBS78Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dns.78.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -56,7 +56,7 @@ test_that("cbind method for DNS78Catalog is working properly", {
   unlink("test.pdf")
 })
 
-test_that("cbind method for DNS144Catalog is working properly", {
+test_that("cbind method for DBS144Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -70,7 +70,7 @@ test_that("cbind method for DNS144Catalog is working properly", {
   unlink("test.pdf")
 })
 
-test_that("cbind method for DNS136Catalog is working properly", {
+test_that("cbind method for DBS136Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dns.136.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
