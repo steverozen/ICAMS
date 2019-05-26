@@ -6,7 +6,7 @@ test_that("PlotCatalogToPdf.DNS136 function is working properly", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, filename = "PlotCatDNS136.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, file = "PlotCatDNS136.counts.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,7 +14,7 @@ test_that("PlotCatalogToPdf.DNS136 function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, filename = "PlotCatDNS136.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, file = "PlotCatDNS136.density.test.pdf")
   expect_equal(out, TRUE)
 
   unlink("PlotCatDNS136.counts.test.pdf")
