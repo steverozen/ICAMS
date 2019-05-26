@@ -334,6 +334,55 @@ CreateTransRanges <- function(path) {
   }
 }
 
+#' Create exome transcriptionally stranded regions
+#'
+#' @param path Path to a SureSelect BED file which contains unstranded exome
+#'   ranges.
+#'
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
+#'
+#' @import data.table
+#'
+#' @return A data table which contains chromosome name, start, end position,
+#'   strand information. It is keyed by chrom, start, and
+#'   end.
+#'
+#' @keywords internal
+CreateExomeStrandedRanges <- function(path, trans.ranges) {
+  exome.ranges <- ReadBedRanges(path)
+  colnames(exome.ranges) <- c("chrom", "exome.start", "exome.end")
+
+  # Remove ranges which fall on transcripts on both strands and get
+  # transcriptionally stranded regions
+  trans.ranges <- RemoveTransRangesOnBothStrand(trans.ranges)
+
+  # Find range overlaps between the exome.ranges and trans.ranges
+  dt <- foverlaps(exome.ranges, trans.ranges, type = "any", mult = "all")
+  dt1 <- dt[!is.na(strand)]
+
+  # Find out and remove exome ranges that fall on transcripts on both strands
+  dt2 <- dt1[, bothstrand := "+" %in% strand && "-" %in% strand,
+             by = .(chrom, exome.start, exome.end)]
+  dt3 <- dt2[bothstrand == FALSE]
+
+  # One unstranded exome range can be represented by more than 1 row in dt3 if it
+  # overlaps with multiple transcriptionally stranded regions. When creating the
+  # exome transcriptionally stranded regions, we only need to count those ranges once.
+  dt4 <- dt3[, count := .N, by = .(chrom, exome.start, exome.end)]
+  dt4 <- dt3[, .(strand = strand[1]), by = .(chrom, exome.start, exome.end)]
+
+  # Intersect dt4 ranges with the transcriptionally stranded regions
+  gr1 <- GenomicRanges::makeGRangesFromDataFrame(dt4)
+  gr2 <- GenomicRanges::makeGRangesFromDataFrame(trans.ranges)
+  gr3 <- GenomicRanges::intersect(gr1, gr2)
+
+  dt5 <- as.data.table(gr3)[, c(1:3, 5)]
+  colnames(dt5)[1] <- "chrom"
+  return(setkeyv(dt5, c("chrom", "start", "end")))
+}
+
 #' @keywords internal
 PyrTri <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
