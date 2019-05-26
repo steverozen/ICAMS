@@ -1199,7 +1199,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
 #'   \code{\link{ICAMS}}.
 #'
 #' @param exome.range A keyed data table which has exome ranges information.
-#' It has three columns: chrom, chromStart and chromEnd.
+#' It has three columns: chrom, start and end.
 #'
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
