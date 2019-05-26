@@ -3,7 +3,7 @@ context("PlotCatalog.SNS96")
 test_that("PlotCatalog.SNS96 function is working properly", {
   par(mar = c(8, 5, 5, 1))
   catalog.counts <-
-    ReadCatalog("testdata/regress.cat.sns.96.csv", ref.genome = "GRCh37",
+    ReadCatalog("testdata/regress.cat.sbs.96.csv", ref.genome = "GRCh37",
                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
   out <- PlotCatalog(cat.counts)
