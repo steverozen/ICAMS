@@ -6,7 +6,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, filename = "PlotCatSNS192.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, file = "PlotCatSNS192.counts.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,7 +14,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, filename = "PlotCatSNS192.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, file = "PlotCatSNS192.density.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -23,7 +23,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     filename = "PlotCatSNS192.counts.signature.test.pdf")
+                     file = "PlotCatSNS192.counts.signature.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -32,7 +32,7 @@ test_that("PlotCatalogToPdf.SNS192 function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     filename = "PlotCatSNS192.density.signature.test.pdf")
+                     file = "PlotCatSNS192.density.signature.test.pdf")
   expect_equal(out, TRUE)
 
   unlink("PlotCatSNS192.counts.test.pdf")
