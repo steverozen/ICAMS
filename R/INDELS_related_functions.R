@@ -594,19 +594,19 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
 #'   \code{\link{AddAndCheckSequenceID}} function. It must only
-#'   contain indels and must \strong{not} contain SNSs
-#'   (single nucleotide/base substitutions), DNSs, or triplet
+#'   contain indels and must \strong{not} contain SBSs
+#'   (single base substitutions), DBSs, or triplet
 #'   base substitutions, etc.
 #'
 #'   One design decision for variant callers is the representation of "complex
 #'   indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
 #'   A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
-#'   arise. In PCAWG, overlapping indel/SNS calls from different callers were
+#'   arise. In PCAWG, overlapping indel/SBS calls from different callers were
 #'   included in the indel VCFs.
 #'
-#' @param SNS.vcf An in-memory VCF as a data frame. Because we have to work with
+#' @param SBS.vcf An in-memory VCF as a data frame. Because we have to work with
 #'   some PCAWG data, we will look for neighboring indels and indels adjoining
-#'   SNS. That means this functions takes an SNS VCF and an ID VCF from the same
+#'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 #'   sample.
 #'
 #' @param trace If > 0, various called functions cat information
@@ -615,13 +615,13 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @return A list with two elements:
 #'   ID.cat:   A 1-column matrix containing the mutation catalog information.
-#'   problems: Locations of neighboring indels or indels neighboring SNS.
+#'   problems: Locations of neighboring indels or indels neighboring SBS.
 #'             In the future we might handle these depending on what we
 #'             find in the indel calls from different variant callers. This
 #'             is not implemented at present.
 #'
 #' @keywords internal
-CreateOneColIDCatalog <- function(ID.vcf, SNS.vcf, trace = 0) {
+CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
@@ -679,7 +679,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
   for (i in 1 : ncol) {
     ID <- list.of.vcfs[[i]]
     ID <- AddAndCheckSequenceID(ID, ref.genome = ref.genome)
-    # Unlike the case for SNS and DNS, we do not
+    # Unlike the case for SBS and DBS, we do not
     # add transcript information.
     one.ID.column <- CreateOneColIDCatalog(ID)
     rm(ID)
