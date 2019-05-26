@@ -1,6 +1,6 @@
-context("CanonicalizeDNS")
+context("CanonicalizeDBS")
 
-test_that("CanonicalizeDNS function is working properly", {
+test_that("CanonicalizeDBS function is working properly", {
   to.test <-
     c("AACC", "AACG", "AACT", "AAGC", "AAGG", "AAGT", "AATC", "AATG",
       "AATT", "ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA",
@@ -52,7 +52,7 @@ test_that("CanonicalizeDNS function is working properly", {
       TGGT = "TGGT", TTAA = "TTAA", TTAC = "TTAC", TTAG = "TTAG", TTCA = "TTCA",
       TTCC = "TTCC", TTCG = "TTCG", TTGA = "TTGA", TTGC = "TTGC", TTGG = "TTGG"
     )
-  expect_equal(CanonicalizeDNS(substr(to.test, 1, 2),
+  expect_equal(CanonicalizeDBS(substr(to.test, 1, 2),
                                substr(to.test, 3, 4)),
                result)
 })
