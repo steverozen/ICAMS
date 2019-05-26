@@ -6,7 +6,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, filename = "PlotDNSClassStrandBias.counts.test.pdf",
+    PlotCatalogToPdf(catalog.counts, file = "PlotDNSClassStrandBias.counts.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -15,7 +15,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, filename = "PlotDNSClassStrandBias.density.test.pdf",
+    PlotCatalogToPdf(catalog.density, file = "PlotDNSClassStrandBias.density.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -25,7 +25,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     filename = "PlotDNSClassStrandBias.counts.signature.test.pdf",
+                     file = "PlotDNSClassStrandBias.counts.signature.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -35,7 +35,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     filename = "PlotDNSClassStrandBias.density.signature.test.pdf",
+                     file = "PlotDNSClassStrandBias.density.signature.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
