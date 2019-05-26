@@ -2,7 +2,7 @@ context("PlotCatalog.DBS78")
 
 test_that("PlotCatalog.DBS78 function is working properly", {
   par(mar = c(6, 4, 6, 2))
-  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.78.csv",
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
