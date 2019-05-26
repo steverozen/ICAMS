@@ -1,13 +1,13 @@
-context("PlotCatalogToPdf.DNSClassStrandBias")
+context("PlotCatalogToPdf.DNS144Catalog")
 
-test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
+test_that("PlotCatalogToPdf.DNS144Catalog function is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, file = "PlotDNSClassStrandBias.counts.test.pdf",
-                     strandbias = TRUE)
+    PlotCatalogToPdf(catalog.counts,
+                     file = "PlotDNS144Catalog.counts.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -15,8 +15,8 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, file = "PlotDNSClassStrandBias.density.test.pdf",
-                     strandbias = TRUE)
+    PlotCatalogToPdf(catalog.density,
+                     file = "PlotDNS144Catalog.density.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -25,8 +25,7 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = "PlotDNSClassStrandBias.counts.signature.test.pdf",
-                     strandbias = TRUE)
+                     file = "PlotDNS144Catalog.counts.signature.test.pdf")
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -35,13 +34,12 @@ test_that("PlotCatalogToPdf.DNSClassStrandBias function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = "PlotDNSClassStrandBias.density.signature.test.pdf",
-                     strandbias = TRUE)
+                     file = "PlotDNS144Catalog.density.signature.test.pdf")
   expect_equal(out, TRUE)
 
-  unlink("PlotDNSClassStrandBias.counts.test.pdf")
-  unlink("PlotDNSClassStrandBias.density.test.pdf")
-  unlink("PlotDNSClassStrandBias.counts.signature.test.pdf")
-  unlink("PlotDNSClassStrandBias.density.signature.test.pdf")
+  unlink("PlotDNS144Catalog.counts.test.pdf")
+  unlink("PlotDNS144Catalog.density.test.pdf")
+  unlink("PlotDNS144Catalog.counts.signature.test.pdf")
+  unlink("PlotDNS144Catalog.density.signature.test.pdf")
   graphics.off()
 })
