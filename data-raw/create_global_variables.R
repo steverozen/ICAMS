@@ -4,7 +4,7 @@ cat(getwd(), "\n")
 
 source("data-raw/create_abundance_files.R")
 source("data-raw/create_catalogs.R")
-source("data-raw/create_order_for_DNS136_plotting.R")
+source("data-raw/create_order_for_DBS136_plotting.R")
 source("data-raw/create_ranges.R")
 
 usethis::use_data(catalog.row.order,
@@ -12,18 +12,18 @@ usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh38,
                   overwrite = TRUE)
 
-usethis::use_data(to.reorder.SNS.192.for.plotting,
-                  to.reorder.DNS.144.for.plotting,
-                  order.for.DNS.136.plotting,
+usethis::use_data(to.reorder.SBS.192.for.plotting,
+                  to.reorder.DBS.144.for.plotting,
+                  order.for.DBS.136.plotting,
                   empty.cats,
                   exome.ranges.GRCh37,
                   exome.ranges.GRCh38,
-                  catalog.row.headers.SNS.96,
-                  catalog.row.headers.SNS.192,
-                  catalog.row.headers.SNS.1536,
-                  catalog.row.headers.DNS.78,
-                  catalog.row.headers.DNS.144,
-                  catalog.row.headers.DNS.136,
+                  catalog.row.headers.SBS.96,
+                  catalog.row.headers.SBS.192,
+                  catalog.row.headers.SBS.1536,
+                  catalog.row.headers.DBS.78,
+                  catalog.row.headers.DBS.144,
+                  catalog.row.headers.DBS.136,
                   catalog.row.headers.ID,
                   abundance.2bp.genome.GRCh37,
                   abundance.3bp.genome.GRCh37,
