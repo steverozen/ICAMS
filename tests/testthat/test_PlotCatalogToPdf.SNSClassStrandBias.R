@@ -7,7 +7,7 @@ test_that("PlotCatalogToPdf.SNSClassStrandBias function is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
     PlotCatalogToPdf(catalog.counts,
-                     filename = "PlotSNSClassStrandBias.counts.test.pdf",
+                     file = "PlotSNSClassStrandBias.counts.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -17,7 +17,7 @@ test_that("PlotCatalogToPdf.SNSClassStrandBias function is working properly", {
                      target.catalog.type = "density")
   out <-
     PlotCatalogToPdf(catalog.density,
-                     filename = "PlotSNSClassStrandBias.density.test.pdf",
+                     file = "PlotSNSClassStrandBias.density.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -27,7 +27,7 @@ test_that("PlotCatalogToPdf.SNSClassStrandBias function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     filename = "PlotSNSClassStrandBias.counts.signature.test.pdf",
+                     file = "PlotSNSClassStrandBias.counts.signature.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
@@ -37,7 +37,7 @@ test_that("PlotCatalogToPdf.SNSClassStrandBias function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     filename = "PlotSNSClassStrandBias.density.signature.test.pdf",
+                     file = "PlotSNSClassStrandBias.density.signature.test.pdf",
                      strandbias = TRUE)
   expect_equal(out, TRUE)
 
