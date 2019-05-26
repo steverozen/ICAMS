@@ -2,7 +2,7 @@ context("PlotCatalog.SBS1536")
 
 test_that("PlotCatalog.SBS1536 function is working properly", {
   catalog.counts <-
-    ReadCatalog("testdata/regress.cat.sns.1536.csv", ref.genome = "GRCh37",
+    ReadCatalog("testdata/regress.cat.sbs.1536.csv", ref.genome = "GRCh37",
                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
   out <- PlotCatalog(cat.counts)
