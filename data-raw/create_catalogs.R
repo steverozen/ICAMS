@@ -27,9 +27,9 @@ make.row.order1536 <- function() {
   return(list(standard = retval1, mini = retval2))
 }
 
-catalog.row.order.SNS.1536 <- make.row.order1536()$standard
+catalog.row.order.SBS.1536 <- make.row.order1536()$standard
 
-catalog.row.order.SNS.192 <-
+catalog.row.order.SBS.192 <-
   c("AAAC","AACC","AAGC","AATC","CAAC","CACC","CAGC","CATC","GAAC",
     "GACC","GAGC","GATC","TAAC","TACC","TAGC","TATC","AAAG","AACG",
     "AAGG","AATG","CAAG","CACG","CAGG","CATG","GAAG","GACG","GAGG",
@@ -53,7 +53,7 @@ catalog.row.order.SNS.192 <-
     "CTAG","CTCG","CTGG","CTTG","GTAG","GTCG","GTGG","GTTG","TTAG",
     "TTCG","TTGG","TTTG")
 
-to.reorder.SNS.192.for.plotting <-
+to.reorder.SBS.192.for.plotting <-
   c("TGTT", "ACAA", "GGTT", "ACCA", "CGTT", "ACGA", "AGTT", "ACTA",
     "TGGT", "CCAA", "GGGT", "CCCA", "CGGT", "CCGA", "AGGT", "CCTA",
     "TGCT", "GCAA", "GGCT", "GCCA", "CGCT", "GCGA", "AGCT", "GCTA",
@@ -80,7 +80,7 @@ to.reorder.SNS.192.for.plotting <-
     "TAAC", "TTAG", "GAAC", "TTCG", "CAAC", "TTGG", "AAAC", "TTTG"
   )
 
-catalog.row.order.SNS.96 <-
+catalog.row.order.SBS.96 <-
   c("ACAA", "ACCA", "ACGA", "ACTA", "CCAA", "CCCA", "CCGA", "CCTA",
     "GCAA", "GCCA", "GCGA", "GCTA", "TCAA", "TCCA", "TCGA", "TCTA",
     "ACAG", "ACCG", "ACGG", "ACTG", "CCAG", "CCCG", "CCGG", "CCTG",
@@ -97,7 +97,7 @@ catalog.row.order.SNS.96 <-
 
 # The first two letters are reference bases while the
 # last two letters are the altered bases after mutation.
-catalog.row.order.DNS.78 <-
+catalog.row.order.DBS.78 <-
   c("ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA", "ACTG",
     "ACTT", "ATCA", "ATCC", "ATCG", "ATGA", "ATGC", "ATTA", "CCAA",
     "CCAG", "CCAT", "CCGA", "CCGG", "CCGT", "CCTA", "CCTG", "CCTT",
@@ -109,9 +109,9 @@ catalog.row.order.DNS.78 <-
     "TGCC", "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC", "TTAG",
     "TTCA", "TTCC", "TTCG", "TTGA", "TTGC", "TTGG")
 
-# There are 144 stranded DNSs: 4 X 4 sources and 3 X 3 alternates;
+# There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
 # 4 x 4 x 3 x 3 = 144.
-catalog.row.order.DNS.144 <-
+catalog.row.order.DBS.144 <-
   c("AACC", "AACG", "AACT", "AAGC", "AAGG", "AAGT", "AATC", "AATG",
     "AATT", "ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA",
     "ACTG", "ACTT", "AGCA", "AGCC", "AGCT", "AGGA", "AGGC", "AGGT",
@@ -133,12 +133,12 @@ catalog.row.order.DNS.144 <-
   )
 
 # Create the order for plotting transcription strand bias graph of the
-# 144 DNS catalog. There are 12 dinucleotide mutation types which are not
+# 144 DBS catalog. There are 12 dinucleotide mutation types which are not
 # used in the transcription analysis because the REF and ALT bases are both
 # symmetrical, hence not able to determine the strand information.
 # ("ATCG", "ATGC", "ATTA", "CGAT", "CGGC", "CGTA", "GCAT", "GCCG",
 # "GCTA", "TAAT", "TACG", "TAGC")
-to.reorder.DNS.144.for.plotting <-
+to.reorder.DBS.144.for.plotting <-
   c("GTTG", "ACCA", "GTCG", "ACCG", "GTAG", "ACCT", "GTTC", "ACGA",
     "GTCC", "ACGG", "GTAC", "ACGT", "GTTA", "ACTA", "GTCA", "ACTG",
     "GTAA", "ACTT", "ATTG", "ATCA", "ATGG", "ATCC", "ATTC", "ATGA",
@@ -157,7 +157,7 @@ to.reorder.DNS.144.for.plotting <-
     "AATG", "TTCA", "AAGG", "TTCC", "AACG", "TTCG", "AATC", "TTGA",
     "AAGC", "TTGC", "AACC", "TTGG")
 
-catalog.row.order.DNS.136 <-
+catalog.row.order.DBS.136 <-
   c("AACA", "AACC", "AACG", "AACT", "AATA",
     "AATC", "AATG", "AATT", "ACCA", "ACCC", "ACCG", "ACCT", "ACGA",
     "ACGC", "ACGG", "ACGT", "ACTA", "ACTC", "ACTG", "ACTT", "AGCA",
@@ -204,7 +204,7 @@ catalog.row.order.ID <-
 # need to write catalogs to disk.
 ##############################################################
 
-catalog.row.headers.SNS.96 <-
+catalog.row.headers.SBS.96 <-
   structure(
     list(
       `Mutation type` =
@@ -238,7 +238,7 @@ catalog.row.headers.SNS.96 <-
     # , .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-catalog.row.headers.SNS.192 <-
+catalog.row.headers.SBS.192 <-
   structure(
     list(
       Strand =
@@ -310,7 +310,7 @@ catalog.row.headers.SNS.192 <-
     # .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
-catalog.row.headers.SNS.1536 <-
+catalog.row.headers.SBS.1536 <-
   structure(
     list(
       `Mutation type` =
@@ -713,7 +713,7 @@ catalog.row.headers.SNS.1536 <-
     #, .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-catalog.row.headers.DNS.78 <-
+catalog.row.headers.DBS.78 <-
   structure(
     list(
       Ref =
@@ -738,7 +738,7 @@ catalog.row.headers.DNS.78 <-
     # ,  .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
-catalog.row.headers.DNS.144 <-
+catalog.row.headers.DBS.144 <-
   structure(
     list(
       Ref =
@@ -774,7 +774,7 @@ catalog.row.headers.DNS.144 <-
     row.names = c(NA, -144L))
 # .internal.selfref = <pointer: 0x0000000002611ef0>)
 
-catalog.row.headers.DNS.136 <-
+catalog.row.headers.DBS.136 <-
   structure(
     list(
       Quad =
@@ -850,37 +850,37 @@ catalog.row.headers.ID <-
     #, .internal.selfref = <pointer: 0x0000000008dc1ef0>
   )
 # Create a list of empty matrices
-emptySNS96 <- matrix(0, nrow = 96, ncol = 0)
-rownames(emptySNS96) <- catalog.row.order.SNS.96
+emptySBS96 <- matrix(0, nrow = 96, ncol = 0)
+rownames(emptySBS96) <- catalog.row.order.SBS.96
 
-emptySNS192 <- matrix(0, nrow = 192, ncol = 0)
-rownames(emptySNS192) <- catalog.row.order.SNS.192
+emptySBS192 <- matrix(0, nrow = 192, ncol = 0)
+rownames(emptySBS192) <- catalog.row.order.SBS.192
 
-emptySNS1536 <- matrix(0, nrow = 1536, ncol = 0)
-rownames(emptySNS1536) <- catalog.row.order.SNS.1536
+emptySBS1536 <- matrix(0, nrow = 1536, ncol = 0)
+rownames(emptySBS1536) <- catalog.row.order.SBS.1536
 
-emptyDNS78 <- matrix(0, nrow = 78, ncol = 0)
-rownames(emptyDNS78) <- catalog.row.order.DNS.78
+emptyDBS78 <- matrix(0, nrow = 78, ncol = 0)
+rownames(emptyDBS78) <- catalog.row.order.DBS.78
 
-emptyDNS144 <- matrix(0, nrow = 144, ncol = 0)
-rownames(emptyDNS144) <- catalog.row.order.DNS.144
+emptyDBS144 <- matrix(0, nrow = 144, ncol = 0)
+rownames(emptyDBS144) <- catalog.row.order.DBS.144
 
-emptyDNS136 <- matrix(0, nrow = 136, ncol = 0)
-rownames(emptyDNS136) <- catalog.row.order.DNS.136
+emptyDBS136 <- matrix(0, nrow = 136, ncol = 0)
+rownames(emptyDBS136) <- catalog.row.order.DBS.136
 
-empty.cats <- list(catSNS96 = emptySNS96,
-                   catSNS192 = emptySNS192,
-                   catSNS1536 = emptySNS1536,
-                   catDNS78 = emptyDNS78,
-                   catDNS144 = emptyDNS144,
-                   catDNS136 = emptyDNS136)
+empty.cats <- list(catSBS96 = emptySBS96,
+                   catSBS192 = emptySBS192,
+                   catSBS1536 = emptySBS1536,
+                   catDBS78 = emptyDBS78,
+                   catDBS144 = emptyDBS144,
+                   catDBS136 = emptyDBS136)
 
-catalog.row.order <- list(SNS96 = catalog.row.order.SNS.96,
-                          SNS192 = catalog.row.order.SNS.192,
-                          SNS1536 = catalog.row.order.SNS.1536,
-                          DNS78 = catalog.row.order.DNS.78,
-                          DNS136 = catalog.row.order.DNS.136,
-                          DNS144 = catalog.row.order.DNS.144,
+catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
+                          SBS192 = catalog.row.order.SBS.192,
+                          SBS1536 = catalog.row.order.SBS.1536,
+                          DBS78 = catalog.row.order.DBS.78,
+                          DBS136 = catalog.row.order.DBS.136,
+                          DBS144 = catalog.row.order.DBS.144,
                           ID = catalog.row.order.ID)
 
 #Create regex pattern for FilterWithHomopolymerMS
