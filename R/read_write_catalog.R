@@ -56,7 +56,7 @@ WriteCatalog <- function(catalog, path, strict = TRUE) {
 }
 
 #' @export
-ReadCatalog.SNS96 <- function(path, ref.genome, region,
+ReadCatalog.SBS96 <- function(path, ref.genome, region,
                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
@@ -72,15 +72,15 @@ ReadCatalog.SNS96 <- function(path, ref.genome, region,
   out <- as.matrix(out)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$SNS96)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$SBS96)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @export
-ReadCatalog.SNS192 <- function(path, ref.genome, region,
+ReadCatalog.SBS192 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   # cos.copy <- cos # For debugging, testing
@@ -94,7 +94,7 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region,
   before.ref.after <- unlist(cos[, 3])
 
   ## Find the rows labeled with "T", indicating the
-  ## SNS is on the transcribed (which is the *antisense*) strand.
+  ## SBS is on the transcribed (which is the *antisense*) strand.
   transcribed.strand.pos <- which(cos[, 1] == 'T')
 
   before.ref.after[transcribed.strand.pos] <-
@@ -105,17 +105,17 @@ ReadCatalog.SNS192 <- function(path, ref.genome, region,
 
   tmp <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(tmp == ICAMS::catalog.row.order$SNS192)
+    stopifnot(tmp == ICAMS::catalog.row.order$SBS192)
   }
   out <- cos[, -(1 : 3), drop = FALSE]
   out <- as.matrix(out)
   rownames(out) <- tmp
-  out <- out[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$SBS192, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @export
-ReadCatalog.SNS1536 <- function(path, ref.genome, region,
+ReadCatalog.SBS1536 <- function(path, ref.genome, region,
                                 catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
@@ -131,15 +131,15 @@ ReadCatalog.SNS1536 <- function(path, ref.genome, region,
   out <- as.matrix(cos[ , -(1 : 2)], drop = FALSE)
   rownames(out) <- paste0(before.ref.after, var)
   if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$SNS1536)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$SBS1536)
   }
   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
-  out <- out[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$SBS1536, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @export
-ReadCatalog.DNS78 <- function(path, ref.genome, region,
+ReadCatalog.DBS78 <- function(path, ref.genome, region,
                               catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 78)
@@ -150,15 +150,15 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region,
   out <- cos[, -(1 : 2), drop = FALSE]
   out <- as.matrix(out)
   rn <- paste0(cos$Ref, cos$Var)
-  diff1 <- sort(setdiff(rn, ICAMS::catalog.row.order$DNS78))
+  diff1 <- sort(setdiff(rn, ICAMS::catalog.row.order$DBS78))
   if ( (length(diff1) > 0)
        &&
        (diff1 == c("CGAA", "CGAC", "CGGA", "TAAC", "TAAG", "TACC"))
        &&
-       (sort(setdiff(ICAMS::catalog.row.order$DNS78, rn) ==
+       (sort(setdiff(ICAMS::catalog.row.order$DBS78, rn) ==
              c("CGGT", "CGTC", "CGTT", "TACT", "TAGG", "TAGT")))
   ) {
-    cat("using temporary hack for old DNS canonicalization\n")
+    cat("using temporary hack for old DBS canonicalization\n")
     # CGAA -> CGTT
     rn[rn == "CGAA"] <- "CGTT"
 
@@ -179,14 +179,14 @@ ReadCatalog.DNS78 <- function(path, ref.genome, region,
   }
   rownames(out) <- rn
   if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS78)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$DBS78)
   }
-  out <- out[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @export
-ReadCatalog.DNS144 <- function(path, ref.genome, region,
+ReadCatalog.DBS144 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 144)
@@ -199,14 +199,14 @@ ReadCatalog.DNS144 <- function(path, ref.genome, region,
   rn <- paste0(cos$Ref, cos$Var)
   rownames(out) <- rn
   if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS144)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$DBS144)
   }
-  out <- out[ICAMS::catalog.row.order$DNS144, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$DBS144, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
 #' @export
-ReadCatalog.DNS136 <- function(path, ref.genome, region,
+ReadCatalog.DBS136 <- function(path, ref.genome, region,
                                catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 136)
@@ -218,9 +218,9 @@ ReadCatalog.DNS136 <- function(path, ref.genome, region,
   out <- as.matrix(out)
   rownames(out) <- cos$Quad
   if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$DNS136)
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$DBS136)
   }
-  out <- out[ICAMS::catalog.row.order$DNS136, , drop = FALSE]
+  out <- out[ICAMS::catalog.row.order$DBS136, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
@@ -277,39 +277,39 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
 }
 
 #' @export
-WriteCatalog.SNS96Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SNS96,
-           catalog.row.headers.SNS.96, strict)
+WriteCatalog.SBS96Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SBS96,
+           catalog.row.headers.SBS.96, strict)
 }
 
 #' @export
-WriteCatalog.SNS192Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SNS192,
-           catalog.row.headers.SNS.192, strict)
+WriteCatalog.SBS192Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SBS192,
+           catalog.row.headers.SBS.192, strict)
 }
 
 #' @export
-WriteCatalog.SNS1536Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SNS1536,
-           catalog.row.headers.SNS.1536, strict)
+WriteCatalog.SBS1536Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SBS1536,
+           catalog.row.headers.SBS.1536, strict)
 }
 
 #' @export
-WriteCatalog.DNS78Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DNS78,
-           catalog.row.headers.DNS.78, strict)
+WriteCatalog.DBS78Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DBS78,
+           catalog.row.headers.DBS.78, strict)
 }
 
 #' @export
-WriteCatalog.DNS144Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DNS144,
-           catalog.row.headers.DNS.144, strict)
+WriteCatalog.DBS144Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DBS144,
+           catalog.row.headers.DBS.144, strict)
 }
 
 #' @export
-WriteCatalog.DNS136Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DNS136,
-           catalog.row.headers.DNS.136, strict)
+WriteCatalog.DBS136Catalog <- function(catalog, path, strict = TRUE) {
+  WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DBS136,
+           catalog.row.headers.DBS.136, strict)
 }
 
 #' @export
