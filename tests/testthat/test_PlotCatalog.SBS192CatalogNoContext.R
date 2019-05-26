@@ -1,8 +1,8 @@
-context("PlotCatalog.SNS192CatalogNoContext")
+context("PlotCatalog.SBS192CatalogNoContext")
 
-test_that("PlotCatalog.SNS192CatalogNoContext function is working properly", {
+test_that("PlotCatalog.SBS192CatalogNoContext function is working properly", {
   par(mar = c(5, 5, 5, 1))
-  catalog.counts <- ReadCatalog("testdata/regress.cat.sns.192.csv",
+  catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
