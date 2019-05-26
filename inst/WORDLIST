@@ -24,8 +24,10 @@ bioconductor
 BSgenome
 CanonicalizeDNS
 CanonicalizeQUAD
+catDBS
 catDNS
 CatDNS
+catSBS
 catSNS
 CATTAT
 CCDS
@@ -37,7 +39,9 @@ chromStart
 cisplatin
 cshlp
 dinucleotide
+DBS
 DNS
+DBSs
 DNSs
 ebi
 et
@@ -60,6 +64,7 @@ https
 indel
 indels
 intron
+MakeVCFDBSdf
 MakeVCFDNSdf
 mer
 mers
@@ -84,7 +89,9 @@ PyrPenta
 PyrTri
 rowname
 sanger
+SBS
 SNS
+SBSs
 SNSs
 steverozen
 StrandToPdf
