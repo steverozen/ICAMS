@@ -40,7 +40,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @param filename The name of the PDF file to be produced.
+#' @param file The name of the PDF file to be produced.
 #'
 #' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
 #'   catalog. Leave out this parameter if you don't intend to plot strand bias
@@ -57,7 +57,7 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @export
 #'
 #' @name PlotCatalogToPdf
-PlotCatalogToPdf <- function(catalog, filename, strandbias = FALSE, ...) {
+PlotCatalogToPdf <- function(catalog, file, strandbias = FALSE, ...) {
   type.of.plot <- character()
   if (strandbias == TRUE && "SNS192Catalog" %in% class(catalog)) {
     class(type.of.plot) <- "SNSClassStrandBias"
@@ -197,10 +197,10 @@ PlotCatalog.SNS96Catalog <-
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatalogToPdf.SNS96Catalog <-
-  function(catalog, filename,
+  function(catalog, file,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
     n <- ncol(catalog)
     graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
@@ -341,9 +341,9 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS192Catalog <- function(catalog, filename) {
+PlotCatalogToPdf.SNS192Catalog <- function(catalog, file) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
@@ -473,10 +473,10 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, filename,
+PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, file,
                                                 strandbias = TRUE) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
   graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
@@ -686,8 +686,8 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS1536Catalog <- function(catalog, filename) {
-  grDevices::cairo_pdf(filename, width = 11.6929, height = 9.2677, onefile = TRUE)
+PlotCatalogToPdf.SNS1536Catalog <- function(catalog, file) {
+  grDevices::cairo_pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
 
@@ -799,9 +799,9 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS78Catalog <- function(catalog, filename) {
+PlotCatalogToPdf.DNS78Catalog <- function(catalog, file) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
@@ -933,9 +933,9 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 #' @rdname PlotCatalogToPdf
 #' @export
 PlotCatalogToPdf.DNSClassStrandBias <-
-  function(catalog, filename, strandbias = TRUE, cex = 1) {
+  function(catalog, file, strandbias = TRUE, cex = 1) {
     # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
     n <- ncol(catalog)
     graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
@@ -1096,12 +1096,12 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS136Catalog <- function(catalog, filename) {
+PlotCatalogToPdf.DNS136Catalog <- function(catalog, file) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   par(oma = c(1, 2, 1, 1))
 
   # Specify the lay out of the plotting
@@ -1401,9 +1401,9 @@ PlotCatalog.IndelCatalog <- function(catalog){
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.IndelCatalog <-function(catalog, filename) {
+PlotCatalogToPdf.IndelCatalog <-function(catalog, file) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(filename, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
