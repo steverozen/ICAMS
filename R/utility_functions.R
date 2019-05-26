@@ -356,7 +356,7 @@ CreateExomeStrandedRanges <- function(path, trans.ranges) {
 
   # Remove ranges which fall on transcripts on both strands and get
   # transcriptionally stranded regions
-  trans.ranges <- RemoveTransRangesOnBothStrand(trans.ranges)
+  trans.ranges <- RemoveRangesOnBothStrand(trans.ranges)
 
   # Find range overlaps between the exome.ranges and trans.ranges
   dt <- foverlaps(exome.ranges, trans.ranges, type = "any", mult = "all")
@@ -380,6 +380,8 @@ CreateExomeStrandedRanges <- function(path, trans.ranges) {
 
   dt5 <- as.data.table(gr3)[, c(1:3, 5)]
   colnames(dt5)[1] <- "chrom"
+  chrOrder <- c((1:22), "X", "Y")
+  dt5$chrom <- factor(dt5$chrom, chrOrder, ordered = TRUE)
   return(setkeyv(dt5, c("chrom", "start", "end")))
 }
 
@@ -498,8 +500,7 @@ ReadBedRanges <- function(path) {
 
   chrOrder <- c((1:22), "X", "Y")
   dt2$chrom <- factor(dt2$chrom, chrOrder, ordered = TRUE)
-  dt3 <- StandardChromName(dt2)
-  return(data.table::setkeyv(dt3, c("chrom", "start", "end")))
+  return(data.table::setkeyv(dt2, c("chrom", "start", "end")))
 }
 
 #' Create trinucleotide abundance
@@ -1136,7 +1137,7 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #'
 #' @keywords internal
 GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
-  trans.ranges <- RemoveTransRangesOnBothStrand(trans.ranges)
+  trans.ranges <- RemoveRangesOnBothStrand(trans.ranges)
   stranded.ranges <- StandardChromName(trans.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
