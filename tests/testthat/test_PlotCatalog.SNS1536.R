@@ -5,7 +5,6 @@ test_that("PlotCatalog.SNS1536 function is working properly", {
     ReadCatalog("testdata/regress.cat.sns.1536.csv", ref.genome = "GRCh37",
                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
-  cat.counts <- PreserveCatalogAttribute(catalog.counts, cat.counts)
   out <- PlotCatalog(cat.counts)
   expect_equal(out, TRUE)
 
