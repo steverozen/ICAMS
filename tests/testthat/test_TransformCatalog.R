@@ -222,7 +222,7 @@ and genome counts -> exome counts.signature", {
 })
 
 if (FALSE) {
-  test_that("Error test: transformation of a SNS 192 catalog", {
+  test_that("Error test: transformation of a SBS 192 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.sns.192.csv",
                        ref.genome = "GRCh37", region = "genome",
                        catalog.type = "counts")
@@ -256,7 +256,7 @@ if (FALSE) {
 
 
 if (FALSE) {
-  test_that("Transformation of a DNS 144 catalog", {
+  test_that("Transformation of a DBS 144 catalog", {
     cat <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                        ref.genome = "GRCh37", region = "transcript",
                        catalog.type = "counts")
