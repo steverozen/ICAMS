@@ -1,6 +1,6 @@
-context("PlotCatalog.DNSClassStrandBias")
+context("PlotCatalog.DNS144Catalog")
 
-test_that("PlotCatalog.DNSClassStrandBias function is working properly", {
+test_that("PlotCatalog.DNS144Catalog function is working properly", {
   par(mar = c(5, 8, 5, 1))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dns.144.csv",
                                 ref.genome = "GRCh37",
