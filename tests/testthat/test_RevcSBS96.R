@@ -1,5 +1,5 @@
-context("RevcSNS96")
+context("RevcSBS96")
 
-test_that("RevcSNS96 function is working properly", {
-  expect_equal(RevcSNS96(c("ATAG", "TGGA")), c("TATC", "CCAT"))
+test_that("RevcSBS96 function is working properly", {
+  expect_equal(RevcSBS96(c("ATAG", "TGGA")), c("TATC", "CCAT"))
 })
