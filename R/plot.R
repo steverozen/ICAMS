@@ -6,7 +6,7 @@
 #' See \code{\link{as.catalog}} for more details.
 #'
 #' @param no.context If TRUE, no preceding and following base context for
-#' SNS192 catalog plot.
+#' SBS192 catalog plot.
 #'
 #' @param ... Additional arguments to be passed to methods.
 #'
@@ -21,8 +21,8 @@
 #' @name PlotCatalog
 PlotCatalog <- function(catalog, no.context = FALSE, ...) {
   type.of.plot <- character()
-  if (no.context == TRUE && "SNS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SNS192CatalogNoContext"
+  if (no.context == TRUE && "SBS192Catalog" %in% class(catalog)) {
+    class(type.of.plot) <- "SBS192CatalogNoContext"
   } else {
     class(type.of.plot) <- class(catalog)
   }
@@ -40,7 +40,7 @@ PlotCatalog <- function(catalog, no.context = FALSE, ...) {
 #' @param file The name of the PDF file to be produced.
 #'
 #' @param no.context If TRUE, no preceding and following base context for
-#' SNS192 catalog plot.
+#' SBS192 catalog plot.
 #'
 #' @param ... Additional arguments to be passed to methods.
 #'
@@ -55,8 +55,8 @@ PlotCatalog <- function(catalog, no.context = FALSE, ...) {
 #' @name PlotCatalogToPdf
 PlotCatalogToPdf <- function(catalog, file, no.context = FALSE, ...) {
   type.of.plot <- character()
-  if (no.context == TRUE && "SNS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SNS192CatalogNoContext"
+  if (no.context == TRUE && "SBS192Catalog" %in% class(catalog)) {
+    class(type.of.plot) <- "SBS192CatalogNoContext"
   } else {
     class(type.of.plot) <- class(catalog)
   }
@@ -64,15 +64,15 @@ PlotCatalogToPdf <- function(catalog, file, no.context = FALSE, ...) {
 }
 
 ###############################################################################
-# Plotting functions for SNS96, SNS192 and SNS1536 catalog start here
+# Plotting functions for SBS96, SBS192 and SBS1536 catalog start here
 ###############################################################################
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.SNS96Catalog <-
+PlotCatalog.SBS96Catalog <-
   function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog) == c(96, 1))
-    stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SNS96)
+    stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SBS96)
 
     class.col <- c("#0000ff",  # dark blue
                    "#000000",  # black
@@ -190,7 +190,7 @@ PlotCatalog.SNS96Catalog <-
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS96Catalog <-
+PlotCatalogToPdf.SBS96Catalog <-
   function(catalog, file,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
@@ -209,7 +209,7 @@ PlotCatalogToPdf.SNS96Catalog <-
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
+PlotCatalog.SBS192Catalog <- function(catalog, cex = 0.8) {
   stopifnot(dim(catalog) == c(192, 1))
 
   class.col  <- c("#03bcee",
@@ -230,7 +230,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
                   "#e83020")
 
   # Sort data in plotting order
-  cat <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
 
   num.classes <- length(cat)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -333,7 +333,7 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS192Catalog <- function(catalog, file) {
+PlotCatalogToPdf.SBS192Catalog <- function(catalog, file) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -350,7 +350,7 @@ PlotCatalogToPdf.SNS192Catalog <- function(catalog, file) {
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.SNS192CatalogNoContext <-
+PlotCatalog.SBS192CatalogNoContext <-
   function(catalog, no.context = TRUE, cex = 1) {
   stopifnot(dim(catalog) == c(192, 1))
 
@@ -358,7 +358,7 @@ PlotCatalog.SNS192CatalogNoContext <-
                   '#e83020')
 
   # Sort data in plotting order
-  cat <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
 
   num.classes <- 12
   maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -463,7 +463,7 @@ PlotCatalog.SNS192CatalogNoContext <-
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS192CatalogNoContext <- function(catalog, file,
+PlotCatalogToPdf.SBS192CatalogNoContext <- function(catalog, file,
                                                 no.context = TRUE) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -482,7 +482,7 @@ PlotCatalogToPdf.SNS192CatalogNoContext <- function(catalog, file,
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.SNS1536Catalog <- function(catalog) {
+PlotCatalog.SBS1536Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -675,7 +675,7 @@ PlotCatalog.SNS1536Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNS1536Catalog <- function(catalog, file) {
+PlotCatalogToPdf.SBS1536Catalog <- function(catalog, file) {
   grDevices::cairo_pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
@@ -689,14 +689,14 @@ PlotCatalogToPdf.SNS1536Catalog <- function(catalog, file) {
 }
 
 ###############################################################################
-# Plotting functions for DNS78, DNS144 and DNS136 catalog start here
+# Plotting functions for DBS78, DBS144 and DBS136 catalog start here
 ###############################################################################
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.DNS78Catalog <- function(catalog) {
+PlotCatalog.DBS78Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(78, 1))
-  stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DNS78)
+  stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DBS78)
 
   dinuc.class.col <- RColorBrewer::brewer.pal(10, "Paired")
   cols <- rep(dinuc.class.col, c(9, 6, 9, 6, 9, 6, 6, 9, 9, 9))
@@ -787,7 +787,7 @@ PlotCatalog.DNS78Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS78Catalog <- function(catalog, file) {
+PlotCatalogToPdf.DBS78Catalog <- function(catalog, file) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -804,13 +804,13 @@ PlotCatalogToPdf.DNS78Catalog <- function(catalog, file) {
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.DNS144Catalog <- function(catalog, cex = 1) {
+PlotCatalog.DBS144Catalog <- function(catalog, cex = 1) {
   stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
 
   # Sort data in plotting order
-  cat <- catalog[to.reorder.DNS.144.for.plotting, 1, drop = FALSE]
+  cat <- catalog[to.reorder.DBS.144.for.plotting, 1, drop = FALSE]
 
   num.classes <- 20
   maj.class.names <-
@@ -918,7 +918,7 @@ PlotCatalog.DNS144Catalog <- function(catalog, cex = 1) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS144Catalog <-
+PlotCatalogToPdf.DBS144Catalog <-
   function(catalog, file, cex = 1) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -936,7 +936,7 @@ PlotCatalogToPdf.DNS144Catalog <-
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.DNS136Catalog <- function(catalog) {
+PlotCatalog.DBS136Catalog <- function(catalog) {
   stopifnot(dim(catalog) == c(136, 1))
 
   old <- par(no.readonly = TRUE)
@@ -954,10 +954,10 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
   if (attributes(catalog)$catalog.type == "counts") {
     # Calculate the occurrences of each mutation type for plotting
     counts <- matrix(0, nrow = 160, ncol = 1)
-    rownames(counts) <- order.for.DNS.136.plotting
+    rownames(counts) <- order.for.DBS.136.plotting
     for (i in 1:160){
-      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
-        counts[i] <- catalog[order.for.DNS.136.plotting[i], ]
+      if (order.for.DBS.136.plotting[i] %in% rownames(catalog)) {
+        counts[i] <- catalog[order.for.DBS.136.plotting[i], ]
       } else {
         counts[i] <- NA
       }
@@ -977,10 +977,10 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
     # occurrence in the genome
     rates <- matrix(0, nrow = 160, ncol = 1)
-    rownames(rates) <- order.for.DNS.136.plotting
+    rownames(rates) <- order.for.DBS.136.plotting
     for (i in 1:160){
-      if (order.for.DNS.136.plotting[i] %in% rownames(catalog)) {
-        rates[i] <- catalog[order.for.DNS.136.plotting[i], ]
+      if (order.for.DBS.136.plotting[i] %in% rownames(catalog)) {
+        rates[i] <- catalog[order.for.DBS.136.plotting[i], ]
       } else {
         rates[i] <- NA
       }
@@ -994,7 +994,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
     max.rate.per.class <- matrix(round(df4$x * 1000000, 3), 10, 1)
     rownames(max.rate.per.class) <- df4$Ref
   } else {
-    stop ('Plotting for DNS136 catlaog with type "', attributes(catalog)$catalog.type,
+    stop ('Plotting for DBS136 catlaog with type "', attributes(catalog)$catalog.type,
           '" is not implemented at the current stage.')
   }
 
@@ -1081,7 +1081,7 @@ PlotCatalog.DNS136Catalog <- function(catalog) {
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNS136Catalog <- function(catalog, file) {
+PlotCatalogToPdf.DBS136Catalog <- function(catalog, file) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
@@ -1120,10 +1120,10 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, file) {
     if (attributes(catalog)$catalog.type == "counts") {
       # Calculate the occurrences of each mutation type for plotting
       counts <- matrix(0, nrow = 160, ncol = 1)
-      rownames(counts) <- order.for.DNS.136.plotting
+      rownames(counts) <- order.for.DBS.136.plotting
       for (j in 1:160){
-        if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
-          counts[j] <- cat[order.for.DNS.136.plotting[j], ]
+        if (order.for.DBS.136.plotting[j] %in% rownames(cat)) {
+          counts[j] <- cat[order.for.DBS.136.plotting[j], ]
         } else {
           counts[j] <- NA
         }
@@ -1145,10 +1145,10 @@ PlotCatalogToPdf.DNS136Catalog <- function(catalog, file) {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
       rates <- matrix(0, nrow = 160, ncol = 1)
-      rownames(rates) <- order.for.DNS.136.plotting
+      rownames(rates) <- order.for.DBS.136.plotting
       for (j in 1:160){
-        if (order.for.DNS.136.plotting[j] %in% rownames(cat)) {
-          rates[j] <- cat[order.for.DNS.136.plotting[j], ]
+        if (order.for.DBS.136.plotting[j] %in% rownames(cat)) {
+          rates[j] <- cat[order.for.DBS.136.plotting[j], ]
         } else {
           rates[j] <- NA
         }
