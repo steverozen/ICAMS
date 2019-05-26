@@ -479,7 +479,6 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, file,
 
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
-    cat <- PreserveCatalogAttribute(catalog, cat)
     PlotCatalog(cat, strandbias = TRUE)
   }
   invisible(grDevices::dev.off())
