@@ -1,0 +1,98 @@
+context("cbind methods for catalogs")
+
+test_that("cbind method for SNS96Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.sns.96.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for SNS192Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.sns.192.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for SNS1536Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.sns.1536.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for DNS78Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.78.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for DNS144Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.144.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for DNS136Catalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/regress.cat.dns.136.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
+
+test_that("cbind method for IndelCatalog is working properly", {
+  catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
+                                ref.genome = "GRCh37",
+                                region = "genome", catalog.type = "counts")
+
+  cat1 <- catalog.counts[, 1, drop = FALSE]
+  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat3 <- cbind(cat1, cat2)
+  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  expect_equal(out, TRUE)
+  unlink("test.pdf")
+})
