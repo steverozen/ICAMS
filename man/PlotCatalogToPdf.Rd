@@ -2,33 +2,33 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
-\alias{PlotCatalogToPdf.SNS96Catalog}
-\alias{PlotCatalogToPdf.SNS192Catalog}
-\alias{PlotCatalogToPdf.SNS192CatalogNoContext}
-\alias{PlotCatalogToPdf.SNS1536Catalog}
-\alias{PlotCatalogToPdf.DNS78Catalog}
-\alias{PlotCatalogToPdf.DNS144Catalog}
-\alias{PlotCatalogToPdf.DNS136Catalog}
+\alias{PlotCatalogToPdf.SBS96Catalog}
+\alias{PlotCatalogToPdf.SBS192Catalog}
+\alias{PlotCatalogToPdf.SBS192CatalogNoContext}
+\alias{PlotCatalogToPdf.SBS1536Catalog}
+\alias{PlotCatalogToPdf.DBS78Catalog}
+\alias{PlotCatalogToPdf.DBS144Catalog}
+\alias{PlotCatalogToPdf.DBS136Catalog}
 \alias{PlotCatalogToPdf.IndelCatalog}
 \title{Plot catalogs to a PDF file.}
 \usage{
 PlotCatalogToPdf(catalog, file, no.context = FALSE, ...)
 
-\method{PlotCatalogToPdf}{SNS96Catalog}(catalog, file, grid = TRUE,
+\method{PlotCatalogToPdf}{SBS96Catalog}(catalog, file, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
-\method{PlotCatalogToPdf}{SNS192Catalog}(catalog, file)
+\method{PlotCatalogToPdf}{SBS192Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{SNS192CatalogNoContext}(catalog, file,
+\method{PlotCatalogToPdf}{SBS192CatalogNoContext}(catalog, file,
   no.context = TRUE)
 
-\method{PlotCatalogToPdf}{SNS1536Catalog}(catalog, file)
+\method{PlotCatalogToPdf}{SBS1536Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{DNS78Catalog}(catalog, file)
+\method{PlotCatalogToPdf}{DBS78Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{DNS144Catalog}(catalog, file, cex = 1)
+\method{PlotCatalogToPdf}{DBS144Catalog}(catalog, file, cex = 1)
 
-\method{PlotCatalogToPdf}{DNS136Catalog}(catalog, file)
+\method{PlotCatalogToPdf}{DBS136Catalog}(catalog, file)
 
 \method{PlotCatalogToPdf}{IndelCatalog}(catalog, file)
 }
@@ -39,7 +39,7 @@ See \code{\link{as.catalog}} for more details.}
 \item{file}{The name of the PDF file to be produced.}
 
 \item{no.context}{If TRUE, no preceding and following base context for
-SNS192 catalog plot.}
+SBS192 catalog plot.}
 
 \item{...}{Additional arguments to be passed to methods.}
 }

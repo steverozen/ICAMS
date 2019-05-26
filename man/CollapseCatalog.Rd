@@ -24,12 +24,12 @@ A catalog as defined in \code{\link{ICAMS}}.
 signature catalogs.
 }
 \details{
-\code{Collapse192CatalogTo96} Collapse an SNS 192 catalog
-to an SNS 96 catalog.
+\code{Collapse192CatalogTo96} Collapse an SBS 192 catalog
+to an SBS 96 catalog.
 
-\code{Collapse1536CatalogTo96} Collapse an SNS 1536 catalog
- to an SNS 96 catalog.
+\code{Collapse1536CatalogTo96} Collapse an SBS 1536 catalog
+ to an SBS 96 catalog.
 
-\code{Collapse144CatalogTo78} Collapse a DNS 144 catalog
-to a DNS 78 catalog.
+\code{Collapse144CatalogTo78} Collapse a DBS 144 catalog
+to a DBS 78 catalog.
 }

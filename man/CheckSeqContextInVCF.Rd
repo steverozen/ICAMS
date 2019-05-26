@@ -8,7 +8,7 @@ the column REF.}
 CheckSeqContextInVCF(vcf, column.to.use)
 }
 \arguments{
-\item{vcf}{In-memory VCF as a data.frame; must be an SNS or DNS VCF.}
+\item{vcf}{In-memory VCF as a data.frame; must be an SBS or DBS VCF.}
 
 \item{column.to.use}{The column name as a string of the column in the VCF
 with the context information.}

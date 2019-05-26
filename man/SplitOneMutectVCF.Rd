@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitOneMutectVCF}
 \alias{SplitOneMutectVCF}
-\title{Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations}
+\title{Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations}
 \usage{
 SplitOneMutectVCF(vcf.df)
 }
@@ -11,10 +11,10 @@ SplitOneMutectVCF(vcf.df)
 VAFs, which are added by \code{\link{ReadMutectVCF}}.}
 }
 \value{
-A list with the SNS, DNS, and ID portions of the VCF file, plus two
+A list with the SBS, DBS, and ID portions of the VCF file, plus two
 data.frames of other mutations
 }
 \description{
-Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
+Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
 }
 \keyword{internal}

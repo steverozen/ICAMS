@@ -9,7 +9,7 @@ TransformCatalog(catalog, target.ref.genome, target.region,
   target.catalog.type)
 }
 \arguments{
-\item{catalog}{An SNS or DNS catalog as described in \code{\link{ICAMS}};
+\item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
 must \strong{not} be an ID (indel) catalog.}
 
 \item{target.ref.genome}{A \code{ref.genome} argument as described in

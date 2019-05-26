@@ -17,9 +17,9 @@ into the first 3 VCFs, as follows:
 
 \enumerate{
 
- \item \code{SNS} VCF with only single nucleotide substitutions.
+ \item \code{SBS} VCF with only single base substitutions.
 
- \item \code{DNS} VCF with only doublet nucleotide substitutions
+ \item \code{DBS} VCF with only doublet base substitutions
   as called by Mutect.
 
  \item \code{ID} VCF with only small insertions and deletions.

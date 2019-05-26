@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitListOfMutectVCFs}
 \alias{SplitListOfMutectVCFs}
-\title{Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+\title{Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 VCF-like data frame with left-over rows).}
 \usage{
 SplitListOfMutectVCFs(list.of.vcfs)
@@ -17,9 +17,9 @@ into the first 3 VCFs, as follows:
 
 \enumerate{
 
- \item \code{SNS} VCF with only single nucleotide substitutions.
+ \item \code{SBS} VCF with only single base substitutions.
 
- \item \code{DNS} VCF with only doublet nucleotide substitutions
+ \item \code{DBS} VCF with only doublet base substitutions
   as called by Mutect.
 
  \item \code{ID} VCF with only small insertions and deletions.
@@ -35,7 +35,7 @@ into the first 3 VCFs, as follows:
 }
 }
 \description{
-Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 VCF-like data frame with left-over rows).
 }
 \keyword{internal}

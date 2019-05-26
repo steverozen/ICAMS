@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MutectVCFFilesToCatalog}
 \alias{MutectVCFFilesToCatalog}
-\title{Create SNS, DNS and Indel catalogs from Mutect VCF files}
+\title{Create SBS, DBS and Indel catalogs from Mutect VCF files}
 \usage{
 MutectVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges,
   region)
@@ -22,19 +22,19 @@ details.}
 "genome", "exome".}
 }
 \value{
-A list of 3 SNS catalogs (one each for 96, 192, and 1536), 3 DNS
+A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
   catalogs (one each for 78, 136, and 144) and ID catalog. Each catalog has
   attributes added. See \code{\link{as.catalog}} for more
   details.
 }
 \description{
-Create 3 SNS catalogs (96, 192, 1536), 3 DNS catalogs (78, 136, 144) and
+Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 Indel catalog from the Mutect VCFs specified by vector.of.file.paths
 }
 \details{
-This function calls \code{\link{VCFsToSNSCatalogs}},
-\code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
+This function calls \code{\link{VCFsToSBSCatalogs}},
+\code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
+SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 }

@@ -16,7 +16,7 @@ catalog.row.order
 This data is designed for those
 who need to create their own catalogs from formats not
 supported by this package. The rownames denote the mutation
-types.  For example, for SNS96 catalogs, the rowname
+types.  For example, for SBS96 catalogs, the rowname
  AGAT represents a mutation from AGA > ATA.
 }
 \note{
