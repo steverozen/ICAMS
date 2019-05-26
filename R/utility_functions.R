@@ -3,14 +3,14 @@
 #' "Collapse" a catalog. Do not use this function for
 #' signature catalogs.
 #'
-#' \code{Collapse192CatalogTo96} Collapse an SNS 192 catalog
-#' to an SNS 96 catalog.
+#' \code{Collapse192CatalogTo96} Collapse an SBS 192 catalog
+#' to an SBS 96 catalog.
 #'
-#' \code{Collapse1536CatalogTo96} Collapse an SNS 1536 catalog
-#'  to an SNS 96 catalog.
+#' \code{Collapse1536CatalogTo96} Collapse an SBS 1536 catalog
+#'  to an SBS 96 catalog.
 #'
-#' \code{Collapse144CatalogTo78} Collapse a DNS 144 catalog
-#' to a DNS 78 catalog.
+#' \code{Collapse144CatalogTo78} Collapse a DBS 144 catalog
+#' to a DBS 78 catalog.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}}.
 #'
@@ -27,7 +27,7 @@ Collapse192CatalogTo96 <- function(catalog) {
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
+  mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
 
   attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
   attr(mat96, "region") <- attributes(catalog)$region
@@ -71,7 +71,7 @@ Collapse1536CatalogTo96 <- function(catalog) {
   dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
-  mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
+  mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
 }
 
 #' @rdname CollapseCatalog
@@ -80,11 +80,11 @@ Collapse144CatalogTo78 <- function(catalog) {
   dt144 <- data.table(catalog)
   ref <- substr(rownames(catalog), 1, 2)
   alt <- substr(rownames(catalog), 3, 4)
-  dt144$rn <- CanonicalizeDNS(ref, alt)
+  dt144$rn <- CanonicalizeDBS(ref, alt)
   dt78 <- dt144[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
-  mat78 <- mat78[ICAMS::catalog.row.order$DNS78, , drop = FALSE]
+  mat78 <- mat78[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
 
   attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
   attr(mat78, "region") <- attributes(catalog)$region
@@ -131,7 +131,7 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' }
 #'
 #'
-#' @param catalog An SNS or DNS catalog as described in \code{\link{ICAMS}};
+#' @param catalog An SBS or DBS catalog as described in \code{\link{ICAMS}};
 #'  must \strong{not} be an ID (indel) catalog.
 #'
 #' @param target.ref.genome A \code{ref.genome} argument as described in
@@ -169,7 +169,7 @@ TransformCatalog <-
 
     if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
       stop("This function can only transform catalogs from the type of ",
-           "SNS96, SNS192, SNS1536, DNS78, DNS136, DNS144")
+           "SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144")
     }
 
     source.abundance <- attributes(catalog)$abundance
@@ -190,10 +190,10 @@ TransformCatalog <-
     # CAUTION: this function depends on how mutations are encoded in
     # the row names!
     transform.n.mer <- function(source.n.mer) {
-      # For 96 and 192 SNS, source.n.mer is e.g. "ACT" (for the encoding of ACT >
-      # AGT as "ACTG"); for SNS1536 the n-mer for AACAG > AATAG is AACAG, in the
-      # encoding AACAGT. For DNS78 and DNS144 TGGA represents TG >GA, and the
-      # source n-mer is TG. For DNS136, TTGA represents TTGA > TNNA, and the
+      # For 96 and 192 SBS, source.n.mer is e.g. "ACT" (for the encoding of ACT >
+      # AGT as "ACTG"); for SBS1536 the n-mer for AACAG > AATAG is AACAG, in the
+      # encoding AACAGT. For DBS78 and DBS144 TGGA represents TG >GA, and the
+      # source n-mer is TG. For DBS136, TTGA represents TTGA > TNNA, and the
       # source n-mer is TTGA.
 
       # First, get the rows with the given source.n.mer
@@ -372,10 +372,10 @@ revc <- function(string.vec) {
   )
 }
 
-#' @title Reverse complement strings that represent stranded SNSs
+#' @title Reverse complement strings that represent stranded SBSs
 #'
 #' @param mutstring A vector of 4-character strings representing
-#' stranded SNSs in trinucleotide context,
+#' stranded SBSs in trinucleotide context,
 #' for example "AATC" represents AAT > ACT mutations.
 #'
 #' @return Return the vector of
@@ -384,17 +384,17 @@ revc <- function(string.vec) {
 #' last character, e.g. "AATC" returns "ATTG".
 #'
 #' @keywords internal
-RevcSNS96 <- function(mutstring) {
+RevcSBS96 <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   context <- revc(substr(mutstring, 1, 3))
   target  <- revc(substr(mutstring, 4, 4))
   return(paste0(context, target))
 }
 
-#' @title Reverse complement strings that represent stranded DNSs
+#' @title Reverse complement strings that represent stranded DBSs
 #'
 #' @param mutstring A vector of 4-character strings representing
-#' stranded DNSs, for example "AATC" represents AA > TC mutations.
+#' stranded DBSs, for example "AATC" represents AA > TC mutations.
 #'
 #' @return Return the vector of
 #' reverse complements of the first 2 characters
@@ -402,7 +402,7 @@ RevcSNS96 <- function(mutstring) {
 #' 2 characters, e.g. "AATC" returns "TTGA".
 #'
 #' @keywords internal
-RevcDNS144 <- function(mutstring) {
+RevcDBS144 <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   context <- revc(substr(mutstring, 1, 2))
   target  <- revc(substr(mutstring, 3, 4))
@@ -648,17 +648,17 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
 CheckClassOfCatalogFromPath <- function(path) {
   cos <- data.table::fread(path)
   if (nrow(cos) == 96) {
-    structure("ClassofCatalog", class = "SNS96")
+    structure("ClassofCatalog", class = "SBS96")
   } else if (nrow(cos) == 192) {
-    structure("ClassofCatalog", class = "SNS192")
+    structure("ClassofCatalog", class = "SBS192")
   } else if (nrow(cos) == 1536) {
-    structure("ClassofCatalog", class = "SNS1536")
+    structure("ClassofCatalog", class = "SBS1536")
   } else if (nrow(cos) == 78) {
-    structure("ClassofCatalog", class = "DNS78")
+    structure("ClassofCatalog", class = "DBS78")
   } else if (nrow(cos) == 144) {
-    structure("ClassofCatalog", class = "DNS144")
+    structure("ClassofCatalog", class = "DBS144")
   } else if (nrow(cos) == 136) {
-    structure("ClassofCatalog", class = "DNS136")
+    structure("ClassofCatalog", class = "DBS136")
   } else if (nrow(cos) == 83) {
     structure("ClassofCatalog", class = "ID")
   } else {
@@ -677,32 +677,32 @@ CheckClassOfCatalogFromPath <- function(path) {
 CreateCatalogClass <- function(catalog) {
   if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
     stop('This is not a catalog supported by ICAMS. The input catalog must
-         be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
-         "DNS136", "ID(indel)"',
+         be one type of "SBS96", "SBS192", "SBS1536", "DBS78", "DBS144",
+         "DBS136", "ID(indel)"',
          'The number of rows of the input catalog is ', nrow(catalog))
   }
   if(nrow(catalog) == 96) {
-    class(catalog) <- append(class(catalog), "SNS96Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "SBS96Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 192) {
-    class(catalog) <- append(class(catalog), "SNS192Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "SBS192Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 1536) {
-    class(catalog) <- append(class(catalog), "SNS1536Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "SBS1536Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 78) {
-    class(catalog) <- append(class(catalog), "DNS78Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "DBS78Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 144) {
-    class(catalog) <- append(class(catalog), "DNS144Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "DBS144Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 136) {
-    class(catalog) <- append(class(catalog), "DNS136Catalog", after = 0)
+    class(catalog) <- append(class(catalog), "DBS136Catalog", after = 0)
     class(catalog) <- unique(attributes(catalog)$class)
   }
   if(nrow(catalog) == 83) {
@@ -731,8 +731,8 @@ CreateCatalogClass <- function(catalog) {
 CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
   if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
     stop('This is not a catalog supported by ICAMS. The input catalog must
-         be one type of "SNS96", "SNS192", "SNS1536", "DNS78", "DNS144",
-         "DNS136", "ID(indel)"',
+         be one type of "SBS96", "SBS192", "SBS1536", "DBS78", "DBS144",
+         "DBS136", "ID(indel)"',
          'The number of rows of the input catalog is ', nrow(catalog))
   }
 
@@ -886,7 +886,7 @@ as.catalog <- function(catalog, ref.genome, region, catalog.type) {
     attr(catalog, "catalog.type") <- catalog.type
     catalog <- CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
     catalog <- CreateCatalogClass(catalog)
-    if (attributes(catalog)$class[1] %in% c("SNS192Catalog", "DNS144Catalog")) {
+    if (attributes(catalog)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
       attr(catalog, "region") <- ifelse(region == "genome", "transcript", "exome")
     } else {
       attr(catalog, "region") <- region
@@ -1212,7 +1212,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
 }
 
 # Redefine the [ methods for catalogs
-`[.SNS96Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.SBS96Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1226,7 +1226,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
-`[.SNS192Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.SBS192Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1240,7 +1240,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
-`[.SNS1536Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.SBS1536Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                  1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1254,7 +1254,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
-`[.DNS78Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.DBS78Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                   1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1268,7 +1268,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
-`[.DNS144Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.DBS144Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1282,7 +1282,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
-`[.DNS136Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+`[.DBS136Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                  1) {
   y <- NextMethod("[")
   if (class(y) %in% c("integer", "numeric")) {
@@ -1311,7 +1311,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
 }
 
 # Redefine the cbind methods for catalogs
-`cbind.SNS96Catalog` <- function (..., deparse.level = 1) {
+`cbind.SBS96Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -1320,7 +1320,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
-`cbind.SNS192Catalog` <- function (..., deparse.level = 1) {
+`cbind.SBS192Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -1329,7 +1329,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
-`cbind.SNS1536Catalog` <- function (..., deparse.level = 1) {
+`cbind.SBS1536Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -1338,7 +1338,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
-`cbind.DNS78Catalog` <- function (..., deparse.level = 1) {
+`cbind.DBS78Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -1347,7 +1347,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
-`cbind.DNS144Catalog` <- function (..., deparse.level = 1) {
+`cbind.DBS144Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -1356,7 +1356,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
-`cbind.DNS136Catalog` <- function (..., deparse.level = 1) {
+`cbind.DBS136Catalog` <- function (..., deparse.level = 1) {
   x <- as.matrix(data.frame(..., check.names = FALSE))
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
