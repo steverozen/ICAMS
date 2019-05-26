@@ -935,7 +935,6 @@ PlotCatalogToPdf.DNSClassStrandBias <-
 
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
-      cat <- PreserveCatalogAttribute(catalog, cat)
       PlotCatalog(cat, cex = cex)
     }
     invisible(grDevices::dev.off())
