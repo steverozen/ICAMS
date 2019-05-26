@@ -1,6 +1,6 @@
-context("PlotCatalog.SNS96")
+context("PlotCatalog.SBS96")
 
-test_that("PlotCatalog.SNS96 function is working properly", {
+test_that("PlotCatalog.SBS96 function is working properly", {
   par(mar = c(8, 5, 5, 1))
   catalog.counts <-
     ReadCatalog("testdata/regress.cat.sbs.96.csv", ref.genome = "GRCh37",
