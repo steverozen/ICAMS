@@ -4,30 +4,29 @@
 \alias{PlotCatalog}
 \alias{PlotCatalog.SNS96Catalog}
 \alias{PlotCatalog.SNS192Catalog}
-\alias{PlotCatalog.SNSClassStrandBias}
+\alias{PlotCatalog.SNS192CatalogNoContext}
 \alias{PlotCatalog.SNS1536Catalog}
 \alias{PlotCatalog.DNS78Catalog}
-\alias{PlotCatalog.DNSClassStrandBias}
+\alias{PlotCatalog.DNS144Catalog}
 \alias{PlotCatalog.DNS136Catalog}
 \alias{PlotCatalog.IndelCatalog}
 \title{Plot \strong{one} spectrum or signature.}
 \usage{
-PlotCatalog(catalog, strandbias = FALSE, ...)
+PlotCatalog(catalog, no.context = FALSE, ...)
 
 \method{PlotCatalog}{SNS96Catalog}(catalog, cex = 0.8, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
 \method{PlotCatalog}{SNS192Catalog}(catalog, cex = 0.8)
 
-\method{PlotCatalog}{SNSClassStrandBias}(catalog, strandbias = TRUE,
+\method{PlotCatalog}{SNS192CatalogNoContext}(catalog, no.context = TRUE,
   cex = 1)
 
 \method{PlotCatalog}{SNS1536Catalog}(catalog)
 
 \method{PlotCatalog}{DNS78Catalog}(catalog)
 
-\method{PlotCatalog}{DNSClassStrandBias}(catalog, strandbias = TRUE,
-  cex = 1)
+\method{PlotCatalog}{DNS144Catalog}(catalog, cex = 1)
 
 \method{PlotCatalog}{DNS136Catalog}(catalog)
 
@@ -37,9 +36,8 @@ PlotCatalog(catalog, strandbias = FALSE, ...)
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{as.catalog}} for more details.}
 
-\item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144
-catalog. Leave out this parameter if you don't intend to plot strand bias
-graph.}
+\item{no.context}{If TRUE, no preceding and following base context for
+SNS192 catalog plot.}
 
 \item{...}{Additional arguments to be passed to methods.}
 }
