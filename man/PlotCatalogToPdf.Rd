@@ -4,30 +4,29 @@
 \alias{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf.SNS96Catalog}
 \alias{PlotCatalogToPdf.SNS192Catalog}
-\alias{PlotCatalogToPdf.SNSClassStrandBias}
+\alias{PlotCatalogToPdf.SNS192CatalogNoContext}
 \alias{PlotCatalogToPdf.SNS1536Catalog}
 \alias{PlotCatalogToPdf.DNS78Catalog}
-\alias{PlotCatalogToPdf.DNSClassStrandBias}
+\alias{PlotCatalogToPdf.DNS144Catalog}
 \alias{PlotCatalogToPdf.DNS136Catalog}
 \alias{PlotCatalogToPdf.IndelCatalog}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, file, strandbias = FALSE, ...)
+PlotCatalogToPdf(catalog, file, no.context = FALSE, ...)
 
 \method{PlotCatalogToPdf}{SNS96Catalog}(catalog, file, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
 \method{PlotCatalogToPdf}{SNS192Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{SNSClassStrandBias}(catalog, file,
-  strandbias = TRUE)
+\method{PlotCatalogToPdf}{SNS192CatalogNoContext}(catalog, file,
+  no.context = TRUE)
 
 \method{PlotCatalogToPdf}{SNS1536Catalog}(catalog, file)
 
 \method{PlotCatalogToPdf}{DNS78Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{DNSClassStrandBias}(catalog, file,
-  strandbias = TRUE, cex = 1)
+\method{PlotCatalogToPdf}{DNS144Catalog}(catalog, file, cex = 1)
 
 \method{PlotCatalogToPdf}{DNS136Catalog}(catalog, file)
 
@@ -39,9 +38,8 @@ See \code{\link{as.catalog}} for more details.}
 
 \item{file}{The name of the PDF file to be produced.}
 
-\item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144
-catalog. Leave out this parameter if you don't intend to plot strand bias
-graph.}
+\item{no.context}{If TRUE, no preceding and following base context for
+SNS192 catalog plot.}
 
 \item{...}{Additional arguments to be passed to methods.}
 }
