@@ -7,7 +7,7 @@
 #' @name GetVAF
 NULL
 
-#' Read in the data lines of an SNS VCF created by Strelka version 1
+#' Read in the data lines of an SBS VCF created by Strelka version 1
 #'
 #' @importFrom utils read.csv
 #'
@@ -16,7 +16,7 @@ NULL
 #' @return A data frame storing mutation records of a VCF file.
 #'
 #' @keywords internal
-ReadStrelkaSNSVCF <- function(path) {
+ReadStrelkaSBSVCF <- function(path) {
   df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
@@ -207,12 +207,12 @@ GetMutectVAF <-function(vcf) {
   return(vaf)
 }
 
-#' @title Split a mutect2 VCF into SNS, DNS, and ID VCFs, plus a list of other mutations
+#' @title Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
 #'
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
 #'
-#' @return A list with the SNS, DNS, and ID portions of the VCF file, plus two
+#' @return A list with the SBS, DBS, and ID portions of the VCF file, plus two
 #' data.frames of other mutations
 #'
 #' @keywords internal
@@ -226,20 +226,20 @@ SplitOneMutectVCF <- function(vcf.df) {
   df <- vcf.df[-multiple.alt, ]
   rm(multiple.alt, vcf.df)
 
-  SNS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
+  SBS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
 
-  DNS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
+  DBS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
 
   other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
 
   ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
 
-  return(list(SNS = SNS.df, DNS = DNS.df, ID = ID.df,
+  return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
               other=other.df, multiple.alt = multiple.alt.df))
 
 }
 
-#' Split each Mutect VCF into SNS, DNS, and ID VCFs (plus two
+#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 #' VCF-like data frame with left-over rows).
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
@@ -250,9 +250,9 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' \enumerate{
 #'
-#'  \item \code{SNS} VCF with only single nucleotide substitutions.
+#'  \item \code{SBS} VCF with only single base substitutions.
 #'
-#'  \item \code{DNS} VCF with only doublet nucleotide substitutions
+#'  \item \code{DBS} VCF with only doublet base substitutions
 #'   as called by Mutect.
 #'
 #'  \item \code{ID} VCF with only small insertions and deletions.
@@ -270,14 +270,14 @@ SplitOneMutectVCF <- function(vcf.df) {
 #' @keywords internal
 SplitListOfMutectVCFs <- function(list.of.vcfs) {
   v1 <- lapply(list.of.vcfs, SplitOneMutectVCF)
-  SNS <- lapply(v1, function(x) x$SNS)
-  DNS <- lapply(v1, function(x) x$DNS)
+  SBS <- lapply(v1, function(x) x$SBS)
+  DBS <- lapply(v1, function(x) x$DBS)
   ID  <- lapply(v1, function(x) x$ID)
   other.subs <- lapply(v1, function(x) x$other.df)
   multiple.alternative.alleles <-
     lapply(v1, function(x) x$multiple.alt)
 
-  return(list(SNS = SNS, DNS = DNS, ID = ID,
+  return(list(SBS = SBS, DBS = DBS, ID = ID,
               other.subs = other.subs,
               multiple.alternative.alleles
               = multiple.alternative.alleles
@@ -389,13 +389,13 @@ AddTranscript <- function(df, trans.ranges) {
   return(dt4)
 }
 
-#' MakeVCFDNSdf Take DNS ranges and the original VCF and generate a VCF with
+#' MakeVCFDBSdf Take DBS ranges and the original VCF and generate a VCF with
 #' dinucleotide REF and ALT alleles.
 #'
-#' @param DNS.range.df Data frame with columns CHROM, LOW, HIGH
+#' @param DBS.range.df Data frame with columns CHROM, LOW, HIGH
 #'
-#' @param SNS.vcf.dt A data table containing the VCF from which
-#' \code{DNS.range.df} was computed.
+#' @param SBS.vcf.dt A data table containing the VCF from which
+#' \code{DBS.range.df} was computed.
 #'
 #' @import data.table
 #'
@@ -403,27 +403,27 @@ AddTranscript <- function(df, trans.ranges) {
 #' \code{POS}, \code{ID}, \code{REF}, \code{ALT}.
 #'
 #' @keywords internal
-MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
-  tmpvcf <- SNS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
-  DNS.range.dt <- as.data.table(DNS.range.df)
-  tmp1 <- merge(DNS.range.dt, tmpvcf,
+MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
+  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
+  DBS.range.dt <- as.data.table(DBS.range.df)
+  tmp1 <- merge(DBS.range.dt, tmpvcf,
                 by.x = c("CHROM", "LOW"),
                 by.y = c("CHROM", "POS"))
   tmp2 <- merge(tmp1, tmpvcf,
                 by.x = c("CHROM", "HIGH"),
                 by.y = c("CHROM", "POS"))
   tmp2[, POS := LOW]
-  tmp2[, ID := "From merged SNSs"]
+  tmp2[, ID := "From merged SBSs"]
   tmp2[, REF := paste0(REF.x, REF.y)]
   tmp2[, ALT := paste0(ALT.x, ALT.y)]
   return(as.data.frame(tmp2[, c("CHROM", "POS", "ID", "REF", "ALT")]))
 }
 
-#' Split an in-memory Strelka VCF into SNS, DNS, and variants involving
+#' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
 #'
-#' SNSs are single nucleotide substitutions,
-#' e.g. C>T, A<G,....  DNSs are double nucleotide substitutions,
+#' SBSs are single base substitutions,
+#' e.g. C>T, A<G,....  DBSs are double base substitutions,
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
@@ -440,8 +440,8 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #'
 #' @return A list of 3 in-memory objects with the elements:
 #' \enumerate{
-#'    \item \code{SNS.vcf}:   Data frame of pure SNS mutations -- no DNS or 3+BS mutations
-#'    \item \code{DNS.vcf}:   Data frame of pure DNS mutations -- no SNS or 3+BS mutations
+#'    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
+#'    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
 #'    \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
@@ -449,7 +449,7 @@ MakeVCFDNSdf <- function(DNS.range.df, SNS.vcf.dt) {
 #'    }
 #'
 #' @keywords internal
-SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
+SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot(class(vcf.df) == "data.frame")
 
   # Record the total number of input variants for later sanity checking.
@@ -482,105 +482,105 @@ SplitStrelkaSNSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
                by.y = c("CHROM", "POS.plus.one"))
 
   # After this merge, each row contains one *pair*.
-  # In each row, POS.y == POS - 1, and the neighboring SNS
+  # In each row, POS.y == POS - 1, and the neighboring SBS
   # are at postions POS and POS.y.
   dt2[, HIGH := POS]
   dt2[, LOW := POS.y]
 
-  # Keep only SNS pairs that have very similar VAFs (variant allele frequencies).
-  # If VAFs are not similar, the adjacent SNSs were likely to be "merely"
+  # Keep only SBS pairs that have very similar VAFs (variant allele frequencies).
+  # If VAFs are not similar, the adjacent SBSs were likely to be "merely"
   # asynchronous single base mutations, and a simultaneous doublet mutation.
-  non.SNS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
-  # If VAF.x or VAF.y is NA the row will not go into non.SNS.
+  non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
+  # If VAF.x or VAF.y is NA the row will not go into non.SBS.
   rm(dt2)
 
-  if (nrow(non.SNS) == 0) {
-    # Thre are no non.SNS mutations in the input.
-    # Everything in vcf.df is an SNS. We are finished.
+  if (nrow(non.SBS) == 0) {
+    # Thre are no non.SBS mutations in the input.
+    # Everything in vcf.df is an SBS. We are finished.
     empty <- vcf.df[-(1 : nrow(vcf.df)), ]
-    return(list(SNS.vcf = vcf.df, DNS.vcf = empty,
+    return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
                 ThreePlus =
                   data.table(CHROM = character(),
                              LOW.POS = numeric(),
                              HIGH.POS = numeric())))
   }
 
-  # Remove non SNS rows from the output VCF for the SNSs
+  # Remove non SBS rows from the output VCF for the SBSs
   pairs.to.remove <-
-    data.frame(non.SNS[, .(CHROM, POS = HIGH)])
+    data.frame(non.SBS[, .(CHROM, POS = HIGH)])
   pairs.to.remove <-
     rbind(pairs.to.remove,
-          data.frame(non.SNS[, .(CHROM, POS = LOW)]))
+          data.frame(non.SBS[, .(CHROM, POS = LOW)]))
   dt.rm <- data.table(pairs.to.remove)
   dt.rm$delete.flag = TRUE
-  out.SNS.dt <- merge(vcf.dt, dt.rm, by = c("CHROM", "POS"), all.x = TRUE)
-  out.SNS.dt2 <- out.SNS.dt[is.na(delete.flag)]
-  out.SNS.df <- as.data.frame(out.SNS.dt2[, delete.flag := NULL])
-  num.SNS.out <- nrow(out.SNS.df)
+  out.SBS.dt <- merge(vcf.dt, dt.rm, by = c("CHROM", "POS"), all.x = TRUE)
+  out.SBS.dt2 <- out.SBS.dt[is.na(delete.flag)]
+  out.SBS.df <- as.data.frame(out.SBS.dt2[, delete.flag := NULL])
+  num.SBS.out <- nrow(out.SBS.df)
 
-  # Now separate doublets (DNS) from triplet and above base substitutions.
+  # Now separate doublets (DBS) from triplet and above base substitutions.
   # For ease of testing, keep only the genomic range information.
-  non.SNS <- non.SNS[, c("CHROM", "LOW", "HIGH")]
+  non.SBS <- non.SBS[, c("CHROM", "LOW", "HIGH")]
   ranges <-
-    GRanges(non.SNS$CHROM, IRanges(start = non.SNS$LOW, end = non.SNS$HIGH))
+    GRanges(non.SBS$CHROM, IRanges(start = non.SBS$LOW, end = non.SBS$HIGH))
   rranges <- reduce(ranges) # Merge overlapping ranges
-  DNS.plus <- as.data.frame(rranges)
-  if ((sum(DNS.plus$width) + num.SNS.out) != num.in) {
-    if ((sum(DNS.plus$width) + num.SNS.out) > num.in) {
-      cat("too many SNS\n")
+  DBS.plus <- as.data.frame(rranges)
+  if ((sum(DBS.plus$width) + num.SBS.out) != num.in) {
+    if ((sum(DBS.plus$width) + num.SBS.out) > num.in) {
+      cat("too many SBS\n")
       stop()
     } else {
-      cat("possible site with multiple variant alleles involved in a DNS\n")
+      cat("possible site with multiple variant alleles involved in a DBS\n")
     }
   }
-  DNSx <- DNS.plus[DNS.plus$width == 2, c("seqnames", "start", "end"), ]
-  colnames(DNSx) <- c("CHROM", "LOW", "HIGH")
-  DNS.vcf.df <- MakeVCFDNSdf(DNSx, vcf.dt)
-  num.DNS.out <- nrow(DNS.vcf.df)
+  DBSx <- DBS.plus[DBS.plus$width == 2, c("seqnames", "start", "end"), ]
+  colnames(DBSx) <- c("CHROM", "LOW", "HIGH")
+  DBS.vcf.df <- MakeVCFDBSdf(DBSx, vcf.dt)
+  num.DBS.out <- nrow(DBS.vcf.df)
 
-  other.ranges <- DNS.plus[DNS.plus$width > 2, ]
+  other.ranges <- DBS.plus[DBS.plus$width > 2, ]
   num.other <- sum(other.ranges$width)
 
-  if ((num.SNS.out + 2 * num.DNS.out + num.other) != num.in) {
-    cat("Counts are off:", num.SNS.out, 2*num.DNS.out, num.other, "vs", num.in, "\n")
+  if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
+    cat("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
   }
 
-  return(list(SNS.vcf = out.SNS.df, DNS.vcf = DNS.vcf.df,
+  return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
               ThreePlus = other.ranges))
 }
 
-#' Split a list of in-memory Strelka SNS VCF into SNS, DNS, and variants involving
+#' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
 #'
-#' SNSs are single nucleotide substitutions,
-#' e.g. C>T, A<G,....  DNSs are double nucleotide substitutions,
+#' SBSs are single base substitutions,
+#' e.g. C>T, A<G,....  DBSs are double base substitutions,
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
 #' would be variants such ATG>CCT, AGAT > TCTA, ...
 #'
-#' @param list.of.vcfs A list of in-memory data frames containing Strelka SNS VCF file contents.
+#' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS VCF file contents.
 #'
 #' @return A list of 3 in-memory objects with the elements:
-#'    SNS.vcfs:  List of Data frames of pure SNS mutations -- no DNS or 3+BS mutations
-#'    DNS.vcfs:  List of Data frames of pure DNS mutations -- no SNS or 3+BS mutations
+#'    SBS.vcfs:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
+#'    DBS.vcfs:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
 #'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
 #'
 #' @keywords internal
-SplitListOfStrelkaSNSVCFs <- function(list.of.vcfs) {
-  split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSNSVCF)
-  SNS.vcfs <- lapply(split.vcfs, function(x) x$SNS.vcf)
-  DNS.vcfs <- lapply(split.vcfs, function(x) x$DNS.vcf)
+SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
+  split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSBSVCF)
+  SBS.vcfs <- lapply(split.vcfs, function(x) x$SBS.vcf)
+  DBS.vcfs <- lapply(split.vcfs, function(x) x$DBS.vcf)
   ThreePlus <- lapply(split.vcfs, function(x) x$ThreePlus)
-  return(list(SNS.vcfs = SNS.vcfs, DNS.vcfs = DNS.vcfs, ThreePlus = ThreePlus))
+  return(list(SBS.vcfs = SBS.vcfs, DBS.vcfs = DBS.vcfs, ThreePlus = ThreePlus))
 }
 
 #' Check that the sequence context information is consistent with the value of
 #' the column REF.
 #'
-#' @param vcf In-memory VCF as a data.frame; must be an SNS or DNS VCF.
+#' @param vcf In-memory VCF as a data.frame; must be an SBS or DBS VCF.
 #'
 #' @param column.to.use The column name as a string of the column in the VCF
 #'   with the context information.
@@ -612,7 +612,7 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   }
 }
 
-#' Read Strelka SNS (single nucleotide substitutions) VCF files.
+#' Read Strelka SBS (single base substitutions) VCF files.
 #'
 #' @param vector.of.file.paths Character vector of
 #' file paths to the VCF files.
@@ -620,35 +620,35 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #' @return A list of vcfs from vector.of.file.paths.
 #'
 #' @keywords internal
-ReadStrelkaSNSVCFs <- function(vector.of.file.paths) {
-  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSNSVCF)
+ReadStrelkaSBSVCFs <- function(vector.of.file.paths) {
+  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSBSVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
                      basename(vector.of.file.paths))
   return(vcfs)
 }
 
-#' Read and split Strelka SNS VCF files.
+#' Read and split Strelka SBS VCF files.
 #'
 #' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka SNS VCF files.
+#' file paths to the Strelka SBS VCF files.
 #'
 #' @return A list of 3 in-memory objects as follows:
 #' \enumerate{
-#'    \item \code{SNS.vcfs} List of data.frames of pure SNS mutations -- no DNS or 3+BS mutations.
+#'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS or 3+BS mutations.
 #'
-#'    \item \code{DNS.vcfs} List of data.frames of pure DNS mutations -- no SNS or 3+BS mutations.
+#'    \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS or 3+BS mutations.
 #'
 #'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
-#'    rows that that in the input that did not represent SNSs or DNSs.
+#'    rows that that in the input that did not represent SBSs or DBSs.
 #'
 #'    }
 #'
-#' @seealso \code{\link{StrelkaSNSVCFFilesToCatalog}}
+#' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'
 #' @export
-ReadAndSplitStrelkaSNSVCFs <- function(vector.of.file.paths) {
-  vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
-  split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
+ReadAndSplitStrelkaSBSVCFs <- function(vector.of.file.paths) {
+  vcfs <- ReadStrelkaSBSVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(split.vcfs)
 }
 
@@ -699,9 +699,9 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #'
 #' \enumerate{
 #'
-#'  \item \code{SNS} VCF with only single nucleotide substitutions.
+#'  \item \code{SBS} VCF with only single base substitutions.
 #'
-#'  \item \code{DNS} VCF with only doublet nucleotide substitutions
+#'  \item \code{DBS} VCF with only doublet base substitutions
 #'   as called by Mutect.
 #'
 #'  \item \code{ID} VCF with only small insertions and deletions.
@@ -725,44 +725,44 @@ ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
   return(split.vcfs)
 }
 
-#' Create single nucleotide mutation catalog for *one* sample from
+#' Create single base mutation catalog for *one* sample from
 #' a Variant Call Format (VCF) file.
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must *not*
-#'   contain DNS (double nucleotide substitutions), or triplet base substitutions
-#'   etc., even if encoded as neighboring SNS.
+#'   contain DBS (double base substitutions), or triplet base substitutions
+#'   etc., even if encoded as neighboring SBS.
 #'
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the SNS mutation catalog:
+#' @return A list of three matrices containing the SBS mutation catalog:
 #'   96, 192, 1536 catalog respectively.
 #'
-#' @note catSNS192 only contains mutations in transcribed regions.
+#' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
+CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
-  # Therefore we check for this problem; but we need to exclude DNSs
-  # before calling the function. This function does not detect DNSs.
+  # Therefore we check for this problem; but we need to exclude DBSs
+  # before calling the function. This function does not detect DBSs.
 
   if (0 == nrow(vcf)) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
-    catSNS96 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS96), ncol = 1)
-    rownames(catSNS96) <- ICAMS::catalog.row.order$SNS96
-    catSNS192 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS192), ncol = 1)
-    rownames(catSNS192) <- ICAMS::catalog.row.order$SNS192
-    catSNS1536 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SNS1536), ncol = 1)
-    rownames(catSNS1536) <- ICAMS::catalog.row.order$SNS1536
+    catSBS96 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS96), ncol = 1)
+    rownames(catSBS96) <- ICAMS::catalog.row.order$SBS96
+    catSBS192 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1)
+    rownames(catSBS192) <- ICAMS::catalog.row.order$SBS192
+    catSBS1536 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS1536), ncol = 1)
+    rownames(catSBS1536) <- ICAMS::catalog.row.order$SBS1536
 
-    return(list(catSNS96 = catSNS96, catSNS192 = catSNS192,
-                catSNS1536 = catSNS1536))
+    return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                catSBS1536 = catSBS1536))
   }
 
   stopifnot(nchar(vcf$ALT) == 1)
@@ -776,7 +776,7 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # e.g. ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
   vcf$pyr.mut <- PyrPenta(vcf$mutation)
 
-  # One SNS mutation can be represented by more than 1 row in vcf after annotated by
+  # One SBS mutation can be represented by more than 1 row in vcf after annotated by
   # AddTranscript function if the mutation position falls into the range of
   # multiple transcripts. When creating the 1536 and 96 catalog, we only need to
   # count these mutations once.
@@ -787,19 +787,19 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   # types have NA in the count column.
   tab1536 <- table(vcf1[, "pyr.mut"])
   stopifnot(setequal(
-    setdiff(names(tab1536), ICAMS::catalog.row.order$SNS1536),
+    setdiff(names(tab1536), ICAMS::catalog.row.order$SBS1536),
     c()))
   dt1536  <- data.table(tab1536)
 
   colnames(dt1536) <- c("rn", "count")
-  d <- data.table(rn = ICAMS::catalog.row.order$SNS1536)
-  stopifnot(length(ICAMS::catalog.row.order$SNS1536) == 1536)
+  d <- data.table(rn = ICAMS::catalog.row.order$SBS1536)
+  stopifnot(length(ICAMS::catalog.row.order$SBS1536) == 1536)
   x <- merge(d, dt1536, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
   stopifnot(sum(x$count) == nrow(vcf1))
   mat1536 <- matrix(x$count)
   rownames(mat1536) <- x$rn
-  mat1536 <- mat1536[ICAMS::catalog.row.order$SNS1536, , drop = FALSE]
+  mat1536 <- mat1536[ICAMS::catalog.row.order$SBS1536, , drop = FALSE]
   colnames(mat1536) <- sample.id
 
   # Create the 96 catalog matrix
@@ -808,14 +808,14 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(nrow(dt96) == 96)
   mat96 <- matrix(dt96$V1)
   rownames(mat96) <- dt96$nrn
-  mat96 <- mat96[ICAMS::catalog.row.order$SNS96, , drop = FALSE]
+  mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   colnames(mat96) <- sample.id
 
   # There may be some mutations in vcf which fall on transcripts on both
   # strands. We do not consider those mutations when generating the 192 catalog.
   vcf2 <- vcf[bothstrand == FALSE, ]
 
-  # One SNS mutation can be represented by more than 1 row in vcf2 if the mutation
+  # One SBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 192 catalog, we only need to count these mutations once.
   vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], strand = strand[1]),
@@ -830,27 +830,27 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
   dt192 <- as.data.table(tab192)
   colnames(dt192) <- c("rn", "strand", "count")
   dt192 <- dt192[!is.na(strand)]
-  dt192[strand == "-", rn := RevcSNS96(rn)]
+  dt192[strand == "-", rn := RevcSBS96(rn)]
   dt192 <- dt192[ , .(count = sum(count)), by = rn]
-  x192 <- data.table(rn = ICAMS::catalog.row.order$SNS192)
+  x192 <- data.table(rn = ICAMS::catalog.row.order$SBS192)
   x <- merge(x192, dt192, by = "rn", all.x = TRUE)
   x[is.na(count), count := 0]
   mat192 <- matrix(x[, count])
   rownames(mat192) <- unlist(x[, 1])
-  mat192 <- mat192[ICAMS::catalog.row.order$SNS192, , drop = FALSE]
+  mat192 <- mat192[ICAMS::catalog.row.order$SBS192, , drop = FALSE]
   colnames(mat192) <- sample.id
 
-  return(list(catSNS96 = mat96, catSNS192 = mat192, catSNS1536 = mat1536))
+  return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
 }
 
-#' Create SNS catalogs from SNS VCFs
+#' Create SBS catalogs from SBS VCFs
 #'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
-#' out of the contents in list.of.SNS.vcfs. The SNS VCFs must not contain
-#' DNSs, indels, or other types of mutations.
+#' out of the contents in list.of.SBS.vcfs. The SBS VCFs must not contain
+#' DBSs, indels, or other types of mutations.
 #'
-#' @param list.of.SNS.vcfs List of in-memory data frames of pure SNS mutations
-#'   -- no DNS or 3+BS mutations. The list names will be the sample ids in the
+#' @param list.of.SBS.vcfs List of in-memory data frames of pure SBS mutations
+#'   -- no DBS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
@@ -863,195 +863,195 @@ CreateOneColSNSCatalog <- function(vcf, sample.id = "count") {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return A list of 3 SNS catalogs, one each for 96, 192, 1536: catSNS96
-#'   catSNS192 catSNS1536. Each catalog has attributes added. See
+#' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
+#'   catSBS192 catSBS1536. Each catalog has attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
-#' @note SNS 192 catalog only contains mutations in transcribed regions.
+#' @note SBS 192 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToSNSCatalogs <- function(list.of.SNS.vcfs, ref.genome, trans.ranges, region) {
-  ncol <- length(list.of.SNS.vcfs)
+VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region) {
+  ncol <- length(list.of.SBS.vcfs)
 
-  catSNS96 <- empty.cats$catSNS96
-  catSNS192 <- empty.cats$catSNS192
-  catSNS1536 <- empty.cats$catSNS1536
+  catSBS96 <- empty.cats$catSBS96
+  catSBS192 <- empty.cats$catSBS192
+  catSBS1536 <- empty.cats$catSBS1536
 
   for (i in 1:ncol) {
-    SNS <- list.of.SNS.vcfs[[i]]
+    SBS <- list.of.SBS.vcfs[[i]]
 
-    SNS <- AddSequence(SNS, ref.genome = ref.genome)
+    SBS <- AddSequence(SBS, ref.genome = ref.genome)
 
-    # Delete the rows of SNS if the extracted sequence contains "N"
-    idx <- grep("N", substr(SNS$seq.21context, 9, 13))
+    # Delete the rows of SBS if the extracted sequence contains "N"
+    idx <- grep("N", substr(SBS$seq.21context, 9, 13))
     if (!length(idx) == 0) {
-      SNS <- SNS[-idx, ]
-      cat('There are rows in the SNS vcf where extracted sequence contains "N",',
+      SBS <- SBS[-idx, ]
+      cat('There are rows in the SBS vcf where extracted sequence contains "N",',
           'these rows have been deleted so as not to conflict with code',
           'in other parts of ICAMS package')
     }
 
-    CheckSeqContextInVCF(SNS, "seq.21context")
-    SNS <- AddTranscript(SNS, trans.ranges)
-    SNS.cat <- CreateOneColSNSCatalog(SNS)
-    rm(SNS)
-    catSNS96 <- cbind(catSNS96, SNS.cat$catSNS96)
-    catSNS192 <- cbind(catSNS192, SNS.cat$catSNS192)
-    catSNS1536 <- cbind(catSNS1536, SNS.cat$catSNS1536)
+    CheckSeqContextInVCF(SBS, "seq.21context")
+    SBS <- AddTranscript(SBS, trans.ranges)
+    SBS.cat <- CreateOneColSBSCatalog(SBS)
+    rm(SBS)
+    catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
+    catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
+    catSBS1536 <- cbind(catSBS1536, SBS.cat$catSBS1536)
   }
 
-  colnames(catSNS96) <- names(list.of.SNS.vcfs)
-  colnames(catSNS192) <- names(list.of.SNS.vcfs)
-  colnames(catSNS1536) <- names(list.of.SNS.vcfs)
+  colnames(catSBS96) <- names(list.of.SBS.vcfs)
+  colnames(catSBS192) <- names(list.of.SBS.vcfs)
+  colnames(catSBS1536) <- names(list.of.SBS.vcfs)
 
-  catSNS96 <-
-    as.catalog(catSNS96, ref.genome = ref.genome,
+  catSBS96 <-
+    as.catalog(catSBS96, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
 
   if (region == "genome") {
-    catSNS192 <-
-      as.catalog(catSNS192, ref.genome = ref.genome,
+    catSBS192 <-
+      as.catalog(catSBS192, ref.genome = ref.genome,
                  region = "transcript", catalog.type = "counts")
   } else if (region == "exome") {
-    catSNS192 <-
-      as.catalog(catSNS192, ref.genome = ref.genome,
+    catSBS192 <-
+      as.catalog(catSBS192, ref.genome = ref.genome,
                  region = "exome", catalog.type = "counts")
   }
 
-  catSNS1536 <-
-    as.catalog(catSNS1536, ref.genome = ref.genome,
+  catSBS1536 <-
+    as.catalog(catSBS1536, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
-  return(list(catSNS96 = catSNS96, catSNS192 = catSNS192, catSNS1536 = catSNS1536))
+  return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, catSBS1536 = catSBS1536))
 }
 
-#' Create double nucleotide catalog for *one* sample from
+#' Create double base catalog for *one* sample from
 #' a Variant Call Format (VCF) file
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSequence and
 #'   AddTranscript functions. It must *not* contain indels and must
-#'   *not* contain SNS (single nucleotide substitutions), or triplet base
+#'   *not* contain SBS (single base substitutions), or triplet base
 #'   substitutions etc.
 #'
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the DNS catalog:
-#'   catDNS78, catDNS144, catDNS136 respectively.
+#' @return A list of three matrices containing the DBS catalog:
+#'   catDBS78, catDBS144, catDBS136 respectively.
 #'
-#' @note DNS 144 catalog only contains mutations in transcribed regions.
+#' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
+CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
-  # Therefore we check for this problem; but we need to exclude SNSs
-  # before calling the function. This function does not detect SNSs.
+  # Therefore we check for this problem; but we need to exclude SBSs
+  # before calling the function. This function does not detect SBSs.
 
   if (0 == nrow(vcf)) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
-    catDNS78 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS78), ncol = 1)
-    rownames(catDNS78) <- ICAMS::catalog.row.order$DNS78
-    catDNS144 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS144), ncol = 1)
-    rownames(catDNS144) <- ICAMS::catalog.row.order$DNS144
-    catDNS136 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DNS136), ncol = 1)
-    rownames(catDNS136) <- ICAMS::catalog.row.order$DNS136
+    catDBS78 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS78), ncol = 1)
+    rownames(catDBS78) <- ICAMS::catalog.row.order$DBS78
+    catDBS144 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1)
+    rownames(catDBS144) <- ICAMS::catalog.row.order$DBS144
+    catDBS136 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS136), ncol = 1)
+    rownames(catDBS136) <- ICAMS::catalog.row.order$DBS136
 
-    return(list(catDNS78 = catDNS78,
-                catDNS144 = catDNS144,
-                catDNS136 = catDNS136))
+    return(list(catDBS78 = catDBS78,
+                catDBS144 = catDBS144,
+                catDBS136 = catDBS136))
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
   stopifnot(nchar(vcf$REF) == 2)
 
-  # One DNS mutation can be represented by more than 1 row in vcf after annotated by
+  # One DBS mutation can be represented by more than 1 row in vcf after annotated by
   # AddTranscript function if the mutation position falls into the range of
   # multiple transcripts. When creating the 78 and 136 catalog, we only need to
   # count these mutations once.
   vcf1 <- vcf[, .(REF = REF[1], seq.21context = seq.21context[1]),
               by = .(CHROM, ALT, POS)]
 
-  # Create the 78 DNS catalog matrix
-  canon.DNS.78 <- CanonicalizeDNS(vcf1$REF, vcf1$ALT)
-  tab.DNS.78 <- table(canon.DNS.78)
-  row.order.78 <- data.table(rn = ICAMS::catalog.row.order$DNS78)
-  DNS.dt.78 <- as.data.table(tab.DNS.78)
+  # Create the 78 DBS catalog matrix
+  canon.DBS.78 <- CanonicalizeDBS(vcf1$REF, vcf1$ALT)
+  tab.DBS.78 <- table(canon.DBS.78)
+  row.order.78 <- data.table(rn = ICAMS::catalog.row.order$DBS78)
+  DBS.dt.78 <- as.data.table(tab.DBS.78)
 
-  # DNS.dt.78 has two columns, names canon.DNS.78 (from the table() function)
+  # DBS.dt.78 has two columns, names canon.DBS.78 (from the table() function)
   # and N (the count)
-  DNS.dt.78.2 <-
-    merge(row.order.78, DNS.dt.78,
-          by.x = "rn", by.y = "canon.DNS.78", all = TRUE)
-  DNS.dt.78.2[is.na(N), N := 0]
-  stopifnot(DNS.dt.78.2$rn == ICAMS::catalog.row.order$DNS78)
-  DNS.mat.78 <- as.matrix(DNS.dt.78.2[, 2])
-  rownames(DNS.mat.78) <- DNS.dt.78.2$rn
-  colnames(DNS.mat.78)<- sample.id
+  DBS.dt.78.2 <-
+    merge(row.order.78, DBS.dt.78,
+          by.x = "rn", by.y = "canon.DBS.78", all = TRUE)
+  DBS.dt.78.2[is.na(N), N := 0]
+  stopifnot(DBS.dt.78.2$rn == ICAMS::catalog.row.order$DBS78)
+  DBS.mat.78 <- as.matrix(DBS.dt.78.2[, 2])
+  rownames(DBS.mat.78) <- DBS.dt.78.2$rn
+  colnames(DBS.mat.78)<- sample.id
 
-  # Create the 136 DNS catalog matrix
-  canon.DNS.136 <- CanonicalizeQUAD(substr(vcf1$seq.21context, 10, 13))
-  tab.DNS.136 <- table(canon.DNS.136)
-  row.order.136 <- data.table(rn = ICAMS::catalog.row.order$DNS136)
-  DNS.dt.136 <- as.data.table(tab.DNS.136)
+  # Create the 136 DBS catalog matrix
+  canon.DBS.136 <- CanonicalizeQUAD(substr(vcf1$seq.21context, 10, 13))
+  tab.DBS.136 <- table(canon.DBS.136)
+  row.order.136 <- data.table(rn = ICAMS::catalog.row.order$DBS136)
+  DBS.dt.136 <- as.data.table(tab.DBS.136)
 
-  # DNS.dt.136 has two columns, names canon.DNS.136 (from the table() function)
+  # DBS.dt.136 has two columns, names canon.DBS.136 (from the table() function)
   # and N (the count)
-  DNS.dt.136.2 <-
-    merge(row.order.136, DNS.dt.136,
-          by.x = "rn", by.y = "canon.DNS.136", all = TRUE)
-  DNS.dt.136.2[is.na(N), N := 0]
-  stopifnot(DNS.dt.136.2$rn == ICAMS::catalog.row.order$DNS136)
-  DNS.mat.136 <- as.matrix(DNS.dt.136.2[, 2])
-  rownames(DNS.mat.136) <- DNS.dt.136.2$rn
-  colnames(DNS.mat.136)<- sample.id
+  DBS.dt.136.2 <-
+    merge(row.order.136, DBS.dt.136,
+          by.x = "rn", by.y = "canon.DBS.136", all = TRUE)
+  DBS.dt.136.2[is.na(N), N := 0]
+  stopifnot(DBS.dt.136.2$rn == ICAMS::catalog.row.order$DBS136)
+  DBS.mat.136 <- as.matrix(DBS.dt.136.2[, 2])
+  rownames(DBS.mat.136) <- DBS.dt.136.2$rn
+  colnames(DBS.mat.136)<- sample.id
 
   # There may be some mutations in vcf which fall on transcripts on both
   # strands. We do not consider those mutations when generating the 144 catalog.
   vcf2 <- vcf[bothstrand == FALSE, ]
 
-  # One DNS mutation can be represented by more than 1 row in vcf2 if the mutation
+  # One DBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 144 catalog, we only need to count these mutations once.
   vcf3 <- vcf2[, .(REF = REF[1], strand = strand[1]),
                by = .(CHROM, ALT, POS)]
 
-  # Create the 144 DNS catalog matrix
-  # There are 144 stranded DNSs: 4 X 4 sources and 3 X 3 alternates;
+  # Create the 144 DBS catalog matrix
+  # There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
   # 4 x 4 x 3 x 3 = 144.
-  tab.DNS.144  <-
+  tab.DBS.144  <-
     table(paste0(vcf3$REF, vcf3$ALT), vcf3$strand, useNA = "ifany")
-  stopifnot(sum(tab.DNS.144) == nrow(vcf3))
-  DNS.dt.144 <- as.data.table(tab.DNS.144)
-  colnames(DNS.dt.144) <- c("rn", "strand", "count")
-  DNS.dt.144 <- DNS.dt.144[!is.na(strand)]
-  DNS.dt.144[strand == "-", rn := RevcDNS144(rn)]
-  DNS.dt.144 <- DNS.dt.144[, .(count = sum(count)), by = rn]
-  row.order.144 <- data.table(rn = ICAMS::catalog.row.order$DNS144)
+  stopifnot(sum(tab.DBS.144) == nrow(vcf3))
+  DBS.dt.144 <- as.data.table(tab.DBS.144)
+  colnames(DBS.dt.144) <- c("rn", "strand", "count")
+  DBS.dt.144 <- DBS.dt.144[!is.na(strand)]
+  DBS.dt.144[strand == "-", rn := RevcDBS144(rn)]
+  DBS.dt.144 <- DBS.dt.144[, .(count = sum(count)), by = rn]
+  row.order.144 <- data.table(rn = ICAMS::catalog.row.order$DBS144)
 
-  # DNS.dt.144 has two columns, names rn and count
-  DNS.dt.144.2 <- merge(row.order.144, DNS.dt.144, by = "rn", all.x = TRUE)
-  DNS.dt.144.2[is.na(count), count := 0]
-  stopifnot(DNS.dt.144.2$rn == ICAMS::catalog.row.order$DNS144)
-  DNS.mat.144 <- as.matrix(DNS.dt.144.2[, 2])
-  rownames(DNS.mat.144) <- DNS.dt.144.2$rn
-  colnames(DNS.mat.144)<- sample.id
+  # DBS.dt.144 has two columns, names rn and count
+  DBS.dt.144.2 <- merge(row.order.144, DBS.dt.144, by = "rn", all.x = TRUE)
+  DBS.dt.144.2[is.na(count), count := 0]
+  stopifnot(DBS.dt.144.2$rn == ICAMS::catalog.row.order$DBS144)
+  DBS.mat.144 <- as.matrix(DBS.dt.144.2[, 2])
+  rownames(DBS.mat.144) <- DBS.dt.144.2$rn
+  colnames(DBS.mat.144)<- sample.id
 
-  return(list(catDNS78 = DNS.mat.78, catDNS144 = DNS.mat.144,
-              catDNS136 = DNS.mat.136))
+  return(list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144,
+              catDBS136 = DBS.mat.136))
 }
 
-#' Create DNS catalogs from VCFs
+#' Create DBS catalogs from VCFs
 #'
-#' Create a list of 3 catalogs (one each for DNS78, DNS144 and DNS136)
-#' out of the contents in list.of.DNS.vcfs. The VCFs must not contain
-#' any type of mutation other then DNSs.
+#' Create a list of 3 catalogs (one each for DBS78, DBS144 and DBS136)
+#' out of the contents in list.of.DBS.vcfs. The VCFs must not contain
+#' any type of mutation other then DBSs.
 #'
-#' @param list.of.DNS.vcfs List of in-memory data frames of pure DNS mutations
-#'   -- no SNS or 3+BS mutations. The list names will be the sample ids in the
+#' @param list.of.DBS.vcfs List of in-memory data frames of pure DBS mutations
+#'   -- no SBS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
@@ -1064,77 +1064,77 @@ CreateOneColDNSCatalog <- function(vcf, sample.id = "count") {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return A list of 3 DNS catalogs, one each for 78, 144, 136: catDNS78
-#'   catDNS144 catDNS136. Each catalog has attributes added. See
+#' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
+#'   catDBS144 catDBS136. Each catalog has attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
-#' @note DNS 144 catalog only contains mutations in transcribed regions.
+#' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region) {
-  ncol <- length(list.of.DNS.vcfs)
+VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region) {
+  ncol <- length(list.of.DBS.vcfs)
 
-  catDNS78 <- empty.cats$catDNS78
-  catDNS144 <- empty.cats$catDNS144
-  catDNS136 <- empty.cats$catDNS136
+  catDBS78 <- empty.cats$catDBS78
+  catDBS144 <- empty.cats$catDBS144
+  catDBS136 <- empty.cats$catDBS136
 
   for (i in 1 : ncol) {
-    DNS <- list.of.DNS.vcfs[[i]]
+    DBS <- list.of.DBS.vcfs[[i]]
 
-    DNS <- AddSequence(DNS, ref.genome = ref.genome)
+    DBS <- AddSequence(DBS, ref.genome = ref.genome)
 
-    # Delete the rows of DNS if the extracted sequence contains "N"
-    idx <- grep("N", substr(DNS$seq.21context, 10, 13))
+    # Delete the rows of DBS if the extracted sequence contains "N"
+    idx <- grep("N", substr(DBS$seq.21context, 10, 13))
     if (!length(idx) == 0) {
-      DNS <- DNS[-idx, ]
-      cat('There are rows in the DNS vcf where extracted sequence contains "N", ',
+      DBS <- DBS[-idx, ]
+      cat('There are rows in the DBS vcf where extracted sequence contains "N", ',
           'these rows have been deleted so as not to conflict with code ',
           'in other parts of ICAMS package')
     }
 
-    DNS <- AddTranscript(DNS, trans.ranges)
-    CheckSeqContextInVCF(DNS, "seq.21context")
-    DNS.cat <- CreateOneColDNSCatalog(DNS)
-    rm(DNS)
-    catDNS78 <- cbind(catDNS78, DNS.cat$catDNS78)
-    catDNS144 <- cbind(catDNS144, DNS.cat$catDNS144)
-    catDNS136 <- cbind(catDNS136, DNS.cat$catDNS136)
+    DBS <- AddTranscript(DBS, trans.ranges)
+    CheckSeqContextInVCF(DBS, "seq.21context")
+    DBS.cat <- CreateOneColDBSCatalog(DBS)
+    rm(DBS)
+    catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
+    catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
+    catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
   }
 
-  colnames(catDNS78) <- names(list.of.DNS.vcfs)
-  colnames(catDNS144) <- names(list.of.DNS.vcfs)
-  colnames(catDNS136) <- names(list.of.DNS.vcfs)
+  colnames(catDBS78) <- names(list.of.DBS.vcfs)
+  colnames(catDBS144) <- names(list.of.DBS.vcfs)
+  colnames(catDBS136) <- names(list.of.DBS.vcfs)
 
-  catDNS78 <-
-    as.catalog(catDNS78, ref.genome = ref.genome,
+  catDBS78 <-
+    as.catalog(catDBS78, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
 
   if (region == "genome") {
-    catDNS144 <-
-      as.catalog(catDNS144, ref.genome = ref.genome,
+    catDBS144 <-
+      as.catalog(catDBS144, ref.genome = ref.genome,
                  region = "transcript", catalog.type = "counts")
   } else if (region == "exome") {
-    catDNS144 <-
-      as.catalog(catDNS144, ref.genome = ref.genome,
+    catDBS144 <-
+      as.catalog(catDBS144, ref.genome = ref.genome,
                  region = "exome", catalog.type = "counts")
   }
 
-  catDNS136 <-
-    as.catalog(catDNS136, ref.genome = ref.genome,
+  catDBS136 <-
+    as.catalog(catDBS136, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
-  return(list(catDNS78 = catDNS78, catDNS144 = catDNS144, catDNS136 = catDNS136))
+  return(list(catDBS78 = catDBS78, catDBS144 = catDBS144, catDBS136 = catDBS136))
 }
 
-#' Create SNS and DNS catalogs from Strelka SNS VCF files.
+#' Create SBS and DBS catalogs from Strelka SBS VCF files.
 #'
-#' Create 3 SNS catalogs (96, 192, 1536) and 3 DNS catalogs (78, 136, 144)
-#' from the Strelka SNS VCFs specified by vector.of.file.paths
+#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
+#' from the Strelka SBS VCFs specified by vector.of.file.paths
 #'
-#' This function calls \code{\link{VCFsToSNSCatalogs}} and
-#' \code{\link{VCFsToDNSCatalogs}}.
+#' This function calls \code{\link{VCFsToSBSCatalogs}} and
+#' \code{\link{VCFsToDBSCatalogs}}.
 #'
 #' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka SNS VCF files.
+#' file paths to the Strelka SBS VCF files.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1146,19 +1146,19 @@ VCFsToDNSCatalogs <- function(list.of.DNS.vcfs, ref.genome, trans.ranges, region
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536) and 3 DNS
+#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). Each catalog has attributes
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
-#' @note SNS 192 and DNS 144 catalog only contains mutations in transcribed regions.
+#' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-StrelkaSNSVCFFilesToCatalog <-
+StrelkaSBSVCFFilesToCatalog <-
   function(vector.of.file.paths, ref.genome, trans.ranges, region) {
-  vcfs <- ReadStrelkaSNSVCFs(vector.of.file.paths)
-  split.vcfs <- SplitListOfStrelkaSNSVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS.vcfs, ref.genome, trans.ranges, region),
-           VCFsToDNSCatalogs(split.vcfs$DNS.vcfs, ref.genome, trans.ranges, region)))
+  vcfs <- ReadStrelkaSBSVCFs(vector.of.file.paths)
+  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
+  return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
+           VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, trans.ranges, region)))
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files
@@ -1189,13 +1189,13 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
-#' Create SNS, DNS and Indel catalogs from Mutect VCF files
+#' Create SBS, DBS and Indel catalogs from Mutect VCF files
 #'
-#' Create 3 SNS catalogs (96, 192, 1536), 3 DNS catalogs (78, 136, 144) and
+#' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by vector.of.file.paths
 #'
-#' This function calls \code{\link{VCFsToSNSCatalogs}},
-#' \code{\link{VCFsToDNSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
+#' This function calls \code{\link{VCFsToSBSCatalogs}},
+#' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 #'
 #' @param vector.of.file.paths Character vector of
 #' file paths to the Mutect VCF files.
@@ -1210,39 +1210,39 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return  A list of 3 SNS catalogs (one each for 96, 192, and 1536), 3 DNS
+#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. Each catalog has
 #'   attributes added. See \code{\link{as.catalog}} for more
 #'   details.
 #'
-#' @note SNS 192 and DNS 144 catalogs include only mutations in transcribed regions.
+#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
 MutectVCFFilesToCatalog <-
   function(vector.of.file.paths, ref.genome, trans.ranges, region) {
   vcfs <- ReadMutectVCFs(vector.of.file.paths)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
-  return(c(VCFsToSNSCatalogs(split.vcfs$SNS, ref.genome, trans.ranges, region),
-           VCFsToDNSCatalogs(split.vcfs$DNS, ref.genome, trans.ranges, region),
+  return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
+           VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
            list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, region))))
 }
 
 #' @keywords internal
-CanonicalizeDNS <- function(ref.vec, alt.vec) {
+CanonicalizeDBS <- function(ref.vec, alt.vec) {
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
-  Canonicalize1DNS <- function(DNS) {
-    if (DNS %in% ICAMS::catalog.row.order$DNS78) {
-      return(DNS)
+  Canonicalize1DBS <- function(DBS) {
+    if (DBS %in% ICAMS::catalog.row.order$DBS78) {
+      return(DBS)
     } else {
-      ref <- substr(DNS, 1, 2)
-      alt <- substr(DNS, 3, 4)
+      ref <- substr(DBS, 1, 2)
+      alt <- substr(DBS, 3, 4)
       out <- paste0(revc(ref), revc(alt))
     }
-    stopifnot(out %in% ICAMS::catalog.row.order$DNS78)
+    stopifnot(out %in% ICAMS::catalog.row.order$DBS78)
     return(out)
   }
-  ret <- sapply(paste0(ref.vec, alt.vec), FUN = Canonicalize1DNS)
+  ret <- sapply(paste0(ref.vec, alt.vec), FUN = Canonicalize1DBS)
   return(ret)
 }
 
@@ -1252,11 +1252,11 @@ CanonicalizeQUAD <- function(quad) {
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
   Canonicalize1QUAD <- function(quad) {
-    if (quad %in% ICAMS::catalog.row.order$DNS136) {
+    if (quad %in% ICAMS::catalog.row.order$DBS136) {
       return(quad)
     } else {
       out <- revc(quad)
-      stopifnot(out %in% ICAMS::catalog.row.order$DNS136)
+      stopifnot(out %in% ICAMS::catalog.row.order$DBS136)
       return(out)
     }
   }
