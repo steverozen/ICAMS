@@ -1319,3 +1319,12 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
   return(x)
 }
+
+`cbind.SNS192Catalog` <- function (..., deparse.level = 1) {
+  x <- as.matrix(data.frame(..., check.names = FALSE))
+  class(x) <- class(..1)
+  for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+    attr(x, at) <- attr(..1, at, exact = TRUE)
+  }
+  return(x)
+}
