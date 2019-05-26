@@ -5,9 +5,8 @@
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
-#'   catalog. Leave out this parameter if you don't intend to plot strand bias
-#'   graph.
+#' @param no.context If TRUE, no preceding and following base context for
+#' SNS192 catalog plot.
 #'
 #' @param ... Additional arguments to be passed to methods.
 #'
@@ -20,12 +19,10 @@
 #' @export
 #'
 #' @name PlotCatalog
-PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
+PlotCatalog <- function(catalog, no.context = FALSE, ...) {
   type.of.plot <- character()
-  if (strandbias == TRUE && "SNS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SNSClassStrandBias"
-  } else if ("DNS144Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "DNSClassStrandBias"
+  if (no.context == TRUE && "SNS192Catalog" %in% class(catalog)) {
+    class(type.of.plot) <- "SNS192CatalogNoContext"
   } else {
     class(type.of.plot) <- class(catalog)
   }
@@ -42,9 +39,8 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #'
 #' @param file The name of the PDF file to be produced.
 #'
-#' @param strandbias If TRUE, plot strand bias graph for SNS192 or DNS144
-#'   catalog. Leave out this parameter if you don't intend to plot strand bias
-#'   graph.
+#' @param no.context If TRUE, no preceding and following base context for
+#' SNS192 catalog plot.
 #'
 #' @param ... Additional arguments to be passed to methods.
 #'
@@ -57,12 +53,10 @@ PlotCatalog <- function(catalog, strandbias = FALSE, ...) {
 #' @export
 #'
 #' @name PlotCatalogToPdf
-PlotCatalogToPdf <- function(catalog, file, strandbias = FALSE, ...) {
+PlotCatalogToPdf <- function(catalog, file, no.context = FALSE, ...) {
   type.of.plot <- character()
-  if (strandbias == TRUE && "SNS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SNSClassStrandBias"
-  } else if ("DNS144Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "DNSClassStrandBias"
+  if (no.context == TRUE && "SNS192Catalog" %in% class(catalog)) {
+    class(type.of.plot) <- "SNS192CatalogNoContext"
   } else {
     class(type.of.plot) <- class(catalog)
   }
@@ -356,8 +350,8 @@ PlotCatalogToPdf.SNS192Catalog <- function(catalog, file) {
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
-                                           cex = 1) {
+PlotCatalog.SNS192CatalogNoContext <-
+  function(catalog, no.context = TRUE, cex = 1) {
   stopifnot(dim(catalog) == c(192, 1))
 
   strand.col <- c('#394398',
@@ -469,8 +463,8 @@ PlotCatalog.SNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, file,
-                                                strandbias = TRUE) {
+PlotCatalogToPdf.SNS192CatalogNoContext <- function(catalog, file,
+                                                no.context = TRUE) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -479,7 +473,7 @@ PlotCatalogToPdf.SNSClassStrandBias <- function(catalog, file,
 
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
-    PlotCatalog(cat, strandbias = TRUE)
+    PlotCatalog(cat, no.context = TRUE)
   }
   invisible(grDevices::dev.off())
 
@@ -810,8 +804,7 @@ PlotCatalogToPdf.DNS78Catalog <- function(catalog, file) {
 
 #' @rdname PlotCatalog
 #' @export
-PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
-                                           cex = 1) {
+PlotCatalog.DNS144Catalog <- function(catalog, cex = 1) {
   stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
@@ -925,8 +918,8 @@ PlotCatalog.DNSClassStrandBias <- function(catalog, strandbias = TRUE,
 
 #' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DNSClassStrandBias <-
-  function(catalog, file, strandbias = TRUE, cex = 1) {
+PlotCatalogToPdf.DNS144Catalog <-
+  function(catalog, file, cex = 1) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
