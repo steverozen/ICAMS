@@ -1,4 +1,4 @@
-CreateOrderForDNS136Plotting <- function() {
+CreateOrderForDBS136Plotting <- function() {
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   base <- c("A", "C", "G", "T")
   rev.base <- c("T", "G", "C", "A")
@@ -13,4 +13,4 @@ CreateOrderForDNS136Plotting <- function() {
   return(output)
 }
 
-order.for.DNS.136.plotting <- CreateOrderForDNS136Plotting()
+order.for.DBS.136.plotting <- CreateOrderForDBS136Plotting()
