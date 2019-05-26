@@ -8,17 +8,11 @@ trans.ranges.GRCh37 <-
 trans.ranges.GRCh38 <-
   ReadTranscriptRanges("data-raw/ranges/TranscriptRanges.GRCh38.GENECODEv30.csv")
 
-exome.ranges.GRCh37 <-
-  ReadBedRanges("data-raw/ranges/ExomeRanges.GRCh37.SureSelectv6.csv")
+#exome.ranges.GRCh37 <-
+  #ReadBedRanges("data-raw/ranges/SureSelect_Human_All_Exon_V6.hg19.bed")
 
-exome.ranges.stranded.GRCh37 <-
-  CreateExomeStrandedRanges("data-raw/ranges/ExomeRanges.GRCh37.SureSelectv6.csv")
-
-exome.ranges.GRCh38 <-
-  ReadBedRanges("data-raw/ranges/ExomeRanges.GRCh38.SureSelectv6.csv")
-
-exome.ranges.stranded.GRCh38 <-
-  CreateExomeStrandedRanges("data-raw/ranges/ExomeRanges.GRCh38.SureSelectv6.csv")
+#exome.ranges.GRCh38 <-
+  #ReadBedRanges("data-raw/ranges/SureSelect_Human_All_Exon_V6.GRCh38.bed")
 
 
 
