@@ -1,7 +1,7 @@
 context("PlotCatalogToPdf.SNS1536")
 
 test_that("PlotCatalogToPdf.SNS1536 function is working properly", {
-  catalog.counts <- ReadCatalog("testdata/regress.cat.sns.1536.csv",
+  catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.1536.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
