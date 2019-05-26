@@ -237,7 +237,6 @@ PlotCatalog.SNS192Catalog <- function(catalog, cex = 0.8) {
 
   # Sort data in plotting order
   cat <- catalog[to.reorder.SNS.192.for.plotting, 1, drop = FALSE]
-  cat <- PreserveCatalogAttribute(catalog, cat)
 
   num.classes <- length(cat)
   maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
