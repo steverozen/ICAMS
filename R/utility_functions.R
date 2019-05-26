@@ -1081,8 +1081,8 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
 #' @param stranded.ranges A keyed data table which has stranded ranges information.
 #' It has four columns: chrom, start, end and strand.
 #'
-#' @return A data table which has removed ranges that fall on both
-#' strands from the input \code{stranded.ranges}.
+#' @return A data table which has removed ranges that fall on both strands from
+#'   the input \code{stranded.ranges}.
 #'
 #' @keywords internal
 RemoveRangesOnBothStrand <- function(stranded.ranges) {
@@ -1101,12 +1101,18 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
   gr <-
     GenomicRanges::intersect(gr.plus.reduced, gr.minus.reduced,
                              ignore.strand = TRUE)
-  gr1 <- gr
-  gr1@strand@values <- "+"
-  gr2 <- gr
-  gr2@strand@values <- "-"
-  gr3 <- GenomicRanges::setdiff(gr.plus.reduced, gr1)
-  gr4 <- GenomicRanges::setdiff(gr.minus.reduced, gr2)
+
+  if (length(gr) != 0) {
+    gr1 <- gr
+    gr1@strand@values <- "+"
+    gr2 <- gr
+    gr2@strand@values <- "-"
+    gr3 <- GenomicRanges::setdiff(gr.plus.reduced, gr1)
+    gr4 <- GenomicRanges::setdiff(gr.minus.reduced, gr2)
+  } else {
+    gr3 <- gr.plus.reduced
+    gr4 <- gr.minus.reduced
+  }
 
   # Get a new data table which does not have ranges on both strands
   dt1 <- as.data.table(gr3)
@@ -1127,7 +1133,8 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
 #'
-#' @param trans.range A GFF3 trans.range.file
+#' @param stranded.ranges A keyed data table which has stranded ranges
+#'   information. It has four columns: chrom, start, end and strand.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -1136,9 +1143,9 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
-  trans.ranges <- RemoveRangesOnBothStrand(trans.ranges)
-  stranded.ranges <- StandardChromName(trans.ranges)
+GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
+  stranded.ranges <- RemoveRangesOnBothStrand(stranded.ranges)
+  stranded.ranges <- StandardChromName(stranded.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
@@ -1162,12 +1169,12 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
   for (chr in unique(stranded.ranges$chrom)) {
     print(chr)
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
-    trans.ranges.chr <-
+    stranded.ranges.chr <-
       with(temp.stranded.ranges,
            GRanges(chrom, IRanges(start, end), strand = strand))
 
-    # Remove the overlapping ranges in trans.ranges.chr
-    trans.ranges.chr <- IRanges::reduce(trans.ranges.chr)
+    # Remove the overlapping ranges in stranded.ranges.chr
+    stranded.ranges.chr <- IRanges::reduce(stranded.ranges.chr)
 
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
@@ -1177,15 +1184,15 @@ GetStrandedKmerCounts <- function(k, ref.genome, trans.ranges, filter.path) {
       filter.chr <-
         c(with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "+")),
           with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4), strand = "-")))
-      filtered.trans.ranges.chr <-
-        GenomicRanges::setdiff(trans.ranges.chr, filter.chr)
+      filtered.stranded.ranges.chr <-
+        GenomicRanges::setdiff(stranded.ranges.chr, filter.chr)
 
-      stranded.seq <- BSgenome::getSeq(genome, filtered.trans.ranges.chr,
+      stranded.seq <- BSgenome::getSeq(genome, filtered.stranded.ranges.chr,
                                        as.character = TRUE)
       # Filter shorter homopolymer and microsatellites by regex
       stranded.seq <- gsub(homopolymer.ms.regex.pattern, "N", stranded.seq)
     } else {
-      stranded.seq <- BSgenome::getSeq(genome, trans.ranges.chr,
+      stranded.seq <- BSgenome::getSeq(genome, stranded.ranges.chr,
                                        as.character = TRUE)
     }
     kmer.counts <- kmer.counts + GetSequenceKmerCounts(stranded.seq, k)
