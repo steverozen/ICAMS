@@ -12,32 +12,32 @@
 \alias{PlotCatalogToPdf.IndelCatalog}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, filename, strandbias = FALSE, ...)
+PlotCatalogToPdf(catalog, file, strandbias = FALSE, ...)
 
-\method{PlotCatalogToPdf}{SNS96Catalog}(catalog, filename, grid = TRUE,
+\method{PlotCatalogToPdf}{SNS96Catalog}(catalog, file, grid = TRUE,
   upper = TRUE, xlabels = TRUE)
 
-\method{PlotCatalogToPdf}{SNS192Catalog}(catalog, filename)
+\method{PlotCatalogToPdf}{SNS192Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{SNSClassStrandBias}(catalog, filename,
+\method{PlotCatalogToPdf}{SNSClassStrandBias}(catalog, file,
   strandbias = TRUE)
 
-\method{PlotCatalogToPdf}{SNS1536Catalog}(catalog, filename)
+\method{PlotCatalogToPdf}{SNS1536Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{DNS78Catalog}(catalog, filename)
+\method{PlotCatalogToPdf}{DNS78Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{DNSClassStrandBias}(catalog, filename,
+\method{PlotCatalogToPdf}{DNSClassStrandBias}(catalog, file,
   strandbias = TRUE, cex = 1)
 
-\method{PlotCatalogToPdf}{DNS136Catalog}(catalog, filename)
+\method{PlotCatalogToPdf}{DNS136Catalog}(catalog, file)
 
-\method{PlotCatalogToPdf}{IndelCatalog}(catalog, filename)
+\method{PlotCatalogToPdf}{IndelCatalog}(catalog, file)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{as.catalog}} for more details.}
 
-\item{filename}{The name of the PDF file to be produced.}
+\item{file}{The name of the PDF file to be produced.}
 
 \item{strandbias}{If TRUE, plot strand bias graph for SNS192 or DNS144
 catalog. Leave out this parameter if you don't intend to plot strand bias
