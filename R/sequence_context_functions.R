@@ -62,3 +62,32 @@ CreatePWMFromSBSVCFs <-
                           ref.context.width = ref.context.width)
     return(list.of.PWM)
   }
+
+#' Plot position weight matrix (PWM) for *one* sample from a Variant Call Format
+#' (VCF) file.
+#'
+#' @param pwm A position weight matrix (PWM) for *one* sample with each row
+#'   representing the position weight of four bases.
+#'
+#' @param title The main title of the plot.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
+PlotPWM <- function(pwm, title) {
+  par(mar = c(5, 5, 1, 1))
+  x <- seq(1:nrow(pwm))
+  plot(x, y = pwm[, "A"], xaxt = "n", xlab = "",
+       ylab = "frequency", ylim = c(0, 1), pch = 20, type = "b",
+       lwd = 2, col = "darkgreen")
+  lines(x, pwm[, "C"], col = "blue", type = "b", pch = 20, lwd = 2)
+  lines(x, pwm[, "G"], col = "black", type = "b", pch = 20, lwd = 2)
+  lines(x, pwm[, "T"], col = "red", type = "b", pch = 20, lwd = 2)
+  abline(h = 0.25, col = "grey50")
+  text(x, y = -0.1, labels = rownames(pwm), adj = 1, srt = 90, xpd = NA)
+  legend("topright", pch = 16, ncol = 4, bty = "n",
+         legend = c("A", "C", "G", "T"),
+         col = c("darkgreen", "blue", "black", "red"))
+  mtext(text = title, side = 3, line = 0.5)
+  invisible(TRUE)
+}
