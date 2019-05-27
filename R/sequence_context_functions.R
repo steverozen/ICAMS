@@ -39,3 +39,26 @@ CreateOnePWMFromSBSVCF <- function(vcf, ref.context.width) {
   return(t(mat))
 }
 
+#' Create position weight matrices (PWM) from a list of SBS vcfs
+#'
+#' @param list.of.SBS.vcfs List of in-memory data frames of pure SBS mutations
+#'   -- no DBS or 3+BS mutations. The list names will be the main title on top
+#'   of each position weight matrices (PWM) plot.
+#'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param ref.context.width Width of the reference context to be used for
+#'   generating the position weight matrix (PWM).
+#'
+#' @return A list of position weight matrices (PWM).
+#'
+#' @keywords internal
+CreatePWMFromSBSVCFs <-
+  function(list.of.SBS.vcfs, ref.genome, ref.context.width) {
+    list.of.SBS.vcfs <- lapply(list.of.SBS.vcfs, FUN = AddSequence,
+                               ref.genome = ref.genome)
+    list.of.PWM <- lapply(list.of.SBS.vcfs, FUN = CreateOnePWMFromSBSVCF,
+                          ref.context.width = ref.context.width)
+    return(list.of.PWM)
+  }
