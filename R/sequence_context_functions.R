@@ -91,3 +91,28 @@ PlotPWM <- function(pwm, title) {
   mtext(text = title, side = 3, line = 0.5)
   invisible(TRUE)
 }
+
+#' Plot position weight matrices (PWM) to a PDF file
+#'
+#' @param list.of.pwm A list of position weight matrices (PWM)
+#'
+#' @param file The name of the PDF file to be produced.
+#'
+#' @param titles A vector of titles on top of each PWM plot.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
+PlotPWMToPdf <- function(list.of.pwm, file, titles = names(list.of.pwm)) {
+  # Setting the width and length for A4 size plotting
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+
+  n <- length(list.of.pwm)
+  graphics::par(mfrow = c(2, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+
+  for (i in 1:n) {
+    PlotPWM(list.of.pwm[[i]], title = titles[i])
+  }
+  invisible(grDevices::dev.off())
+  invisible(TRUE)
+}
