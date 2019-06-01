@@ -1,41 +1,41 @@
 #' Create position weight matrix (PWM) for *one* sample from
 #' a Variant Call Format (VCF) file.
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSeqContext function. It
-#'   must *not* contain indels and must *not* contain DBS (double base
-#'   substitutions), or triplet base substitutions etc., even if encoded as
-#'   neighboring SBS.
+#' @param vcf One in-memory data frame of pure SBS mutations -- no DBS or 3+BS
+#'   mutations.
 #'
-#' @param ref.context.width Width of the reference context to be used for
-#'   generating the position weight matrix (PWM).
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param seq.context.width The number of preceding and following bases to be
+#'   extracted around the mutated position from \code{ref.genome}.
 #'
 #' @return A position weight matrix (PWM) with each row representing the
 #'   position weight of four bases.
 #'
 #' @keywords internal
-CreateOnePWMFromSBSVCF <- function(vcf, ref.context.width) {
+CreateOnePWMFromSBSVCF <- function(vcf, ref.genome, seq.context.width) {
   stopifnot(nrow(vcf) != 0)
-  stopifnot("seq.21context" %in% colnames(vcf))
+  vcf <- AddSeqContext(vcf, ref.genome = ref.genome,
+                       seq.context.width = seq.context.width)
   dt <- data.table(vcf)
 
-  # Map the seq.21context column in dt to strand-agnostic category
-  idx <- substr(dt$seq.21context, 11, 11) %in% c("A", "G")
-  dt$seq.21context[idx] <- revc(dt$seq.21context[idx])
-
-  # Get the desired reference context based on ref.context.width
-  k <- (ref.context.width - 1) / 2
-  dt[, ref.context := substr(seq.21context, 11 - k, 11 + k)]
+  # Map the sequence context column in dt to strand-agnostic category
+  idx <- substr(dt[[tail(names(dt), 1)]], seq.context.width + 1,
+                seq.context.width + 1) %in% c("A", "G")
+  dt[[tail(names(dt), 1)]][idx] <- revc(dt[[tail(names(dt), 1)]][idx])
 
   # Create the position weight matrix (PWM)
-  GetPWM <- function(idx, ref.context) {
-    base <- substr(ref.context, idx, idx)
+  GetPWM <- function(idx, seq.context) {
+    base <- substr(seq.context, idx, idx)
     count <- table(factor(base, levels = c("A", "C", "G", "T")))
     return(as.matrix(count / sum(count)))
   }
-  mat <- sapply(1:ref.context.width, FUN = GetPWM,
-                ref.context = dt$ref.context)
+  mat <- sapply(1:nchar(dt[[tail(names(dt), 1)]][1]), FUN = GetPWM,
+                seq.context = dt[[tail(names(dt), 1)]])
   rownames(mat) <- c("A", "C", "G", "T")
-  colnames(mat) <- c(paste0(k:1, "bp 5'"), "target", paste0(1:k, "bp 3'"))
+  colnames(mat) <- c(paste0(seq.context.width:1, "bp 5'"), "target",
+                     paste0(1:seq.context.width, "bp 3'"))
   return(t(mat))
 }
 
