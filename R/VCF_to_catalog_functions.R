@@ -336,10 +336,10 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
     )
 
   # Extract sequence context from the reference genome
-  df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
+  df$extracted.seq <- getSeq(ref.genome, Ranges, as.character = TRUE)
 
-  names(df)[names(df) == "seq.context"] <-
-    paste0("seq.", 2 * seq.context.width + 1, "context")
+  names(df)[names(df) == "extracted.seq"] <-
+    paste0("seq.", 2 * seq.context.width + 1, "bases")
   return(df)
 }
 
@@ -590,7 +590,7 @@ SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
 #'   with the context information.
 #'
 #' @return Throws error with location information if the value of REF is
-#'   inconsistent with the value of seq.21context. Assumes the first base of the
+#'   inconsistent with the value of seq.21bases. Assumes the first base of the
 #'   reference allele is at position (size(<context string>)-1)/2, and generates
 #'   error if this is not an integer. Indices are 1-based.
 #'
@@ -773,7 +773,7 @@ CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
   stopifnot(nchar(vcf$REF) == 1)
   stopifnot(vcf$ALT != vcf$REF)
   # Create 2 new columns that show the 3072 and 1536 mutation type
-  context <- substr(vcf$seq.21context, 9, 13)
+  context <- substr(vcf$seq.21bases, 9, 13)
   vcf$mutation <- paste0(context, vcf$ALT)
 
   # PyrPenta maps to strand-agnostic category
@@ -887,7 +887,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
     SBS <- AddSeqContext(SBS, ref.genome = ref.genome)
 
     # Delete the rows of SBS if the extracted sequence contains "N"
-    idx <- grep("N", substr(SBS$seq.21context, 9, 13))
+    idx <- grep("N", substr(SBS$seq.21bases, 9, 13))
     if (!length(idx) == 0) {
       SBS <- SBS[-idx, ]
       cat('There are rows in the SBS vcf where extracted sequence contains "N",',
@@ -895,7 +895,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
           'in other parts of ICAMS package')
     }
 
-    CheckSeqContextInVCF(SBS, "seq.21context")
+    CheckSeqContextInVCF(SBS, "seq.21bases")
     SBS <- AddTranscript(SBS, trans.ranges)
     SBS.cat <- CreateOneColSBSCatalog(SBS)
     rm(SBS)
@@ -976,7 +976,7 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
   # AddTranscript function if the mutation position falls into the range of
   # multiple transcripts. When creating the 78 and 136 catalog, we only need to
   # count these mutations once.
-  vcf1 <- vcf[, .(REF = REF[1], seq.21context = seq.21context[1]),
+  vcf1 <- vcf[, .(REF = REF[1], seq.21bases = seq.21bases[1]),
               by = .(CHROM, ALT, POS)]
 
   # Create the 78 DBS catalog matrix
@@ -997,7 +997,7 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
   colnames(DBS.mat.78)<- sample.id
 
   # Create the 136 DBS catalog matrix
-  canon.DBS.136 <- CanonicalizeQUAD(substr(vcf1$seq.21context, 10, 13))
+  canon.DBS.136 <- CanonicalizeQUAD(substr(vcf1$seq.21bases, 10, 13))
   tab.DBS.136 <- table(canon.DBS.136)
   row.order.136 <- data.table(rn = ICAMS::catalog.row.order$DBS136)
   DBS.dt.136 <- as.data.table(tab.DBS.136)
@@ -1088,7 +1088,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
     DBS <- AddSeqContext(DBS, ref.genome = ref.genome)
 
     # Delete the rows of DBS if the extracted sequence contains "N"
-    idx <- grep("N", substr(DBS$seq.21context, 10, 13))
+    idx <- grep("N", substr(DBS$seq.21bases, 10, 13))
     if (!length(idx) == 0) {
       DBS <- DBS[-idx, ]
       cat('There are rows in the DBS vcf where extracted sequence contains "N", ',
@@ -1097,7 +1097,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
     }
 
     DBS <- AddTranscript(DBS, trans.ranges)
-    CheckSeqContextInVCF(DBS, "seq.21context")
+    CheckSeqContextInVCF(DBS, "seq.21bases")
     DBS.cat <- CreateOneColDBSCatalog(DBS)
     rm(DBS)
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
