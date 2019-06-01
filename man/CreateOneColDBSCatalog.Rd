@@ -8,7 +8,7 @@ a Variant Call Format (VCF) file}
 CreateOneColDBSCatalog(vcf, sample.id = "count")
 }
 \arguments{
-\item{vcf}{An in-memory VCF file annotated by the AddSequence and
+\item{vcf}{An in-memory VCF file annotated by the AddSeqContext and
 AddTranscript functions. It must *not* contain indels and must
 *not* contain SBS (single base substitutions), or triplet base
 substitutions etc.}

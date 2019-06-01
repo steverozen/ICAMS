@@ -12,7 +12,7 @@ ReadTranscriptRanges(path)
 start end positions of genomic ranges.}
 }
 \value{
-A data.table keyed by chrom, chromStart, and chromEnd.
+A data.table keyed by chrom, start, and end.
 }
 \description{
 Read transcript ranges and strand information from a gff3 format file.

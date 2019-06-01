@@ -16,7 +16,7 @@ GetExomeKmerCounts(k, ref.genome, exome.ranges, filter.path)
 genome(sequence). Only simple repeat masking is accepted now.}
 
 \item{exome.range}{A keyed data table which has exome ranges information.
-It has three columns: chrom, chromStart and chromEnd.}
+It has three columns: chrom, start and end.}
 }
 \value{
 Matrix of the counts of exome k-mer across the \code{ref.genome}
