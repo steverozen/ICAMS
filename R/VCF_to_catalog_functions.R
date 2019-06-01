@@ -291,6 +291,9 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
+#' @param seq.context.width The number of preceding and following bases to be
+#'   extracted around the mutated position from \code{ref.genome}. The default value is 10.
+#'
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
@@ -305,9 +308,8 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'     that contains sequence context information.
 #'
 #' @keywords internal
-AddSequence <- function(df, ref.genome) {
+AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
   if (0 == nrow(df)) return(df)
-  seq.context.width <- 10
   ref.genome <- NormalizeGenomeArg(ref.genome)
 
   # Check if the format of sequence names in df and genome are the same.
@@ -334,8 +336,10 @@ AddSequence <- function(df, ref.genome) {
     )
 
   # Extract sequence context from the reference genome
-  df$seq.21context <- getSeq(ref.genome, Ranges, as.character = TRUE)
+  df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
 
+  names(df)[names(df) == "seq.context"] <-
+    paste0("seq.", 2 * seq.context.width + 1, "context")
   return(df)
 }
 
@@ -728,7 +732,7 @@ ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
 #' Create single base mutation catalog for *one* sample from
 #' a Variant Call Format (VCF) file.
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSequence and
+#' @param vcf An in-memory VCF file annotated by the AddSeqContext and
 #'   AddTranscript functions. It must *not* contain indels and must *not*
 #'   contain DBS (double base substitutions), or triplet base substitutions
 #'   etc., even if encoded as neighboring SBS.
@@ -880,7 +884,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
   for (i in 1:ncol) {
     SBS <- list.of.SBS.vcfs[[i]]
 
-    SBS <- AddSequence(SBS, ref.genome = ref.genome)
+    SBS <- AddSeqContext(SBS, ref.genome = ref.genome)
 
     # Delete the rows of SBS if the extracted sequence contains "N"
     idx <- grep("N", substr(SBS$seq.21context, 9, 13))
@@ -927,7 +931,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
 #' Create double base catalog for *one* sample from
 #' a Variant Call Format (VCF) file
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSequence and
+#' @param vcf An in-memory VCF file annotated by the AddSeqContext and
 #'   AddTranscript functions. It must *not* contain indels and must
 #'   *not* contain SBS (single base substitutions), or triplet base
 #'   substitutions etc.
@@ -1081,7 +1085,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
   for (i in 1 : ncol) {
     DBS <- list.of.DBS.vcfs[[i]]
 
-    DBS <- AddSequence(DBS, ref.genome = ref.genome)
+    DBS <- AddSeqContext(DBS, ref.genome = ref.genome)
 
     # Delete the rows of DBS if the extracted sequence contains "N"
     idx <- grep("N", substr(DBS$seq.21context, 10, 13))

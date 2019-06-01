@@ -1,7 +1,7 @@
 #' Create position weight matrix (PWM) for *one* sample from
 #' a Variant Call Format (VCF) file.
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSequence function. It
+#' @param vcf An in-memory VCF file annotated by the AddSeqContext function. It
 #'   must *not* contain indels and must *not* contain DBS (double base
 #'   substitutions), or triplet base substitutions etc., even if encoded as
 #'   neighboring SBS.
@@ -56,7 +56,7 @@ CreateOnePWMFromSBSVCF <- function(vcf, ref.context.width) {
 #' @keywords internal
 CreatePWMFromSBSVCFs <-
   function(list.of.SBS.vcfs, ref.genome, ref.context.width) {
-    list.of.SBS.vcfs <- lapply(list.of.SBS.vcfs, FUN = AddSequence,
+    list.of.SBS.vcfs <- lapply(list.of.SBS.vcfs, FUN = AddSeqContext,
                                ref.genome = ref.genome)
     list.of.PWM <- lapply(list.of.SBS.vcfs, FUN = CreateOnePWMFromSBSVCF,
                           ref.context.width = ref.context.width)
