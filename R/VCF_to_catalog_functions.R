@@ -969,8 +969,8 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
     rownames(catDBS136) <- ICAMS::catalog.row.order$DBS136
 
     return(list(catDBS78 = catDBS78,
-                catDBS144 = catDBS144,
-                catDBS136 = catDBS136))
+                catDBS136 = catDBS136,
+                catDBS144 = catDBS144))
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
