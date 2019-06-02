@@ -956,6 +956,7 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 #'
 #' @export
 as.catalog <- function(catalog, ref.genome, region, catalog.type) {
+  stopifnot(region %in% c("genome", "exome"))
   ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
 
   if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
