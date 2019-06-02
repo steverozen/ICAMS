@@ -916,15 +916,9 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
     as.catalog(catSBS96, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
 
-  if (region == "genome") {
-    catSBS192 <-
-      as.catalog(catSBS192, ref.genome = ref.genome,
-                 region = "transcript", catalog.type = "counts")
-  } else if (region == "exome") {
-    catSBS192 <-
-      as.catalog(catSBS192, ref.genome = ref.genome,
-                 region = "exome", catalog.type = "counts")
-  }
+  catSBS192 <-
+    as.catalog(catSBS192, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
 
   catSBS1536 <-
     as.catalog(catSBS1536, ref.genome = ref.genome,
