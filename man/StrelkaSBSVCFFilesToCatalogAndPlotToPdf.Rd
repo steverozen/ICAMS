@@ -37,7 +37,7 @@ Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
 Strelka SBS VCFs specified by vector.of.file.paths and plot them to PDF
 }
 \details{
-This function calls \code{\link{StrelkaSBSFilesToCatalog}} and
+This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}} and
 \code{\link{PlotCatalogToPdf}}
 }
 \note{
