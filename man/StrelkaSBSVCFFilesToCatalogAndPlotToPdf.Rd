@@ -28,8 +28,8 @@ following base context for the plot. Only implemented for SBS192Catalog.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-  catalogs (one each for 78, 136, and 144) and their plots
-  outputed to PDF with specified file name. Each catalog has attributes
+  catalogs (one each for 78, 136, and 144) and their graphs
+  plotted to PDF with specified file name. Each catalog has attributes
   added. See \code{\link{as.catalog}} for more details.
 }
 \description{
