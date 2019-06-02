@@ -160,7 +160,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
 #' @keywords internal
 TestMakeCatalogFromStrelkaIDVCFs <- function() {
   files <- c(system.file("extdata",
-                         "MCF10A_Carb_Low_cl2_INDELresult.vcf",
+                         "MCF10A_Carb_Low_cl2_Strelka_ID.vcf",
                          package = "ICAMS",
                          mustWork = TRUE))
 
