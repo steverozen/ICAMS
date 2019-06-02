@@ -5,10 +5,26 @@
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @param no.context If TRUE, no preceding and following base context for
-#' SBS192 catalog plot.
+#' @param no.context A logical value indicating whether there is preceding and
+#'   following base context for the plot. Only implemented for SBS192Catalog.
 #'
-#' @param ... Additional arguments to be passed to methods.
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists), sample name and legend(if it exists)
+#'   should be magnified relative to the default. Only implemented for SBS96Catalog,
+#'   SBS192Catalog and DBS144Catalog.
+#'
+#' @param grid A logical value indicating whether to draw grid lines. Only
+#'   implemented for SBS96Catalog.
+#'
+#' @param upper A logical value indicating whether to draw horizontal lines and
+#'   the names of major mutation class on top of graph. Only implemented for
+#'   SBS96Catalog.
+#'
+#' @param xlabels A logical value indicating whether to draw x axis labels. Only
+#'   implemented for SBS96Catalog.
+#'
+#' @import graphics
 #'
 #' @return \code{invisible(TRUE)}
 #'
@@ -19,14 +35,8 @@
 #' @export
 #'
 #' @name PlotCatalog
-PlotCatalog <- function(catalog, no.context = FALSE, ...) {
-  type.of.plot <- character()
-  if (no.context == TRUE && "SBS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SBS192CatalogNoContext"
-  } else {
-    class(type.of.plot) <- class(catalog)
-  }
-  UseMethod(generic = "PlotCatalog", object = type.of.plot)
+PlotCatalog <- function(catalog, no.context, cex, grid, upper, xlabels) {
+  UseMethod(generic = "PlotCatalog")
 }
 
 
@@ -39,10 +49,24 @@ PlotCatalog <- function(catalog, no.context = FALSE, ...) {
 #'
 #' @param file The name of the PDF file to be produced.
 #'
-#' @param no.context If TRUE, no preceding and following base context for
-#' SBS192 catalog plot.
+#' @param no.context A logical value indicating whether there is preceding and
+#'   following base context for the plot. Only implemented for SBS192Catalog.
 #'
-#' @param ... Additional arguments to be passed to methods.
+#' @param cex A numerical value giving the amount by which mutation class labels,
+#'   mutation counts(if it exists), y axis and its labels, x axis labels and
+#'   its annotations(if it exists), sample name and legend(if it exists)
+#'   should be magnified relative to the default. Only implemented for SBS96Catalog,
+#'   SBS192Catalog and DBS144Catalog.
+#'
+#' @param grid A logical value indicating whether to draw grid lines. Only
+#'   implemented for SBS96Catalog.
+#'
+#' @param upper A logical value indicating whether to draw horizontal lines and
+#'   the names of major mutation class on top of graph. Only implemented for
+#'   SBS96Catalog.
+#'
+#' @param xlabels A logical value indicating whether to draw x axis labels. Only
+#'   implemented for SBS96Catalog.
 #'
 #' @return \code{invisible(TRUE)}
 #'
@@ -53,24 +77,18 @@ PlotCatalog <- function(catalog, no.context = FALSE, ...) {
 #' @export
 #'
 #' @name PlotCatalogToPdf
-PlotCatalogToPdf <- function(catalog, file, no.context = FALSE, ...) {
-  type.of.plot <- character()
-  if (no.context == TRUE && "SBS192Catalog" %in% class(catalog)) {
-    class(type.of.plot) <- "SBS192CatalogNoContext"
-  } else {
-    class(type.of.plot) <- class(catalog)
-  }
-  UseMethod(generic = "PlotCatalogToPdf", object = type.of.plot)
+PlotCatalogToPdf <- function(catalog, file, no.context, cex, grid, upper, xlabels) {
+  UseMethod(generic = "PlotCatalogToPdf")
 }
 
 ###############################################################################
 # Plotting functions for SBS96, SBS192 and SBS1536 catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
 #' @export
 PlotCatalog.SBS96Catalog <-
-  function(catalog, cex = 0.8, grid = TRUE, upper = TRUE, xlabels = TRUE) {
+  function(catalog, no.context = NULL, cex = 0.8, grid = TRUE,
+           upper = TRUE, xlabels = TRUE) {
     stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SBS96)
 
@@ -187,11 +205,9 @@ PlotCatalog.SBS96Catalog <-
     invisible(TRUE)
   }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
 PlotCatalogToPdf.SBS96Catalog <-
-  function(catalog, file,
+  function(catalog, file, no.context = NULL, cex = 0.8,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -201,288 +217,270 @@ PlotCatalogToPdf.SBS96Catalog <-
 
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
-      PlotCatalog(cat, grid = grid, upper = upper, xlabels = xlabels)
+      PlotCatalog(cat, cex = cex, grid = grid, upper = upper, xlabels = xlabels)
     }
     invisible(grDevices::dev.off())
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.SBS192Catalog <- function(catalog, cex = 0.8) {
+PlotCatalog.SBS192Catalog <- function(catalog, no.context = FALSE, cex = 0.8,
+                                      grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(dim(catalog) == c(192, 1))
 
-  class.col  <- c("#03bcee",
-                  "#010101",
-                  "#e32926",
-                  "#999999",
-                  "#a1ce63",
-                  "#ebc6c4")
+  if (no.context == FALSE) {
+    class.col  <- c("#03bcee",
+                    "#010101",
+                    "#e32926",
+                    "#999999",
+                    "#a1ce63",
+                    "#ebc6c4")
 
-  bg.class.col  <- c("#DCF8FF",
-                     "#E9E9E9",
-                     "#FFC7C7",
-                     "#F7F7F7",
-                     "#E5F9DF",
-                     "#F9E7E7")
+    bg.class.col  <- c("#DCF8FF",
+                       "#E9E9E9",
+                       "#FFC7C7",
+                       "#F7F7F7",
+                       "#E5F9DF",
+                       "#F9E7E7")
 
-  strand.col <- c("#394398",
-                  "#e83020")
+    strand.col <- c("#394398",
+                    "#e83020")
 
-  # Sort data in plotting order
-  cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
+    # Sort data in plotting order
+    cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
 
-  num.classes <- length(cat)
-  maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  cols <- rep(strand.col, num.classes / 2)
+    num.classes <- length(cat)
+    maj.class.names = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+    cols <- rep(strand.col, num.classes / 2)
 
-  if (attributes(cat)$catalog.type == "counts") {
-    # Get ylim
-    ymax <- max(cat[, 1]) * 1.3
+    if (attributes(cat)$catalog.type == "counts") {
+      # Get ylim
+      ymax <- max(cat[, 1]) * 1.3
 
-    # Barplot: side by side
-    mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, lwd = 3, xaxs = "i",
-                  border = NA, col = cols, xpd = NA, ylab = "counts")
-  } else if (attributes(cat)$catalog.type %in%
-             c("counts.signature", "density.signature")) {
-    # Determine the y axis label
-    yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
-                         "counts proportion", "density proportion")
-    # Get ylim
-    ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
+      # Barplot: side by side
+      mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
+                    axes = FALSE, lwd = 3, xaxs = "i",
+                    border = NA, col = cols, xpd = NA, ylab = "counts")
+    } else if (attributes(cat)$catalog.type %in%
+               c("counts.signature", "density.signature")) {
+      # Determine the y axis label
+      yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
+                           "counts proportion", "density proportion")
+      # Get ylim
+      ymax <- ifelse(max(cat[, 1]) * 1.3 > 1, 1, max(cat[, 1]) * 1.3)
 
-    # Barplot: side by side
-    mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, lwd = 3, xaxs = "i",
-                  border = NA, col = cols, xpd = NA, ylab = yaxislabel)
-  } else if (attributes(cat)$catalog.type == "density") {
-    # Get the rate of mutations per million trinucleotides
-    rate <- cat[, 1] * 1000000
+      # Barplot: side by side
+      mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
+                    axes = FALSE, lwd = 3, xaxs = "i",
+                    border = NA, col = cols, xpd = NA, ylab = yaxislabel)
+    } else if (attributes(cat)$catalog.type == "density") {
+      # Get the rate of mutations per million trinucleotides
+      rate <- cat[, 1] * 1000000
 
-    # Get ylim
-    ymax <- max(rate) * 1.3
+      # Get ylim
+      ymax <- max(rate) * 1.3
 
-    # Barplot: side by side
-    mat <- matrix(rate, nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                  axes = FALSE, lwd = 3, xaxs = "i",
-                  border = NA, col = cols, xpd = NA, ylab = "mut/million")
-  }
-
-  # Draw lines above each class:
-  x.left <- bp[seq(0, 160, 32) + 1] - 0.5
-  x.right <- bp[seq(32, 192, 32)] + 0.5
-  rect(xleft = x.left, ymax * 1.01, xright = x.right, ymax * 1.03,
-       col = class.col, border = NA, xpd = NA)
-
-  # Draw mutation class labels at the top of the figure:
-  text((x.left + x.right)/2, ymax * 1.07, labels = maj.class.names,
-       cex = cex, xpd = NA)
-
-  # Draw background color
-  rect(xleft = x.left - 0.5, 0, xright = x.right + 0.5, ymax,
-       col = bg.class.col, border = 'grey90', lwd = 1.5)
-
-  # Plot again
-  barplot(mat, beside = TRUE, ylim = c(0, ymax),
-          axes = FALSE, ann = FALSE, lwd = 3,
-          border = NA, col = cols, xpd = NA, add = TRUE)
-
-  # Draw grid lines
-  segments(bp[1] - 1, seq(0, ymax, ymax/4), bp[num.classes] + 1,
-           seq(0, ymax, ymax/4), col = 'grey35', lwd = 0.25)
-
-  # Draw y axis and write mutation counts on top of graph(if applicable)
-  y.axis.values <- seq(0, ymax, ymax/4)
-  if (attributes(cat)$catalog.type != "counts") {
-    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
-  } else {
-    y.axis.labels <- round(y.axis.values, 0)
-
-    # Write the mutation counts on top of graph
-    for (i in 1 : 6) {
-      j <- 32 + 32 * (i - 1)
-      k <- 1 + 32 * (i - 1)
-      text(bp[j], ymax * 0.92, labels = sum(cat[k : (32 * i), 1]),
-           adj = c(1, 1), xpd = NA, cex = 0.8)
+      # Barplot: side by side
+      mat <- matrix(rate, nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
+                    axes = FALSE, lwd = 3, xaxs = "i",
+                    border = NA, col = cols, xpd = NA, ylab = "mut/million")
     }
+
+    # Draw lines above each class:
+    x.left <- bp[seq(0, 160, 32) + 1] - 0.5
+    x.right <- bp[seq(32, 192, 32)] + 0.5
+    rect(xleft = x.left, ymax * 1.01, xright = x.right, ymax * 1.03,
+         col = class.col, border = NA, xpd = NA)
+
+    # Draw mutation class labels at the top of the figure:
+    text((x.left + x.right)/2, ymax * 1.07, labels = maj.class.names,
+         cex = cex, xpd = NA)
+
+    # Draw background color
+    rect(xleft = x.left - 0.5, 0, xright = x.right + 0.5, ymax,
+         col = bg.class.col, border = 'grey90', lwd = 1.5)
+
+    # Plot again
+    barplot(mat, beside = TRUE, ylim = c(0, ymax),
+            axes = FALSE, ann = FALSE, lwd = 3,
+            border = NA, col = cols, xpd = NA, add = TRUE)
+
+    # Draw grid lines
+    segments(bp[1] - 1, seq(0, ymax, ymax/4), bp[num.classes] + 1,
+             seq(0, ymax, ymax/4), col = 'grey35', lwd = 0.25)
+
+    # Draw y axis and write mutation counts on top of graph(if applicable)
+    y.axis.values <- seq(0, ymax, ymax/4)
+    if (attributes(cat)$catalog.type != "counts") {
+      y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+    } else {
+      y.axis.labels <- round(y.axis.values, 0)
+
+      # Write the mutation counts on top of graph
+      for (i in 1 : 6) {
+        j <- 32 + 32 * (i - 1)
+        k <- 1 + 32 * (i - 1)
+        text(bp[j], ymax * 0.92, labels = sum(cat[k : (32 * i), 1]),
+             adj = c(1, 1), xpd = NA, cex = 0.8)
+      }
+    }
+    text(-0.5, y.axis.values, labels = y.axis.labels,
+         las = 1, adj = 1, xpd = NA, cex = cex)
+
+    # Draw the x axis labels
+    context.pos <- (bp[seq(1, 191, 2)] + bp[seq(2, 192, 2)]) / 2
+    xlabel.1 <- c("A", "C", "G", "T")
+    xlabel.2 <- rep(c("A", "C", "G", "T"), each = 4)
+    text(context.pos, -ymax / 100, labels = rep(xlabel.1, 24), cex = 0.5,
+         srt = 90, adj = 1, xpd = NA)
+    text(context.pos, -ymax / 18, labels = rep(c("C", "T"), each = 48),
+         cex = 0.5, srt = 90, adj = 1, xpd = NA)
+    text(context.pos, -ymax / 10, labels = rep(xlabel.2, 6),
+         cex = 0.5, srt = 90, adj = 1, xpd = NA)
+
+    # Write the name of the sample
+    text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
+  } else {
+    strand.col <- c('#394398',
+                    '#e83020')
+
+    # Sort data in plotting order
+    cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
+
+    num.classes <- 12
+    maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+    cols <- rep(strand.col, num.classes / 2)
+
+    if (attributes(cat)$catalog.type == "counts") {
+      # Get the counts for each major mutation class
+      counts <- cat[, 1]
+      counts.strand <- integer(12)
+      for (i in 1 : 6){
+        counts.strand[2 * i - 1] <-
+          sum(counts[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+        counts.strand[2 * i] <-
+          sum(counts[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+      }
+
+      # Get ylim
+      ymax <- max(counts.strand) * 1.3
+
+      # Barplot: side by side
+      mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
+                    width = 0.3, xaxs = "i", yaxs = "i",
+                    axes = FALSE, ylab = "counts",
+                    border = NA, col = cols, xpd = NA)
+    } else if (attributes(cat)$catalog.type %in%
+               c("counts.signature", "density.signature")) {
+      # Determine the y axis label
+      yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
+                           "counts proportion", "density proportion")
+
+      # Get the proportion for each major mutation class
+      prop <- cat[, 1]
+      prop.strand <- integer(12)
+      for (i in 1 : 6){
+        prop.strand[2 * i - 1] <-
+          sum(prop[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+        prop.strand[2 * i] <-
+          sum(prop[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+      }
+
+      # Get ylim
+      ymax <- ifelse(max(prop.strand) * 1.3 > 1, 1, max(prop.strand) * 1.3)
+
+      # Barplot: side by side
+      mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
+                    width = 0.3, xaxs = "i", yaxs = "i",
+                    axes = FALSE, ylab = yaxislabel,
+                    border = NA, col = cols, xpd = NA)
+    } else if (attributes(cat)$catalog.type == "density") {
+      # Get the rate of mutations per million trinucleotides
+      rates <- cat[, 1] * 1000000
+
+      rates.strand <- integer(12)
+      for (i in 1 : 6){
+        rates.strand[2 * i - 1] <-
+          sum(rates[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
+        rates.strand[2 * i] <-
+          sum(rates[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+      }
+
+      # Get ylim
+      ymax <- max(rates.strand) * 1.3
+
+      # Barplot: side by side
+      mat <- matrix(rates.strand, nrow = 2, ncol = num.classes / 2)
+      bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
+                    width = 0.3, xaxs = "i", yaxs = "i",
+                    axes = FALSE, ylab = "mut/million",
+                    border = NA, col = cols, xpd = NA)
+    }
+
+    # Draw y axis
+    y.axis.values <- seq(0, ymax, length.out = 5)
+    if (attributes(cat)$catalog.type != "counts") {
+      y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+    } else {
+      y.axis.labels <- round(y.axis.values, 0)
+    }
+    Axis(side = 2, at = y.axis.values, las = 1, labels = FALSE)
+    text(-0.25, y.axis.values, labels = y.axis.labels,
+         las = 1, adj = 1, xpd = NA, cex = cex)
+
+    # Draw x axis
+    xlabel <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+    text(bp[seq(1, 12, by = 2)] + 0.16, -ymax / 28,
+         labels = xlabel, xpd = NA, cex = cex)
+
+    # Add legend
+    legend(bp[6], ymax * 0.95, fill = strand.col, border = "white",
+           xpd = NA, bty = "n",
+           legend = c("Transcribed", "Untranscribed"), cex = cex)
+
+    # Draw the sample name information on top of graph
+    text(bp[5], ymax * 1.02, labels = colnames(catalog), xpd = NA,
+         font = 2, cex = cex, adj = c(0, 0))
   }
-  text(-0.5, y.axis.values, labels = y.axis.labels,
-       las = 1, adj = 1, xpd = NA, cex = cex)
-
-  # Draw the x axis labels
-  context.pos <- (bp[seq(1, 191, 2)] + bp[seq(2, 192, 2)]) / 2
-  xlabel.1 <- c("A", "C", "G", "T")
-  xlabel.2 <- rep(c("A", "C", "G", "T"), each = 4)
-  text(context.pos, -ymax / 100, labels = rep(xlabel.1, 24), cex = 0.5,
-       srt = 90, adj = 1, xpd = NA)
-  text(context.pos, -ymax / 18, labels = rep(c("C", "T"), each = 48),
-       cex = 0.5, srt = 90, adj = 1, xpd = NA)
-  text(context.pos, -ymax / 10, labels = rep(xlabel.2, 6),
-       cex = 0.5, srt = 90, adj = 1, xpd = NA)
-
-  # Write the name of the sample
-  text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
 
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SBS192Catalog <- function(catalog, file) {
+PlotCatalogToPdf.SBS192Catalog <-
+  function(catalog, file, no.context = FALSE, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- ncol(catalog)
-  graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
-
-  for (i in 1 : n) {
-    cat <- catalog[, i, drop = FALSE]
-    PlotCatalog(cat)
-  }
-  invisible(grDevices::dev.off())
-  invisible(TRUE)
-}
-
-#' @rdname PlotCatalog
-#' @export
-PlotCatalog.SBS192CatalogNoContext <-
-  function(catalog, no.context = TRUE, cex = 1) {
-  stopifnot(dim(catalog) == c(192, 1))
-
-  strand.col <- c('#394398',
-                  '#e83020')
-
-  # Sort data in plotting order
-  cat <- catalog[to.reorder.SBS.192.for.plotting, 1, drop = FALSE]
-
-  num.classes <- 12
-  maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  cols <- rep(strand.col, num.classes / 2)
-
-  if (attributes(cat)$catalog.type == "counts") {
-    # Get the counts for each major mutation class
-    counts <- cat[, 1]
-    counts.strand <- integer(12)
-    for (i in 1 : 6){
-      counts.strand[2 * i - 1] <-
-        sum(counts[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
-      counts.strand[2 * i] <-
-        sum(counts[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
+  if (no.context == FALSE) {
+    graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
+    for (i in 1 : n) {
+      cat <- catalog[, i, drop = FALSE]
+      PlotCatalog(cat)
     }
-
-    # Get ylim
-    ymax <- max(counts.strand) * 1.3
-
-    # Barplot: side by side
-    mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
-                  width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ylab = "counts",
-                  border = NA, col = cols, xpd = NA)
-  } else if (attributes(cat)$catalog.type %in%
-             c("counts.signature", "density.signature")) {
-    # Determine the y axis label
-    yaxislabel <- ifelse(attributes(cat)$catalog.type == "counts.signature",
-                         "counts proportion", "density proportion")
-
-    # Get the proportion for each major mutation class
-    prop <- cat[, 1]
-    prop.strand <- integer(12)
-    for (i in 1 : 6){
-      prop.strand[2 * i - 1] <-
-        sum(prop[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
-      prop.strand[2 * i] <-
-        sum(prop[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
-    }
-
-    # Get ylim
-    ymax <- ifelse(max(prop.strand) * 1.3 > 1, 1, max(prop.strand) * 1.3)
-
-    # Barplot: side by side
-    mat <- matrix(prop.strand, nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
-                  width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ylab = yaxislabel,
-                  border = NA, col = cols, xpd = NA)
-  } else if (attributes(cat)$catalog.type == "density") {
-    # Get the rate of mutations per million trinucleotides
-    rates <- cat[, 1] * 1000000
-
-    rates.strand <- integer(12)
-    for (i in 1 : 6){
-      rates.strand[2 * i - 1] <-
-        sum(rates[seq(32 * (i - 1) + 1, by = 2, length.out = 16)])
-      rates.strand[2 * i] <-
-        sum(rates[seq(32 * (i - 1) + 2, by = 2, length.out = 16)])
-    }
-
-    # Get ylim
-    ymax <- max(rates.strand) * 1.3
-
-    # Barplot: side by side
-    mat <- matrix(rates.strand, nrow = 2, ncol = num.classes / 2)
-    bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
-                  width = 0.3, xaxs = "i", yaxs = "i",
-                  axes = FALSE, ylab = "mut/million",
-                  border = NA, col = cols, xpd = NA)
-  }
-
-  # Draw y axis
-  y.axis.values <- seq(0, ymax, length.out = 5)
-  if (attributes(cat)$catalog.type != "counts") {
-    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+    for (i in 1 : n) {
+      cat <- catalog[, i, drop = FALSE]
+      PlotCatalog(cat, no.context = TRUE)
+    }
   }
-  Axis(side = 2, at = y.axis.values, las = 1, labels = FALSE)
-  text(-0.25, y.axis.values, labels = y.axis.labels,
-       las = 1, adj = 1, xpd = NA, cex = cex)
 
-  # Draw x axis
-  xlabel <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  text(bp[seq(1, 12, by = 2)] + 0.16, -ymax / 28,
-       labels = xlabel, xpd = NA, cex = cex)
-
-  # Add legend
-  legend(bp[6], ymax * 0.95, fill = strand.col, border = "white",
-         xpd = NA, bty = "n",
-         legend = c("Transcribed", "Untranscribed"), cex = cex)
-
-  # Draw the sample name information on top of graph
-  text(bp[5], ymax * 1.02, labels = colnames(catalog), xpd = NA,
-       font = 2, cex = cex, adj = c(0, 0))
-
-  invisible(TRUE)
-}
-
-
-#' @rdname PlotCatalogToPdf
-#' @export
-PlotCatalogToPdf.SBS192CatalogNoContext <- function(catalog, file,
-                                                no.context = TRUE) {
-  # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-
-  n <- ncol(catalog)
-  graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
-
-  for (i in 1 : n) {
-    cat <- catalog[, i, drop = FALSE]
-    PlotCatalog(cat, no.context = TRUE)
-  }
   invisible(grDevices::dev.off())
-
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.SBS1536Catalog <- function(catalog) {
+PlotCatalog.SBS1536Catalog <-
+  function(catalog, no.context = NULL, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -672,10 +670,10 @@ PlotCatalog.SBS1536Catalog <- function(catalog) {
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.SBS1536Catalog <- function(catalog, file) {
+PlotCatalogToPdf.SBS1536Catalog <-
+  function(catalog, file, no.context = NULL, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   grDevices::cairo_pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
@@ -692,9 +690,9 @@ PlotCatalogToPdf.SBS1536Catalog <- function(catalog, file) {
 # Plotting functions for DBS78, DBS144 and DBS136 catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.DBS78Catalog <- function(catalog) {
+PlotCatalog.DBS78Catalog <- function(catalog, no.context = NULL, cex = NULL,
+                                     grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(dim(catalog) == c(78, 1))
   stopifnot(rownames(catalog) == ICAMS::catalog.row.order$DBS78)
 
@@ -784,10 +782,10 @@ PlotCatalog.DBS78Catalog <- function(catalog) {
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DBS78Catalog <- function(catalog, file) {
+PlotCatalogToPdf.DBS78Catalog <-
+  function(catalog, file, no.context = NULL, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -802,9 +800,9 @@ PlotCatalogToPdf.DBS78Catalog <- function(catalog, file) {
   invisible(TRUE)
 }
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.DBS144Catalog <- function(catalog, cex = 1) {
+PlotCatalog.DBS144Catalog <- function(catalog, no.context = NULL, cex = 1,
+                                      grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
@@ -915,11 +913,10 @@ PlotCatalog.DBS144Catalog <- function(catalog, cex = 1) {
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
 PlotCatalogToPdf.DBS144Catalog <-
-  function(catalog, file, cex = 1) {
+  function(catalog, file, no.context = NULL, cex = 1,
+           grid = NULL, upper = NULL, xlabels = NULL) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
@@ -934,9 +931,9 @@ PlotCatalogToPdf.DBS144Catalog <-
     invisible(TRUE)
   }
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.DBS136Catalog <- function(catalog) {
+PlotCatalog.DBS136Catalog <- function(catalog, no.context = NULL, cex = NULL,
+                                      grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(dim(catalog) == c(136, 1))
 
   old <- par(no.readonly = TRUE)
@@ -1078,10 +1075,10 @@ PlotCatalog.DBS136Catalog <- function(catalog) {
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.DBS136Catalog <- function(catalog, file) {
+PlotCatalogToPdf.DBS136Catalog <-
+  function(catalog, file, no.context = NULL, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
@@ -1252,9 +1249,9 @@ PlotCatalogToPdf.DBS136Catalog <- function(catalog, file) {
 # Plotting functions for ID(insertion and deletion) catalog start here
 ###############################################################################
 
-#' @rdname PlotCatalog
 #' @export
-PlotCatalog.IndelCatalog <- function(catalog){
+PlotCatalog.IndelCatalog <- function(catalog, no.context = NULL, cex = NULL,
+                                     grid = NULL, upper = NULL, xlabels = NULL){
   stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
@@ -1383,10 +1380,10 @@ PlotCatalog.IndelCatalog <- function(catalog){
   invisible(TRUE)
 }
 
-
-#' @rdname PlotCatalogToPdf
 #' @export
-PlotCatalogToPdf.IndelCatalog <-function(catalog, file) {
+PlotCatalogToPdf.IndelCatalog <-
+  function(catalog, file, no.context = NULL, cex = NULL,
+           grid = NULL, upper = NULL, xlabels = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
