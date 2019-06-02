@@ -10,6 +10,8 @@
 #' @param seq.context.width The number of preceding and following bases to be
 #'   extracted around the mutated position from \code{ref.genome}.
 #'
+#' @importFrom utils tail
+#'
 #' @return A position weight matrix (PWM) with each row representing the
 #'   position weight of four bases.
 #'
@@ -73,6 +75,7 @@ CreatePWMFromSBSVCFs <-
 #'
 #' @keywords internal
 PlotPWM <- function(pwm, title) {
+  old <- par(no.readonly = TRUE)
   par(mar = c(5, 5, 1, 1))
   x <- seq(1:nrow(pwm))
   plot(x, y = pwm[, "A"], xaxt = "n", xlab = "",
@@ -87,6 +90,8 @@ PlotPWM <- function(pwm, title) {
          legend = c("A", "C", "G", "T"),
          col = c("darkgreen", "blue", "black", "red"))
   mtext(text = title, side = 3, line = 0.5)
+  on.exit(par(old), add = TRUE)
+  invisible(grDevices::dev.off())
   invisible(TRUE)
 }
 
