@@ -96,3 +96,4 @@ test_that("[ method for IndelCatalog is working properly", {
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink("test.pdf")
 })
+
