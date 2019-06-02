@@ -16,6 +16,8 @@ file paths to the Strelka ID VCF files.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
+
+\item{file}{The name of the PDF file to be produced.}
 }
 \value{
 An ID (indel) catalog and its graph plotted to PDF with specified
