@@ -18,6 +18,8 @@
 #'
 #' @importFrom BSgenome getSeq seqnames
 #'
+#' @importFrom stats start end
+#'
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #'
 #' @import BSgenome.Hsapiens.UCSC.hg38
