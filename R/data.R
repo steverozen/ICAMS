@@ -57,3 +57,15 @@ NULL
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh38"
+
+# Quiets concerns of R CMD check about no visible binding for global variable
+if(getRversion() >= "2.15.1") {
+  utils::globalVariables(c("POS2", "POS", "bothstrand", "strand", ".", "CHROM",
+                           "ALT", "count", "rn", "occurrences", "type", "strand",
+                           "bothstrand", "chrom", "exome.start", "exome.end",
+                           "count", "REF", "seq.21bases", "N", "pyr.mut", "nrn",
+                           "mutation", "LOW", "ID", "REF.x", "REF.y", "ALT.x",
+                           "ALT.y", "ref2alt", "minus1bs", "minus2bs", "plus1bs",
+                           "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
+                           "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols"))
+}
