@@ -304,6 +304,8 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @import BSgenome.Hsapiens.UCSC.hg38
 #'
+#' @importFrom stats start end
+#'
 #' @return A copy of the input data.frame with a new column added
 #'     that contains sequence context information.
 #'
@@ -437,6 +439,8 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
 #'
 #' @import data.table
+#'
+#' @importFrom stats start end
 #'
 #' @importFrom GenomicRanges GRanges reduce
 #'
