@@ -1116,15 +1116,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
     as.catalog(catDBS136, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
 
-  if (region == "genome") {
-    catDBS144 <-
-      as.catalog(catDBS144, ref.genome = ref.genome,
-                 region = "transcript", catalog.type = "counts")
-  } else if (region == "exome") {
-    catDBS144 <-
-      as.catalog(catDBS144, ref.genome = ref.genome,
-                 region = "exome", catalog.type = "counts")
-  }
+  catDBS144 <-
+    as.catalog(catDBS144, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
 
   return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, catDBS144 = catDBS144))
 }
