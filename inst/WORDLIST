@@ -7,7 +7,7 @@ ACC
 ACCs
 ACG
 ACGs
-AddSequence
+AddSeqContext
 AddTranscript
 AGA
 AGAT
@@ -85,6 +85,7 @@ PlotDNSClassStrandBiasToPdf
 PlotSNSClassStrandBias
 PlotSNSClassStrandBiasToPdf
 POS
+PWM
 PyrPenta
 PyrTri
 rowname
@@ -96,6 +97,7 @@ SNSs
 steverozen
 StrandToPdf
 Strelka
+SureSelect
 TAC
 TCTA
 tetranucleotide
@@ -104,12 +106,14 @@ TGA
 ThreePlus
 ToPdf
 transcriptional
+transcriptionally
 trinucleotide
 TT
 TTC
 TTGA
-undeleted
 uk
+undeleted
+unstranded
 VAF
 VAFs
 vcfs
