@@ -1167,7 +1167,64 @@ StrelkaSBSVCFFilesToCatalog <-
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, trans.ranges, region)))
-}
+  }
+
+#' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
+#'
+#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
+#' Strelka SBS VCFs specified by vector.of.file.paths and plot them to PDF
+#'
+#' This function calls \code{\link{StrelkaSBSFilesToCatalog}} and
+#' \code{\link{PlotCatalogToPdf}}
+#'
+#' @param vector.of.file.paths Character vector of file paths to the Strelka SBS
+#'   VCF files.
+#'
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param trans.ranges A data.table which contains transcript range and strand
+#'   information. Please refer to \code{\link{TranscriptRanges}} for more
+#'   details.
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @param file The name of the PDF file to be produced.
+#'
+#' @param no.context A logical value indicating whether there is preceding and
+#'   following base context for the plot. Only implemented for SBS192Catalog.
+#'
+#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
+#'   catalogs (one each for 78, 136, and 144) and their plots
+#'   outputed to PDF with specified file name. Each catalog has attributes
+#'   added. See \code{\link{as.catalog}} for more details.
+#'
+#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+#'
+#' @export
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
+  function(vector.of.file.paths, ref.genome, trans.ranges, region,
+           file, no.context) {
+    catalogs <-
+      StrelkaSBSVCFFilesToCatalog(vector.of.file.paths, ref.genome,
+                                  trans.ranges, region)
+
+    PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", file))
+    if (no.context == TRUE) {
+      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", file))
+      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.no.context.", file),
+                       no.context)
+    } else {
+      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", file))
+    }
+    PlotCatalogToPdf(catalogs$catSBS1536, file = paste0("SBS1536Catalog.", file))
+    PlotCatalogToPdf(catalogs$catDBS78, file = paste0("DBS78Catalog.", file))
+    PlotCatalogToPdf(catalogs$catDBS136, file = paste0("DBS136Catalog.", file))
+    PlotCatalogToPdf(catalogs$catDBS144, file = paste0("DBS144Catalog.", file))
+
+    return(catalogs)
+  }
 
 #' Create ID (indel) catalog from Strelka ID VCF files
 #'
