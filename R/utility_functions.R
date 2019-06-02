@@ -23,7 +23,7 @@ NULL
 #' @export
 Collapse192CatalogTo96 <- function(catalog) {
   if (attributes(catalog)$catalog.type %in%
-      c(counts.signature, density.signature)) {
+      c("counts.signature", "density.signature")) {
     stop("This function cannot collapse a signature catalog\n")
   }
 
@@ -66,6 +66,11 @@ Collapse192AbundanceTo96 <- function(abundance192) {
 #' @rdname CollapseCatalog
 #' @export
 Collapse1536CatalogTo96 <- function(catalog) {
+  if (attributes(catalog)$catalog.type %in%
+      c("counts.signature", "density.signature")) {
+    stop("This function cannot collapse a signature catalog\n")
+  }
+
   dt <- data.table(catalog)
   rn <- rownames(catalog)
 
