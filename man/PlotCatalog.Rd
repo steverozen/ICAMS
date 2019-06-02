@@ -2,44 +2,32 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
-\alias{PlotCatalog.SBS96Catalog}
-\alias{PlotCatalog.SBS192Catalog}
-\alias{PlotCatalog.SBS192CatalogNoContext}
-\alias{PlotCatalog.SBS1536Catalog}
-\alias{PlotCatalog.DBS78Catalog}
-\alias{PlotCatalog.DBS144Catalog}
-\alias{PlotCatalog.DBS136Catalog}
-\alias{PlotCatalog.IndelCatalog}
 \title{Plot \strong{one} spectrum or signature.}
 \usage{
-PlotCatalog(catalog, no.context = FALSE, ...)
-
-\method{PlotCatalog}{SBS96Catalog}(catalog, cex = 0.8, grid = TRUE,
-  upper = TRUE, xlabels = TRUE)
-
-\method{PlotCatalog}{SBS192Catalog}(catalog, cex = 0.8)
-
-\method{PlotCatalog}{SBS192CatalogNoContext}(catalog, no.context = TRUE,
-  cex = 1)
-
-\method{PlotCatalog}{SBS1536Catalog}(catalog)
-
-\method{PlotCatalog}{DBS78Catalog}(catalog)
-
-\method{PlotCatalog}{DBS144Catalog}(catalog, cex = 1)
-
-\method{PlotCatalog}{DBS136Catalog}(catalog)
-
-\method{PlotCatalog}{IndelCatalog}(catalog)
+PlotCatalog(catalog, no.context, cex, grid, upper, xlabels)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{as.catalog}} for more details.}
 
-\item{no.context}{If TRUE, no preceding and following base context for
-SBS192 catalog plot.}
+\item{no.context}{A logical value indicating whether there is preceding and
+following base context for the plot. Only implemented for SBS192Catalog.}
 
-\item{...}{Additional arguments to be passed to methods.}
+\item{cex}{A numerical value giving the amount by which mutation class labels,
+mutation counts(if it exists), y axis and its labels, x axis labels and
+its annotations(if it exists), sample name and legend(if it exists)
+should be magnified relative to the default. Only implemented for SBS96Catalog,
+SBS192Catalog and DBS144Catalog.}
+
+\item{grid}{A logical value indicating whether to draw grid lines. Only
+implemented for SBS96Catalog.}
+
+\item{upper}{A logical value indicating whether to draw horizontal lines and
+the names of major mutation class on top of graph. Only implemented for
+SBS96Catalog.}
+
+\item{xlabels}{A logical value indicating whether to draw x axis labels. Only
+implemented for SBS96Catalog.}
 }
 \value{
 \code{invisible(TRUE)}
