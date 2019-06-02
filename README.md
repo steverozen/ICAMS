@@ -32,4 +32,4 @@ devtools::install_github("steverozen/ICAMS")
 ## Reference manual
 
 You can download the PDF manual from:
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.0.0.9009.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.0.0.pdf>
