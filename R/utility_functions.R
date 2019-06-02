@@ -699,19 +699,19 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
 CheckClassOfCatalogFromPath <- function(path) {
   cos <- data.table::fread(path)
   if (nrow(cos) == 96) {
-    structure("ClassofCatalog", class = "SBS96")
+    structure("ClassofCatalog", class = "SBS96Catalog")
   } else if (nrow(cos) == 192) {
-    structure("ClassofCatalog", class = "SBS192")
+    structure("ClassofCatalog", class = "SBS192Catalog")
   } else if (nrow(cos) == 1536) {
-    structure("ClassofCatalog", class = "SBS1536")
+    structure("ClassofCatalog", class = "SBS1536Catalog")
   } else if (nrow(cos) == 78) {
-    structure("ClassofCatalog", class = "DBS78")
+    structure("ClassofCatalog", class = "DBS78Catalog")
   } else if (nrow(cos) == 144) {
-    structure("ClassofCatalog", class = "DBS144")
+    structure("ClassofCatalog", class = "DBS144Catalog")
   } else if (nrow(cos) == 136) {
-    structure("ClassofCatalog", class = "DBS136")
+    structure("ClassofCatalog", class = "DBS136Catalog")
   } else if (nrow(cos) == 83) {
-    structure("ClassofCatalog", class = "ID")
+    structure("ClassofCatalog", class = "IndelCatalog")
   } else {
     stop("The catalog seems not to be a standard catalog supported by ICAMS",
          "number of rows is ", nrow(cos))
@@ -789,23 +789,23 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 
   if(nrow(catalog) == 96) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat
+      attr(catalog, "abundance") <- abundance.3bp.flat.unstranded
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.GRCh37
+        attr(catalog, "abundance") <- abundance.3bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh37
+        attr(catalog, "abundance") <- abundance.3bp.exome.unstranded.GRCh37
       } else if (region == "transcript") {
         attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.GRCh38
+        attr(catalog, "abundance") <- abundance.3bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.GRCh38
+        attr(catalog, "abundance") <- abundance.3bp.exome.unstranded.GRCh38
       } else if (region == "transcript") {
         attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh38
       }
@@ -818,53 +818,53 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
-        attr(catalog, "abundance") <- abundance.3bp.stranded.GRCh37
+        attr(catalog, "abundance") <- abundance.3bp.genome.stranded.GRCh37
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
-        attr(catalog, "abundance") <- abundance.3bp.stranded.GRCh38
+        attr(catalog, "abundance") <- abundance.3bp.genome.stranded.GRCh38
     }
   }
 
   if(nrow(catalog) == 1536) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.5bp.flat
+      attr(catalog, "abundance") <- abundance.5bp.flat.unstranded
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.5bp.genome.GRCh37
+        attr(catalog, "abundance") <- abundance.5bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.5bp.exome.GRCh37
+        attr(catalog, "abundance") <- abundance.5bp.exome.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.5bp.genome.GRCh38
+        attr(catalog, "abundance") <- abundance.5bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.5bp.exome.GRCh38
+        attr(catalog, "abundance") <- abundance.5bp.exome.unstranded.GRCh38
       }
     }
   }
 
   if(nrow(catalog) == 78) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.2bp.flat
+      attr(catalog, "abundance") <- abundance.2bp.flat.unstranded
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.GRCh37
+        attr(catalog, "abundance") <- abundance.2bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh37
+        attr(catalog, "abundance") <- abundance.2bp.exome.unstranded.GRCh37
       } else if (region == "transcript") {
         attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.GRCh38
+        attr(catalog, "abundance") <- abundance.2bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.GRCh38
+        attr(catalog, "abundance") <- abundance.2bp.exome.unstranded.GRCh38
       } else if (region == "transcript") {
         attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh38
       }
@@ -877,30 +877,30 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
-        attr(catalog, "abundance") <- abundance.2bp.stranded.GRCh37
+        attr(catalog, "abundance") <- abundance.2bp.genome.stranded.GRCh37
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
-        attr(catalog, "abundance") <- abundance.2bp.stranded.GRCh38
+        attr(catalog, "abundance") <- abundance.2bp.genome.stranded.GRCh38
     }
   }
 
   if(nrow(catalog) == 136) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.4bp.flat
+      attr(catalog, "abundance") <- abundance.4bp.flat.unstranded
       return(catalog)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.4bp.genome.GRCh37
+        attr(catalog, "abundance") <- abundance.4bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.4bp.exome.GRCh37
+        attr(catalog, "abundance") <- abundance.4bp.exome.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.4bp.genome.GRCh38
+        attr(catalog, "abundance") <- abundance.4bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.4bp.exome.GRCh38
+        attr(catalog, "abundance") <- abundance.4bp.exome.unstranded.GRCh38
       }
     }
   }
@@ -1136,6 +1136,8 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #' @param stranded.ranges A keyed data table which has stranded ranges
 #'   information. It has four columns: chrom, start, end and strand.
 #'
+#' @importFrom stats start end
+#'
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
@@ -1213,6 +1215,8 @@ GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
 #'
+#' @importFrom stats start end
+#'
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
@@ -1271,6 +1275,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
 }
 
 # Redefine the [ methods for catalogs
+#' @export
 `[.SBS96Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
@@ -1285,6 +1290,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.SBS192Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
@@ -1299,6 +1305,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.SBS1536Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                  1) {
   y <- NextMethod("[")
@@ -1313,6 +1320,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.DBS78Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                   1) {
   y <- NextMethod("[")
@@ -1327,6 +1335,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.DBS144Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                 1) {
   y <- NextMethod("[")
@@ -1341,6 +1350,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.DBS136Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                  1) {
   y <- NextMethod("[")
@@ -1355,6 +1365,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 }
 
+#' @export
 `[.IndelCatalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
                                  1) {
   y <- NextMethod("[")
@@ -1370,8 +1381,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
 }
 
 # Redefine the cbind methods for catalogs
+#' @export
 `cbind.SBS96Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1379,8 +1392,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.SBS192Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1388,8 +1403,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.SBS1536Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1397,8 +1414,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.DBS78Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1406,8 +1425,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.DBS144Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1415,8 +1436,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.DBS136Catalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
@@ -1424,8 +1447,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   return(x)
 }
 
+#' @export
 `cbind.IndelCatalog` <- function (..., deparse.level = 1) {
-  x <- as.matrix(data.frame(..., check.names = FALSE))
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
   class(x) <- class(..1)
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
     attr(x, at) <- attr(..1, at, exact = TRUE)
