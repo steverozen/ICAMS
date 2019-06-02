@@ -1176,7 +1176,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
 #' Strelka SBS VCFs specified by vector.of.file.paths and plot them to PDF
 #'
-#' This function calls \code{\link{StrelkaSBSFilesToCatalog}} and
+#' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}} and
 #' \code{\link{PlotCatalogToPdf}}
 #'
 #' @param vector.of.file.paths Character vector of file paths to the Strelka SBS
@@ -1272,6 +1272,8 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
+#'
+#' @param file The name of the PDF file to be produced.
 #'
 #' @return An ID (indel) catalog and its graph plotted to PDF with specified
 #'   file name. The ID (indel) catalog has attributes added. See
