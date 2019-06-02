@@ -1,6 +1,6 @@
-context("PlotCatalog.DBS136")
+context("PlotCatalog.DBS136Catalog")
 
-test_that("PlotCatalog.DBS136 function is working properly", {
+test_that("PlotCatalog.DBS136Catalog function is working properly", {
   par(oma = c(2, 2, 2, 0))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.136.csv",
                                 ref.genome = "GRCh37",
