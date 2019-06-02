@@ -1083,8 +1083,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
   ncol <- length(list.of.DBS.vcfs)
 
   catDBS78 <- empty.cats$catDBS78
-  catDBS144 <- empty.cats$catDBS144
   catDBS136 <- empty.cats$catDBS136
+  catDBS144 <- empty.cats$catDBS144
+
 
   for (i in 1 : ncol) {
     DBS <- list.of.DBS.vcfs[[i]]
@@ -1105,16 +1106,20 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
     DBS.cat <- CreateOneColDBSCatalog(DBS)
     rm(DBS)
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
-    catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
     catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
+    catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
   }
 
   colnames(catDBS78) <- names(list.of.DBS.vcfs)
-  colnames(catDBS144) <- names(list.of.DBS.vcfs)
   colnames(catDBS136) <- names(list.of.DBS.vcfs)
+  colnames(catDBS144) <- names(list.of.DBS.vcfs)
 
   catDBS78 <-
     as.catalog(catDBS78, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
+
+  catDBS136 <-
+    as.catalog(catDBS136, ref.genome = ref.genome,
                region = region, catalog.type = "counts")
 
   if (region == "genome") {
@@ -1127,10 +1132,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
                  region = "exome", catalog.type = "counts")
   }
 
-  catDBS136 <-
-    as.catalog(catDBS136, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-  return(list(catDBS78 = catDBS78, catDBS144 = catDBS144, catDBS136 = catDBS136))
+  return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, catDBS144 = catDBS144))
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files.
