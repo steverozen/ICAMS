@@ -96,3 +96,4 @@ test_that("cbind method for IndelCatalog is working properly", {
   expect_equal(out, TRUE)
   unlink("test.pdf")
 })
+
