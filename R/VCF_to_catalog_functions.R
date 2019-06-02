@@ -1254,6 +1254,40 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
+#' Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF
+#'
+#' Create ID (indel) catalog from the Strelka ID VCFs specified by
+#' vector.of.file.paths and plot them to PDF
+#'
+#' This function calls \code{\link{VCFsToIDCatalogs}} and
+#' \code{\link{PlotCatalogToPdf}}
+#'
+#' @param vector.of.file.paths Character vector of
+#' file paths to the Strelka ID VCF files.
+#'
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return An ID (indel) catalog with attributes added and its plot outputed to
+#'   PDF with specified file name. See \code{\link{as.catalog}} for more
+#'   details.
+#'
+#' @note In the ID (insertion and deletion) catalog, deletion repeat size
+#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
+#'   from 1 to 6+.
+#'
+#' @export
+StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
+  function(vector.of.file.paths, ref.genome, region, file) {
+    catalog <-
+      StrelkaIDVCFFilesToCatalog(vector.of.file.paths, ref.genome, region)
+    PlotCatalogToPdf(catalog, file = paste0("IndelCatalog.", file))
+    return(catalog)
+  }
+
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
