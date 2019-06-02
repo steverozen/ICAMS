@@ -22,6 +22,11 @@ NULL
 #' @rdname CollapseCatalog
 #' @export
 Collapse192CatalogTo96 <- function(catalog) {
+  if (attributes(catalog)$catalog.type %in%
+      c(counts.signature, density.signature)) {
+    stop("This function cannot collapse a signature catalog\n")
+  }
+
   dt192 <- data.table(catalog)
   dt192$rn <- PyrTri(rownames(catalog))
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
