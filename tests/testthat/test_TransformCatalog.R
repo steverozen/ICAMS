@@ -221,38 +221,52 @@ and genome counts -> exome counts.signature", {
 
 })
 
-if (FALSE) {
-  test_that("Error test: transformation of a SBS 192 catalog", {
-    cat <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
-                       ref.genome = "GRCh37", region = "genome",
-                       catalog.type = "counts")
+test_that("Transformation of a SBS 192 catalog", {
+  cat <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
+                     ref.genome = "GRCh37", region = "genome",
+                     catalog.type = "counts")
 
-    expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
-                                  target.region = "exome",
-                                  target.catalog.type = "counts"))
+  x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
+                         target.region = "exome",
+                         target.catalog.type = "counts")
 
-    expect_error(TransformCatalog(cat, target.ref.genome = "GRCh37",
+  x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "counts")
+  expect_equal(cat, x2)
+
+  cat.density <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                   target.region = "genome",
-                                  target.catalog.type = "density"))
+                                  target.catalog.type = "density")
 
-    genome.counts.signature <-
-      TransformCatalog(cat, target.ref.genome = "GRCh37",
-                       target.region = "genome",
-                       target.catalog.type = "counts.signature")
-    out <- rep(1, 4)
-    expect_equal(sum(colSums(genome.counts.signature) == out), 4)
+  x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+                         target.region = "exome",
+                         target.catalog.type = "density")
+  attr(cat.density, "region") <- NULL
+  attr(x3, "region") <- NULL
+  expect_equal(cat.density, x3)
 
-    expect_error(TransformCatalog(genome.counts.signature,
-                                  target.ref.genome = "GRCh37",
-                                  target.region = "genome",
-                                  target.catalog.type = "density"))
+  genome.counts.signature <-
+    TransformCatalog(cat, target.ref.genome = "GRCh37",
+                     target.region = "genome",
+                     target.catalog.type = "counts.signature")
+  out <- rep(1, 4)
+  expect_equal(sum(colSums(genome.counts.signature) == out), 4)
 
-    expect_error(TransformCatalog(genome.counts.signature,
-                                  target.ref.genome = "GRCh37",
-                                  target.region = "genome",
-                                  target.catalog.type = "density.signature"))
-  })
-}
+  expect_error(TransformCatalog(genome.counts.signature,
+                                target.ref.genome = "GRCh37",
+                                target.region = "genome",
+                                target.catalog.type = "density"))
+
+  x4 <- TransformCatalog(genome.counts.signature,
+                         target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "density.signature")
+  x5 <- TransformCatalog(cat.density, target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "density.signature")
+  expect_equal(x4, x5)
+})
 
 
 if (FALSE) {
