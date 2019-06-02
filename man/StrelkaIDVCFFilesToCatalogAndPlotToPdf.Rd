@@ -18,9 +18,9 @@ file paths to the Strelka ID VCF files.}
 "genome", "exome".}
 }
 \value{
-An ID (indel) catalog with attributes added and its plot outputed to
-  PDF with specified file name. See \code{\link{as.catalog}} for more
-  details.
+An ID (indel) catalog and its graph plotted to PDF with specified
+  file name. The ID (indel) catalog has attributes added. See
+  \code{\link{as.catalog}} for more details.
 }
 \description{
 Create ID (indel) catalog from the Strelka ID VCFs specified by
