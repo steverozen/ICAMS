@@ -56,8 +56,8 @@ WriteCatalog <- function(catalog, path, strict = TRUE) {
 }
 
 #' @export
-ReadCatalog.SBS96 <- function(path, ref.genome, region,
-                              catalog.type, strict = TRUE) {
+ReadCatalog.SBS96Catalog <- function(path, ref.genome, region,
+                                     catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -80,8 +80,8 @@ ReadCatalog.SBS96 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS192 <- function(path, ref.genome, region,
-                               catalog.type, strict = TRUE) {
+ReadCatalog.SBS192Catalog <- function(path, ref.genome, region,
+                                      catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
@@ -115,8 +115,8 @@ ReadCatalog.SBS192 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS1536 <- function(path, ref.genome, region,
-                                catalog.type, strict = TRUE) {
+ReadCatalog.SBS1536Catalog <- function(path, ref.genome, region,
+                                       catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -139,8 +139,8 @@ ReadCatalog.SBS1536 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS78 <- function(path, ref.genome, region,
-                              catalog.type, strict = TRUE) {
+ReadCatalog.DBS78Catalog <- function(path, ref.genome, region,
+                                     catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 78)
   if (strict) {
@@ -186,8 +186,8 @@ ReadCatalog.DBS78 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS144 <- function(path, ref.genome, region,
-                               catalog.type, strict = TRUE) {
+ReadCatalog.DBS144Catalog <- function(path, ref.genome, region,
+                                      catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 144)
   if (strict) {
@@ -206,8 +206,8 @@ ReadCatalog.DBS144 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS136 <- function(path, ref.genome, region,
-                               catalog.type, strict = TRUE) {
+ReadCatalog.DBS136Catalog <- function(path, ref.genome, region,
+                                      catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -225,8 +225,8 @@ ReadCatalog.DBS136 <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.ID <- function(path, ref.genome, region,
-                           catalog.type, strict = TRUE) {
+ReadCatalog.IndelCatalog <- function(path, ref.genome, region,
+                                     catalog.type, strict = TRUE) {
   cos <- data.table::fread(path)
   stopifnot(nrow(cos) == 83)
   cn <- names(cos)
