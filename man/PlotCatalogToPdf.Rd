@@ -2,35 +2,9 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
-\alias{PlotCatalogToPdf.SBS96Catalog}
-\alias{PlotCatalogToPdf.SBS192Catalog}
-\alias{PlotCatalogToPdf.SBS192CatalogNoContext}
-\alias{PlotCatalogToPdf.SBS1536Catalog}
-\alias{PlotCatalogToPdf.DBS78Catalog}
-\alias{PlotCatalogToPdf.DBS144Catalog}
-\alias{PlotCatalogToPdf.DBS136Catalog}
-\alias{PlotCatalogToPdf.IndelCatalog}
 \title{Plot catalogs to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, file, no.context = FALSE, ...)
-
-\method{PlotCatalogToPdf}{SBS96Catalog}(catalog, file, grid = TRUE,
-  upper = TRUE, xlabels = TRUE)
-
-\method{PlotCatalogToPdf}{SBS192Catalog}(catalog, file)
-
-\method{PlotCatalogToPdf}{SBS192CatalogNoContext}(catalog, file,
-  no.context = TRUE)
-
-\method{PlotCatalogToPdf}{SBS1536Catalog}(catalog, file)
-
-\method{PlotCatalogToPdf}{DBS78Catalog}(catalog, file)
-
-\method{PlotCatalogToPdf}{DBS144Catalog}(catalog, file, cex = 1)
-
-\method{PlotCatalogToPdf}{DBS136Catalog}(catalog, file)
-
-\method{PlotCatalogToPdf}{IndelCatalog}(catalog, file)
+PlotCatalogToPdf(catalog, file, no.context, cex, grid, upper, xlabels)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
@@ -38,10 +12,24 @@ See \code{\link{as.catalog}} for more details.}
 
 \item{file}{The name of the PDF file to be produced.}
 
-\item{no.context}{If TRUE, no preceding and following base context for
-SBS192 catalog plot.}
+\item{no.context}{A logical value indicating whether there is preceding and
+following base context for the plot. Only implemented for SBS192Catalog.}
 
-\item{...}{Additional arguments to be passed to methods.}
+\item{cex}{A numerical value giving the amount by which mutation class labels,
+mutation counts(if it exists), y axis and its labels, x axis labels and
+its annotations(if it exists), sample name and legend(if it exists)
+should be magnified relative to the default. Only implemented for SBS96Catalog,
+SBS192Catalog and DBS144Catalog.}
+
+\item{grid}{A logical value indicating whether to draw grid lines. Only
+implemented for SBS96Catalog.}
+
+\item{upper}{A logical value indicating whether to draw horizontal lines and
+the names of major mutation class on top of graph. Only implemented for
+SBS96Catalog.}
+
+\item{xlabels}{A logical value indicating whether to draw x axis labels. Only
+implemented for SBS96Catalog.}
 }
 \value{
 \code{invisible(TRUE)}
