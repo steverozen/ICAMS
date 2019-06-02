@@ -72,6 +72,9 @@ Collapse1536CatalogTo96 <- function(catalog) {
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
+  return(as.catalog(mat96, attributes(catalog)$ref.genome,
+                    attributes(catalog)$region,
+                    attributes(catalog)$catalog.type))
 }
 
 #' @rdname CollapseCatalog
@@ -642,9 +645,11 @@ CreatePentanucAbundance <- function(path) {
 #' @keywords internal
 NormalizeGenomeArg <- function(ref.genome) {
   if (class(ref.genome) == "character") {
-    if (ref.genome %in% c("GRCh38", "hg38")) {
+    if (ref.genome %in%
+        c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       ref.genome <- BSgenome.Hsapiens.UCSC.hg38
-    } else if (ref.genome %in% c("GRCh37", "hg19")) {
+    } else if (ref.genome %in%
+               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
     } else {
       stop("Unrecoginzed genome identifier:\n", ref.genome,
