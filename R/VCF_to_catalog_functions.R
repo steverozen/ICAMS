@@ -1198,8 +1198,8 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   following base context for the plot. Only implemented for SBS192Catalog.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and their plots
-#'   outputed to PDF with specified file name. Each catalog has attributes
+#'   catalogs (one each for 78, 136, and 144) and their graphs
+#'   plotted to PDF with specified file name. Each catalog has attributes
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
@@ -1273,9 +1273,9 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return An ID (indel) catalog with attributes added and its plot outputed to
-#'   PDF with specified file name. See \code{\link{as.catalog}} for more
-#'   details.
+#' @return An ID (indel) catalog and its graph plotted to PDF with specified
+#'   file name. The ID (indel) catalog has attributes added. See
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note In the ID (insertion and deletion) catalog, deletion repeat size
 #'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
@@ -1356,8 +1356,8 @@ MutectVCFFilesToCatalog <-
 #'   following base context for the plot. Only implemented for SBS192Catalog.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144), Indel catalog and their plots
-#'   outputed to PDF with specified file name. Each catalog has attributes
+#'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
+#'   plotted to PDF with specified file name. Each catalog has attributes
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
