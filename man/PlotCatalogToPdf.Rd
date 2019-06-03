@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
-\title{Plot catalogs to a PDF file.}
+\title{Plot catalog to a PDF file.}
 \usage{
 PlotCatalogToPdf(catalog, file, no.context, cex, grid, upper, xlabels)
 }
@@ -35,7 +35,10 @@ implemented for SBS96Catalog.}
 \code{invisible(TRUE)}
 }
 \description{
-Plot catalogs to a PDF file.
+Plot catalog to a PDF file. The type of graph is based on one
+attribute("catalog.type") of the input catalog. You can first use
+\code{\link{TransformCatalog}} to get different types of catalog and then do
+the plotting.
 }
 \note{
 The sizes of repeats involved in deletions range from 0 to 5+ in the

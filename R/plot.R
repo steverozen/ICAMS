@@ -43,9 +43,12 @@ PlotCatalog <- function(catalog, no.context, cex, grid, upper, xlabels) {
 }
 
 
-#' Plot catalogs to a PDF file.
+#' Plot catalog to a PDF file.
 #'
-#' Plot catalogs to a PDF file.
+#' Plot catalog to a PDF file. The type of graph is based on one
+#' attribute("catalog.type") of the input catalog. You can first use
+#' \code{\link{TransformCatalog}} to get different types of catalog and then do
+#' the plotting.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
