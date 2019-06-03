@@ -33,7 +33,10 @@ implemented for SBS96Catalog.}
 \code{invisible(TRUE)}
 }
 \description{
-Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
+Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
+type of graph is based on one attribute("catalog.type") of the input catalog.
+You can first use \code{\link{TransformCatalog}} to get different types of
+catalog and then do the plotting.
 }
 \note{
 The sizes of repeats involved in deletions range from 0 to 5+ in the

@@ -1,6 +1,9 @@
 #' Plot \strong{one} spectrum or signature.
 #'
-#' Plot the spectrum of \strong{one} sample or plot \strong{one} signature.
+#' Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
+#' type of graph is based on one attribute("catalog.type") of the input catalog.
+#' You can first use \code{\link{TransformCatalog}} to get different types of
+#' catalog and then do the plotting.
 #'
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
