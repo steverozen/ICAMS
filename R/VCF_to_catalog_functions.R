@@ -1131,8 +1131,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #' This function calls \code{\link{VCFsToSBSCatalogs}} and
 #' \code{\link{VCFsToDBSCatalogs}}.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka SBS VCF files.
+#' @param vector.of.file.paths Character vector of file paths to the Strelka SBS
+#'   VCF files.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1142,7 +1142,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #'   details.
 #'
 #' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#'   "genome", "exome".
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). Each catalog has attributes
