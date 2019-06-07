@@ -4,11 +4,10 @@
 \alias{StrelkaIDVCFFilesToCatalog}
 \title{Create ID (indel) catalog from Strelka ID VCF files}
 \usage{
-StrelkaIDVCFFilesToCatalog(vector.of.file.paths, ref.genome, region)
+StrelkaIDVCFFilesToCatalog(files, ref.genome, region)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the Strelka ID VCF files.}
+\item{files}{Character vector of file paths to the Strelka ID VCF files.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -21,7 +20,7 @@ An ID (indel) catalog with attributes added. See
   \code{\link{as.catalog}} for more details.
 }
 \description{
-Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths
+Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
 }
 \details{
 This function calls \code{\link{VCFsToIDCatalogs}}

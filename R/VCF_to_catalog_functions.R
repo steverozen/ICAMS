@@ -622,23 +622,21 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 
 #' Read Strelka SBS (single base substitutions) VCF files.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the VCF files.
+#' @param files Character vector of file paths to the VCF files.
 #'
-#' @return A list of vcfs from vector.of.file.paths.
+#' @return A list of vcfs from \code{files}.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCFs <- function(vector.of.file.paths) {
-  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaSBSVCF)
+ReadStrelkaSBSVCFs <- function(files) {
+  vcfs <- lapply(files, FUN = ReadStrelkaSBSVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
-                     basename(vector.of.file.paths))
+                     basename(files))
   return(vcfs)
 }
 
 #' Read and split Strelka SBS VCF files.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka SBS VCF files.
+#' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
 #' @return A list of 3 in-memory objects as follows:
 #' \enumerate{
@@ -654,18 +652,17 @@ ReadStrelkaSBSVCFs <- function(vector.of.file.paths) {
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'
 #' @export
-ReadAndSplitStrelkaSBSVCFs <- function(vector.of.file.paths) {
-  vcfs <- ReadStrelkaSBSVCFs(vector.of.file.paths)
+ReadAndSplitStrelkaSBSVCFs <- function(files) {
+  vcfs <- ReadStrelkaSBSVCFs(files)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(split.vcfs)
 }
 
 #' Read Strelka ID (insertion and deletion) VCF files.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the VCF files.
+#' @param files Character vector of file paths to the VCF files.
 #'
-#' @return A list of vcfs from vector.of.file.paths.
+#' @return A list of vcfs from \code{files}.
 #'
 #' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -674,32 +671,30 @@ ReadAndSplitStrelkaSBSVCFs <- function(vector.of.file.paths) {
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 #'
 #' @export
-ReadStrelkaIDVCFs <- function(vector.of.file.paths) {
-  vcfs <- lapply(vector.of.file.paths, FUN = ReadStrelkaIDVCF)
+ReadStrelkaIDVCFs <- function(files) {
+  vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
-                     basename(vector.of.file.paths))
+                     basename(files))
   return(vcfs)
 }
 
 #' Read Mutect VCF files.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the VCF files.
+#' @param files Character vector of file paths to the VCF files.
 #'
-#' @return A list of vcfs from vector.of.file.paths.
+#' @return A list of vcfs from \code{files}.
 #'
 #' @keywords internal
-ReadMutectVCFs <- function(vector.of.file.paths) {
-  vcfs <- lapply(vector.of.file.paths, FUN = ReadMutectVCF)
+ReadMutectVCFs <- function(files) {
+  vcfs <- lapply(files, FUN = ReadMutectVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
-                     basename(vector.of.file.paths))
+                     basename(files))
   return(vcfs)
 }
 
 #' Read and split Mutect VCF files.
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the Mutect VCF files.
+#' @param files Character vector of file paths to the Mutect VCF files.
 #'
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -727,8 +722,8 @@ ReadMutectVCFs <- function(vector.of.file.paths) {
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #'
 #' @export
-ReadAndSplitMutectVCFs <- function(vector.of.file.paths) {
-  vcfs <- ReadMutectVCFs(vector.of.file.paths)
+ReadAndSplitMutectVCFs <- function(files) {
+  vcfs <- ReadMutectVCFs(files)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(split.vcfs)
 }
@@ -1126,13 +1121,12 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #' Create SBS and DBS catalogs from Strelka SBS VCF files.
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
-#' from the Strelka SBS VCFs specified by vector.of.file.paths
+#' from the Strelka SBS VCFs specified by \code{files}
 #'
 #' This function calls \code{\link{VCFsToSBSCatalogs}} and
 #' \code{\link{VCFsToDBSCatalogs}}.
 #'
-#' @param vector.of.file.paths Character vector of file paths to the Strelka SBS
-#'   VCF files.
+#' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1152,8 +1146,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #'
 #' @export
 StrelkaSBSVCFFilesToCatalog <-
-  function(vector.of.file.paths, ref.genome, trans.ranges, region) {
-  vcfs <- ReadStrelkaSBSVCFs(vector.of.file.paths)
+  function(files, ref.genome, trans.ranges, region) {
+  vcfs <- ReadStrelkaSBSVCFs(files)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, trans.ranges, region)))
@@ -1162,13 +1156,12 @@ StrelkaSBSVCFFilesToCatalog <-
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
-#' Strelka SBS VCFs specified by vector.of.file.paths and plot them to PDF
+#' Strelka SBS VCFs specified by \code{files} and plot them to PDF
 #'
 #' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}} and
 #' \code{\link{PlotCatalogToPdf}}
 #'
-#' @param vector.of.file.paths Character vector of file paths to the Strelka SBS
-#'   VCF files.
+#' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1194,10 +1187,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @export
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
-  function(vector.of.file.paths, ref.genome, trans.ranges, region,
+  function(files, ref.genome, trans.ranges, region,
            file, no.context) {
     catalogs <-
-      StrelkaSBSVCFFilesToCatalog(vector.of.file.paths, ref.genome,
+      StrelkaSBSVCFFilesToCatalog(files, ref.genome,
                                   trans.ranges, region)
 
     PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", file))
@@ -1218,12 +1211,11 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 
 #' Create ID (indel) catalog from Strelka ID VCF files
 #'
-#' Create ID (indel) catalog from the Strelka ID VCFs specified by vector.of.file.paths
+#' Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}}
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka ID VCF files.
+#' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1239,21 +1231,20 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
-StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region) {
-  vcfs <- ReadStrelkaIDVCFs(vector.of.file.paths)
+StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region) {
+  vcfs <- ReadStrelkaIDVCFs(files)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF
 #'
-#' Create ID (indel) catalog from the Strelka ID VCFs specified by
-#' vector.of.file.paths and plot them to PDF
+#' Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
+#' and plot them to PDF
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}} and
 #' \code{\link{PlotCatalogToPdf}}
 #'
-#' @param vector.of.file.paths Character vector of
-#' file paths to the Strelka ID VCF files.
+#' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1273,9 +1264,9 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #'
 #' @export
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
-  function(vector.of.file.paths, ref.genome, region, file) {
+  function(files, ref.genome, region, file) {
     catalog <-
-      StrelkaIDVCFFilesToCatalog(vector.of.file.paths, ref.genome, region)
+      StrelkaIDVCFFilesToCatalog(files, ref.genome, region)
     PlotCatalogToPdf(catalog, file = paste0("IndelCatalog.", file))
     return(catalog)
   }
@@ -1283,13 +1274,12 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
-#' Indel catalog from the Mutect VCFs specified by vector.of.file.paths
+#' Indel catalog from the Mutect VCFs specified by \code{files}
 #'
 #' This function calls \code{\link{VCFsToSBSCatalogs}},
 #' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 #'
-#' @param vector.of.file.paths Character vector of file paths to the Mutect VCF
-#'   files.
+#' @param files Character vector of file paths to the Mutect VCF files.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1310,8 +1300,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @export
 MutectVCFFilesToCatalog <-
-  function(vector.of.file.paths, ref.genome, trans.ranges, region) {
-  vcfs <- ReadMutectVCFs(vector.of.file.paths)
+  function(files, ref.genome, trans.ranges, region) {
+  vcfs <- ReadMutectVCFs(files)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
@@ -1321,14 +1311,13 @@ MutectVCFFilesToCatalog <-
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
-#' Indel catalog from the Mutect VCFs specified by vector.of.file.paths and plot them
-#' to PDF
+#' Indel catalog from the Mutect VCFs specified by \code{files} and plot them to
+#' PDF
 #'
 #' This function calls \code{\link{MutectVCFFilesToCatalog}} and
 #' \code{\link{PlotCatalogToPdf}}
 #'
-#' @param vector.of.file.paths Character vector of file paths to the Mutect VCF
-#'   files.
+#' @param files Character vector of file paths to the Mutect VCF files.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1354,10 +1343,10 @@ MutectVCFFilesToCatalog <-
 #'
 #' @export
 MutectVCFFilesToCatalogAndPlotToPdf <-
-  function(vector.of.file.paths, ref.genome, trans.ranges, region,
+  function(files, ref.genome, trans.ranges, region,
            file, no.context) {
     catalogs <-
-      MutectVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges, region)
+      MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, region)
 
     PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", file))
     if (no.context == TRUE) {

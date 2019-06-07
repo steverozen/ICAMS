@@ -4,12 +4,11 @@
 \alias{MutectVCFFilesToCatalogAndPlotToPdf}
 \title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF}
 \usage{
-MutectVCFFilesToCatalogAndPlotToPdf(vector.of.file.paths, ref.genome,
-  trans.ranges, region, file, no.context)
+MutectVCFFilesToCatalogAndPlotToPdf(files, ref.genome, trans.ranges,
+  region, file, no.context)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of file paths to the Mutect VCF
-files.}
+\item{files}{Character vector of file paths to the Mutect VCF files.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -34,8 +33,8 @@ A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
-Indel catalog from the Mutect VCFs specified by vector.of.file.paths and plot them
-to PDF
+Indel catalog from the Mutect VCFs specified by \code{files} and plot them to
+PDF
 }
 \details{
 This function calls \code{\link{MutectVCFFilesToCatalog}} and

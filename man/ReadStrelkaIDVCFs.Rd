@@ -4,14 +4,13 @@
 \alias{ReadStrelkaIDVCFs}
 \title{Read Strelka ID (insertion and deletion) VCF files.}
 \usage{
-ReadStrelkaIDVCFs(vector.of.file.paths)
+ReadStrelkaIDVCFs(files)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the VCF files.}
+\item{files}{Character vector of file paths to the VCF files.}
 }
 \value{
-A list of vcfs from vector.of.file.paths.
+A list of vcfs from \code{files}.
 }
 \description{
 Read Strelka ID (insertion and deletion) VCF files.

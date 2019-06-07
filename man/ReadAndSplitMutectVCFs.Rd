@@ -4,11 +4,10 @@
 \alias{ReadAndSplitMutectVCFs}
 \title{Read and split Mutect VCF files.}
 \usage{
-ReadAndSplitMutectVCFs(vector.of.file.paths)
+ReadAndSplitMutectVCFs(files)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the Mutect VCF files.}
+\item{files}{Character vector of file paths to the Mutect VCF files.}
 }
 \value{
 A list with 3 in-memory VCFs and two left-over

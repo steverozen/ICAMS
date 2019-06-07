@@ -4,11 +4,10 @@
 \alias{ReadAndSplitStrelkaSBSVCFs}
 \title{Read and split Strelka SBS VCF files.}
 \usage{
-ReadAndSplitStrelkaSBSVCFs(vector.of.file.paths)
+ReadAndSplitStrelkaSBSVCFs(files)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the Strelka SBS VCF files.}
+\item{files}{Character vector of file paths to the Strelka SBS VCF files.}
 }
 \value{
 A list of 3 in-memory objects as follows:

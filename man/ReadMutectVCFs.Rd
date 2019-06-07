@@ -4,14 +4,13 @@
 \alias{ReadMutectVCFs}
 \title{Read Mutect VCF files.}
 \usage{
-ReadMutectVCFs(vector.of.file.paths)
+ReadMutectVCFs(files)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the VCF files.}
+\item{files}{Character vector of file paths to the VCF files.}
 }
 \value{
-A list of vcfs from vector.of.file.paths.
+A list of vcfs from \code{files}.
 }
 \description{
 Read Mutect VCF files.
