@@ -2,8 +2,8 @@
 % Please edit documentation in R/utility_functions.R
 \name{TransformCatalog}
 \alias{TransformCatalog}
-\title{Transform between count and density spectrum catalogs
-and signature catalogs.}
+\title{Transform between counts and density spectrum catalogs
+and counts and density signature catalogs.}
 \usage{
 TransformCatalog(catalog, target.ref.genome, target.region,
   target.catalog.type)
@@ -25,8 +25,8 @@ identifier, one of "counts", "density", "counts.signature",
 A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-Transform between count and density spectrum catalogs
-and signature catalogs.
+Transform between counts and density spectrum catalogs
+and counts and density signature catalogs.
 }
 \details{
 Only the following transformations are legal:

@@ -129,8 +129,8 @@ Collapse144AbundanceTo78 <- function(abundance144) {
   return(abundance78)
 }
 
-#' Transform between count and density spectrum catalogs
-#' and signature catalogs.
+#' Transform between counts and density spectrum catalogs
+#' and counts and density signature catalogs.
 #'
 #' @details Only the following transformations are legal:
 #'
