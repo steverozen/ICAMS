@@ -658,14 +658,14 @@ CreatePentanucAbundance <- function(file) {
   return(abundance)
 }
 
-#' Take strings representing a genome and return the \link[BSgenome]{BSgenome} object.
+#' Take strings representing a genome and return the \code{\link{BSgenome}} object.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @return If \code{genome} is \link[BSgenome]{BSgenome} object, return it.
-#' Otherwise return the \link[BSgenome]{BSgenome} object identified by the
-#' string \code{genome}.
+#' @return If \code{ref.genome} is \code{\link{BSgenome}} object, return it.
+#' Otherwise return the \code{\link{BSgenome}} object identified by the
+#' string \code{ref.genome}.
 #'
 #' @keywords internal
 NormalizeGenomeArg <- function(ref.genome) {

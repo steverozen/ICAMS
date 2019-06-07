@@ -115,7 +115,7 @@ and plot them to PDF. }
 Many functions take the argument \code{ref.genome}.
 This can be either
 \enumerate{
-  \item A variable from the Bioconductor \code{\link[BSgenome]{BSgenome}} package
+  \item A variable from the Bioconductor \code{\link{BSgenome}} package
   that contains a particular reference genome, for example
   \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
   \code{BSgenome::available.genomes()} returns the available
