@@ -4,10 +4,10 @@
 \alias{ReadCatalog}
 \title{Read catalog.}
 \usage{
-ReadCatalog(path, ref.genome, region, catalog.type, strict = TRUE)
+ReadCatalog(file, ref.genome, region, catalog.type, strict = TRUE)
 }
 \arguments{
-\item{path}{Path to a catalog on disk in the standardized format.}
+\item{file}{Path to a catalog on disk in the standardized format.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}

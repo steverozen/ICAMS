@@ -4,13 +4,13 @@
 \alias{WriteCatalog}
 \title{Write a catalog}
 \usage{
-WriteCatalog(catalog, path, strict = TRUE)
+WriteCatalog(catalog, file, strict = TRUE)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}};
 see also \code{\link{as.catalog}}.}
 
-\item{path}{The path to the file to be created .}
+\item{file}{The path to the file to be created.}
 
 \item{strict}{If TRUE, do additional checks on the input, and stop if the
 checks fail.}

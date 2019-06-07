@@ -5,10 +5,10 @@
 \title{Read in the data lines of a Variant Call Format (VCF) file created by
     MuTect}
 \usage{
-ReadMutectVCF(path)
+ReadMutectVCF(file)
 }
 \arguments{
-\item{path}{The name/path of the VCF file, or a complete URL.}
+\item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
 A data frame storing mutation records of a VCF file.

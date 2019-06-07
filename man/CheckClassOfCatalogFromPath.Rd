@@ -4,10 +4,10 @@
 \alias{CheckClassOfCatalogFromPath}
 \title{Check the class of catalog from path}
 \usage{
-CheckClassOfCatalogFromPath(path)
+CheckClassOfCatalogFromPath(file)
 }
 \arguments{
-\item{path}{Path to a catalog on disk in the standardized format.}
+\item{file}{Path to a catalog on disk in the standardized format.}
 }
 \value{
 An object with the corresponding class type of catalog.

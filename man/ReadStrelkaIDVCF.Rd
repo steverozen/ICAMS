@@ -4,10 +4,10 @@
 \alias{ReadStrelkaIDVCF}
 \title{Read in the data lines of an ID VCF created by Strelka version 1}
 \usage{
-ReadStrelkaIDVCF(path)
+ReadStrelkaIDVCF(file)
 }
 \arguments{
-\item{path}{The name/path of the VCF file, or a complete URL.}
+\item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
 A data frame storing mutation records of a VCF file.

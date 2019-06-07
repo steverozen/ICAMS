@@ -4,13 +4,13 @@
 \alias{WriteCat}
 \title{Write a catalog to a file.}
 \usage{
-WriteCat(catalog, path, num.row, row.order, row.header, strict)
+WriteCat(catalog, file, num.row, row.order, row.header, strict)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{as.catalog}} for more details.}
 
-\item{path}{The path of the file to be written.}
+\item{file}{The path of the file to be written.}
 
 \item{num.row}{The number of rows in the file to be written.}
 

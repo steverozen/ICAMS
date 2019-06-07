@@ -11,13 +11,13 @@ NULL
 #'
 #' @importFrom utils read.csv
 #'
-#' @param path The name/path of the VCF file, or a complete URL.
+#' @param file The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCF <- function(path) {
-  df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
+ReadStrelkaSBSVCF <- function(file) {
+  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
   # Delete the columns which are totally empty
@@ -66,7 +66,7 @@ ReadStrelkaSBSVCF <- function(path) {
 #'
 #' @importFrom utils read.csv
 #'
-#' @param path The name/path of the VCF file, or a complete URL.
+#' @param file The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #'
@@ -75,8 +75,8 @@ ReadStrelkaSBSVCF <- function(path) {
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @keywords internal
-ReadStrelkaIDVCF <- function(path) {
-  df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
+ReadStrelkaIDVCF <- function(file) {
+  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
   # Delete the columns which are totally empty
@@ -133,13 +133,13 @@ GetStrelkaVAF <-function(vcf) {
 #'
 #' @importFrom utils read.csv
 #'
-#' @param path The name/path of the VCF file, or a complete URL.
+#' @param file The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #'
 #' @keywords internal
-ReadMutectVCF <- function(path) {
-  df <- read.csv(path, header = FALSE, sep = "\t", quote = "",
+ReadMutectVCF <- function(file) {
+  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1 : 100), as.is = TRUE)
 
   # Delete the columns which are totally empty

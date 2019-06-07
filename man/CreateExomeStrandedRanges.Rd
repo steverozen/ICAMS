@@ -4,10 +4,10 @@
 \alias{CreateExomeStrandedRanges}
 \title{Create exome transcriptionally stranded regions}
 \usage{
-CreateExomeStrandedRanges(path, trans.ranges)
+CreateExomeStrandedRanges(file, trans.ranges)
 }
 \arguments{
-\item{path}{Path to a SureSelect BED file which contains unstranded exome
+\item{file}{Path to a SureSelect BED file which contains unstranded exome
 ranges.}
 
 \item{trans.ranges}{A data.table which contains transcript range and strand

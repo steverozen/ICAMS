@@ -4,7 +4,7 @@
 #'
 #' See also \code{\link{WriteCatalog}}
 #'
-#' @param path Path to a catalog on disk in the standardized format.
+#' @param file Path to a catalog on disk in the standardized format.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -25,9 +25,9 @@
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
-ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
+ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
   if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
-    class.of.catalog <- CheckClassOfCatalogFromPath(path)
+    class.of.catalog <- CheckClassOfCatalogFromPath(file)
     UseMethod(generic = "ReadCatalog", object = class.of.catalog)
   }
 }
@@ -41,7 +41,7 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #' @param catalog A catalog as defined in \code{\link{ICAMS}};
 #' see also \code{\link{as.catalog}}.
 #'
-#' @param path The path to the file to be created .
+#' @param file The path to the file to be created.
 #'
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
@@ -51,14 +51,14 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
-WriteCatalog <- function(catalog, path, strict = TRUE) {
+WriteCatalog <- function(catalog, file, strict = TRUE) {
   UseMethod(generic = "WriteCatalog")
 }
 
 #' @export
-ReadCatalog.SBS96Catalog <- function(path, ref.genome, region,
+ReadCatalog.SBS96Catalog <- function(file, ref.genome, region,
                                      catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 96)
   if (strict) {
     stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation Type",
@@ -80,9 +80,9 @@ ReadCatalog.SBS96Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS192Catalog <- function(path, ref.genome, region,
+ReadCatalog.SBS192Catalog <- function(file, ref.genome, region,
                                       catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
   if (strict) {
@@ -115,9 +115,9 @@ ReadCatalog.SBS192Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS1536Catalog <- function(path, ref.genome, region,
+ReadCatalog.SBS1536Catalog <- function(file, ref.genome, region,
                                        catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
     stopifnot(names(cos)[1] %in% c("Mutation type", "Mutation Type",
@@ -139,9 +139,9 @@ ReadCatalog.SBS1536Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS78Catalog <- function(path, ref.genome, region,
+ReadCatalog.DBS78Catalog <- function(file, ref.genome, region,
                                      catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 78)
   if (strict) {
     stopifnot(names(cos)[1 : 2] == c("Ref", "Var"))
@@ -186,9 +186,9 @@ ReadCatalog.DBS78Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS144Catalog <- function(path, ref.genome, region,
+ReadCatalog.DBS144Catalog <- function(file, ref.genome, region,
                                       catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 144)
   if (strict) {
     stopifnot(names(cos)[1 : 2] == c("Ref", "Var"))
@@ -206,9 +206,9 @@ ReadCatalog.DBS144Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS136Catalog <- function(path, ref.genome, region,
+ReadCatalog.DBS136Catalog <- function(file, ref.genome, region,
                                       catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 136)
   if (strict) {
     stopifnot(names(cos)[1] %in% c("Quad", "quad", "QUAD"))
@@ -225,9 +225,9 @@ ReadCatalog.DBS136Catalog <- function(path, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.IndelCatalog <- function(path, ref.genome, region,
+ReadCatalog.IndelCatalog <- function(file, ref.genome, region,
                                      catalog.type, strict = TRUE) {
-  cos <- data.table::fread(path)
+  cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 83)
   cn <- names(cos)
   ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
@@ -254,7 +254,7 @@ ReadCatalog.IndelCatalog <- function(path, ref.genome, region,
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @param path The path of the file to be written.
+#' @param file The path of the file to be written.
 #'
 #' @param num.row The number of rows in the file to be written.
 #'
@@ -265,7 +265,7 @@ ReadCatalog.IndelCatalog <- function(path, ref.genome, region,
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
 #' @keywords internal
-WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
+WriteCat <- function(catalog, file, num.row, row.order, row.header, strict) {
   mut.categories <- rownames(catalog)
   stopifnot(num.row == nrow(catalog))
   if (strict) {
@@ -273,47 +273,47 @@ WriteCat <- function(catalog, path, num.row, row.order, row.header, strict) {
   }
   catalog <- catalog[row.order, , drop = FALSE]
   DT <- as.data.table(catalog)
-  fwrite(cbind(row.header, DT), file = path)
+  fwrite(cbind(row.header, DT), file = file)
 }
 
 #' @export
-WriteCatalog.SBS96Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 96, ICAMS::catalog.row.order$SBS96,
+WriteCatalog.SBS96Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 96, ICAMS::catalog.row.order$SBS96,
            catalog.row.headers.SBS.96, strict)
 }
 
 #' @export
-WriteCatalog.SBS192Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 192, ICAMS::catalog.row.order$SBS192,
+WriteCatalog.SBS192Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 192, ICAMS::catalog.row.order$SBS192,
            catalog.row.headers.SBS.192, strict)
 }
 
 #' @export
-WriteCatalog.SBS1536Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 1536, ICAMS::catalog.row.order$SBS1536,
+WriteCatalog.SBS1536Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 1536, ICAMS::catalog.row.order$SBS1536,
            catalog.row.headers.SBS.1536, strict)
 }
 
 #' @export
-WriteCatalog.DBS78Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 78, ICAMS::catalog.row.order$DBS78,
+WriteCatalog.DBS78Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 78, ICAMS::catalog.row.order$DBS78,
            catalog.row.headers.DBS.78, strict)
 }
 
 #' @export
-WriteCatalog.DBS144Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 144, ICAMS::catalog.row.order$DBS144,
+WriteCatalog.DBS144Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 144, ICAMS::catalog.row.order$DBS144,
            catalog.row.headers.DBS.144, strict)
 }
 
 #' @export
-WriteCatalog.DBS136Catalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 136, ICAMS::catalog.row.order$DBS136,
+WriteCatalog.DBS136Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 136, ICAMS::catalog.row.order$DBS136,
            catalog.row.headers.DBS.136, strict)
 }
 
 #' @export
-WriteCatalog.IndelCatalog <- function(catalog, path, strict = TRUE) {
-  WriteCat(catalog, path, 83, ICAMS::catalog.row.order$ID,
+WriteCatalog.IndelCatalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 83, ICAMS::catalog.row.order$ID,
            catalog.row.headers.ID, strict)
 }

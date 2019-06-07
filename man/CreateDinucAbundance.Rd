@@ -4,10 +4,10 @@
 \alias{CreateDinucAbundance}
 \title{Create dinucleotide abundance}
 \usage{
-CreateDinucAbundance(path)
+CreateDinucAbundance(file)
 }
 \arguments{
-\item{path}{Path to the file with the nucleotide abundance information with 2
+\item{file}{Path to the file with the nucleotide abundance information with 2
 base pairs.}
 }
 \value{

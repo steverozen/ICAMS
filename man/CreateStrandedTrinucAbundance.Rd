@@ -4,10 +4,10 @@
 \alias{CreateStrandedTrinucAbundance}
 \title{Create stranded trinucleotide abundance}
 \usage{
-CreateStrandedTrinucAbundance(path)
+CreateStrandedTrinucAbundance(file)
 }
 \arguments{
-\item{path}{Path to the file with the nucleotide abundance information with 3
+\item{file}{Path to the file with the nucleotide abundance information with 3
 base pairs.}
 }
 \value{

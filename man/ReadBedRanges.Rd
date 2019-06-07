@@ -4,10 +4,10 @@
 \alias{ReadBedRanges}
 \title{Read chromosome and position information from a bed format file.}
 \usage{
-ReadBedRanges(path)
+ReadBedRanges(file)
 }
 \arguments{
-\item{path}{Path to the file in bed format.}
+\item{file}{Path to the file in bed format.}
 }
 \value{
 A data.table keyed by chrom, start, and end.

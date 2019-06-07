@@ -13,13 +13,13 @@ if (FALSE) {
     ReadBedRanges("data-raw/ranges/ExomeRanges.GRCh37.SureSelectv6.csv")
 
   exome.ranges.stranded.GRCh37 <-
-    CreateExomeStrandedRanges(path = "data-raw/ranges/ExomeRanges.GRCh37.SureSelectv6.csv",
+    CreateExomeStrandedRanges(file = "data-raw/ranges/ExomeRanges.GRCh37.SureSelectv6.csv",
                               trans.ranges = trans.ranges.GRCh37)
 
   exome.ranges.GRCh38 <-
     ReadBedRanges("data-raw/ranges/ExomeRanges.GRCh38.SureSelectv6.csv")
 
   exome.ranges.stranded.GRCh38 <-
-    CreateExomeStrandedRanges(path = "data-raw/ranges/ExomeRanges.GRCh38.SureSelectv6.csv",
+    CreateExomeStrandedRanges(file = "data-raw/ranges/ExomeRanges.GRCh38.SureSelectv6.csv",
                               trans.ranges = trans.ranges.GRCh38)
 }

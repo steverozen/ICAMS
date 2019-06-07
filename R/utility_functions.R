@@ -285,7 +285,7 @@ StandardChromName <- function(df) {
 
 #' Create a transcript range file from the raw GFF3 File
 #'
-#' @param path The name/path of the raw GFF3 File, or a complete URL.
+#' @param file The name/path of the raw GFF3 File, or a complete URL.
 #'
 #' @importFrom  stringi stri_split_fixed
 #'
@@ -295,13 +295,13 @@ StandardChromName <- function(df) {
 #'   transcriptional strand bias analysis.
 #'
 #' @keywords internal
-CreateTransRanges <- function(path) {
-  df <- read.csv(path, header = FALSE, fill = TRUE, nrows = 20)
+CreateTransRanges <- function(file) {
+  df <- read.csv(file, header = FALSE, fill = TRUE, nrows = 20)
   # Count the number of comment lines
   n <- sum(grepl("#", df[, 1]))
 
   # Read in the raw GFF3 File while skipping the comment lines
-  dt <- data.table::fread(path, header = FALSE, sep = "\t", fill = TRUE, skip = n)
+  dt <- data.table::fread(file, header = FALSE, sep = "\t", fill = TRUE, skip = n)
 
   # Extract the gene ID associated with CCDS ID
   dt1 <- dt[grep("CCDS", dt$V9), ]
@@ -364,7 +364,7 @@ CreateTransRanges <- function(path) {
 
 #' Create exome transcriptionally stranded regions
 #'
-#' @param path Path to a SureSelect BED file which contains unstranded exome
+#' @param file Path to a SureSelect BED file which contains unstranded exome
 #'   ranges.
 #'
 #' @param trans.ranges A data.table which contains transcript range and strand
@@ -378,8 +378,8 @@ CreateTransRanges <- function(path) {
 #'   end.
 #'
 #' @keywords internal
-CreateExomeStrandedRanges <- function(path, trans.ranges) {
-  exome.ranges <- ReadBedRanges(path)
+CreateExomeStrandedRanges <- function(file, trans.ranges) {
+  exome.ranges <- ReadBedRanges(file)
   colnames(exome.ranges) <- c("chrom", "exome.start", "exome.end")
 
   # Remove ranges which fall on transcripts on both strands and get
@@ -491,14 +491,14 @@ RevcDBS144 <- function(mutstring) {
 #' Read transcript ranges and strand information from a gff3 format file.
 #' Use this one for the new, cut down gff3 file (2018 11 24)
 #'
-#' @param path Path to the file with the transcript information with 1-based
+#' @param file Path to the file with the transcript information with 1-based
 #'   start end positions of genomic ranges.
 #'
 #' @return A data.table keyed by chrom, start, and end.
 #'
 #' @keywords internal
-ReadTranscriptRanges <- function(path) {
-  dt <- data.table::fread(path)
+ReadTranscriptRanges <- function(file) {
+  dt <- data.table::fread(file)
   colnames(dt) <- c("chrom", "start", "end", "strand", "gene.name")
   chrOrder <- c((1:22), "X", "Y")
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
@@ -508,13 +508,13 @@ ReadTranscriptRanges <- function(path) {
 
 #' Read chromosome and position information from a bed format file.
 #'
-#' @param path Path to the file in bed format.
+#' @param file Path to the file in bed format.
 #'
 #' @return A data.table keyed by chrom, start, and end.
 #'
 #' @keywords internal
-ReadBedRanges <- function(path) {
-  dt <- data.table::fread(path)
+ReadBedRanges <- function(file) {
+  dt <- data.table::fread(file)
   dt1 <- StandardChromName(dt[, 1:3])
   colnames(dt1) <- c("chrom", "start", "end")
 
@@ -533,15 +533,15 @@ ReadBedRanges <- function(path) {
 
 #' Create trinucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 3
+#' @param file Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
 #'
 #' @return A numeric vector whose names indicate 32 different types of 3 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreateTrinucAbundance <- function(path) {
-  dt <- fread(path)
+CreateTrinucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("3bp", "occurrences")
   dt$type <-
     ifelse(substr(dt[[1]], 2, 2) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
@@ -553,15 +553,15 @@ CreateTrinucAbundance <- function(path) {
 
 #' Create stranded trinucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 3
+#' @param file Path to the file with the nucleotide abundance information with 3
 #'   base pairs.
 #'
 #' @return A numeric vector whose names indicate 64 different types of 3 base pairs
 #'   combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreateStrandedTrinucAbundance <- function(path) {
-  dt <- fread(path)
+CreateStrandedTrinucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("3bp", "occurrences")
   dt$type <- dt[[1]]
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
@@ -572,7 +572,7 @@ CreateStrandedTrinucAbundance <- function(path) {
 
 #' Create dinucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 2
+#' @param file Path to the file with the nucleotide abundance information with 2
 #'   base pairs.
 #'
 #' @import data.table
@@ -581,8 +581,8 @@ CreateStrandedTrinucAbundance <- function(path) {
 #'   combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreateDinucAbundance <- function(path) {
-  dt <- fread(path)
+CreateDinucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("2bp", "occurrences")
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
@@ -596,7 +596,7 @@ CreateDinucAbundance <- function(path) {
 
 #' Create stranded dinucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 2
+#' @param file Path to the file with the nucleotide abundance information with 2
 #'   base pairs.
 #'
 #' @import data.table
@@ -605,8 +605,8 @@ CreateDinucAbundance <- function(path) {
 #'   combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreateStrandedDinucAbundance <- function(path) {
-  dt <- fread(path)
+CreateStrandedDinucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("2bp", "occurrences")
   dt$type <- dt[[1]]
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
@@ -617,7 +617,7 @@ CreateStrandedDinucAbundance <- function(path) {
 
 #' Create tetranucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information with 4
+#' @param file Path to the file with the nucleotide abundance information with 4
 #'   base pairs.
 #'
 #' @import data.table
@@ -626,8 +626,8 @@ CreateStrandedDinucAbundance <- function(path) {
 #'   combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreateTetranucAbundance <- function(path) {
-  dt <- fread(path)
+CreateTetranucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("4bp", "occurrences")
   dt$type <- CanonicalizeQUAD(dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
@@ -638,7 +638,7 @@ CreateTetranucAbundance <- function(path) {
 
 #' Create pentanucleotide abundance
 #'
-#' @param path Path to the file with the nucleotide abundance information
+#' @param file Path to the file with the nucleotide abundance information
 #'   with 5 base pairs.
 #'
 #' @import data.table
@@ -647,8 +647,8 @@ CreateTetranucAbundance <- function(path) {
 #'   pairs combinations while its values indicate the occurrences of each type.
 #'
 #' @keywords internal
-CreatePentanucAbundance <- function(path) {
-  dt <- fread(path)
+CreatePentanucAbundance <- function(file) {
+  dt <- fread(file)
   colnames(dt) <- c("5bp", "occurrences")
   dt$type <-
     ifelse(substr(dt[[1]], 3, 3) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
@@ -721,13 +721,13 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
 
 #' Check the class of catalog from path
 #'
-#' @param path Path to a catalog on disk in the standardized format.
+#' @param file Path to a catalog on disk in the standardized format.
 #'
 #' @return An object with the corresponding class type of catalog.
 #'
 #' @keywords internal
-CheckClassOfCatalogFromPath <- function(path) {
-  cos <- data.table::fread(path)
+CheckClassOfCatalogFromPath <- function(file) {
+  cos <- data.table::fread(file)
   if (nrow(cos) == 96) {
     structure("ClassofCatalog", class = "SBS96Catalog")
   } else if (nrow(cos) == 192) {

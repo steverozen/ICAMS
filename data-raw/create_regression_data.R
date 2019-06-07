@@ -13,15 +13,15 @@ catalog <-
                               region = "genome")
 
 WriteCatalog(catalog$catSBS96,
-             path = "tests/testthat/testdata/regress.cat.sbs.96.csv")
+             file = "tests/testthat/testdata/regress.cat.sbs.96.csv")
 WriteCatalog(catalog$catSBS192,
-             path = "tests/testthat/testdata/regress.cat.sbs.192.csv")
+             file = "tests/testthat/testdata/regress.cat.sbs.192.csv")
 WriteCatalog(catalog$catSBS1536,
-             path = "tests/testthat/testdata/regress.cat.sbs.1536.csv")
+             file = "tests/testthat/testdata/regress.cat.sbs.1536.csv")
 WriteCatalog(catalog$catDBS78,
-             path = "tests/testthat/testdata/regress.cat.dbs.78.csv")
+             file = "tests/testthat/testdata/regress.cat.dbs.78.csv")
 WriteCatalog(catalog$catDBS144,
-             path = "tests/testthat/testdata/regress.cat.dbs.144.csv")
+             file = "tests/testthat/testdata/regress.cat.dbs.144.csv")
 WriteCatalog(catalog$catDBS136,
-             path = "tests/testthat/testdata/regress.cat.dbs.136.csv")
+             file = "tests/testthat/testdata/regress.cat.dbs.136.csv")
 

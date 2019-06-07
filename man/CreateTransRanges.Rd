@@ -4,10 +4,10 @@
 \alias{CreateTransRanges}
 \title{Create a transcript range file from the raw GFF3 File}
 \usage{
-CreateTransRanges(path)
+CreateTransRanges(file)
 }
 \arguments{
-\item{path}{The name/path of the raw GFF3 File, or a complete URL.}
+\item{file}{The name/path of the raw GFF3 File, or a complete URL.}
 }
 \value{
 A data table which contains chromosome name, start, end position,

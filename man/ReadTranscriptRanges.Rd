@@ -5,10 +5,10 @@
 \title{Read transcript ranges and strand information from a gff3 format file.
 Use this one for the new, cut down gff3 file (2018 11 24)}
 \usage{
-ReadTranscriptRanges(path)
+ReadTranscriptRanges(file)
 }
 \arguments{
-\item{path}{Path to the file with the transcript information with 1-based
+\item{file}{Path to the file with the transcript information with 1-based
 start end positions of genomic ranges.}
 }
 \value{
