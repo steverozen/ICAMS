@@ -31,7 +31,7 @@ Read a catalog in standardized format from path.
 See also \code{\link{WriteCatalog}}
 }
 \note{
-In the ID (insertion and deletion) catalog, deletion repeat size
-  ranges from 0 to 5+, but for plotting and end user documentation it ranges
-  from 1 to 6+.
+In ID (insertion and deletion) catalogs, deletion repeat sizes
+  range from 0 to 5+, but for plotting and end-user documentation
+  deletion repeat sizes range from 1 to 6+.
 }

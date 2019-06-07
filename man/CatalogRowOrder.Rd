@@ -18,9 +18,8 @@ types.  For example, for SBS96 catalogs, the rowname
  AGAT represents a mutation from AGA > ATA.
 }
 \note{
-In the ID (insertion and deletion) catalog, deletion repeat size
-  is in the range from 0 to 5+, but for plotting
-  and end user documentation it ranges
-  from 1 to 6+.
+In ID (insertion and deletion) catalogs, deletion repeat sizes
+  range from 0 to 5+, but for plotting and end-user documentation
+  deletion repeat sizes range from 1 to 6+.
 }
 \keyword{datasets}

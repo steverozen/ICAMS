@@ -20,9 +20,9 @@
 #' @return A catalog in standard in-memory format with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
 ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
@@ -46,9 +46,9 @@ ReadCatalog <- function(path, ref.genome, region, catalog.type, strict = TRUE) {
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
 WriteCatalog <- function(catalog, path, strict = TRUE) {

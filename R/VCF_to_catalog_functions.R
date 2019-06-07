@@ -70,9 +70,9 @@ ReadStrelkaSBSVCF <- function(path) {
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @keywords internal
 ReadStrelkaIDVCF <- function(path) {
@@ -667,9 +667,9 @@ ReadAndSplitStrelkaSBSVCFs <- function(vector.of.file.paths) {
 #'
 #' @return A list of vcfs from vector.of.file.paths.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 #'
@@ -1234,9 +1234,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @return An ID (indel) catalog with attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
 StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region) {
@@ -1267,9 +1267,9 @@ StrelkaIDVCFFilesToCatalog <- function(vector.of.file.paths, ref.genome, region)
 #'   file name. The ID (indel) catalog has attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
-#' @note In the ID (insertion and deletion) catalog, deletion repeat size
-#'   ranges from 0 to 5+, but for plotting and end user documentation it ranges
-#'   from 1 to 6+.
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-

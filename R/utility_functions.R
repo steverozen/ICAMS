@@ -129,23 +129,33 @@ Collapse144AbundanceTo78 <- function(abundance144) {
   return(abundance78)
 }
 
-#' Transform between count and density catalogs
-#' and signatures.
+#' Transform between count and density spectrum catalogs
+#' and signature catalogs.
 #'
 #' @details Only the following transformations are legal:
 #'
 #' \enumerate{
-#' \item \code{counts -> counts}
+#'
+#' \item \code{counts -> counts} (used to transform
+#'    between \code{target.ref.genome} and/or \code{target.region})
+#'
 #' \item \code{counts -> density}
+#'
 #' \item \code{counts -> (counts.signature, density.signature)}
-#' \item \code{density -> counts} (in which case the semantics are to
+#'
+#' \item \code{density -> counts} (the semantics are to
 #' infer the genome-wide or exome-wide counts based on the
-#' densities.)
+#' densities)
+#'
 #' \item \code{density -> (counts.signature, density.signature)}
-#' \item \preformatted{(counts.signature, density.signature) ->
-#'  (counts.signature, density.signature)}
-#' (\code{density.signature -> density.signature} is a null operation.)
-#' \item \code{density -> density} (A null operation.)
+#'
+#' \item \preformatted{counts.signature -> (counts.signature, density.signature)}
+#'
+#' \item \preformatted{density.signature -> counts.signature}
+#'
+#' \item \code{density.signature -> density.signature} (a null operation)
+#'
+#' \item \code{density -> density} (a null operation)
 #' }
 #'
 #'
@@ -155,11 +165,11 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' @param target.ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param target.region One of "genome", "exome".
+#' @param target.region One of "genome", "exome"; see \code{\link{as.catalog}}.
 #'
 #' @param target.catalog.type A character string acting as a catalog type
 #'   identifier, one of "counts", "density", "counts.signature",
-#'   "density.signature".
+#'   "density.signature"; see \code{\link{as.catalog}}.
 #'
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
