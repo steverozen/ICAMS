@@ -49,9 +49,6 @@
 #' @name TranscriptRanges
 NULL
 
-#' @rdname CatalogRowOrder
-"catalog.row.order"
-
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh37"
 
