@@ -85,12 +85,37 @@ Mutect VCFs.
 }
 }
 
+\section{Plotting catalogs}{
+
+The \code{\link{PlotCatalog}} functions plot mutational spectra
+for one sample or plot one mutational signature.
+
+The \code{\link{PlotCatalogToPdf}}
+functions plot catalogs of mutational spectra or
+of mutational signatures to a PDF file.
+}
+
+\section{Creating catalogs from variant call files (VCF files) and plot them to PDF}{
+
+\enumerate{
+\item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates 3 SBS
+catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the Strelka SBS
+VCFs and plot them to PDF.
+
+\item \code{\link{StrelkaIDVCFFilesToCatalog}} creates ID (indel) catalog
+from the Strelka ID VCFs and plot it to PDF.
+
+\item \code{\link{MutectVCFFilesToCatalog}} creates 3 SBS catalogs (96, 192,
+1536), 3 DBS catalogs (78, 136, 144), ID (indel) catalog from the Mutect VCFs
+and plot them to PDF. }
+}
+
 \section{The \code{ref.genome} argument}{
 
 Many functions take the argument \code{ref.genome}.
 This can be either
 \enumerate{
-  \item A variable from the Bioconductor \link[BSgenome]{BSgenome} package
+  \item A variable from the Bioconductor \code{\link[BSgenome]{BSgenome}} package
   that contains a particular reference genome, for example
   \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
   \code{BSgenome::available.genomes()} returns the available
@@ -121,16 +146,6 @@ This can be either
 
  Use \code{\link[BSgenome]{available.genomes}} to get the list of
  available genomes.
-}
-
-\section{Plotting catalogs}{
-
-The \code{\link{PlotCatalog}} functions plot mutational spectra
-for one sample or plot one mutational signature.
-
-The \code{\link{PlotCatalogToPdf}}
-functions plot catalogs of mutational spectra or
-of mutational signatures to a PDF file.
 }
 
 \section{Writing catalogs}{
