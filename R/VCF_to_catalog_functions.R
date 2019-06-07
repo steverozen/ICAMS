@@ -349,9 +349,9 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
 #'
 #' @param df A data frame storing mutation records of a VCF file.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @import data.table
 #'
@@ -864,9 +864,9 @@ CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1059,9 +1059,9 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1137,9 +1137,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #'   "genome", "exome".
@@ -1173,9 +1173,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1294,9 +1294,9 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
@@ -1333,9 +1333,9 @@ MutectVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A data.table which contains transcript range and strand
-#'   information. Please refer to \code{\link{TranscriptRanges}} for more
-#'   details.
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".

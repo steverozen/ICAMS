@@ -9,9 +9,9 @@ AddTranscript(df, trans.ranges)
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file.}
 
-\item{trans.ranges}{A data.table which contains transcript range and strand
-information. Please refer to \code{\link{TranscriptRanges}} for more
-details.}
+\item{trans.ranges}{a \code{\link[data.table]{data.table}} which contains
+transcript range and strand information. Please refer to
+\code{\link{TranscriptRanges}} for more details.}
 }
 \value{
 A data frame with new columns added to the input data frame,
