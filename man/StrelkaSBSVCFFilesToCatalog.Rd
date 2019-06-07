@@ -8,8 +8,8 @@ StrelkaSBSVCFFilesToCatalog(vector.of.file.paths, ref.genome, trans.ranges,
   region)
 }
 \arguments{
-\item{vector.of.file.paths}{Character vector of
-file paths to the Strelka SBS VCF files.}
+\item{vector.of.file.paths}{Character vector of file paths to the Strelka SBS
+VCF files.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
