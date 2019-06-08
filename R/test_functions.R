@@ -2,13 +2,11 @@
 #' and compares it with the expected catalog information.
 #' @keywords internal
 TestMakeCatalogFromMutectVCFs <- function() {
-  files <- c(system.file("extdata",
-                         "MCF10A_Carb_Low_cl2_Mutect.vcf",
-                         package = "ICAMS",
-                         mustWork = TRUE))
+  file <-
+    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Mutect.vcf"
 
   cats <-
-    MutectVCFFilesToCatalog(files, ref.genome = "GRCh37",
+    MutectVCFFilesToCatalog(file, ref.genome = "GRCh37",
                             # Use default transcript ranges
                             trans.ranges = trans.ranges.GRCh37,
                             region = "genome")
@@ -85,20 +83,18 @@ TestMakeCatalogFromMutectVCFs <- function() {
 #' to compare with the expected catalog information.
 #' @keywords internal
 TestMakeCatalogFromStrelkaSBSVCFs <- function() {
-  files <- c(system.file("extdata",
-                         "MCF10A_Carb_Low_cl2_Strelka_SBS.vcf",
-                         package = "ICAMS",
-                         mustWork = TRUE))
+  file <-
+    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_SBS.vcf"
 
   cats <-
-    StrelkaSBSVCFFilesToCatalog(files, ref.genome = "GRCh37",
+    StrelkaSBSVCFFilesToCatalog(file, ref.genome = "GRCh37",
                                 # Use default transcript ranges
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome")
 
   prev.catalog.192 <-
     ReadCatalog(system.file("extdata",
-                            "new.regress.cat.sbs.192.csv",
+                            "strelka.regress.cat.sbs.192.csv",
                             package = "ICAMS",
                             mustWork = TRUE),
                 ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -108,7 +104,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   prev.catalog.96 <-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.sbs.96.csv",
+                  "strelka.regress.cat.sbs.96.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -117,7 +113,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   prev.catalog.1536 <-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.sbs.1536.csv",
+                  "strelka.regress.cat.sbs.1536.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -126,7 +122,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   prev.catalog.DBS.78<-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.dbs.78.csv",
+                  "strelka.regress.cat.dbs.78.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -135,7 +131,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   prev.catalog.DBS.136<-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.dbs.136.csv",
+                  "strelka.regress.cat.dbs.136.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -144,7 +140,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   prev.catalog.DBS.144<-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.dbs.144.csv",
+                  "strelka.regress.cat.dbs.144.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
@@ -159,18 +155,16 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
 #' to compare with the expected catalog information.
 #' @keywords internal
 TestMakeCatalogFromStrelkaIDVCFs <- function() {
-  files <- c(system.file("extdata",
-                         "MCF10A_Carb_Low_cl2_Strelka_ID.vcf",
-                         package = "ICAMS",
-                         mustWork = TRUE))
+  file <-
+    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_ID.vcf"
 
-  cat.ID <- StrelkaIDVCFFilesToCatalog(files, ref.genome = "GRCh37",
+  cat.ID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "GRCh37",
                                        region = "genome")
 
   prev.catalog.indels<-
     ReadCatalog(
       system.file("extdata",
-                  "new.regress.cat.indels.csv",
+                  "strelka.regress.cat.indels.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
