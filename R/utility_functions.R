@@ -947,7 +947,9 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 #'
 #' TODO(Nanhai): change name of this argument and handle
 #' numeric data frames as well.
-#' @param catalog A numeric matrix or <Nanhai fill in>.
+#' @param object A numeric matrix or numeric data frame. This object must have
+#'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+#'   for more details.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -957,29 +959,48 @@ CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
+#'   
+#' @param abundance Optional, only needed when \code{ref.genome} does not belong
+#'   to the two human reference genomes supported by ICAMS. The abundance should
+#'   contain the counts of different source sequences for mutations. See
+#'   \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
 #'
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'
 #' @export
 # TODO(Nanhai) I think this function needs an optional abundance
 # argument, so someone can use it e.g. with mouse or C. elegans.
-as.catalog <- function(catalog, ref.genome, region, catalog.type) {
-  stopifnot(region %in% c("genome", "exome"))
-  ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
-
-  if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
-    attr(catalog, "ref.genome") <- ref.genome
-    attr(catalog, "catalog.type") <- catalog.type
-    catalog <- CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
-    catalog <- CreateCatalogClass(catalog)
-    if (attributes(catalog)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
-      attr(catalog, "region") <- ifelse(region == "genome", "transcript", "exome")
-    } else {
-      attr(catalog, "region") <- region
+as.catalog <- 
+  function(object, ref.genome, region, catalog.type, abundance) {
+    stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
+    stopifnot(!is.null(rownames(object)))
+    stopifnot(region %in% c("genome", "exome"))
+    if ("data.frame" %in% class(object)) {
+      object <- data.matrix(object)
     }
+    ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
+    if (missing(abundance)) {
+      stopifnot(ref.genome %in% c("BSgenome.Hsapiens.1000genomes.hs37d5",
+                                  "BSgenome.Hsapiens.UCSC.hg38"))
+    }
+    
+    if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
+      attr(object, "ref.genome") <- ref.genome
+      attr(object, "catalog.type") <- catalog.type
+      if (missing(abundance)) {
+        object <- CreateCatalogAbundance(object, ref.genome, region, catalog.type)
+      } else {
+        attr(object, "abundance") <- abundance
+      }
+      object <- CreateCatalogClass(object)
+      if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
+        attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
+      } else {
+        attr(object, "region") <- region
+      }
+    }
+    return(object)
   }
-  return(catalog)
-}
 
 #' Generate all possible k-mers of length k.
 #'

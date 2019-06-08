@@ -4,10 +4,12 @@
 \alias{as.catalog}
 \title{Create a catalog from a matrix or matrix-like object}
 \usage{
-as.catalog(catalog, ref.genome, region, catalog.type)
+as.catalog(object, ref.genome, region, catalog.type, abundance)
 }
 \arguments{
-\item{catalog}{A numeric matrix or <Nanhai fill in>.}
+\item{object}{A numeric matrix or numeric data frame. This object must have
+rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+for more details.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -17,6 +19,11 @@ as.catalog(catalog, ref.genome, region, catalog.type)
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
+
+\item{abundance}{Optional, only needed when \code{ref.genome} does not belong
+to the two human reference genomes supported by ICAMS. The abundance should
+contain the counts of different source sequences for mutations. See
+\code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
 }
 \value{
 A catalog as described in \code{\link{ICAMS}}.
