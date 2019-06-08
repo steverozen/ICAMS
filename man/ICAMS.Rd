@@ -140,16 +140,14 @@ provides this.
 \enumerate{
   \item A variable from the Bioconductor \code{\link{BSgenome}} package
   that contains a particular reference genome, for example
-  \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
-  \code{BSgenome::available.genomes()} returns the available
-  genomes.
+  \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}.
 
  \item The strings \code{"hg38"} or \code{"GRCh38"}
  are shorthand for
  \code{BSgenome.Hsapiens.UCSC.hg38},
  and the strings \code{"hg19"} or \code{"GRCh37"}
  are shorthand for
- \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
+ \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}.
  }
 
 The Bioconductor \code{\link{BSgenome}} package and 
@@ -158,18 +156,20 @@ two human genomes genomes from \code{\link{BSgenome}} are
 ICAMS is installed. The two genomes that are
  installed as dependencies are:
 \itemize{
-\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}
+\item \code{\link{BSgenome.Hsapiens.UCSC.hg38}}
 }
 
 Any other needed reference genomes must be installed separately by the user.  
-Use \code{\link{BSgenome::available.genomes}()}
+Use \code{\link[BSgenome]{available.genomes}()}
  to get the list of available genomes.  
 Further instructions are at
 https://bioconductor.org/packages/release/bioc/html/BSgenome.html.  
 Use of ICAMS with other reference genomes is restricted to
 \code{catalog.type} of \code{counts} or \code{counts.signature}
-unless the user also creates the necessary abundance files.
+unless the user also creates the necessary abundance vectors.
+See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for
+an example.
 }
 
 \section{Writing catalogs to files}{
