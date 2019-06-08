@@ -733,49 +733,51 @@ CheckClassOfCatalogFromPath <- function(file) {
   }
 }
 
-#' Create the class attribute of a catalog
+#' Create the additional class attribute of a catalog
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#' @param object A numeric matrix or numeric data frame. This object must have
+#'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+#'   for more details.
 #'
-#' @return The original catalog with class attribute added.
+#' @return The original object with additional class attribute added.
 #'
 #' @keywords internal
-CreateCatalogClass <- function(catalog) {
-  if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-    stop('This is not a catalog supported by ICAMS. The input catalog must
-         be one type of "SBS96", "SBS192", "SBS1536", "DBS78", "DBS144",
-         "DBS136", "ID(indel)"',
-         'The number of rows of the input catalog is ', nrow(catalog))
+CreateCatalogClass <- function(object) {
+  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+    stop('\nThe input object must be one type of ',
+    '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
+    '\nThe number of rows of the input object is ', nrow(object))
   }
-  if(nrow(catalog) == 96) {
-    class(catalog) <- append(class(catalog), "SBS96Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  
+  if(nrow(object) == 96) {
+    class(object) <- append(class(object), "SBS96Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 192) {
-    class(catalog) <- append(class(catalog), "SBS192Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 192) {
+    class(object) <- append(class(object), "SBS192Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 1536) {
-    class(catalog) <- append(class(catalog), "SBS1536Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 1536) {
+    class(object) <- append(class(object), "SBS1536Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 78) {
-    class(catalog) <- append(class(catalog), "DBS78Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 78) {
+    class(object) <- append(class(object), "DBS78Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 144) {
-    class(catalog) <- append(class(catalog), "DBS144Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 144) {
+    class(object) <- append(class(object), "DBS144Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 136) {
-    class(catalog) <- append(class(catalog), "DBS136Catalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 136) {
+    class(object) <- append(class(object), "DBS136Catalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  if(nrow(catalog) == 83) {
-    class(catalog) <- append(class(catalog), "IndelCatalog", after = 0)
-    class(catalog) <- unique(attributes(catalog)$class)
+  if(nrow(object) == 83) {
+    class(object) <- append(class(object), "IndelCatalog", after = 0)
+    class(object) <- unique(attributes(object)$class)
   }
-  return(catalog)
+  return(object)
 }
 
 #' Create the abundance attribute of a catalog
@@ -975,6 +977,12 @@ as.catalog <-
     stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
     stopifnot(!is.null(rownames(object)))
     stopifnot(region %in% c("genome", "exome"))
+    if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+      stop('\nThe input object must be one type of ',
+           '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
+           '\nThe number of rows of the input object is ', nrow(object))
+    }
+    
     if ("data.frame" %in% class(object)) {
       object <- data.matrix(object)
     }
