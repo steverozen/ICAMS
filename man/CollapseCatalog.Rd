@@ -20,8 +20,7 @@ Collapse144CatalogTo78(catalog)
 A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-"Collapse" a catalog. Do not use this function for
-signature catalogs.
+"Collapse" a catalog.
 }
 \details{
 \code{Collapse192CatalogTo96} Collapse an SBS 192 catalog

@@ -1,7 +1,6 @@
 #' "Collapse" a catalog.
 #'
-#' "Collapse" a catalog. Do not use this function for
-#' signature catalogs.
+#' "Collapse" a catalog.
 #'
 #' \code{Collapse192CatalogTo96} Collapse an SBS 192 catalog
 #' to an SBS 96 catalog.
@@ -22,11 +21,6 @@ NULL
 #' @rdname CollapseCatalog
 #' @export
 Collapse192CatalogTo96 <- function(catalog) {
-  if (attributes(catalog)$catalog.type %in%
-      c("counts.signature", "density.signature")) {
-    stop("This function cannot collapse a signature catalog.\n")
-  }
-
   dt192 <- data.table(catalog)
   dt192$rn <- PyrTri(rownames(catalog))
   dt96 <- dt192[, lapply(.SD, sum), by = rn, .SDcols = ]
@@ -66,11 +60,6 @@ Collapse192AbundanceTo96 <- function(abundance192) {
 #' @rdname CollapseCatalog
 #' @export
 Collapse1536CatalogTo96 <- function(catalog) {
-  if (attributes(catalog)$catalog.type %in%
-      c("counts.signature", "density.signature")) {
-    stop("This function cannot collapse a signature catalog.\n")
-  }
-
   dt <- data.table(catalog)
   rn <- rownames(catalog)
 
@@ -90,11 +79,6 @@ Collapse1536CatalogTo96 <- function(catalog) {
 #' @rdname CollapseCatalog
 #' @export
 Collapse144CatalogTo78 <- function(catalog) {
-  if (attributes(catalog)$catalog.type %in%
-      c("counts.signature", "density.signature")) {
-    stop("This function cannot collapse a signature catalog.\n")
-  }
-
   dt144 <- data.table(catalog)
   ref <- substr(rownames(catalog), 1, 2)
   alt <- substr(rownames(catalog), 3, 4)
