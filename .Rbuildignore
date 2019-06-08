@@ -1,6 +1,3 @@
-^inst/extdata/MCF10A_Carb_Low_cl2_Strelka_SBS\.vcf$
-^inst/extdata/MCF10A_Carb_Low_cl2_Strelka_ID\.vcf$
-^inst/extdata/MCF10A_Carb_Low_cl2_Mutect\.vcf$
 ^\.travis\.yml$
 ^README\.Rmd$
 ^data-raw$
