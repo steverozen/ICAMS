@@ -9,9 +9,9 @@ test_that("cbind method for SBS96Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for SBS192Catalog is working properly", {
@@ -23,9 +23,9 @@ test_that("cbind method for SBS192Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for SBS1536Catalog is working properly", {
@@ -37,9 +37,9 @@ test_that("cbind method for SBS1536Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for DBS78Catalog is working properly", {
@@ -51,9 +51,9 @@ test_that("cbind method for DBS78Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for DBS144Catalog is working properly", {
@@ -65,9 +65,9 @@ test_that("cbind method for DBS144Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for DBS136Catalog is working properly", {
@@ -79,9 +79,9 @@ test_that("cbind method for DBS136Catalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("cbind method for IndelCatalog is working properly", {
@@ -92,8 +92,8 @@ test_that("cbind method for IndelCatalog is working properly", {
   cat1 <- catalog.counts[, 1, drop = FALSE]
   cat2 <- catalog.counts[, 2, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
-  out <- PlotCatalogToPdf(cat3, file = "test.pdf")
+  out <- PlotCatalogToPdf(cat3, file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out, TRUE)
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 

@@ -6,7 +6,8 @@ test_that("PlotCatalogToPdf.SBS1536Catalog function is working properly", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, file = "PlotCatSBS1536.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, 
+                     file = paste0(tempdir(), "\\PlotCatSBS1536.counts.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,7 +15,7 @@ test_that("PlotCatalogToPdf.SBS1536Catalog function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, file = "PlotCatSBS1536.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, file = paste0(tempdir(), "\\PlotCatSBS1536.density.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -23,7 +24,7 @@ test_that("PlotCatalogToPdf.SBS1536Catalog function is working properly", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = "PlotCatSBS1536.counts.signature.test.pdf")
+                     file = paste0(tempdir(), "\\PlotCatSBS1536.counts.signature.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -32,12 +33,12 @@ test_that("PlotCatalogToPdf.SBS1536Catalog function is working properly", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = "PlotCatSBS1536.density.signature.test.pdf")
+                     file = paste0(tempdir(), "\\PlotCatSBS1536.density.signature.test.pdf"))
   expect_equal(out, TRUE)
 
-  unlink("PlotCatSBS1536.counts.test.pdf")
-  unlink("PlotCatSBS1536.density.test.pdf")
-  unlink("PlotCatSBS1536.counts.signature.test.pdf")
-  unlink("PlotCatSBS1536.density.signature.test.pdf")
+  unlink(paste0(tempdir(), "\\PlotCatSBS1536.counts.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatSBS1536.density.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatSBS1536.counts.signature.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatSBS1536.density.signature.test.pdf"))
   graphics.off()
 })

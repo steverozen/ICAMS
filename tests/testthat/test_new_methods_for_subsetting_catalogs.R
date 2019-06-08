@@ -7,11 +7,11 @@ test_that("[ method for SBS96Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for SBS192Catalog is working properly", {
@@ -21,11 +21,11 @@ test_that("[ method for SBS192Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for SBS1536Catalog is working properly", {
@@ -35,11 +35,11 @@ test_that("[ method for SBS1536Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for DBS78Catalog is working properly", {
@@ -49,11 +49,11 @@ test_that("[ method for DBS78Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for DBS144Catalog is working properly", {
@@ -63,11 +63,11 @@ test_that("[ method for DBS144Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for DBS136Catalog is working properly", {
@@ -77,11 +77,11 @@ test_that("[ method for DBS136Catalog is working properly", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
 test_that("[ method for IndelCatalog is working properly", {
@@ -90,10 +90,10 @@ test_that("[ method for IndelCatalog is working properly", {
                                 region = "genome", catalog.type = "counts")
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
-                           file = "test.pdf")
+                           file = paste0(tempdir(), "\\test.pdf"))
   expect_equal(out1, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
-  unlink("test.pdf")
+  unlink(paste0(tempdir(), "\\test.pdf"))
 })
 

@@ -6,7 +6,8 @@ test_that("PlotCatalogToPdf.DBS136Catalog function is working properly", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
-    PlotCatalogToPdf(catalog.counts, file = "PlotCatDBS136.counts.test.pdf")
+    PlotCatalogToPdf(catalog.counts, 
+                     file = paste0(tempdir(), "\\PlotCatDBS136.counts.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -14,10 +15,11 @@ test_that("PlotCatalogToPdf.DBS136Catalog function is working properly", {
                      target.region = "genome",
                      target.catalog.type = "density")
   out <-
-    PlotCatalogToPdf(catalog.density, file = "PlotCatDBS136.density.test.pdf")
+    PlotCatalogToPdf(catalog.density, 
+                     file = paste0(tempdir(), "\\PlotCatDBS136.density.test.pdf"))
   expect_equal(out, TRUE)
 
-  unlink("PlotCatDBS136.counts.test.pdf")
-  unlink("PlotCatDBS136.density.test.pdf")
+  unlink(paste0(tempdir(), "\\PlotCatDBS136.counts.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatDBS136.density.test.pdf"))
   graphics.off()
 })

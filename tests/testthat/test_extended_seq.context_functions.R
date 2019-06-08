@@ -6,11 +6,12 @@ test_that("extended seq.context functions are working properly for Mutect GRCh38
   mat <- CreateOnePWMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
                                 seq.context.width = 10)
   out <- PlotPWM(mat, title = "ExtendedSeqContext_21bases")
-  out1 <- PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                       file = "Extended.seq.context.21bases.pdf")
+  out1 <- 
+    PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
+                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink("Extended.seq.context.21bases.pdf")
+  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions are working properly for Mutect GRCh37 vcf", {
@@ -19,11 +20,12 @@ test_that("extended seq.context functions are working properly for Mutect GRCh37
   mat <- CreateOnePWMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)
   out <- PlotPWM(mat, title = "ExtendedSeqContext_21bases")
-  out1 <- PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                       file = "Extended.seq.context.21bases.pdf")
+  out1 <- 
+    PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
+                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink("Extended.seq.context.21bases.pdf")
+  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions are working properly for Strelka GRCh38 vcf", {
@@ -32,11 +34,12 @@ test_that("extended seq.context functions are working properly for Strelka GRCh3
   mat <- CreateOnePWMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
                                 seq.context.width = 10)
   out <- PlotPWM(mat, title = "ExtendedSeqContext_21bases")
-  out1 <- PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                       file = "Extended.seq.context.21bases.pdf")
+  out1 <- 
+    PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
+                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink("Extended.seq.context.21bases.pdf")
+  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions are working properly for Strelka GRCh37 vcf", {
@@ -45,9 +48,10 @@ test_that("extended seq.context functions are working properly for Strelka GRCh3
   mat <- CreateOnePWMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)
   out <- PlotPWM(mat, title = "ExtendedSeqContext_21bases")
-  out1 <- PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                       file = "Extended.seq.context.21bases.pdf")
+  out1 <- 
+    PlotPWMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
+                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink("Extended.seq.context.21bases.pdf")
+  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
