@@ -4,10 +4,12 @@
 \alias{CreateCatalogAbundance}
 \title{Create the abundance attribute of a catalog}
 \usage{
-CreateCatalogAbundance(catalog, ref.genome, region, catalog.type)
+CreateCatalogAbundance(object, ref.genome, region, catalog.type)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
+\item{object}{A numeric matrix or numeric data frame. This object must have
+rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+for more details.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}

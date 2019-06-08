@@ -2,17 +2,19 @@
 % Please edit documentation in R/utility_functions.R
 \name{CreateCatalogClass}
 \alias{CreateCatalogClass}
-\title{Create the class attribute of a catalog}
+\title{Create the additional class attribute of a catalog}
 \usage{
-CreateCatalogClass(catalog)
+CreateCatalogClass(object)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
+\item{object}{A numeric matrix or numeric data frame. This object must have
+rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+for more details.}
 }
 \value{
-The original catalog with class attribute added.
+The original object with additional class attribute added.
 }
 \description{
-Create the class attribute of a catalog
+Create the additional class attribute of a catalog
 }
 \keyword{internal}
