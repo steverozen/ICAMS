@@ -782,7 +782,9 @@ CreateCatalogClass <- function(object) {
 
 #' Create the abundance attribute of a catalog
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}}.
+#' @param object A numeric matrix or numeric data frame. This object must have
+#'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+#'   for more details.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -796,153 +798,152 @@ CreateCatalogClass <- function(object) {
 #' @return The original catalog with abundance attribute added.
 #'
 #' @keywords internal
-CreateCatalogAbundance <- function(catalog, ref.genome, region, catalog.type) {
-  if(!nrow(catalog) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-    stop('This is not a catalog supported by ICAMS. The input catalog must
-         be one type of "SBS96", "SBS192", "SBS1536", "DBS78", "DBS144",
-         "DBS136", "ID(indel)"',
-         'The number of rows of the input catalog is ', nrow(catalog))
+CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
+  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+    stop('\nThe input object must be one type of ',
+         '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
+         '\nThe number of rows of the input object is ', nrow(object))
   }
 
-  if(nrow(catalog) == 96) {
+  if(nrow(object) == 96) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat.unstranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.3bp.flat.unstranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.3bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.3bp.exome.unstranded.GRCh37
       } else if (region == "transcript") {
-        attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.3bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.3bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.3bp.exome.unstranded.GRCh38
       } else if (region == "transcript") {
-        attr(catalog, "abundance") <- abundance.3bp.transcript.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.3bp.transcript.unstranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 192) {
+  if(nrow(object) == 192) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.3bp.flat.stranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.3bp.flat.stranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.stranded.GRCh37
+        attr(object, "abundance") <- abundance.3bp.genome.stranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.stranded.GRCh37
+        attr(object, "abundance") <- abundance.3bp.exome.stranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.3bp.genome.stranded.GRCh38
+        attr(object, "abundance") <- abundance.3bp.genome.stranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.3bp.exome.stranded.GRCh38
+        attr(object, "abundance") <- abundance.3bp.exome.stranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 1536) {
+  if(nrow(object) == 1536) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.5bp.flat.unstranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.5bp.flat.unstranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.5bp.genome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.5bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.5bp.exome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.5bp.exome.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.5bp.genome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.5bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.5bp.exome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.5bp.exome.unstranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 78) {
+  if(nrow(object) == 78) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.2bp.flat.unstranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.2bp.flat.unstranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.2bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.2bp.exome.unstranded.GRCh37
       } else if (region == "transcript") {
-        attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.2bp.transcript.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.2bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.2bp.exome.unstranded.GRCh38
       } else if (region == "transcript") {
-        attr(catalog, "abundance") <- abundance.2bp.transcript.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.2bp.transcript.unstranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 144) {
+  if(nrow(object) == 144) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.2bp.flat.stranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.2bp.flat.stranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.stranded.GRCh37
+        attr(object, "abundance") <- abundance.2bp.genome.stranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.stranded.GRCh37
+        attr(object, "abundance") <- abundance.2bp.exome.stranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.2bp.genome.stranded.GRCh38
+        attr(object, "abundance") <- abundance.2bp.genome.stranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.2bp.exome.stranded.GRCh38
+        attr(object, "abundance") <- abundance.2bp.exome.stranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 136) {
+  if(nrow(object) == 136) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(catalog, "abundance") <- abundance.4bp.flat.unstranded
-      return(catalog)
+      attr(object, "abundance") <- abundance.4bp.flat.unstranded
+      return(object)
     } else if (ref.genome %in%
                c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.4bp.genome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.4bp.genome.unstranded.GRCh37
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.4bp.exome.unstranded.GRCh37
+        attr(object, "abundance") <- abundance.4bp.exome.unstranded.GRCh37
       }
     } else if (ref.genome %in%
                c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
       if (region == "genome") {
-        attr(catalog, "abundance") <- abundance.4bp.genome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.4bp.genome.unstranded.GRCh38
       } else if (region == "exome") {
-        attr(catalog, "abundance") <- abundance.4bp.exome.unstranded.GRCh38
+        attr(object, "abundance") <- abundance.4bp.exome.unstranded.GRCh38
       }
     }
   }
 
-  if(nrow(catalog) == 83) {
-    attr(catalog, "abundance") <- NULL
+  if(nrow(object) == 83) {
+    attr(object, "abundance") <- NULL
   }
 
-  return(catalog)
+  return(object)
 }
 
 #' Create a catalog from a matrix or matrix-like object
