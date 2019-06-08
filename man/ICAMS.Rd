@@ -26,17 +26,28 @@ write these catalogs.
 }
 \section{Catalogs}{
 
-A key data type in \code{ICAMS} is a "catalog" of mutation counts, of
+A key data type in ICAMS is a "catalog" of mutation counts, of
 mutation densities, or of mutational signatures.
 
-A catalog has one of the following types:
+Catalogs are R S3 objects of class \code{matrix} and one of
+several additional classes that specify the types of the mutations
+represented in the catalog (e.g. SBS96, ID, etc, ...). The possible
+additional classes are 
+one of \code{SBS96Catalog}, \code{SBS192Catalog},
+\code{SBS1536Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog},
+\code{DBS136Catalog}, \code{IndelCatalog}.
+
+Conceptually, a catalog has one of the following types, which are
+indicated in the attribute \code{catalog.type}:
+
 \enumerate{
+
 \item Matrix of mutation counts (one column per sample), representing
-(counts-based) mutational spectra.
+(counts-based) mutational spectra (\code{catalog.type = "counts"}).
 
 \item Matrix of mutation densities, i.e. mutations per occurrences
  of source sequences (one column per sample), representing
- (density-based) mutational spectra.
+ (density-based) mutational spectra (\code{catalog.type = "density"}).
 
 \item Matrix of mutational signatures, which
 are similar to spectra. However where spectra consist of
@@ -47,20 +58,25 @@ the proportions of mutations in each class (with all the
 proportions summing to 1). A mutational signature can be based
 on either:
 \itemize{
-  \item mutation counts (a "counts-based mutational signature"), or
-  \item mutation densities (a "density-based mutational signature").
+  \item mutation counts (a "counts-based mutational signature",
+  \code{catalog.type = "counts.signature"}), or
+  \item mutation densities (a "density-based mutational signature",
+  \code{catalog.type = "density.signature"}).
 }
 }
 
+Catalogs also have the attribute \code{abundance}, which contains the 
+counts of different source sequences for mutations. For example,
+for SBSs in trinucleotide context, the abundances would be the counts 
+of each trinucleotide in the human genome, exome, or in the transcribed
+region of the genome. See below under \code{\link{TransformCatalog}}
+for more information.
+
+TODO(Nanhai): I think the following is no longer true, correct?
 Many functions take the argument \code{catalog.type}, with possible
 values \code{"counts"}, \code{"density"}, \code{"counts.signature"},
 or \code{"density.signature"}, corresponding to the types of catalogs
 in items 1, 2, 3.1, and 3.2, above.
-
-Catalogs are implemented as S3 objects of class \code{matrix} and
-one of the ICAMS classes \code{SBS96Catalog}, \code{SBS192Catalog},
-\code{SBS1536Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog},
-\code{DBS136Catalog}, \code{IndelCatalog}.
 
 If you need to create a catalog from a source other than
 this package (i.e. other than with
@@ -95,25 +111,32 @@ functions plot catalogs of mutational spectra or
 of mutational signatures to a PDF file.
 }
 
-\section{Creating catalogs from variant call files (VCF files) and plot them to PDF}{
+\section{Wrapper functions to create catalogs from VCFs and plot the catalogs to PDF files}{
 
 \enumerate{
-\item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates 3 SBS
-catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the Strelka SBS
-VCFs and plot them to PDF.
+\item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates all
+type of SBS and DBS catalogs from Strelka SBS VCFs and plots the catalogs.
 
-\item \code{\link{StrelkaIDVCFFilesToCatalog}} creates ID (indel) catalog
-from the Strelka ID VCFs and plot it to PDF.
+\item \code{\link{StrelkaIDVCFFilesToCatalog}} creates an ID (indel) catalog
+from Strelka ID VCFs and plot it.
 
-\item \code{\link{MutectVCFFilesToCatalog}} creates 3 SBS catalogs (96, 192,
-1536), 3 DBS catalogs (78, 136, 144), ID (indel) catalog from the Mutect VCFs
-and plot them to PDF. }
+\item \code{\link{MutectVCFFilesToCatalog}} creates all types of SBS, DBS,
+and ID catalogs from Mutect VCFs and plots the catalogs.
+}
 }
 
-\section{The \code{ref.genome} argument}{
+\section{The \code{ref.genome} (reference genome) argument}{
 
 Many functions take the argument \code{ref.genome}.
-This can be either
+
+In order to create a mutational
+spectrum catalog, ICAMS needs to know the sequence 
+context of the mutations in the VCF file.
+For this, ICAMS needs the reference genome sequence
+that matches the VCF file. The \code{ref.genome} argument
+provides this. 
+
+\code{ref.genome} can be either
 \enumerate{
   \item A variable from the Bioconductor \code{\link{BSgenome}} package
   that contains a particular reference genome, for example
@@ -128,38 +151,37 @@ This can be either
  are shorthand for
  \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
  }
+
+The Bioconductor \code{\link{BSgenome}} package and 
+two human genomes genomes from \code{\link{BSgenome}} are 
+"imported" by ICAMS and therefore should be installed when 
+ICAMS is installed. The two genomes that are
+ installed as dependencies are:
+\itemize{
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
 }
 
-\section{The Bioconductor \code{BSgenome} package}{
-
- This package will be installed automatically if \code{\link{ICAMS}}
- is installed with \code{devtools::install_local} or
- with \code{devtools::install_github}.
- Otherwise you must
- manually install \code{BSgenome} and the
- necessary genomes, e.g. \preformatted{
- BSgenome.Hsapiens.1000genomes.hs37d5.}
- See instructions at \preformatted{
- https://bioconductor.org/packages/release/bioc/html/BSgenome.html.}
- Genomes other than the two human genomes mentioned above must
- be installed manually.
-
- Use \code{\link[BSgenome]{available.genomes}} to get the list of
- available genomes.
+Any other needed reference genomes must be installed separately by the user.  
+Use \code{\link{BSgenome::available.genomes}()}
+ to get the list of available genomes.  
+Further instructions are at
+https://bioconductor.org/packages/release/bioc/html/BSgenome.html.  
+Use of ICAMS with other reference genomes is restricted to
+\code{catalog.type} of \code{counts} or \code{counts.signature}
+unless the user also creates the necessary abundance files.
 }
 
-\section{Writing catalogs}{
+\section{Writing catalogs to files}{
 
 The \code{\link{WriteCatalog}} functions
-write a catalog of mutational spectra or of
-mutational signatures to a file.
+write a catalog to a file.
 }
 
 \section{Reading catalogs}{
 
 The \code{\link{ReadCatalog}} functions
-read a file that contains a catalog of mutational
-spectra or of signatures in standardized format.
+read a file that contains a catalog in standardized format.
 }
 
 \section{Transforming catalogs}{
@@ -174,7 +196,8 @@ ACG are much rarer in the human genome than mutations from ACC
 simply because CG dinucleotides are rare in the genome.
 Consequently, there are two possible representations of
 mutational spectra or signatures. One representation is
-based on mutation counts as observed in a given genome,
+based on mutation counts as observed in a given genome
+or exome,
 and this approach is widely used, as, for example, at
 https://cancer.sanger.ac.uk/cosmic/signatures, which
 presents signatures based on observed mutation counts

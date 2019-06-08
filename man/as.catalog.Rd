@@ -2,26 +2,26 @@
 % Please edit documentation in R/utility_functions.R
 \name{as.catalog}
 \alias{as.catalog}
-\title{Create attributes of a catalog}
+\title{Create a catalog from a matrix or matrix-like object}
 \usage{
 as.catalog(catalog, ref.genome, region, catalog.type)
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}}.}
+\item{catalog}{A numeric matrix or <Nanhai fill in>.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+"genome", "exome", or "transcript".}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
 }
 \value{
-The original catalog with the following attributes added: ref.genome,
-  region, type, abundance, class.
+A catalog as described in \code{\link{ICAMS}}.
 }
 \description{
-Create attributes of a catalog
+TODO(Nanhai): change name of this argument and handle
+numeric data frames as well.
 }

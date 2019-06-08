@@ -11,7 +11,9 @@ CheckCatalogAttribute(ref.genome, region, catalog.type)
 \code{\link{ICAMS}}.}
 
 \item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+"genome", "exome". 
+
+TODO(Nanhai) need to added "transcript" here also (and in other functions)}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
