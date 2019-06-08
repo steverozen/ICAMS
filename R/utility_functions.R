@@ -685,20 +685,14 @@ NormalizeGenomeArg <- function(ref.genome) {
 #'
 #' @keywords internal
 CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
-  if (!ref.genome %in% c("GRCh37", "hg19", "GRCh38", "hg38",
-                         "BSgenome.Hsapiens.UCSC.hg38",
-                         "BSgenome.Hsapiens.1000genomes.hs37d5")) {
-    # TODO(Nanhai): this will break if one tries to use this
-    # with e.g. a mouse genome.  But the user should be able
-    # to specify genomes other than the ones below.
-    stop("Unrecoginzed reference genome identifier: ", ref.genome,
-         "\nNeed one of GRCh38, hg38, GRCh37, hg19",
-         "BSgenome.Hsapiens.UCSC.hg38, ",
-         "BSgenome.Hsapiens.1000genomes.hs37d5")
-  }
-  if (!region %in% c("genome", "exome", "transcript")) {
+  # TODO(Nanhai): this will break if one tries to use this
+  # with e.g. a mouse genome.  But the user should be able
+  # to specify genomes other than the ones below.
+  stopifnot(class(NormalizeGenomeArg(ref.genome)@pkgname) == "character")
+  
+  if (!region %in% c("genome", "exome")) {
     stop("Unrecoginzed region identifier: ", region,
-         "\nNeed one of genome, exome, transcript")
+         "\nNeed one of genome, exome")
   }
   if (!catalog.type %in% c("counts", "density",
                            "counts.signature", "density.signature")) {
