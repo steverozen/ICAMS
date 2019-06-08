@@ -653,6 +653,8 @@ CreatePentanucAbundance <- function(file) {
 #'
 #' @keywords internal
 NormalizeGenomeArg <- function(ref.genome) {
+  stopifnot(class(ref.genome) %in% c("character", "BSgenome"))
+  
   if (class(ref.genome) == "character") {
     if (ref.genome %in%
         c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
