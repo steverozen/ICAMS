@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{as.catalog}
 \alias{as.catalog}
-\title{Create a catalog from a matrix or matrix-like object}
+\title{Create a catalog from a numeric matrix or numeric data.frame}
 \usage{
 as.catalog(object, ref.genome, region, catalog.type, abundance)
 }
@@ -29,6 +29,5 @@ contain the counts of different source sequences for mutations. See
 A catalog as described in \code{\link{ICAMS}}.
 }
 \description{
-TODO(Nanhai): change name of this argument and handle
-numeric data frames as well.
+Create a catalog from a numeric matrix or numeric data.frame
 }

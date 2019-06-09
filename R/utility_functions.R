@@ -654,7 +654,7 @@ CreatePentanucAbundance <- function(file) {
 #' @keywords internal
 NormalizeGenomeArg <- function(ref.genome) {
   stopifnot(class(ref.genome) %in% c("character", "BSgenome"))
-  
+
   if (class(ref.genome) == "character") {
     if (ref.genome %in%
         c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
@@ -676,8 +676,8 @@ NormalizeGenomeArg <- function(ref.genome) {
 #'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
-#' "genome", "exome". 
-#' 
+#' "genome", "exome".
+#'
 #' TODO(Nanhai) need to added "transcript" here also (and in other functions)
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
@@ -691,7 +691,7 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
   # with e.g. a mouse genome.  But the user should be able
   # to specify genomes other than the ones below.
   stopifnot(class(NormalizeGenomeArg(ref.genome)@pkgname) == "character")
-  
+
   if (!region %in% c("genome", "exome")) {
     stop("Unrecoginzed region identifier: ", region,
          "\nNeed one of genome, exome")
@@ -748,7 +748,7 @@ CreateCatalogClass <- function(object) {
     '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
     '\nThe number of rows of the input object is ', nrow(object))
   }
-  
+
   if(nrow(object) == 96) {
     class(object) <- append(class(object), "SBS96Catalog", after = 0)
     class(object) <- unique(attributes(object)$class)
@@ -946,10 +946,8 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
   return(object)
 }
 
-#' Create a catalog from a matrix or matrix-like object
+#' Create a catalog from a numeric matrix or numeric data.frame
 #'
-#' TODO(Nanhai): change name of this argument and handle
-#' numeric data frames as well.
 #' @param object A numeric matrix or numeric data frame. This object must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
 #'   for more details.
@@ -962,7 +960,7 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
-#'   
+#'
 #' @param abundance Optional, only needed when \code{ref.genome} does not belong
 #'   to the two human reference genomes supported by ICAMS. The abundance should
 #'   contain the counts of different source sequences for mutations. See
@@ -971,19 +969,17 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'
 #' @export
-# TODO(Nanhai) I think this function needs an optional abundance
-# argument, so someone can use it e.g. with mouse or C. elegans.
-as.catalog <- 
+as.catalog <-
   function(object, ref.genome, region, catalog.type, abundance) {
     stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
     stopifnot(!is.null(rownames(object)))
-    stopifnot(region %in% c("genome", "exome"))
+    stopifnot(region %in% c("genome", "exome")) # TODO(Nanhai): is this correct? "transcript ok"?
     if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
       stop('\nThe input object must be one type of ',
            '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
            '\nThe number of rows of the input object is ', nrow(object))
     }
-    
+
     if ("data.frame" %in% class(object)) {
       object <- data.matrix(object)
     }
@@ -992,7 +988,7 @@ as.catalog <-
       stopifnot(ref.genome %in% c("BSgenome.Hsapiens.1000genomes.hs37d5",
                                   "BSgenome.Hsapiens.UCSC.hg38"))
     }
-    
+
     if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
       attr(object, "ref.genome") <- ref.genome
       attr(object, "catalog.type") <- catalog.type
