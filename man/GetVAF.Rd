@@ -11,7 +11,7 @@ GetStrelkaVAF(vcf)
 GetMutectVAF(vcf)
 }
 \arguments{
-\item{vcf}{said VCF as a data.frame.}
+\item{vcf}{Said VCF as a data.frame.}
 }
 \value{
 A vector of VAFs, one for each row of \code{vcf}.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{as.catalog}
 \alias{as.catalog}
-\title{Create a catalog from a numeric matrix or numeric data.frame}
+\title{Create a catalog from a numeric matrix or numeric data frame}
 \usage{
 as.catalog(object, ref.genome, region, catalog.type, abundance)
 }
@@ -22,12 +22,12 @@ for more details.}
 
 \item{abundance}{Optional, only needed when \code{ref.genome} does not belong
 to the two human reference genomes supported by ICAMS. The abundance should
-contain the counts of different source sequences for mutations. See
-\code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
+contain the counts of different source sequences for mutations. \cr
+See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
 }
 \value{
 A catalog as described in \code{\link{ICAMS}}.
 }
 \description{
-Create a catalog from a numeric matrix or numeric data.frame
+Create a catalog from a numeric matrix or numeric data frame
 }

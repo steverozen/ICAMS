@@ -1,6 +1,15 @@
 #' "Collapse" a catalog.
+#' 
+#' @description 
+#' \enumerate{
+#' \item Take a mutational spectrum or signature catalog
+#' that is based on a fined-grained set of features (for example, single-nucleotide
+#' substitutions in the context of the preceding and following 2 bases).
 #'
-#' "Collapse" a catalog.
+#' \item Collapse it to a catalog based on a coarser-grained set of features
+#' (for example, single-nucleotide substitutions in the context of the
+#' immediately preceding and following bases).
+#' }
 #'
 #' \code{Collapse192CatalogTo96} Collapse an SBS 192 catalog
 #' to an SBS 96 catalog.
@@ -946,7 +955,7 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
   return(object)
 }
 
-#' Create a catalog from a numeric matrix or numeric data.frame
+#' Create a catalog from a numeric matrix or numeric data frame
 #'
 #' @param object A numeric matrix or numeric data frame. This object must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
@@ -963,8 +972,8 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
 #'
 #' @param abundance Optional, only needed when \code{ref.genome} does not belong
 #'   to the two human reference genomes supported by ICAMS. The abundance should
-#'   contain the counts of different source sequences for mutations. See
-#'   \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
+#'   contain the counts of different source sequences for mutations. \cr
+#'   See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
 #'
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'

@@ -105,7 +105,7 @@ Mutect VCFs.
 \section{Plotting catalogs}{
 
 The \code{\link{PlotCatalog}} functions plot mutational spectra
-for one sample or plot one mutational signature.
+for \strong{one} sample or plot \strong{one} mutational signature.
 
 The \code{\link{PlotCatalogToPdf}}
 functions plot catalogs of mutational spectra or
@@ -145,7 +145,7 @@ provides this.
 
  \item The strings \code{"hg38"} or \code{"GRCh38"}
  are shorthand for
- \code{BSgenome.Hsapiens.UCSC.hg38},
+ \code{\link{BSgenome.Hsapiens.UCSC.hg38}},
  and the strings \code{"hg19"} or \code{"GRCh37"}
  are shorthand for
  \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}.
@@ -164,11 +164,11 @@ ICAMS is installed. The two genomes that are
 Any other needed reference genomes must be installed separately by the user.
 Use \code{\link[BSgenome]{available.genomes}()}
  to get the list of available genomes.
-Further instructions are at
-https://bioconductor.org/packages/release/bioc/html/BSgenome.html.
+Further instructions are at \cr
+https://bioconductor.org/packages/release/bioc/html/BSgenome.html. \cr
 Use of ICAMS with other reference genomes is restricted to
 \code{catalog.type} of \code{counts} or \code{counts.signature}
-unless the user also creates the necessary abundance vectors.
+unless the user also creates the necessary abundance vectors. \cr
 See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for
 an example.
 }
@@ -236,11 +236,11 @@ species).
 
 The \code{\link{CollapseCatalog}} functions
 \enumerate{
-\item take a mutational spectrum or signature catalog
+\item Take a mutational spectrum or signature catalog
 that is based on a fined-grained set of features (for example, single-nucleotide
-substitutions in the context of the preceding and following 2 bases), and
+substitutions in the context of the preceding and following 2 bases).
 
-\item collapse it to a catalog based on a coarser-grained set of features
+\item Collapse it to a catalog based on a coarser-grained set of features
 (for example, single-nucleotide substitutions in the context of the
 immediately preceding and following bases).
 }

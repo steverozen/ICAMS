@@ -20,9 +20,16 @@ Collapse144CatalogTo78(catalog)
 A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
-"Collapse" a catalog.
+\enumerate{
+\item Take a mutational spectrum or signature catalog
+that is based on a fined-grained set of features (for example, single-nucleotide
+substitutions in the context of the preceding and following 2 bases).
+
+\item Collapse it to a catalog based on a coarser-grained set of features
+(for example, single-nucleotide substitutions in the context of the
+immediately preceding and following bases).
 }
-\details{
+
 \code{Collapse192CatalogTo96} Collapse an SBS 192 catalog
 to an SBS 96 catalog.
 

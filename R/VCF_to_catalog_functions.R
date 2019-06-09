@@ -1,6 +1,6 @@
 #' Extract the VAFs (variant allele frequencies) from a VCF file.
 #'
-#' @param vcf said VCF as a data.frame.
+#' @param vcf Said VCF as a data.frame.
 #'
 #' @return A vector of VAFs, one for each row of \code{vcf}.
 #'
