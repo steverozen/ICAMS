@@ -8,8 +8,11 @@
 #' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
 #' See \code{\link{as.catalog}} for more details.
 #'
-#' @param no.context A logical value indicating whether there is preceding and
-#'   following base context for the plot. Only implemented for SBS192Catalog.
+#' @param no.context Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
+#' generate an abbreviated plot of only SBS without context, i.e. 
+#' C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
+#' rather than SBS in trinucleotide context, e.g.
+#' ACA > AAA, ACA > AGA, ..., TCT > TAT, ...
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
@@ -55,8 +58,11 @@ PlotCatalog <- function(catalog, no.context, cex, grid, upper, xlabels) {
 #'
 #' @param file The name of the PDF file to be produced.
 #'
-#' @param no.context A logical value indicating whether there is preceding and
-#'   following base context for the plot. Only implemented for SBS192Catalog.
+#' @param no.context Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
+#' generate an abbreviated plot of only SBS without context, i.e. 
+#' C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
+#' rather than SBS in trinucleotide context, e.g.
+#' ACA > AAA, ACA > AGA, ..., TCT > TAT, ...
 #'
 #' @param cex A numerical value giving the amount by which mutation class labels,
 #'   mutation counts(if it exists), y axis and its labels, x axis labels and
