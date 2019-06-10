@@ -4,7 +4,8 @@
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \title{Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF}
 \usage{
-StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome, region, file)
+StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome, region,
+  output.file)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka ID VCF files.}
@@ -15,7 +16,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome, region, file)
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
 
-\item{file}{The name of the PDF file to be produced.}
+\item{output.file}{The name of the PDF file to be produced.}
 }
 \value{
 An ID (indel) catalog and its graph plotted to PDF with specified

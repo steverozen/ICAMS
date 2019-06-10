@@ -5,7 +5,7 @@
 \title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF}
 \usage{
 MutectVCFFilesToCatalogAndPlotToPdf(files, ref.genome, trans.ranges,
-  region, file, no.context)
+  region, output.file, no.context)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Mutect VCF files.}
@@ -20,7 +20,7 @@ transcript range and strand information. Please refer to
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
 
-\item{file}{The name of the PDF file to be produced.}
+\item{output.file}{The name of the PDF file to be produced.}
 
 \item{no.context}{A logical value indicating whether there is preceding and
 following base context for the plot. Only implemented for SBS192Catalog.}
