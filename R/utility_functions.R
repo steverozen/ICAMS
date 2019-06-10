@@ -82,6 +82,17 @@ Collapse1536CatalogTo96 <- function(catalog) {
                     attributes(catalog)$catalog.type))
 }
 
+#' @keywords internal
+Collapse1536AbundanceTo96 <- function(abundance1536) {
+  dt <- data.table(abundance1536)
+  rownames(dt) <- names(abundance1536)
+  dt$rn <- substr(rownames(dt), 2, 4)
+  dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
+  abundance96 <- unlist(dt1[, -1])
+  names(abundance96) <- dt1$rn
+  return(abundance96)
+}
+
 #' @rdname CollapseCatalog
 #' @export
 Collapse144CatalogTo78 <- function(catalog) {
