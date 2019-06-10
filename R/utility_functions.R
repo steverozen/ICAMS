@@ -97,12 +97,9 @@ Collapse144CatalogTo78 <- function(catalog) {
   attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
   attr(mat78, "region") <- attributes(catalog)$region
   attr(mat78, "catalog.type") <- attributes(catalog)$catalog.type
-  cat78 <-
-    CreateCatalogAbundance(mat78,
-                           ref.genome = attributes(catalog)$ref.genome,
-                           region = attributes(catalog)$region,
-                           catalog.type = attributes(catalog)$catalog.type)
-  cat78 <- CreateCatalogClass(cat78)
+  attr(mat78, "abundance") <- 
+    Collapse144AbundanceTo78(attributes(catalog)$abundance)  
+  cat78 <- CreateCatalogClass(mat78)
   return(cat78)
 }
 
