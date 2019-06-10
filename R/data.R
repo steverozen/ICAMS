@@ -20,34 +20,30 @@
 #'
 #' Transcript ranges and strand information for a particular reference genome.
 #'
-#' \code{trans.ranges.GRCh37} A \code{\link[data.table]{data.table}} which
-#' contains transcript range and strand information for \cr \strong{Human}
-#' GRCh37. It is derived from a raw \strong{GFF3} format file
-#' (\url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gff3.gz}),
-#' only genes that are associated with a CCDS ID are kept for transcriptional
-#' strand bias analysis. Needed for \code{\link{StrelkaSBSVCFFilesToCatalog}},
-#' \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}}, \cr
-#' \code{\link{MutectVCFFilesToCatalog}},
-#' \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}},
-#' \code{\link{VCFsToSBSCatalogs}} \cr and \code{\link{VCFsToDBSCatalogs}}.
-#'
-#' \code{trans.ranges.GRCh38} A \code{\link[data.table]{data.table}} which
-#' contains transcript range and strand information for \cr \strong{Human}
-#' GRCh38. It is derived from a raw \strong{GFF3} format file
-#' (\url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/gencode.v30.annotation.gff3.gz}),
-#' only genes that are associated with a CCDS ID are kept for transcriptional
-#' strand bias analysis. Needed for \cr
-#' \code{\link{StrelkaSBSVCFFilesToCatalog}},
+#' @details 
+#' 
+#' This information is needed to generate catalogs that
+#' depend on transcriptional
+#' strand information, for example catalogs of 
+#' class \code{SBS192Catalog}. 
+#' 
+#' \code{trans.ranges.GRCh37}:  \strong{Human} GRCh37. 
+#' 
+#' \code{trans.ranges.GRCh38}:  \strong{Human} GRCh38. 
+#' 
+#' For these two tables, only genes that are associated with a CCDS ID are kept for transcriptional
+#' strand bias analysis. 
+#' 
+#' This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}},
 #' \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}}, \cr
 #' \code{\link{MutectVCFFilesToCatalog}},
 #' \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}},
 #' \code{\link{VCFsToSBSCatalogs}} \cr and \code{\link{VCFsToDBSCatalogs}}.
 #'
 #' @format A \code{\link[data.table]{data.table}} which contains transcript
-#'   range and strand information for a particular reference genome. It contains
-#'   chromosome name, start, end position, strand information and gene name and
-#'   is keyed by chrom, chromStart, and chromEnd. It uses one-based coordinate
-#'   system.
+#'   range and strand information for a particular reference genome.
+#'   \code{colname}s are \code{chrom}, \code{start}, \code{end}, \code{strand},
+#'   \code{gene.name}. It uses one-based coordinates.
 #' 
 #' @source \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gff3.gz}
 #' 
