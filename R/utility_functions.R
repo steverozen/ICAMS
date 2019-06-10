@@ -695,7 +695,7 @@ NormalizeGenomeArg <- function(ref.genome) {
 #'   \code{\link{ICAMS}}.
 #'
 #' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' "genome", "exome", or "transcript".
 #'
 #' TODO(Nanhai) need to added "transcript" here also (and in other functions)
 #'
@@ -711,9 +711,9 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
   # to specify genomes other than the ones below.
   stopifnot(class(NormalizeGenomeArg(ref.genome)@pkgname) == "character")
 
-  if (!region %in% c("genome", "exome")) {
+  if (!region %in% c("genome", "exome", "transcript")) {
     stop("Unrecoginzed region identifier: ", region,
-         "\nNeed one of genome, exome")
+         "\nNeed one of genome, exome, transcript")
   }
   if (!catalog.type %in% c("counts", "density",
                            "counts.signature", "density.signature")) {
@@ -992,7 +992,7 @@ as.catalog <-
   function(object, ref.genome, region, catalog.type, abundance) {
     stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
     stopifnot(!is.null(rownames(object)))
-    stopifnot(region %in% c("genome", "exome")) # TODO(Nanhai): is this correct? "transcript ok"?
+    stopifnot(region %in% c("genome", "exome", "transcript")) # TODO(Nanhai): is this correct? "transcript ok"?
     if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
       stop('\nThe input object must be one type of ',
            '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
@@ -1018,7 +1018,11 @@ as.catalog <-
       }
       object <- CreateCatalogClass(object)
       if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
-        attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
+        if (region == "transcript") {
+          attr(object, "region") <- "transcript"
+        } else {
+          attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
+        }
       } else {
         attr(object, "region") <- region
       }
