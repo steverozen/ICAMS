@@ -255,12 +255,19 @@ TransformCatalog <-
 
     source.abundance <- attributes(catalog)$abundance
     
-    target.abundance <-
+    inferred.abundance <-
       InferAbundance(catalog, 
                      target.ref.genome, 
                      target.region,
                      target.catalog.type)
 
+    # TODO(nanhai): add target.abundance argument.
+    if (is.null(inferred.abundance)) stop("Cannot infer abundance")
+    # else if (!is.null(target.abundance))
+    #  stopifnot(target.abundance == inferred.abundance)
+    # }
+    target.abundance <- inferred.abundance
+    
     stopifnot(names(source.abundance) == names(target.abundance))
 
     factor <- target.abundance / source.abundance
