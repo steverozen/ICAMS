@@ -842,10 +842,8 @@ CreateCatalogClass <- function(object) {
 #' 
 #' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 IsGRCh37 <- function(x) {
-  if (is.null(x)) return(x)
-  return(
-    x@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5"
-  )
+  if (is.null(x)) return(FALSE)
+  return(x@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5")
 }
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
@@ -854,10 +852,8 @@ IsGRCh37 <- function(x) {
 #' 
 #' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 IsGRCh38 <- function(x) {
-  if (is.null(x)) return(x)
-  return(
-    x@pkgname == "BSgenome.Hsapiens.UCSC.hg38"
-  )
+  if (is.null(x)) return(FALSE)
+  return(x@pkgname == "BSgenome.Hsapiens.UCSC.hg38")
 }
 
 #' Infer abundance attribute of a catalog with a known \code{ref.genome}.
