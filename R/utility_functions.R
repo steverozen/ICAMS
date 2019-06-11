@@ -37,12 +37,21 @@ Collapse192CatalogTo96 <- function(catalog) {
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
 
-  attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
-  attr(mat96, "region") <- attributes(catalog)$region
-  attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
-  attr(mat96, "abundance") <- 
-    Collapse192AbundanceTo96(attributes(catalog)$abundance)
-  cat96 <- CreateCatalogClass(mat96)
+  # attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
+  # attr(mat96, "region") <- attributes(catalog)$region
+  # attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
+  #attr(mat96, "abundance") <- 
+  #  Collapse192AbundanceTo96(attributes(catalog)$abundance)
+  # cat96 <- CreateCatalogClass(mat96)
+  
+  cat96 <-
+    as.catalog(
+      object = mat96,
+      ref.genome = attributes(catalog)$ref.genome,
+      region = attributes(catalog)$region,
+      catalog.type = attributes(catalog)$catalog.type,
+      abundance = Collapse192AbundanceTo96(attributes(catalog)$abundance)
+    )
   return(cat96)
 }
 
@@ -78,12 +87,21 @@ Collapse1536CatalogTo96 <- function(catalog) {
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   
-  attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
-  attr(mat96, "region") <- attributes(catalog)$region
-  attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
-  attr(mat96, "abundance") <- 
-    Collapse1536AbundanceTo96(attributes(catalog)$abundance)
-  cat96 <- CreateCatalogClass(mat96)
+  # attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
+  # attr(mat96, "region") <- attributes(catalog)$region
+  # attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
+  # attr(mat96, "abundance") <- 
+  #  Collapse1536AbundanceTo96(attributes(catalog)$abundance)
+  # cat96 <- CreateCatalogClass(mat96)
+  
+  cat96 <-
+    as.catalog(
+      object = mat96,
+      ref.genome = attributes(catalog)$ref.genome,
+      region = attributes(catalog)$region,
+      catalog.type = attributes(catalog)$catalog.type,
+      abundance = Collapse1536AbundanceTo96(attributes(catalog)$abundance)
+    )
   return(cat96)
 }
 
@@ -110,12 +128,21 @@ Collapse144CatalogTo78 <- function(catalog) {
   rownames(mat78) <- dt78$rn
   mat78 <- mat78[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
 
-  attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
-  attr(mat78, "region") <- attributes(catalog)$region
-  attr(mat78, "catalog.type") <- attributes(catalog)$catalog.type
-  attr(mat78, "abundance") <- 
-    Collapse144AbundanceTo78(attributes(catalog)$abundance)  
-  cat78 <- CreateCatalogClass(mat78)
+  # attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
+  # attr(mat78, "region") <- attributes(catalog)$region
+  # attr(mat78, "catalog.type") <- attributes(catalog)$catalog.type
+  # attr(mat78, "abundance") <- 
+  #  Collapse144AbundanceTo78(attributes(catalog)$abundance)  
+  # cat78 <- CreateCatalogClass(mat78)
+
+  cat78 <-
+    as.catalog(
+      object = mat78,
+      ref.genome = attributes(catalog)$ref.genome,
+      region = attributes(catalog)$region,
+      catalog.type = attributes(catalog)$catalog.type,
+      abundance = Collapse1536AbundanceTo96(attributes(catalog)$abundance)
+    )
   return(cat78)
 }
 
