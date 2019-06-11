@@ -21,8 +21,7 @@ ReadCatalog(file, ref.genome, region, catalog.type, strict = TRUE)
 checks fail.}
 }
 \value{
-A catalog in standard in-memory format with attributes added.
-See \code{\link{as.catalog}} for more details.
+A catalog as an S3 object; see \code{\link{as.catalog}}.
 }
 \description{
 Read a catalog in standardized format from path.

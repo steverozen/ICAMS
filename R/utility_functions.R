@@ -731,6 +731,8 @@ CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
 #'
 #' @keywords internal
 CheckClassOfCatalogFromPath <- function(file) {
+  # TODO(Nanhai): why do we need this function
+  # in addtion to the function below CreateCatalogClass?
   cos <- data.table::fread(file)
   if (nrow(cos) == 96) {
     structure("ClassofCatalog", class = "SBS96Catalog")
@@ -992,41 +994,47 @@ as.catalog <-
   function(object, ref.genome, region, catalog.type, abundance) {
     stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
     stopifnot(!is.null(rownames(object)))
-    stopifnot(region %in% c("genome", "exome", "transcript")) # TODO(Nanhai): is this correct? "transcript ok"?
+    stopifnot(region %in% c("genome", "exome", "transcript"))
+    
     if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-      stop('\nThe input object must be one type of ',
-           '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
-           '\nThe number of rows of the input object is ', nrow(object))
+      stop("\nThe number of rows in the input object must be one of\n",
+           "96 192 1536 78 144 136 83\ngot ", nrow(object))
     }
 
     if ("data.frame" %in% class(object)) {
       object <- data.matrix(object)
     }
+    
     ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
     if (missing(abundance)) {
       stopifnot(ref.genome %in% c("BSgenome.Hsapiens.1000genomes.hs37d5",
                                   "BSgenome.Hsapiens.UCSC.hg38"))
     }
 
-    if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
-      attr(object, "ref.genome") <- ref.genome
-      attr(object, "catalog.type") <- catalog.type
-      if (missing(abundance)) {
-        object <- CreateCatalogAbundance(object, ref.genome, region, catalog.type)
-      } else {
-        attr(object, "abundance") <- abundance
-      }
-      object <- CreateCatalogClass(object)
-      if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
-        if (region == "transcript") {
-          attr(object, "region") <- "transcript"
-        } else {
-          attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
-        }
-      } else {
-        attr(object, "region") <- region
-      }
+    # stops if attributes are not correct
+    CheckCatalogAttribute(ref.genome, region, catalog.type)
+    
+    attr(object, "ref.genome") <- ref.genome
+    attr(object, "catalog.type") <- catalog.type
+    
+    if (missing(abundance)) {
+      object <- CreateCatalogAbundance(object, ref.genome, region, catalog.type)
+    } else {
+      attr(object, "abundance") <- abundance
     }
+
+    object <- CreateCatalogClass(object)
+    
+    if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
+      if (region == "transcript") {
+        attr(object, "region") <- "transcript"
+      } else {
+        attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
+      }
+    } else {
+      attr(object, "region") <- region
+    }
+    
     return(object)
   }
 

@@ -17,8 +17,7 @@
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
 #'
-#' @return A catalog in standard in-memory format with attributes added.
-#' See \code{\link{as.catalog}} for more details.
+#' @return A catalog as an S3 object; see \code{\link{as.catalog}}.
 #'
 #' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -26,10 +25,12 @@
 #'
 #' @export
 ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
-  if (CheckCatalogAttribute(ref.genome, region, catalog.type)) {
-    class.of.catalog <- CheckClassOfCatalogFromPath(file)
-    UseMethod(generic = "ReadCatalog", object = class.of.catalog)
-  }
+  
+  # stop if attributes are not correct
+  CheckCatalogAttribute(ref.genome, region, catalog.type)
+  
+  class.of.catalog <- CheckClassOfCatalogFromPath(file)
+  UseMethod(generic = "ReadCatalog", object = class.of.catalog)
 }
 
 #' Write a catalog
