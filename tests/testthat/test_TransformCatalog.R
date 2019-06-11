@@ -127,7 +127,6 @@ test_that("Legal transformation 5;
                                    target.catalog.type = "density.signature")
 
             tmp <- apply(x1, MARGIN = 2, function(x) x/sum(x))
-            skip("temporarily broken")
             expect_true(all(x3 == tmp))
             expect_true(!all(x2 == x3))
           })

@@ -121,7 +121,7 @@ Collapse144CatalogTo78 <- function(catalog) {
 
 #' @keywords internal
 IsDensity <- function(x) {
-  return(x %in% c("density", "density.s"))
+  return(x %in% c("density", "density.signature"))
 }
 
 #' @keywords internal
