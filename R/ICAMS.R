@@ -69,12 +69,6 @@
 #' region of the genome. See below under \code{\link{TransformCatalog}}
 #' for more information.
 #'
-#' TODO(Nanhai): I think the following is no longer true, correct?
-#' Many functions take the argument \code{catalog.type}, with possible
-#' values \code{"counts"}, \code{"density"}, \code{"counts.signature"},
-#' or \code{"density.signature"}, corresponding to the types of catalogs
-#' in items 1, 2, 3.1, and 3.2, above.
-#'
 #' If you need to create a catalog from a source other than
 #' this package (i.e. other than with
 #' \code{\link{ReadCatalog}}
