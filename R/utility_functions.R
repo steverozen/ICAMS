@@ -768,72 +768,26 @@ StopIfCatalogTypeIllegal <- function(catalog.type) {
 #' @return An object with the corresponding class type of catalog.
 #'
 #' @keywords internal
-CheckClassOfCatalogFromPath <- function(file) {
-  # TODO(Nanhai): why do we need this function
-  # in addtion to the function below CreateCatalogClass?
-  cos <- data.table::fread(file)
-  if (nrow(cos) == 96) {
-    structure("ClassofCatalog", class = "SBS96Catalog")
-  } else if (nrow(cos) == 192) {
-    structure("ClassofCatalog", class = "SBS192Catalog")
-  } else if (nrow(cos) == 1536) {
-    structure("ClassofCatalog", class = "SBS1536Catalog")
-  } else if (nrow(cos) == 78) {
-    structure("ClassofCatalog", class = "DBS78Catalog")
-  } else if (nrow(cos) == 144) {
-    structure("ClassofCatalog", class = "DBS144Catalog")
-  } else if (nrow(cos) == 136) {
-    structure("ClassofCatalog", class = "DBS136Catalog")
-  } else if (nrow(cos) == 83) {
-    structure("ClassofCatalog", class = "IndelCatalog")
-  } else {
-    stop("The catalog seems not to be a standard catalog supported by ICAMS",
-         "number of rows is ", nrow(cos))
-  }
+InferClassOfCatalogForRead <- function(cos) {
+  StopIfNrowIllegal(cos)
+  class.string <- InferCatalogClassString(cos) 
+  return(structure("ClassofCatalog", class = class.string))
 }
 
-#' Create the additional class attribute of a catalog
-#'
-#' @param object A numeric matrix or numeric data frame. This object must have
-#'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
-#'   for more details.
-#'
-#' @return The original object with additional class attribute added.
-#'
 #' @keywords internal
-CreateCatalogClass <- function(object) {
+InferCatalogClassString <- function(object) {
   
   StopIfNrowIllegal(object)
-
-  if(nrow(object) == 96) {
-    class(object) <- append(class(object), "SBS96Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 192) {
-    class(object) <- append(class(object), "SBS192Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 1536) {
-    class(object) <- append(class(object), "SBS1536Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 78) {
-    class(object) <- append(class(object), "DBS78Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 144) {
-    class(object) <- append(class(object), "DBS144Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 136) {
-    class(object) <- append(class(object), "DBS136Catalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  if(nrow(object) == 83) {
-    class(object) <- append(class(object), "IndelCatalog", after = 0)
-    class(object) <- unique(attributes(object)$class)
-  }
-  return(object)
+  nrow <- nrow(object)
+  
+  if(nrow == 96)   class.string <- "SBS96Catalog"
+  if(nrow == 192)  class.string <- "SBS192Catalog"
+  if(nrow == 1536) class.string <- "SBS1536Catalog"
+  if(nrow == 78)   class.string <- "DBS78Catalog"
+  if(nrow == 144)  class.string <- "DBS144Catalog"
+  if(nrow == 136)  class.string <- "DBS136Catalog"
+  if(nrow == 83)   class.string <- "IndelCatalog"
+  return(class.string)
 }
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
@@ -1068,7 +1022,9 @@ as.catalog <- function(object,
   } 
   attr(object, "abundance") <- abundance
 
-  object <- CreateCatalogClass(object)
+  class.string  <- InferCatalogClassString(object)
+  class(object) <- append(class(object), class.string, after = 0)
+  class(object) <- unique(attributes(object)$class)
   
   if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
     if (region == "transcript") {
