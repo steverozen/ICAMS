@@ -128,8 +128,8 @@ test_that("Legal transformation 5;
 
             tmp <- apply(x1, MARGIN = 2, function(x) x/sum(x))
             skip("temporarily broken")
-            expect_true(all(x3 == tmp)) Broken
-            expect_true(!all(x2 == x3)) Broken
+            expect_true(all(x3 == tmp))
+            expect_true(!all(x2 == x3))
           })
 
 test_that("Legal transformations 3 and 6;
