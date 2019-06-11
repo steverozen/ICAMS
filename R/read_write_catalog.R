@@ -26,9 +26,9 @@
 #' @export
 ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
   
-  # stop if attributes are not correct
-  CheckCatalogAttribute(ref.genome, region, catalog.type)
-  
+  StopIfRegionIllegal(region)
+  StopIfCatalogTypeIllegal(catalog.type)
+
   class.of.catalog <- CheckClassOfCatalogFromPath(file)
   UseMethod(generic = "ReadCatalog", object = class.of.catalog)
 }

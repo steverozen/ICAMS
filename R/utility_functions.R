@@ -120,6 +120,11 @@ Collapse144CatalogTo78 <- function(catalog) {
 }
 
 #' @keywords internal
+IsDensity <- function(x) {
+  return(x %in% c("density", "density.s"))
+}
+
+#' @keywords internal
 Collapse144AbundanceTo78 <- function(abundance144) {
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
@@ -179,14 +184,34 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' @export
 TransformCatalog <-
   function(catalog, target.ref.genome, target.region, target.catalog.type) {
-    # Some error checking
-    stopifnot(target.catalog.type %in% c("counts", "density",
-                                         "counts.signature", "density.signature"))
 
-    if (attributes(catalog)$catalog.type %in% c("counts.signature", "density.signature") &&
-        !target.catalog.type %in% c("counts.signature", "density.signature")) {
-      stop("Only a \"counts\" or \"density\" type catalog ",
-           "can be transformed to a different type.")
+    StopIfCatalogTypeIllegal(target.catalog.type)
+    
+    target.ref.genome <- NormalizeGenomeArg(target.ref.genome)
+    
+    source.ct <- attr(catalog, "catalog.type", exact = TRUE)
+    if (target.catalog.type != "counts.signature") {
+      f1 <- "Cannnot transform a catalog with "
+      f2 <- " unless target.catalog.type is counts.signature"  
+      
+      if (is.null(attr(catalog, "ref.genome", exact = TRUE)))
+        stop(f1, "a null ref.genome", f2)
+      
+      if (is.null(attr(catalog, "abundance", exact = TRUE))) 
+        stop(f1, "a null abundance", f2)
+      
+      if (attr(catalog, "region", exact = TRUE) == "unknown")
+        if (!IsDensity(source.ct) || !IsDensity(target.catalog.type)) {
+          stop("Illegal catalog transformation with unknown region")
+        }
+    }
+    
+    if (attr(catalog, "catalog.type", exact = TRUE) %in% 
+        c("counts.signature", "density.signature") &&
+        !target.catalog.type %in%
+        c("counts.signature", "density.signature")) {
+      stop("counts.signature and density.signature catalogs ",
+           "cannot be transforemd to counts or dentisty catalogs")
     }
 
     if (attributes(catalog)$catalog.type == "density.signature" &&
@@ -194,19 +219,21 @@ TransformCatalog <-
       return(catalog)
     }
 
-    if (attributes(catalog)$catalog.type == "density" && target.catalog.type == "density") {
+    if (attributes(catalog)$catalog.type == "density" &&
+        target.catalog.type == "density") {
       return(catalog)
     }
 
-    if (!nrow(catalog) %in% c(96, 192, 1536, 78, 136, 144)) {
-      stop("This function can only transform catalogs from the type of ",
-           "SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144")
-    }
+    StopIfNrowIllegal(catalog)
 
     source.abundance <- attributes(catalog)$abundance
-    cat <- CreateCatalogAbundance(catalog, target.ref.genome,
-                                  target.region, target.catalog.type)
-    target.abundance <- attributes(cat)$abundance
+    
+    target.abundance <-
+      InferAbundance(catalog, 
+                     target.ref.genome, 
+                     target.region,
+                     target.catalog.type)
+
     stopifnot(names(source.abundance) == names(target.abundance))
 
     factor <- target.abundance / source.abundance
@@ -666,61 +693,72 @@ CreatePentanucAbundance <- function(file) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @return If \code{ref.genome} is \code{\link{BSgenome}} object, return it.
+#' @return If \code{ref.genome} is \code{NULL} or
+#' a \code{\link{BSgenome}} object, return it.
 #' Otherwise return the \code{\link{BSgenome}} object identified by the
 #' string \code{ref.genome}.
 #'
 #' @keywords internal
 NormalizeGenomeArg <- function(ref.genome) {
-  stopifnot(class(ref.genome) %in% c("character", "BSgenome"))
-
-  if (class(ref.genome) == "character") {
-    if (ref.genome %in%
-        c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
-      ref.genome <- BSgenome.Hsapiens.UCSC.hg38
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
-      ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
-    } else {
-      stop("Unrecoginzed genome identifier:\n", ref.genome,
-           "\nNeed one of GRCh38, hg38, GRCh37, hg19")
-    }
+  
+  if (is.null(ref.genome)) stop("Need a non-NULL ref.genome")
+  if (class(ref.genome) == "BSgenome") return(ref.genome)
+  
+  stopifnot(class(ref.genome) == "character")
+  
+  if (ref.genome %in%
+      c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    ref.genome <- BSgenome.Hsapiens.UCSC.hg38
+  } else if (ref.genome %in%
+             c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+  } else {
+    stop("Unrecoginzed ref.genome:\n", ref.genome,
+         "\nNeed NULL or a BSgenome reference genome\n",
+         "or one of the character strings GRCh38, hg38, GRCh37, hg19")
   }
+  
   return(ref.genome)
 }
 
-#' Check attributes of catalog specified by user
+#' Stop if the number of rows in \code{object} is illegal
+#' 
+#' @param object A \code{catalog}, numeric \code{matrix}, or numeric \code{data.fram}
+#' 
+#' @keywords internal
+StopIfNrowIllegal <- function(object) {
+  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
+    stop("\nThe number of rows in the input object must be one of\n",
+         "96 192 1536 78 144 136 83\ngot ", nrow(object))
+  }
+
+}
+
+#' Stop if \code{region} is illegal.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
+#' @param region Character string to check.
+#' 
+#' @keywords internal
+StopIfRegionIllegal <- function(region) {
+  if (!region %in% c("genome", "exome", "transcript", "unknown")) {
+    stop("Unrecoginzed region identifier: ", region,
+         "\nNeed one of genome, exome, transcript, unknown")
+  }
+ return(NULL)
+}
+
+#' Stop if \code{catalog.type} is illegal.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome", or "transcript".
-#'
-#' TODO(Nanhai) need to added "transcript" here also (and in other functions)
-#'
-#' @param catalog.type One of "counts", "density", "counts.signature",
-#'   "density.signature".
-#'
-#' @return TRUE
+#' @param catalog.type Character string to check.
 #'
 #' @keywords internal
-CheckCatalogAttribute <- function(ref.genome, region, catalog.type) {
-  # TODO(Nanhai): this will break if one tries to use this
-  # with e.g. a mouse genome.  But the user should be able
-  # to specify genomes other than the ones below.
-  stopifnot(class(NormalizeGenomeArg(ref.genome)@pkgname) == "character")
-
-  if (!region %in% c("genome", "exome", "transcript")) {
-    stop("Unrecoginzed region identifier: ", region,
-         "\nNeed one of genome, exome, transcript")
-  }
+StopIfCatalogTypeIllegal <- function(catalog.type) {
   if (!catalog.type %in% c("counts", "density",
                            "counts.signature", "density.signature")) {
     stop("Unrecoginzed catalog type identifier: ", catalog.type,
          "\nNeed one of counts, density, counts.signature, density.signature")
   }
-  return(TRUE)
+  return(NULL)
 }
 
 #' Check the class of catalog from path
@@ -764,11 +802,8 @@ CheckClassOfCatalogFromPath <- function(file) {
 #'
 #' @keywords internal
 CreateCatalogClass <- function(object) {
-  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-    stop('\nThe input object must be one type of ',
-    '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
-    '\nThe number of rows of the input object is ', nrow(object))
-  }
+  
+  StopIfNrowIllegal(object)
 
   if(nrow(object) == 96) {
     class(object) <- append(class(object), "SBS96Catalog", after = 0)
@@ -801,7 +836,29 @@ CreateCatalogClass <- function(object) {
   return(object)
 }
 
-#' Create the abundance attribute of a catalog
+#' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#'
+#' @param x Object to test.
+#' 
+#' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+IsGRCh37 <- function(x) {
+  return(
+    x@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5"
+  )
+}
+
+#' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#'
+#' @param x Object to test.
+#' 
+#' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+IsGRCh38 <- function(x) {
+  return(
+    x@pkgname == "BSgenome.Hsapiens.UCSC.hg38"
+  )
+}
+
+#' Infer abundance attribute of a catalog with a known \code{ref.genome}.
 #'
 #' @param object A numeric matrix or numeric data frame. This object must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
@@ -819,157 +876,137 @@ CreateCatalogClass <- function(object) {
 #' @return The original catalog with abundance attribute added.
 #'
 #' @keywords internal
-CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
-  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-    stop('\nThe input object must be one type of ',
-         '\n"SBS96", "SBS192", "SBS1536", "DBS78", "DBS144", "DBS136", "ID(Indel)"',
-         '\nThe number of rows of the input object is ', nrow(object))
-  }
+InferAbundance <- function(object, ref.genome, region, catalog.type) {
+  
+  StopIfNrowIllegal(object)
+  StopIfRegionIllegal(region)
+  
+  if (!IsGRCh38(ref.genome) && !IsGRCh37(ref.genome)) return(NULL)
+  
+  if (nrow(object) == 83) return(NULL)
 
   if(nrow(object) == 96) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.3bp.flat.unstranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (IsDensity(catalog.type)) return(abundance.3bp.flat.unstranded)
+    
+    if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.3bp.genome.unstranded.GRCh37
+        return(abundance.3bp.genome.unstranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.3bp.exome.unstranded.GRCh37
+        return(abundance.3bp.exome.unstranded.GRCh37)
       } else if (region == "transcript") {
-        attr(object, "abundance") <- abundance.3bp.transcript.unstranded.GRCh37
+        return(abundance.3bp.transcript.unstranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.3bp.genome.unstranded.GRCh38
+        return(abundance.3bp.genome.unstranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.3bp.exome.unstranded.GRCh38
+        return(abundance.3bp.exome.unstranded.GRCh38)
       } else if (region == "transcript") {
-        attr(object, "abundance") <- abundance.3bp.transcript.unstranded.GRCh38
+        return(abundance.3bp.transcript.unstranded.GRCh38)
       }
-    }
+    } else stop("programming error")
   }
 
   if(nrow(object) == 192) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.3bp.flat.stranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (IsDensity(catalog.type)) return(abundance.3bp.flat.stranded)
+
+    if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.3bp.genome.stranded.GRCh37
+        return(abundance.3bp.genome.stranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.3bp.exome.stranded.GRCh37
+        return(abundance.3bp.exome.stranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.3bp.genome.stranded.GRCh38
+        return(abundance.3bp.genome.stranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.3bp.exome.stranded.GRCh38
+        return(abundance.3bp.exome.stranded.GRCh38)
       }
-    }
+    } else stop("Programming error")
   }
 
   if(nrow(object) == 1536) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.5bp.flat.unstranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if (IsDensity(catalog.type)) return(abundance.5bp.flat.unstranded)
+        
+    if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.5bp.genome.unstranded.GRCh37
+        return(abundance.5bp.genome.unstranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.5bp.exome.unstranded.GRCh37
+        return(abundance.5bp.exome.unstranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.5bp.genome.unstranded.GRCh38
+        return(abundance.5bp.genome.unstranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.5bp.exome.unstranded.GRCh38
+        return(abundance.5bp.exome.unstranded.GRCh38)
       }
     }
   }
 
   if(nrow(object) == 78) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.2bp.flat.unstranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      return(abundance.2bp.flat.unstranded)
+    } else if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.2bp.genome.unstranded.GRCh37
+        return(abundance.2bp.genome.unstranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.2bp.exome.unstranded.GRCh37
+        return(abundance.2bp.exome.unstranded.GRCh37)
       } else if (region == "transcript") {
-        attr(object, "abundance") <- abundance.2bp.transcript.unstranded.GRCh37
+        return(abundance.2bp.transcript.unstranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.2bp.genome.unstranded.GRCh38
+        return(abundance.2bp.genome.unstranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.2bp.exome.unstranded.GRCh38
+        return(abundance.2bp.exome.unstranded.GRCh38)
       } else if (region == "transcript") {
-        attr(object, "abundance") <- abundance.2bp.transcript.unstranded.GRCh38
+        return(abundance.2bp.transcript.unstranded.GRCh38)
       }
     }
   }
 
   if(nrow(object) == 144) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.2bp.flat.stranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      return(abundance.2bp.flat.stranded)
+    } else if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.2bp.genome.stranded.GRCh37
+        return(abundance.2bp.genome.stranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.2bp.exome.stranded.GRCh37
+        return(abundance.2bp.exome.stranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.2bp.genome.stranded.GRCh38
+        return(abundance.2bp.genome.stranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.2bp.exome.stranded.GRCh38
+        return(abundance.2bp.exome.stranded.GRCh38)
       }
     }
   }
 
   if(nrow(object) == 136) {
     if (catalog.type %in% c("density", "density.signature")) {
-      attr(object, "abundance") <- abundance.4bp.flat.unstranded
-      return(object)
-    } else if (ref.genome %in%
-               c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      return(abundance.4bp.flat.unstranded)
+    } else if (IsGRCh37(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.4bp.genome.unstranded.GRCh37
+        return(abundance.4bp.genome.unstranded.GRCh37)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.4bp.exome.unstranded.GRCh37
+        return(abundance.4bp.exome.unstranded.GRCh37)
       }
-    } else if (ref.genome %in%
-               c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    } else if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
-        attr(object, "abundance") <- abundance.4bp.genome.unstranded.GRCh38
+        return(abundance.4bp.genome.unstranded.GRCh38)
       } else if (region == "exome") {
-        attr(object, "abundance") <- abundance.4bp.exome.unstranded.GRCh38
+        return(abundance.4bp.exome.unstranded.GRCh38)
       }
     }
   }
-
-  if(nrow(object) == 83) {
-    attr(object, "abundance") <- NULL
-  }
-
-  return(object)
+  stop("programming error")
 }
 
-#' Create a catalog from a numeric matrix or numeric data frame
+#' Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
 #'
-#' @param object A numeric matrix or numeric data frame. This object must have
+#' @param object A numeric \code{matrix} or numeric \code{data.frame}. 
+#'  This object must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
 #'   for more details.
 #'
@@ -982,61 +1019,71 @@ CreateCatalogAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
 #'
-#' @param abundance Optional, only needed when \code{ref.genome} does not belong
-#'   to the two human reference genomes supported by ICAMS. The abundance should
-#'   contain the counts of different source sequences for mutations. \cr
-#'   See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
+#' @param abundance Optional, only needed when \code{ref.genome}
+#'  is not one of
+#'  the two human reference genomes 
+#'  included in ICAMS. The abundance should
+#'  contain the counts of different source sequences for mutations. \cr
+#'  See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
 #'
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'
 #' @export
-as.catalog <-
-  function(object, ref.genome, region, catalog.type, abundance) {
-    stopifnot("matrix" %in% class(object) || "data.frame" %in% class(object))
-    stopifnot(!is.null(rownames(object)))
-    stopifnot(region %in% c("genome", "exome", "transcript"))
-    
-    if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-      stop("\nThe number of rows in the input object must be one of\n",
-           "96 192 1536 78 144 136 83\ngot ", nrow(object))
-    }
-
-    if ("data.frame" %in% class(object)) {
-      object <- data.matrix(object)
-    }
-    
-    ref.genome <- NormalizeGenomeArg(ref.genome)@pkgname
-    if (missing(abundance)) {
-      stopifnot(ref.genome %in% c("BSgenome.Hsapiens.1000genomes.hs37d5",
-                                  "BSgenome.Hsapiens.UCSC.hg38"))
-    }
-
-    # stops if attributes are not correct
-    CheckCatalogAttribute(ref.genome, region, catalog.type)
-    
-    attr(object, "ref.genome") <- ref.genome
-    attr(object, "catalog.type") <- catalog.type
-    
-    if (missing(abundance)) {
-      object <- CreateCatalogAbundance(object, ref.genome, region, catalog.type)
+as.catalog <- function(object, 
+                       ref.genome = NULL, 
+                       region = "unknown", 
+                       catalog.type = "counts", 
+                       abundance = NULL) {
+  if (!is.matrix(object)) {
+    if (is.data.frame(object)) {
+      object <- as.matrix(object)
     } else {
-      attr(object, "abundance") <- abundance
+      stop("object must be numeric matrix or data frame")
     }
-
-    object <- CreateCatalogClass(object)
-    
-    if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
-      if (region == "transcript") {
-        attr(object, "region") <- "transcript"
-      } else {
-        attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
-      }
-    } else {
-      attr(object, "region") <- region
-    }
-    
-    return(object)
   }
+  stopifnot(mode(object) == "numeric")
+
+  stopifnot(!is.null(rownames(object)))
+  
+  StopIfRegionIllegal(region)
+  
+  StopIfNrowIllegal(object)
+  
+#  ref.genome.name <- NormalizeGenomeArg(ref.genome)@pkgname
+#  if (missing(abundance)) {
+#    stopifnot(ref.genome.name %in%
+#                c("BSgenome.Hsapiens.1000genomes.hs37d5",
+#                  "BSgenome.Hsapiens.UCSC.hg38"))
+#  }
+  
+  StopIfCatalogTypeIllegal(catalog.type)
+  
+  if (!is.null(ref.genome)) {
+    ref.genome <- NormalizeGenomeArg(ref.genome)
+  }
+  attr(object, "ref.genome") <- ref.genome
+
+  attr(object, "catalog.type") <- catalog.type
+  
+  if (is.null(abundance)) {
+    abundance <- InferAbundance(object, ref.genome, region, catalog.type)
+  } 
+  attr(object, "abundance") <- abundance
+
+  object <- CreateCatalogClass(object)
+  
+  if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
+    if (region == "transcript") {
+      attr(object, "region") <- "transcript"
+    } else {
+      attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
+    }
+  } else {
+    attr(object, "region") <- region
+  }
+  
+  return(object)
+}
 
 #' Generate all possible k-mers of length k.
 #'

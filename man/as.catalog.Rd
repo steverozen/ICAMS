@@ -2,14 +2,16 @@
 % Please edit documentation in R/utility_functions.R
 \name{as.catalog}
 \alias{as.catalog}
-\title{Create a catalog from a numeric matrix or numeric data frame}
+\title{Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.}
 \usage{
-as.catalog(object, ref.genome, region, catalog.type, abundance)
+as.catalog(object, ref.genome = NULL, region = "unknown",
+  catalog.type = "counts", abundance = NULL)
 }
 \arguments{
-\item{object}{A numeric matrix or numeric data frame. This object must have
-rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
-for more details.}
+\item{object}{A numeric \code{matrix} or numeric \code{data.frame}. 
+This object must have
+ rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
+ for more details.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -20,8 +22,10 @@ for more details.}
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
 
-\item{abundance}{Optional, only needed when \code{ref.genome} does not belong
-to the two human reference genomes supported by ICAMS. The abundance should
+\item{abundance}{Optional, only needed when \code{ref.genome}
+is not one of
+the two human reference genomes 
+included in ICAMS. The abundance should
 contain the counts of different source sequences for mutations. \cr
 See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
 }
@@ -29,5 +33,5 @@ See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
 A catalog as described in \code{\link{ICAMS}}.
 }
 \description{
-Create a catalog from a numeric matrix or numeric data frame
+Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
 }
