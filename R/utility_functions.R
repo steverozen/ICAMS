@@ -815,7 +815,7 @@ InferCatalogClassString <- function(object) {
   if(nrow == 144)  return("DBS144Catalog")
   if(nrow == 136)  return("DBS136Catalog")
   if(nrow == 83)   return("IndelCatalog")
-  return(class.string)
+
 }
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
@@ -823,6 +823,8 @@ InferCatalogClassString <- function(object) {
 #' @param x Object to test.
 #' 
 #' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#' 
+#' @keywords internal
 IsGRCh37 <- function(x) {
   if (is.null(x)) return(FALSE)
   return(x@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5")
@@ -833,6 +835,8 @@ IsGRCh37 <- function(x) {
 #' @param x Object to test.
 #' 
 #' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#' 
+#' @keywords internal
 IsGRCh38 <- function(x) {
   if (is.null(x)) return(FALSE)
   return(x@pkgname == "BSgenome.Hsapiens.UCSC.hg38")
@@ -1054,6 +1058,8 @@ as.catalog <- function(object,
   class(object) <- append(class(object), class.string, after = 0)
   class(object) <- unique(attributes(object)$class)
   
+  # TODO(Nanhai): move this logic to the VCF to catalog functions, and
+  # change this to error checking.
   if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
     if (region == "transcript") {
       attr(object, "region") <- "transcript"

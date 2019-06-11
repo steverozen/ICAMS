@@ -5,3 +5,4 @@ test.cat <-
 
 c96 <- as.catalog(test.cat[[1]])
 
+# test transform to counts.signature

@@ -1175,9 +1175,6 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'
-#' @param no.context A logical value indicating whether there is preceding and
-#'   following base context for the plot. Only implemented for SBS192Catalog.
-#'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and their graphs
 #'   plotted to PDF with specified file name. Each catalog has attributes
@@ -1187,20 +1184,16 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @export
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges, region,
-           output.file, no.context) {
+  function(files, ref.genome, trans.ranges, region, output.file) {
     catalogs <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome,
                                   trans.ranges, region)
 
     PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", output.file))
-    if (no.context == TRUE) {
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.no.context.", output.file),
-                       no.context)
-    } else {
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
-    }
+    PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catSBS192,
+                     file = paste0("SBS12Catalog.", output.file),
+                       plot.SBS12 = TRUE)
     PlotCatalogToPdf(catalogs$catSBS1536, file = paste0("SBS1536Catalog.", output.file))
     PlotCatalogToPdf(catalogs$catDBS78, file = paste0("DBS78Catalog.", output.file))
     PlotCatalogToPdf(catalogs$catDBS136, file = paste0("DBS136Catalog.", output.file))
@@ -1331,9 +1324,6 @@ MutectVCFFilesToCatalog <-
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'
-#' @param no.context A logical value indicating whether there is preceding and
-#'   following base context for the plot. Only implemented for SBS192Catalog.
-#'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
 #'   plotted to PDF with specified file name. Each catalog has attributes
@@ -1343,24 +1333,27 @@ MutectVCFFilesToCatalog <-
 #'
 #' @export
 MutectVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges, region,
-           output.file, no.context) {
+  function(files, ref.genome, trans.ranges, region, output.file) {
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, region)
 
-    PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", output.file))
-    if (no.context == TRUE) {
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.no.context.", output.file),
-                       no.context)
-    } else {
-      PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
-    }
-    PlotCatalogToPdf(catalogs$catSBS1536, file = paste0("SBS1536Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS78, file = paste0("DBS78Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS144, file = paste0("DBS144Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS136, file = paste0("DBS136Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catID, file = paste0("IndelCatalog.", output.file))
+    PlotCatalogToPdf(catalogs$catSBS96, 
+                     file = paste0("SBS96Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catSBS192,
+                     file = paste0("SBS192Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catSBS192,
+                     file = paste0("SBS1292Catalog.", output.file),
+                       plot.SBS12 = TRUE)
+    PlotCatalogToPdf(catalogs$catSBS1536,
+                     file = paste0("SBS1536Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catDBS78,
+                     file = paste0("DBS78Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catDBS144,
+                     file = paste0("DBS144Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catDBS136,
+                     file = paste0("DBS136Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catID,
+                     file = paste0("IndelCatalog.", output.file))
 
     return(catalogs)
   }

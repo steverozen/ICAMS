@@ -4,7 +4,7 @@
 \alias{PlotCatalogToPdf}
 \title{Plot catalog to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, file, no.context, cex, grid, upper, xlabels)
+PlotCatalogToPdf(catalog, file, plot.SBS12, cex, grid, upper, xlabels)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
@@ -12,11 +12,11 @@ See \code{\link{as.catalog}} for more details.}
 
 \item{file}{The name of the PDF file to be produced.}
 
-\item{no.context}{Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
+\item{plot.SBS12}{Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
 generate an abbreviated plot of only SBS without context, i.e. 
 C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
-ACA > AAA, ACA > AGA, ..., TCT > TAT, ...}
+ACA > AAA, ACA > AGA, ..., TCT > TAT, ... There are 12 bars in the graph.}
 
 \item{cex}{A numerical value giving the amount by which mutation class labels,
 mutation counts(if it exists), y axis and its labels, x axis labels and

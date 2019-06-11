@@ -15,3 +15,4 @@ TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 \description{
 Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 }
+\keyword{internal}

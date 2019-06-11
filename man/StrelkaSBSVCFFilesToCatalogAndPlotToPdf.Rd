@@ -5,7 +5,7 @@
 \title{Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF}
 \usage{
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf(files, ref.genome, trans.ranges,
-  region, output.file, no.context)
+  region, output.file)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka SBS VCF files.}
@@ -21,9 +21,6 @@ transcript range and strand information. Please refer to
 "genome", "exome".}
 
 \item{output.file}{The name of the PDF file to be produced.}
-
-\item{no.context}{A logical value indicating whether there is preceding and
-following base context for the plot. Only implemented for SBS192Catalog.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS

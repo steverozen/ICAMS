@@ -4,13 +4,13 @@
 \alias{PlotCatalog}
 \title{Plot \strong{one} spectrum or signature.}
 \usage{
-PlotCatalog(catalog, no.context, cex, grid, upper, xlabels)
+PlotCatalog(catalog, plot.SBS12, cex, grid, upper, xlabels)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
 See \code{\link{as.catalog}} for more details.}
 
-\item{no.context}{Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
+\item{plot.SBS12}{Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
 generate an abbreviated plot of only SBS without context, i.e. 
 C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.

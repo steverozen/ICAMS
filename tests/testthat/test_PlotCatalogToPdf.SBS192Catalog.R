@@ -11,7 +11,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function is working properly", {
   out1 <-
     PlotCatalogToPdf(catalog.counts,
                      file = paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.test.pdf"),
-                     no.context = TRUE)
+                     plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
 
@@ -24,7 +24,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function is working properly", {
   out1 <-
     PlotCatalogToPdf(catalog.density,
                      file = paste0(tempdir(), "\\PlotCatSBS192NoContext.density.test.pdf"),
-                     no.context = TRUE)
+                     plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
 
@@ -38,7 +38,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function is working properly", {
   out1 <-
     PlotCatalogToPdf(catalog.counts.signature,
                      file = paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.signature.test.pdf"),
-                     no.context = TRUE)
+                     plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
 
@@ -52,7 +52,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function is working properly", {
   out1 <-
     PlotCatalogToPdf(catalog.density.signature,
                      file = paste0(tempdir(), "\\PlotCatSBS192NoContext.density.signature.test.pdf"),
-                     no.context = TRUE)
+                     plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
 
