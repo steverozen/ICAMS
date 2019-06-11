@@ -28,12 +28,7 @@ ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
   
   StopIfRegionIllegal(region)
   StopIfCatalogTypeIllegal(catalog.type)
-<<<<<<< HEAD
   class.of.catalog <- InferClassOfCatalogForRead(file)
-=======
-  cos <- data.table::fread(file)
-  class.of.catalog <- CheckClassOfCatalogFromFile(cos)
->>>>>>> 3436d530915b950d41cef5998fb8b97f99cbf504
   UseMethod(generic = "ReadCatalog", object = class.of.catalog)
 }
 
