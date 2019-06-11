@@ -780,7 +780,7 @@ InferCatalogClassString <- function(object) {
   
   StopIfNrowIllegal(object)
   nrow <- nrow(object)
-  
+
   if(nrow == 96)   return("SBS96Catalog")
   if(nrow == 192)  return("SBS192Catalog")
   if(nrow == 1536) return("SBS1536Catalog")
