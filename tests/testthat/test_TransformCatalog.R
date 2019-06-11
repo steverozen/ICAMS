@@ -221,7 +221,6 @@ and genome counts -> exome counts.signature", {
 })
 
 test_that("Transformation of a SBS 192 catalog", {
-  skip("temporarily broken")
   cat <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -234,7 +233,7 @@ test_that("Transformation of a SBS 192 catalog", {
                          target.region = "genome",
                          target.catalog.type = "counts")
   expect_equal(cat, x2)
-
+  
   cat.density <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                                   target.region = "genome",
                                   target.catalog.type = "density")
@@ -242,9 +241,12 @@ test_that("Transformation of a SBS 192 catalog", {
   x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "exome",
                          target.catalog.type = "density")
-  attr(cat.density, "region") <- NULL
-  attr(x3, "region") <- NULL
-  expect_equal(cat.density, x3)
+  null.cat.density <-cat.density
+  attr(null.cat.density, "region") <- NULL
+  null.x3 <- x3
+  attr(null.x3, "region") <- NULL
+  expect_equal(null.cat.density, null.x3)
+  rm(null.cat.density, null.x3)
 
   genome.counts.signature <-
     TransformCatalog(cat, target.ref.genome = "GRCh37",
@@ -262,6 +264,7 @@ test_that("Transformation of a SBS 192 catalog", {
                          target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "density.signature")
+
   x5 <- TransformCatalog(cat.density, target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "density.signature")
@@ -281,7 +284,7 @@ test_that("Transformation of a DBS 144 catalog", {
   x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "counts")
-  skip("temporarily broken")
+
   expect_equal(cat, x2)
 
   cat.density <- TransformCatalog(cat, target.ref.genome = "GRCh37",
@@ -291,9 +294,12 @@ test_that("Transformation of a DBS 144 catalog", {
   x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "exome",
                          target.catalog.type = "density")
-  attr(cat.density, "region") <- NULL
-  attr(x3, "region") <- NULL
-  expect_equal(cat.density, x3)
+  null.cat.density <- cat.density
+  attr(null.cat.density, "region") <- NULL
+  null.x3 <- x3
+  attr(null.x3, "region") <- NULL
+  expect_equal(null.cat.density, null.x3)
+  rm(null.cat.density, null.x3)
 
   genome.counts.signature <-
     TransformCatalog(cat, target.ref.genome = "GRCh37",
@@ -311,6 +317,7 @@ test_that("Transformation of a DBS 144 catalog", {
                          target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "density.signature")
+
   x5 <- TransformCatalog(cat.density, target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "density.signature")
