@@ -4,7 +4,8 @@
 \alias{PlotCatalogToPdf}
 \title{Plot catalog to a PDF file.}
 \usage{
-PlotCatalogToPdf(catalog, file, plot.SBS12, cex, grid, upper, xlabels)
+PlotCatalogToPdf(catalog, file, plot.SBS12 = NULL, cex = NULL,
+  grid = NULL, upper = NULL, xlabels = NULL)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
