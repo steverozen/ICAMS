@@ -849,22 +849,22 @@ IsGRCh38 <- function(x) {
   return(x@pkgname == "BSgenome.Hsapiens.UCSC.hg38")
 }
 
-#' Infer abundance attribute of a catalog with a known \code{ref.genome}.
+#' Infer \code{abundance} given a matrix-like \code{object} and additional information.
 #'
-#' @param object A numeric matrix or numeric data frame. This object must have
-#'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
-#'   for more details.
+#' @param object A numeric matrix, numeric data frame, or \code{catalog}.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string for genomic region as described
+#' in \code{\link{ICAMS}}.
 #'
-#' @param catalog.type One of "counts", "density", "counts.signature",
-#'   "density.signature".
+#' @param catalog.type A character string for \code{catalog.type}
+#' as described in \code{\link{ICAMS}}.
 #'
-#' @return The original catalog with abundance attribute added.
+#' @return A value that can be set as the abundance attribute of
+#' a \code{catalog} (which may be \code{NULL} if no abundance
+#' can be inferred).
 #'
 #' @keywords internal
 InferAbundance <- function(object, ref.genome, region, catalog.type) {

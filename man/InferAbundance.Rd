@@ -2,28 +2,28 @@
 % Please edit documentation in R/utility_functions.R
 \name{InferAbundance}
 \alias{InferAbundance}
-\title{Infer abundance attribute of a catalog with a known \code{ref.genome}.}
+\title{Infer \code{abundance} given a matrix-like \code{object} and additional information.}
 \usage{
 InferAbundance(object, ref.genome, region, catalog.type)
 }
 \arguments{
-\item{object}{A numeric matrix or numeric data frame. This object must have
-rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
-for more details.}
+\item{object}{A numeric matrix, numeric data frame, or \code{catalog}.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+\item{region}{A character string for genomic region as described
+in \code{\link{ICAMS}}.}
 
-\item{catalog.type}{One of "counts", "density", "counts.signature",
-"density.signature".}
+\item{catalog.type}{A character string for \code{catalog.type}
+as described in \code{\link{ICAMS}}.}
 }
 \value{
-The original catalog with abundance attribute added.
+A value that can be set as the abundance attribute of
+a \code{catalog} (which may be \code{NULL} if no abundance
+can be inferred).
 }
 \description{
-Infer abundance attribute of a catalog with a known \code{ref.genome}.
+Infer \code{abundance} given a matrix-like \code{object} and additional information.
 }
 \keyword{internal}
