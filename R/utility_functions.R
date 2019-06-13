@@ -827,7 +827,8 @@ IsGRCh37 <- function(x) {
 #' @keywords internal
 IsGRCh38 <- function(x) {
   if (is.null(x)) return(FALSE)
-  return(x@pkgname == "BSgenome.Hsapiens.UCSC.hg38")
+  return(NormalizeGenomeArg(x)@pkgname == 
+           "BSgenome.Hsapiens.UCSC.hg38")
 }
 
 #' Infer \code{abundance} given a matrix-like \code{object} and additional information.
