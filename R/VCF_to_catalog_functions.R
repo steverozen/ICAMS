@@ -349,7 +349,7 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
 #'
 #' @param df A data frame storing mutation records of a VCF file.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -359,9 +359,13 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
 #'     which contain the mutated gene's name, range and strand information.
 #'
 #' @keywords internal
-AddTranscript <- function(df, trans.ranges) {
+AddTranscript <- function(df, trans.ranges = NULL) {
   if (nrow(df) == 0) {
     return(df)
+  }
+  
+  if (is.null(trans.ranges)) {
+    return(data.table(df))
   }
 
   # Find range overlaps between the df and trans.ranges
@@ -735,18 +739,24 @@ ReadAndSplitMutectVCFs <- function(files) {
 #'   AddTranscript functions. It must *not* contain indels and must *not*
 #'   contain DBS (double base substitutions), or triplet base substitutions
 #'   etc., even if encoded as neighboring SBS.
+#'   
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.  
 #'
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the SBS mutation catalog:
-#'   96, 192, 1536 catalog respectively.
+#' @return A list of three matrices containing the SBS mutation catalog: 96,
+#'   192, 1536 catalog respectively. If trans.ranges = NULL, SBS 192 catalog
+#'   will not be generated.
 #'
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
+CreateOneColSBSCatalog <- function(vcf, trans.ranges = NULL, 
+                                   sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude DBSs
@@ -813,7 +823,11 @@ CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
   rownames(mat96) <- dt96$nrn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   colnames(mat96) <- sample.id
-
+  
+  if (is.null(trans.ranges)) {
+    return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+  }
+  
   # There may be some mutations in vcf which fall on transcripts on both
   # strands. We do not consider those mutations when generating the 192 catalog.
   vcf2 <- vcf[bothstrand == FALSE, ]
@@ -867,13 +881,15 @@ CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-#'   catSBS192 catSBS1536. Each catalog has attributes added. See
-#'   \code{\link{as.catalog}} for more details.
+#'   catSBS192 catSBS1536. If trans.ranges = NULL, SBS 192 catalog will not be
+#'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
+#'   for more details.
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
 #' @export
-VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region) {
+VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
+                              trans.ranges = NULL, region = "unknown") {
   ncol <- length(list.of.SBS.vcfs)
 
   catSBS96 <- empty.cats$catSBS96
@@ -896,29 +912,46 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
 
     CheckSeqContextInVCF(SBS, "seq.21bases")
     SBS <- AddTranscript(SBS, trans.ranges)
-    SBS.cat <- CreateOneColSBSCatalog(SBS)
+    SBS.cat <- CreateOneColSBSCatalog(SBS, trans.ranges)
     rm(SBS)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
-    catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
+    if (!is.null(trans.ranges)) {
+      catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
+    }
     catSBS1536 <- cbind(catSBS1536, SBS.cat$catSBS1536)
   }
 
   colnames(catSBS96) <- names(list.of.SBS.vcfs)
-  colnames(catSBS192) <- names(list.of.SBS.vcfs)
   colnames(catSBS1536) <- names(list.of.SBS.vcfs)
 
   catSBS96 <-
     as.catalog(catSBS96, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-
-  catSBS192 <-
-    as.catalog(catSBS192, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catSBS96, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
   catSBS1536 <-
     as.catalog(catSBS1536, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-  return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, catSBS1536 = catSBS1536))
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catSBS1536, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
+  if (is.null(trans.ranges)) {
+    return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536))
+  }
+  
+  colnames(catSBS192) <- names(list.of.SBS.vcfs)
+  catSBS192 <-
+    as.catalog(catSBS192, ref.genome = ref.genome,
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catSBS192, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
+  return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
+              catSBS1536 = catSBS1536))
 }
 
 #' Create double base catalog for *one* sample from
@@ -928,18 +961,24 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region
 #'   AddTranscript functions. It must *not* contain indels and must
 #'   *not* contain SBS (single base substitutions), or triplet base
 #'   substitutions etc.
-#'
+#' 
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.  
+#'   
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the DBS catalog:
-#'   catDBS78, catDBS144, catDBS136 respectively.
+#' @return A list of three matrices containing the DBS catalog: catDBS78,
+#'   catDBS144, catDBS136 respectively. If trans.ranges = NULL, DBS 144 catalog
+#'   will not be generated.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
+CreateOneColDBSCatalog <- function(vcf, trans.ranges = NULL,
+                                   sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude SBSs
@@ -1005,7 +1044,11 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
   DBS.mat.136 <- as.matrix(DBS.dt.136.2[, 2])
   rownames(DBS.mat.136) <- DBS.dt.136.2$rn
   colnames(DBS.mat.136)<- sample.id
-
+  
+  if (is.null(trans.ranges)) {
+    return(list(catDBS78 = DBS.mat.78, catDBS136 = DBS.mat.136))
+  }
+  
   # There may be some mutations in vcf which fall on transcripts on both
   # strands. We do not consider those mutations when generating the 144 catalog.
   vcf2 <- vcf[bothstrand == FALSE, ]
@@ -1062,13 +1105,15 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-#'   catDBS144 catDBS136. Each catalog has attributes added. See
-#'   \code{\link{as.catalog}} for more details.
+#'   catDBS144 catDBS136. If trans.ranges = NULL, DBS 144 catalog will not be
+#'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
+#'   for more details.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
-VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region) {
+VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
+                              trans.ranges = NULL, region = "unknown") {
   ncol <- length(list.of.DBS.vcfs)
 
   catDBS78 <- empty.cats$catDBS78
@@ -1092,30 +1137,46 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 
     DBS <- AddTranscript(DBS, trans.ranges)
     CheckSeqContextInVCF(DBS, "seq.21bases")
-    DBS.cat <- CreateOneColDBSCatalog(DBS)
+    DBS.cat <- CreateOneColDBSCatalog(DBS, trans.ranges)
     rm(DBS)
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
     catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
-    catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
+    if (!is.null(trans.ranges)) {
+      catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
+    }
   }
 
   colnames(catDBS78) <- names(list.of.DBS.vcfs)
   colnames(catDBS136) <- names(list.of.DBS.vcfs)
-  colnames(catDBS144) <- names(list.of.DBS.vcfs)
 
   catDBS78 <-
     as.catalog(catDBS78, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catDBS78, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
   catDBS136 <-
     as.catalog(catDBS136, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catDBS136, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
 
+  if (is.null(trans.ranges)) {
+    return(list(catDBS78 = catDBS78, catDBS136 = catDBS136))
+  }
+  colnames(catDBS144) <- names(list.of.DBS.vcfs)
   catDBS144 <-
     as.catalog(catDBS144, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-
-  return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, catDBS144 = catDBS144))
+               region = region, catalog.type = "counts",
+               abundance = InferAbundance(catDBS144, 
+                                          ref.genome = ref.genome,
+                                          region = region, 
+                                          catalog.type = "counts"))
+  return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
+              catDBS144 = catDBS144))
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files.
@@ -1139,14 +1200,15 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). Each catalog has attributes
+#'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
+#'   and DBS 144 catalog will not be generated. Each catalog has attributes
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
 StrelkaSBSVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges, region) {
+  function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadStrelkaSBSVCFs(files)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
@@ -1176,29 +1238,39 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @param output.file The name of the PDF file to be produced.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and their graphs
-#'   plotted to PDF with specified file name. Each catalog has attributes
+#'   catalogs (one each for 78, 136, and 144) and their graphs plotted to PDF
+#'   with specified file name. If trans.ranges = NULL, SBS 192 and DBS 144
+#'   catalog will not be generated and plotted. Each catalog has attributes
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges, region, output.file) {
+  function(files, ref.genome, trans.ranges = NULL, 
+           region = "unknown", output.file) {
     catalogs <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome,
                                   trans.ranges, region)
 
-    PlotCatalogToPdf(catalogs$catSBS96, file = paste0("SBS96Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catSBS192, file = paste0("SBS192Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catSBS192,
-                     file = paste0("SBS12Catalog.", output.file),
+    PlotCatalogToPdf(catalogs$catSBS96, 
+                     file = paste0("SBS96Catalog.", output.file))
+    if (!is.null(trans.ranges)) {
+      PlotCatalogToPdf(catalogs$catSBS192, 
+                       file = paste0("SBS192Catalog.", output.file))
+      PlotCatalogToPdf(catalogs$catSBS192,
+                       file = paste0("SBS12Catalog.", output.file),
                        plot.SBS12 = TRUE)
-    PlotCatalogToPdf(catalogs$catSBS1536, file = paste0("SBS1536Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS78, file = paste0("DBS78Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS136, file = paste0("DBS136Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS144, file = paste0("DBS144Catalog.", output.file))
-
+      PlotCatalogToPdf(catalogs$catDBS144, 
+                       file = paste0("DBS144Catalog.", output.file))
+    }
+    PlotCatalogToPdf(catalogs$catSBS1536, 
+                     file = paste0("SBS1536Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catDBS78, 
+                     file = paste0("DBS78Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catDBS136, 
+                     file = paste0("DBS136Catalog.", output.file))
+    
     return(catalogs)
   }
 
@@ -1224,7 +1296,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
-StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region) {
+StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
   vcfs <- ReadStrelkaIDVCFs(files)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
@@ -1257,7 +1329,7 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region) {
 #'
 #' @export
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, region, output.file) {
+  function(files, ref.genome, region = "unknown", output.file) {
     catalog <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region)
     PlotCatalogToPdf(catalog, file = paste0("IndelCatalog.", output.file))
@@ -1285,15 +1357,15 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and ID catalog. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more
-#'   details.
+#'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
+#'   NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
 MutectVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges, region) {
+  function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadMutectVCFs(files)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
@@ -1326,30 +1398,34 @@ MutectVCFFilesToCatalog <-
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
-#'   plotted to PDF with specified file name. Each catalog has attributes
-#'   added. See \code{\link{as.catalog}} for more details.
+#'   plotted to PDF with specified file name. If trans.ranges = NULL, SBS 192
+#'   and DBS 144 catalog will not be generated and plotted. Each catalog has
+#'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
 MutectVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges, region, output.file) {
+  function(files, ref.genome, trans.ranges = NULL, 
+           region = "unknown", output.file) {
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, region)
 
     PlotCatalogToPdf(catalogs$catSBS96, 
                      file = paste0("SBS96Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catSBS192,
-                     file = paste0("SBS192Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catSBS192,
-                     file = paste0("SBS1292Catalog.", output.file),
+    if (!is.null(trans.ranges)) {
+      PlotCatalogToPdf(catalogs$catSBS192, 
+                       file = paste0("SBS192Catalog.", output.file))
+      PlotCatalogToPdf(catalogs$catSBS192,
+                       file = paste0("SBS12Catalog.", output.file),
                        plot.SBS12 = TRUE)
+      PlotCatalogToPdf(catalogs$catDBS144, 
+                       file = paste0("DBS144Catalog.", output.file))
+    }
     PlotCatalogToPdf(catalogs$catSBS1536,
                      file = paste0("SBS1536Catalog.", output.file))
     PlotCatalogToPdf(catalogs$catDBS78,
                      file = paste0("DBS78Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS144,
-                     file = paste0("DBS144Catalog.", output.file))
     PlotCatalogToPdf(catalogs$catDBS136,
                      file = paste0("DBS136Catalog.", output.file))
     PlotCatalogToPdf(catalogs$catID,

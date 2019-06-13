@@ -671,7 +671,7 @@ CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
 #'   "catalog". See \code{\link{as.catalog}} for more details.
 #'
 #' @export
-VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region) {
+VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   ncol <- length(list.of.vcfs)
 
   # Create a 0-column matrix with the correct row labels.
