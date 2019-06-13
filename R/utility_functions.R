@@ -814,7 +814,8 @@ InferCatalogClassString <- function(object) {
 #' @keywords internal
 IsGRCh37 <- function(x) {
   if (is.null(x)) return(FALSE)
-  return(x@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5")
+  return(NormalizeGenomeArg(x)@pkgname == 
+           "BSgenome.Hsapiens.1000genomes.hs37d5")
 }
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
