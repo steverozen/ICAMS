@@ -4,12 +4,12 @@
 \alias{AddTranscript}
 \title{Add transcript information to a data frame with mutation records}
 \usage{
-AddTranscript(df, trans.ranges)
+AddTranscript(df, trans.ranges = NULL)
 }
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file.}
 
-\item{trans.ranges}{a \code{\link[data.table]{data.table}} which contains
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 }

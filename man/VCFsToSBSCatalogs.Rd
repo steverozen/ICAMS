@@ -4,7 +4,8 @@
 \alias{VCFsToSBSCatalogs}
 \title{Create SBS catalogs from SBS VCFs}
 \usage{
-VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome, trans.ranges, region)
+VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome, trans.ranges = NULL,
+  region = "unknown")
 }
 \arguments{
 \item{list.of.SBS.vcfs}{List of in-memory data frames of pure SBS mutations
@@ -23,8 +24,9 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 }
 \value{
 A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-  catSBS192 catSBS1536. Each catalog has attributes added. See
-  \code{\link{as.catalog}} for more details.
+  catSBS192 catSBS1536. If trans.ranges = NULL, SBS 192 catalog will not be
+  generated. Each catalog has attributes added. See \code{\link{as.catalog}}
+  for more details.
 }
 \description{
 Create a list of 3 catalogs (one each for 96, 192, 1536)

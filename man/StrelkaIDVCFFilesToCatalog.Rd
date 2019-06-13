@@ -4,7 +4,7 @@
 \alias{StrelkaIDVCFFilesToCatalog}
 \title{Create ID (indel) catalog from Strelka ID VCF files}
 \usage{
-StrelkaIDVCFFilesToCatalog(files, ref.genome, region)
+StrelkaIDVCFFilesToCatalog(files, ref.genome, region = "unknown")
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka ID VCF files.}

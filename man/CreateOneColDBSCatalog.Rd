@@ -5,7 +5,7 @@
 \title{Create double base catalog for *one* sample from
 a Variant Call Format (VCF) file}
 \usage{
-CreateOneColDBSCatalog(vcf, sample.id = "count")
+CreateOneColDBSCatalog(vcf, trans.ranges = NULL, sample.id = "count")
 }
 \arguments{
 \item{vcf}{An in-memory VCF file annotated by the AddSeqContext and
@@ -13,11 +13,16 @@ AddTranscript functions. It must *not* contain indels and must
 *not* contain SBS (single base substitutions), or triplet base
 substitutions etc.}
 
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
+transcript range and strand information. Please refer to
+\code{\link{TranscriptRanges}} for more details.}
+
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
 \value{
-A list of three matrices containing the DBS catalog:
-  catDBS78, catDBS144, catDBS136 respectively.
+A list of three matrices containing the DBS catalog: catDBS78,
+  catDBS144, catDBS136 respectively. If trans.ranges = NULL, DBS 144 catalog
+  will not be generated.
 }
 \description{
 Create double base catalog for *one* sample from

@@ -5,7 +5,7 @@
 \title{Create single base mutation catalog for *one* sample from
 a Variant Call Format (VCF) file.}
 \usage{
-CreateOneColSBSCatalog(vcf, sample.id = "count")
+CreateOneColSBSCatalog(vcf, trans.ranges = NULL, sample.id = "count")
 }
 \arguments{
 \item{vcf}{An in-memory VCF file annotated by the AddSeqContext and
@@ -13,11 +13,16 @@ AddTranscript functions. It must *not* contain indels and must *not*
 contain DBS (double base substitutions), or triplet base substitutions
 etc., even if encoded as neighboring SBS.}
 
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
+transcript range and strand information. Please refer to
+\code{\link{TranscriptRanges}} for more details.}
+
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
 \value{
-A list of three matrices containing the SBS mutation catalog:
-  96, 192, 1536 catalog respectively.
+A list of three matrices containing the SBS mutation catalog: 96,
+  192, 1536 catalog respectively. If trans.ranges = NULL, SBS 192 catalog
+  will not be generated.
 }
 \description{
 Create single base mutation catalog for *one* sample from

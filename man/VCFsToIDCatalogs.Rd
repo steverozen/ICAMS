@@ -4,7 +4,7 @@
 \alias{VCFsToIDCatalogs}
 \title{Create ID (insertion and deletion) catalog from ID VCFs}
 \usage{
-VCFsToIDCatalogs(list.of.vcfs, ref.genome, region)
+VCFsToIDCatalogs(list.of.vcfs, ref.genome, region = "unknown")
 }
 \arguments{
 \item{list.of.vcfs}{List of in-memory VCFs. The list names will be

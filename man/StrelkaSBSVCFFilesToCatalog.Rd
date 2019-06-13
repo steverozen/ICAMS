@@ -4,7 +4,8 @@
 \alias{StrelkaSBSVCFFilesToCatalog}
 \title{Create SBS and DBS catalogs from Strelka SBS VCF files.}
 \usage{
-StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, region)
+StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges = NULL,
+  region = "unknown")
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka SBS VCF files.}
@@ -21,7 +22,8 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-  catalogs (one each for 78, 136, and 144). Each catalog has attributes
+  catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
+  and DBS 144 catalog will not be generated. Each catalog has attributes
   added. See \code{\link{as.catalog}} for more details.
 }
 \description{
