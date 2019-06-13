@@ -16,8 +16,9 @@ This object must have
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome", or "transcript".}
+\item{region}{A character string designating a region, one of
+\code{genome}, \code{transcript}, \code{exome}, \code{unknown};
+see \code{\link{ICAMS}}.}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}

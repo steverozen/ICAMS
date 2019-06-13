@@ -37,13 +37,6 @@ Collapse192CatalogTo96 <- function(catalog) {
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
 
-  # attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
-  # attr(mat96, "region") <- attributes(catalog)$region
-  # attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
-  #attr(mat96, "abundance") <- 
-  #  Collapse192AbundanceTo96(attributes(catalog)$abundance)
-  # cat96 <- CreateCatalogClass(mat96)
-  
   cat96 <-
     as.catalog(
       object = mat96,
@@ -87,13 +80,6 @@ Collapse1536CatalogTo96 <- function(catalog) {
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   
-  # attr(mat96, "ref.genome") <- attributes(catalog)$ref.genome
-  # attr(mat96, "region") <- attributes(catalog)$region
-  # attr(mat96, "catalog.type") <- attributes(catalog)$catalog.type
-  # attr(mat96, "abundance") <- 
-  #  Collapse1536AbundanceTo96(attributes(catalog)$abundance)
-  # cat96 <- CreateCatalogClass(mat96)
-  
   cat96 <-
     as.catalog(
       object = mat96,
@@ -127,13 +113,6 @@ Collapse144CatalogTo78 <- function(catalog) {
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
   mat78 <- mat78[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
-
-  # attr(mat78, "ref.genome") <- attributes(catalog)$ref.genome
-  # attr(mat78, "region") <- attributes(catalog)$region
-  # attr(mat78, "catalog.type") <- attributes(catalog)$catalog.type
-  # attr(mat78, "abundance") <- 
-  #  Collapse144AbundanceTo78(attributes(catalog)$abundance)  
-  # cat78 <- CreateCatalogClass(mat78)
 
   cat78 <-
     as.catalog(
@@ -200,7 +179,8 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' @param target.ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param target.region One of "genome", "exome"; see \code{\link{as.catalog}}.
+#' @param target.region A \code{region} argument; see \code{\link{as.catalog}}
+#' and \code{\link{ICAMS}}.
 #'
 #' @param target.catalog.type A character string acting as a catalog type
 #'   identifier, one of "counts", "density", "counts.signature",
@@ -856,8 +836,8 @@ IsGRCh38 <- function(x) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region A character string for genomic region as described
-#' in \code{\link{ICAMS}}.
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @param catalog.type A character string for \code{catalog.type}
 #' as described in \code{\link{ICAMS}}.
@@ -873,6 +853,8 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
   StopIfRegionIllegal(region)
   
   if (!IsGRCh38(ref.genome) && !IsGRCh37(ref.genome)) return(NULL)
+  
+  if (region == "unknown") return(NULL)
   
   if (nrow(object) == 83) return(NULL)
 
@@ -1004,8 +986,9 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome", or "transcript".
+#' @param region A character string designating a region, one of
+#' \code{genome}, \code{transcript}, \code{exome}, \code{unknown};
+#' see \code{\link{ICAMS}}.
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".

@@ -12,7 +12,8 @@ ReadCatalog(file, ref.genome, region, catalog.type, strict = TRUE)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{region}{One of "genome", "exome".}
+\item{region}{region A character string designating a genomic region;
+see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}

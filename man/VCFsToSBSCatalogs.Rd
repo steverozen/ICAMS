@@ -18,8 +18,8 @@ output catalog.}
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+\item{region}{A character string designating a genomic region;
+see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 }
 \value{
 A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
@@ -32,5 +32,5 @@ out of the contents in list.of.SBS.vcfs. The SBS VCFs must not contain
 DBSs, indels, or other types of mutations.
 }
 \note{
-SBS 192 catalog only contains mutations in transcribed regions.
+SBS 192 catalogs only contain mutations in transcribed regions.
 }

@@ -13,8 +13,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome, region,
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+\item{region}{A character string designating a genomic region;
+see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{output.file}{The name of the PDF file to be produced.}
 }

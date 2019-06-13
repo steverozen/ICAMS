@@ -17,8 +17,8 @@ MutectVCFFilesToCatalogAndPlotToPdf(files, ref.genome, trans.ranges,
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 
-\item{region}{A character string acting as a region identifier, one of
-"genome", "exome".}
+\item{region}{A character string designating a genomic region;
+see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{output.file}{The name of the PDF file to be produced.}
 }

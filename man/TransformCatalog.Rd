@@ -15,7 +15,8 @@ must \strong{not} be an ID (indel) catalog.}
 \item{target.ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{target.region}{One of "genome", "exome"; see \code{\link{as.catalog}}.}
+\item{target.region}{A \code{region} argument; see \code{\link{as.catalog}}
+and \code{\link{ICAMS}}.}
 
 \item{target.catalog.type}{A character string acting as a catalog type
 identifier, one of "counts", "density", "counts.signature",
