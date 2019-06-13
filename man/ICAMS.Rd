@@ -36,7 +36,8 @@ represented in the catalog (e.g. SBS96, ID, etc, ...). The possible
 additional classes are
 one of \code{SBS96Catalog}, \code{SBS192Catalog},
 \code{SBS1536Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog},
-\code{DBS136Catalog}, \code{IndelCatalog}.
+\code{DBS136Catalog}, \code{IndelCatalog}. \code{\link{as.catalog}}
+is the main constructor.
 
 Conceptually, a catalog has one of the following types, which are
 indicated in the attribute \code{catalog.type}:
@@ -71,7 +72,13 @@ counts of different source sequences for mutations. For example,
 for SBSs in trinucleotide context, the abundances would be the counts
 of each trinucleotide in the human genome, exome, or in the transcribed
 region of the genome. See below under \code{\link{TransformCatalog}}
-for more information.
+for more information. Abundances logically depend on the species in
+question and on the part of the genome being analyzed. In ICAMS functions
+these are specified by the \code{catalog} class attribute and
+function argument \code{region}. Possible values for
+\code{region} are the strings \code{genome}, \code{transcript}, 
+\code{exome}, and \code{unknown}; \code{transcript} includes entire
+transcribed regions, i.e. the introns as well as the exons. 
 
 If you need to create a catalog from a source other than
 this package (i.e. other than with

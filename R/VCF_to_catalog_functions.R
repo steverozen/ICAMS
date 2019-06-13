@@ -863,14 +863,14 @@ CreateOneColSBSCatalog <- function(vcf, sample.id = "count") {
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
 #'   catSBS192 catSBS1536. Each catalog has attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
-#' @note SBS 192 catalog only contains mutations in transcribed regions.
+#' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
 #' @export
 VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, trans.ranges, region) {
@@ -1058,8 +1058,8 @@ CreateOneColDBSCatalog <- function(vcf, sample.id = "count") {
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
 #'   catDBS144 catDBS136. Each catalog has attributes added. See
@@ -1135,8 +1135,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, trans.ranges, region
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#'   "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). Each catalog has attributes
@@ -1170,8 +1170,8 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'
@@ -1213,8 +1213,8 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return An ID (indel) catalog with attributes added. See
 #'   \code{\link{as.catalog}} for more details.
@@ -1242,8 +1242,8 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region) {
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'
@@ -1281,8 +1281,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. Each catalog has
@@ -1319,8 +1319,8 @@ MutectVCFFilesToCatalog <-
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
-#' @param region A character string acting as a region identifier, one of
-#' "genome", "exome".
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'

@@ -12,8 +12,8 @@ InferAbundance(object, ref.genome, region, catalog.type)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{region}{A character string for genomic region as described
-in \code{\link{ICAMS}}.}
+\item{region}{A character string designating a genomic region;
+see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{catalog.type}{A character string for \code{catalog.type}
 as described in \code{\link{ICAMS}}.}

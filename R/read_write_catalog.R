@@ -9,7 +9,8 @@
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param region One of "genome", "exome".
+#' @param region region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
