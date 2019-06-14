@@ -845,6 +845,46 @@ IsGRCh38 <- function(x) {
            "BSgenome.Hsapiens.UCSC.hg38")
 }
 
+#' @keywords internal
+TestInferA <- function(object, ref.genome, region, catalog.type) {
+    
+    StopIfNrowIllegal(object)
+    StopIfRegionIllegal(region)
+
+    density.ab <- c(
+      "96" = 32,
+      "78" = 10,
+      "192" = 64,
+      "144" = 16, # 136
+      "136" = 136, # 16
+      "1536" = 512
+    )
+        
+    if (IsDensity(catalog.type)) {
+      rep.count <- density.ab[as.character(nrow(object))]
+      if (is.na(rep.count)) {
+        stop("Cannot find abundance length for catalogs with ",
+             as.character(nrow(object)), " rows")
+      }
+      return(rep(1, density.ab[as.character(nrow(object))]))
+    }
+      
+    if (is.null(ref.genome)) return(NULL)
+    ref.genome <- NormalizeGenomeArg(ref.genome)
+    ab <- all.abundance[[ref.genome@pkgname]]
+    if (is.null(ab)) return(NULL)
+
+    ab2 <- ab[[region]]
+    if (is.null(ab2)) return(NULL)
+
+    ab3 <- ab2[[as.character(nrow(object))]]
+
+    return(ab3)
+
+  }
+  
+  
+
 #' Infer \code{abundance} given a matrix-like \code{object} and additional information.
 #'
 #' @param object A numeric matrix, numeric data frame, or \code{catalog}.
@@ -864,6 +904,8 @@ IsGRCh38 <- function(x) {
 #'
 #' @keywords internal
 InferAbundance <- function(object, ref.genome, region, catalog.type) {
+  
+  foo <- TestInferA(object, ref.genome, region, catalog.type)
   
   StopIfNrowIllegal(object)
   StopIfRegionIllegal(region)
@@ -1052,6 +1094,12 @@ as.catalog <- function(object,
   
   if (is.null(abundance)) {
     abundance <- InferAbundance(object, ref.genome, region, catalog.type)
+    foo <- TestInferA(object, ref.genome, region, catalog.type)
+    if (length(abundance) != length(foo)) {
+      stop("wrong lengths for nrow(object) = ", nrow(object), ": ",
+           length(abundance), " ", length(foo))
+    }
+    stopifnot(abundance == foo)
   } 
   attr(object, "abundance") <- abundance
 

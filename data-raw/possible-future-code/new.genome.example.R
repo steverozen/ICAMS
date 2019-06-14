@@ -30,9 +30,6 @@ PlotCatalogToPdf(c96,
 ## What you reall need are abundances. The ref.genome argument is
 ## just a convenience that lets you look up abundances.
 
-BiocManager::install("BSgenome.Mmusculus.UCSC.mm8")
-library(BSgenome.Mmusculus.UCSC.mm8)
-
 BiocManager::install("BSgenome.Mmusculus.UCSC.mm10")
 library(BSgenome.Mmusculus.UCSC.mm10)
 

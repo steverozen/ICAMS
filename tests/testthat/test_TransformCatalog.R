@@ -44,7 +44,7 @@ and genome counts -> exome count -> density", {
 
 })
 
-test_that("Legal transformation 2;
+test_that("Legal transformation 3;
 counts -> density; genome GRCh37 counts -> genome GRCh37 density,
 and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
