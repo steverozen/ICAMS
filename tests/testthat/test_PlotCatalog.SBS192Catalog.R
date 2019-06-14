@@ -1,6 +1,6 @@
 context("PlotCatalog.SBS192Catalog")
 
-test_that("PlotCatalog.SBS192Catalog function is working properly", {
+test_that("PlotCatalog.SBS192Catalog function", {
   par(mar = c(2, 2, 2, 1))
   catalog.counts <-
     ReadCatalog("testdata/regress.cat.sbs.192.csv", 

@@ -1,6 +1,6 @@
 context("PlotCatalog.IndelCatalog")
 
-test_that("PlotCatalog.IndelCatalog function is working properly", {
+test_that("PlotCatalog.IndelCatalog function", {
   par(mar = c(2, 2, 2, 1))
   catalog <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                        ref.genome = "GRCh37",

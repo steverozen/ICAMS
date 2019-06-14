@@ -1,6 +1,6 @@
 context("PlotCatalogToPdf.IndelCatalog")
 
-test_that("PlotCatalogToPdf.IndelCatalog function is working properly", {
+test_that("PlotCatalogToPdf.IndelCatalog function", {
   catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                        ref.genome = "GRCh37",
                        region = "genome", catalog.type = "counts")

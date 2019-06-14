@@ -1,6 +1,6 @@
 context("AddAndCheckSequenceID")
 
-test_that("AddAndCheckSequenceID function is working properly", {
+test_that("AddAndCheckSequenceID function", {
   load("testdata/test_AddAndCheckSequenceID.Rdata")
   id.vcf <- ReadStrelkaIDVCF("testdata/Strelka.ID.GRCh37.vcf")
   df <- AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5)
