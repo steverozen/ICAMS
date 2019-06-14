@@ -31,3 +31,21 @@ PlotCatalogToPdf(c96,
 ## just a convenience that lets you look up abundances.
 
 BiocManager::install("BSgenome.Mmusculus.UCSC.mm8")
+library(BSgenome.Mmusculus.UCSC.mm8)
+
+BiocManager::install("BSgenome.Mmusculus.UCSC.mm10")
+library(BSgenome.Mmusculus.UCSC.mm10)
+
+strelka.files <- 
+  dir(devtools::package_file("data-raw/possible-future-code"),
+      pattern = ".vcf", full.names = TRUE)
+
+
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf(
+  files = strelka.files,
+  ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+  trans.ranges = NULL,
+  region = "genome",
+  output.file = "test.pdf")
+
+
