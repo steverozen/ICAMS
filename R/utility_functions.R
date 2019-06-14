@@ -240,6 +240,14 @@ TransformCatalog <-
                      target.ref.genome, 
                      target.region,
                      target.catalog.type)
+    foo <- TestInferA(catalog, target.ref.genome, target.region, target.catalog.type)
+    if (length(inferred.abundance) != length(foo)) {
+      stop("wrong lengths for nrow(catalog) = ", nrow(catalog), ": ",
+           length(inferrred.abundance), " ", length(foo))
+    }
+    stopifnot(inferred.abundance == foo)
+    
+    
 
     # TODO(nanhai): add target.abundance argument.
     if (is.null(inferred.abundance)) stop("Cannot infer abundance")

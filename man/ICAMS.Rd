@@ -73,9 +73,16 @@ for SBSs in trinucleotide context, the abundances would be the counts
 of each trinucleotide in the human genome, exome, or in the transcribed
 region of the genome. See below under \code{\link{TransformCatalog}}
 for more information. Abundances logically depend on the species in
-question and on the part of the genome being analyzed. In ICAMS functions
-these are specified by the \code{catalog} class attribute and
-function argument \code{region}. Possible values for
+question and on the part of the genome being analyzed. 
+
+In ICAMS functions
+these can sometimes be inferred from \code{catalog} class attribute and
+function arguments \code{region}, \code{ref.genome}, and \code{catalog.type}.
+Otherwise they can be provided as an \code{abundance} argument.
+See \code{\link{all.abudance}} for examples.
+
+
+ Possible values for
 \code{region} are the strings \code{genome}, \code{transcript}, 
 \code{exome}, and \code{unknown}; \code{transcript} includes entire
 transcribed regions, i.e. the introns as well as the exons. 
@@ -129,6 +136,7 @@ and ID catalogs from Mutect VCFs and plots the catalogs.
 
 \section{The \code{ref.genome} (reference genome) argument}{
 
+
 Many functions take the argument \code{ref.genome}.
 
 In order to create a mutational
@@ -169,9 +177,8 @@ Further instructions are at \cr
 https://bioconductor.org/packages/release/bioc/html/BSgenome.html. \cr
 Use of ICAMS with other reference genomes is restricted to
 \code{catalog.type} of \code{counts} or \code{counts.signature}
-unless the user also creates the necessary abundance vectors. \cr
-See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for
-an example.
+unless the user also creates the necessary abundance vectors.
+See \code{\link{all.abundance}}.
 }
 
 \section{Writing catalogs to files}{
