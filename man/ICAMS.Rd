@@ -79,7 +79,7 @@ In ICAMS functions
 these can sometimes be inferred from \code{catalog} class attribute and
 function arguments \code{region}, \code{ref.genome}, and \code{catalog.type}.
 Otherwise they can be provided as an \code{abundance} argument.
-See \code{\link{all.abudance}} for examples.
+See \code{\link{all.abundance}} for examples.
 
 
  Possible values for
