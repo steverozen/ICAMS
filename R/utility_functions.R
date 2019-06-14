@@ -243,7 +243,7 @@ TransformCatalog <-
     foo <- TestInferA(catalog, target.ref.genome, target.region, target.catalog.type)
     if (length(inferred.abundance) != length(foo)) {
       stop("wrong lengths for nrow(catalog) = ", nrow(catalog), ": ",
-           length(inferrred.abundance), " ", length(foo))
+           length(inferred.abundance), " ", length(foo))
     }
     stopifnot(inferred.abundance == foo)
     
