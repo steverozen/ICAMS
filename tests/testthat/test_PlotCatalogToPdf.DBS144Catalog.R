@@ -1,6 +1,6 @@
 context("PlotCatalogToPdf.DBS144Catalog")
 
-test_that("PlotCatalogToPdf.DBS144Catalog function is working properly", {
+test_that("PlotCatalogToPdf.DBS144Catalog function", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
                                 ref.genome = "GRCh37",
                                 region = "transcript",

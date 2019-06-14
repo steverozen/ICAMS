@@ -1,6 +1,6 @@
 context("extended seq.context functions")
 
-test_that("extended seq.context functions are working properly for Mutect GRCh38 vcf", {
+test_that("extended seq.context functions for Mutect GRCh38 vcf", {
   vcf <- ReadAndSplitMutectVCFs("testdata/Mutect.GRCh38.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
@@ -14,7 +14,7 @@ test_that("extended seq.context functions are working properly for Mutect GRCh38
   unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
-test_that("extended seq.context functions are working properly for Mutect GRCh37 vcf", {
+test_that("extended seq.context functions for Mutect GRCh37 vcf", {
   vcf <- ReadAndSplitMutectVCFs("testdata/Mutect.GRCh37.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
@@ -28,7 +28,7 @@ test_that("extended seq.context functions are working properly for Mutect GRCh37
   unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
-test_that("extended seq.context functions are working properly for Strelka GRCh38 vcf", {
+test_that("extended seq.context functions for Strelka GRCh38 vcf", {
   vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
@@ -42,7 +42,7 @@ test_that("extended seq.context functions are working properly for Strelka GRCh3
   unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
 })
 
-test_that("extended seq.context functions are working properly for Strelka GRCh37 vcf", {
+test_that("extended seq.context functions for Strelka GRCh37 vcf", {
   vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh37.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",

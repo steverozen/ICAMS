@@ -1,6 +1,6 @@
 context("PlotCatalog.SBS1536Catalog")
 
-test_that("PlotCatalog.SBS1536Catalog function is working properly", {
+test_that("PlotCatalog.SBS1536Catalog function", {
   catalog.counts <-
     ReadCatalog("testdata/regress.cat.sbs.1536.csv", ref.genome = "GRCh37",
                 region = "genome", catalog.type = "counts")

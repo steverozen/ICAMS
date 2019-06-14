@@ -1,6 +1,6 @@
 context("CanonicalizeDBS")
 
-test_that("CanonicalizeDBS function is working properly", {
+test_that("CanonicalizeDBS function", {
   to.test <-
     c("AACC", "AACG", "AACT", "AAGC", "AAGG", "AAGT", "AATC", "AATG",
       "AATT", "ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA",

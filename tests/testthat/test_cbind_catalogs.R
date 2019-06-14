@@ -57,7 +57,7 @@ test_that("cbind method for DBS78Catalog", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for DBS144Catalog is working properly", {
+test_that("cbind method for DBS144Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
                                 ref.genome = "GRCh37",
                                 region = "transcript", 
@@ -87,7 +87,7 @@ test_that("cbind method for DBS136Catalog", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for IndelCatalog is working properly", {
+test_that("cbind method for IndelCatalog", {
   catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
