@@ -10,7 +10,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
                      file = paste0(tempdir(), "\\PlotCatSBS192.counts.test.pdf"))
   out1 <-
     PlotCatalogToPdf(catalog.counts,
-                     file = paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.test.pdf"),
+                     file = paste0(tempdir(), "\\PlotCatalog.SBS12.counts.test.pdf"),
                      plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
@@ -23,7 +23,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
     PlotCatalogToPdf(catalog.density, file = paste0(tempdir(), "\\PlotCatSBS192.density.test.pdf"))
   out1 <-
     PlotCatalogToPdf(catalog.density,
-                     file = paste0(tempdir(), "\\PlotCatSBS192NoContext.density.test.pdf"),
+                     file = paste0(tempdir(), "\\PlotCatalog.SBS12.density.test.pdf"),
                      plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
@@ -37,7 +37,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
                      file = paste0(tempdir(), "\\PlotCatSBS192.counts.signature.test.pdf"))
   out1 <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.signature.test.pdf"),
+                     file = paste0(tempdir(), "\\PlotCatalog.SBS12.counts.signature.test.pdf"),
                      plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
@@ -51,7 +51,7 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
                      file = paste0(tempdir(), "\\PlotCatSBS192.density.signature.test.pdf"))
   out1 <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = paste0(tempdir(), "\\PlotCatSBS192NoContext.density.signature.test.pdf"),
+                     file = paste0(tempdir(), "\\PlotCatalog.SBS12.density.signature.test.pdf"),
                      plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
@@ -60,9 +60,9 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
   unlink(paste0(tempdir(), "\\PlotCatSBS192.density.test.pdf"))
   unlink(paste0(tempdir(), "\\PlotCatSBS192.counts.signature.test.pdf"))
   unlink(paste0(tempdir(), "\\PlotCatSBS192.density.signature.test.pdf"))
-  unlink(paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.test.pdf"))
-  unlink(paste0(tempdir(), "\\PlotCatSBS192NoContext.density.test.pdf"))
-  unlink(paste0(tempdir(), "\\PlotCatSBS192NoContext.counts.signature.test.pdf"))
-  unlink(paste0(tempdir(), "\\PlotCatSBS192NoContext.density.signature.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatalog.SBS12.counts.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatalog.SBS12.density.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatalog.SBS12.counts.signature.test.pdf"))
+  unlink(paste0(tempdir(), "\\PlotCatalog.SBS12.density.signature.test.pdf"))
   graphics.off()
 })
