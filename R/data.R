@@ -58,6 +58,9 @@ NULL
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh38"
 
+#' K-mer abundances
+"all.abundance"
+
 # Quiets concerns of R CMD check about no visible binding for global variable
 if(getRversion() >= "2.15.1") {
   utils::globalVariables(c("POS2", "POS", "bothstrand", "strand", ".", "CHROM",
