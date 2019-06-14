@@ -83,6 +83,9 @@ ReadCatalog.SBS96Catalog <- function(file, ref.genome, region,
 #' @export
 ReadCatalog.SBS192Catalog <- function(file, ref.genome, region,
                                       catalog.type, strict = TRUE) {
+  
+  StopIfTranscribedRegionIllegal(region)
+  
   cos <- data.table::fread(file)
   # cos.copy <- cos # For debugging, testing
   stopifnot(nrow(cos) == 192)
@@ -189,6 +192,9 @@ ReadCatalog.DBS78Catalog <- function(file, ref.genome, region,
 #' @export
 ReadCatalog.DBS144Catalog <- function(file, ref.genome, region,
                                       catalog.type, strict = TRUE) {
+  
+  StopIfTranscribedRegionIllegal(region)
+  
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 144)
   if (strict) {

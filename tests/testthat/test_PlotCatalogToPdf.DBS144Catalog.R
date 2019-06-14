@@ -3,7 +3,8 @@ context("PlotCatalogToPdf.DBS144Catalog")
 test_that("PlotCatalogToPdf.DBS144Catalog function is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
                                 ref.genome = "GRCh37",
-                                region = "genome", catalog.type = "counts")
+                                region = "transcript",
+                                catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
     PlotCatalogToPdf(catalog.counts,
@@ -12,7 +13,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function is working properly", {
 
   catalog.density <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
-                     target.region = "genome",
+                     target.region = "transcript",
                      target.catalog.type = "density")
   out <-
     PlotCatalogToPdf(catalog.density,
@@ -21,7 +22,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function is working properly", {
 
   catalog.counts.signature <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
-                     target.region = "genome",
+                     target.region = "transcript",
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
@@ -30,7 +31,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function is working properly", {
 
   catalog.density.signature <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
-                     target.region = "genome",
+                     target.region = "transcript",
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,

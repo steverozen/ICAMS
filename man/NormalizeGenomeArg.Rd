@@ -11,7 +11,7 @@ NormalizeGenomeArg(ref.genome)
 \code{\link{ICAMS}}.}
 }
 \value{
-If \code{ref.genome} is \code{NULL} or
+If \code{ref.genome} is 
 a \code{\link{BSgenome}} object, return it.
 Otherwise return the \code{\link{BSgenome}} object identified by the
 string \code{ref.genome}.

@@ -732,8 +732,7 @@ ReadAndSplitMutectVCFs <- function(files) {
   return(split.vcfs)
 }
 
-#' Create single base mutation catalog for *one* sample from
-#' a Variant Call Format (VCF) file.
+#' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated by the AddSeqContext and
 #'   AddTranscript functions. It must *not* contain indels and must *not*
@@ -748,14 +747,15 @@ ReadAndSplitMutectVCFs <- function(files) {
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the SBS mutation catalog: 96,
-#'   192, 1536 catalog respectively. If trans.ranges = NULL, SBS 192 catalog
-#'   will not be generated.
+#' @return A list of three 1-column matrices with the names
+#' \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}.
+#'  If trans.ranges is NULL, \code{catSBS192} is not generated.
+#'  Do not rely on the order of elements in the list.
 #'
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSBSCatalog <- function(vcf, trans.ranges = NULL, 
+CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL, 
                                    sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -912,7 +912,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 
     CheckSeqContextInVCF(SBS, "seq.21bases")
     SBS <- AddTranscript(SBS, trans.ranges)
-    SBS.cat <- CreateOneColSBSCatalog(SBS, trans.ranges)
+    SBS.cat <- CreateOneColSBSMatrix(SBS, trans.ranges)
     rm(SBS)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
@@ -926,30 +926,23 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 
   catSBS96 <-
     as.catalog(catSBS96, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = InferAbundance(catSBS96, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+               region = region, catalog.type = "counts")
+
   catSBS1536 <-
     as.catalog(catSBS1536, ref.genome = ref.genome,
                region = region, catalog.type = "counts",
-               abundance = InferAbundance(catSBS1536, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+               abundance = NULL)
   if (is.null(trans.ranges)) {
     return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536))
   }
   
   colnames(catSBS192) <- names(list.of.SBS.vcfs)
+  in.transcript.region <- ifelse(region == "genome", "transcript", region)
   catSBS192 <-
     as.catalog(catSBS192, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = InferAbundance(catSBS192, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+               region = in.transcript.region, 
+               catalog.type = "counts",
+               abundance = NULL)
   return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
               catSBS1536 = catSBS1536))
 }
@@ -970,14 +963,16 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #'
 #' @import data.table
 #'
-#' @return A list of three matrices containing the DBS catalog: catDBS78,
-#'   catDBS144, catDBS136 respectively. If trans.ranges = NULL, DBS 144 catalog
-#'   will not be generated.
+#' @return A list of three 1-column matrices with the names
+#' \code{catDBS78}, \code{catDBS144}, and \code{catDBS136}.
+#'  If trans.ranges is NULL, \code{catDBS144} is
+#'   not generated. Do not rely on the order of elements
+#'   in the list.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColDBSCatalog <- function(vcf, trans.ranges = NULL,
+CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
                                    sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -1137,7 +1132,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 
     DBS <- AddTranscript(DBS, trans.ranges)
     CheckSeqContextInVCF(DBS, "seq.21bases")
-    DBS.cat <- CreateOneColDBSCatalog(DBS, trans.ranges)
+    DBS.cat <- CreateOneColDBSMatrix(DBS, trans.ranges)
     rm(DBS)
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
     catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
@@ -1151,30 +1146,26 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 
   catDBS78 <-
     as.catalog(catDBS78, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = InferAbundance(catDBS78, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+               region = region, catalog.type = "counts")
+  
   catDBS136 <-
-    as.catalog(catDBS136, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = InferAbundance(catDBS136, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+    as.catalog(catDBS136, 
+               ref.genome = ref.genome,
+               region = region,
+               catalog.type = "counts",
+               abundance = NULL)
 
   if (is.null(trans.ranges)) {
     return(list(catDBS78 = catDBS78, catDBS136 = catDBS136))
   }
   colnames(catDBS144) <- names(list.of.DBS.vcfs)
+  in.transcript.region <- ifelse(region == "genome", "transcript", region)
   catDBS144 <-
-    as.catalog(catDBS144, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = InferAbundance(catDBS144, 
-                                          ref.genome = ref.genome,
-                                          region = region, 
-                                          catalog.type = "counts"))
+    as.catalog(catDBS144, 
+               ref.genome = ref.genome,
+               region = in.transcript.region, 
+               catalog.type = "counts",
+               abundance = NULL)
   return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
               catDBS144 = catDBS144))
 }

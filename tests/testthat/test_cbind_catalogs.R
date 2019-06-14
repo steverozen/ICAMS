@@ -1,6 +1,6 @@
 context("cbind methods for catalogs")
 
-test_that("cbind method for SBS96Catalog is working properly", {
+test_that("cbind method for SBS96Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -14,10 +14,11 @@ test_that("cbind method for SBS96Catalog is working properly", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for SBS192Catalog is working properly", {
+test_that("cbind method for SBS192Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                                 ref.genome = "GRCh37",
-                                region = "genome", catalog.type = "counts")
+                                region = "transcript",
+                                catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
   cat1 <- catalog.counts[, 1, drop = FALSE]
@@ -28,7 +29,7 @@ test_that("cbind method for SBS192Catalog is working properly", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for SBS1536Catalog is working properly", {
+test_that("cbind method for SBS1536Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.1536.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -42,7 +43,7 @@ test_that("cbind method for SBS1536Catalog is working properly", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for DBS78Catalog is working properly", {
+test_that("cbind method for DBS78Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -59,7 +60,8 @@ test_that("cbind method for DBS78Catalog is working properly", {
 test_that("cbind method for DBS144Catalog is working properly", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
                                 ref.genome = "GRCh37",
-                                region = "genome", catalog.type = "counts")
+                                region = "transcript", 
+                                catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
   cat1 <- catalog.counts[, 1, drop = FALSE]
@@ -70,10 +72,11 @@ test_that("cbind method for DBS144Catalog is working properly", {
   unlink(paste0(tempdir(), "\\test.pdf"))
 })
 
-test_that("cbind method for DBS136Catalog is working properly", {
+test_that("cbind method for DBS136Catalog", {
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.136.csv",
                                 ref.genome = "GRCh37",
-                                region = "genome", catalog.type = "counts")
+                                region = "genome",
+                                catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
   cat1 <- catalog.counts[, 1, drop = FALSE]

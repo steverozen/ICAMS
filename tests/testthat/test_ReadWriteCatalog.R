@@ -1,6 +1,6 @@
 context("Read and Write Catalog")
 
-test_that("Functions for reading and writing catalog are working properly", {
+test_that("Functions for reading and writing catalogs", {
   read.fn <-
     c(ReadCatalog,
       ReadCatalog,
@@ -28,16 +28,26 @@ test_that("Functions for reading and writing catalog are working properly", {
       "testdata/HepG2.dbs.136.csv",
       "testdata/BTSG_WGS_PCAWG.indels.csv"
     )
+  
+  a.region <-
+    c("genome",
+      "transcript",
+      "genome",
+      "genome",
+      "transcript",
+      "genome",
+      "genome"
+      )
 
-  Test1Cat <- function(my.read, my.write, my.file) {
+  Test1Cat <- function(my.read, my.write, my.file, my.region) {
     ct1 <- my.read(my.file, ref.genome = "GRCh37",
-                   region = "genome", catalog.type = "counts")
+                   region = my.region, catalog.type = "counts")
     my.write(ct1, paste0(tempdir(), "\\tmp.ct.txt"))
     ct2 <- my.read(paste0(tempdir(), "\\tmp.ct.txt"), ref.genome = "GRCh37",
-                   region = "genome", catalog.type = "counts")
+                   region = my.region, catalog.type = "counts")
     expect_equal(ct1, ct2)
   }
 
-  discard <- mapply(Test1Cat, read.fn, write.fn, fl)
+  discard <- mapply(Test1Cat, read.fn, write.fn, fl, a.region)
   unlink(paste0(tempdir(), "\\tmp.ct.txt"))
 })

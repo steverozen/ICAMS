@@ -95,7 +95,7 @@ test_that("FindDelMH", {
     4)
 })
 
-test_that("CreateOneColIDCatalog insertions", {
+test_that("CreateOneColIDMatrx insertions", {
   MakeTestInsVCF <- function() {
     return(data.frame(
       seq.context=c("TTTTTTTTTTTTCGACCCCCCCCCCCC",
@@ -110,11 +110,11 @@ test_that("CreateOneColIDCatalog insertions", {
   }
   load("testdata/create_one_col_insert_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDCatalog(MakeTestInsVCF(), NULL, trace = 0),
+    ICAMS:::CreateOneColIDMatrix(MakeTestInsVCF(), NULL, trace = 0),
     create.one.col.insert.test)
 })
 
-test_that("CreateOneColIDCatalog deletions", {
+test_that("CreateOneColIDMatrix deletions", {
   MakeTestDelVCF <- function() {
     return(
       data.frame(
@@ -130,7 +130,7 @@ test_that("CreateOneColIDCatalog deletions", {
   }
   load("testdata/create_one_col_delete_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDCatalog(MakeTestDelVCF(), NULL, trace = 0),
+    ICAMS:::CreateOneColIDMatrix(MakeTestDelVCF(), NULL, trace = 0),
     create.one.col.delete.test)
 })
 

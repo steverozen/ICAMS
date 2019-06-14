@@ -707,7 +707,7 @@ CreatePentanucAbundance <- function(file) {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @return If \code{ref.genome} is \code{NULL} or
+#' @return If \code{ref.genome} is 
 #' a \code{\link{BSgenome}} object, return it.
 #' Otherwise return the \code{\link{BSgenome}} object identified by the
 #' string \code{ref.genome}.
@@ -733,6 +733,20 @@ NormalizeGenomeArg <- function(ref.genome) {
   }
   
   return(ref.genome)
+}
+
+#' Stop if \code{region} is illegal for an in-transcript catalogs
+#'
+#' @param region The region to test (a character string)
+#' 
+#' @keywords internal
+
+StopIfTranscribedRegionIllegal <- function(region) {
+  if (!region %in% c("transcript", "exome")) {
+    stop("Require region to be one of transcript, exome, or unknown for ",
+         "SBS192Catalog and DBS144Catalog\n",
+         "Got ", region)
+  }
 }
 
 #' Stop if the number of rows in \code{object} is illegal
@@ -886,13 +900,13 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     if (IsDensity(catalog.type)) return(abundance.3bp.flat.stranded)
 
     if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
+      if (region == "transcript") {
         return(abundance.3bp.genome.stranded.GRCh37)
       } else if (region == "exome") {
         return(abundance.3bp.exome.stranded.GRCh37)
       }
     } else if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
+      if (region == "transcript") {
         return(abundance.3bp.genome.stranded.GRCh38)
       } else if (region == "exome") {
         return(abundance.3bp.exome.stranded.GRCh38)
@@ -909,13 +923,15 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
       } else if (region == "exome") {
         return(abundance.5bp.exome.unstranded.GRCh37)
       }
-    } else if (IsGRCh38(ref.genome)) {
+    } 
+    if (IsGRCh38(ref.genome)) {
       if (region == "genome") {
         return(abundance.5bp.genome.unstranded.GRCh38)
       } else if (region == "exome") {
         return(abundance.5bp.exome.unstranded.GRCh38)
       }
-    }
+    } 
+    stop("Programming error; no abundance for 5bp.transcript.unstranded")
   }
 
   if(nrow(object) == 78) {
@@ -944,14 +960,14 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     if (catalog.type %in% c("density", "density.signature")) {
       return(abundance.2bp.flat.stranded)
     } else if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.2bp.genome.stranded.GRCh37)
+      if (region == "transcript") {
+        return(abundance.2bp.genome.stranded.GRCh37) # genome sic, really transcript
       } else if (region == "exome") {
         return(abundance.2bp.exome.stranded.GRCh37)
       }
     } else if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.2bp.genome.stranded.GRCh38)
+      if (region == "transcript") {
+        return(abundance.2bp.genome.stranded.GRCh38)  # genome, sic, really transcript
       } else if (region == "exome") {
         return(abundance.2bp.exome.stranded.GRCh38)
       }
@@ -1025,13 +1041,6 @@ as.catalog <- function(object,
   
   StopIfNrowIllegal(object)
   
-#  ref.genome.name <- NormalizeGenomeArg(ref.genome)@pkgname
-#  if (missing(abundance)) {
-#    stopifnot(ref.genome.name %in%
-#                c("BSgenome.Hsapiens.1000genomes.hs37d5",
-#                  "BSgenome.Hsapiens.UCSC.hg38"))
-#  }
-  
   StopIfCatalogTypeIllegal(catalog.type)
   
   if (!is.null(ref.genome)) {
@@ -1050,17 +1059,12 @@ as.catalog <- function(object,
   class(object) <- append(class(object), class.string, after = 0)
   class(object) <- unique(attributes(object)$class)
   
-  # TODO(Nanhai): move this logic to the VCF to catalog functions, and
-  # change this to error checking.
+  # TODO(Steve): check that his has been moved 
+  # to the VCF -> catalog functions
   if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
-    if (region == "transcript") {
-      attr(object, "region") <- "transcript"
-    } else {
-      attr(object, "region") <- ifelse(region == "genome", "transcript", "exome")
-    }
-  } else {
-    attr(object, "region") <- region
+    StopIfTranscribedRegionIllegal(region)
   }
+  attr(object, "region") <- region
   
   return(object)
 }

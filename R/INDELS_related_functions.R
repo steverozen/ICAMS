@@ -592,7 +592,7 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
   return(ret)
 }
 
-#' @title Create one column of an indel catalog from one VCF
+#' @title Create one column of the matrix for an indel catalog from *one* in-memory VCF.
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
 #'   \code{\link{AddAndCheckSequenceID}} function. It must only
@@ -615,15 +615,10 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'   useful for debugging and testing. The larger the number, the
 #'   more output.
 #'
-#' @return A list with two elements:
-#'   ID.cat:   A 1-column matrix containing the mutation catalog information.
-#'   problems: Locations of neighboring indels or indels neighboring SBS.
-#'             In the future we might handle these depending on what we
-#'             find in the indel calls from different variant callers. This
-#'             is not implemented at present.
+#' @return A 1-column matrix containing the mutation catalog information.
 #'
 #' @keywords internal
-CreateOneColIDCatalog <- function(ID.vcf, SBS.vcf, trace = 0) {
+CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
@@ -683,7 +678,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
     ID <- AddAndCheckSequenceID(ID, ref.genome = ref.genome)
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
-    one.ID.column <- CreateOneColIDCatalog(ID)
+    one.ID.column <- CreateOneColIDMatrix(ID)
     rm(ID)
     catID <- cbind(catID, one.ID.column)
   }
