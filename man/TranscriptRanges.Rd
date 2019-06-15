@@ -36,10 +36,10 @@ class \code{SBS192Catalog}.
 For these two tables, only genes that are associated with a CCDS ID are kept for transcriptional
 strand bias analysis. 
 
-This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}},
-\code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}}, \cr
-\code{\link{MutectVCFFilesToCatalog}},
+This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}}, \cr
+\code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}}, 
+\code{\link{MutectVCFFilesToCatalog}}, \cr
 \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}},
-\code{\link{VCFsToSBSCatalogs}} \cr and \code{\link{VCFsToDBSCatalogs}}.
+\code{\link{VCFsToSBSCatalogs}} and \code{\link{VCFsToDBSCatalogs}}.
 }
 \keyword{datasets}
