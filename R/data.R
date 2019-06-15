@@ -60,7 +60,7 @@ NULL
 
 #' K-mer abundances.
 #'
-#' A R list with one element each for \code{BSgenome.Hsapiens.1000genomes.hs37d5},
+#' An R list with one element each for \code{BSgenome.Hsapiens.1000genomes.hs37d5},
 #' and \code{BSgenome.Hsapiens.UCSC.hg38}.
 #' Each element contains K-mer abundances for \code{exome}, \code{transcript}, 
 #' and \code{genome} regions all sub-lists keyed by those strings.
