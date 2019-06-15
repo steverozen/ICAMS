@@ -77,11 +77,13 @@ abundance.2bp.transcript.unstranded.GRCh38 <-
 
 abundance.2bp.flat.unstranded <- rep(1, length(abundance.2bp.genome.unstranded.GRCh37))
 names(abundance.2bp.flat.unstranded) <- names(abundance.2bp.genome.unstranded.GRCh37)
+
 abundance.2bp.flat.stranded <- rep(1, length(abundance.2bp.genome.stranded.GRCh37))
 names(abundance.2bp.flat.stranded) <- names(abundance.2bp.genome.stranded.GRCh37)
 
 abundance.3bp.flat.unstranded <- rep(1, length(abundance.3bp.genome.unstranded.GRCh37))
 names(abundance.3bp.flat.unstranded) <- names(abundance.3bp.genome.unstranded.GRCh37)
+
 abundance.3bp.flat.stranded <- rep(1, length(abundance.3bp.genome.stranded.GRCh37))
 names(abundance.3bp.flat.stranded) <- names(abundance.3bp.genome.stranded.GRCh37)
 
@@ -90,6 +92,15 @@ names(abundance.4bp.flat.unstranded) <- names(abundance.4bp.genome.unstranded.GR
 
 abundance.5bp.flat.unstranded <- rep(1, length(abundance.5bp.genome.unstranded.GRCh37))
 names(abundance.5bp.flat.unstranded) <- names(abundance.5bp.genome.unstranded.GRCh37)
+
+flat.abundance <- list(
+    "96"   = abundance.3bp.flat.unstranded, # length = 32
+    "78"   = abundance.2bp.flat.unstranded, # length = 10
+    "192"  = abundance.3bp.flat.stranded,   # length = 64
+    "144"  = abundance.2bp.flat.stranded,   # length = 16
+    "136"  = abundance.4bp.flat.unstranded, # length = 136
+    "1536" = abundance.5bp.flat.unstranded  # length = 512
+)
 
 
 tmp.hg19 <- list(

@@ -10,6 +10,7 @@ source("data-raw/create_ranges.R")
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
+                  all.abundance,
                   overwrite = TRUE)
 
 usethis::use_data(to.reorder.SBS.192.for.plotting,
@@ -58,6 +59,7 @@ usethis::use_data(to.reorder.SBS.192.for.plotting,
                   abundance.3bp.transcript.unstranded.GRCh38,
                   abundance.2bp.transcript.unstranded.GRCh38,
                   homopolymer.ms.regex.pattern,
+                  flat.abundance,
                   internal = TRUE,
                   overwrite = TRUE)
 

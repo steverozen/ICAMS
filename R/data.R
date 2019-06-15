@@ -60,12 +60,14 @@ NULL
 
 #' K-mer abundances.
 #'
-#' An R list with one element each for \code{BSgenome.Hsapiens.1000genomes.hs37d5},
+#' An R list with one element each for 
+#' \code{BSgenome.Hsapiens.1000genomes.hs37d5},
 #' and \code{BSgenome.Hsapiens.UCSC.hg38}.
-#' Each element contains K-mer abundances for \code{exome}, \code{transcript}, 
-#' and \code{genome} regions all sub-lists keyed by those strings.
-#' For each region there are abundances appropriate for each catalog class,
-#' keyed by the number of rows in the catalog class as a string namely
+#' Each element is in turn a sub-list keyed by 
+#' \code{exome}, \code{transcript}, 
+#' and \code{genome}. Each element of the sub list
+#' is keyed by the number of rows in the catalog class (as a string, e.g. 
+#' \code{"78"}, not \code{78}. The keys are:
 #' 78 (\code{DBS78Catalog}), 96 (\code{SBS96Catalog}), 136 (\code{DBS136Catalog}),
 #' 144 (\code{DBS144Catalog}), 192 (\code{SBS192Catalog}),
 #'  and 1536 (\code{SBS1536Catalog}). So, for example to get the exome
@@ -74,12 +76,14 @@ NULL
 #'  \code{all.abundance[["BSgenome.Hsapiens.UCSC.hg38"]][["exome"]]["96"]}
 #'  or \code{all.abundance$BSgenome.Hsapiens.UCSC.hg38$exome$"96"}.
 #'  The value of the abundance is an integer vector with the the K-mers
-#'  as names and the values being the number of the K-mer.  
+#'  as names and the values being the number of the K-mer.
+
 "all.abundance"
 
 # Quiets concerns of R CMD check about no visible binding for global variable
 if(getRversion() >= "2.15.1") {
-  utils::globalVariables(c("POS2", "POS", "bothstrand", "strand", ".", "CHROM",
+  utils::globalVariables(c("all.abundance","POS2", "POS", 
+                           "bothstrand", "strand", ".", "CHROM",
                            "ALT", "count", "rn", "occurrences", "type", "strand",
                            "bothstrand", "chrom", "exome.start", "exome.end",
                            "count", "REF", "seq.21bases", "N", "pyr.mut", "nrn",

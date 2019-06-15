@@ -240,14 +240,6 @@ TransformCatalog <-
                      target.ref.genome, 
                      target.region,
                      target.catalog.type)
-    foo <- TestInferA(catalog, target.ref.genome, target.region, target.catalog.type)
-    if (length(inferred.abundance) != length(foo)) {
-      stop("wrong lengths for nrow(catalog) = ", nrow(catalog), ": ",
-           length(inferred.abundance), " ", length(foo))
-    }
-    stopifnot(inferred.abundance == foo)
-    
-    
 
     # TODO(nanhai): add target.abundance argument.
     if (is.null(inferred.abundance)) stop("Cannot infer abundance")
@@ -853,45 +845,6 @@ IsGRCh38 <- function(x) {
            "BSgenome.Hsapiens.UCSC.hg38")
 }
 
-#' @keywords internal
-TestInferA <- function(object, ref.genome, region, catalog.type) {
-    
-    StopIfNrowIllegal(object)
-    StopIfRegionIllegal(region)
-
-    density.ab <- c(
-      "96" = 32,
-      "78" = 10,
-      "192" = 64,
-      "144" = 16, # 16
-      "136" = 136, # 136
-      "1536" = 512
-    )
-        
-    if (IsDensity(catalog.type)) {
-      rep.count <- density.ab[as.character(nrow(object))]
-      if (is.na(rep.count)) {
-        stop("Cannot find abundance length for catalogs with ",
-             as.character(nrow(object)), " rows")
-      }
-      return(rep(1, density.ab[as.character(nrow(object))]))
-    }
-      
-    if (is.null(ref.genome)) return(NULL)
-    ref.genome <- NormalizeGenomeArg(ref.genome)
-    ab <- all.abundance[[ref.genome@pkgname]]
-    if (is.null(ab)) return(NULL)
-
-    ab2 <- ab[[region]]
-    if (is.null(ab2)) return(NULL)
-
-    ab3 <- ab2[[as.character(nrow(object))]]
-
-    return(ab3)
-
-  }
-  
-  
 
 #' Infer \code{abundance} given a matrix-like \code{object} and additional information.
 #'
@@ -912,137 +865,30 @@ TestInferA <- function(object, ref.genome, region, catalog.type) {
 #'
 #' @keywords internal
 InferAbundance <- function(object, ref.genome, region, catalog.type) {
-  
-  foo <- TestInferA(object, ref.genome, region, catalog.type)
-  
-  StopIfNrowIllegal(object)
-  StopIfRegionIllegal(region)
-  
-  if (!IsGRCh38(ref.genome) && !IsGRCh37(ref.genome)) return(NULL)
-  
-  if (region == "unknown") return(NULL)
-  
-  if (nrow(object) == 83) return(NULL)
-
-  if(nrow(object) == 96) {
-    if (IsDensity(catalog.type)) return(abundance.3bp.flat.unstranded)
     
-    if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.3bp.genome.unstranded.GRCh37)
-      } else if (region == "exome") {
-        return(abundance.3bp.exome.unstranded.GRCh37)
-      } else if (region == "transcript") {
-        return(abundance.3bp.transcript.unstranded.GRCh37)
-      }
-    } else if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.3bp.genome.unstranded.GRCh38)
-      } else if (region == "exome") {
-        return(abundance.3bp.exome.unstranded.GRCh38)
-      } else if (region == "transcript") {
-        return(abundance.3bp.transcript.unstranded.GRCh38)
-      }
-    } else stop("programming error")
-  }
+    StopIfNrowIllegal(object)
+    StopIfRegionIllegal(region)
 
-  if(nrow(object) == 192) {
-    if (IsDensity(catalog.type)) return(abundance.3bp.flat.stranded)
-
-    if (IsGRCh37(ref.genome)) {
-      if (region == "transcript") {
-        return(abundance.3bp.genome.stranded.GRCh37)
-      } else if (region == "exome") {
-        return(abundance.3bp.exome.stranded.GRCh37)
-      }
-    } else if (IsGRCh38(ref.genome)) {
-      if (region == "transcript") {
-        return(abundance.3bp.genome.stranded.GRCh38)
-      } else if (region == "exome") {
-        return(abundance.3bp.exome.stranded.GRCh38)
-      }
-    } else stop("Programming error")
-  }
-
-  if(nrow(object) == 1536) {
-    if (IsDensity(catalog.type)) return(abundance.5bp.flat.unstranded)
-        
-    if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.5bp.genome.unstranded.GRCh37)
-      } else if (region == "exome") {
-        return(abundance.5bp.exome.unstranded.GRCh37)
-      }
-    } 
-    if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.5bp.genome.unstranded.GRCh38)
-      } else if (region == "exome") {
-        return(abundance.5bp.exome.unstranded.GRCh38)
-      }
-    } 
-    stop("Programming error; no abundance for 5bp.transcript.unstranded")
-  }
-
-  if(nrow(object) == 78) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      return(abundance.2bp.flat.unstranded)
-    } else if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.2bp.genome.unstranded.GRCh37)
-      } else if (region == "exome") {
-        return(abundance.2bp.exome.unstranded.GRCh37)
-      } else if (region == "transcript") {
-        return(abundance.2bp.transcript.unstranded.GRCh37)
-      }
-    } else if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.2bp.genome.unstranded.GRCh38)
-      } else if (region == "exome") {
-        return(abundance.2bp.exome.unstranded.GRCh38)
-      } else if (region == "transcript") {
-        return(abundance.2bp.transcript.unstranded.GRCh38)
-      }
+    if (IsDensity(catalog.type)) {
+      ab <- flat.abundance[[as.character(nrow(object))]]
+      stopifnot(!is.null(ab))
+      return(ab)
     }
-  }
+    
+    if (is.null(ref.genome)) return(NULL)
+    ref.genome <- NormalizeGenomeArg(ref.genome)
+    ab <- all.abundance[[ref.genome@pkgname]]
+    if (is.null(ab)) return(NULL)
 
-  if(nrow(object) == 144) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      return(abundance.2bp.flat.stranded)
-    } else if (IsGRCh37(ref.genome)) {
-      if (region == "transcript") {
-        return(abundance.2bp.genome.stranded.GRCh37) # genome sic, really transcript
-      } else if (region == "exome") {
-        return(abundance.2bp.exome.stranded.GRCh37)
-      }
-    } else if (IsGRCh38(ref.genome)) {
-      if (region == "transcript") {
-        return(abundance.2bp.genome.stranded.GRCh38)  # genome, sic, really transcript
-      } else if (region == "exome") {
-        return(abundance.2bp.exome.stranded.GRCh38)
-      }
-    }
-  }
+    ab2 <- ab[[region]]
+    if (is.null(ab2)) return(NULL)
 
-  if(nrow(object) == 136) {
-    if (catalog.type %in% c("density", "density.signature")) {
-      return(abundance.4bp.flat.unstranded)
-    } else if (IsGRCh37(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.4bp.genome.unstranded.GRCh37)
-      } else if (region == "exome") {
-        return(abundance.4bp.exome.unstranded.GRCh37)
-      }
-    } else if (IsGRCh38(ref.genome)) {
-      if (region == "genome") {
-        return(abundance.4bp.genome.unstranded.GRCh38)
-      } else if (region == "exome") {
-        return(abundance.4bp.exome.unstranded.GRCh38)
-      }
-    }
+    ab3 <- ab2[[as.character(nrow(object))]]
+
+    return(ab3)
+
   }
-  stop("programming error")
-}
+  
 
 #' Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
 #'
@@ -1102,12 +948,6 @@ as.catalog <- function(object,
   
   if (is.null(abundance)) {
     abundance <- InferAbundance(object, ref.genome, region, catalog.type)
-    foo <- TestInferA(object, ref.genome, region, catalog.type)
-    if (length(abundance) != length(foo)) {
-      stop("wrong lengths for nrow(object) = ", nrow(object), ": ",
-           length(abundance), " ", length(foo))
-    }
-    stopifnot(abundance == foo)
   } 
   attr(object, "abundance") <- abundance
 
