@@ -185,18 +185,32 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' @param target.catalog.type A character string acting as a catalog type
 #'   identifier, one of "counts", "density", "counts.signature",
 #'   "density.signature"; see \code{\link{as.catalog}}.
-#'
+#'   
+#' @param target.catalog.abundance Optional, only needed when
+#'   \code{target.ref.genome} is not one of the two human reference genomes
+#'   included in ICAMS. The abundance should contain the counts of different
+#'   source sequences for mutations. \cr See
+#'   \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
+#'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
 #' @export
 TransformCatalog <-
-  function(catalog, target.ref.genome, target.region, target.catalog.type) {
+  function(catalog, target.ref.genome, target.region, 
+           target.catalog.type, target.catalog.abundance = NULL) {
 
     StopIfCatalogTypeIllegal(target.catalog.type)
     
     target.ref.genome <- NormalizeGenomeArg(target.ref.genome)
     
     source.ct <- attr(catalog, "catalog.type", exact = TRUE)
+    
+    if (is.null(attributes(catalog)$abundance) && 
+        attr(catalog, "region", exact = TRUE) != target.region) {
+      stop("Cannot transform a catalog with a null abundance ", 
+           "to a catalog with different region")
+    }
+    
     if (target.catalog.type != "counts.signature") {
       f1 <- "Cannnot transform a catalog with "
       f2 <- " unless target.catalog.type is counts.signature"  
@@ -211,6 +225,17 @@ TransformCatalog <-
         if (!IsDensity(source.ct) || !IsDensity(target.catalog.type)) {
           stop("Illegal catalog transformation with unknown region")
         }
+    } else {
+      if (source.ct == "counts.signature" && 
+          attr(catalog, "region", exact = TRUE) == target.region) {
+        return(catalog)
+      } else if (source.ct == "counts" && 
+                 attr(catalog, "region", exact = TRUE) == target.region) {
+        out <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
+        return(as.catalog(out, target.ref.genome,
+                          target.region, target.catalog.type)) 
+        
+      }
     }
     
     if (attr(catalog, "catalog.type", exact = TRUE) %in% 
@@ -235,18 +260,17 @@ TransformCatalog <-
 
     source.abundance <- attributes(catalog)$abundance
     
-    inferred.abundance <-
-      InferAbundance(catalog, 
-                     target.ref.genome, 
-                     target.region,
-                     target.catalog.type)
-
-    # TODO(nanhai): add target.abundance argument.
-    if (is.null(inferred.abundance)) stop("Cannot infer abundance")
-    # else if (!is.null(target.abundance))
-    #  stopifnot(target.abundance == inferred.abundance)
-    # }
-    target.abundance <- inferred.abundance
+    if (is.null(target.catalog.abundance)) {
+      inferred.abundance <-
+        InferAbundance(catalog, 
+                       target.ref.genome, 
+                       target.region,
+                       target.catalog.type)
+      if (is.null(inferred.abundance)) stop("Cannot infer abundance")
+      target.abundance <- inferred.abundance
+    } else {
+      target.abundance <- target.catalog.abundance
+    }
     
     stopifnot(names(source.abundance) == names(target.abundance))
 
