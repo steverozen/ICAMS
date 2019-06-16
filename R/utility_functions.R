@@ -189,8 +189,8 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #' @param target.catalog.abundance Optional, only needed when
 #'   \code{target.ref.genome} is not one of the two human reference genomes
 #'   included in ICAMS. The abundance should contain the counts of different
-#'   source sequences for mutations. \cr See
-#'   \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.
+#'   source sequences for mutations. See
+#'   \code{\link{all.abundance}}.
 #'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'

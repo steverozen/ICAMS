@@ -75,8 +75,10 @@ NULL
 #'  one would reference \cr
 #'  \code{all.abundance[["BSgenome.Hsapiens.UCSC.hg38"]][["exome"]]["96"]} \cr
 #'  or \code{all.abundance$BSgenome.Hsapiens.UCSC.hg38$exome$"96"}.
-#'  The value of the abundance is an integer vector with the the K-mers
-#'  as names and the values being the number of the K-mer.
+#'  The value of the abundance is an integer vector with the K-mers
+#'  as names and each value being the count of that K-mer.
+#'  
+#' @format See Description.
 
 "all.abundance"
 
