@@ -42,8 +42,9 @@ test_that("Functions for reading and writing catalogs", {
   Test1Cat <- function(my.read, my.write, my.file, my.region) {
     ct1 <- my.read(my.file, ref.genome = "GRCh37",
                    region = my.region, catalog.type = "counts")
-    my.write(ct1, paste0(tempdir(), "\\tmp.ct.txt"))
-    ct2 <- my.read(paste0(tempdir(), "\\tmp.ct.txt"), ref.genome = "GRCh37",
+    f <- tempfile("catalog")
+    my.write(ct1, f)
+    ct2 <- my.read(f, ref.genome = "GRCh37",
                    region = my.region, catalog.type = "counts")
     expect_equal(ct1, ct2)
   }
