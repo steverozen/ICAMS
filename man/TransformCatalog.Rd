@@ -6,7 +6,7 @@
 and counts and density signature catalogs.}
 \usage{
 TransformCatalog(catalog, target.ref.genome, target.region,
-  target.catalog.type, target.catalog.abundance = NULL)
+  target.catalog.type, target.abundance = NULL)
 }
 \arguments{
 \item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
@@ -22,7 +22,7 @@ and \code{\link{ICAMS}}.}
 identifier, one of "counts", "density", "counts.signature",
 "density.signature"; see \code{\link{as.catalog}}.}
 
-\item{target.catalog.abundance}{Optional, only needed when
+\item{target.abundance}{Optional, only needed when
 \code{target.ref.genome} is not one of the two human reference genomes
 included in ICAMS. The abundance should contain the counts of different
 source sequences for mutations. See

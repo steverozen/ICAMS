@@ -10,6 +10,7 @@ and exome counts -> genome counts", {
   x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                          target.region = "exome",
                          target.catalog.type = "counts")
+  
 
   x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "genome",
@@ -231,17 +232,18 @@ test_that("going from density to density,
                                    target.catalog.type = "density")
 
 
-            x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+            expect_warning(
+              x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                                    target.region = "genome",
-                                   target.catalog.type = "density")
+                                   target.catalog.type = "density"))
 
             x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                                    target.region = "genome",
                                    target.catalog.type = "density.signature")
 
-            x4 <- TransformCatalog(x3, target.ref.genome = "GRCh37",
+            expect_warning(x4 <- TransformCatalog(x3, target.ref.genome = "GRCh37",
                                    target.region = "genome",
-                                   target.catalog.type = "density.signature")
+                                   target.catalog.type = "density.signature"))
 
             expect_equal(x1, x2)
             expect_equal(x3, x4)

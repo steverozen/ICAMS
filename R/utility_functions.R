@@ -143,6 +143,56 @@ Collapse144AbundanceTo78 <- function(abundance144) {
   return(abundance78)
 }
 
+#' @keywords internal
+CheckAndNormalizeTranCatArgs <-
+  function(catalog, 
+           target.ref.genome, 
+           target.region, 
+           target.catalog.type, 
+           target.abundance) {
+    
+    s <- list(
+      ref.genome    = attr(catalog, "ref.genome",   exact = TRUE),
+      catalog.type = attr(catalog,  "catalog.type", exact = TRUE),
+      abundance    = attr(catalog,  "abundance",    exact = TRUE),
+      region       = attr(catalog,  "region",       exact = TRUE))
+    
+    if (is.null(target.ref.genome))   target.ref.genome   <- s$ref.genome
+    if (is.null(target.catalog.type)) target.catalog.type <- s$catalog.type 
+    StopIfCatalogTypeIllegal(target.catalog.type)
+    if (is.null(target.region))       target.region       <-s$region
+    StopIfRegionIllegal(target.region)
+
+    inferred.abundance <- 
+        InferAbundance(catalog,
+                       target.ref.genome,
+                       target.region,
+                       target.catalog.type)
+                   
+    if (!is.null(target.abundance) &&
+        !is.null(inferred.abundance)) {
+      if (!all.equal(target.abundance,
+                     inferred.abundance)) {
+        stop("Caller supplied abundance is different from inferred abundance")
+      }
+    }
+    if (is.null(target.abundance)) target.abundance <- inferred.abundance
+
+    if (s$catalog.type == target.catalog.type) {
+      if (all(s$abundance == target.abundance)) { 
+        warning("Input and target catalog.type and abundance are the same\n",
+                "no transformation")
+      }
+    }
+    return(list(s = s, 
+                t = 
+                  list(ref.genome   = target.ref.genome,
+                       catalog.type = target.catalog.type,
+                       region       = target.region,
+                       abundance    = target.abundance)))
+  }
+
+
 #' Transform between counts and density spectrum catalogs
 #' and counts and density signature catalogs.
 #'
@@ -186,7 +236,7 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #'   identifier, one of "counts", "density", "counts.signature",
 #'   "density.signature"; see \code{\link{as.catalog}}.
 #'   
-#' @param target.catalog.abundance Optional, only needed when
+#' @param target.abundance Optional, only needed when
 #'   \code{target.ref.genome} is not one of the two human reference genomes
 #'   included in ICAMS. The abundance should contain the counts of different
 #'   source sequences for mutations. See
@@ -196,8 +246,20 @@ Collapse144AbundanceTo78 <- function(abundance144) {
 #'
 #' @export
 TransformCatalog <-
-  function(catalog, target.ref.genome, target.region, 
-           target.catalog.type, target.catalog.abundance = NULL) {
+  function(catalog, 
+           target.ref.genome,
+           target.region, 
+           target.catalog.type,
+           target.abundance = NULL) {
+  
+    # Check and normalize the arguments  
+    args <-
+      CheckAndNormalizeTranCatArgs(
+        catalog             = catalog,
+        target.ref.genome   = target.ref.genome,
+        target.catalog.type = target.catalog.type,
+        target.region       = target.region,
+        target.abundance    = target.abundance)
 
     StopIfCatalogTypeIllegal(target.catalog.type)
     
@@ -260,7 +322,7 @@ TransformCatalog <-
 
     source.abundance <- attributes(catalog)$abundance
     
-    if (is.null(target.catalog.abundance)) {
+    if (is.null(target.abundance)) {
       inferred.abundance <-
         InferAbundance(catalog, 
                        target.ref.genome, 
@@ -269,7 +331,7 @@ TransformCatalog <-
       if (is.null(inferred.abundance)) stop("Cannot infer abundance")
       target.abundance <- inferred.abundance
     } else {
-      target.abundance <- target.catalog.abundance
+      target.abundance <- target.abundance
     }
     
     stopifnot(names(source.abundance) == names(target.abundance))
@@ -805,6 +867,7 @@ StopIfRegionIllegal <- function(region) {
 #'
 #' @keywords internal
 StopIfCatalogTypeIllegal <- function(catalog.type) {
+  if (is.null(catalog.type)) return (NULL)
   if (!catalog.type %in% c("counts", "density",
                            "counts.signature", "density.signature")) {
     stop("Unrecoginzed catalog type identifier: ", catalog.type,
@@ -892,6 +955,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     
     StopIfNrowIllegal(object)
     StopIfRegionIllegal(region)
+    StopIfCatalogTypeIllegal(catalog.type)
 
     if (IsDensity(catalog.type)) {
       ab <- flat.abundance[[as.character(nrow(object))]]
