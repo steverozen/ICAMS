@@ -131,6 +131,16 @@ IsDensity <- function(x) {
 }
 
 #' @keywords internal
+IsCounts <- function(x) {
+  return(x %in% c("counts", "counts.signature"))
+}
+
+#' @keywords internal
+IsSignature <- function(x) {
+  return(x %in% c("counts.signature", "density.signature"))
+}
+
+#' @keywords internal
 Collapse144AbundanceTo78 <- function(abundance144) {
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
@@ -191,6 +201,164 @@ CheckAndNormalizeTranCatArgs <-
                        region       = target.region,
                        abundance    = target.abundance)))
   }
+
+
+#' @keywords internal
+IsTransformationLegal <- function(arg) {
+  
+  s <- arg$s
+  t <- arg$t
+  
+  if (IsSignature(s$catalog.type) &&
+      !IsSignature(t$catalog.type)) {
+    stop("cannot transform from a signture to a counts or density catalog")
+  }
+  
+  if (IsDensity(s))
+    return(IsTransformationfromDensityLegal(s, t))
+  else
+    return(IsTransformationfromCountsLegal(s, t))
+}
+
+
+#' Source catalog type is counts or counts.signature
+#' 
+#' counts -> <anything>
+#' counts.signature -> counts.signature, density.signature
+#' 
+#' @keywords internal
+IsTransformationfromCountsLegal <- function(s, t) {
+
+  stopifnot(IsCounts(s$catalog.type))
+  
+  if (is.null(s$abundance)) {
+    if (!is.null(t$abundance) || 
+      t$catalog.type != "counts.signature") {
+        stop("XXXX")
+      # Only allow counts.signature -> counts.signature (null)
+      # counts -> counts.signaure
+    }
+  }
+  
+  if (IsSignature(s$catalog.type)) {
+    return(IsTransFromCountsSigLegal(s, t))
+    # counts.signature -> ??
+  } else {
+    return(IsTransFromCountsLegal(s, t))
+    # counts -> ??
+  }
+}
+
+#' @keywords internal
+#' 
+#' counts.signature -> counts.signature, density.signature
+IsTransFromCountsSigLegal <- function(s, t) {
+  
+  if (IsCounts(t$catalog.type)) {
+    
+    # counts.signature -> counts.signature
+    stop("not finished")
+    # WARM
+    
+    # counts -> counts.signature
+    # if target or source abundance is null, both must be
+    
+    # INSERT TEST HERE
+    
+  } else {
+    # counts.signature -> density.signature
+    stopifnot(IsDensity(t$catalog.type))
+    if (is.null(s$abundance)) {
+      stop("Cannot transform from a counts.signature\n",
+           "catalog to density.signature catalog if the\n",
+           "source abundance is NULL")
+    } else {
+      return(TRUE)
+    }
+  }
+}
+
+
+#' @keywords internal
+#' 
+#' counts -> <anything>
+#' 
+#'  NOT DONE
+IsTransFromCountsLegal <- function(s, t) {
+  if (IsCounts(t$catalog.type)) {
+    # counts -> counts, counts.signature
+    if (IsSignature(t$catalog.type)) {
+      # counts -> counts.signature
+      #x stop("not finished")
+      
+      # if target or source abundance is null, both must be
+      
+      # INSERT TEST HERE
+      
+    } else {
+      # counts -> counts
+      if (is.null(s$abundance) || is.null(t$abundance)) {
+        stop("Cannot transform from a counts or a counts.signature\n",
+             "catalog to a counts or counts.signature catalog if the\n",
+             "either abundance is NULL")
+      } else {
+        return(TRUE)
+      }
+    }
+
+  } else { #!IsCounts(t$catalog.type)
+      # counts -> density
+      # counts -> density.signature
+      #x if (IsSignature(t$catalog.type)) {
+        # counts -> density.signature
+      #x } else {
+        # counts -> density
+      #x}
+  }
+}
+
+
+#' density -> <anything>
+#' density.signature -> density.signature, counts.signature
+#' 
+#' @keywords internal
+IsTransformationfromDensityLegal <- function(s, t) {
+
+  if (IsSignature(s$catalog.type))
+    return(IsTransFromDenSigLegal(s, t))
+  else
+    return(IsTransFromDenLegal(s,t))
+}
+
+#' @keywords internal
+IsTransFromDenSigLegal <- function (s, t) {
+  if (IsCounts(t$catalog.type)) {
+    # density -> (counts, counts.signature)
+    # density.signature -> counts.signature
+    if (is.null(t$abundance)) {
+      stop("Cannot transform from a density.signature\n",
+           "catalog to a counts or counts.signature catalog if the\n",
+           "target abundance is NULL")
+    } else {  return(TRUE)   }
+  } else { # IsDensity(t$catalog.type)
+     # density.signature -> density.signature
+          warning("Transformation from density.signature to",
+                "density.signature is a null operation")
+        return(NULL)
+  } 
+}
+
+#' @keywords internal
+#' density -> anything
+IsTransFromDenLegal <- function (s, t) {  
+  if (t$catalog.type == "density") {
+    warning("Transformation from density to density ",
+            "is a null operation")
+    return(NULL)
+  } else { # t$catalog.type == "density.signature"
+    stop("not finished")
+  }
+}
 
 
 #' Transform between counts and density spectrum catalogs
