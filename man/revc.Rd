@@ -16,3 +16,14 @@ A vector of type characters with the reverse complement of every
 \description{
 Reverse complement every string in \code{string.vec}.
 }
+\examples{
+# Reverse complement a character of DNA sequence
+string1 <- "ATGC"
+string2 <- "atgc"
+revc(string1)        # "GCAT"
+revc(string2)        # "GCAT"
+
+# Reverse complement a vector of character of DNA sequences
+strings <- c("ATGC", "TCGT")
+revc(strings)        # "GCAT" "ACGA"
+}
