@@ -1,0 +1,48 @@
+# ICAMS to do list, 2019 06 18
+
+## Highest priority
+1.1 Address CRAN comments
+1.1.1 Nanhai Add examples to documentation (key functions only for now)
+1.1.2 Steve <<- in TransformCatalaog (refactor TransformCatlog)
+1.1.3 Nanhai, other CRAN comments
+
+1.2 Nanhai Checks for functions ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs() according to Arnoud’s suggestion in the email.
+1.3 Nanhai Change the PPM plot functions according to Arnoud’ suggestion in the email.
+1.4 Nanhai DISCUSS w/ Steve, should we update ICAMS reference manual accordingly in view of Matas’ comments from a beginner’s view?
+1.5 Steve assess feasibility of a shiny app
+1.6 Nanhai, any new bugs
+
+## High priority
+2.1 Nanhai Add built-in support for mouse mm10, create new transcript ranges and abundance files.
+2.2 Steve Background signature subtraction
+2.3 Nanhai binom test for transcription strand bias
+2.4 Functions to re-write annotated VCFS
+2.5 Corrections to extended sequence plotting for SBS
+2.6 Extended sequence plotting for ID, DNS
+
+
+## Medium priority3
+3.1 Make a full transcriptional strand bias plot for DBS144 catalog.
+3.2 Put a legend on the top right part of the graph to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
+3.3 Update as.catalog() function to ensure the catalog rows are in the expected order and have the expected row names?
+3.4 Plot transcription strand bias as function of distance from TSS
+3.5 Plot transcription strand bias as function of expression level
+3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
+
+
+## Low priority
+4.1 Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
+4.2 Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
+4.3	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file?
+4.4 Develop extended seq.context plotting functions for DBS and INDEL.
+4.5 Should StrelkaSBSVCFFilesToCatalogAndPlotToPdf() and similar functions also save the catalogs to files?
+4.6 Utility function to split VCF by VAF according to Arnoud’ suggestion previously.
+4.7 Add Freebayes VCFs as an option in ICAMS.
+4.8 Update the legend in 1536 catalog plotting according to Liu Mo’s suggestion?
+4.9 More automatic tests for genomes that do not have built-in support
+4.10 binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
+
+
+
+
+
