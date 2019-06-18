@@ -37,6 +37,7 @@ cshlp
 dinucleotide
 DBS
 DBSs
+doi
 ebi
 et
 exome
@@ -54,6 +55,7 @@ GRCm
 gz
 hg
 homopolymers
+http
 https
 indel
 indels
