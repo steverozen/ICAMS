@@ -734,17 +734,31 @@ PyrPenta <- function(mutstring) {
 }
 
 #' Reverse complement every string in \code{string.vec}.
+#' 
+#' Based on \code{\link{reverseComplement}}.
+#' Handles IUPAC ambiguity codes but not "u" (uracil).
+#' (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 #'
-#' @param string.vec a vector of type character.
+#' @param string.vec A character vector.
 #'
 #' @importFrom Biostrings reverseComplement DNAStringSet
 #'
-#' @return A vector of type characters with the reverse complement of every
+#' @return A character vector with the reverse complement of every
 #'   string in \code{string.vec}.
 #'
 #' @export
 #' 
 #' @examples 
+#' # Suggested by Steve:
+#' 
+#' revc("aTgc") # GCAT
+#' 
+#' # A vector and strings with ambiguity codes
+#' revc(c("ATGC", "aTGc", "wnTCb")) # GCAT GCAT VGANW
+#' 
+#' \dontrun{
+#' revc("ACGU") # An error}
+#' 
 #' # Reverse complement a character of DNA sequence
 #' string1 <- "ATGC"
 #' string2 <- "atgc"
