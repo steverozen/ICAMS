@@ -25,10 +25,10 @@ see \code{\link{ICAMS}}.}
 
 \item{abundance}{Optional, only needed when \code{ref.genome}
 is not one of
-the two human reference genomes 
-included in ICAMS. The abundance should
+the reference genomes known to ICAMS (see \code{\link{ICAMS}}.
+The abundance should
 contain the counts of different source sequences for mutations. \cr
-See \code{ICAMS:::abundance.3bp.exome.unstranded.GRCh37} for an example.}
+See \code{\link{all.abundance}}.}
 }
 \value{
 A catalog as described in \code{\link{ICAMS}}.

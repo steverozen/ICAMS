@@ -79,6 +79,13 @@ NULL
 #'  as names and each value being the count of that K-mer.
 #'  
 #' @format See Description.
+#' 
+#' @examples
+#' all.abundance$BSgenome.Hsapiens.UCSC.hg38$transcript$`144` 
+#' #        AA        AC        AG        AT        CA        CC ... 
+#' #  90769160  57156295  85738416  87552737  83479655  63267896 ...
+#' # There are 90769160 AAs on the sense strands of transcripts in
+#' # this genome.
 
 "all.abundance"
 

@@ -23,8 +23,9 @@ identifier, one of "counts", "density", "counts.signature",
 "density.signature"; see \code{\link{as.catalog}}.}
 
 \item{target.abundance}{Optional, only needed when
-\code{target.ref.genome} is not one of the two human reference genomes
-included in ICAMS. The abundance should contain the counts of different
+\code{target.ref.genome} is not one of the reference genomes
+known to ICAMS (see \code{\link{ICAMS}}. 
+The abundance should contain the counts of different
 source sequences for mutations. See
 \code{\link{all.abundance}}.}
 }
