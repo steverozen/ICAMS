@@ -1194,6 +1194,15 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'
 #' @export
+#' 
+#' @examples
+#' # Create a SBS96 catalog of human GRCh37 from genome region with all 
+#' # mutation counts equal to 1.  
+#' require(ICAMS) 
+#' object <- matrix(1, nrow = 96, ncol = 1, 
+#'                  dimnames = list(catalog.row.order$SBS96))
+#' catSBS96 <- as.catalog(object, ref.genome = "hg19", region = "genome")
+             
 as.catalog <- function(object, 
                        ref.genome = NULL, 
                        region = "unknown", 
