@@ -37,7 +37,7 @@ A catalog as described in \code{\link{ICAMS}}.
 Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
 }
 \examples{
-# Create a SBS96 catalog of human GRCh37 from genome region with all 
+# Create an SBS96 catalog of human GRCh37 from genome region with all 
 # mutation counts equal to 1.  
 require(ICAMS) 
 object <- matrix(1, nrow = 96, ncol = 1, 

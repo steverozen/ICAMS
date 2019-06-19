@@ -25,6 +25,14 @@
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
 #' @name CollapseCatalog
+#' 
+#' @examples 
+#' # Create an SBS192 catalog and collapse it to an SBS96 catalog
+#' require(ICAMS)
+#' object <- matrix(1, nrow = 192, ncol = 1, 
+#'                  dimnames = list(catalog.row.order$SBS192))
+#' catSBS192 <- as.catalog(object, ref.genome = "hg19", region = "transcript")
+#' catSBS96 <- Collapse192CatalogTo96(catSBS192)
 NULL
 
 #' @rdname CollapseCatalog
@@ -1196,7 +1204,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @export
 #' 
 #' @examples
-#' # Create a SBS96 catalog of human GRCh37 from genome region with all 
+#' # Create an SBS96 catalog of human GRCh37 from genome region with all 
 #' # mutation counts equal to 1.  
 #' require(ICAMS) 
 #' object <- matrix(1, nrow = 96, ncol = 1, 
