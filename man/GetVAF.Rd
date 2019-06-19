@@ -19,3 +19,11 @@ A vector of VAFs, one for each row of \code{vcf}.
 \description{
 Extract the VAFs (variant allele frequencies) from a VCF file.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Strelka.SBS.GRCh37.vcf",
+                      package = "ICAMS",
+                      mustWork = TRUE))
+df <- ICAMS:::MakeDataFrameFromStrelkaSBSVCF(file)
+vaf <- GetStrelkaVAF(df)
+}

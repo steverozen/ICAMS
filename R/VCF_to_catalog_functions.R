@@ -5,6 +5,14 @@
 #' @return A vector of VAFs, one for each row of \code{vcf}.
 #'
 #' @name GetVAF
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS",
+#'                       mustWork = TRUE))
+#' df <- ICAMS:::MakeDataFrameFromStrelkaSBSVCF(file)
+#' vaf <- GetStrelkaVAF(df)
 NULL
 
 #' Read in the data lines of an SBS VCF created by Strelka version 1
