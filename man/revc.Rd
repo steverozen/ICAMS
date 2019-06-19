@@ -19,8 +19,6 @@ Handles IUPAC ambiguity codes but not "u" (uracil).
 (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 }
 \examples{
-# Suggested by Steve:
-
 revc("aTgc") # GCAT
 
 # A vector and strings with ambiguity codes
@@ -28,14 +26,4 @@ revc(c("ATGC", "aTGc", "wnTCb")) # GCAT GCAT VGANW
 
 \dontrun{
 revc("ACGU") # An error}
-
-# Reverse complement a character of DNA sequence
-string1 <- "ATGC"
-string2 <- "atgc"
-revc(string1)        # "GCAT"
-revc(string2)        # "GCAT"
-
-# Reverse complement a vector of character of DNA sequences
-strings <- c("ATGC", "TCGT")
-revc(strings)        # "GCAT" "ACGA"
 }

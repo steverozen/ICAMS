@@ -757,8 +757,6 @@ PyrPenta <- function(mutstring) {
 #' @export
 #' 
 #' @examples 
-#' # Suggested by Steve:
-#' 
 #' revc("aTgc") # GCAT
 #' 
 #' # A vector and strings with ambiguity codes
@@ -766,16 +764,6 @@ PyrPenta <- function(mutstring) {
 #' 
 #' \dontrun{
 #' revc("ACGU") # An error}
-#' 
-#' # Reverse complement a character of DNA sequence
-#' string1 <- "ATGC"
-#' string2 <- "atgc"
-#' revc(string1)        # "GCAT"
-#' revc(string2)        # "GCAT"
-#' 
-#' # Reverse complement a vector of character of DNA sequences
-#' strings <- c("ATGC", "TCGT")
-#' revc(strings)        # "GCAT" "ACGA"
 revc <- function(string.vec) {
   return(
     as.character(reverseComplement(DNAStringSet(string.vec)))
