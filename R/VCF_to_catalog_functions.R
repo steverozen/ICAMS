@@ -143,6 +143,56 @@ GetStrelkaVAF <-function(vcf) {
   return(vaf)
 }
 
+#' Read in the data lines of a Variant Call Format (VCF) file created by MuTect
+#'
+#' @importFrom utils read.csv
+#'
+#' @param file The name/path of the VCF file, or a complete URL.
+#'
+#' @return A data frame storing mutation records of a VCF file.
+#'
+#' @keywords internal
+MakeDataFrameFromMutectVCF <- function(file) {
+  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
+                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+  
+  # Delete the columns which are totally empty
+  df <- df[!sapply(df, function(x) all(is.na(x)))]
+  
+  # Delete meta-information lines which start with "##"
+  idx <- grep("^##", df[, 1])
+  df1 <- df[-idx, ]
+  
+  # Extract the names of columns in the VCF file
+  names <- c("CHROM", as.character(df1[1, ])[-1])
+  df1 <- df1[-1, ]
+  colnames(df1) <- names
+  
+  df1$POS <- as.integer(df1$POS)
+  
+  # Is there any column in df1 with name "strand"?
+  # If there is, change its name to "strand_old" so that it will
+  # conflict with code in other parts of ICAMS package.
+  if ("strand" %in% colnames(df1)) {
+    colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
+    warning('There is column in VCF which has name "strand", ',
+            'it has been renamed to "strand_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
+  }
+  
+  # Is there any column in df1 with name "VAF"?
+  # If there is, change its name to "VAF_old" so that it will
+  # conflict with code in other parts of ICAMS package.
+  if ("VAF" %in% colnames(df1)) {
+    colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
+    warning('There is column in VCF which has name "VAF", ',
+            'it has been renamed to "VAF_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
+  }
+  
+  return(StandardChromName(df1))
+}
+
 #' Read in the data lines of a Variant Call Format (VCF) file created by
 #'     MuTect
 #'
