@@ -5,29 +5,36 @@
 \title{Transform between counts and density spectrum catalogs
 and counts and density signature catalogs.}
 \usage{
-TransformCatalog(catalog, target.ref.genome, target.region,
-  target.catalog.type, target.abundance = NULL)
+TransformCatalog(catalog, target.ref.genome = NULL,
+  target.region = NULL, target.catalog.type = NULL,
+  target.abundance = NULL)
 }
 \arguments{
 \item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
 must \strong{not} be an ID (indel) catalog.}
 
 \item{target.ref.genome}{A \code{ref.genome} argument as described in
-\code{\link{ICAMS}}.}
+\code{\link{ICAMS}}. If \code{NULL}, then defaults to the
+\code{ref.genome} attribute of \code{catalog}.}
 
 \item{target.region}{A \code{region} argument; see \code{\link{as.catalog}}
-and \code{\link{ICAMS}}.}
+and \code{\link{ICAMS}}. If \code{NULL}, then defaults to the
+  \code{region} attribute of \code{catalog}.}
 
 \item{target.catalog.type}{A character string acting as a catalog type
 identifier, one of "counts", "density", "counts.signature",
-"density.signature"; see \code{\link{as.catalog}}.}
+"density.signature"; see \code{\link{as.catalog}}. If \code{NULL}, then defaults to the
+\code{catalog.type} attribute of \code{catalog}.}
 
-\item{target.abundance}{Optional, only needed when
-\code{target.ref.genome} is not one of the reference genomes
-known to ICAMS (see \code{\link{ICAMS}}. 
-The abundance should contain the counts of different
-source sequences for mutations. See
-\code{\link{all.abundance}}.}
+\item{target.abundance}{A vector of counts different
+source K-mer sequences for mutations. See
+\code{\link{all.abundance}}. If \code{NULL},
+then the function attempt to infer the \code{target.abundace}
+from the class of \code{catalog} and the values of the
+\code{target.ref.genome}, \code{target.region}, and
+\code{target.catalog.type}. It is an error if the inferred
+abundance is different from an non-\code{NULL} 
+\code{target.abundance}.}
 }
 \value{
 A catalog as defined in \code{\link{ICAMS}}.

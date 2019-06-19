@@ -11,7 +11,7 @@ ReadMutectVCF(file)
 \item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
-A data frame storing mutation records of a VCF file.
+A data frame storing mutation records of a VCF file with VAFs added.
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file created by

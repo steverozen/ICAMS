@@ -438,33 +438,40 @@ TCFromDen <- function (s, t) {
 #'  must \strong{not} be an ID (indel) catalog.
 #'
 #' @param target.ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
+#'   \code{\link{ICAMS}}. If \code{NULL}, then defaults to the
+#'   \code{ref.genome} attribute of \code{catalog}.
 #'
 #' @param target.region A \code{region} argument; see \code{\link{as.catalog}}
-#' and \code{\link{ICAMS}}.
+#' and \code{\link{ICAMS}}. If \code{NULL}, then defaults to the
+#'   \code{region} attribute of \code{catalog}.
 #'
 #' @param target.catalog.type A character string acting as a catalog type
 #'   identifier, one of "counts", "density", "counts.signature",
-#'   "density.signature"; see \code{\link{as.catalog}}.
+#'   "density.signature"; see \code{\link{as.catalog}}. If \code{NULL}, then defaults to the
+#'   \code{catalog.type} attribute of \code{catalog}.
 #'   
-#' @param target.abundance Optional, only needed when
-#'   \code{target.ref.genome} is not one of the reference genomes
-#'   known to ICAMS (see \code{\link{ICAMS}}. 
-#'   The abundance should contain the counts of different
-#'   source sequences for mutations. See
-#'   \code{\link{all.abundance}}.
+#' @param target.abundance  
+#'   A vector of counts different
+#'   source K-mer sequences for mutations. See
+#'   \code{\link{all.abundance}}. If \code{NULL},
+#'   then the function attempt to infer the \code{target.abundace}
+#'   from the class of \code{catalog} and the values of the
+#'   \code{target.ref.genome}, \code{target.region}, and
+#'   \code{target.catalog.type}. It is an error if the inferred
+#'   abundance is different from an non-\code{NULL} 
+#'   \code{target.abundance}.
 #'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
 #' @export
 TransformCatalog <-
   function(catalog, 
-           target.ref.genome,
-           target.region, 
-           target.catalog.type,
-           target.abundance = NULL) {
+           target.ref.genome   = NULL,
+           target.region       = NULL, 
+           target.catalog.type = NULL,
+           target.abundance    = NULL) {
   
-    # Check and normalize the arguments  
+    # Check and normalize the arguments
     args <-
       CheckAndNormalizeTranCatArgs(
         catalog             = catalog,
@@ -472,17 +479,12 @@ TransformCatalog <-
         target.catalog.type = target.catalog.type,
         target.region       = target.region,
         target.abundance    = target.abundance)
-    
+    # Check if the transformation is legal
     s <- args$s
     t <- args$t
     test <- IsTransformationLegal(s, t)
-    # cat(test, "\n")
 
-    # t$ref.genome <- NormalizeGenomeArg(t$ref.genome)
-    
-   if (t$catalog.type != "counts.signature") {
-
-    } else {
+    if (t$catalog.type == "counts.signature") {
       if (s$catalog.type == "counts.signature" && 
           attr(catalog, "region", exact = TRUE) == target.region) {
         return(catalog)
@@ -491,7 +493,6 @@ TransformCatalog <-
         out <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
         return(as.catalog(out, t$ref.genome,
                           target.region, target.catalog.type)) 
-        
       }
     }
     
@@ -500,26 +501,16 @@ TransformCatalog <-
       return(catalog)
     }
 
-    if (attributes(catalog)$catalog.type == "density" &&
-        target.catalog.type == "density") {
+    if (s[["catalog.type"]] == "density" && t[["catalog.type"]] == "density") {
       return(catalog)
     }
 
-    source.abundance <- attributes(catalog)$abundance
+    # TODO(steve) replace source.abundance and target.abundance below
+    source.abundance <- s[["abundance"]]
+    target.abundance <- t[["abundance"]]
     
-    if (is.null(target.abundance)) {
-      inferred.abundance <-
-        InferAbundance(catalog, 
-                       t$ref.genome, 
-                       target.region,
-                       target.catalog.type)
-      if (is.null(inferred.abundance)) stop("Cannot infer abundance")
-      target.abundance <- inferred.abundance
-    } else {
-      target.abundance <- target.abundance
-    }
-    
-    stopifnot(names(source.abundance) == names(target.abundance))
+    # TODO(Steve): move this to the argument checking function
+    # stopifnot(names(source.abundance) == names(target.abundance))
 
     factor <- target.abundance / source.abundance
     if (any(is.infinite(factor)) || any(is.na(factor))) {

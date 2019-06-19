@@ -60,6 +60,7 @@ https
 indel
 indels
 intron
+IUPAC
 MakeVCFDBSdf
 mer
 mers
@@ -108,3 +109,4 @@ VAFs
 vcfs
 VCF
 VCFs
+wikipedia
