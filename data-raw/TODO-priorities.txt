@@ -2,7 +2,12 @@
 
 ## Highest priority
 1.1 Address CRAN comments
+
 1.1.1 Nanhai Add examples to documentation (key functions only for now)
+Suggest to create an example for each, should be as simple as possible, then we can review again
+
+
+
 1.1.2 Steve <<- in TransformCatalaog (refactor TransformCatlog)
 1.1.3 Nanhai, other CRAN comments
 
