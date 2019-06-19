@@ -1393,6 +1393,16 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
+#' 
+#' @examples 
+#' require(ICAMS)
+#' file <- c(system.file("extdata",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS",
+#'                       mustWork = TRUE))
+#' catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
+#'                                     trans.ranges = trans.ranges.GRCh37,
+#'                                     region = "genome")
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadMutectVCFs(files)
