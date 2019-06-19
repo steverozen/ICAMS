@@ -514,23 +514,22 @@ TransformCatalog <-
     names(factor) <- names(target.abundance)
     out.catalog <- catalog
 
-    # CAUTION: this function depends on how mutations are encoded in
-    # the row names!
-    transform.n.mer <- function(source.n.mer) {
+    for(source.n.mer in names(source.abundance)) {
+      # CAUTION: this loop depends on how mutations are encoded in
+      # the row names of catalogs!
+      
       # For 96 and 192 SBS, source.n.mer is e.g. "ACT" (for the encoding of ACT >
       # AGT as "ACTG"); for SBS1536 the n-mer for AACAG > AATAG is AACAG, in the
       # encoding AACAGT. For DBS78 and DBS144 TGGA represents TG >GA, and the
       # source n-mer is TG. For DBS136, TTGA represents TTGA > TNNA, and the
       # source n-mer is TTGA.
-
+      
       # First, get the rows with the given source.n.mer
       rows <- grep(paste("^", source.n.mer, sep=''), rownames(out.catalog))
       # Then update those rows using the factor for that source.n.mer
-
-      out.catalog[rows, ] <<- out.catalog[rows, ] * factor[source.n.mer]
+      
+      out.catalog[rows, ] <- out.catalog[rows, ] * factor[source.n.mer]
     }
-
-    lapply(names(source.abundance), transform.n.mer)
 
     if (target.catalog.type %in% c("counts.signature", "density.signature")) {
       out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
