@@ -42,4 +42,15 @@ This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}}, \cr
 \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}},
 \code{\link{VCFsToSBSCatalogs}} and \code{\link{VCFsToDBSCatalogs}}.
 }
+\examples{
+trans.ranges.GRCh37
+# chrom    start      end strand gene.name
+#     1    65419    71585      +     OR4F5
+#     1   367640   368634      +    OR4F29
+#     1   621059   622053      -    OR4F16
+#     1   859308   879961      +    SAMD11
+#     1   879583   894689      -     NOC2L
+#   ...      ...      ...    ...       ...
+
+}
 \keyword{datasets}
