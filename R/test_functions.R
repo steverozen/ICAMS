@@ -16,7 +16,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                             "mutect.regress.cat.sbs.192.csv",
                             package = "ICAMS",
                             mustWork = TRUE),
-                ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
+                ref.genome = "GRCh37", region = "transcript", catalog.type = "counts")
 
   stopifnot(cats$catSBS192 == prev.catalog.192)
 
@@ -62,7 +62,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   "mutect.regress.cat.dbs.144.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
+      ref.genome = "GRCh37", region = "transcript", catalog.type = "counts")
   stopifnot(cats$catDBS144 == prev.catalog.DBS.144)
 
   prev.catalog.indels<-
@@ -97,7 +97,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
                             "strelka.regress.cat.sbs.192.csv",
                             package = "ICAMS",
                             mustWork = TRUE),
-                ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
+                ref.genome = "GRCh37", region = "transcript", catalog.type = "counts")
 
   stopifnot(cats$catSBS192 == prev.catalog.192)
 
@@ -143,7 +143,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
                   "strelka.regress.cat.dbs.144.csv",
                   package = "ICAMS",
                   mustWork = TRUE),
-      ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
+      ref.genome = "GRCh37", region = "transcript", catalog.type = "counts")
   stopifnot(cats$catDBS144 == prev.catalog.DBS.144)
 
   cat("ok\n")
