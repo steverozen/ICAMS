@@ -166,7 +166,7 @@ and genome counts.signature -> exome counts.signature", {
 
 
 test_that("Legal transformation 6;
-counts.signature -> denisty.signature,
+counts.signature -> density.signature,
 and genome counts -> exome counts.signature", {
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
