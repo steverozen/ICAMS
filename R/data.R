@@ -14,6 +14,13 @@
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @name CatalogRowOrder
+#' 
+#' @examples 
+#' catalog.row.order$SBS96
+#' # "ACAA" "ACCA" "ACGA" "ACTA" "CCAA" "CCCA" "CCGA" "CCTA" ...
+#' # There are altogether 96 row names to denote the mutation types
+#' # in SBS96 catalog.
+#' 
 "catalog.row.order"
 
 #' Transcript ranges data

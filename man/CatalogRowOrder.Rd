@@ -22,4 +22,11 @@ In ID (insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }
+\examples{
+catalog.row.order$SBS96
+# "ACAA" "ACCA" "ACGA" "ACTA" "CCAA" "CCCA" "CCGA" "CCTA" ...
+# There are altogether 96 row names to denote the mutation types
+# in SBS96 catalog.
+
+}
 \keyword{datasets}
