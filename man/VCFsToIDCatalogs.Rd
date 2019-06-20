@@ -23,3 +23,11 @@ An S3 object containing an ID (indel) catalog with class
 \description{
 Create ID (insertion and deletion) catalog from ID VCFs
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Mutect.GRCh37.vcf",
+                      package = "ICAMS"))
+list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
+catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
+                          region = "genome")
+}

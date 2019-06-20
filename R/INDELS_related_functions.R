@@ -666,6 +666,14 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
 #'   "catalog". See \code{\link{as.catalog}} for more details.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
+#' catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
+#'                           region = "genome")
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   ncol <- length(list.of.vcfs)
 
