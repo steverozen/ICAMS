@@ -1395,7 +1395,6 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @export
 #' 
 #' @examples 
-#' require(ICAMS)
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS",

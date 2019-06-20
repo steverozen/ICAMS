@@ -28,7 +28,6 @@
 #' 
 #' @examples 
 #' # Create an SBS192 catalog and collapse it to an SBS96 catalog
-#' require(ICAMS)
 #' object <- matrix(1, nrow = 192, ncol = 1, 
 #'                  dimnames = list(catalog.row.order$SBS192))
 #' catSBS192 <- as.catalog(object, ref.genome = "hg19", region = "transcript")
@@ -1200,7 +1199,6 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @examples
 #' # Create an SBS96 catalog of human GRCh37 from genome region with all 
 #' # mutation counts equal to 1.  
-#' require(ICAMS) 
 #' object <- matrix(1, nrow = 96, ncol = 1, 
 #'                  dimnames = list(catalog.row.order$SBS96))
 #' catSBS96 <- as.catalog(object, ref.genome = "hg19", region = "genome")
