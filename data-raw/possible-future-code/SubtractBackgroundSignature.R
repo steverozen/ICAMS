@@ -18,19 +18,22 @@ SubtractBackground1 <- function(spectrum, background) {
 #'  \itemize{
 #'  
 #'  \item If
-#'  the \code{catalog.type} of
-#'  \code{signature} is \code{density.signature} then the \code{catalog.type}
-#'  of \code{spectra} must be \code{density}.
+#'  the class and \code{background} and \code{catalog}
+#'  must be the same, and
+#'  
+#'  \item if \code{catalog.type} of
+#'  \code{background} is \code{density.signature} then the \code{catalog.type}
+#'  of \code{spectra} must be \code{density}, and
 #'  
 #'  \item If the \code{catalog.type} of
-#'  \code{signature} is \code{counts.signature} then the \code{catalog.type}
+#'  \code{background} is \code{counts.signature} then the \code{catalog.type}
 #'  of \code{spectra} must be \code{counts} \strong{and} the
 #'  \code{abundance} attributes must match.
 #'  
 #'  } 
 #'  
 #' @export
-SubtractBackgroundSignature <- function(spectra, signature) {
+SubtractBackgroundSignature <- function(spectra, background) {
     out.spectra <- 
       apply(X = colnames(spectra),
             MARGIN = 2,
