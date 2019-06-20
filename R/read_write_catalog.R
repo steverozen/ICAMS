@@ -25,8 +25,15 @@
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "strelka.regress.cat.sbs.96.csv",
+#'                     package = "ICAMS")
+#' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
+#'                         region = "genome",
+#'                         catalog.type = "counts")
 ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
-  
   StopIfRegionIllegal(region)
   StopIfCatalogTypeIllegal(catalog.type)
   class.of.catalog <- InferClassOfCatalogForRead(file) #
