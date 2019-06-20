@@ -765,6 +765,12 @@ ReadMutectVCFs <- function(files) {
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS")
+#' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 ReadAndSplitMutectVCFs <- function(files) {
   vcfs <- ReadMutectVCFs(files)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
