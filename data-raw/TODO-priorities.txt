@@ -24,7 +24,6 @@
 2.4 Functions to re-write annotated VCFS
 2.5 Corrections to extended sequence plotting for SBS
 2.6 Extended sequence plotting for ID, DNS
-2.7 Steve finish refactoring / arg checking in TransformCatalog
 
 
 ## Medium priority3

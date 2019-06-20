@@ -49,7 +49,7 @@ Only the following transformations are legal:
 \enumerate{
 
 \item \code{counts -> counts} (used to transform
-   between \code{target.ref.genome} and/or \code{target.region})
+   between the source abundance and \code{target.abundance})
 
 \item \code{counts -> density}
 
@@ -59,14 +59,24 @@ Only the following transformations are legal:
 infer the genome-wide or exome-wide counts based on the
 densities)
 
+\item \code{density -> density} (a null operation, generates
+a warning)
+
 \item \code{density -> (counts.signature, density.signature)}
 
-\item \preformatted{counts.signature -> (counts.signature, density.signature)}
+\item \code{counts.signature -> counts.signature} (used to transform
+   between the source abundance and \code{target.abundance})
 
-\item \preformatted{density.signature -> counts.signature}
+\item \code{counts.signature -> density.signature}
 
-\item \code{density.signature -> density.signature} (a null operation)
+\item \code{counts.signature -> (counts, density)} (generates an error)
 
-\item \code{density -> density} (a null operation)
+\item \code{density.signature -> density.signature} (a null operation,
+generates a warning)
+
+\item \code{density.signature -> counts.signature}
+
+\item \code{density.signature -> (counts, density)} (generates an error)
+
 }
 }

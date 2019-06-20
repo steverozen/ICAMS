@@ -195,8 +195,10 @@ CheckAndNormalizeTranCatArgs <-
                      inferred.abundance)) {
         stop("Caller supplied abundance is different from inferred abundance")
       }
+      stopifnot(names(inferred.abundance) == names(target.abundance))
     }
     if (is.null(target.abundance)) target.abundance <- inferred.abundance
+    stopifnot(names(s[["abundance"]]) == names(target.abundance))
 
     if (s$catalog.type == target.catalog.type) {
       if (all(s[["abundance"]] == target.abundance)) { 
@@ -265,7 +267,7 @@ TCFromCouSig <- function(s, t) {
     if (all(s[["abundance"]] == t[["abundance"]])) {
       warning("Transformation from counts.signature -> counts.sinature",
               "with equal abundance is a null operation")
-      return(NULL)
+      return("null.op")
     }
     return(TRUE)
   } else if (t$catalog.type == "counts") {
@@ -304,6 +306,9 @@ TCFromCou <- function(s, t) {
       stop("Cannot transform from counts.signature -> counts.signature ",
            "target abundance is NULL")
     }
+    if (AbundanceIsSame(s[["abundance"]], t[["abundance"]])) {
+      return("sig.only")
+    }
     return(TRUE)
   } else if (t$catalog.type == "counts") {
     # counts -> counts
@@ -314,7 +319,7 @@ TCFromCou <- function(s, t) {
     if (all(s[["abundance"]] == t[["abundance"]])) {
       warning("Trasformation from counts -> counts with equal abundances ",
               "is a null operation")
-      return(NULL)
+      return("null.op")
     }
     return(TRUE)
         
@@ -360,7 +365,7 @@ TCFromDenSig <- function (s, t) {
     # density.signature -> density.signature
     warning("Transform density.signature -> density signature",
             " is a null operation")
-    return(NULL)
+    return("null.op")
   } else if (t$catalog.type == "counts") {
     # density.signature -> counts
     stop("programming error: density.signature -> counts")
@@ -381,10 +386,10 @@ TCFromDen <- function (s, t) {
     # density -> density
     warning("Transformation from density to density ",
             "is a null operation")
-    return(NULL)
+    return("null.op")
   } else if (t$catalog.type == "density.signature") { 
     # density -> density.signature
-    return(TRUE)
+    return("sig.only")
   } else if (t$catalog.type == "counts") {
     # density -> counts
     if (is.null(t[["abundance"]])) {
@@ -403,6 +408,14 @@ TCFromDen <- function (s, t) {
   stop("programming error, unexpected catalog.type ", t$catalog.type)
 }
 
+#' @keywords internal
+AbundanceIsSame <- function(a1, a2) {
+  if (is.null(a1)  && is.null(a2))  return(TRUE)
+  if (is.null(a1)  && !is.null(a2)) return(FALSE)
+  if (!is.null(a1) && is.null(a2))  return(FALSE)
+  if (all(a1 == a2) && all(names(a1) == names(a2))) return(TRUE)
+  return(FALSE)
+}
 
 #' Transform between counts and density spectrum catalogs
 #' and counts and density signature catalogs.
@@ -412,7 +425,7 @@ TCFromDen <- function (s, t) {
 #' \enumerate{
 #'
 #' \item \code{counts -> counts} (used to transform
-#'    between \code{target.ref.genome} and/or \code{target.region})
+#'    between the source abundance and \code{target.abundance})
 #'
 #' \item \code{counts -> density}
 #'
@@ -422,15 +435,25 @@ TCFromDen <- function (s, t) {
 #' infer the genome-wide or exome-wide counts based on the
 #' densities)
 #'
+#' \item \code{density -> density} (a null operation, generates
+#' a warning)
+#'
 #' \item \code{density -> (counts.signature, density.signature)}
 #'
-#' \item \preformatted{counts.signature -> (counts.signature, density.signature)}
+#' \item \code{counts.signature -> counts.signature} (used to transform
+#'    between the source abundance and \code{target.abundance})
 #'
-#' \item \preformatted{density.signature -> counts.signature}
+#' \item \code{counts.signature -> density.signature}
+#' 
+#' \item \code{counts.signature -> (counts, density)} (generates an error)
+#' 
+#' \item \code{density.signature -> density.signature} (a null operation,
+#' generates a warning)
 #'
-#' \item \code{density.signature -> density.signature} (a null operation)
+#' \item \code{density.signature -> counts.signature}
+#' 
+#' \item \code{density.signature -> (counts, density)} (generates an error)
 #'
-#' \item \code{density -> density} (a null operation)
 #' }
 #'
 #'
@@ -479,49 +502,29 @@ TransformCatalog <-
         target.catalog.type = target.catalog.type,
         target.region       = target.region,
         target.abundance    = target.abundance)
-    # Check if the transformation is legal
+    rm(target.ref.genome, target.catalog.type, target.region, target.abundance)
     s <- args$s
     t <- args$t
+    
+    # Check if the transformation is legal
     test <- IsTransformationLegal(s, t)
-
-    if (t$catalog.type == "counts.signature") {
-      if (s$catalog.type == "counts.signature" && 
-          attr(catalog, "region", exact = TRUE) == target.region) {
-        return(catalog)
-      } else if (s$catalog.type == "counts" && 
-                 attr(catalog, "region", exact = TRUE) == target.region) {
-        out <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
-        return(as.catalog(out, t$ref.genome,
-                          target.region, target.catalog.type)) 
-      }
-    }
-    
-    if (s$catalog.type == "density.signature" &&
-        target.catalog.type == "density.signature") {
-      return(catalog)
+    if (test == "null.op") return(catalog)
+    if (test == "sig.only") {
+      out <- apply(catalog, MARGIN = 2, function (x) x / sum(x))
+      return(as.catalog(out, t$ref.genome,
+                        t[["region"]], t[["catalog.type"]], t[["abundance"]])) 
     }
 
-    if (s[["catalog.type"]] == "density" && t[["catalog.type"]] == "density") {
-      return(catalog)
-    }
-
-    # TODO(steve) replace source.abundance and target.abundance below
-    source.abundance <- s[["abundance"]]
-    target.abundance <- t[["abundance"]]
-    
-    # TODO(Steve): move this to the argument checking function
-    # stopifnot(names(source.abundance) == names(target.abundance))
-
-    factor <- target.abundance / source.abundance
+    factor <- t[["abundance"]] / s[["abundance"]]
     if (any(is.infinite(factor)) || any(is.na(factor))) {
       factor[is.infinite(factor)] <- 0
       factor[is.na(factor)] <- 0
     }
 
-    names(factor) <- names(target.abundance)
+    names(factor) <- names(t[["abundance"]])
     out.catalog <- catalog
 
-    for(source.n.mer in names(source.abundance)) {
+    for(source.n.mer in names(s[["abundance"]])) {
       # CAUTION: this loop depends on how mutations are encoded in
       # the row names of catalogs!
       
@@ -538,14 +541,14 @@ TransformCatalog <-
       out.catalog[rows, ] <- out.catalog[rows, ] * factor[source.n.mer]
     }
 
-    if (target.catalog.type %in% c("counts.signature", "density.signature")) {
+    if (t[["catalog.type"]] %in% c("counts.signature", "density.signature")) {
       out2 <- apply(out.catalog, MARGIN = 2, function (x) x / sum(x))
-      return(as.catalog(out2, t$ref.genome,
-                        target.region, target.catalog.type))
     } else {
-      return(as.catalog(out.catalog, t$ref.genome,
-                        target.region, target.catalog.type))
+      out2 <- out.catalog
     }
+    return(as.catalog(out2, t[["ref.genome"]], t[["region"]],
+                      t[["catalog.type"]], t[["abundance"]]))
+
   }
 
 #' Standardize the chromosome name annotations for a data frame.
