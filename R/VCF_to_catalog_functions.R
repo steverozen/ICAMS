@@ -1397,8 +1397,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @examples 
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
-#'                       package = "ICAMS",
-#'                       mustWork = TRUE))
+#'                       package = "ICAMS")
 #' catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
 #'                                     trans.ranges = trans.ranges.GRCh37,
 #'                                     region = "genome")
