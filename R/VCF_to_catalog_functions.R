@@ -1255,6 +1255,14 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
+#'                                         trans.ranges = trans.ranges.GRCh37,
+#'                                         region = "genome")
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadStrelkaSBSVCFs(files)
