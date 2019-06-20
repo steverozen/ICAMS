@@ -720,6 +720,12 @@ ReadAndSplitStrelkaSBSVCFs <- function(files) {
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadStrelkaIDVCFs(file)
 ReadStrelkaIDVCFs <- function(files) {
   vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
   names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
