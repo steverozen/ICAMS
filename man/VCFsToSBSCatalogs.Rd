@@ -36,3 +36,12 @@ DBSs, indels, or other types of mutations.
 \note{
 SBS 192 catalogs only contain mutations in transcribed regions.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Mutect.GRCh37.vcf",
+                      package = "ICAMS"))
+list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
+catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
+                                  trans.ranges = trans.ranges.GRCh37,
+                                  region = "genome")
+}
