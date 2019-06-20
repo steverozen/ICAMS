@@ -1344,6 +1344,13 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
+#'                                           region = "genome")
 StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
   vcfs <- ReadStrelkaIDVCFs(files)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))

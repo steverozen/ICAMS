@@ -30,3 +30,10 @@ In ID (insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Strelka.ID.GRCh37.vcf",
+                      package = "ICAMS"))
+catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
+                                          region = "genome")
+}
