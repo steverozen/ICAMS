@@ -36,3 +36,12 @@ any type of mutation other then DBSs.
 \note{
 DBS 144 catalog only contains mutations in transcribed regions.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Mutect.GRCh37.vcf",
+                      package = "ICAMS"))
+list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
+catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
+                                  trans.ranges = trans.ranges.GRCh37,
+                                  region = "genome")
+}

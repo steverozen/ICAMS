@@ -1164,6 +1164,15 @@ CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
+#' catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
+#'                                   trans.ranges = trans.ranges.GRCh37,
+#'                                   region = "genome")
 VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown") {
   ncol <- length(list.of.DBS.vcfs)
