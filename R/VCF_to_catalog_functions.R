@@ -9,9 +9,10 @@
 #' @examples 
 #' file <- c(system.file("extdata",
 #'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS",
-#'                       mustWork = TRUE))
-#' df <- ICAMS:::MakeDataFrameFromStrelkaSBSVCF(file)
+#'                       package = "ICAMS"))
+#' MakeDataFrameFromStrelkaSBSVCF <- 
+#'   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
+#' df <- MakeDataFrameFromStrelkaSBSVCF(file)
 #' vaf <- GetStrelkaVAF(df)
 NULL
 
