@@ -41,7 +41,6 @@ to a DBS 78 catalog.
 }
 \examples{
 # Create an SBS192 catalog and collapse it to an SBS96 catalog
-require(ICAMS)
 object <- matrix(1, nrow = 192, ncol = 1, 
                  dimnames = list(catalog.row.order$SBS192))
 catSBS192 <- as.catalog(object, ref.genome = "hg19", region = "transcript")

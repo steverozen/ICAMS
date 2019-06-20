@@ -39,7 +39,7 @@ Read and split Mutect VCF files.
 \examples{
 file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",
-                      package = "ICAMS")
+                      package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 }
 \seealso{

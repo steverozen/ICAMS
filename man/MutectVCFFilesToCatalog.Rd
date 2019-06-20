@@ -38,11 +38,9 @@ This function calls \code{\link{VCFsToSBSCatalogs}},
 SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 }
 \examples{
-require(ICAMS)
 file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",
-                      package = "ICAMS",
-                      mustWork = TRUE))
+                      package = "ICAMS"))
 catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
                                     trans.ranges = trans.ranges.GRCh37,
                                     region = "genome")
