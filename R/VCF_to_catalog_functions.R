@@ -695,6 +695,12 @@ ReadStrelkaSBSVCFs <- function(files) {
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 ReadAndSplitStrelkaSBSVCFs <- function(files) {
   vcfs <- ReadStrelkaSBSVCFs(files)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
@@ -769,7 +775,7 @@ ReadMutectVCFs <- function(files) {
 #' @examples 
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
-#'                       package = "ICAMS")
+#'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 ReadAndSplitMutectVCFs <- function(files) {
   vcfs <- ReadMutectVCFs(files)
@@ -1404,7 +1410,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @examples 
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
-#'                       package = "ICAMS")
+#'                       package = "ICAMS"))
 #' catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
 #'                                     trans.ranges = trans.ranges.GRCh37,
 #'                                     region = "genome")
