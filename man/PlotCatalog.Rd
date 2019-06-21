@@ -54,6 +54,6 @@ file <- system.file("extdata",
 catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
                         region = "genome",
                         catalog.type = "counts")
-colnames(catSBS96) <- "test"
+colnames(catSBS96) <- "sample"
 PlotCatalog(catSBS96)
 }

@@ -49,7 +49,7 @@
 #' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
 #'                         region = "genome",
 #'                         catalog.type = "counts")
-#' colnames(catSBS96) <- "test"
+#' colnames(catSBS96) <- "sample"
 #' PlotCatalog(catSBS96)
 PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL, 
                         grid = NULL , upper = NULL, xlabels = NULL) {
@@ -99,6 +99,16 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' @export
 #'
 #' @name PlotCatalogToPdf
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "strelka.regress.cat.sbs.96.csv",
+#'                     package = "ICAMS")
+#' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
+#'                         region = "genome",
+#'                         catalog.type = "counts")
+#' colnames(catSBS96) <- "sample"
+#' PlotCatalogToPdf(catSBS96, file = paste0(tempdir(), "\\test.pdf"))
 PlotCatalogToPdf <- 
   function(catalog, file, plot.SBS12 = NULL, 
            cex = NULL, grid = NULL, upper = NULL, xlabels = NULL) {
