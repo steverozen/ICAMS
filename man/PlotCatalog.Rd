@@ -47,3 +47,13 @@ The sizes of repeats involved in deletions range from 0 to 5+ in the
   mutational-spectra and signature catalog rownames, but for plotting and
   end-user documentation they range from 1 to 6+.
 }
+\examples{
+file <- system.file("extdata",
+                    "strelka.regress.cat.sbs.96.csv",
+                    package = "ICAMS")
+catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
+                        region = "genome",
+                        catalog.type = "counts")
+colnames(catSBS96) <- "test"
+PlotCatalog(catSBS96)
+}

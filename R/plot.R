@@ -41,6 +41,16 @@
 #' @export
 #'
 #' @name PlotCatalog
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "strelka.regress.cat.sbs.96.csv",
+#'                     package = "ICAMS")
+#' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
+#'                         region = "genome",
+#'                         catalog.type = "counts")
+#' colnames(catSBS96) <- "test"
+#' PlotCatalog(catSBS96)
 PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL, 
                         grid = NULL , upper = NULL, xlabels = NULL) {
   UseMethod(generic = "PlotCatalog")
