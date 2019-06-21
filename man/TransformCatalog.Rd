@@ -80,3 +80,15 @@ generates a warning)
 
 }
 }
+\examples{
+file <- system.file("extdata",
+                    "strelka.regress.cat.sbs.96.csv",
+                    package = "ICAMS")
+catSBS96.counts <- ReadCatalog(file, ref.genome = "hg19", 
+                               region = "genome",
+                               catalog.type = "counts")
+catSBS96.density <- TransformCatalog(catSBS96.counts,
+                                     target.ref.genome = "hg19",
+                                     target.region = "genome",
+                                     target.catalog.type = "density")
+}
