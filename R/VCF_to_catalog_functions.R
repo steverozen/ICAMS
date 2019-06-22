@@ -1330,7 +1330,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                           trans.ranges = trans.ranges.GRCh37,
 #'                                           region = "genome",
 #'                                           output.file = file.path(tempdir(), 
-#'                                                                   "Strelka.SBS.pdf")) 
+#'                                                                   "StrelkaSBS.pdf")) 
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {
@@ -1427,6 +1427,16 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' catID <- 
+#'   StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+#'                                          region = "genome",
+#'                                          output.file = file.path(tempdir(), 
+#'                                                                  "StrelkaID.pdf"))
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, region = "unknown", output.file) {
     catalog <-

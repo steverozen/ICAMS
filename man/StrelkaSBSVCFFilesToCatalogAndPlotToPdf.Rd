@@ -49,5 +49,5 @@ catalogs <-
                                           trans.ranges = trans.ranges.GRCh37,
                                           region = "genome",
                                           output.file = file.path(tempdir(), 
-                                                                  "Strelka.SBS.pdf")) 
+                                                                  "StrelkaSBS.pdf")) 
 }
