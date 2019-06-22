@@ -20,8 +20,10 @@ test_that(
 
 test_that(
   "ReadMutectVCFs",
-  { foo <- ReadMutectVCFs("testdata/Mutect.GRCh37.vcf")
-    expect_equal(dim(foo[[1]]), c(1851, 12))
+  { vcf <- ReadMutectVCFs("testdata/Mutect.GRCh37.vcf")
+    vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
+    expect_equal(dim(vcf[[1]]), c(1851, 12))
+    expect_equal(dim(vcf1[[1]]), c(1561, 12))
   } )
 
 test_that(
@@ -37,6 +39,42 @@ test_that(
   })
 
 test_that(
+  "ReadStrelkaSBSVCFs applied to Strelka ID VCF error",
+  {
+    expect_error(ReadStrelkaSBSVCFs("testdata/Strelka.ID.GRCh37.vcf"),
+                 "does not appear to be a Strelka SBS VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadStrelkaSBSVCFs("testdata/Strelka.ID.GRCh38.vcf"),
+                 "does not appear to be a Strelka SBS VCF",
+                 fixed = TRUE)
+  })
+
+test_that(
+  "ReadStrelkaIDVCFs applied to Mutect VCF error",
+  {
+    expect_error(ReadStrelkaIDVCFs("testdata/Mutect.GRCh37.vcf"),
+                 "does not appear to be a Strelka VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadStrelkaIDVCFs("testdata/Mutect.GRCh38.vcf"),
+                 "does not appear to be a Strelka VCF",
+                 fixed = TRUE)
+  })
+
+test_that(
+  "ReadStrelkaIDVCFs applied to Strelka SBS VCF error",
+  {
+    expect_error(ReadStrelkaIDVCFs("testdata/Strelka.SBS.GRCh37.vcf"),
+                 "does not appear to be a Strelka ID VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadStrelkaIDVCFs("testdata/Strelka.SBS.GRCh38.vcf"),
+                 "does not appear to be a Strelka ID VCF",
+                 fixed = TRUE)
+  })
+
+test_that(
   "ReadMutectVCFs applied to Strelka VCF error",
   {
     expect_error(ReadMutectVCFs("testdata/Strelka.SBS.GRCh37.vcf"),
@@ -46,5 +84,14 @@ test_that(
     expect_error(ReadMutectVCFs("testdata/Strelka.SBS.GRCh38.vcf"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
+    
+    expect_error(ReadMutectVCFs("testdata/Strelka.ID.GRCh37.vcf"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadMutectVCFs("testdata/Strelka.ID.GRCh38.vcf"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
   }
 )

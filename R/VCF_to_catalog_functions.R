@@ -114,6 +114,22 @@ ReadStrelkaIDVCF <- function(file) {
   names <- c("CHROM", as.character(df1[1, ])[-1])
   df1 <- df1[-1, ]
   colnames(df1) <- names
+  
+  # Check whether the input VCF is a Strelka ID VCF
+  if (!("TUMOR" %in% names(df1)) ||
+      !("FORMAT" %in% names(df1))) {
+    stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
+         paste(colnames(df1), collapse=" "))
+  }
+  control <- unique(df1[ , "FORMAT"])
+  stopifnot(length(control) == 1)
+  colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
+  each.base.col <- c("AU", "CU", "GU", "TU")
+  if (all(each.base.col %in% colnames)) {
+    stop("\nvcf does not appear to be a Strelka ID VCF,", 
+         "the value of column FORMAT is \n", 
+         control)
+  }
 
   df1$POS <- as.integer(df1$POS)
   return(StandardChromName(df1))
@@ -126,7 +142,7 @@ GetStrelkaVAF <-function(vcf) {
   stopifnot(class(vcf) == "data.frame")
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
-    stop("vcf does not appear to be a Strelka VCF, column names are ",
+    stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
   TUMOR <- vcf[ , "TUMOR"]
@@ -137,6 +153,11 @@ GetStrelkaVAF <-function(vcf) {
   values <- strsplit(TUMOR, split=":", fixed=TRUE)
   vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
+  if (!all(each.base.col %in% colnames)) {
+    stop("\nvcf does not appear to be a Strelka SBS VCF,", 
+         "the value of column FORMAT is \n", 
+         control)
+  }
   for (i in 1:length(vaf)) {
     row.i <- values[[i]]
     names(row.i) <- colnames

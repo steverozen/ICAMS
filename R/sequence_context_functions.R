@@ -74,11 +74,9 @@ CreatePPMFromSBSVCFs <-
 #' @keywords internal
 PlotPPM <- function(ppm, title) {
   ppm <- t(ppm)
-  old <- par(no.readonly = TRUE)
-  par(mar = c(5, 5, 1, 1))
   x <- seq(1:nrow(ppm))
   plot(x, y = ppm[, "A"], xaxt = "n", xlab = "",
-       ylab = "probability", ylim = c(0, 1), pch = 20, type = "b",
+       ylab = "proportion", ylim = c(0, 1), pch = 20, type = "b",
        lwd = 2, col = "darkgreen")
   lines(x, ppm[, "C"], col = "blue", type = "b", pch = 20, lwd = 2)
   lines(x, ppm[, "G"], col = "black", type = "b", pch = 20, lwd = 2)
@@ -89,7 +87,6 @@ PlotPPM <- function(ppm, title) {
          legend = c("A", "C", "G", "T"),
          col = c("darkgreen", "blue", "black", "red"))
   mtext(text = title, side = 3, line = 0.5)
-  on.exit(par(old), add = TRUE)
   invisible(TRUE)
 }
 
@@ -109,7 +106,7 @@ PlotPPMToPdf <- function(list.of.ppm, file, titles = names(list.of.ppm)) {
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   n <- length(list.of.ppm)
-  graphics::par(mfrow = c(2, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+  graphics::par(mfrow = c(4, 2), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
   for (i in 1:n) {
     PlotPPM(list.of.ppm[[i]], title = titles[i])
