@@ -727,8 +727,7 @@ ReadAndSplitStrelkaSBSVCFs <- function(files) {
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
 ReadStrelkaIDVCFs <- function(files) {
   vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
-  names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
-                     basename(files))
+  names(vcfs) <- tools::file_path_sans_ext(basename(files))
   return(vcfs)
 }
 
