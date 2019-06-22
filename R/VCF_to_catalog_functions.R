@@ -1431,7 +1431,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, region = "unknown", output.file) {
     catalog <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region)
-    PlotCatalogToPdf(catalog, file = paste0("IndelCatalog.", output.file))
+    PlotCatalogToPdf(catalog, file = sub(".pdf", ".IndelCatalog.pdf", 
+                                         output.file, ignore.case = TRUE))
     return(catalog)
   }
 
