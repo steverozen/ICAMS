@@ -741,8 +741,7 @@ ReadStrelkaIDVCFs <- function(files) {
 #' @keywords internal
 ReadMutectVCFs <- function(files) {
   vcfs <- lapply(files, FUN = ReadMutectVCF)
-  names(vcfs) <- sub(pattern = "(.*?)\\..*$", replacement = "\\1",
-                     basename(files))
+  names(vcfs) <- tools::file_path_sans_ext(basename(files))
   return(vcfs)
 }
 
