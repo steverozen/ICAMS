@@ -41,3 +41,14 @@ This function calls \code{\link{MutectVCFFilesToCatalog}} and
 \note{
 SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Mutect.GRCh37.vcf",
+                      package = "ICAMS"))
+catalogs <- 
+  MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+                                      trans.ranges = trans.ranges.GRCh37,
+                                      region = "genome",
+                                      output.file = file.path(tempdir(), 
+                                                              "Mutect.pdf"))
+}

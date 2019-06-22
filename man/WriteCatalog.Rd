@@ -33,5 +33,5 @@ file <- system.file("extdata",
 catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
                         region = "genome",
                         catalog.type = "counts")
-WriteCatalog(catSBS96, file = paste0(tempdir(), "\\\\catSBS96.csv"))
+WriteCatalog(catSBS96, file = file.path(tempdir(), "catSBS96.csv")
 }

@@ -57,5 +57,5 @@ catSBS96 <- ReadCatalog(file, ref.genome = "hg19",
                         region = "genome",
                         catalog.type = "counts")
 colnames(catSBS96) <- "sample"
-PlotCatalogToPdf(catSBS96, file = paste0(tempdir(), "\\\\test.pdf"))
+PlotCatalogToPdf(catSBS96, file = file.path(tempdir(), "test.pdf")
 }

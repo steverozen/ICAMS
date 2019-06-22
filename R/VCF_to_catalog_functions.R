@@ -1501,6 +1501,17 @@ MutectVCFFilesToCatalog <-
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' catalogs <- 
+#'   MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+#'                                       trans.ranges = trans.ranges.GRCh37,
+#'                                       region = "genome",
+#'                                       output.file = file.path(tempdir(), 
+#'                                                               "Mutect.pdf"))
 MutectVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {
