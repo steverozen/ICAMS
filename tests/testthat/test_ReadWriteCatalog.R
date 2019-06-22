@@ -50,5 +50,6 @@ test_that("Functions for reading and writing catalogs", {
   }
 
   discard <- mapply(Test1Cat, read.fn, write.fn, fl, a.region)
-  unlink(paste0(tempdir(), "\\tmp.ct.txt"))
+  temp.files <- list.files(tempdir(), full.names = TRUE, pattern = "^catalog")
+  invisible(file.remove(temp.files)) 
 })
