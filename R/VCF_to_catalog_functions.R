@@ -1328,22 +1328,29 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
                                   trans.ranges, region)
 
     PlotCatalogToPdf(catalogs$catSBS96, 
-                     file = paste0("SBS96Catalog.", output.file))
+                     file = sub(".pdf", ".SBS96Catalog.pdf", 
+                                output.file, ignore.case = TRUE))
     if (!is.null(trans.ranges)) {
       PlotCatalogToPdf(catalogs$catSBS192, 
-                       file = paste0("SBS192Catalog.", output.file))
+                       file = sub(".pdf", ".SBS192Catalog.pdf", 
+                                  output.file, ignore.case = TRUE))
       PlotCatalogToPdf(catalogs$catSBS192,
-                       file = paste0("SBS12Catalog.", output.file),
+                       file = sub(".pdf", ".SBS12Catalog.pdf", 
+                                  output.file, ignore.case = TRUE),
                        plot.SBS12 = TRUE)
       PlotCatalogToPdf(catalogs$catDBS144, 
-                       file = paste0("DBS144Catalog.", output.file))
+                       file = sub(".pdf", ".DBS144Catalog.pdf", 
+                                  output.file, ignore.case = TRUE))
     }
-    PlotCatalogToPdf(catalogs$catSBS1536, 
-                     file = paste0("SBS1536Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS78, 
-                     file = paste0("DBS78Catalog.", output.file))
-    PlotCatalogToPdf(catalogs$catDBS136, 
-                     file = paste0("DBS136Catalog.", output.file))
+    PlotCatalogToPdf(catalogs$catSBS1536,
+                     file = sub(".pdf", ".SBS1536Catalog.pdf", 
+                                output.file, ignore.case = TRUE))
+    PlotCatalogToPdf(catalogs$catDBS78,
+                     file = sub(".pdf", ".DBS78Catalog.pdf", 
+                                output.file, ignore.case = TRUE))
+    PlotCatalogToPdf(catalogs$catDBS136,
+                     file = sub(".pdf", ".DBS136Catalog.pdf", 
+                                output.file, ignore.case = TRUE))
     
     return(catalogs)
   }
