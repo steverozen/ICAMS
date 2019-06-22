@@ -288,6 +288,11 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'   in \code{context}.
 #'
 #' @export
+#' 
+#' @examples 
+#' # GAGAGG[CTAGAA]CTAGTT
+#' #        ----   ----
+#' FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
 FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   n <- nchar(deleted.seq)
 

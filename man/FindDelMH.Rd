@@ -119,3 +119,8 @@ is identical to the left end of the deleted sequence.
 The microhomology sequence is the concatenation of items
 (1) and (2).
 }
+\examples{
+# GAGAGG[CTAGAA]CTAGTT
+#        ----   ----
+FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
+}
