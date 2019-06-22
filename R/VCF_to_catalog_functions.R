@@ -126,7 +126,7 @@ GetStrelkaVAF <-function(vcf) {
   stopifnot(class(vcf) == "data.frame")
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
-    stop("vcf does not appear to be a Strelka VCF, column names are ",
+    stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
   TUMOR <- vcf[ , "TUMOR"]
@@ -137,6 +137,11 @@ GetStrelkaVAF <-function(vcf) {
   values <- strsplit(TUMOR, split=":", fixed=TRUE)
   vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
+  if (!all(each.base.col %in% colnames)) {
+    stop("\nvcf does not appear to be a Strelka SBS VCF,", 
+         "the value of column FORMAT is \n", 
+         control)
+  }
   for (i in 1:length(vaf)) {
     row.i <- values[[i]]
     names(row.i) <- colnames
