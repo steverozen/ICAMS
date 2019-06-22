@@ -1,19 +1,9 @@
 # ICAMS to do list, 2019 06 18
 
 ## Highest priority
-done 1.1 Nanhai Address CRAN comments
-done 1.1.1 Nanhai Add examples to documentation (key functions only for now)
-      Suggest to create an example for each, should be as simple as
-      possible, then we can review again
-done 1.1.2 Nanhai, other CRAN comments
 
-done 1.2 Nanhai Checks for functions ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs() according to Arnoud?s suggestion in the email.
+1.1 Steve assess feasibility of a shiny or other portable app / is web page easier?
 
-done 1.3 Nanhai Change the PPM plot functions according to Arnoud? suggestion in the email.
-
-1.4 Steve assess feasibility of a shiny app
-
-done(no new bug) 1.6 Nanhai, any new bugs
 
 ## High priority
 2.1 Nanhai Add built-in support for mouse mm10, create new transcript ranges and abundance files.
@@ -44,8 +34,19 @@ done(no new bug) 1.6 Nanhai, any new bugs
 4.8 Update the legend in 1536 catalog plotting according to Liu Mo?s suggestion?
 4.9 More automatic tests for genomes that do not have built-in support
 4.10 binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
-4.11 Nanhai DISCUSS w/ Steve, should we update ICAMS reference manual accordingly in view of Matas? comments from a beginner?s view?
+4.11 Review Matas' comments on documentation
 
 
+## Done
+
+done 1.1 Nanhai Address CRAN comments
+done 1.1.1 Nanhai Add examples to documentation (key functions only for now)
+      Suggest to create an example for each, should be as simple as
+      possible, then we can review again
+done 1.1.2 Nanhai, other CRAN comments
+
+done 1.2 Nanhai Checks for functions ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs() according to Arnoud?s suggestion in the email.
+
+done 1.3 Nanhai Change the PPM plot functions according to Arnoud? suggestion in the email.
 
 
