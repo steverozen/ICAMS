@@ -8,10 +8,10 @@ test_that("extended seq.context functions for Mutect GRCh38 vcf", {
   out <- PlotPPM(mat, title = "ExtendedSeqContext_21bases")
   out1 <- 
     PlotPPMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+                 file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+  unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions for Mutect GRCh37 vcf", {
@@ -22,10 +22,10 @@ test_that("extended seq.context functions for Mutect GRCh37 vcf", {
   out <- PlotPPM(mat, title = "ExtendedSeqContext_21bases")
   out1 <- 
     PlotPPMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+                 file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+  unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions for Strelka GRCh38 vcf", {
@@ -36,10 +36,10 @@ test_that("extended seq.context functions for Strelka GRCh38 vcf", {
   out <- PlotPPM(mat, title = "ExtendedSeqContext_21bases")
   out1 <- 
     PlotPPMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+                 file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+  unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
 test_that("extended seq.context functions for Strelka GRCh37 vcf", {
@@ -50,8 +50,8 @@ test_that("extended seq.context functions for Strelka GRCh37 vcf", {
   out <- PlotPPM(mat, title = "ExtendedSeqContext_21bases")
   out1 <- 
     PlotPPMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
-                 file = paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+                 file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  unlink(paste0(tempdir(), "\\Extended.seq.context.21bases.pdf"))
+  unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
