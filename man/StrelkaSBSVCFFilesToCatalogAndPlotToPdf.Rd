@@ -40,3 +40,14 @@ This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}} and
 \note{
 SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 }
+\examples{
+file <- c(system.file("extdata",
+                      "Strelka.SBS.GRCh37.vcf",
+                      package = "ICAMS"))
+catalogs <- 
+  StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
+                                          trans.ranges = trans.ranges.GRCh37,
+                                          region = "genome",
+                                          output.file = file.path(tempdir(), 
+                                                                  "Strelka.SBS.pdf")) 
+}
