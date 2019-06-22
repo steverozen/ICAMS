@@ -6,7 +6,7 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
                        region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("Biliary-AdenoCA", 1 : 35)
   out <- PlotCatalogToPdf(catalog.counts, 
-                          file = paste0(tempdir(), "\\PlotCatID.counts.test.pdf"))
+                          file = file.path(tempdir(), "PlotCatID.counts.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -16,10 +16,10 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
                region = "genome", catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = paste0(tempdir(), "\\PlotCatID.counts.signature.test.pdf"))
+                     file = file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
   expect_equal(out, TRUE)
 
-  unlink(paste0(tempdir(), "\\PlotCatID.counts.test.pdf"))
-  unlink(paste0(tempdir(), "\\PlotCatID.counts.signature.test.pdf"))
+  unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
+  unlink(file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
   graphics.off()
 })
