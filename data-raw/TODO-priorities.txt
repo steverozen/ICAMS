@@ -11,9 +11,7 @@
 
 1.3 Nanhai Change the PPM plot functions according to Arnoud? suggestion in the email.
 
-1.4 Nanhai DISCUSS w/ Steve, should we update ICAMS reference manual accordingly in view of Matas? comments from a beginner?s view?
-
-1.5 Steve assess feasibility of a shiny app
+1.4 Steve assess feasibility of a shiny app
 
 1.6 Nanhai, any new bugs
 
@@ -46,7 +44,7 @@
 4.8 Update the legend in 1536 catalog plotting according to Liu Mo?s suggestion?
 4.9 More automatic tests for genomes that do not have built-in support
 4.10 binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
-
+4.11 Nanhai DISCUSS w/ Steve, should we update ICAMS reference manual accordingly in view of Matas? comments from a beginner?s view?
 
 
 
