@@ -108,7 +108,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'                         region = "genome",
 #'                         catalog.type = "counts")
 #' colnames(catSBS96) <- "sample"
-#' PlotCatalogToPdf(catSBS96, file = file.path(tempdir(), "test.pdf")
+#' PlotCatalogToPdf(catSBS96, file = file.path(tempdir(), "test.pdf"))
 PlotCatalogToPdf <- 
   function(catalog, file, plot.SBS12 = NULL, 
            cex = NULL, grid = NULL, upper = NULL, xlabels = NULL) {
