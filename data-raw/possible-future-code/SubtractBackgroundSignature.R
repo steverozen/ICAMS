@@ -74,3 +74,47 @@ CSubtractBackground <- function(spectra, background.sig, background.count) {
     return(out.spectra) # Not sure how to make this a catalog again
 }
 
+
+
+#' Estimate a signature from several spectra; two possible approaches,
+#' 1. Just an average of the signatures corresponding to the spectra.
+#' 2. Find a maximum likelihood signature and coefficients (exposures)
+#' in the clones.
+#  For now, we assume that option 1 is sufficient.
+
+GetHepG2Background1 <- function() {
+  # This is a 192-channel catalog, but it is whole genome,
+  # so we use the collapsed version.
+  c1 <- ReadDukeNUSCat192(
+    devtools::package_file(
+      "data-raw/possible-future-code/HepG2_SC2_clones.txt"),
+    ref.genome = "hg19", region = "unknown",
+    catalog.type = "counts")
+  
+  counts96 <- as.catalog(c1$cat96, ref.genome = "hg19",
+                         region = "genome")
+  
+  PlotCatalogToPdf(counts96, "counts96.pdf")
+  PlotCatalogToPdf(
+    TransformCatalog(counts96, target.catalog.type = "density"),
+    "density96.pdf")
+  
+  pre.sig96 <-
+    TransformCatalog(c1$cat96, target.catalog.type = "counts.signature")
+  
+  sig96 <-
+    as.catalog(
+      as.matrix(apply(pre.sig96, MARGIN = 1, mean), nrow = 96),
+      ref.genome = "hg19",
+      region = "genome",
+      catalog.type = "counts.signature")
+  
+  PlotCatalogToPdf(sig96, "sig96.pdf")
+  
+  PlotCatalogToPdf(
+    TransformCatalog(sig96, target.catalog.type = "density.signature"),
+    "sig96-dens.pdf")
+  
+  return(sig96.pdf)
+  
+}
