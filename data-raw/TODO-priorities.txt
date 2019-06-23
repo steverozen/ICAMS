@@ -35,6 +35,8 @@
 4.9 More automatic tests for genomes that do not have built-in support
 4.10 binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
 4.11 Review Matas' comments on documentation
+4.12 Allow as.catalog to work on a numeric vector (interpreting it as a
+     matrix w/ one column)
 
 
 ## Done
