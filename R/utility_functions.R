@@ -43,14 +43,19 @@ Collapse192CatalogTo96 <- function(catalog) {
   mat96 <- as.matrix(dt96[, -1])
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
-
+  
+  abundance <- attributes(catalog)$abundance
+  if (!is.null(abundance)) {
+      abundance <- Collapse192AbundanceTo96(abundance)
+  }
+  
   cat96 <-
     as.catalog(
       object = mat96,
       ref.genome = attributes(catalog)$ref.genome,
       region = attributes(catalog)$region,
       catalog.type = attributes(catalog)$catalog.type,
-      abundance = Collapse192AbundanceTo96(attributes(catalog)$abundance)
+      abundance = abundance
     )
   return(cat96)
 }
@@ -127,6 +132,8 @@ Collapse144CatalogTo78 <- function(catalog) {
       ref.genome = attributes(catalog)$ref.genome,
       region = attributes(catalog)$region,
       catalog.type = attributes(catalog)$catalog.type,
+      # TODO(Nanhai): Is this the correct collapose abundance function?
+      # If so, please change the name to be more informative.
       abundance = Collapse1536AbundanceTo96(attributes(catalog)$abundance)
     )
   return(cat78)
@@ -1030,7 +1037,7 @@ NormalizeGenomeArg <- function(ref.genome) {
 #' @keywords internal
 
 StopIfTranscribedRegionIllegal <- function(region) {
-  if (!region %in% c("transcript", "exome")) {
+  if (!region %in% c("transcript", "exome", "unknown")) {
     stop("Require region to be one of transcript, exome, or unknown for ",
          "SBS192Catalog and DBS144Catalog\n",
          "Got ", region)
