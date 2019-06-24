@@ -23,12 +23,14 @@ see \code{\link{ICAMS}}.}
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
 
-\item{abundance}{Optional, only needed when \code{ref.genome}
-is not one of
-the reference genomes known to ICAMS (see \code{\link{ICAMS}}.
-The abundance should
-contain the counts of different source sequences for mutations. \cr
-See \code{\link{all.abundance}}.}
+\item{abundance}{If \code{NULL}, then
+inferred if \code{ref.genome}
+is one of
+the reference genomes known to ICAMS and \code{region}
+is not \code{unknown}. See \code{\link{ICAMS}}.
+The argument \code{abundance} should
+contain the counts of different source sequences for mutations
+in the same format as the numeric vectors in \code{\link{all.abundance}}.}
 }
 \value{
 A catalog as described in \code{\link{ICAMS}}.

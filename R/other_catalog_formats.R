@@ -1,4 +1,4 @@
-#' Read a 192-channel spectra (or signaure) catalog in Duke-NUS format.
+#' Read a 192-channel spectra (or signature) catalog in Duke-NUS format.
 #' 
 #' The file needs to have the column names Before	Ref	After	Var
 #' in the first 4 columns 
