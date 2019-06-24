@@ -4,6 +4,7 @@ This is a resubmission. In this version I have:
   with <doi:10.1101/gr.230219.117>.
 * In DESCRIPTION (and README) explained the acronym ICAMS 
   (In-depth Characterization and Analysis of Mutational Signatures).
+* Added small executable examples too all Rd-files.
 * Ensured that all examples/vignettes/tests that write files write only
   to tempdir().
 * Removed all instances of <<- from the code.
