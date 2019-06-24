@@ -17,13 +17,13 @@ Analysis and visualization of experimentally elucidated mutational signatures --
 Installation
 ------------
 
-Install ICAMS v2.0.2 from [GitHub](https://github.com/) with the R command line:
+Install ICAMS v2.0.3 from [GitHub](https://github.com/) with the R command line:
 
 ``` r
-devtools::install_github("steverozen/ICAMS", ref = "v2.0.2")
+devtools::install_github("steverozen/ICAMS", ref = "v2.0.3")
 ```
 
 Reference manual
 ----------------
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.0.2.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.0.3.pdf>
