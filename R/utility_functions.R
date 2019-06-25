@@ -94,7 +94,7 @@ Collapse1536CatalogTo96 <- function(catalog) {
   
   abundance <- attributes(catalog)$abundance
   if (!is.null(abundance)) {
-    abundance <- Collapse1536AbundanceTo96(abundance)
+    abundance <- Collapse5bpAbundanceTo3bp(abundance)
   }
   
   cat96 <-
@@ -109,7 +109,7 @@ Collapse1536CatalogTo96 <- function(catalog) {
 }
 
 #' @keywords internal
-Collapse1536AbundanceTo96 <- function(abundance1536) {
+Collapse5bpAbundanceTo3bp <- function(abundance1536) {
   dt <- data.table(abundance1536)
   rownames(dt) <- names(abundance1536)
   dt$rn <- substr(rownames(dt), 2, 4)
