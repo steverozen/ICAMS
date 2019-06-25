@@ -92,13 +92,18 @@ Collapse1536CatalogTo96 <- function(catalog) {
   rownames(mat96) <- dt96$rn
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   
+  abundance <- attributes(catalog)$abundance
+  if (!is.null(abundance)) {
+    abundance <- Collapse1536AbundanceTo96(abundance)
+  }
+  
   cat96 <-
     as.catalog(
       object = mat96,
       ref.genome = attributes(catalog)$ref.genome,
       region = attributes(catalog)$region,
       catalog.type = attributes(catalog)$catalog.type,
-      abundance = Collapse1536AbundanceTo96(attributes(catalog)$abundance)
+      abundance = abundance
     )
   return(cat96)
 }
