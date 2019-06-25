@@ -130,7 +130,12 @@ Collapse144CatalogTo78 <- function(catalog) {
   mat78 <- as.matrix(dt78[ , -1])
   rownames(mat78) <- dt78$rn
   mat78 <- mat78[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
-
+  
+  abundance <- attributes(catalog)$abundance
+  if (!is.null(abundance)) {
+    abundance <- Collapse144AbundanceTo78(abundance)
+  }
+  
   cat78 <-
     as.catalog(
       object = mat78,
@@ -139,8 +144,8 @@ Collapse144CatalogTo78 <- function(catalog) {
       catalog.type = attributes(catalog)$catalog.type,
       # TODO(Nanhai): Is this the correct collapose abundance function?
       # If so, please change the name to be more informative.
-      abundance = Collapse1536AbundanceTo96(attributes(catalog)$abundance)
-    )
+      abundance = abundance)
+    
   return(cat78)
 }
 
