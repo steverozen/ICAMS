@@ -5,6 +5,7 @@
 \alias{TranscriptRanges}
 \alias{trans.ranges.GRCh37}
 \alias{trans.ranges.GRCh38}
+\alias{trans.ranges.GRCm38}
 \title{Transcript ranges data}
 \format{A \code{\link[data.table]{data.table}} which contains transcript
   range and strand information for a particular reference genome.
@@ -19,6 +20,8 @@
 trans.ranges.GRCh37
 
 trans.ranges.GRCh38
+
+trans.ranges.GRCm38
 }
 \description{
 Transcript ranges and strand information for a particular reference genome.
@@ -32,6 +35,8 @@ class \code{SBS192Catalog}.
 \code{trans.ranges.GRCh37}:  \strong{Human} GRCh37. 
 
 \code{trans.ranges.GRCh38}:  \strong{Human} GRCh38. 
+
+\code{trans.ranges.GRCm38}:  \strong{Mouse} GRCm38. 
 
 For these two tables, only genes that are associated with a CCDS ID are kept for transcriptional
 strand bias analysis. 

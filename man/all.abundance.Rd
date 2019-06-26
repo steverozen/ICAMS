@@ -11,7 +11,7 @@ all.abundance
 \description{
 An R list with one element each for 
 \code{BSgenome.Hsapiens.1000genomes.hs37d5}, \cr
-and \code{BSgenome.Hsapiens.UCSC.hg38}.
+\code{BSgenome.Hsapiens.UCSC.hg38} and \code{BSgenome.Mmusculus.UCSC.mm10}.
 Each element is in turn a sub-list keyed by 
 \code{exome}, \code{transcript}, 
 and \code{genome}. Each element of the sub list

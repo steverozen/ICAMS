@@ -9,8 +9,9 @@
 Analysis and visualization of experimentally elucidated mutational signatures
 -- the kind of analysis and visualization in Boot et al., "In-depth
 characterization of the cisplatin mutational signature in human cell lines
-and in esophageal and liver tumors", \emph{Genome Research} 2018,
-https://doi.org/10.1101/gr.230219.117. "ICAMS" stands for In-depth Characterization and
+and in esophageal and liver tumors", \cr
+\emph{Genome Research} 2018, https://doi.org/10.1101/gr.230219.117.
+"ICAMS" stands for In-depth Characterization and
 Analysis of Mutational Signatures. ICAMS has functions to read in variant
 call files (VCFs) and to collate the corresponding catalogs of mutational
 spectra and to analyze and plot catalogs of mutational spectra and
@@ -154,19 +155,23 @@ provides this.
  \item The strings \code{"hg38"} or \code{"GRCh38"}
  are shorthand for
  \code{\link{BSgenome.Hsapiens.UCSC.hg38}},
- and the strings \code{"hg19"} or \code{"GRCh37"}
+ the strings \code{"hg19"} or \code{"GRCh37"}
  are shorthand for
- \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}.
+ \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}},
+ and the strings \code{"mm10"} or \code{"GRCm38"}
+ are shorthand for
+ \code{\link{BSgenome.Mmusculus.UCSC.mm10}}.
  }
 
-The Bioconductor \code{\link{BSgenome}} package and
-two human genomes genomes from \code{\link{BSgenome}} are
+The Bioconductor \code{\link{BSgenome}} package,
+two human genomes and one mouse genome from \code{\link{BSgenome}} are
 "imported" by ICAMS and therefore should be installed when
-ICAMS is installed. The two genomes that are
+ICAMS is installed. The three genomes that are
  installed as dependencies are:
 \itemize{
 \item \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}
 \item \code{\link{BSgenome.Hsapiens.UCSC.hg38}}
+\item \code{\link{BSgenome.Mmusculus.UCSC.mm10}}
 }
 
 Any other needed reference genomes must be installed separately by the user.
