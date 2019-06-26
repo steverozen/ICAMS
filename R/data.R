@@ -58,6 +58,8 @@
 #' 
 #' @source \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/gencode.v30.annotation.gff3.gz}
 #' 
+#' @source \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M21/gencode.vM21.annotation.gff3.gz}
+#' 
 #' @name TranscriptRanges
 #' 
 #' @examples 
