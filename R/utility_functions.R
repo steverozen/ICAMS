@@ -1031,10 +1031,14 @@ NormalizeGenomeArg <- function(ref.genome) {
   } else if (ref.genome %in%
              c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
     ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+  } else if (ref.genome %in%
+             c("GRCm38", "mm10", "BSgenome.Mmusculus.UCSC.mm10")) {
+    ref.genome <- BSgenome.Mmusculus.UCSC.mm10
   } else {
     stop("Unrecoginzed ref.genome:\n", ref.genome,
          "\nNeed NULL or a BSgenome reference genome\n",
-         "or one of the character strings GRCh38, hg38, GRCh37, hg19")
+         "or one of the character strings GRCh38, hg38, GRCh37, hg19, ",
+         "GRCm38, mm10")
   }
   
   return(ref.genome)
