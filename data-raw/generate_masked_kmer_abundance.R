@@ -78,7 +78,41 @@ write.csv(GRCh38_masked_exome_unstranded_5bp,
           "data-raw/new_masked_abundance/GRCh38/GRCh38_masked_exome_unstranded_5bp.csv")
 
 ########################################################################################
+tmp <- proc.time()
+GRCm38_masked_exome_unstranded_2bp <-
+  GetExomeKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     exome.ranges = exome.ranges.GRCm38,
+                     filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_unstranded_2bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_unstranded_2bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_unstranded_2bp.csv")
 
+tmp <- proc.time()
+GRCm38_masked_exome_unstranded_3bp <-
+  GetExomeKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     exome.ranges = exome.ranges.GRCm38,
+                     filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_unstranded_3bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_unstranded_3bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_unstranded_3bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_exome_unstranded_4bp <-
+  GetExomeKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     exome.ranges = exome.ranges.GRCm38,
+                     filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_unstranded_4bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_unstranded_4bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_unstranded_4bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_exome_unstranded_5bp <-
+  GetExomeKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     exome.ranges = exome.ranges.GRCm38,
+                     filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_unstranded_5bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_unstranded_5bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_unstranded_5bp.csv")
 ########################################################################################
 # Code for generating masked stranded exome k-mer counts
 tmp <- proc.time()
@@ -153,7 +187,42 @@ GRCh38_masked_exome_stranded_5bp <-
 t.GRCh38_masked_exome_stranded_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_stranded_5bp,
           "data-raw/new_masked_abundance/GRCh38/GRCh38_masked_exome_stranded_5bp.csv")
+#########################################################################################
+tmp <- proc.time()
+GRCm38_masked_exome_stranded_2bp <-
+  GetStrandedKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = exome.ranges.stranded.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_stranded_2bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_stranded_2bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_stranded_2bp.csv")
 
+tmp <- proc.time()
+GRCm38_masked_exome_stranded_3bp <-
+  GetStrandedKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = exome.ranges.stranded.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_stranded_3bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_stranded_3bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_stranded_3bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_exome_stranded_4bp <-
+  GetStrandedKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = exome.ranges.stranded.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_stranded_4bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_stranded_4bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_stranded_4bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_exome_stranded_5bp <-
+  GetStrandedKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = exome.ranges.stranded.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_exome_stranded_5bp <- proc.time() - tmp
+write.csv(GRCm38_masked_exome_stranded_5bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_exome_stranded_5bp.csv")
 #########################################################################################
 # Code for generating masked genome stranded k-mer counts
 tmp <- proc.time()
@@ -228,7 +297,42 @@ GRCh38_masked_genome_stranded_5bp <-
 t.GRCh38_masked_genome_stranded_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_genome_stranded_5bp,
           "data-raw/new_masked_abundance/GRCh38/GRCh38_masked_genome_stranded_5bp.csv")
+#########################################################################################
+tmp <- proc.time()
+GRCm38_masked_genome_stranded_2bp <-
+  GetStrandedKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = trans.ranges.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_stranded_2bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_stranded_2bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_stranded_2bp.csv")
 
+tmp <- proc.time()
+GRCm38_masked_genome_stranded_3bp <-
+  GetStrandedKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = trans.ranges.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_stranded_3bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_stranded_3bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_stranded_3bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_genome_stranded_4bp <-
+  GetStrandedKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = trans.ranges.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_stranded_4bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_stranded_4bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_stranded_4bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_genome_stranded_5bp <-
+  GetStrandedKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                        stranded.ranges = trans.ranges.GRCm38,
+                        filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_stranded_5bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_stranded_5bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_stranded_5bp.csv")
 #########################################################################################
 # Code for generating masked genome unstranded k-mer counts
 tmp <- proc.time()
@@ -295,3 +399,35 @@ GRCh38_masked_genome_unstranded_5bp <-
 t.GRCh38_masked_genome_unstranded_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_genome_unstranded_5bp,
           "data-raw/new_masked_abundance/GRCh38/GRCh38_masked_genome_unstranded_5bp.csv")
+#########################################################################################
+tmp <- proc.time()
+GRCm38_masked_genome_unstranded_2bp <-
+  GetGenomeKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_unstranded_2bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_unstranded_2bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_unstranded_2bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_genome_unstranded_3bp <-
+  GetGenomeKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_unstranded_3bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_unstranded_3bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_unstranded_3bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_genome_unstranded_4bp <-
+  GetGenomeKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_unstranded_4bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_unstranded_4bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_unstranded_4bp.csv")
+
+tmp <- proc.time()
+GRCm38_masked_genome_unstranded_5bp <-
+  GetGenomeKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
+t.GRCm38_masked_genome_unstranded_5bp <- proc.time() - tmp
+write.csv(GRCm38_masked_genome_unstranded_5bp,
+          "data-raw/new_masked_abundance/GRCm38/GRCm38_masked_genome_unstranded_5bp.csv")
