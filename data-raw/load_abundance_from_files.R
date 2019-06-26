@@ -141,78 +141,78 @@ flat.abundance <- list(
 
 tmp.hg19 <- list(
   exome = list(
-    "78"   = ICAMS:::abundance.2bp.exome.unstranded.GRCh37,
-    "144"  = ICAMS:::abundance.2bp.exome.stranded.GRCh37,
-    "96"   = ICAMS:::abundance.3bp.exome.unstranded.GRCh37,
-    "192"  = ICAMS:::abundance.3bp.exome.stranded.GRCh37,
-    "136"  = ICAMS:::abundance.4bp.exome.unstranded.GRCh37,
-    "1536" = ICAMS:::abundance.5bp.exome.unstranded.GRCh37
+    "78"   = abundance.2bp.exome.unstranded.GRCh37,
+    "144"  = abundance.2bp.exome.stranded.GRCh37,
+    "96"   = abundance.3bp.exome.unstranded.GRCh37,
+    "192"  = abundance.3bp.exome.stranded.GRCh37,
+    "136"  = abundance.4bp.exome.unstranded.GRCh37,
+    "1536" = abundance.5bp.exome.unstranded.GRCh37
   ),
   transcript = list(
-    "78"   = ICAMS:::abundance.2bp.transcript.unstranded.GRCh37,
-    "144"  = ICAMS:::abundance.2bp.genome.stranded.GRCh37,
-    "96"   = ICAMS:::abundance.3bp.transcript.unstranded.GRCh37,
-    "192"  = ICAMS:::abundance.3bp.genome.stranded.GRCh37
+    "78"   = abundance.2bp.transcript.unstranded.GRCh37,
+    "144"  = abundance.2bp.genome.stranded.GRCh37,
+    "96"   = abundance.3bp.transcript.unstranded.GRCh37,
+    "192"  = abundance.3bp.genome.stranded.GRCh37
     # Nothing here for 136 or 1536
   ),
   genome = list(
-    "96"   = ICAMS:::abundance.3bp.genome.unstranded.GRCh37,
-    "78"   = ICAMS:::abundance.2bp.genome.unstranded.GRCh37,
-    "136"  = ICAMS:::abundance.4bp.genome.unstranded.GRCh37,
-    "1536" = ICAMS:::abundance.5bp.genome.unstranded.GRCh37
+    "96"   = abundance.3bp.genome.unstranded.GRCh37,
+    "78"   = abundance.2bp.genome.unstranded.GRCh37,
+    "136"  = abundance.4bp.genome.unstranded.GRCh37,
+    "1536" = abundance.5bp.genome.unstranded.GRCh37
   )
 )
 
 tmp.GRCh38 <- list(
   exome = list(
-    "78"   = ICAMS:::abundance.2bp.exome.unstranded.GRCh38,
-    "144"  = ICAMS:::abundance.2bp.exome.stranded.GRCh38,
-    "96"   = ICAMS:::abundance.3bp.exome.unstranded.GRCh38,
-    "192"  = ICAMS:::abundance.3bp.exome.stranded.GRCh38,
-    "136"  = ICAMS:::abundance.4bp.exome.unstranded.GRCh38,
-    "1536" = ICAMS:::abundance.5bp.exome.unstranded.GRCh38
+    "78"   = abundance.2bp.exome.unstranded.GRCh38,
+    "144"  = abundance.2bp.exome.stranded.GRCh38,
+    "96"   = abundance.3bp.exome.unstranded.GRCh38,
+    "192"  = abundance.3bp.exome.stranded.GRCh38,
+    "136"  = abundance.4bp.exome.unstranded.GRCh38,
+    "1536" = abundance.5bp.exome.unstranded.GRCh38
     ),
   transcript = list(
-    "78"   = ICAMS:::abundance.2bp.transcript.unstranded.GRCh38,
-    "144"  = ICAMS:::abundance.2bp.genome.stranded.GRCh38,
-    "96"   = ICAMS:::abundance.3bp.transcript.unstranded.GRCh38,
-    "192"  = ICAMS:::abundance.3bp.genome.stranded.GRCh38
+    "78"   = abundance.2bp.transcript.unstranded.GRCh38,
+    "144"  = abundance.2bp.genome.stranded.GRCh38,
+    "96"   = abundance.3bp.transcript.unstranded.GRCh38,
+    "192"  = abundance.3bp.genome.stranded.GRCh38
     # Nothing here for 136 or 1536
   ),
   genome = list(
-    "96"   = ICAMS:::abundance.3bp.genome.unstranded.GRCh38,
-    "78"   = ICAMS:::abundance.2bp.genome.unstranded.GRCh38,
-    "136"  = ICAMS:::abundance.4bp.genome.unstranded.GRCh38,
-    "1536" = ICAMS:::abundance.5bp.genome.unstranded.GRCh38
+    "96"   = abundance.3bp.genome.unstranded.GRCh38,
+    "78"   = abundance.2bp.genome.unstranded.GRCh38,
+    "136"  = abundance.4bp.genome.unstranded.GRCh38,
+    "1536" = abundance.5bp.genome.unstranded.GRCh38
     )
   )
 
 tmp.GRCm38 <- list(
   exome = list(
-    "78"   = ICAMS:::abundance.2bp.exome.unstranded.GRCm38,
-    "144"  = ICAMS:::abundance.2bp.exome.stranded.GRCm38,
-    "96"   = ICAMS:::abundance.3bp.exome.unstranded.GRCm38,
-    "192"  = ICAMS:::abundance.3bp.exome.stranded.GRCm38,
-    "136"  = ICAMS:::abundance.4bp.exome.unstranded.GRCm38,
-    "1536" = ICAMS:::abundance.5bp.exome.unstranded.GRCm38
+    "78"   = abundance.2bp.exome.unstranded.GRCm38,
+    "144"  = abundance.2bp.exome.stranded.GRCm38,
+    "96"   = abundance.3bp.exome.unstranded.GRCm38,
+    "192"  = abundance.3bp.exome.stranded.GRCm38,
+    "136"  = abundance.4bp.exome.unstranded.GRCm38,
+    "1536" = abundance.5bp.exome.unstranded.GRCm38
   ),
   transcript = list(
-    "78"   = ICAMS:::abundance.2bp.transcript.unstranded.GRCm38,
-    "144"  = ICAMS:::abundance.2bp.genome.stranded.GRCm38,
-    "96"   = ICAMS:::abundance.3bp.transcript.unstranded.GRCm38,
-    "192"  = ICAMS:::abundance.3bp.genome.stranded.GRCm38
+    "78"   = abundance.2bp.transcript.unstranded.GRCm38,
+    "144"  = abundance.2bp.genome.stranded.GRCm38,
+    "96"   = abundance.3bp.transcript.unstranded.GRCm38,
+    "192"  = abundance.3bp.genome.stranded.GRCm38
     # Nothing here for 136 or 1536
   ),
   genome = list(
-    "96"   = ICAMS:::abundance.3bp.genome.unstranded.GRCm38,
-    "78"   = ICAMS:::abundance.2bp.genome.unstranded.GRCm38,
-    "136"  = ICAMS:::abundance.4bp.genome.unstranded.GRCm38,
-    "1536" = ICAMS:::abundance.5bp.genome.unstranded.GRCm38
+    "96"   = abundance.3bp.genome.unstranded.GRCm38,
+    "78"   = abundance.2bp.genome.unstranded.GRCm38,
+    "136"  = abundance.4bp.genome.unstranded.GRCm38,
+    "1536" = abundance.5bp.genome.unstranded.GRCm38
   )
 )
 
 all.abundance <- list(
   BSgenome.Hsapiens.1000genomes.hs37d5 = tmp.hg19,
-  BSgenome.Hsapiens.UCSC.hg38 = tmp.GRCh38
+  BSgenome.Hsapiens.UCSC.hg38 = tmp.GRCh38,
   BSgenome.Mmusculus.UCSC.mm10 = tmp.GRCm38
 )
