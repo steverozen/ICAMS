@@ -2,7 +2,7 @@
 
 cat(getwd(), "\n")
 
-source("data-raw/create_abundance_files.R")
+source("data-raw/load_abundance_from_files.R")
 source("data-raw/create_catalogs.R")
 source("data-raw/create_order_for_DBS136_plotting.R")
 source("data-raw/create_ranges.R")
@@ -10,6 +10,7 @@ source("data-raw/create_ranges.R")
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
+                  trans.ranges.GRCm38,
                   all.abundance,
                   overwrite = TRUE)
 
