@@ -38,6 +38,8 @@
 #' 
 #' \code{trans.ranges.GRCh38}:  \strong{Human} GRCh38. 
 #' 
+#' \code{trans.ranges.GRCm38}:  \strong{Mouse} GRCm38. 
+#' 
 #' For these two tables, only genes that are associated with a CCDS ID are kept for transcriptional
 #' strand bias analysis. 
 #' 
@@ -76,11 +78,14 @@ NULL
 #' @rdname TranscriptRanges
 "trans.ranges.GRCh38"
 
+#' @rdname TranscriptRanges
+"trans.ranges.GRCm38"
+
 #' K-mer abundances.
 #'
 #' An R list with one element each for 
 #' \code{BSgenome.Hsapiens.1000genomes.hs37d5}, \cr
-#' and \code{BSgenome.Hsapiens.UCSC.hg38}.
+#' \code{BSgenome.Hsapiens.UCSC.hg38} and \code{BSgenome.Mmusculus.UCSC.mm10}.
 #' Each element is in turn a sub-list keyed by 
 #' \code{exome}, \code{transcript}, 
 #' and \code{genome}. Each element of the sub list
