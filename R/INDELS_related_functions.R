@@ -23,6 +23,8 @@
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #'
 #' @import BSgenome.Hsapiens.UCSC.hg38
+#' 
+#' @import BSgenome.Mmusculus.UCSC.mm10
 #'
 #' @return A data frame with 2 new columns added to the input data frame:
 #' \enumerate{
