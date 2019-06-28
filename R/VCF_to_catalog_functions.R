@@ -363,6 +363,8 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #'
 #' @import BSgenome.Hsapiens.UCSC.hg38
+#' 
+#' @import BSgenome.Mmusculus.UCSC.mm10
 #'
 #' @importFrom stats start end
 #'
