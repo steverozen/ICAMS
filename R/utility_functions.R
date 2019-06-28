@@ -142,11 +142,23 @@ Collapse144CatalogTo78 <- function(catalog) {
       ref.genome = attributes(catalog)$ref.genome,
       region = attributes(catalog)$region,
       catalog.type = attributes(catalog)$catalog.type,
-      # TODO(Nanhai): Is this the correct collapose abundance function?
-      # If so, please change the name to be more informative.
       abundance = abundance)
     
   return(cat78)
+}
+
+#' @keywords internal
+Collapse144AbundanceTo78 <- function(abundance144) {
+  canonical.ref <-
+    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
+  dt <- data.table(abundance144)
+  rownames(dt) <- names(abundance144)
+  dt$rn <- ifelse(rownames(dt) %in% canonical.ref, rownames(dt), 
+                  revc(rownames(dt)))
+  dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
+  abundance78 <- unlist(dt1[, -1])
+  names(abundance78) <- dt1$rn
+  return(abundance78)
 }
 
 #' @keywords internal
@@ -162,19 +174,6 @@ IsCounts <- function(x) {
 #' @keywords internal
 IsSignature <- function(x) {
   return(x %in% c("counts.signature", "density.signature"))
-}
-
-#' @keywords internal
-Collapse144AbundanceTo78 <- function(abundance144) {
-  canonical.ref <-
-    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
-  dt <- data.table(abundance144)
-  rownames(dt) <- names(abundance144)
-  dt$rn <- ifelse(rownames(dt) %in% canonical.ref, rownames(dt), revc(rownames(dt)))
-  dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
-  abundance78 <- unlist(dt1[, -1])
-  names(abundance78) <- dt1$rn
-  return(abundance78)
 }
 
 #' @keywords internal
