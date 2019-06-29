@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{IsGRCh38}
 \alias{IsGRCh38}
-\title{Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.}
+\title{Test if object is \code{BSgenome.Hsapiens.UCSC.hg38}.}
 \usage{
 IsGRCh38(x)
 }
@@ -10,9 +10,9 @@ IsGRCh38(x)
 \item{x}{Object to test.}
 }
 \value{
-TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+TRUE if \code{x} is \code{BSgenome.Hsapiens.UCSC.hg38}.
 }
 \description{
-Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+Test if object is \code{BSgenome.Hsapiens.UCSC.hg38}.
 }
 \keyword{internal}
