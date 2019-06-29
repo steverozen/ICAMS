@@ -55,3 +55,17 @@ test_that("extended seq.context functions for Strelka GRCh37 vcf", {
   expect_equal(out1, TRUE)
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
+
+test_that("extended seq.context functions for Strelka GRCm38 vcf", {
+  vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
+  sbs.vcf <- vcf$SBS[[1]]
+  mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCm38",
+                                seq.context.width = 10)
+  out <- PlotPPM(mat, title = "ExtendedSeqContext_21bases")
+  out1 <- 
+    PlotPPMToPdf(list(mat), titles = "ExtendedSeqContext_21bases",
+                 file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
+  expect_equal(out, TRUE)
+  expect_equal(out1, TRUE)
+  unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
+})

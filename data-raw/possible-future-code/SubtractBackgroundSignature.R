@@ -15,7 +15,13 @@ LikelihoodBackgroundOnly <- function(spectra, background.sig) {
 
 
 
-#' Subtract background if required by likelihood ratio test for presenece of non-backgound signature
+#' Subtract background determined by maxium likelihood of
+#' spectrum1 = b1 * background + (total-mut1 - b1) * sig
+#' spectrum2 = b2 * background + (total-mut2 - b2) * sig
+#' ...
+#' 
+#' (Arnoud's idea - take low regions in spectrum and
+#' assume they are due to background)
 #' 
 #' @param spectra An \code{ICAMS}
 #'  \code{counts} or \code{density} \code{catalog}.
@@ -94,10 +100,12 @@ GetHepG2Background1 <- function() {
   counts96 <- as.catalog(c1$cat96, ref.genome = "hg19",
                          region = "genome")
   
-  PlotCatalogToPdf(counts96, "counts96.pdf")
+  PlotCatalogToPdf(
+    counts96, 
+    devtools::package_file("data-raw/possible-future-code/counts96.pdf"))
   PlotCatalogToPdf(
     TransformCatalog(counts96, target.catalog.type = "density"),
-    "density96.pdf")
+    devtools::package_file("data-raw/possible-future-code/density96.pdf"))
   
   pre.sig96 <-
     TransformCatalog(c1$cat96, target.catalog.type = "counts.signature")
@@ -109,13 +117,15 @@ GetHepG2Background1 <- function() {
       region = "genome",
       catalog.type = "counts.signature")
   
-  PlotCatalogToPdf(sig96, "sig96.pdf")
+  PlotCatalogToPdf(
+    sig96,
+    devtools::package_file("data-raw/possible-future-code/sig96.pdf"))
   
   PlotCatalogToPdf(
     TransformCatalog(sig96, target.catalog.type = "density.signature"),
-    "sig96-dens.pdf")
+    devtools::package_file("data-raw/possible-future-code/sig96-dens.pdf"))
   
-  return(sig96.pdf)
+  return(sig96)
   
 }
 

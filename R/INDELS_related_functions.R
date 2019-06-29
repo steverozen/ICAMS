@@ -10,7 +10,7 @@
 #'   \code{\link{ICAMS}}.
 #'
 #' @param flag.mismatches If > 0, if there are mismatches to references, print
-#' out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.
+#' out the mismatched rows and continue.  Otherwise \code{stop}.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -23,6 +23,8 @@
 #' @import BSgenome.Hsapiens.1000genomes.hs37d5
 #'
 #' @import BSgenome.Hsapiens.UCSC.hg38
+#' 
+#' @import BSgenome.Mmusculus.UCSC.mm10
 #'
 #' @return A data frame with 2 new columns added to the input data frame:
 #' \enumerate{
@@ -30,9 +32,11 @@
 #'
 #'  \item \code{seq.context.width} The width of \code{seq.context} to the left
 #' }
+#' 
+#' @importFrom utils write.csv
 #'
 #' @keywords internal
-AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = FALSE) {
+AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
   ref.genome <- NormalizeGenomeArg(ref.genome)
 
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
@@ -45,8 +49,9 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = FALSE) {
     stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
     complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
     if (length(complex.indels.to.remove > 0)) {
-      warning("Removing complex indels", complex.indels.to.remove, "\n")
-      print(df[ complex.indels.to.remove, 1:5])
+      temp <- tempfile(fileext = ".csv")
+      warning("Removing complex indels; see ", tempfile)
+      write.csv(file = temp, df[complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }
   }
@@ -99,21 +104,16 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = FALSE) {
       data.frame(
         df$CHROM, df$POS, df$REF, df$ALT, df$seq.context, seq.to.check)
     tmp.table <- tmp.table[mismatches, ]
-    cat("\n\nMismatches between VCF and reference sequence:\n\n")
-    rows.to.print <-
-      ifelse(flag.mismatches == 0,
-             min(10, nrow(tmp.table)),
-             min(nrow(tmp.table), flag.mismatches))
-    cat("Showing", rows.to.print, "rows out of", nrow(tmp.table), "\n\n")
-    print(tmp.table[1:rows.to.print, ])
+    temp <- tempfile(fileext = ".csv")
+    write.csv(file = temp, tmp.table)
     if (flag.mismatches > 0) {
-      cat("\n\nDiscarding rows with mismatches\n\n")
+      warning("Discarding rows with mismatches between VCF ",
+              "and reference sequence, see ", temp)
       df <- df[-mismatches, ]
     } else {
-      stop("Mismatch to reference genome sequence")
+      stop("Mismatches between VCF and reference sequence; see ", temp)
     }
   }
-
   return(df)
 }
 
@@ -320,7 +320,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   }
   left.len <- n - i
   if (trace > 0 ) {
-    cat("Left break", i, "\nleft.len =", left.len, "\n")
+    message("Left break", i, "\nleft.len =", left.len, "\n")
   }
 
   # Look for microhomology to the right in context.
@@ -336,14 +336,15 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
   }
   right.len <- i2 - 1
   if (trace > 0) {
-    cat("Right break", i2, "\nright.len =", right.len, "\n")
-    cat(paste0(left.context, "[",
+    message("Right break", i2, "\nright.len =", right.len, "\n")
+    message(paste0(left.context, "[",
                deleted.seq, "]",
                right.context, "\n"))
     # Print out strings of ** and -- to indicated the sequences involved in the
     # microhomology; left.context and right.context are the same length as
     # deleted.seq
-    cat(paste(c(
+    message(
+      paste(c(
       rep(" ", n - left.len),
       rep("*", left.len),
       " ",
@@ -507,7 +508,7 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
 #' @keywords internal
 Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
   if (trace > 0) {
-   cat("Canonicalize1ID(", context, ",", ins.sequence, ",", pos, "\n")
+   message("Canonicalize1ID(", context, ",", ins.sequence, ",", pos, "\n")
   }
   rep.count <- FindMaxRepeatIns(context, ins.sequence, pos)
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
@@ -520,12 +521,12 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
     if (ins.sequence == "A") ins.sequence <- "T"
     retval <-
       paste0("INS:", ins.sequence, ":1:", rep.count.string)
-    if (trace > 0) cat(retval, "\n")
+    if (trace > 0) message(retval)
     return(retval)
   }
   retval <-
     paste0("INS:repeats:", insertion.size.string, ":", rep.count.string)
-  if (trace > 0) cat(retval, "\n")
+  if (trace > 0) message(retval)
   return(retval)
 }
 
@@ -547,7 +548,9 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #'
 #' @keywords internal
 Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
-  if (trace > 0) cat("Canonicalize1ID(", context, ",", ref, ",", alt, ",", pos, "\n")
+  if (trace > 0) {
+    message("Canonicalize1ID(", context, ",", ref, ",", alt, ",", pos, "\n")
+  }
   if (nchar(alt) < nchar(ref)) {
     # A deletion
     return(Canonicalize1DEL(context, ref, pos + 1, trace))
@@ -555,8 +558,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
     # An insertion
     return(Canonicalize1INS(context, alt, pos, trace))
   } else {
-    cat("Non-insertion / non-deletion found:", ref, alt, context, "\n")
-    stop()
+    stop("Non-insertion / non-deletion found: ", ref, " ", alt, " ", context)
   }
 }
 
@@ -571,20 +573,13 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @param pos Vector of the positions of the insertions and deletions in \code{context}.
 #'
-#' @param trace If > 0 cat information how the computation is carried out.
-#
 #' @return A vector of strings that are the canonical representations
 #'  of the given insertions and deletions.
 #'
 #' @importFrom utils head
 #'
 #' @keywords internal
-CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
-  if (trace > 1) {
-    print(head(data.frame(
-      context, left.pad = substr(context, 1, pos), pos, ref, alt,
-      stringsAsFactors = FALSE)))
-  }
+CanonicalizeID <- function(context, ref, alt, pos) {
 
   if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
     ref <- substr(ref, 2, nchar(ref))
@@ -592,8 +587,8 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
   } else {
     stopifnot(ref != "" | alt != "")
   }
-  # trace = 1
-  ret <- mapply(Canonicalize1ID, context, ref, alt, pos, trace)
+
+  ret <- mapply(Canonicalize1ID, context, ref, alt, pos, 0)
   return(ret)
 }
 
@@ -616,14 +611,10 @@ CanonicalizeID <- function(context, ref, alt, pos, trace = 0) {
 #'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 #'   sample.
 #'
-#' @param trace If > 0, various called functions cat information
-#'   useful for debugging and testing. The larger the number, the
-#'   more output.
-#'
 #' @return A 1-column matrix containing the mutation catalog information.
 #'
 #' @keywords internal
-CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
+CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
@@ -634,8 +625,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
                              ID.vcf$ALT,
-                             ID.vcf$seq.context.width + 1,
-                             trace = trace)
+                             ID.vcf$seq.context.width + 1)
 
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
@@ -653,7 +643,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
   rownames(ID.mat) <- ID.dt2$rn
-  return(ID.mat[ICAMS::catalog.row.order$ID, , drop = F])
+  return(ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE])
 }
 
 #' Create ID (insertion and deletion) catalog from ID VCFs
@@ -669,7 +659,11 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf, trace = 0) {
 #'
 #' @return An S3 object containing an ID (indel) catalog with class
 #'   "catalog". See \code{\link{as.catalog}} for more details.
-#'
+#'   
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
+#'   
 #' @export
 #' 
 #' @examples 

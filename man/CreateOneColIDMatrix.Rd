@@ -4,7 +4,7 @@
 \alias{CreateOneColIDMatrix}
 \title{Create one column of the matrix for an indel catalog from *one* in-memory VCF.}
 \usage{
-CreateOneColIDMatrix(ID.vcf, SBS.vcf, trace = 0)
+CreateOneColIDMatrix(ID.vcf, SBS.vcf)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
@@ -23,10 +23,6 @@ CreateOneColIDMatrix(ID.vcf, SBS.vcf, trace = 0)
 some PCAWG data, we will look for neighboring indels and indels adjoining
 SBS. That means this functions takes an SBS VCF and an ID VCF from the same
 sample.}
-
-\item{trace}{If > 0, various called functions cat information
-useful for debugging and testing. The larger the number, the
-more output.}
 }
 \value{
 A 1-column matrix containing the mutation catalog information.

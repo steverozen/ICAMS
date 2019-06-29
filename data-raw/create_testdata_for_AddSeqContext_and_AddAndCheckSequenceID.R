@@ -12,7 +12,12 @@ sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
 strelka.SBS.vcf.GRCh38 <-
   AddSeqContext(sbs.vcf, ref.genome = BSgenome.Hsapiens.UCSC.hg38)
 
-save(strelka.SBS.vcf.GRCh37, strelka.SBS.vcf.GRCh38,
+list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("data-raw/VCF/Strelka.SBS.GRCm38.vcf")
+sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
+strelka.SBS.vcf.GRCm38 <-
+  AddSeqContext(sbs.vcf, ref.genome = BSgenome.Mmusculus.UCSC.mm10)
+
+save(strelka.SBS.vcf.GRCh37, strelka.SBS.vcf.GRCh38, strelka.SBS.vcf.GRCm38,
      file = "tests/testthat/testdata/test_AddSeqContext.Rdata")
 
 id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCh37.vcf")
@@ -23,5 +28,9 @@ id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCh38.vcf")
 strelka.ID.vcf.GRCh38 <-
   AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Hsapiens.UCSC.hg38)
 
-save(strelka.ID.vcf.GRCh37, strelka.ID.vcf.GRCh38,
+id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCm38.vcf")
+strelka.ID.vcf.GRCm38 <-
+  AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Mmusculus.UCSC.mm10)
+
+save(strelka.ID.vcf.GRCh37, strelka.ID.vcf.GRCh38, strelka.ID.vcf.GRCm38,
      file = "tests/testthat/testdata/test_AddAndCheckSequenceID.Rdata")

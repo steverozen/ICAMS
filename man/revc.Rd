@@ -15,7 +15,7 @@ A character vector with the reverse complement of every
 }
 \description{
 Based on \code{\link{reverseComplement}}.
-Handles IUPAC ambiguity codes but not "u" (uracil).
+Handles IUPAC ambiguity codes but not "u" (uracil). \cr
 (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 }
 \examples{
