@@ -773,7 +773,7 @@ PyrPenta <- function(mutstring) {
 #' Reverse complement every string in \code{string.vec}.
 #' 
 #' Based on \code{\link{reverseComplement}}.
-#' Handles IUPAC ambiguity codes but not "u" (uracil).
+#' Handles IUPAC ambiguity codes but not "u" (uracil). \cr
 #' (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 #'
 #' @param string.vec A character vector.

@@ -659,7 +659,11 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
 #'
 #' @return An S3 object containing an ID (indel) catalog with class
 #'   "catalog". See \code{\link{as.catalog}} for more details.
-#'
+#'   
+#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
+#'   
 #' @export
 #' 
 #' @examples 

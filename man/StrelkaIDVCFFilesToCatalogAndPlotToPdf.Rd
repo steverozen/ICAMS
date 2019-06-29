@@ -28,7 +28,7 @@ Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
 and plot them to PDF
 }
 \details{
-This function calls \code{\link{VCFsToIDCatalogs}} and
+This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
 \code{\link{PlotCatalogToPdf}}
 }
 \note{

@@ -47,7 +47,7 @@ the plotting.
 \note{
 The sizes of repeats involved in deletions range from 0 to 5+ in the
   mutational-spectra and signature catalog rownames, but for plotting and
-  end-user documentation they range from 1 to 6+.
+  end-user documentation deletion repeat sizes range from 1 to 6+.
 }
 \examples{
 file <- system.file("extdata",

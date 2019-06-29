@@ -23,6 +23,11 @@ An S3 object containing an ID (indel) catalog with class
 \description{
 Create ID (insertion and deletion) catalog from ID VCFs
 }
+\note{
+In ID (insertion and deletion) catalogs, deletion repeat sizes
+  range from 0 to 5+, but for plotting and end-user documentation
+  deletion repeat sizes range from 1 to 6+.
+}
 \examples{
 file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",

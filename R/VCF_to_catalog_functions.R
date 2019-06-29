@@ -1424,7 +1424,7 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
 #' Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
 #' and plot them to PDF
 #'
-#' This function calls \code{\link{VCFsToIDCatalogs}} and
+#' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
 #' \code{\link{PlotCatalogToPdf}}
 #'
 #' @param files Character vector of file paths to the Strelka ID VCF files.
@@ -1490,7 +1490,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'   NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
+#'   regions. In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation deletion
+#'   repeat sizes range from 1 to 6+.
 #'
 #' @export
 #' 
@@ -1542,7 +1545,10 @@ MutectVCFFilesToCatalog <-
 #'   and DBS 144 catalog will not be generated and plotted. Each catalog has
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
+#'   regions. In ID (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation deletion
+#'   repeat sizes range from 1 to 6+.
 #'
 #' @export
 #' 

@@ -35,7 +35,10 @@ This function calls \code{\link{VCFsToSBSCatalogs}},
 \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+SBS 192 and DBS 144 catalogs include only mutations in transcribed
+  regions. In ID (insertion and deletion) catalogs, deletion repeat sizes
+  range from 0 to 5+, but for plotting and end-user documentation deletion
+  repeat sizes range from 1 to 6+.
 }
 \examples{
 file <- c(system.file("extdata",
