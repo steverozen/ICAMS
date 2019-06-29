@@ -4,7 +4,7 @@
 \alias{CanonicalizeID}
 \title{Given vectors of insertions and deletions in contexts categorize them.}
 \usage{
-CanonicalizeID(context, ref, alt, pos, trace = 0)
+CanonicalizeID(context, ref, alt, pos)
 }
 \arguments{
 \item{context}{A vector of ample surrounding
@@ -15,8 +15,6 @@ sequence on each side the variants}
 \item{alt}{Vector of alternative alleles}
 
 \item{pos}{Vector of the positions of the insertions and deletions in \code{context}.}
-
-\item{trace}{If > 0 cat information how the computation is carried out.}
 }
 \value{
 A vector of strings that are the canonical representations

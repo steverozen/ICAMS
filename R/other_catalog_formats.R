@@ -11,10 +11,10 @@ ReadDukeNUSCat192 <- function(file,
                               catalog.type = "counts",
                               abundance    = NULL) {
   df <- read.table(file,
-                   stringsAsFactors = F,
-                   as.is=T,
-                   header=T, 
-                   check.names = F)
+                   stringsAsFactors = FALSE,
+                   as.is            = TRUE,
+                   header           = TRUE, 
+                   check.names      = FALSE)
   # Careful, df has 192 rows
   stopifnot(nrow(df)==192)
   

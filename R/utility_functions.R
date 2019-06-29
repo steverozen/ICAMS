@@ -1361,6 +1361,8 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #'
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
+#'   
+#' @param verbose If \code{TRUE}, generate progress messages.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -1369,7 +1371,7 @@ GetSequenceKmerCounts <- function(sequences, k) {
 #' @return Matrix of the counts of each k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
+GetGenomeKmerCounts <- function(k, ref.genome, filter.path, verbose = FALSE) {
   kmer.counts <- GenerateEmptyKmerCounts(k)
   genome <- NormalizeGenomeArg(ref.genome)
 
@@ -1380,7 +1382,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
   }
 
   if (!missing(filter.path)) {
-    filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
+    filter.df <- fread(filter.path, header = FALSE, stringsAsFactors = FALSE)
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
@@ -1389,10 +1391,10 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path) {
     }
   }
 
-  print("Start counting by chromosomes")
+  if (verbose) message("Start counting by chromosomes")
 
   for (idx in 1:length(chr.list)) {
-    print(chr.list[idx])
+    if (verbose) message(chr.list[idx])
 
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr.list[idx]), ]
@@ -1474,6 +1476,8 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #'
 #' @param stranded.ranges A keyed data table which has stranded ranges
 #'   information. It has four columns: chrom, start, end and strand.
+#'   
+#' @param verbose If \code{TRUE} generate progress messages.
 #'
 #' @importFrom stats start end
 #'
@@ -1484,7 +1488,8 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #' @return Matrix of the counts of each stranded k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
+GetStrandedKmerCounts <- 
+  function(k, ref.genome, stranded.ranges, filter.path, verbose = FALSE) {
   stranded.ranges <- RemoveRangesOnBothStrand(stranded.ranges)
   stranded.ranges <- StandardChromName(stranded.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
@@ -1496,7 +1501,7 @@ GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
   }
 
   if (!missing(filter.path)) {
-    filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
+    filter.df <- fread(filter.path, header = FALSE, stringsAsFactors = FALSE)
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
@@ -1505,10 +1510,10 @@ GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
     }
   }
 
-  print("Start counting by chromosomes")
+  if (verbose) message("Start counting by chromosomes")
 
   for (chr in unique(stranded.ranges$chrom)) {
-    print(chr)
+    if (verbose) message(chr)
     temp.stranded.ranges <- stranded.ranges[stranded.ranges$chrom == chr, ]
     stranded.ranges.chr <-
       with(temp.stranded.ranges,
@@ -1553,6 +1558,8 @@ GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
 #'
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
+#'   
+#' @param verbose If \code{TRUE} generate progress messages.
 #'
 #' @importFrom stats start end
 #'
@@ -1563,7 +1570,8 @@ GetStrandedKmerCounts <- function(k, ref.genome, stranded.ranges, filter.path) {
 #' @return Matrix of the counts of exome k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
+GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path, 
+                               verbose = FALSE) {
   exome.ranges <- StandardChromName(exome.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
@@ -1574,7 +1582,7 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
   }
 
   if (!missing(filter.path)) {
-    filter.df <- fread(filter.path, header = F, stringsAsFactors = F)
+    filter.df <- fread(filter.path, header = FALSE, stringsAsFactors = FALSE)
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
@@ -1583,10 +1591,10 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path) {
     }
 
   }
-  print("Start counting by chromosomes")
+  if (verbose) message("Start counting by chromosomes")
 
   for (chr in unique(exome.ranges$chrom)) {
-    print(chr)
+    if (verbose) message(chr)
     temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
     exome.range.chr <-
       with(temp.exome.ranges, GRanges(chrom, IRanges(start, end)))

@@ -178,7 +178,7 @@ ReadCatalog.DBS78Catalog <- function(file, ref.genome, region,
        (sort(setdiff(ICAMS::catalog.row.order$DBS78, rn) ==
              c("CGGT", "CGTC", "CGTT", "TACT", "TAGG", "TAGT")))
   ) {
-    cat("using temporary hack for old DBS canonicalization\n")
+    warning("using temporary hack to handle old DBS canonicalization")
     # CGAA -> CGTT
     rn[rn == "CGAA"] <- "CGTT"
 

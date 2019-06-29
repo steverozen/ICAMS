@@ -4,7 +4,8 @@
 \alias{GetStrandedKmerCounts}
 \title{Generate stranded k-mer abundance from a given genome and gene annotation file}
 \usage{
-GetStrandedKmerCounts(k, ref.genome, stranded.ranges, filter.path)
+GetStrandedKmerCounts(k, ref.genome, stranded.ranges, filter.path,
+  verbose = FALSE)
 }
 \arguments{
 \item{k}{Length of k-mers (k>=2)}
@@ -17,6 +18,8 @@ information. It has four columns: chrom, start, end and strand.}
 
 \item{filter.path}{If given, homopolymers will be masked from
 genome(sequence). Only simple repeat masking is accepted now.}
+
+\item{verbose}{If \code{TRUE} generate progress messages.}
 }
 \value{
 Matrix of the counts of each stranded k-mer across the \code{ref.genome}

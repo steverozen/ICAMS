@@ -5,7 +5,7 @@
 \title{Add sequence context to a data frame with ID (insertion/deletion) mutation records,
  and confirm that they match the given reference genome.}
 \usage{
-AddAndCheckSequenceID(df, ref.genome, flag.mismatches = FALSE)
+AddAndCheckSequenceID(df, ref.genome, flag.mismatches = 0)
 }
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file
@@ -17,7 +17,7 @@ AddAndCheckSequenceID(df, ref.genome, flag.mismatches = FALSE)
 \code{\link{ICAMS}}.}
 
 \item{flag.mismatches}{If > 0, if there are mismatches to references, print
-out the first \code{flag.mismatches} rows and continue.  Otherwise \code{stop}.}
+out the mismatched rows and continue.  Otherwise \code{stop}.}
 }
 \value{
 A data frame with 2 new columns added to the input data frame:

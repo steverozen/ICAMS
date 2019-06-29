@@ -592,7 +592,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   out.SBS.df <- as.data.frame(out.SBS.dt2[, delete.flag := NULL])
   num.SBS.out <- nrow(out.SBS.df)
 
-  # Now separate doublets (DBS) from triplet and above base substitutions.
+  # Now separate doublets (DBSs) from triplet and above base substitutions.
   # For ease of testing, keep only the genomic range information.
   non.SBS <- non.SBS[, c("CHROM", "LOW", "HIGH")]
   ranges <-
@@ -601,10 +601,9 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   DBS.plus <- as.data.frame(rranges)
   if ((sum(DBS.plus$width) + num.SBS.out) != num.in) {
     if ((sum(DBS.plus$width) + num.SBS.out) > num.in) {
-      cat("too many SBS\n")
-      stop()
+      stop("Possible programming error or input problem: too many SBS")
     } else {
-      cat("possible site with multiple variant alleles involved in a DBS\n")
+      warning("Possible site with multiple variant alleles involved in a DBS\n")
     }
   }
   DBSx <- DBS.plus[DBS.plus$width == 2, c("seqnames", "start", "end"), ]
@@ -616,7 +615,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   num.other <- sum(other.ranges$width)
 
   if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
-    cat("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
+    warning("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
   }
 
   return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
@@ -678,11 +677,11 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
                          (cut.pos + nchar(vcf$REF)) - 1)
   error.rows <- which(vcf$REF != cut.from.ref)
   if (any(error.rows > 0)) {
+    temp <- tempfile(fileext = ".csv")
     data.table::fwrite(x = as.data.table(vcf[error.rows, ]),
-                       file = "error.rows.csv")
-    cat("Seqence context of reference allele is inconsistent,
-        see file error.rows.csv")
-    stop()
+                       file = temp)
+    stop("Seqence context of reference allele is inconsistent,",
+         "see file ", temp)
   }
 }
 
@@ -991,9 +990,9 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
     idx <- grep("N", substr(SBS$seq.21bases, 9, 13))
     if (!length(idx) == 0) {
       SBS <- SBS[-idx, ]
-      cat('There are rows in the SBS vcf where extracted sequence contains "N",',
-          'these rows have been deleted so as not to conflict with code',
-          'in other parts of ICAMS package')
+      message(
+        'Rows in the SBS vcf where surrounding sequence contains "N" ',
+        'have been deleted so as not to conflict with downstrea processing')
     }
 
     CheckSeqContextInVCF(SBS, "seq.21bases")
@@ -1220,9 +1219,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
     idx <- grep("N", substr(DBS$seq.21bases, 10, 13))
     if (!length(idx) == 0) {
       DBS <- DBS[-idx, ]
-      cat('There are rows in the DBS vcf where extracted sequence contains "N", ',
-          'these rows have been deleted so as not to conflict with code ',
-          'in other parts of ICAMS package')
+      message(
+        'Rows in the DBS vcf where surrounding sequence contains "N" ',
+        'have been deleted so as not to conflict with downstrea processing')
     }
 
     DBS <- AddTranscript(DBS, trans.ranges)

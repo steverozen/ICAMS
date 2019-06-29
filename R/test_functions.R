@@ -74,7 +74,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cats$catID == prev.catalog.indels)
 
-  cat("ok\n")
+  message("ok\n")
 
   invisible(cats)
 }
@@ -146,7 +146,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
       ref.genome = "GRCh37", region = "transcript", catalog.type = "counts")
   stopifnot(cats$catDBS144 == prev.catalog.DBS.144)
 
-  cat("ok\n")
+  message("ok\n")
 
   invisible(cats)
 }
@@ -170,7 +170,7 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
   stopifnot(cat.ID == prev.catalog.indels)
 
-  cat("ok\n")
+  message("ok\n")
 
   invisible(cat.ID)
 }

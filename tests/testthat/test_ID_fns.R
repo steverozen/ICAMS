@@ -110,7 +110,7 @@ test_that("CreateOneColIDMatrx insertions", {
   }
   load("testdata/create_one_col_insert_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDMatrix(MakeTestInsVCF(), NULL, trace = 0),
+    ICAMS:::CreateOneColIDMatrix(MakeTestInsVCF(), NULL),
     create.one.col.insert.test)
 })
 
@@ -130,7 +130,7 @@ test_that("CreateOneColIDMatrix deletions", {
   }
   load("testdata/create_one_col_delete_test.Rdata")
   expect_equal(
-    ICAMS:::CreateOneColIDMatrix(MakeTestDelVCF(), NULL, trace = 0),
+    ICAMS:::CreateOneColIDMatrix(MakeTestDelVCF(), NULL),
     create.one.col.delete.test)
 })
 
