@@ -662,6 +662,8 @@ SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
 #'   inconsistent with the value of seq.21bases. Assumes the first base of the
 #'   reference allele is at position (size(<context string>)-1)/2, and generates
 #'   error if this is not an integer. Indices are 1-based.
+#'   
+#' @importFrom utils write.csv
 #'
 #' @keywords internal
 CheckSeqContextInVCF <- function(vcf, column.to.use) {
@@ -678,8 +680,7 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   error.rows <- which(vcf$REF != cut.from.ref)
   if (any(error.rows > 0)) {
     temp <- tempfile(fileext = ".csv")
-    data.table::fwrite(x = as.data.table(vcf[error.rows, ]),
-                       file = temp)
+    write.csv(vcf[error.rows, ], file = temp)
     stop("Seqence context of reference allele is inconsistent,",
          "see file ", temp)
   }

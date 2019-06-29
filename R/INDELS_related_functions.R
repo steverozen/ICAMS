@@ -50,7 +50,7 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
     complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
     if (length(complex.indels.to.remove > 0)) {
       temp <- tempfile(fileext = ".csv")
-      warning("Removing complex indels; see ", tempfile)
+      warning("Removing complex indels; see ", temp)
       write.csv(file = temp, df[complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }

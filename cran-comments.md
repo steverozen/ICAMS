@@ -1,13 +1,14 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* In DESCRIPTION, replaced https://doi.org/10.1101/gr.230219.117
-  with <doi:10.1101/gr.230219.117>.
-* In DESCRIPTION (and README) explained the acronym ICAMS 
-  (In-depth Characterization and Analysis of Mutational Signatures).
-* Added small executable examples too all Rd-files.
-* Ensured that all examples/vignettes/tests that write files write only
-  to tempdir().
-* Removed all instances of <<- from the code.
+* Replaced all instances of cat() and print() from the code
+  with message(), warning(), or stop() as appropriate.
+  These are all either part of error handling or part of 
+  tracing capability that is turned off by default.
+* Changed 2 print() calls and 1 fwrite() call that were part of error handling to
+  write.csv() calls writing to a file in tempdir() (grep tempfile */*.R);
+  one of these was in CheckSeqContextInVCF as noted in the manual
+  CRAN check.
+* Replaced T with TRUE and F with FALSE everywhere.
 
 ## Test environments
 * Local Windows 10 install: R 3.6.0
