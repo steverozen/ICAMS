@@ -23,3 +23,15 @@ test_that("AddSeqContext for GRCh38", {
   expect_equal(df3, df4)
   expect_equal(df3, df5)
 })
+
+test_that("AddSeqContext for GRCm38", {
+  load("testdata/test_AddSeqContext.Rdata")
+  list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
+  sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
+  df6 <- AddSeqContext(sbs.vcf, ref.genome = BSgenome.Mmusculus.UCSC.mm10)
+  df7 <- AddSeqContext(sbs.vcf, ref.genome = "GRCm38")
+  df8 <- AddSeqContext(sbs.vcf, ref.genome = "mm10")
+  expect_equal(df6, strelka.SBS.vcf.GRCm38)
+  expect_equal(df6, df7)
+  expect_equal(df6, df8)
+})
