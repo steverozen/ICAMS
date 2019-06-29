@@ -118,3 +118,6 @@ GetHepG2Background1 <- function() {
   return(sig96.pdf)
   
 }
+
+# https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/
+
