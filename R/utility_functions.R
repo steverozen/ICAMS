@@ -1141,17 +1141,30 @@ IsGRCh37 <- function(x) {
            "BSgenome.Hsapiens.1000genomes.hs37d5")
 }
 
-#' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#' Test if object is \code{BSgenome.Hsapiens.UCSC.hg38}.
 #'
 #' @param x Object to test.
 #' 
-#' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
+#' @return TRUE if \code{x} is \code{BSgenome.Hsapiens.UCSC.hg38}.
 #' 
 #' @keywords internal
 IsGRCh38 <- function(x) {
   if (is.null(x)) return(FALSE)
   return(NormalizeGenomeArg(x)@pkgname == 
            "BSgenome.Hsapiens.UCSC.hg38")
+}
+
+#' Test if object is \code{BSgenome.Mmusculus.UCSC.mm10}.
+#'
+#' @param x Object to test.
+#' 
+#' @return TRUE if \code{x} is \code{BSgenome.Mmusculus.UCSC.mm10}.
+#' 
+#' @keywords internal
+IsGRCm38 <- function(x) {
+  if (is.null(x)) return(FALSE)
+  return(NormalizeGenomeArg(x)@pkgname == 
+           "BSgenome.Mmusculus.UCSC.mm10")
 }
 
 
