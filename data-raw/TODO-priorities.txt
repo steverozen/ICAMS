@@ -1,4 +1,4 @@
-# ICAMS to do list, 2019 06 18
+# ICAMS to do list, 2019 06 29
 
 ## Highest priority
 
@@ -6,12 +6,11 @@
 
 
 ## High priority
-2.1 Nanhai Add built-in support for mouse mm10, create new transcript ranges and abundance files.
-2.2 Steve Background signature subtraction
-2.3 Nanhai binom test for transcription strand bias
-2.4 Functions to re-write annotated VCFS
-2.5 Corrections to extended sequence plotting for SBS
-2.6 Extended sequence plotting for ID, DNS
+2.1 Steve Background signature subtraction
+2.2 Nanhai binom test for transcription strand bias
+2.3 Functions to re-write annotated VCFS
+2.4 Corrections to extended sequence plotting for SBS
+2.5 Extended sequence plotting for ID, DNS
 
 
 ## Medium priority3
@@ -21,7 +20,7 @@
 3.4 Plot transcription strand bias as function of distance from TSS
 3.5 Plot transcription strand bias as function of expression level
 3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
-
+3.7 Nanhai test mouse mm10 on MuTect VCF
 
 ## Low priority
 4.1 Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
