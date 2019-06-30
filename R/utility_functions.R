@@ -1032,7 +1032,12 @@ NormalizeGenomeArg <- function(ref.genome) {
     ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
   } else if (ref.genome %in%
              c("GRCm38", "mm10", "BSgenome.Mmusculus.UCSC.mm10")) {
-    ref.genome <- BSgenome.Mmusculus.UCSC.mm10
+    if ("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10")) {
+      stop("Please install BSgenome.Mmusculus.UCSC.mm10:\n",
+           "BiocManager::install(\"BSgenome.Mmusculus.UCSC.mm10\")")
+    }
+    stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
+    ref.genome <- BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10
   } else {
     stop("Unrecoginzed ref.genome:\n", ref.genome,
          "\nNeed NULL or a BSgenome reference genome\n",

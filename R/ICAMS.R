@@ -144,18 +144,16 @@
 #'  \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}},
 #'  and the strings \code{"mm10"} or \code{"GRCm38"}
 #'  are shorthand for
-#'  \code{\link{BSgenome.Mmusculus.UCSC.mm10}}.
+#'  \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}.
 #'  }
 #'
 #' The Bioconductor \code{\link{BSgenome}} package,
-#' two human genomes and one mouse genome from \code{\link{BSgenome}} are
+#' two human genomes \code{\link{BSgenome}} are
 #' "imported" by ICAMS and therefore should be installed when
-#' ICAMS is installed. The three genomes that are
-#'  installed as dependencies are:
+#' ICAMS is installed. These genomes are:
 #' \itemize{
 #' \item \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}
 #' \item \code{\link{BSgenome.Hsapiens.UCSC.hg38}}
-#' \item \code{\link{BSgenome.Mmusculus.UCSC.mm10}}
 #' }
 #'
 #' Any other needed reference genomes must be installed separately by the user.

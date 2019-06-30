@@ -116,7 +116,9 @@ NULL
 
 # Quiets concerns of R CMD check about no visible binding for global variable
 if(getRversion() >= "2.15.1") {
-  utils::globalVariables(c("all.abundance","POS2", "POS", 
+  utils::globalVariables(c("all.abundance",
+                           "BSgenome.Mmusculus.UCSC.mm10",
+                           "POS2", "POS", 
                            "bothstrand", "strand", ".", "CHROM",
                            "ALT", "count", "rn", "occurrences", "type", "strand",
                            "bothstrand", "chrom", "exome.start", "exome.end",

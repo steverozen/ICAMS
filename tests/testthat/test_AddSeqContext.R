@@ -25,10 +25,13 @@ test_that("AddSeqContext for GRCh38", {
 })
 
 test_that("AddSeqContext for GRCm38", {
+  skip_if("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10"))
+  stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
   load("testdata/test_AddSeqContext.Rdata")
   list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
   sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
-  df6 <- AddSeqContext(sbs.vcf, ref.genome = BSgenome.Mmusculus.UCSC.mm10)
+  df6 <- AddSeqContext(sbs.vcf, ref.genome 
+                       = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10)
   df7 <- AddSeqContext(sbs.vcf, ref.genome = "GRCm38")
   df8 <- AddSeqContext(sbs.vcf, ref.genome = "mm10")
   expect_equal(df6, strelka.SBS.vcf.GRCm38)
