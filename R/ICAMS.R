@@ -236,7 +236,7 @@
 #'  \enumerate{
 #'
 #' \item \code{\link{CatalogRowOrder}} Standard order of rownames in a catalog.
-#' The rownames of encode the type of each mutation. The rownames denote the mutation
+#' The rownames encode the type of each mutation. The rownames denote the mutation
 #' types.  For example, for SBS96 catalogs, the rowname
 #'  AGAT represents a mutation from AGA > ATA.
 #'
