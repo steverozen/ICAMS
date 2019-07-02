@@ -126,10 +126,10 @@ of mutational signatures to a PDF file.
 \item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates all
 type of SBS and DBS catalogs from Strelka SBS VCFs and plots the catalogs.
 
-\item \code{\link{StrelkaIDVCFFilesToCatalog}} creates an ID (indel) catalog
+\item \code{\link{StrelkaIDVCFFilesToCatalogAndPlotToPdf}} creates an ID (indel) catalog
 from Strelka ID VCFs and plot it.
 
-\item \code{\link{MutectVCFFilesToCatalog}} creates all types of SBS, DBS,
+\item \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}} creates all types of SBS, DBS,
 and ID catalogs from Mutect VCFs and plots the catalogs.
 }
 }
