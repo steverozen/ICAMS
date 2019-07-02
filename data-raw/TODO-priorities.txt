@@ -24,7 +24,8 @@
 3.4 Plot transcription strand bias as function of distance from TSS
 3.5 Plot transcription strand bias as function of expression level
 3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
-3.7 Maybe: Should it be possible to supply a directory as input to
+3.7 Provide documentaiton on how row-names in catalogs encode mutations.
+3.9 Maybe: Should it be possible to supply a directory as input to
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
 3.8 Nanhai test mouse mm10 on MuTect VCF
