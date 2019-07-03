@@ -1,6 +1,7 @@
 context("PlotCatalog.SBS96Catalog")
 
 test_that("PlotCatalog.SBS96Catalog function", {
+  opar <- par(no.readonly = TRUE)
   par(mar = c(1, 1, 1, 1))
   catalog.counts <-
     ReadCatalog("testdata/regress.cat.sbs.96.csv", ref.genome = "GRCh37",
@@ -29,4 +30,5 @@ test_that("PlotCatalog.SBS96Catalog function", {
                      target.catalog.type = "density.signature")
   out <- PlotCatalog(cat.density.signature)
   expect_equal(out, TRUE)
+  on.exit(par(opar))
 })
