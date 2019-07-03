@@ -824,6 +824,7 @@ PlotCatalogToPdf.DBS78Catalog <-
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
+  opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
   graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
 
@@ -831,6 +832,7 @@ PlotCatalogToPdf.DBS78Catalog <-
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
+  on.exit(par(opar), add = TRUE)
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
