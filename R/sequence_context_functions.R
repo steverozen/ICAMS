@@ -104,13 +104,15 @@ PlotPPM <- function(ppm, title) {
 PlotPPMToPdf <- function(list.of.ppm, file, titles = names(list.of.ppm)) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-
+  
+  opar <- par(no.readonly = TRUE)
   n <- length(list.of.ppm)
   graphics::par(mfrow = c(4, 2), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
   for (i in 1:n) {
     PlotPPM(list.of.ppm[[i]], title = titles[i])
   }
+  on.exit(par(opar))
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
