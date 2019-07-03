@@ -255,7 +255,7 @@ PlotCatalogToPdf.SBS96Catalog <-
       PlotCatalog(cat, cex = cex, grid = grid, upper = upper, xlabels = xlabels)
     }
     
-    on.exit(par(opar), add = TRUE)
+    on.exit(par(opar))
     invisible(grDevices::dev.off())
     invisible(TRUE)
   }
@@ -510,7 +510,7 @@ PlotCatalogToPdf.SBS192Catalog <-
     }
   }
   
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
@@ -702,7 +702,7 @@ PlotCatalog.SBS1536Catalog <-
       }
     }
   }
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
 
   invisible(TRUE)
 }
@@ -832,7 +832,7 @@ PlotCatalogToPdf.DBS78Catalog <-
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
@@ -964,7 +964,7 @@ PlotCatalogToPdf.DBS144Catalog <-
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex)
     }
-    on.exit(par(opar), add = TRUE)
+    on.exit(par(opar))
     invisible(grDevices::dev.off())
     invisible(TRUE)
   }
@@ -1109,7 +1109,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
   invisible(TRUE)
 }
 
@@ -1279,7 +1279,7 @@ PlotCatalogToPdf.DBS136Catalog <-
     plot.new()
     text(0.7, 0.5, colnames(catalog)[i], cex = 1.5, xpd = NA)
   }
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
@@ -1433,7 +1433,7 @@ PlotCatalogToPdf.IndelCatalog <-
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  on.exit(par(opar), add = TRUE)
+  on.exit(par(opar))
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
