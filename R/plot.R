@@ -974,7 +974,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
                                       grid, upper, xlabels) {
   stopifnot(dim(catalog) == c(136, 1))
 
-  old <- par(no.readonly = TRUE)
+  opar <- par(no.readonly = TRUE)
   # Specify the lay out of the plotting
   invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
                           byrow = TRUE)))
@@ -1109,7 +1109,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
-  on.exit(par(old), add = TRUE)
+  on.exit(par(opar), add = TRUE)
   invisible(TRUE)
 }
 
