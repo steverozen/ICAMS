@@ -1121,6 +1121,7 @@ PlotCatalogToPdf.DBS136Catalog <-
 
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  opar <- par(no.readonly = TRUE)
   par(oma = c(1, 2, 1, 1))
 
   # Specify the lay out of the plotting
@@ -1278,6 +1279,7 @@ PlotCatalogToPdf.DBS136Catalog <-
     plot.new()
     text(0.7, 0.5, colnames(catalog)[i], cex = 1.5, xpd = NA)
   }
+  on.exit(par(opar), add = TRUE)
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
