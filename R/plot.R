@@ -246,7 +246,7 @@ PlotCatalogToPdf.SBS96Catalog <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
-    old <- par(no.readonly = TRUE)
+    opar <- par(no.readonly = TRUE)
     n <- ncol(catalog)
     graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
 
@@ -254,7 +254,8 @@ PlotCatalogToPdf.SBS96Catalog <-
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex, grid = grid, upper = upper, xlabels = xlabels)
     }
-    on.exit(par(old), add = TRUE)
+    
+    on.exit(par(opar), add = TRUE)
     invisible(grDevices::dev.off())
     invisible(TRUE)
   }
@@ -492,7 +493,8 @@ PlotCatalogToPdf.SBS192Catalog <-
   function(catalog, file, plot.SBS12 = FALSE, cex, grid, upper, xlabels) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-
+  
+  opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
   if (plot.SBS12 == FALSE) {
     graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
@@ -507,7 +509,8 @@ PlotCatalogToPdf.SBS192Catalog <-
       PlotCatalog(cat, plot.SBS12 = TRUE)
     }
   }
-
+  
+  on.exit(par(opar), add = TRUE)
   invisible(grDevices::dev.off())
   invisible(TRUE)
 }
