@@ -596,7 +596,7 @@ PlotCatalog.SBS1536Catalog <-
   n.types <- length(main.types)  # max 6 types
 
   # Plot one sample on one page
-  old <- par(no.readonly = TRUE)
+  opar <- par(no.readonly = TRUE)
   par(mfrow = c(2, 3), oma = c(1, 6, 1, 4), pty = "s")
 
   for (i in 1 : n.types) {
@@ -702,7 +702,7 @@ PlotCatalog.SBS1536Catalog <-
       }
     }
   }
-  on.exit(par(old), add = TRUE)
+  on.exit(par(opar), add = TRUE)
 
   invisible(TRUE)
 }
