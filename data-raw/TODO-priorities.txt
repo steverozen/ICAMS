@@ -8,7 +8,7 @@
 ## High priority
 2.1 Steve Background signature subtraction
 2.2 Nanhai binom test for transcription strand bias
-2.3 Functions to re-write annotated VCFS
+2.3 Functions to re-write annotated VCFS back to disk (design?)
 2.4 Corrections to extended sequence plotting for SBS
 2.5 Extended sequence plotting for ID, DNS
 2.6 Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and similar       functions.  These functions generate multiple PDF files and this is not
@@ -25,10 +25,12 @@
 3.5 Plot transcription strand bias as function of expression level
 3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
 3.7 Provide documentaiton on how row-names in catalogs encode mutations.
-3.9 Maybe: Should it be possible to supply a directory as input to
+3.8 Maybe: Should it be possible to supply a directory as input to
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
-3.8 Nanhai test mouse mm10 on MuTect VCF
+3.9 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+    ref bases do not match the contents of the VCF file).
+3.10 Nanhai test mouse mm10 on MuTect VCF
 
 ## Low priority
 4.1 Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
