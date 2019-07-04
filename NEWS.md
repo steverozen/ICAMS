@@ -1,6 +1,6 @@
 # ICAMS 2.0.6
 * Additional changes for submission to CRAN (re-set
-  graphics paramaters to original values after plotting
+  graphics parameters to original values after plotting
   calls; documentation updates).
 
 # ICAMS 2.0.5
