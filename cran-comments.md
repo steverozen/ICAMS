@@ -1,14 +1,10 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Replaced all instances of cat() and print() from the code
-  with message(), warning(), or stop() as appropriate.
-  These are all either part of error handling or part of 
-  tracing capability that is turned off by default.
-* Changed 2 print() calls and 1 fwrite() call that were part of error handling to
-  write.csv() calls writing to a file in tempdir() (grep tempfile */*.R);
-  one of these was in CheckSeqContextInVCF as noted in the manual
-  CRAN check.
-* Replaced T with TRUE and F with FALSE everywhere.
+* Written package names, software names and API names in 
+  single quotes (e.g. 'ICAMS') in the DESCRIPTION.
+* In functions that change the user's par() settings,
+  there is now an immediate call of on.exit() to reset
+  to the original settings.
 
 ## Test environments
 * Local Windows 10 install: R 3.6.0

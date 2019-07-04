@@ -246,17 +246,21 @@ PlotCatalogToPdf.SBS96Catalog <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
-    opar <- par(no.readonly = TRUE)
+    # opar <- par(no.readonly = TRUE)
+    
     n <- ncol(catalog)
-    graphics::par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+    opar <- graphics::par(
+      mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+    on.exit(par(opar))
 
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex, grid = grid, upper = upper, xlabels = xlabels)
     }
     
-    on.exit(par(opar))
-    invisible(grDevices::dev.off())
+    # on.exit(par(opar))
+    # invisible(grDevices::dev.off())
+    grDevices::dev.off()
     invisible(TRUE)
   }
 
@@ -495,7 +499,11 @@ PlotCatalogToPdf.SBS192Catalog <-
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
   n <- ncol(catalog)
+  # TODO(Nanhai): Please refactor the code below; just set the par
+  # and a variable called plot.SBS12 inside an the 'if' statement,
+  # then you only need one loop.
   if (plot.SBS12 == FALSE) {
     graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
     for (i in 1 : n) {
@@ -510,8 +518,9 @@ PlotCatalogToPdf.SBS192Catalog <-
     }
   }
   
-  on.exit(par(opar))
-  invisible(grDevices::dev.off())
+  # on.exit(par(opar))
+  # invisible(grDevices::dev.off()) # TODO(Nanhai): why 2 calls to invisible?
+  grDevices::dev.off()
   invisible(TRUE)
 }
 
@@ -597,6 +606,7 @@ PlotCatalog.SBS1536Catalog <-
 
   # Plot one sample on one page
   opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
   par(mfrow = c(2, 3), oma = c(1, 6, 1, 4), pty = "s")
 
   for (i in 1 : n.types) {
@@ -702,7 +712,7 @@ PlotCatalog.SBS1536Catalog <-
       }
     }
   }
-  on.exit(par(opar))
+  # on.exit(par(opar))
 
   invisible(TRUE)
 }
@@ -718,7 +728,8 @@ PlotCatalogToPdf.SBS1536Catalog <-
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  invisible(grDevices::dev.off())
+  # invisible(grDevices::dev.off())
+  grDevices::dev.off()
   invisible(TRUE)
 }
 
@@ -824,16 +835,17 @@ PlotCatalogToPdf.DBS78Catalog <-
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
-  opar <- par(no.readonly = TRUE)
+  # opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
-  graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
-
+  opar <- par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 3, 2, 2))
+  on.exit(par(opar))
+  
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  on.exit(par(opar))
-  invisible(grDevices::dev.off())
+
+  grDevices::dev.off()
   invisible(TRUE)
 }
 
@@ -848,8 +860,8 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
   cat <- catalog[to.reorder.DBS.144.for.plotting, 1, drop = FALSE]
 
   num.classes <- 20
-  maj.class.names <-
-    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
+  # maj.class.names <-
+  #  c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   cols <- rep(strand.col, num.classes / 2)
 
   if (attributes(catalog)$catalog.type == "counts") {
@@ -956,16 +968,18 @@ PlotCatalogToPdf.DBS144Catalog <-
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
-    opar <- par(no.readonly = TRUE)
+    # opar <- par(no.readonly = TRUE)
     n <- ncol(catalog)
-    graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
-
+    opar <- par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+    on.exit(par(opar))
+    
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex)
     }
-    on.exit(par(opar))
-    invisible(grDevices::dev.off())
+    # on.exit(par(opar))
+    # invisible(grDevices::dev.off())
+    grDevices::dev.off()
     invisible(TRUE)
   }
 
@@ -974,7 +988,8 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
                                       grid, upper, xlabels) {
   stopifnot(dim(catalog) == c(136, 1))
 
-  opar <- par(no.readonly = TRUE)
+  # opar <- par(no.readonly = TRUE)
+  # on.exit(par(opar))
   # Specify the lay out of the plotting
   invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
                           byrow = TRUE)))
@@ -1055,8 +1070,10 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
           axes = FALSE, ann = FALSE, add = TRUE)
   }
 
+  opar <- par(mar = c(1, 2, 2, 0))
+  on.exit(par(opar))
   for (i in 1:10){
-    par(mar = c(1, 2, 2, 0))
+    # par(mar = c(1, 2, 2, 0))
 
     if (attributes(catalog)$catalog.type == "density") {
       DrawImage(matrix(rates[(16 * (i - 1) + 1) : (16 * i)], 4, 4))
@@ -1109,7 +1126,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
-  on.exit(par(opar))
+  # on.exit(par(opar))
   invisible(TRUE)
 }
 
@@ -1122,10 +1139,12 @@ PlotCatalogToPdf.DBS136Catalog <-
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
   par(oma = c(1, 2, 1, 1))
-
-  # Specify the lay out of the plotting
-  invisible(layout(matrix(c(12, 12, 12, 12,
+  
+  # Layout for plotting
+  # invisible(
+    layout(matrix(c(12, 12, 12, 12,
                             7, 8, 9, 10, 7, 8, 9, 10,
                             7, 8, 9, 10, 7, 8, 9, 10,
                             4, 5, 6, 11,  4, 5, 6, 11,
@@ -1139,7 +1158,8 @@ PlotCatalogToPdf.DBS136Catalog <-
                             16, 17, 18, 23, 16, 17, 18, 23,
                             13, 14, 15, 23,  13, 14, 15, 23,
                             13, 14, 15, 23, 13, 14, 15, 23),
-                          26, 4,byrow = TRUE)))
+                          26, 4,byrow = TRUE))
+    # )
 
 
   # Define the bases and their colors in plot
@@ -1279,8 +1299,9 @@ PlotCatalogToPdf.DBS136Catalog <-
     plot.new()
     text(0.7, 0.5, colnames(catalog)[i], cex = 1.5, xpd = NA)
   }
-  on.exit(par(opar))
-  invisible(grDevices::dev.off())
+  # on.exit(par(opar))
+  # invisible(grDevices::dev.off())
+  grDevices::dev.off()
   invisible(TRUE)
 }
 
@@ -1425,15 +1446,16 @@ PlotCatalogToPdf.IndelCatalog <-
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
-  opar <- par(no.readonly = TRUE)
+  # opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
-  graphics::par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
-
+  opar <- graphics::par(
+    mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
+  on.exit(par(opar))
+  
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  on.exit(par(opar))
-  invisible(grDevices::dev.off())
+  grDevices::dev.off()
   invisible(TRUE)
 }

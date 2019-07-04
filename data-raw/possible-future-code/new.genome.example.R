@@ -27,7 +27,7 @@ PlotCatalogToPdf(c96,
 ## 
 ## Steve note -- there is no need for a reference genome in
 ## TransformCatalog unless you are changing genomes, and in fact
-## What you reall need are abundances. The ref.genome argument is
+## What you really need are abundances. The ref.genome argument is
 ## just a convenience that lets you look up abundances.
 
 BiocManager::install("BSgenome.Mmusculus.UCSC.mm10")

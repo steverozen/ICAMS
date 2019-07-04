@@ -11,9 +11,12 @@
 2.3 Functions to re-write annotated VCFS back to disk (design?)
 2.4 Corrections to extended sequence plotting for SBS
 2.5 Extended sequence plotting for ID, DNS
-2.6 Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and similar       functions.  These functions generate multiple PDF files and this is not
+2.6 Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+   similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
+2.7 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+    ref bases do not match the contents of the VCF file).
 
 
 
@@ -28,8 +31,8 @@
 3.8 Maybe: Should it be possible to supply a directory as input to
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
-3.9 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
-    ref bases do not match the contents of the VCF file).
+3.9 Clean up plotting funcions (useless calls to invisible(), also, try
+     on.exit(dev.off(), add = TRUE))
 3.10 Nanhai test mouse mm10 on MuTect VCF
 
 ## Low priority
