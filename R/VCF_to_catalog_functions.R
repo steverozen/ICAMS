@@ -856,6 +856,12 @@ CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL,
   stopifnot(nchar(vcf$ALT) == 1)
   stopifnot(nchar(vcf$REF) == 1)
   stopifnot(vcf$ALT != vcf$REF)
+  if (!all(vcf$REF == substr(vcf$seq.21bases, 11, 11))) {
+    stop("\nThe reference base in the ref.genome does not match the ", 
+         "purported reference base in the VCF file.\n",
+         "Please check the ref.genome argument.")
+  }
+  
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21bases, 9, 13)
   vcf$mutation <- paste0(context, vcf$ALT)
