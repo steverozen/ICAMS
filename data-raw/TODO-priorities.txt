@@ -1,24 +1,39 @@
-# ICAMS to do list, 2019 06 29
+# ICAMS to do list, 2019 07 06
 
 ## Highest priority
 
 1.1 Steve assess feasibility of a shiny or other portable app / is web page easier?
-
+1.1.1 Steve find shiny expert to discuss (Alvin)
 
 ## High priority
 2.1 Steve Background signature subtraction
-2.2 Nanhai binom test for transcription strand bias
-2.3 Functions to re-write annotated VCFS back to disk (design?)
-2.4 Corrections to extended sequence plotting for SBS
-2.5 Extended sequence plotting for ID, DNS
-2.6 Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+2.2 Steve Single-click script (as interim for 1.1):
+2.2.1 outputs the standard plots and catalogs.
+2.2.2 a report with
+2.2.2.1 (Arnoud's idea, need to discuss) 
+        Mutation loads (per mutation type, 
+        and compare to the background levels in
+        the background controls we have, and perhaps also cosine to the background signature?)
+2.2.2.2 Percentage of DBS relative to SBS
+
+2.3 Nanhai Investigate whether on.exit(par(opar)) is needed in calls to testthat()
+
+2.4 Nanhai Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
    similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
-2.7 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+   
+2.5 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
+    inspection relative to saved examples in data-raw.  Possibly extend to auto checking
+    by diffing the PDFs.
+    
+2.6 Nanhai binom test for transcription strand bias
+2.7 Nanhai Functions to re-write annotated VCFS back to disk (design?)
+2.8 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
+2.9 Nanhai Extended sequence plotting for ID, DNS
+
+2.10 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
     ref bases do not match the contents of the VCF file).
-
-
 
 ## Medium priority3
 3.1 Make a full transcriptional strand bias plot for DBS144 catalog.
@@ -28,11 +43,16 @@
 3.5 Plot transcription strand bias as function of expression level
 3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
 3.7 Provide documentaiton on how row-names in catalogs encode mutations.
-3.8 Maybe: Should it be possible to supply a directory as input to
-    StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
-    the directory and put all the PDFs in that directory?
-3.9 Clean up plotting funcions (useless calls to invisible(), also, try
+3.8 Clean up plotting funcions (useless calls to invisible(), also, try
      on.exit(dev.off(), add = TRUE))
+3.9 Also, in all plots, should we also include a comment box as our old script
+     also has; specifying the date of printing, and the genome/abundance of 
+     the data that was plotted? 
+     Also a additional text provided by user 
+     (Other processing information; should this be
+     an attribute, or just included as a user note --
+     example would be whether background removal was done, but could also
+     include signature extraction information (?)
 3.10 Nanhai test mouse mm10 on MuTect VCF
 
 ## Low priority
@@ -50,6 +70,12 @@
 4.12 Allow as.catalog to work on a numeric vector (interpreting it as a
      matrix w/ one column)
 
+## Maybe
+
+5.1 Read in MAF files
+5.2 Maybe: Should it be possible to supply a directory as input to
+    StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
+    the directory and put all the PDFs in that directory?
 
 ## Done
 
