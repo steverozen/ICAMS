@@ -16,7 +16,7 @@
 library(stringi)
 library('lsa') # for cosine()
 
-revc <- function(seq) {
+INCORPORATED.revc <- function(seq) {
 
   rq <- stri_reverse(seq)
   rq1 <- stri_trans_char(rq, 'ACGT', '1234')
@@ -26,7 +26,7 @@ revc <- function(seq) {
   stri_trans_char(rq1, '1234', 'TGCA')
 }
 
-xtract.col <- function(spec, sample.name.or.index) {
+INCORPORATED.xtract.col <- function(spec, sample.name.or.index) {
   tmp <- as.matrix(spec[ , sample.name.or.index])
   if (ncol(tmp) > 1) return(tmp)
   rownames(tmp) <- rownames(spec)
@@ -85,7 +85,7 @@ xtract.col <- function(spec, sample.name.or.index) {
 
 # Read 96-channel spectrum or signatures in Ludmil format
 
-read.96.ludmil.format <- function(path) {
+INCORPORATED.read.96.ludmil.format <- function(path) {
   cos <- read.table(path,
                     stringsAsFactors = F,
                     as.is = T,
@@ -126,7 +126,7 @@ read.96.duke.nus.format <- function(path) {
 }
 
 ### Read 192 channel spectra in Duke-NUS format
-read.and.prep.192.duke.nus.catalog <- function(path) {
+INCORPORATED.read.and.prep.192.duke.nus.catalog <- function(path) {
   df <- read.table(path,
                        stringsAsFactors = F,
                        as.is=T,
@@ -197,7 +197,7 @@ read.sa.assignment <- function(sa.file){ ## reads in SignatureAnalyzer assignmen
   return(output) 
 }
 
-## function to read SA signatures
+## function to read SA signatures # This may now be in SynSig
 read.96.sa.signatures <- function(signature.file){
   sig.mat <- read.table(signature.file, header = T)
   stopifnot(nrow(sig.mat)==96)
@@ -270,7 +270,7 @@ read.sp.assignment <- function(sp.file){ ## reads in SignatureProfiler assignmen
 # Funtions for plotting, etc.
 ######################################
 
-pdf.mut.sig.profile <- function(path, spec.or.sig, show.counts=F) {
+INCORPORATED.pdf.mut.sig.profile <- function(path, spec.or.sig, show.counts=F) {
   spectrum.plot.pdf.setup(path)
   t.plot.spectra(duke.nus.rownames.to.cols(spec.or.sig),
                  show.counts=show.counts,
@@ -375,7 +375,7 @@ read.opportunity <- function(path) {
 .flat.96.op[ , 'occurrences'] <-
   sum(.h19.96.WGS.op[ , 'occurrences']) / 32 # not sure if we need this
 
-transform.96.sig.op1.op2 <- function(input.sig.mat, in.op, out.op) {
+INCORPORATED.transform.96.sig.op1.op2 <- function(input.sig.mat, in.op, out.op) {
   out.sig.mat <- input.sig.mat
 
   stopifnot(rownames(out.op) == rownames(in.op))
@@ -509,7 +509,7 @@ get_ylim = function(y) {
   return(y)
 }
 
-t.plot.spectra = function(counts.data.frame,
+INCORPORATED.t.plot.spectra = function(counts.data.frame,
                         show.counts=T,
                         show.class.names=F,
                         all.labels=F,
@@ -1023,7 +1023,7 @@ plot.one.genome <- function(path, spec, exome.op) {
   }
 
 # FIX ME, MOVE THIS TO mSigActTesR
-test.sig.spec.transform <- function(in.wgs.spec) {
+INCORPORATED.test.sig.spec.transform <- function(in.wgs.spec) {
 
   flat.spec <-
     transform.96.sig.op1.op2(input.sig.mat = in.wgs.spec,
