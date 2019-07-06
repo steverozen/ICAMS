@@ -5,6 +5,7 @@
 1.2 Steve assess feasibility of a shiny or other portable app / is web page easier?
 1.2.1 Steve find shiny expert to discuss (Alvin)
 
+<<<<<<< HEAD
 ## High priority
 
 2.1 Steve Single-click script (as interim for 1.1):
@@ -19,10 +20,30 @@
 2.2 Nanhai Investigate whether on.exit(par(opar)) is needed in calls to testthat()
 
 2.3 Nanhai Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+=======
+1.1 Steve assess feasibility of a shiny or other portable app / is web page easier?
+1.1.1 Steve find shiny expert to discuss (Alvin)
+
+## High priority
+2.1 Steve Background signature subtraction
+2.2 Steve Single-click script (as interim for 1.1):
+2.2.1 outputs the standard plots and catalogs.
+2.2.2 a report with
+2.2.2.1 (Arnoud's idea, need to discuss) 
+        Mutation loads (per mutation type, 
+        and compare to the background levels in
+        the background controls we have, and perhaps also cosine to the background signature?)
+2.2.2.2 Percentage of DBS relative to SBS
+
+2.3 Nanhai Investigate whether on.exit(par(opar)) is needed in calls to testthat()
+
+2.4 Nanhai Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+>>>>>>> 502368ff65f259054cd1c4e0a78991eefcf27dbb
    similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
    
+<<<<<<< HEAD
 2.4 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
     inspection relative to saved examples in data-raw.  Possibly extend to auto checking
     by diffing the PDFs.
@@ -33,6 +54,18 @@
 2.8 Nanhai Extended sequence plotting for ID, DNS
 
 2.9 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+=======
+2.5 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
+    inspection relative to saved examples in data-raw.  Possibly extend to auto checking
+    by diffing the PDFs.
+    
+2.6 Nanhai binom test for transcription strand bias
+2.7 Nanhai Functions to re-write annotated VCFS back to disk (design?)
+2.8 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
+2.9 Nanhai Extended sequence plotting for ID, DNS
+
+2.10 Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+>>>>>>> 502368ff65f259054cd1c4e0a78991eefcf27dbb
     ref bases do not match the contents of the VCF file).
 
 ## Medium priority3
