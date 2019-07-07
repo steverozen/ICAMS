@@ -1,3 +1,9 @@
+# ICAMS 2.0.7
+* Additional corrections for submission to cran
+  (putting on.exit(par(opar)) immedately after
+  opar <- par(...)
+  in every case.
+
 # ICAMS 2.0.6
 * Additional changes for submission to CRAN (re-set
   graphics parameters to original values after plotting

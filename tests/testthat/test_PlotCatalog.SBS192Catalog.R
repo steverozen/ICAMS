@@ -1,8 +1,8 @@
 context("PlotCatalog.SBS192Catalog")
 
 test_that("PlotCatalog.SBS192Catalog function", {
-  opar <- par(no.readonly = TRUE)
-  par(mar = c(2, 2, 2, 1))
+  opar <- par(mar = c(2, 2, 2, 1))
+  on.exit(par(opar))
   catalog.counts <-
     ReadCatalog("testdata/regress.cat.sbs.192.csv", 
                 ref.genome = "GRCh37",
@@ -12,7 +12,7 @@ test_that("PlotCatalog.SBS192Catalog function", {
   out1 <- PlotCatalog(cat.counts, plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-
+  
   cat.density <-
     TransformCatalog(cat.counts, target.ref.genome = "GRCh37",
                      target.region = "transcript",
@@ -39,5 +39,4 @@ test_that("PlotCatalog.SBS192Catalog function", {
   out1 <- PlotCatalog(cat.density.signature, plot.SBS12 = TRUE)
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
-  on.exit(par(opar))
-  })
+})

@@ -1,10 +1,10 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Written package names, software names and API names in 
-  single quotes (e.g. 'ICAMS') in the DESCRIPTION.
-* In functions that change the user's par() settings,
-  there is now an immediate call of on.exit() to reset
-  to the original settings.
+* Ensured that every  
+  opar <- par(...)
+  is followed IMMEDIATEDLY by
+  on.exit(par(opar))
+  (not farther down in the code)
 
 ## Test environments
 * Local Windows 10 install: R 3.6.0

@@ -249,8 +249,7 @@ PlotCatalogToPdf.SBS96Catalog <-
     # opar <- par(no.readonly = TRUE)
     
     n <- ncol(catalog)
-    opar <- graphics::par(
-      mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+    opar <- par(mfrow = c(8, 1), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
     on.exit(par(opar))
 
     for (i in 1 : n) {
@@ -258,8 +257,6 @@ PlotCatalogToPdf.SBS96Catalog <-
       PlotCatalog(cat, cex = cex, grid = grid, upper = upper, xlabels = xlabels)
     }
     
-    # on.exit(par(opar))
-    # invisible(grDevices::dev.off())
     grDevices::dev.off()
     invisible(TRUE)
   }
@@ -505,21 +502,19 @@ PlotCatalogToPdf.SBS192Catalog <-
   # and a variable called plot.SBS12 inside an the 'if' statement,
   # then you only need one loop.
   if (plot.SBS12 == FALSE) {
-    graphics::par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
+    par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat)
     }
   } else {
-    graphics::par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
+    par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, plot.SBS12 = TRUE)
     }
   }
   
-  # on.exit(par(opar))
-  # invisible(grDevices::dev.off()) # TODO(Nanhai): why 2 calls to invisible?
   grDevices::dev.off()
   invisible(TRUE)
 }
@@ -712,7 +707,6 @@ PlotCatalog.SBS1536Catalog <-
       }
     }
   }
-  # on.exit(par(opar))
 
   invisible(TRUE)
 }
@@ -728,7 +722,7 @@ PlotCatalogToPdf.SBS1536Catalog <-
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
-  # invisible(grDevices::dev.off())
+
   grDevices::dev.off()
   invisible(TRUE)
 }
@@ -977,8 +971,7 @@ PlotCatalogToPdf.DBS144Catalog <-
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex)
     }
-    # on.exit(par(opar))
-    # invisible(grDevices::dev.off())
+
     grDevices::dev.off()
     invisible(TRUE)
   }
@@ -988,9 +981,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
                                       grid, upper, xlabels) {
   stopifnot(dim(catalog) == c(136, 1))
 
-  # opar <- par(no.readonly = TRUE)
-  # on.exit(par(opar))
-  # Specify the lay out of the plotting
+  # Specify the layout of the plotting
   invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
                           byrow = TRUE)))
 
@@ -1126,7 +1117,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
        paste(ref[1:5], maxima[1:5], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
-  # on.exit(par(opar))
+  
   invisible(TRUE)
 }
 
@@ -1143,35 +1134,32 @@ PlotCatalogToPdf.DBS136Catalog <-
   par(oma = c(1, 2, 1, 1))
   
   # Layout for plotting
-  # invisible(
-    layout(matrix(c(12, 12, 12, 12,
-                            7, 8, 9, 10, 7, 8, 9, 10,
-                            7, 8, 9, 10, 7, 8, 9, 10,
-                            4, 5, 6, 11,  4, 5, 6, 11,
-                            4, 5, 6, 11, 4, 5, 6, 11,
-                            1, 2, 3, 11, 1, 2, 3, 11,
-                            1, 2, 3, 11,  1, 2, 3, 11,
-                            24, 24, 24, 24,
-                            19, 20, 21, 22, 19, 20, 21, 22,
-                            19, 20, 21, 22, 19, 20, 21, 22,
-                            16, 17, 18, 23, 16, 17, 18, 23,
-                            16, 17, 18, 23, 16, 17, 18, 23,
-                            13, 14, 15, 23,  13, 14, 15, 23,
-                            13, 14, 15, 23, 13, 14, 15, 23),
-                          26, 4,byrow = TRUE))
-    # )
-
-
+  layout(matrix(c(12, 12, 12, 12,
+                  7, 8, 9, 10, 7, 8, 9, 10,
+                  7, 8, 9, 10, 7, 8, 9, 10,
+                  4, 5, 6, 11,  4, 5, 6, 11,
+                  4, 5, 6, 11, 4, 5, 6, 11,
+                  1, 2, 3, 11, 1, 2, 3, 11,
+                  1, 2, 3, 11,  1, 2, 3, 11,
+                  24, 24, 24, 24,
+                  19, 20, 21, 22, 19, 20, 21, 22,
+                  19, 20, 21, 22, 19, 20, 21, 22,
+                  16, 17, 18, 23, 16, 17, 18, 23,
+                  16, 17, 18, 23, 16, 17, 18, 23,
+                  13, 14, 15, 23,  13, 14, 15, 23,
+                  13, 14, 15, 23, 13, 14, 15, 23),
+                26, 4,byrow = TRUE))
+  
   # Define the bases and their colors in plot
   base <- c("A", "C", "G", "T")
   base.cols <- c("forestgreen", "dodgerblue2", "black", "red")
-
+  
   ref.order <- c("AC", "AT", "GC", "CC", "CG", "CT", "TA", "TC", "TG", "TT")
   mut.type <- paste(ref.order, "NN", sep = ">")
-
+  
   for (i in 1:n) {
     cat <- catalog[, i, drop = FALSE]
-
+    
     if (attributes(catalog)$catalog.type == "counts") {
       # Calculate the occurrences of each mutation type for plotting
       counts <- matrix(0, nrow = 160, ncol = 1)
@@ -1183,7 +1171,7 @@ PlotCatalogToPdf.DBS136Catalog <-
           counts[j] <- NA
         }
       }
-
+      
       # Calculate maximum count and total counts per mutation class
       df <- data.frame(stats::na.omit(counts))
       colnames(df) <- "counts"
@@ -1195,7 +1183,7 @@ PlotCatalogToPdf.DBS136Catalog <-
       rownames(max.count.per.class) <- df1$Ref
       rownames(counts.per.class) <- df2$Ref
     }
-
+    
     if (attributes(catalog)$catalog.type == "density") {
       # Calculate tetranucleotide sequence contexts, normalized by tetranucleotide
       # occurrence in the genome
@@ -1208,7 +1196,7 @@ PlotCatalogToPdf.DBS136Catalog <-
           rates[j] <- NA
         }
       }
-
+      
       # Calculate maxima per mutation class(mut/million)
       df3 <- data.frame(stats::na.omit(rates))
       colnames(df3) <- "rates"
@@ -1299,8 +1287,7 @@ PlotCatalogToPdf.DBS136Catalog <-
     plot.new()
     text(0.7, 0.5, colnames(catalog)[i], cex = 1.5, xpd = NA)
   }
-  # on.exit(par(opar))
-  # invisible(grDevices::dev.off())
+
   grDevices::dev.off()
   invisible(TRUE)
 }
@@ -1446,16 +1433,71 @@ PlotCatalogToPdf.IndelCatalog <-
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
-  # opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
-  opar <- graphics::par(
-    mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
+  opar <- par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
   on.exit(par(opar))
   
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
     PlotCatalog(cat)
   }
+  grDevices::dev.off()
+  invisible(TRUE)
+}
+
+
+#' Plot position probability matrix (PPM) for *one* sample from a Variant Call Format
+#' (VCF) file.
+#'
+#' @param pwm A position probability matrix (PPM) for *one* sample.
+#'
+#' @param title The main title of the plot.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
+PlotPPM <- function(ppm, title) {
+  ppm <- t(ppm)
+  x <- seq(1:nrow(ppm))
+  plot(x, y = ppm[, "A"], xaxt = "n", xlab = "",
+       ylab = "proportion", ylim = c(0, 1), pch = 20, type = "b",
+       lwd = 2, col = "darkgreen")
+  lines(x, ppm[, "C"], col = "blue", type = "b", pch = 20, lwd = 2)
+  lines(x, ppm[, "G"], col = "black", type = "b", pch = 20, lwd = 2)
+  lines(x, ppm[, "T"], col = "red", type = "b", pch = 20, lwd = 2)
+  abline(h = 0.25, col = "grey50")
+  text(x, y = -0.1, labels = rownames(ppm), adj = 1, srt = 90, xpd = NA)
+  legend("topright", pch = 16, ncol = 4, bty = "n",
+         legend = c("A", "C", "G", "T"),
+         col = c("darkgreen", "blue", "black", "red"))
+  mtext(text = title, side = 3, line = 0.5)
+  invisible(TRUE)
+}
+
+
+#' Plot position probability matrices (PPM) to a PDF file
+#'
+#' @param list.of.pwm A list of position probability matrices (PPM)
+#'
+#' @param file The name of the PDF file to be produced.
+#'
+#' @param titles A vector of titles on top of each PPM plot.
+#'
+#' @return \code{invisible(TRUE)}
+#'
+#' @keywords internal
+PlotPPMToPdf <- function(list.of.ppm, file, titles = names(list.of.ppm)) {
+  # Setting the width and length for A4 size plotting
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  
+  n <- length(list.of.ppm)
+  opar <- par(mfrow = c(4, 2), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+  on.exit(par(opar))
+  
+  for (i in 1:n) {
+    PlotPPM(list.of.ppm[[i]], title = titles[i])
+  }
+  
   grDevices::dev.off()
   invisible(TRUE)
 }

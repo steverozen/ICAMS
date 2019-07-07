@@ -41,9 +41,9 @@ Install development version of ICAMS from [GitHub](https://github.com/) with
 the R command line:
 
 ``` r
-devtools::install_github("steverozen/ICAMS")
+devtools::install_github("steverozen/ICAMS", ref = "v2.0.7-branch")
 ```
 
 ## Reference manual
 
-https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.0.6.pdf
+https://github.com/steverozen/ICAMS/blob/v2.0.7-branch/data-raw/ICAMS_2.0.7.pdf
