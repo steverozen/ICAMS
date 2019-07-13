@@ -30,10 +30,9 @@
 #' file <- system.file("extdata",
 #'                     "strelka.regress.cat.sbs.96.csv",
 #'                     package = "ICAMS")
-#' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
-#'                         region = "genome",
-#'                         catalog.type = "counts")
-ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
+#' catSBS96 <- ReadCatalog(file)
+ReadCatalog <- function(file, ref.genome = NULL, region = "unknown", 
+                        catalog.type = "counts", strict = TRUE) {
   StopIfRegionIllegal(region)
   StopIfCatalogTypeIllegal(catalog.type)
   class.of.catalog <- InferClassOfCatalogForRead(file) #
@@ -64,17 +63,15 @@ ReadCatalog <- function(file, ref.genome, region, catalog.type, strict = TRUE) {
 #' file <- system.file("extdata",
 #'                     "strelka.regress.cat.sbs.96.csv",
 #'                     package = "ICAMS")
-#' catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
-#'                         region = "genome",
-#'                         catalog.type = "counts")
+#' catSBS96 <- ReadCatalog(file)
 #' WriteCatalog(catSBS96, file = file.path(tempdir(), "catSBS96.csv"))
 WriteCatalog <- function(catalog, file, strict = TRUE) {
   UseMethod(generic = "WriteCatalog")
 }
 
 #' @export
-ReadCatalog.SBS96Catalog <- function(file, ref.genome, region,
-                                     catalog.type, strict = TRUE) {
+ReadCatalog.SBS96Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                     catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -97,8 +94,8 @@ ReadCatalog.SBS96Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS192Catalog <- function(file, ref.genome, region,
-                                      catalog.type, strict = TRUE) {
+ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                      catalog.type = "counts", strict = TRUE) {
   
   StopIfTranscribedRegionIllegal(region)
   
@@ -135,8 +132,8 @@ ReadCatalog.SBS192Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.SBS1536Catalog <- function(file, ref.genome, region,
-                                       catalog.type, strict = TRUE) {
+ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                       catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -159,8 +156,8 @@ ReadCatalog.SBS1536Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS78Catalog <- function(file, ref.genome, region,
-                                     catalog.type, strict = TRUE) {
+ReadCatalog.DBS78Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                     catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 78)
   if (strict) {
@@ -206,8 +203,8 @@ ReadCatalog.DBS78Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS144Catalog <- function(file, ref.genome, region,
-                                      catalog.type, strict = TRUE) {
+ReadCatalog.DBS144Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                      catalog.type = "counts", strict = TRUE) {
   
   StopIfTranscribedRegionIllegal(region)
   
@@ -229,8 +226,8 @@ ReadCatalog.DBS144Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.DBS136Catalog <- function(file, ref.genome, region,
-                                      catalog.type, strict = TRUE) {
+ReadCatalog.DBS136Catalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                      catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -248,8 +245,8 @@ ReadCatalog.DBS136Catalog <- function(file, ref.genome, region,
 }
 
 #' @export
-ReadCatalog.IndelCatalog <- function(file, ref.genome, region,
-                                     catalog.type, strict = TRUE) {
+ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown", 
+                                     catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 83)
   cn <- names(cos)
