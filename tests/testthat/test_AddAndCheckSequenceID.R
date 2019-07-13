@@ -21,7 +21,9 @@ test_that("AddAndCheckSequenceID with hg38", {
   stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   load("testdata/test_AddAndCheckSequenceID.Rdata")
   id.vcf <- ReadStrelkaIDVCF("testdata/Strelka.ID.GRCh38.vcf")
-  df3 <- AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Hsapiens.UCSC.hg38)
+  df3 <- AddAndCheckSequenceID(id.vcf, 
+                               ref.genome = 
+                               BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38)
   df4 <- AddAndCheckSequenceID(id.vcf, ref.genome = "GRCh38")
   df5 <- AddAndCheckSequenceID(id.vcf, ref.genome = "hg38")
   expect_equal(df3, strelka.ID.vcf.GRCh38)
