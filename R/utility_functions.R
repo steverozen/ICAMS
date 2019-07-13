@@ -1031,7 +1031,7 @@ NormalizeGenomeArg <- function(ref.genome) {
       stop("\nPlease install BSgenome.Hsapiens.UCSC.hg38:\n",
            "BiocManager::install(\"BSgenome.Hsapiens.UCSC.hg38\")")
     }
-    stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
+    stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE))
     ref.genome <- BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38
   } else if (ref.genome %in%
              c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
@@ -1039,7 +1039,7 @@ NormalizeGenomeArg <- function(ref.genome) {
       stop("\nPlease install BSgenome.Hsapiens.1000genomes.hs37d5:\n",
            "BiocManager::install(\"BSgenome.Hsapiens.1000genomes.hs37d5\")")
     }
-    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE))
     ref.genome <- 
       BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5
   } else if (ref.genome %in%
@@ -1048,7 +1048,7 @@ NormalizeGenomeArg <- function(ref.genome) {
       stop("\nPlease install BSgenome.Mmusculus.UCSC.mm10:\n",
            "BiocManager::install(\"BSgenome.Mmusculus.UCSC.mm10\")")
     }
-    stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
+    stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10", quietly = TRUE))
     ref.genome <- BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10
   } else {
     stop("Unrecoginzed ref.genome:\n", ref.genome,
