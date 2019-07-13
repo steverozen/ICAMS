@@ -49,6 +49,7 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
     StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
                                             trans.ranges = trans.ranges.GRCh37,
                                             region = "genome",
-                                            output.file = file.path(tempdir(), 
-                                                                    "StrelkaSBS.pdf"))}
+                                            output.file = 
+                                            file.path(tempdir(), "StrelkaSBS.pdf"))}
+                                                                    
 }

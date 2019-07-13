@@ -1353,8 +1353,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'     StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
 #'                                             trans.ranges = trans.ranges.GRCh37,
 #'                                             region = "genome",
-#'                                             output.file = file.path(tempdir(), 
-#'                                                                     "StrelkaSBS.pdf"))}
+#'                                             output.file = 
+#'                                             file.path(tempdir(), "StrelkaSBS.pdf"))}
+#'                                                                     
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {
@@ -1461,8 +1462,9 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
 #'   catID <- 
 #'     StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
 #'                                            region = "genome",
-#'                                            output.file = file.path(tempdir(), 
-#'                                                                    "StrelkaID.pdf"))}
+#'                                            output.file = 
+#'                                            file.path(tempdir(), "StrelkaID.pdf"))}
+#'                                                                    
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, region = "unknown", output.file) {
     catalog <-
@@ -1569,8 +1571,8 @@ MutectVCFFilesToCatalog <-
 #'     MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
 #'                                         trans.ranges = trans.ranges.GRCh37,
 #'                                         region = "genome",
-#'                                         output.file = file.path(tempdir(), 
-#'                                                                 "Mutect.pdf"))}
+#'                                         output.file = 
+#'                                         file.path(tempdir(), "Mutect.pdf"))}
 MutectVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {

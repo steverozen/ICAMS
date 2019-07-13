@@ -53,6 +53,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
     MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
                                         trans.ranges = trans.ranges.GRCh37,
                                         region = "genome",
-                                        output.file = file.path(tempdir(), 
-                                                                "Mutect.pdf"))}
+                                        output.file = 
+                                        file.path(tempdir(), "Mutect.pdf"))}
 }
