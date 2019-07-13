@@ -1,6 +1,8 @@
 context("PlotCatalogToPdf.IndelCatalog")
 
 test_that("PlotCatalogToPdf.IndelCatalog function", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                        ref.genome = "GRCh37",
                        region = "genome", catalog.type = "counts")

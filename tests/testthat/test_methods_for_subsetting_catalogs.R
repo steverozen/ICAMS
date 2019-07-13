@@ -1,6 +1,8 @@
 context("[ methods for catalogs")
 
 test_that("[ method for SBS96Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -15,6 +17,8 @@ test_that("[ method for SBS96Catalog", {
 })
 
 test_that("[ method for SBS192Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                                 ref.genome = "GRCh37",
                                 region = "transcript",
@@ -30,6 +34,8 @@ test_that("[ method for SBS192Catalog", {
 })
 
 test_that("[ method for SBS1536Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.1536.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -44,6 +50,8 @@ test_that("[ method for SBS1536Catalog", {
 })
 
 test_that("[ method for DBS78Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -58,6 +66,8 @@ test_that("[ method for DBS78Catalog", {
 })
 
 test_that("[ method for DBS144Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
                                 ref.genome = "GRCh37",
                                 region = "transcript",
@@ -73,6 +83,8 @@ test_that("[ method for DBS144Catalog", {
 })
 
 test_that("[ method for DBS136Catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.136.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
@@ -87,6 +99,8 @@ test_that("[ method for DBS136Catalog", {
 })
 
 test_that("[ method for IndelCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")

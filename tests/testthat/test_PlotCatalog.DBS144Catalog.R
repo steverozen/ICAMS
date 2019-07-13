@@ -1,6 +1,8 @@
 context("PlotCatalog.DBS144Catalog")
 
 test_that("PlotCatalog.DBS144Catalog function", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   opar <- par(mar = c(1, 1, 1, 1))
   on.exit(par(opar))
   catalog.counts <-

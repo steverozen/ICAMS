@@ -1,6 +1,8 @@
 context("PlotCatalog.DBS78Catalog")
 
 test_that("PlotCatalog.DBS78Catalog function", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   opar <- par(mar = c(2, 2, 2, 1))
   on.exit(par(opar))
   catalog.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",

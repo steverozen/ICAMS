@@ -3,6 +3,8 @@ context("TransformCatalog")
 test_that("Legal transformation 1;
 counts -> counts; genome counts -> exome counts,
 and exome counts -> genome counts", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -23,6 +25,8 @@ and exome counts -> genome counts", {
 test_that("Legal transformation 2;
 counts -> density; genome counts -> density,
 and genome counts -> exome count -> density", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -48,6 +52,8 @@ and genome counts -> exome count -> density", {
 test_that("Legal transformation 3;
 counts -> density; genome GRCh37 counts -> genome GRCh37 density,
 and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -73,6 +79,8 @@ and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
 test_that("Legal transformations 1, 2, and 4;
 genome GRCh37 counts -> genome GRCh38 counts,
 and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -94,6 +102,8 @@ and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
 })
 
 test_that("Legal transformation 4; density -> (genome) counts", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -110,31 +120,35 @@ test_that("Legal transformation 4; density -> (genome) counts", {
 })
 
 test_that("Legal transformation 5;
-          density -> counts.signature, density -> density.signature", {
-            cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
-                               ref.genome = "GRCh37", region = "genome",
-                               catalog.type = "counts")
-
-            x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
-                                   target.region = "genome",
-                                   target.catalog.type = "density")
-
-            x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
-                                   target.region = "genome",
-                                   target.catalog.type = "counts.signature")
-
-            x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
-                                   target.region = "genome",
-                                   target.catalog.type = "density.signature")
-
-            tmp <- apply(x1, MARGIN = 2, function(x) x/sum(x))
-            expect_true(all(x3 == tmp))
-            expect_true(!all(x2 == x3))
-          })
+density -> counts.signature, density -> density.signature", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+  cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
+                     ref.genome = "GRCh37", region = "genome",
+                     catalog.type = "counts")
+  
+  x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "density")
+  
+  x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "counts.signature")
+  
+  x3 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+                         target.region = "genome",
+                         target.catalog.type = "density.signature")
+  
+  tmp <- apply(x1, MARGIN = 2, function(x) x/sum(x))
+  expect_true(all(x3 == tmp))
+  expect_true(!all(x2 == x3))
+})
 
 test_that("Legal transformations 3 and 6;
 genome counts -> exome counts.signature,
 and genome counts.signature -> exome counts.signature", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -168,6 +182,8 @@ and genome counts.signature -> exome counts.signature", {
 test_that("Legal transformation 6;
 counts.signature -> density.signature,
 and genome counts -> exome counts.signature", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -223,6 +239,8 @@ and genome counts -> exome counts.signature", {
 
 test_that("going from density to density,
           density.signature to density.signature", {
+            skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+            stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
             cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                                ref.genome = "GRCh37", region = "genome",
                                catalog.type = "counts")
@@ -251,6 +269,8 @@ test_that("going from density to density,
 
 test_that("Error test: counts.singature -> counts or density,
             error message expected", {
+              skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+              stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
               cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                                  ref.genome = "GRCh37", region = "genome",
                                  catalog.type = "counts")

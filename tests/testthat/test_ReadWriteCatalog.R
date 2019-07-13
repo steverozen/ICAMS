@@ -1,6 +1,8 @@
 context("Read and Write Catalog")
 
 test_that("Functions for reading and writing catalogs", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   read.fn <-
     c(ReadCatalog,
       ReadCatalog,

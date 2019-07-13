@@ -1,6 +1,8 @@
 context("CollapseCatalog")
 
 test_that("Collapse1536CatalogTo96 block 1", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat.SBS1536 <-
     ReadCatalog("testdata/regress.cat.sbs.1536.csv", ref.genome = "GRCh37",
                 region = "genome", catalog.type = "counts")
@@ -34,6 +36,8 @@ test_that("Collapse1536CatalogTo96 block 1", {
 })
 
 test_that("Collapse192CatalogTo96 block 2", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat.SBS192 <-
     ReadCatalog("testdata/regress.cat.sbs.192.csv", ref.genome = "GRCh37",
                 region = "transcript", catalog.type = "counts")
@@ -67,6 +71,8 @@ test_that("Collapse192CatalogTo96 block 2", {
 })
 
 test_that("Collapse144CatalogTo78", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat.DBS144 <-
     ReadCatalog("testdata/regress.cat.dbs.144.csv", ref.genome = "GRCh37",
                 region = "transcript", catalog.type = "counts")

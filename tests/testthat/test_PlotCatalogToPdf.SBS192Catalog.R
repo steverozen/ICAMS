@@ -1,6 +1,8 @@
 context("PlotCatalogToPdf.SBS192Catalog")
 
 test_that("PlotCatalogToPdf.SBS192Catalog function", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                                 ref.genome = "GRCh37",
                                 region = "transcript", catalog.type = "counts")

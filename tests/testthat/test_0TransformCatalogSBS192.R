@@ -1,7 +1,8 @@
 context("TransformCatalogSBS192")
 
-
 test_that("Transformation of a SBS 192 catalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   cat.t <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
                        ref.genome = "GRCh37", 
                        region = "transcript",

@@ -1,9 +1,14 @@
 context("AddAndCheckSequenceID")
 
-test_that("AddAndCheckSequenceID function", {
+test_that("AddAndCheckSequenceID function with hg19", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   load("testdata/test_AddAndCheckSequenceID.Rdata")
   id.vcf <- ReadStrelkaIDVCF("testdata/Strelka.ID.GRCh37.vcf")
-  df <- AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5)
+  df <- 
+    AddAndCheckSequenceID(id.vcf, 
+                          ref.genome = 
+                          BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5)
   df1 <- AddAndCheckSequenceID(id.vcf, ref.genome = "GRCh37")
   df2 <- AddAndCheckSequenceID(id.vcf, ref.genome = "hg19")
   expect_equal(df, strelka.ID.vcf.GRCh37)

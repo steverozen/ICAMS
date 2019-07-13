@@ -1,6 +1,8 @@
 context("PlotCatalog.DBS136Catalog")
 
 test_that("PlotCatalog.DBS136Catalog function", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   opar <- par(oma = c(2, 2, 2, 0))
   on.exit(par(opar))
   # cat("just after on.exit, oma =", par("oma"), "\n")
