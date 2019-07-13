@@ -41,7 +41,8 @@ file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
-catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
-                                  trans.ranges = trans.ranges.GRCh37,
-                                  region = "genome")
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
+                                    trans.ranges = trans.ranges.GRCh37,
+                                    region = "genome")}
 }

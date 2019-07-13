@@ -30,8 +30,6 @@ In ID (insertion and deletion) catalogs, deletion repeat sizes
 file <- system.file("extdata",
                     "strelka.regress.cat.sbs.96.csv",
                     package = "ICAMS")
-catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
-                        region = "genome",
-                        catalog.type = "counts")
+catSBS96 <- ReadCatalog(file)
 WriteCatalog(catSBS96, file = file.path(tempdir(), "catSBS96.csv"))
 }

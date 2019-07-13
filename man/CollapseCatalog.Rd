@@ -43,6 +43,6 @@ to a DBS 78 catalog.
 # Create an SBS192 catalog and collapse it to an SBS96 catalog
 object <- matrix(1, nrow = 192, ncol = 1, 
                  dimnames = list(catalog.row.order$SBS192))
-catSBS192 <- as.catalog(object, ref.genome = "hg19", region = "transcript")
+catSBS192 <- as.catalog(object, region = "transcript")
 catSBS96 <- Collapse192CatalogTo96(catSBS192)
 }

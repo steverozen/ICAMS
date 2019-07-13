@@ -33,6 +33,7 @@ file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
-catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
-                          region = "genome")
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
+                            region = "genome")}
 }

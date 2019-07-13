@@ -134,14 +134,14 @@
 #' \enumerate{
 #'   \item A variable from the Bioconductor \code{\link{BSgenome}} package
 #'   that contains a particular reference genome, for example
-#'   \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}.
+#'   \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}.
 #'
 #'  \item The strings \code{"hg38"} or \code{"GRCh38"}
 #'  are shorthand for
 #'  \code{\link{BSgenome.Hsapiens.UCSC.hg38}},
 #'  the strings \code{"hg19"} or \code{"GRCh37"}
 #'  are shorthand for
-#'  \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}},
+#'  \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}},
 #'  and the strings \code{"mm10"} or \code{"GRCm38"}
 #'  are shorthand for
 #'  \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}.
@@ -152,7 +152,7 @@
 #' "imported" by ICAMS and therefore should be installed when
 #' ICAMS is installed. These genomes are:
 #' \itemize{
-#' \item \code{\link{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#' \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
 #' \item \code{\link{BSgenome.Hsapiens.UCSC.hg38}}
 #' }
 #'

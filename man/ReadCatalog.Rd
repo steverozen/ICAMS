@@ -4,7 +4,8 @@
 \alias{ReadCatalog}
 \title{Read catalog.}
 \usage{
-ReadCatalog(file, ref.genome, region, catalog.type, strict = TRUE)
+ReadCatalog(file, ref.genome = NULL, region = "unknown",
+  catalog.type = "counts", strict = TRUE)
 }
 \arguments{
 \item{file}{Path to a catalog on disk in the standardized format.}
@@ -39,7 +40,5 @@ In ID (insertion and deletion) catalogs, deletion repeat sizes
 file <- system.file("extdata",
                     "strelka.regress.cat.sbs.96.csv",
                     package = "ICAMS")
-catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
-                        region = "genome",
-                        catalog.type = "counts")
+catSBS96 <- ReadCatalog(file)
 }

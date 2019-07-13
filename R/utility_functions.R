@@ -30,7 +30,7 @@
 #' # Create an SBS192 catalog and collapse it to an SBS96 catalog
 #' object <- matrix(1, nrow = 192, ncol = 1, 
 #'                  dimnames = list(catalog.row.order$SBS192))
-#' catSBS192 <- as.catalog(object, ref.genome = "hg19", region = "transcript")
+#' catSBS192 <- as.catalog(object, region = "transcript")
 #' catSBS96 <- Collapse192CatalogTo96(catSBS192)
 NULL
 
@@ -507,13 +507,14 @@ AbundanceIsSame <- function(a1, a2) {
 #' file <- system.file("extdata",
 #'                     "strelka.regress.cat.sbs.96.csv",
 #'                     package = "ICAMS")
-#' catSBS96.counts <- ReadCatalog(file, ref.genome = "hg19", 
-#'                                region = "genome",
-#'                                catalog.type = "counts")
-#' catSBS96.density <- TransformCatalog(catSBS96.counts,
-#'                                      target.ref.genome = "hg19",
-#'                                      target.region = "genome",
-#'                                      target.catalog.type = "density")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catSBS96.counts <- ReadCatalog(file, ref.genome = "hg19", 
+#'                                  region = "genome",
+#'                                  catalog.type = "counts")
+#'   catSBS96.density <- TransformCatalog(catSBS96.counts,
+#'                                        target.ref.genome = "hg19",
+#'                                        target.region = "genome",
+#'                                        target.catalog.type = "density")}
 TransformCatalog <-
   function(catalog, 
            target.ref.genome   = NULL,
@@ -1029,11 +1030,17 @@ NormalizeGenomeArg <- function(ref.genome) {
     ref.genome <- BSgenome.Hsapiens.UCSC.hg38
   } else if (ref.genome %in%
              c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
-    ref.genome <- BSgenome.Hsapiens.1000genomes.hs37d5
+    if ("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      stop("\nPlease install BSgenome.Hsapiens.1000genomes.hs37d5:\n",
+           "BiocManager::install(\"BSgenome.Hsapiens.1000genomes.hs37d5\")")
+    }
+    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+    ref.genome <- 
+      BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5
   } else if (ref.genome %in%
              c("GRCm38", "mm10", "BSgenome.Mmusculus.UCSC.mm10")) {
     if ("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10")) {
-      stop("Please install BSgenome.Mmusculus.UCSC.mm10:\n",
+      stop("\nPlease install BSgenome.Mmusculus.UCSC.mm10:\n",
            "BiocManager::install(\"BSgenome.Mmusculus.UCSC.mm10\")")
     }
     stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
@@ -1249,11 +1256,10 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' @export
 #' 
 #' @examples
-#' # Create an SBS96 catalog of human GRCh37 from genome region with all 
-#' # mutation counts equal to 1.  
+#' # Create an SBS96 catalog with all mutation counts equal to 1.  
 #' object <- matrix(1, nrow = 96, ncol = 1, 
 #'                  dimnames = list(catalog.row.order$SBS96))
-#' catSBS96 <- as.catalog(object, ref.genome = "hg19", region = "genome")
+#' catSBS96 <- as.catalog(object)
              
 as.catalog <- function(object, 
                        ref.genome = NULL, 

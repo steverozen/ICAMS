@@ -360,8 +360,6 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @importFrom BSgenome getSeq seqnames
 #'
-#' @import BSgenome.Hsapiens.1000genomes.hs37d5
-#'
 #' @import BSgenome.Hsapiens.UCSC.hg38
 #'
 #' @importFrom stats start end
@@ -975,9 +973,10 @@ CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL,
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
-#' catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
-#'                                   trans.ranges = trans.ranges.GRCh37,
-#'                                   region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
+#'                                     trans.ranges = trans.ranges.GRCh37,
+#'                                     region = "genome")}
 VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown") {
   ncol <- length(list.of.SBS.vcfs)
@@ -1203,9 +1202,10 @@ CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
-#' catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
-#'                                   trans.ranges = trans.ranges.GRCh37,
-#'                                   region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
+#'                                     trans.ranges = trans.ranges.GRCh37,
+#'                                     region = "genome")}
 VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown") {
   ncol <- length(list.of.DBS.vcfs)
@@ -1302,9 +1302,10 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' file <- c(system.file("extdata",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
-#'                                         trans.ranges = trans.ranges.GRCh37,
-#'                                         region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
+#'                                           trans.ranges = trans.ranges.GRCh37,
+#'                                           region = "genome")}
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadStrelkaSBSVCFs(files)
@@ -1349,12 +1350,13 @@ StrelkaSBSVCFFilesToCatalog <-
 #' file <- c(system.file("extdata",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catalogs <- 
-#'   StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
-#'                                           trans.ranges = trans.ranges.GRCh37,
-#'                                           region = "genome",
-#'                                           output.file = file.path(tempdir(), 
-#'                                                                   "StrelkaSBS.pdf")) 
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- 
+#'     StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
+#'                                             trans.ranges = trans.ranges.GRCh37,
+#'                                             region = "genome",
+#'                                             output.file = file.path(tempdir(), 
+#'                                                                     "StrelkaSBS.pdf"))}
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {
@@ -1417,8 +1419,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' file <- c(system.file("extdata",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
-#'                                           region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
+#'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
   vcfs <- ReadStrelkaIDVCFs(files)
   return(VCFsToIDCatalogs(vcfs, ref.genome, region))
@@ -1456,11 +1459,12 @@ StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
 #' file <- c(system.file("extdata",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catID <- 
-#'   StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
-#'                                          region = "genome",
-#'                                          output.file = file.path(tempdir(), 
-#'                                                                  "StrelkaID.pdf"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catID <- 
+#'     StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+#'                                            region = "genome",
+#'                                            output.file = file.path(tempdir(), 
+#'                                                                    "StrelkaID.pdf"))}
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, region = "unknown", output.file) {
     catalog <-
@@ -1506,9 +1510,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
-#'                                     trans.ranges = trans.ranges.GRCh37,
-#'                                     region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
+#'                                       trans.ranges = trans.ranges.GRCh37,
+#'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadMutectVCFs(files)
@@ -1561,11 +1566,13 @@ MutectVCFFilesToCatalog <-
 #' file <- c(system.file("extdata",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' catalogs <- 
-#'   MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
-#'                                       trans.ranges = trans.ranges.GRCh37,
-#'                                       region = "genome",
-#'                                       output.file = file.path(tempdir(), "Mutect.pdf"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- 
+#'     MutectVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+#'                                         trans.ranges = trans.ranges.GRCh37,
+#'                                         region = "genome",
+#'                                         output.file = file.path(tempdir(), 
+#'                                                                 "Mutect.pdf"))}
 MutectVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", output.file) {

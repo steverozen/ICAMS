@@ -39,9 +39,8 @@ A catalog as described in \code{\link{ICAMS}}.
 Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
 }
 \examples{
-# Create an SBS96 catalog of human GRCh37 from genome region with all 
-# mutation counts equal to 1.  
+# Create an SBS96 catalog with all mutation counts equal to 1.  
 object <- matrix(1, nrow = 96, ncol = 1, 
                  dimnames = list(catalog.row.order$SBS96))
-catSBS96 <- as.catalog(object, ref.genome = "hg19", region = "genome")
+catSBS96 <- as.catalog(object)
 }

@@ -20,8 +20,6 @@
 #'
 #' @importFrom stats start end
 #'
-#' @import BSgenome.Hsapiens.1000genomes.hs37d5
-#'
 #' @import BSgenome.Hsapiens.UCSC.hg38
 #'
 #' @return A data frame with 2 new columns added to the input data frame:
@@ -669,8 +667,9 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
-#' catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
-#'                           region = "genome")
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
+#'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   ncol <- length(list.of.vcfs)
 

@@ -40,9 +40,10 @@ In ID (insertion and deletion) catalogs, deletion repeat sizes
 file <- c(system.file("extdata",
                       "Strelka.ID.GRCh37.vcf",
                       package = "ICAMS"))
-catID <- 
-  StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
-                                         region = "genome",
-                                         output.file = file.path(tempdir(), 
-                                                                 "StrelkaID.pdf"))
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catID <- 
+    StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
+                                           region = "genome",
+                                           output.file = file.path(tempdir(), 
+                                                                   "StrelkaID.pdf"))}
 }

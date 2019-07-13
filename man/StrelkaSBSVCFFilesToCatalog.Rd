@@ -41,7 +41,8 @@ SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 file <- c(system.file("extdata",
                       "Strelka.SBS.GRCh37.vcf",
                       package = "ICAMS"))
-catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
-                                        trans.ranges = trans.ranges.GRCh37,
-                                        region = "genome")
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
+                                          trans.ranges = trans.ranges.GRCh37,
+                                          region = "genome")}
 }

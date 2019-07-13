@@ -44,7 +44,8 @@ SBS 192 and DBS 144 catalogs include only mutations in transcribed
 file <- c(system.file("extdata",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
-catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
-                                    trans.ranges = trans.ranges.GRCh37,
-                                    region = "genome")
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
+                                      trans.ranges = trans.ranges.GRCh37,
+                                      region = "genome")}
 }

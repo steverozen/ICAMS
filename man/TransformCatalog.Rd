@@ -84,11 +84,12 @@ generates a warning)
 file <- system.file("extdata",
                     "strelka.regress.cat.sbs.96.csv",
                     package = "ICAMS")
-catSBS96.counts <- ReadCatalog(file, ref.genome = "hg19", 
-                               region = "genome",
-                               catalog.type = "counts")
-catSBS96.density <- TransformCatalog(catSBS96.counts,
-                                     target.ref.genome = "hg19",
-                                     target.region = "genome",
-                                     target.catalog.type = "density")
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  catSBS96.counts <- ReadCatalog(file, ref.genome = "hg19", 
+                                 region = "genome",
+                                 catalog.type = "counts")
+  catSBS96.density <- TransformCatalog(catSBS96.counts,
+                                       target.ref.genome = "hg19",
+                                       target.region = "genome",
+                                       target.catalog.type = "density")}
 }

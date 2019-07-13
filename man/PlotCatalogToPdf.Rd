@@ -53,9 +53,7 @@ The sizes of repeats involved in deletions range from 0 to 5+ in the
 file <- system.file("extdata",
                     "strelka.regress.cat.sbs.96.csv",
                     package = "ICAMS")
-catSBS96 <- ReadCatalog(file, ref.genome = "hg19", 
-                        region = "genome",
-                        catalog.type = "counts")
+catSBS96 <- ReadCatalog(file)
 colnames(catSBS96) <- "sample"
 PlotCatalogToPdf(catSBS96, file = file.path(tempdir(), "test.pdf"))
 }
