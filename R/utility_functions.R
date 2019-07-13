@@ -1027,7 +1027,12 @@ NormalizeGenomeArg <- function(ref.genome) {
   
   if (ref.genome %in%
       c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
-    ref.genome <- BSgenome.Hsapiens.UCSC.hg38
+    if ("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38")) {
+      stop("\nPlease install BSgenome.Hsapiens.UCSC.hg38:\n",
+           "BiocManager::install(\"BSgenome.Hsapiens.UCSC.hg38\")")
+    }
+    stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
+    ref.genome <- BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38
   } else if (ref.genome %in%
              c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
     if ("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5")) {
@@ -1047,7 +1052,7 @@ NormalizeGenomeArg <- function(ref.genome) {
     ref.genome <- BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10
   } else {
     stop("Unrecoginzed ref.genome:\n", ref.genome,
-         "\nNeed NULL or a BSgenome reference genome\n",
+         "\nNeed a BSgenome reference genome\n",
          "or one of the character strings GRCh38, hg38, GRCh37, hg19, ",
          "GRCm38, mm10")
   }

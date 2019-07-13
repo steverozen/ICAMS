@@ -1,6 +1,8 @@
 context("extended seq.context functions")
 
 test_that("extended seq.context functions for Mutect GRCh38 vcf", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   vcf <- ReadAndSplitMutectVCFs("testdata/Mutect.GRCh38.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
@@ -31,6 +33,8 @@ test_that("extended seq.context functions for Mutect GRCh37 vcf", {
 })
 
 test_that("extended seq.context functions for Strelka GRCh38 vcf", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",

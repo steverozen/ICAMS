@@ -17,6 +17,8 @@ test_that("AddAndCheckSequenceID function with hg19", {
 })
 
 test_that("AddAndCheckSequenceID with hg38", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   load("testdata/test_AddAndCheckSequenceID.Rdata")
   id.vcf <- ReadStrelkaIDVCF("testdata/Strelka.ID.GRCh38.vcf")
   df3 <- AddAndCheckSequenceID(id.vcf, ref.genome = BSgenome.Hsapiens.UCSC.hg38)

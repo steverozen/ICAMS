@@ -1,10 +1,13 @@
 context("Making catalogs from Mutect GRCh38 VCFs")
 
 test_that("MutectVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat1 <- MutectVCFFilesToCatalog("testdata/Mutect.GRCh38.vcf",
-                                      ref.genome = BSgenome.Hsapiens.UCSC.hg38,
-                                      trans.ranges = trans.ranges.GRCh38,
-                                      region = "genome")
+                                  ref.genome = 
+                                  BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38,
+                                  trans.ranges = trans.ranges.GRCh38,
+                                  region = "genome")
   cat2 <- MutectVCFFilesToCatalog("testdata/Mutect.GRCh38.vcf",
                                   ref.genome = "GRCh38",
                                   trans.ranges = trans.ranges.GRCh38,

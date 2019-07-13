@@ -138,7 +138,7 @@
 #'
 #'  \item The strings \code{"hg38"} or \code{"GRCh38"}
 #'  are shorthand for
-#'  \code{\link{BSgenome.Hsapiens.UCSC.hg38}},
+#'  \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}},
 #'  the strings \code{"hg19"} or \code{"GRCh37"}
 #'  are shorthand for
 #'  \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}},
@@ -153,7 +153,7 @@
 #' ICAMS is installed. These genomes are:
 #' \itemize{
 #' \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-#' \item \code{\link{BSgenome.Hsapiens.UCSC.hg38}}
+#' \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
 #' }
 #'
 #' Any other needed reference genomes must be installed separately by the user.

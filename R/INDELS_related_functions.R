@@ -20,8 +20,6 @@
 #'
 #' @importFrom stats start end
 #'
-#' @import BSgenome.Hsapiens.UCSC.hg38
-#'
 #' @return A data frame with 2 new columns added to the input data frame:
 #' \enumerate{
 #'  \item \code{seq.context} The sequence embedding the variant.

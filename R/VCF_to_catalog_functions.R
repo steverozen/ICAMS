@@ -360,8 +360,6 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
 #'
 #' @importFrom BSgenome getSeq seqnames
 #'
-#' @import BSgenome.Hsapiens.UCSC.hg38
-#'
 #' @importFrom stats start end
 #'
 #' @return A copy of the input data.frame with a new column added

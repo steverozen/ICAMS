@@ -1,8 +1,11 @@
 context("Making catalogs from Strelka GRCh38 VCFs")
 
 test_that("StrelkaSBSVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat1 <- StrelkaSBSVCFFilesToCatalog("testdata/Strelka.SBS.GRCh38.vcf",
-                                      ref.genome = BSgenome.Hsapiens.UCSC.hg38,
+                                      ref.genome = 
+                                      BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38,
                                       trans.ranges = trans.ranges.GRCh38,
                                       region = "genome")
   cat2 <- StrelkaSBSVCFFilesToCatalog("testdata/Strelka.SBS.GRCh38.vcf",
@@ -24,8 +27,11 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
 })
 
 test_that("StrelkaIDVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat5 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
-                                     ref.genome = BSgenome.Hsapiens.UCSC.hg38,
+                                     ref.genome = 
+                                     BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38,
                                      region = "genome")
   cat6 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
                                      ref.genome = "GRCh38",

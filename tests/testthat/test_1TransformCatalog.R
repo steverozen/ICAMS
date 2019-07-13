@@ -53,7 +53,9 @@ test_that("Legal transformation 3;
 counts -> density; genome GRCh37 counts -> genome GRCh37 density,
 and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
@@ -80,7 +82,9 @@ test_that("Legal transformations 1, 2, and 4;
 genome GRCh37 counts -> genome GRCh38 counts,
 and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")

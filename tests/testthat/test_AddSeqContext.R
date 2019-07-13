@@ -18,6 +18,8 @@ test_that("AddSeqContext for GRCh37", {
 })
 
 test_that("AddSeqContext for GRCh38", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   load("testdata/test_AddSeqContext.Rdata")
   list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
   sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
