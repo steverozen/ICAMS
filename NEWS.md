@@ -1,6 +1,11 @@
+# ICAMS 2.0.8
+* Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 
+  BSgenome.Hsapiens.UCSC.hg38) from Imports to Suggests so that they can
+  be used conditionally in "ICAMS" as suggested by CRAN and documentation updates.
+
 # ICAMS 2.0.7
-* Additional corrections for submission to cran
-  (putting on.exit(par(opar)) immedately after
+* Additional corrections for submission to CRAN
+  (putting on.exit(par(opar)) immediately after
   opar <- par(...)
   in every case.
 
@@ -14,8 +19,8 @@
 * Added support for BSgenome.Mmusculus.UCSC.mm10. 
 
 # ICAMS 2.0
-First stable release. Mutational catalogs are S3 classes.
+* First stable release. Mutational catalogs are S3 classes.
 
 # ICAMS 1.0
-Only available on github; interfaces not compatible with ICAMS 2.0.
+* Only available on GitHub; interfaces not compatible with ICAMS 2.0.
 
