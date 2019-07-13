@@ -23,7 +23,9 @@ test_that("AddSeqContext for GRCh38", {
   load("testdata/test_AddSeqContext.Rdata")
   list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
   sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
-  df3 <- AddSeqContext(sbs.vcf, ref.genome = BSgenome.Hsapiens.UCSC.hg38)
+  df3 <- AddSeqContext(sbs.vcf, 
+                       ref.genome = 
+                       BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38)
   df4 <- AddSeqContext(sbs.vcf, ref.genome = "GRCh38")
   df5 <- AddSeqContext(sbs.vcf, ref.genome = "hg38")
   expect_equal(df3, strelka.SBS.vcf.GRCh38)
