@@ -1,4 +1,4 @@
-Type,Subtype,Indel_size,Repeat_MH_size,MCF10A_Carb_Low_cl2_INDELresult
+Type,Subtype,Indel_size,Repeat_MH_size,MCF10A_Carb_Low_cl2_Strelka_ID
 DEL,C,1,0,41
 DEL,C,1,1,23
 DEL,C,1,2,7
