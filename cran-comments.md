@@ -1,10 +1,8 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Ensured that every  
-  opar <- par(...)
-  is followed IMMEDIATEDLY by
-  on.exit(par(opar))
-  (not farther down in the code)
+* Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 
+  BSgenome.Hsapiens.UCSC.hg38) from Imports to Suggests so that they can
+  be used conditionally in "ICAMS" as requested by CRAN.
 
 ## Test environments
 * Local Windows 10 install: R 3.6.0
