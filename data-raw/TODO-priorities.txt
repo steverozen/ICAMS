@@ -2,12 +2,13 @@
 
 ## Highest priority
 1.1 Steve Background signature subtraction
-1.2 Steve assess feasibility of a shiny or other portable app / is web page easier?
+1.2 Steve assess feasibility of a shiny or other portable app / is web page easier? Docker?
 1.2.1 Steve find shiny expert to discuss (Alvin)
 
 ## High priority
 
-2.1 Steve Single-click script (as interim for 1.1):
+2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
+2.1 Steve Single-click script (as interim for 1.1); docker?
 2.1.1 outputs the standard plots and catalogs.
 2.1.2 a report with
 2.1.2.1 (Arnoud's idea, need to discuss) 
