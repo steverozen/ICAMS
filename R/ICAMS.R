@@ -22,17 +22,25 @@
 #' A key data type in "ICAMS" is a "catalog" of mutation counts, of
 #' mutation densities, or of mutational signatures.
 #'
-#' Catalogs are R S3 objects of class \code{matrix} and one of
+#' Catalogs are S3 objects of class \code{matrix} and one of
 #' several additional classes that specify the types of the mutations
-#' represented in the catalog (e.g. SBS96, ID, etc, ...). The possible
-#' additional classes are
-#' one of \code{SBS96Catalog}, \code{SBS192Catalog},
-#' \code{SBS1536Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog},
-#' \code{DBS136Catalog}, \code{IndelCatalog}. \code{\link{as.catalog}}
+#' represented in the catalog. The possible
+#' additional class is one of
+#' \itemize{
+#' \item code{SBS96Catalog} (single base substitutions in
+#' trinucleotide context)
+#' \item \code{SBS192Catalog}
+#' \item \code{SBS1536Catalog}
+#' \item \code{DBS78Catalog}
+#' \item \code{DBS144Catalog}
+#' \item \code{DBS136Catalog}
+#' \item \code{IndelCatalog}
+#' }
+#' \code{\link{as.catalog}}
 #' is the main constructor.
 #'
-#' Conceptually, a catalog has one of the following types, which are
-#' indicated in the attribute \code{catalog.type}:
+#' Conceptually, a catalog also has one of the following types, 
+#' indicated by the attribute \code{catalog.type}:
 #'
 #' \enumerate{
 #'
@@ -63,18 +71,20 @@
 #' counts of different source sequences for mutations. For example,
 #' for SBSs in trinucleotide context, the abundances would be the counts
 #' of each trinucleotide in the human genome, exome, or in the transcribed
-#' region of the genome. See below under \code{\link{TransformCatalog}}
+#' region of the genome. See \code{\link{TransformCatalog}}
 #' for more information. Abundances logically depend on the species in
 #' question and on the part of the genome being analyzed. 
 #' 
 #' In "ICAMS" 
-#' abundances can sometimes be inferred from \code{catalog} class attribute and
-#' function arguments \code{region}, \code{ref.genome}, and \code{catalog.type}.
-#' Otherwise they can be provided as an \code{abundance} argument.
+#' abundances can sometimes be inferred from the 
+#' \code{catalog} class attribute and the
+#' function arguments \code{region}, \code{ref.genome}, 
+#' and \code{catalog.type}.
+#' Otherwise abundances can be provided as an \code{abundance} argument.
 #' See \code{\link{all.abundance}} for examples.
 #' 
 #' 
-#'  Possible values for
+#' Possible values for
 #' \code{region} are the strings \code{genome}, \code{transcript}, 
 #' \code{exome}, and \code{unknown}; \code{transcript} includes entire
 #' transcribed regions, i.e. the introns as well as the exons. 
@@ -124,26 +134,23 @@
 #' Many functions take the argument \code{ref.genome}.
 #'
 #' In order to create a mutational
-#' spectrum catalog, "ICAMS" needs to know the sequence
-#' context of the mutations in the VCF file.
-#' For this, "ICAMS" needs the reference genome sequence
+#' spectrum catalog, "ICAMS" needs the reference genome sequence
 #' that matches the VCF file. The \code{ref.genome} argument
 #' provides this.
 #'
-#' \code{ref.genome} can be either
+#' \code{ref.genome} must be one of
 #' \enumerate{
 #'   \item A variable from the Bioconductor \code{\link{BSgenome}} package
 #'   that contains a particular reference genome, for example
 #'   \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}.
 #'
-#'  \item The strings \code{"hg38"} or \code{"GRCh38"}
-#'  are shorthand for
-#'  \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}},
-#'  the strings \code{"hg19"} or \code{"GRCh37"}
-#'  are shorthand for
-#'  \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}},
-#'  and the strings \code{"mm10"} or \code{"GRCm38"}
-#'  are shorthand for
+#'  \item The strings \code{"hg38"} or \code{"GRCh38"}, which specify
+#'  \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}.
+#'  \item The strings \code{"hg19"} or \code{"GRCh37"}, 
+#'  which specify
+#'  \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}.
+#'  \item The strings \code{"mm10"} or \code{"GRCm38"},
+#'  which specify
 #'  \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}.
 #'  }
 #'
