@@ -248,23 +248,31 @@ GetMutectVAF <-function(vcf) {
     stop("vcf does not appear to be a Mutect VCF, please check the data")
   }
 
-  # Select out the column which has the information for F1R2 and F2R1
-  info <- vcf[[10]]
-
-  # Get the raw data by splitting the character string
-  raw <- strsplit(info, ":")
-
-  # Define a function to extract the values for F1R2 and F2R1
-  Extract <- function(x) as.integer(unlist(strsplit(x[5:6], ",")))
-
-  values <- lapply(raw, FUN = Extract)
-
-  # Define a function to calculate VAF according to F1R2 and F2R1 values
-  CalculateVAF <- function(x) sum(x[2], x[4]) / sum(x)
-
-  vaf <- sapply(values, FUN = CalculateVAF)
-
-  return(vaf)
+  type1 <- c("F1R2", "F2R1")
+  type2 <- c("REF_F1R2", "ALT_F1R2", "REF_F2R1", "ALT_F2R1")
+  
+  ExtractInfo <- function(idx, type, vector1, vector2) {
+    pos <- match(type, unlist(strsplit(vector1[idx], ":")))
+    values <- unlist(strsplit(vector2[idx], ":"))[pos]
+  }
+  
+  CalculateVAF <- function(idx, list) {
+    values <- list[[idx]]
+    x <- as.integer(unlist(strsplit(values, ",")))
+    vaf <- sum(x[2], x[4]) / sum(x)
+  }
+  
+  GetVAFs <- function(type, vector1, vector2) {
+    info <- lapply(1:length(vector1), FUN = ExtractInfo, type = type,
+                   vector1 = vector1, vector2 = vector2)
+    vafs <- sapply(1:length(info), FUN = CalculateVAF, list = info)
+  }
+  
+  if (all(type1 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
+    return(GetVAFs(type1, vcf$FORMAT, vcf[, 10]))
+  } else if (all(type2 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
+    return(GetVAFs(type2, vcf$FORMAT, vcf[, 10]))
+  }
 }
 
 #' @title Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
