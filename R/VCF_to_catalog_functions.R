@@ -1528,9 +1528,6 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
   vcfs <- ReadMutectVCFs(files)
-  if (IsGRCm38(ref.genome)) {
-    warning("Mouse MuTect VCFs files not tested; use at your own risk")
-  }
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
