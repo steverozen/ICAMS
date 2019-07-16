@@ -7,8 +7,8 @@
 
 ## High priority
 
-2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
-2.0.1 Tests for reading mouse MuTect and Strelka VCFs?
+(done) 2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
+(done) 2.0.1 Tests for reading mouse MuTect and Strelka VCFs?
 2.1 Steve Single-click script (as interim for 1.1); docker?
 2.1.1 outputs the standard plots and catalogs.
 2.1.2 a report with
