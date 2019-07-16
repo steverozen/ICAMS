@@ -289,10 +289,13 @@ SplitOneMutectVCF <- function(vcf.df) {
   # same site; the alleles are separated by commas in the ALT columm;
   # these are quite rare and often dubious, so we ignore them.
   multiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
-
   multiple.alt.df <- vcf.df[multiple.alt, ]
-  df <- vcf.df[-multiple.alt, ]
-  rm(multiple.alt, vcf.df)
+  
+  if (length(multiple.alt) != 0) {
+    df <- vcf.df[-multiple.alt, ]
+  } else {
+    df <- vcf.df
+  }
 
   SBS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
 
