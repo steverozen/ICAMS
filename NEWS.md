@@ -1,7 +1,8 @@
 # ICAMS 2.0.8
 * Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 
   BSgenome.Hsapiens.UCSC.hg38) from Imports to Suggests so that they can
-  be used conditionally in "ICAMS" as requested by CRAN
+  be used conditionally in "ICAMS" as requested by CRAN.
+* Added ability to calculate VAF from newer version Mutect VCF files.
 * Documentation updates.
 
 # ICAMS 2.0.7
