@@ -173,7 +173,7 @@ GetStrelkaVAF <-function(vcf) {
   return(vaf)
 }
 
-#' Read in the data lines of a Variant Call Format (VCF) file created by MuTect
+#' Read in the data lines of a Variant Call Format (VCF) file created by Mutect
 #'
 #' @importFrom utils read.csv
 #'
@@ -224,7 +224,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file created by
-#'     MuTect
+#'     Mutect
 #'
 #' @importFrom utils read.csv
 #'

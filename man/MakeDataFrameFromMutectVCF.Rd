@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MakeDataFrameFromMutectVCF}
 \alias{MakeDataFrameFromMutectVCF}
-\title{Read in the data lines of a Variant Call Format (VCF) file created by MuTect}
+\title{Read in the data lines of a Variant Call Format (VCF) file created by Mutect}
 \usage{
 MakeDataFrameFromMutectVCF(file)
 }
@@ -13,6 +13,6 @@ MakeDataFrameFromMutectVCF(file)
 A data frame storing mutation records of a VCF file.
 }
 \description{
-Read in the data lines of a Variant Call Format (VCF) file created by MuTect
+Read in the data lines of a Variant Call Format (VCF) file created by Mutect
 }
 \keyword{internal}

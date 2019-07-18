@@ -3,7 +3,7 @@
 \name{ReadMutectVCF}
 \alias{ReadMutectVCF}
 \title{Read in the data lines of a Variant Call Format (VCF) file created by
-    MuTect}
+    Mutect}
 \usage{
 ReadMutectVCF(file)
 }
@@ -15,6 +15,6 @@ A data frame storing mutation records of a VCF file with VAFs added.
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file created by
-    MuTect
+    Mutect
 }
 \keyword{internal}
