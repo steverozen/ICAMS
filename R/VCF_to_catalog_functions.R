@@ -243,7 +243,7 @@ ReadMutectVCF <- function(file) {
 #'
 #' @export
 GetMutectVAF <-function(vcf) {
-  stopifnot(class(vcf) == "data.frame")
+  stopifnot("data.frame" %in% class(vcf))
   if (!any(grepl("/1", unlist(vcf[1, ])))) {
     stop("vcf does not appear to be a Mutect VCF, please check the data")
   }
@@ -269,9 +269,9 @@ GetMutectVAF <-function(vcf) {
   }
   
   if (all(type1 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    return(GetVAFs(type1, vcf$FORMAT, vcf[, 10]))
+    return(GetVAFs(type1, vcf$FORMAT, vcf[[10]]))
   } else if (all(type2 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    return(GetVAFs(type2, vcf$FORMAT, vcf[, 10]))
+    return(GetVAFs(type2, vcf$FORMAT, vcf[[10]]))
   }
 }
 
