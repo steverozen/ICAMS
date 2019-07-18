@@ -529,7 +529,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'
 #' @keywords internal
 SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
-  stopifnot(class(vcf.df) == "data.frame")
+  stopifnot("data.frame" %in% class(vcf.df))
 
   # Record the total number of input variants for later sanity checking.
   num.in <- nrow(vcf.df)
