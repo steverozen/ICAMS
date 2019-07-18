@@ -27,9 +27,10 @@
 #' represented in the catalog. The possible
 #' additional class is one of
 #' \itemize{
-#' \item code{SBS96Catalog} (single base substitutions in
+#' \item \code{SBS96Catalog} (strand-agnostic single base substitutions in
 #' trinucleotide context)
-#' \item \code{SBS192Catalog}
+#' \item \code{SBS192Catalog} (transcription-stranded single-base substitutions
+#'  in trinucleotide context)
 #' \item \code{SBS1536Catalog}
 #' \item \code{DBS78Catalog}
 #' \item \code{DBS144Catalog}
@@ -133,8 +134,8 @@
 #' 
 #' Many functions take the argument \code{ref.genome}.
 #'
-#' In order to create a mutational
-#' spectrum catalog, "ICAMS" needs the reference genome sequence
+#' To create a mutational
+#' spectrum catalog from a VCF file, ICAMS needs the reference genome sequence
 #' that matches the VCF file. The \code{ref.genome} argument
 #' provides this.
 #'
@@ -154,25 +155,18 @@
 #'  \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}.
 #'  }
 #'
-#' Two human genomes and one mouse genome from the Bioconductor
-#' \code{\link{BSgenome}} package are supported by "ICAMS" and therefore are
-#' suggested to be installed after "ICAMS" is installed. These genomes are:
-#' \itemize{
-#' \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-#' \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-#' \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
-#' }
-#'
-#' Any other needed reference genomes can be installed separately by the user.
-#' Use \code{\link[BSgenome]{available.genomes}()}
-#'  to get the list of available genomes.
+#' All needed reference genomes must be installed separately by the user.
 #' Further instructions are at \cr
 #' https://bioconductor.org/packages/release/bioc/html/BSgenome.html. \cr
-#' Use of "ICAMS" with other reference genomes is restricted to
+#' 
+#' Use of ICAMS with reference genomes other than the 2 human genomes
+#' and 1 mouse genome specified above is restricted to
 #' \code{catalog.type} of \code{counts} or \code{counts.signature}
 #' unless the user also creates the necessary abundance vectors.
 #' See \code{\link{all.abundance}}.
-#'
+#' 
+#' Use \code{\link[BSgenome]{available.genomes}()}
+#'  to get the list of available genomes.
 #'
 #' @section Writing catalogs to files:
 #' The \code{\link{WriteCatalog}} functions
