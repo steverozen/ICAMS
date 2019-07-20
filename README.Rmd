@@ -37,8 +37,15 @@ Analysis and visualization of experimentally elucidated mutational
 
 ## Installation
 
-Install development version of ICAMS from [GitHub](https://github.com/) with
-the R command line:
+Install the latest stable version(v2.0.8) of ICAMS from [GitHub](https://github.com/) with the R command line:
+
+``` r
+devtools::install_github("steverozen/ICAMS", ref = "v2.0.8-branch")
+```
+
+### Development version
+
+To use new features, you can install ICAMS from the master branch on [GitHub](https://github.com/), which may not be stable:
 
 ``` r
 devtools::install_github("steverozen/ICAMS")
