@@ -1,8 +1,14 @@
 #' Read a 192-channel spectra (or signature) catalog in Duke-NUS format.
 #' 
+#' WARNING: will not work with \code{region = "genome"}. For this 
+#' you must first read with \code{region = "unknown"}, then
+#' convert the \code{cat96} return to \code{"genome"} and
+#' ignore the \code{cat192} return, which is nonsensical.
+#' 
 #' The file needs to have the column names Before	Ref	After	Var
 #' in the first 4 columns 
 #' @keywords internal
+#' @return A list with two elements
 #' @importFrom utils read.table
 
 ReadDukeNUSCat192 <- function(file,

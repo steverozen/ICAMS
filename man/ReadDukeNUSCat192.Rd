@@ -7,7 +7,16 @@
 ReadDukeNUSCat192(file, ref.genome = NULL, region = "unknown",
   catalog.type = "counts", abundance = NULL)
 }
+\value{
+A list with two elements
+}
 \description{
+WARNING: will not work with \code{region = "genome"}. For this 
+you must first read with \code{region = "unknown"}, then
+convert the \code{cat96} return to \code{"genome"} and
+ignore the \code{cat192} return, which is nonsensical.
+}
+\details{
 The file needs to have the column names Before	Ref	After	Var
 in the first 4 columns
 }
