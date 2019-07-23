@@ -139,7 +139,7 @@ ReadStrelkaIDVCF <- function(file) {
 #'
 #' @export
 GetStrelkaVAF <-function(vcf) {
-  stopifnot(class(vcf) == "data.frame")
+  stopifnot("data.frame" %in% class(vcf))
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
     stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
