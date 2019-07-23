@@ -7,8 +7,7 @@
 
 ## High priority
 
-(done) 2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
-(done) 2.0.1 Tests for reading mouse MuTect and Strelka VCFs?
+
 2.1 Steve Single-click script (as interim for 1.1); docker?
 2.1.1 outputs the standard plots and catalogs.
 2.1.2 a report with
@@ -29,7 +28,12 @@
 2.6 Nanhai Functions to re-write annotated VCFS back to disk (design?)
 2.7 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
 2.8 Nanhai Extended sequence plotting for ID, DNS
-2.9 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome
+2.9 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
+2.10 Nanhai update as.catalog to take an additional argument, called infer.rownames,
+that if TRUE will allow as.catalog to take a matrix *without* rownames and an 
+assume that the rows are in the correct order and simply add the correct rownames based
+on the number of rows in the matrix. The documentation should warn that it is completely
+up the user to be sure the rows are in the correct order.
 
 ## Medium priority3
 3.1 Make a full transcriptional strand bias plot for DBS144 catalog.
@@ -85,4 +89,5 @@ done 1.2 Nanhai Checks for functions ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaID
 
 done 1.3 Nanhai Change the PPM plot functions according to Arnoud? suggestion in the email.
 
-
+(done) 2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
+(done) 2.0.1 Tests for reading mouse MuTect and Strelka VCFs?
