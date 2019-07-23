@@ -1217,7 +1217,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     
     if (is.null(ref.genome)) return(NULL)
     ref.genome <- NormalizeGenomeArg(ref.genome)
-    ab <- all.abundance[[ref.genome@pkgname]]
+    ab <- ICAMS::all.abundance[[ref.genome@pkgname]]
     if (is.null(ab)) return(NULL)
 
     ab2 <- ab[[region]]
