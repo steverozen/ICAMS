@@ -7,6 +7,7 @@
 
 [![Travis build
 status](https://travis-ci.org/steverozen/ICAMS.svg?branch=master)](https://travis-ci.org/steverozen/ICAMS)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 
 <!-- badges: end -->
 
@@ -29,11 +30,11 @@ signatures.
 
 ## Installation
 
-Install the latest stable version(v2.0.8) of ICAMS from
-[GitHub](https://github.com/) with the R command line:
+Install the stable version of ICAMS from
+[CRAN](https://cran.r-project.org/) with the R command line:
 
 ``` r
-devtools::install_github("steverozen/ICAMS", ref = "v2.0.8-branch")
+install.packages("ICAMS")
 ```
 
 ### Development version
