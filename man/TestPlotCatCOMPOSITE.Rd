@@ -25,4 +25,4 @@ or signatures in \code{catalog}.}
 \description{
 Plot the a SignatureAnalyzer COMPOSITE signature or catalog into separate pdfs
 }
-\keyword{internl}
+\keyword{internal}

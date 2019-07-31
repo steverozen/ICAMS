@@ -235,7 +235,12 @@ IsTransformationLegal <- function(s, t) {
  
   if (IsSignature(s$catalog.type) &&
       !IsSignature(t$catalog.type)) {
-    stop("cannot transform from a signture to a counts or density catalog")
+    stop("cannot transform from a signature to a counts or density catalog")
+  }
+  
+  if (("COMPOSITECatalog" %in% class(s)) ||
+       ("COMPOSITECatalog" %in% class(t))) {
+    stop("Transformation of class COMPOSITECatalog not supported")
   }
   
   if (IsDensity(s$catalog.type))
@@ -1228,6 +1233,10 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     StopIfNrowIllegal(object)
     StopIfRegionIllegal(region)
     StopIfCatalogTypeIllegal(catalog.type)
+    if (nrow(object) == 1697) {
+      return(NULL)
+      # There are no meaningful abundances for COMPOSITE catalogs.
+    }
 
     if (IsDensity(catalog.type)) {
       ab <- flat.abundance[[as.character(nrow(object))]]
