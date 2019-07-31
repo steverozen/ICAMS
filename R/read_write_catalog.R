@@ -156,10 +156,11 @@ ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknow
 }
 
 #' @export
-ReadCatalog.DBS78Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                     catalog.type = "counts", strict = TRUE) {
-  cos <- data.table::fread(file)
-  stopifnot(nrow(cos) == 78)
+ReadCatalog.DBS78Catalog <- 
+  function(file, ref.genome = NULL, region = "unknown", 
+           catalog.type = "counts", strict = TRUE) {
+    cos <- data.table::fread(file)
+    stopifnot(nrow(cos) == 78)
   if (strict) {
     stopifnot(names(cos)[1 : 2] == c("Ref", "Var"))
   }

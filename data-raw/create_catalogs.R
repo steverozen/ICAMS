@@ -881,7 +881,11 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
                           DBS78 = catalog.row.order.DBS.78,
                           DBS136 = catalog.row.order.DBS.136,
                           DBS144 = catalog.row.order.DBS.144,
-                          ID = catalog.row.order.ID)
+                          ID = catalog.row.order.ID,
+                          # NOT TESTED
+                          COMPOSITE = c(catalog.row.order.SBS.1536,
+                                        catalog.row.order.DBS.78,
+                                        catalog.row.order.ID))
 
 #Create regex pattern for FilterWithHomopolymerMS
 homopolymer.ms.regex.pattern <-

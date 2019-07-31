@@ -29,11 +29,6 @@
 2.7 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
 2.8 Nanhai Extended sequence plotting for ID, DNS
 2.9 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
-2.10 Nanhai update as.catalog to take an additional argument, called infer.rownames,
-that if TRUE will allow as.catalog to take a matrix *without* rownames and an 
-assume that the rows are in the correct order and simply add the correct rownames based
-on the number of rows in the matrix. The documentation should warn that it is completely
-up the user to be sure the rows are in the correct order.
 
 ## Medium priority3
 3.1 Make a full transcriptional strand bias plot for DBS144 catalog.

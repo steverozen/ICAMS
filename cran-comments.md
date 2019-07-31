@@ -1,8 +1,10 @@
 ## Resubmission
-This is a resubmission. In this version I have:
-* Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 
-  BSgenome.Hsapiens.UCSC.hg38) from Imports to Suggests so that they can
-  be used conditionally in "ICAMS" as requested by CRAN.
+This is a new minor version that is backward compatible
+with the previous version. In this version 
+as.catalog supports creation of the catalog 
+from a vector (interpeted as a 1-column matrix)
+and optionally infers the class from the
+number of rows in the input.
 
 ## Test environments
 * Local Windows 10 install: R 3.6.0 and 3.6.1

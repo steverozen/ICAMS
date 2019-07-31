@@ -1080,10 +1080,8 @@ StopIfTranscribedRegionIllegal <- function(region) {
 #' 
 #' @keywords internal
 StopIfNrowIllegal <- function(object) {
-  if(!nrow(object) %in% c(96, 192, 1536, 78, 144, 136, 83)) {
-    stop("\nThe number of rows in the input object must be one of\n",
-         "96 192 1536 78 144 136 83\ngot ", nrow(object))
-  }
+  # Will call stop() if the number or rows is illegal.
+  InferCatalogClassString(object)
 
 }
 
@@ -1130,20 +1128,42 @@ InferClassOfCatalogForRead <- function(file) {
 }
 
 #' @keywords internal
+InferCatalogClassPrefix <- function(object) {
+  
+  nrow <- nrow(object)
+  
+  if (nrow == 96)   return("SBS96")
+  if (nrow == 192)  return("SBS192")
+  if (nrow == 1536) return("SBS1536")
+  if (nrow == 78)   return("DBS78")
+  if (nrow == 144)  return("DBS144")
+  if (nrow == 136)  return("DBS136")
+  if (nrow == 83)   return("ID")
+  if (nrow == 1697) return("COMPOSITE")
+  
+  stop("\nThe number of rows in the input object must be one of\n",
+       "96 192 1536 78 144 136 83 1697\ngot ", nrow)
+  
+}
+
+
+#' @keywords internal
 InferCatalogClassString <- function(object) {
   
-  StopIfNrowIllegal(object)
-  nrow <- nrow(object)
-
-  if(nrow == 96)   return("SBS96Catalog")
-  if(nrow == 192)  return("SBS192Catalog")
-  if(nrow == 1536) return("SBS1536Catalog")
-  if(nrow == 78)   return("DBS78Catalog")
-  if(nrow == 144)  return("DBS144Catalog")
-  if(nrow == 136)  return("DBS136Catalog")
-  if(nrow == 83)   return("IndelCatalog")
-
+  prefix <- InferCatalogClassPrefix(object)
+  if (prefix == "ID") prefix <- "Indel"
+  return(paste0(prefix, "Catalog"))
 }
+
+
+#' Infer the correct rownames for a matrix based on its number of rows
+#' 
+#' @keywords internal
+InferRownames <- function(object) {
+  prefix <- InferCatalogClassPrefix(object)
+  return(ICAMS::catalog.row.order[[prefix]])
+}
+
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 #'
@@ -1228,12 +1248,16 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     return(ab3)
 
   }
-  
 
-#' Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.
+#' Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}.
 #'
-#' @param object A numeric \code{matrix} or numeric \code{data.frame}. 
-#'  This object must have
+#' @param object A numeric \code{matrix}, numeric \code{data.frame},
+#' or \code{vector}.
+#' If a \code{vector}, converted to a 1-column \code{matrix}
+#' with rownames taken from the element names of the \code{vector}
+#' and with column name \code{"Unknown"}.
+#' If argument \code{infer.rownames}
+#'  is \code{FALSE} than this argument must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
 #'   for more details.
 #'
@@ -1255,6 +1279,12 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #'  The argument \code{abundance} should
 #'  contain the counts of different source sequences for mutations
 #'  in the same format as the numeric vectors in \code{\link{all.abundance}}.
+#'  
+#' @param infer.rownames If \code{TRUE}, and \code{object} has no
+#' rownames, then assume the rows of \code{object} are in the
+#' correct order and add the rownames implied by the number of rows
+#' in \code{object} (e.g. rownames for SBS 192 if there are 192 rows).
+#' If \code{TRUE}, \strong{be sure the order of rows is correct.}
 #'
 #' @return A catalog as described in \code{\link{ICAMS}}.
 #'
@@ -1270,21 +1300,33 @@ as.catalog <- function(object,
                        ref.genome = NULL, 
                        region = "unknown", 
                        catalog.type = "counts", 
-                       abundance = NULL) {
+                       abundance = NULL,
+                       infer.rownames = FALSE) {
   if (!is.matrix(object)) {
     if (is.data.frame(object)) {
       object <- as.matrix(object)
+    } else if (is.vector(object)) {
+      obj2 <- matrix(object, ncol = 1)
+      rownames(obj2) <- names(object)
+      colnames(obj2) <- "Unknown"
+      object <- obj2
     } else {
-      stop("object must be numeric matrix or data frame")
+      stop("object must be numeric matrix, vector, or data frame")
     }
   }
   stopifnot(mode(object) == "numeric")
 
-  stopifnot(!is.null(rownames(object)))
-  
+  if (is.null(rownames(object))) {
+    if (!infer.rownames) {
+      stop("Require correct rownames on object unless infer.rownames == TRUE")
+    }
+    rownames(object) <- InferRownames(object)
+  }
+
   StopIfRegionIllegal(region)
   
-  StopIfNrowIllegal(object)
+  # Will call stop() if nrow(object) is illegal
+  class.string  <- InferCatalogClassString(object)
   
   StopIfCatalogTypeIllegal(catalog.type)
   
@@ -1300,7 +1342,6 @@ as.catalog <- function(object,
   } 
   attr(object, "abundance") <- abundance
 
-  class.string  <- InferCatalogClassString(object)
   class(object) <- append(class(object), class.string, after = 0)
   class(object) <- unique(attributes(object)$class)
   

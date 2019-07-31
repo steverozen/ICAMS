@@ -1,3 +1,8 @@
+# ICAMS 2.0.9
+* as.catalog supports creation of the catalog from a vector (interpeted
+  as a 1-column matrix) and optionally infers the class from the
+  number of rows in the input.
+
 # ICAMS 2.0.8
 * Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 
   BSgenome.Hsapiens.UCSC.hg38) from Imports to Suggests so that they can

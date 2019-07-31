@@ -5,7 +5,7 @@
 \title{Create a catalog from a numeric \code{matrix} or numeric \code{data.frame}.}
 \usage{
 as.catalog(object, ref.genome = NULL, region = "unknown",
-  catalog.type = "counts", abundance = NULL)
+  catalog.type = "counts", abundance = NULL, infer.rownames = FALSE)
 }
 \arguments{
 \item{object}{A numeric \code{matrix} or numeric \code{data.frame}. 
@@ -31,6 +31,12 @@ is not \code{unknown}. See \code{\link{ICAMS}}.
 The argument \code{abundance} should
 contain the counts of different source sequences for mutations
 in the same format as the numeric vectors in \code{\link{all.abundance}}.}
+
+\item{infer.rownames}{If \code{TRUE}, and \code{object} has no
+rownames, then assume the rows of \code{object} are in the
+correct order and add the rownames implied by the number of rows
+in \code{object} (e.g. rownames for SBS 192 if there are 192 rows).
+If \code{TRUE}, \strong{be sure the order of rows is correct.}}
 }
 \value{
 A catalog as described in \code{\link{ICAMS}}.
