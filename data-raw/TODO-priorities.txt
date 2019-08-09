@@ -4,6 +4,10 @@
 1.1 Steve Background signature subtraction
 1.2 Steve assess feasibility of a shiny or other portable app / is web page easier? Docker?
 1.2.1 Steve find shiny expert to discuss (Alvin)
+1.3 Nanhai -- steve thinks that as.catalog is not checking that the order of
+rows is correct; please check, and if necessary arrange for as.catalog to
+put the rows in the correct order (if the input matrix has rownames
+that and the rownames are correct).
 
 ## High priority
 

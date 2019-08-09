@@ -34,6 +34,43 @@ ReadDukeNUSCat192 <- function(file,
   list(cat96 = cat96, cat192 = cat192)
 }
 
+#' Convert 96-channel mutations types like this \code{"A[C>A]T" -> "ACTA"}.
+#' 
+#' @param c1 A vector of character strings with the mutation indicated by
+#' e.g. \code{[C>A]} in the middle.
+#' 
+#' @keywords internal
+Unstaple96 <- function(c1) {
+  retval <-
+    paste0(substr(c1, 1, 1),
+           substr(c1, 3, 3),
+           substr(c1, 7, 7),
+           substr(c1, 5, 5))
+  return(retval)
+}
+
+#' Convert 96-channel mutation types like this \code{"ACTA" -> ""A[C>A]T"}.
+#' 
+#' @param c1 A vector of character strings with the first 3 characters
+#' being the source trinucleotide and the last character being the
+#' mutated (center) nucleotide. E.g. ACTA means a mutation from
+#' ACT > AAT.
+#' 
+#' @keywords internal
+
+Restaple96 <- function(c1) {
+  retval <-
+    paste0(substr(c1, 1, 1),
+           "[",
+           substr(c1, 2, 2),
+           ">",
+           substr(c1, 4, 4),
+           "]",
+           substr(c1, 3, 3))
+  return(retval)
+}
+
+
 #' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T"
 #' 
 #' The file needs to have the rownames in the first column.
@@ -55,14 +92,9 @@ ReadStapleGT96SBS <- function(file,
   # Careful, df has 96 rows
   stopifnot(nrow(df)==96)
   c1 <- df[ , 1]
-  
+
   # E.g. "A[C>A]T" -> "ACTA"
-  rn <-
-    paste0(substr(c1, 1, 1),
-           substr(c1, 3, 3),
-           substr(c1, 7, 7),
-           substr(c1, 5, 5))
-  
+  rn <- Unstaple96(c1)
   rownames(df) <- rn
   df <- df[ , -1]
   df.cat <- as.catalog(df, ref.genome = ref.genome, region = region,
