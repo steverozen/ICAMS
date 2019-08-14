@@ -68,10 +68,10 @@ Plot96PartOfCompositeToPDF <- function(catalog, name, type = "density") {
 #'
 #' @param filename.header Contain path and the beginning part of the file name.
 #' The name of the pdf files will be:
-#' \code{filename.header}.SNS.96.pdf
-#' \code{filename.header}.SNS.1536.pdf
-#' \code{filename.header}.DNS.78.pdf
-#' \code{filename.header}.ID.83.pdf
+#' \emph{filename.header}\code{.SBS.96.pdf}
+#' \emph{filename.header}\code{.SBS.1536.pdf}
+#' \emph{filename.header}\code{.DBS.78.pdf}
+#' \emph{filename.header}\code{.ID.83.pdf}
 #'
 #' @param type See \code{\link[ICAMS]{PlotCatalogToPdf}}.
 #'
@@ -87,7 +87,7 @@ TestPlotCatCOMPOSITE <-
   
   # Check
   # stopifnot(nrow(test.COMPOSITE.sigs) == 1697)
-  spectra <- matrix(stats::rnbinom(n = 1697 * 2, mu = 1000, size=3), ncol=2)
+  spectra <- matrix(stats::rnbinom(n = 1697 * 2, mu = 1000, size = 3), ncol = 2)
   colnames(spectra) <- c("s1", "s1")
   spectra <- as.catalog(spectra, infer.rownames = TRUE)
 

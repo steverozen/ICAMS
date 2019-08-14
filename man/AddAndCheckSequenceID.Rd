@@ -16,8 +16,10 @@ AddAndCheckSequenceID(df, ref.genome, flag.mismatches = 0)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{flag.mismatches}{If > 0, if there are mismatches to references, print
-out the mismatched rows and continue.  Otherwise \code{stop}.}
+\item{flag.mismatches}{If > 0, 
+then if there are mismatches to references, 
+generate messages showing the mismatched rows and continue.  Otherwise \code{stop}
+if there are mismatched rows.}
 }
 \value{
 A data frame with 2 new columns added to the input data frame:

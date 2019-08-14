@@ -9,8 +9,10 @@
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param flag.mismatches If > 0, if there are mismatches to references, print
-#' out the mismatched rows and continue.  Otherwise \code{stop}.
+#' @param flag.mismatches If > 0, 
+#' then if there are mismatches to references, 
+#' generate messages showing the mismatched rows and continue.  Otherwise \code{stop}
+#' if there are mismatched rows.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -128,6 +130,9 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 #' the input rep.unit.seq in the count.
 #'
 #' @details
+#' 
+#' This function is primarily for internal use, but we export it
+#' to document the underlying logic.
 #'
 #' For example \code{FindMaxRepeatDel("xyaczt", "ac", 3)}
 #' returns 0.
@@ -137,9 +142,36 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 #'  then stop.
 #'
 #' If this functions returns 0, then it is necessary to
-#'   look for microhomology.
+#'   look for microhomology using the function
+#'   \code{\link{FindDelMH}}.
+#'   
+#' \strong{Warning}\cr
+#' This function depends on the variant caller having 
+#' "aligned" the deletion within the context of the
+#' repeat.
+#' 
+#' For example, a deletion of \code{CAG} in the repeat
+#' \preformatted{
+#' GTCAGCAGCATGT
+#' }
+#' can have an "aligned" representation as follows:
+#'  \preformatted{
+#' CT---CAGCAGGT
+#' CTCAG---CAGGT
+#' CTCAGCAG---GT
+#' }
+#' In these cases this function will return 3.
+#' 
+#' However, the same deletion can also have an "unaligned" representation, such as
+#'  \preformatted{
+#' CTCAGC---AGGT
+#' }
+#' (a deletion of \code{AGC}).
+#' 
+#' In this case this function will return 2 (a deletion of \code{AGC}
+#' in a 2-element repeat of \code{AGC}), not 3.
 #'
-#' @keywords internal
+#' @export
 FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   n <- nchar(rep.unit.seq)
   stopifnot(substring(context, pos, pos + n - 1) == rep.unit.seq)
@@ -159,7 +191,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   i <- pos + n
   tot.len <- nchar(context)
   while ((i + n - 1) <= tot.len) {
-    if (substr(context, i, i + n -1) == rep.unit.seq) {
+    if (substr(context, i, i + n - 1) == rep.unit.seq) {
       right.count <- right.count + 1
       i <- i + n
     } else break
@@ -227,7 +259,24 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
 #'                           ****   ****
 #' }
+#' 
+#' #' This function finds:
 #'
+#' \enumerate{
+#'
+#' \item The maximum match of undeleted sequence to the left
+#' of the deletion that is
+#' identical to the right end of the deleted sequence, and
+#'
+#' \item The maximum match of undeleted sequence to the right
+#' of the deletion that
+#' is identical to the left end of the deleted sequence.
+#'}
+#'
+#' The microhomology sequence is the concatenation of items
+#' (1) and (2).
+#'
+#' \strong{Warning}\cr
 #' A deletion in a \emph{repeat} can also be represented
 #' in several different ways. A deletion in a repeat
 #' is abstractly equivalent to microhomology that
@@ -253,22 +302,6 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' case with a -1 return; it does not figure
 #' out the repeat extent.}
 #'
-#' This function finds:
-#'
-#' \enumerate{
-#'
-#' \item The maximum match of undeleted sequence to the left
-#' of the deletion that is
-#' identical to the right end of the deleted sequence, and
-#'
-#' \item The maximum match of undeleted sequence to the right
-#' of the deletion that
-#' is identical to the left end of the deleted sequence.
-#'}
-#'
-#' The microhomology sequence is the concatenation of items
-#' (1) and (2).
-#'
 #' @param context The deleted sequence plus ample surrounding
 #'   sequence on each side (at least as long as \code{del.sequence}).
 #'
@@ -276,7 +309,8 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
-#' @param trace If > 0, cat various messages.
+#' @param trace If > 0, then generate various 
+#' messages showing how the computation is carried out.
 #'
 #' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
@@ -292,7 +326,7 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
 
   if (substr(context, pos, pos + n - 1) != deleted.seq) {
     stop("substr(context, pos, pos + n - 1) != deleted.seq\n",
-         substr(context, pos, pos + n -1), " ", deleted.seq, "\n")
+         substr(context, pos, pos + n - 1), " ", deleted.seq, "\n")
   }
   # The context on the left has to be longer then deleted.seq
   stopifnot((pos - 1) > n)
@@ -433,7 +467,21 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
+
 #' @title Given a deletion and its sequence context, categorize it.
+#' 
+#' This function is primarily for internal use, but we export it
+#' to document the underlying logic.
+#' 
+#' This function first handles deletions in homopolymers, then
+#' handles deletions in simple repeats with
+#' longer repeat units, (e.g. \code{CACACACA}, see
+#' \code{\link{FindMaxRepeatDel}}),
+#' and if the deletion is not in a simple repeat,
+#' looks for microhomology (see \code{\link{FindDelMH}}).
+#' 
+#' See the code for unexported function \code{\link{CanonicalizeID}}
+#' and the functions it calls for handling of insertions.
 #'
 #' @param context The deleted sequence plus ample surrounding
 #'   sequence on each side (at least as long as \code{del.seq}).
@@ -442,11 +490,13 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #'
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
-#' @param trace If > 0 cat information how the computation is carried out.
+#' @param trace If > 0, then generate messages tracing
+#' how the computation is carried out.
 #
 #' @return A string that is the canonical representation of the given deletion type
 #'
-#' @keywords internal
+#' @export
+
 Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
   # Is the deletion involved in a repeat?
   rep.count <- FindMaxRepeatDel(context, del.seq, pos)
@@ -495,7 +545,8 @@ Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
 #'
 #' @param pos The position of \code{ins.sequence} in \code{context}.
 #'
-#' @param trace If > 0, then cat information how the computation is carried out.
+#' @param trace If > 0, then generate
+#' messages tracing how the computation is carried out.
 #
 #' @return A string that is the canonical representation of the given insertion type
 #'
@@ -535,7 +586,8 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #'
 #' @param pos The position of \code{ins.or.del.seq} in \code{context}.
 #'
-#' @param trace If > 0 cat information how the computation is carried out.
+#' @param trace If > 0, then generate messages tracing
+#' how the computation is carried out.
 #
 #' @return A string that is the canonical representation of the type of the given
 #'  insertion or deletion.

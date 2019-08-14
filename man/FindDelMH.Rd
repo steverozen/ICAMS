@@ -14,7 +14,8 @@ sequence on each side (at least as long as \code{del.sequence}).}
 
 \item{pos}{The position of \code{del.sequence} in \code{context}.}
 
-\item{trace}{If > 0, cat various messages.}
+\item{trace}{If > 0, then generate various 
+messages showing how the computation is carried out.}
 }
 \value{
 The length of the maximum microhomology of \code{del.sequence}
@@ -78,6 +79,23 @@ GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
                           ****   ****
 }
 
+#' This function finds:
+
+\enumerate{
+
+\item The maximum match of undeleted sequence to the left
+of the deletion that is
+identical to the right end of the deleted sequence, and
+
+\item The maximum match of undeleted sequence to the right
+of the deletion that
+is identical to the left end of the deleted sequence.
+}
+
+The microhomology sequence is the concatenation of items
+(1) and (2).
+
+\strong{Warning}\cr
 A deletion in a \emph{repeat} can also be represented
 in several different ways. A deletion in a repeat
 is abstractly equivalent to microhomology that
@@ -102,22 +120,6 @@ GACT----AGTT GACTAGTT GACT[AGCT]AGTT
 \strong{This function only flags this
 case with a -1 return; it does not figure
 out the repeat extent.}
-
-This function finds:
-
-\enumerate{
-
-\item The maximum match of undeleted sequence to the left
-of the deletion that is
-identical to the right end of the deleted sequence, and
-
-\item The maximum match of undeleted sequence to the right
-of the deletion that
-is identical to the left end of the deleted sequence.
-}
-
-The microhomology sequence is the concatenation of items
-(1) and (2).
 }
 \examples{
 # GAGAGG[CTAGAA]CTAGTT

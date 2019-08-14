@@ -16,7 +16,8 @@ sequence on each side of the insertion or deletion.}
 
 \item{pos}{The position of \code{ins.or.del.seq} in \code{context}.}
 
-\item{trace}{If > 0 cat information how the computation is carried out.}
+\item{trace}{If > 0, then generate messages tracing
+how the computation is carried out.}
 }
 \value{
 A string that is the canonical representation of the type of the given

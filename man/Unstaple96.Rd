@@ -7,7 +7,7 @@
 Unstaple96(c1)
 }
 \arguments{
-\item{c1}{a vector of chatracter strings with the mutation indicated by
+\item{c1}{A vector of character strings with the mutation indicated by
 e.g. \code{[C>A]} in the middle.}
 }
 \description{

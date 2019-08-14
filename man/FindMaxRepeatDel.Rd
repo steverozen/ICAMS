@@ -27,6 +27,9 @@ Return the number of repeat units in which a deletion
 is embedded.
 }
 \details{
+This function is primarily for internal use, but we export it
+to document the underlying logic.
+
 For example \code{FindMaxRepeatDel("xyaczt", "ac", 3)}
 returns 0.
 
@@ -35,6 +38,32 @@ If
  then stop.
 
 If this functions returns 0, then it is necessary to
-  look for microhomology.
+  look for microhomology using the function
+  \code{\link{FindDelMH}}.
+  
+\strong{Warning}\cr
+This function depends on the variant caller having 
+"aligned" the deletion within the context of the
+repeat.
+
+For example, a deletion of \code{CAG} in the repeat
+\preformatted{
+GTCAGCAGCATGT
 }
-\keyword{internal}
+can have an "aligned" representation as follows:
+ \preformatted{
+CT---CAGCAGGT
+CTCAG---CAGGT
+CTCAGCAG---GT
+}
+In these cases this function will return 3.
+
+However, the same deletion can also have an "unaligned" representation, such as
+ \preformatted{
+CTCAGC---AGGT
+}
+(a deletion of \code{AGC}).
+
+In this case this function will return 2 (a deletion of \code{AGC}
+in a 2-element repeat of \code{AGC}), not 3.
+}

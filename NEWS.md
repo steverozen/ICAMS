@@ -1,7 +1,9 @@
 # ICAMS 2.0.9
-* as.catalog supports creation of the catalog from a vector (interpeted
+* as.catalog supports creation of the catalog from a vector (interpreted
   as a 1-column matrix) and optionally infers the class from the
   number of rows in the input.
+* Exported some functions that are used in categorizing deletions as 
+  a way to make documentation of the underlying logic more visible.
 
 # ICAMS 2.0.8
 * Moved two Bioconductor packages(BSgenome.Hsapiens.1000genomes.hs37d5, 

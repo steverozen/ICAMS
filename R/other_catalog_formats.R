@@ -49,12 +49,15 @@ Unstaple96 <- function(c1) {
   return(retval)
 }
 
-#' Convert 96-channel mutation types like this \code{"ACTA" -> ""A[C>A]T"}.
+#' Convert 96-channel mutation types like this \code{"ACTA" -> "A[C>A]T"}.
+#' 
+#' This is an internal function needed for generating
+#' "non-canonical" row number formats for catalogs.
 #' 
 #' @param c1 A vector of character strings with the first 3 characters
 #' being the source trinucleotide and the last character being the
-#' mutated (center) nucleotide. E.g. ACTA means a mutation from
-#' ACT > AAT.
+#' mutated (center) nucleotide. E.g. \code{ACTA} means a mutation from
+#' \code{ACT > AAT}.
 #' 
 #' @keywords internal
 

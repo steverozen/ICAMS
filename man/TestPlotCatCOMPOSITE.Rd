@@ -12,10 +12,10 @@ TestPlotCatCOMPOSITE(catalog, filename.header, type,
 
 \item{filename.header}{Contain path and the beginning part of the file name.
 The name of the pdf files will be:
-\code{filename.header}.SNS.96.pdf
-\code{filename.header}.SNS.1536.pdf
-\code{filename.header}.DNS.78.pdf
-\code{filename.header}.ID.83.pdf}
+\emph{filename.header}\code{.SBS.96.pdf}
+\emph{filename.header}\code{.SBS.1536.pdf}
+\emph{filename.header}\code{.DBS.78.pdf}
+\emph{filename.header}\code{.ID.83.pdf}}
 
 \item{type}{See \code{\link[ICAMS]{PlotCatalogToPdf}}.}
 
