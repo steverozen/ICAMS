@@ -20,7 +20,7 @@ to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat
 \value{
 The number of repeat units in which \code{rep.unit.seq} is
 embedded, not including
-the input rep.unit.seq in the count.
+the input \code{rep.unit.seq} in the count.
 }
 \description{
 Return the number of repeat units in which a deletion
@@ -50,13 +50,15 @@ For example, a deletion of \code{CAG} in the repeat
 \preformatted{
 GTCAGCAGCATGT
 }
-can have an "aligned" representation as follows:
+can have 3 "aligned" representations as follows:
  \preformatted{
 CT---CAGCAGGT
 CTCAG---CAGGT
 CTCAGCAG---GT
 }
-In these cases this function will return 3.
+In these cases this function will return 2. (Please
+not that the return value does not include the
+\code{rep.uni.seq} in the count.)
 
 However, the same deletion can also have an "unaligned" representation, such as
  \preformatted{
@@ -64,6 +66,11 @@ CTCAGC---AGGT
 }
 (a deletion of \code{AGC}).
 
-In this case this function will return 2 (a deletion of \code{AGC}
-in a 2-element repeat of \code{AGC}), not 3.
+In this case this function will return 1 (a deletion of \code{AGC}
+in a 2-element repeat of \code{AGC}).
+}
+\examples{
+FindMaxRepeatDel("xyACACzt", "AC", 3) # 1
+FindMaxRepeatDel("xyACACzt", "CA", 4) # 0
+
 }

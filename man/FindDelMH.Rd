@@ -79,7 +79,7 @@ GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
                           ****   ****
 }
 
-#' This function finds:
+This function finds:
 
 \enumerate{
 
@@ -98,7 +98,7 @@ The microhomology sequence is the concatenation of items
 \strong{Warning}\cr
 A deletion in a \emph{repeat} can also be represented
 in several different ways. A deletion in a repeat
-is abstractly equivalent to microhomology that
+is abstractly equivalent to a deletion with microhomology that
 spans the entire deleted sequence. For example;
 
 \preformatted{

@@ -127,7 +127,7 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 #'
 #' @return The number of repeat units in which \code{rep.unit.seq} is
 #' embedded, not including
-#' the input rep.unit.seq in the count.
+#' the input \code{rep.unit.seq} in the count.
 #'
 #' @details
 #' 
@@ -154,13 +154,15 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 #' \preformatted{
 #' GTCAGCAGCATGT
 #' }
-#' can have an "aligned" representation as follows:
+#' can have 3 "aligned" representations as follows:
 #'  \preformatted{
 #' CT---CAGCAGGT
 #' CTCAG---CAGGT
 #' CTCAGCAG---GT
 #' }
-#' In these cases this function will return 3.
+#' In these cases this function will return 2. (Please
+#' not that the return value does not include the
+#' \code{rep.uni.seq} in the count.)
 #' 
 #' However, the same deletion can also have an "unaligned" representation, such as
 #'  \preformatted{
@@ -168,8 +170,12 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 #' }
 #' (a deletion of \code{AGC}).
 #' 
-#' In this case this function will return 2 (a deletion of \code{AGC}
-#' in a 2-element repeat of \code{AGC}), not 3.
+#' In this case this function will return 1 (a deletion of \code{AGC}
+#' in a 2-element repeat of \code{AGC}).
+#' 
+#' @examples 
+#' FindMaxRepeatDel("xyACACzt", "AC", 3) # 1
+#' FindMaxRepeatDel("xyACACzt", "CA", 4) # 0
 #'
 #' @export
 FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
@@ -260,7 +266,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'                           ****   ****
 #' }
 #' 
-#' #' This function finds:
+#' This function finds:
 #'
 #' \enumerate{
 #'
@@ -279,7 +285,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' \strong{Warning}\cr
 #' A deletion in a \emph{repeat} can also be represented
 #' in several different ways. A deletion in a repeat
-#' is abstractly equivalent to microhomology that
+#' is abstractly equivalent to a deletion with microhomology that
 #' spans the entire deleted sequence. For example;
 #'
 #' \preformatted{
@@ -495,9 +501,14 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #
 #' @return A string that is the canonical representation of the given deletion type
 #'
+#' @examples 
+#' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 3) # "DEL:T:1:2"
+#' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 4) # "DEL:T:1:2"
+#' Canonicalize1Del("xyAqr", del.seq = "A", pos = 3)   # "DEL:T:1:0"
+#'
 #' @export
 
-Canonicalize1DEL <- function(context, del.seq, pos, trace = 0) {
+Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
   # Is the deletion involved in a repeat?
   rep.count <- FindMaxRepeatDel(context, del.seq, pos)
 
@@ -599,7 +610,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   }
   if (nchar(alt) < nchar(ref)) {
     # A deletion
-    return(Canonicalize1DEL(context, ref, pos + 1, trace))
+    return(Canonicalize1Del(context, ref, pos + 1, trace))
   } else if (nchar(alt) > nchar(ref)) {
     # An insertion
     return(Canonicalize1INS(context, alt, pos, trace))
