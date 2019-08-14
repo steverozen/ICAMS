@@ -2,20 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{Canonicalize1Del}
 \alias{Canonicalize1Del}
-\title{Given a deletion and its sequence context, categorize it.
-
-This function is primarily for internal use, but we export it
-to document the underlying logic.
-
-This function first handles deletions in homopolymers, then
-handles deletions in simple repeats with
-longer repeat units, (e.g. \code{CACACACA}, see
-\code{\link{FindMaxRepeatDel}}),
-and if the deletion is not in a simple repeat,
-looks for microhomology (see \code{\link{FindDelMH}}).
-
-See the code for unexported function \code{\link{CanonicalizeID}}
-and the functions it calls for handling of insertions.}
+\title{Given a deletion and its sequence context, categorize it.}
 \usage{
 Canonicalize1Del(context, del.seq, pos, trace = 0)
 }
@@ -31,13 +18,18 @@ sequence on each side (at least as long as \code{del.seq}).}
 how the computation is carried out.}
 }
 \value{
-A string that is the canonical representation of the given deletion type
+A string that is the canonical representation
+ of the given deletion type.
 }
 \description{
-Given a deletion and its sequence context, categorize it.
-
 This function is primarily for internal use, but we export it
 to document the underlying logic.
+}
+\details{
+See 
+\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+for additional information on deletion 
+mutation classification.
 
 This function first handles deletions in homopolymers, then
 handles deletions in simple repeats with

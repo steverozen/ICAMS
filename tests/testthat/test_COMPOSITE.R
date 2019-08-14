@@ -12,5 +12,4 @@ test_that("WriteCatalog ReadCatalog COMPOSITE", {
   WriteCatalog(ctg, file = out.file)
   ctg2 <- ReadCatalog(out.file)
   expect_equal(ctg, ctg2)
-  
 })

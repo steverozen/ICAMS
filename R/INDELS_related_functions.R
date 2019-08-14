@@ -474,10 +474,15 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 }
 
 
-#' @title Given a deletion and its sequence context, categorize it.
+#' Given a deletion and its sequence context, categorize it.
 #' 
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.
+#' 
+#' See 
+#' \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' for additional information on deletion 
+#' mutation classification.
 #' 
 #' This function first handles deletions in homopolymers, then
 #' handles deletions in simple repeats with
@@ -499,7 +504,8 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' @param trace If > 0, then generate messages tracing
 #' how the computation is carried out.
 #
-#' @return A string that is the canonical representation of the given deletion type
+#' @return A string that is the canonical representation
+#'  of the given deletion type. 
 #'
 #' @examples 
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 3) # "DEL:T:1:2"
