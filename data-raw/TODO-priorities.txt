@@ -1,50 +1,51 @@
 # ICAMS to do list, 2019 07 07
 
 ## Highest priority
-1.1 Steve Background signature subtraction
-1.2 Steve assess feasibility of a shiny or other portable app / is web page easier? Docker?
+1.1 *** Steve Background signature subtraction (will take until early September)
+
+1.2 Steve and Nanhai Web and local shiny app design and initial implementation
 1.2.1 Steve find shiny expert to discuss (Alvin)
-1.3 Nanhai -- steve thinks that as.catalog is not checking that the order of
+1.2.2 Buy web server hardware?
+1.2.3 Design points
+1.2.3.1 outputs the standard plots and catalogs.
+1.2.3.2 outputs a report with
+       (Arnoud's idea, need to discuss) 
+        Mutation loads (per mutation type, 
+        and compare to the background levels in
+        the background controls we have, and perhaps also cosine to the background signature?)
+1.2.3.3 outputs Percentage of DBS relative to SBS
+
+1.3 Bugs
+1.3.1 Nanhai -- steve thinks that as.catalog is not checking that the order of
 rows is correct; please check, and if necessary arrange for as.catalog to
 put the rows in the correct order (if the input matrix has rownames
 that and the rownames are correct).
 
 ## High priority
-
-
-2.1 Steve Single-click script (as interim for 1.1); docker?
-2.1.1 outputs the standard plots and catalogs.
-2.1.2 a report with
-2.1.2.1 (Arnoud's idea, need to discuss) 
-        Mutation loads (per mutation type, 
-        and compare to the background levels in
-        the background controls we have, and perhaps also cosine to the background signature?)
-2.1.2.2 Percentage of DBS relative to SBS
-2.2 Nanhai Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
-2.3 Nanhai Corrections to documention for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+2.1 Nanhai Corrections to documentation for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
    similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
-2.4 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
+2.2 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
     inspection relative to saved examples in data-raw.  Possibly extend to auto checking
     by diffing the PDFs.
-2.5 Nanhai binom test for transcription strand bias
-2.6 Nanhai Functions to re-write annotated VCFS back to disk (design?)
-2.7 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
-2.8 Nanhai Extended sequence plotting for ID, DNS
-2.9 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
+2.3 *** Nanhai binom test for transcription strand bias
+2.4 Nanhai Functions to re-write annotated VCFS back to disk (design?)
+2.5 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
+2.6 Nanhai Extended sequence plotting for ID, DNS
+2.7 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
 
-## Medium priority3
+## Medium priority
 3.1 Make a full transcriptional strand bias plot for DBS144 catalog.
 3.2 Put a legend on the top right part of the graph to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
 3.3 Update as.catalog() function to ensure the catalog rows are in the expected order and have the expected row names?
 3.4 Plot transcription strand bias as function of distance from TSS
 3.5 Plot transcription strand bias as function of expression level
-3.6 Function to filter VCF for homoplymers for human and mouse (consult w/ Mo, maybe make script)
-3.7 Provide documentaiton on how row-names in catalogs encode mutations.
-3.8 Clean up plotting funcions (useless calls to invisible(), also, try
+3.6 Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
+3.7 Provide documentation on how row-names in catalogs encode mutations.
+3.8 Clean up plotting functions (useless calls to invisible(), also, try
      on.exit(dev.off(), add = TRUE))
-3.9 Also, in all plots, should we also include a comment box as our old script
+3.9 *** Also, in all plots, should we also include a comment box as our old script
      also has; specifying the date of printing, and the genome/abundance of 
      the data that was plotted? 
      Also a additional text provided by user 
@@ -78,13 +79,3 @@ that and the rownames are correct).
 
 ## Done
 
-done 1.1 Nanhai Address CRAN comments
-done 1.1.1 Nanhai Add examples to documentation (key functions only for now)
-      Suggest to create an example for each, should be as simple as
-      possible, then we can review again
-done 1.1.2 Nanhai, other CRAN comments
-done 1.2 Nanhai Checks for functions ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs() according to Arnoud?s suggestion in the email.
-done 1.3 Nanhai Change the PPM plot functions according to Arnoud? suggestion in the email.
-done 2.0 Calculate VAFs from newer MuTect output Steve? Nanhai?
-done 2.0.1 Tests for reading mouse MuTect and Strelka VCFs?
-done 3.10 Nanhai test mouse mm10 on MuTect VCF

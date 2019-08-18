@@ -887,6 +887,10 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
                                         catalog.row.order.DBS.78,
                                         catalog.row.order.ID))
 
+catalog.row.headers.COMPOSITE <-
+  data.frame("Mutation type" = catalog.row.order[["COMPOSITE"]])
+colnames(catalog.row.headers.COMPOSITE) <- "Mutation type"
+
 #Create regex pattern for FilterWithHomopolymerMS
 homopolymer.ms.regex.pattern <-
   c("A", "C", "G", "T", "(AC)", "(AG)", "(AT)", "(CA)",

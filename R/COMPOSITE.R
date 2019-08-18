@@ -15,15 +15,13 @@ ReadCatalog.COMPOSITECatalog <-
 #' @export
 WriteCatalog.COMPOSITECatalog <-
   function(catalog, file, strict = TRUE) {
-  WriteCat(catalog, file = file, 
-           1697,
-           ICAMS::catalog.row.order[["COMPOSITE"]],
-           # For the on-disk representation of COMPOSITE
-           # catalogs we just use the rownames from the
-           # in-memory representation.
-           rownames(catalog), 
-           strict = strict)
-}
+    WriteCat(catalog, file = file, 
+             1697,
+             ICAMS::catalog.row.order[["COMPOSITE"]],
+             # rownames(catalog), 
+             catalog.row.headers.COMPOSITE,
+             strict = strict)
+  }
 
 #' @keywords internal
 SplitCatCOMPOSITE <- function(catalog) {
