@@ -44,6 +44,13 @@ Install the stable version of ICAMS from [CRAN](https://cran.r-project.org/) wit
 install.packages("ICAMS")
 ```
 
+After that, install the necessary dependency package from [Bioconductor](https://www.bioconductor.org/) in order to successfully load ICAMS:
+
+``` r
+install.packages("BiocManager")
+BiocManager::install("BSgenome")
+```
+
 ### Development version
 
 To use new features, you can install ICAMS from the master branch on [GitHub](https://github.com/), which may not be stable:
