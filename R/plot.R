@@ -978,8 +978,10 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
   stopifnot(dim(catalog) == c(136, 1))
 
   # Specify the layout of the plotting
-  invisible(layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
-                          byrow = TRUE)))
+  # invisible(
+    layout(matrix(c(7, 8, 9, 10, 4, 5, 6, 11, 1, 2 , 3, 11), 3, 4,
+                          byrow = TRUE))
+  #  )
 
   # Define the bases and their colors in plot
   base <- c("A", "C", "G", "T")
