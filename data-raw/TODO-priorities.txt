@@ -16,36 +16,45 @@
 1.2.3.3 outputs Percentage of DBS relative to SBS
 
 1.3 Bugs
-1.3.1 Nanhai -- steve thinks that as.catalog is not checking that the order of
+... HIGH Nanhai -- steve thinks that as.catalog is not checking that the order of
 rows is correct; please check, and if necessary arrange for as.catalog to
 put the rows in the correct order (if the input matrix has rownames
 that and the rownames are correct).
 
 ## High priority
-2.1 Nanhai Corrections to documentation for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
+... HIGH  Nanhai Corrections to documentation for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
    similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
-2.2 Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
+   
+   
+... LOW Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
     inspection relative to saved examples in data-raw.  Possibly extend to auto checking
     by diffing the PDFs.
-2.3 *** Nanhai binom test for transcription strand bias
-2.4 Nanhai Functions to re-write annotated VCFS back to disk (design?)
-2.5 Nanhai Corrections to extended sequence plotting for SBS (Steve forgets what these are)
-2.6 Nanhai Extended sequence plotting for ID, DNS
-2.7 Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
+    
+  
+... HIGH Nanhai binom test for transcription strand bias
+... HIGH Nanhai Corrections to extended sequence plotting for SBS (Arnoud re-review output)
+... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
 
-## Medium priority
-3.1 Make a full transcriptional strand bias plot for DBS144 catalog.
-3.2 Put a legend on the top right part of the graph to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
-3.3 Update as.catalog() function to ensure the catalog rows are in the expected order and have the expected row names?
-3.4 Plot transcription strand bias as function of distance from TSS
-3.5 Plot transcription strand bias as function of expression level
-3.6 Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
-3.7 Provide documentation on how row-names in catalogs encode mutations.
-3.8 Clean up plotting functions (useless calls to invisible(), also, try
-     on.exit(dev.off(), add = TRUE))
-3.9 *** Also, in all plots, should we also include a comment box as our old script
+... HIGH Nanhai Extended sequence plotting for ID
+... HIGH Nanhai Extended sequence plotting for DNS 
+
+
+... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
+
+... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
+
+... MED Plot transcription strand bias as function of distance from TSS
+
+... MED Plot transcription strand bias as function of expression level (need to get new parameter -- expression data)
+
+... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
+
+... MED Provide documentation on how row-names in catalogs encode mutations.
+
+
+... MED Also, in all plots, should we also include a comment box as our old script
      also has; specifying the date of printing, and the genome/abundance of 
      the data that was plotted? 
      Also a additional text provided by user 
@@ -53,29 +62,22 @@ that and the rownames are correct).
      an attribute, or just included as a user note --
      example would be whether background removal was done, but could also
      include signature extraction information (?)
-3.10 Add error checking for cbinding catalogs with different attributes
+     
+... MED Add error checking for cbinding catalogs with different attributes
 
 ## Low priority
-4.1 Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
-4.2 Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
-4.3	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file?
-4.4 Develop extended seq.context plotting functions for DBS and INDEL.
-4.5 Should StrelkaSBSVCFFilesToCatalogAndPlotToPdf() and similar functions also save the catalogs to files?
-4.6 Utility function to split VCF by VAF according to Arnoud? suggestion previously.
-4.7 Add Freebayes VCFs as an option in ICAMS.
-4.8 Update the legend in 1536 catalog plotting according to Liu Mo?s suggestion?
-4.9 More automatic tests for genomes that do not have built-in support
-4.10 binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
-4.11 Review Matas' comments on documentation
-4.12 Allow as.catalog to work on a numeric vector (interpreting it as a
-     matrix w/ one column)
+... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
+... MED Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
+... MED	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file? (allow exceptions for lacking first few rows, then requiring user input)
+... MED Utility function to split VCF by VAF according to Arnoud? suggestion previously.
+... LOW Add Freebayes VCFs as an option in ICAMS.
+... LOW More automatic tests for genomes that do not have built-in support
+... LOW binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
+... VERY VERY VERY LOW Review Matas' comments on documentation
 
 ## Maybe
 
-5.1 Read in MAF files
-5.2 Maybe: Should it be possible to supply a directory as input to
+... VERY LOW Read in MAF files
+... MEDIUM Maybe: Should it be possible to supply a directory as input to
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
-
-## Done
-
