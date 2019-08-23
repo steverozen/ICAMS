@@ -1,4 +1,4 @@
-# ICAMS to do list, 2019 07 07
+# ICAMS to do list, 2019 08 23
 
 ## Highest priority
 1.1 *** Steve Background signature subtraction (will take until early September)
@@ -15,45 +15,26 @@
         the background controls we have, and perhaps also cosine to the background signature?)
 1.2.3.3 outputs Percentage of DBS relative to SBS
 
-1.3 Bugs
+## High priority
 ... HIGH Nanhai -- steve thinks that as.catalog is not checking that the order of
 rows is correct; please check, and if necessary arrange for as.catalog to
 put the rows in the correct order (if the input matrix has rownames
 that and the rownames are correct).
-
-## High priority
 ... HIGH  Nanhai Corrections to documentation for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
    similar functions.  These functions generate multiple PDF files and this is not
    clear in the documentation; It is also not clear that the output.file is
    just a base name, and it is not clear what the names of the output files will be.
-   
-   
-... LOW Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
-    inspection relative to saved examples in data-raw.  Possibly extend to auto checking
-    by diffing the PDFs.
-    
-  
 ... HIGH Nanhai binom test for transcription strand bias
 ... HIGH Nanhai Corrections to extended sequence plotting for SBS (Arnoud re-review output)
 ... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
-
 ... HIGH Nanhai Extended sequence plotting for ID
 ... HIGH Nanhai Extended sequence plotting for DNS 
 
-
+## Medium priority
 ... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
-
-... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
-
 ... MED Plot transcription strand bias as function of distance from TSS
-
 ... MED Plot transcription strand bias as function of expression level (need to get new parameter -- expression data)
-
-... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
-
 ... MED Provide documentation on how row-names in catalogs encode mutations.
-
-
 ... MED Also, in all plots, should we also include a comment box as our old script
      also has; specifying the date of printing, and the genome/abundance of 
      the data that was plotted? 
@@ -61,23 +42,27 @@ that and the rownames are correct).
      (Other processing information; should this be
      an attribute, or just included as a user note --
      example would be whether background removal was done, but could also
-     include signature extraction information (?)
-     
+     include signature extraction information (?)  
 ... MED Add error checking for cbinding catalogs with different attributes
-
-## Low priority
-... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
 ... MED Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
 ... MED	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file? (allow exceptions for lacking first few rows, then requiring user input)
 ... MED Utility function to split VCF by VAF according to Arnoud? suggestion previously.
+... MEDIUM Maybe: Should it be possible to supply a directory as input to
+    StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
+    the directory and put all the PDFs in that directory?
+
+## Low priority
+... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
 ... LOW Add Freebayes VCFs as an option in ICAMS.
 ... LOW More automatic tests for genomes that do not have built-in support
 ... LOW binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
+... LOW Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
+    inspection relative to saved examples in data-raw.  Possibly extend to auto checking
+    by diffing the PDFs.
+... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
+... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
+... VERY LOW Read in MAF files
 ... VERY VERY VERY LOW Review Matas' comments on documentation
 
 ## Maybe
 
-... VERY LOW Read in MAF files
-... MEDIUM Maybe: Should it be possible to supply a directory as input to
-    StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
-    the directory and put all the PDFs in that directory?
