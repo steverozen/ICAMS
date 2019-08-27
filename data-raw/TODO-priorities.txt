@@ -32,7 +32,7 @@ that and the rownames are correct).
 
 ## Medium priority
 ... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
-... MED Plot transcription strand bias as function of distance from TSS
+Nat... MED Plot transcription strand bias as function of distance from TSS
 ... MED Plot transcription strand bias as function of expression level (need to get new parameter -- expression data)
 ... MED Provide documentation on how row-names in catalogs encode mutations.
 ... MED Also, in all plots, should we also include a comment box as our old script
