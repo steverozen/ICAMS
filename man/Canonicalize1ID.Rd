@@ -20,7 +20,8 @@ sequence on each side of the insertion or deletion.}
 how the computation is carried out.}
 }
 \value{
-A string that is the canonical representation of the type of the given
+A string that is the canonical representation
+ of the type of the given
  insertion or deletion.
 }
 \description{

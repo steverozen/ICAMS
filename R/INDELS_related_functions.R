@@ -441,14 +441,16 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
 #' return 4
 #' }
 #'
-#' If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
+#' If 
+#' \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq},
+#' then stop.
 #'
 #' @keywords internal
 FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   n <- nchar(rep.unit.seq)
 
-  # If rep.unit.seq is in context adjacent to pos, it might start at pos + 1 -
-  # len(rep.unit.seq), so look left
+  # If rep.unit.seq is in context adjacent to pos, it might start at 
+  # pos + 1 - len(rep.unit.seq), so look left
   left.count <- 0
   p <- pos + 1 - n
   while (p > 0) {
@@ -520,7 +522,8 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
 
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
   deletion.size <- nchar(del.seq)
-  deletion.size.string <- ifelse(deletion.size >= 5, "5+", as.character(deletion.size))
+  deletion.size.string <- 
+    ifelse(deletion.size >= 5, "5+", as.character(deletion.size))
 
   # Category is "1bp deletion"
   if (deletion.size == 1) {
@@ -531,7 +534,8 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
 
   # Category is ">2bp deletion"
   if (rep.count > 0) {
-    return(paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string))
+    return(
+      paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string))
   }
 
   # We have to look for microhomology
@@ -550,7 +554,8 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
   microhomology.len.str <-
     ifelse(microhomology.len >= 5, "5+", as.character(microhomology.len))
 
-  return(paste0("DEL:MH:", deletion.size.string, ":", microhomology.len.str))
+  return(paste0(
+    "DEL:MH:", deletion.size.string, ":", microhomology.len.str))
 }
 
 #' @title Given an insertion and its sequence context, categorize it.
@@ -565,7 +570,8 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
 #' @param trace If > 0, then generate
 #' messages tracing how the computation is carried out.
 #
-#' @return A string that is the canonical representation of the given insertion type
+#' @return A string that is the canonical representation of 
+#' the given insertion type.
 #'
 #' @keywords internal
 Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
@@ -606,7 +612,8 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #' @param trace If > 0, then generate messages tracing
 #' how the computation is carried out.
 #
-#' @return A string that is the canonical representation of the type of the given
+#' @return A string that is the canonical representation
+#'  of the type of the given
 #'  insertion or deletion.
 #'
 #' @keywords internal
@@ -625,7 +632,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   }
 }
 
-#' @title Given vectors of insertions and deletions in contexts categorize them.
+#' @title Determine the muation types of insertions and deletions.
 #'
 #' @param context A vector of ample surrounding
 #'   sequence on each side the variants
@@ -634,7 +641,8 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @param alt Vector of alternative alleles
 #'
-#' @param pos Vector of the positions of the insertions and deletions in \code{context}.
+#' @param pos Vector of the positions of the insertions and deletions in
+#'  \code{context}.
 #'
 #' @return A vector of strings that are the canonical representations
 #'  of the given insertions and deletions.
@@ -734,7 +742,8 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
+#'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {

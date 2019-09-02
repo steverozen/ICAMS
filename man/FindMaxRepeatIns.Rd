@@ -52,6 +52,8 @@ pos = any of 1, 3, 5, 7, 9
 return 4
 }
 
-If \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq} then stop.
+If 
+\code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq},
+then stop.
 }
 \keyword{internal}

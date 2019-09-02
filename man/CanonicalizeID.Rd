@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{CanonicalizeID}
 \alias{CanonicalizeID}
-\title{Given vectors of insertions and deletions in contexts categorize them.}
+\title{Determine the muation types of insertions and deletions.}
 \usage{
 CanonicalizeID(context, ref, alt, pos)
 }
@@ -14,13 +14,14 @@ sequence on each side the variants}
 
 \item{alt}{Vector of alternative alleles}
 
-\item{pos}{Vector of the positions of the insertions and deletions in \code{context}.}
+\item{pos}{Vector of the positions of the insertions and deletions in
+\code{context}.}
 }
 \value{
 A vector of strings that are the canonical representations
  of the given insertions and deletions.
 }
 \description{
-Given vectors of insertions and deletions in contexts categorize them.
+Determine the muation types of insertions and deletions.
 }
 \keyword{internal}
