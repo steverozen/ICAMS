@@ -34,7 +34,7 @@ ReadDukeNUSCat192 <- function(file,
   list(cat96 = cat96, cat192 = cat192)
 }
 
-#' Convert 96-channel mutations types like this \code{"A[C>A]T" -> "ACTA"}.
+#' Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}.
 #' 
 #' @param c1 A vector of character strings with the mutation indicated by
 #' e.g. \code{[C>A]} in the middle.
@@ -49,7 +49,7 @@ Unstaple96 <- function(c1) {
   return(retval)
 }
 
-#' Convert 96-channel mutation types like this \code{"ACTA" -> "A[C>A]T"}.
+#' Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}.
 #' 
 #' This is an internal function needed for generating
 #' "non-canonical" row number formats for catalogs.
@@ -74,7 +74,7 @@ Restaple96 <- function(c1) {
 }
 
 
-#' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T"
+#' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T".
 #' 
 #' The file needs to have the rownames in the first column.
 #' @keywords internal
