@@ -1,4 +1,4 @@
-context("Reading and splitting VCFs")
+context("Reading VCFs")
 
 test_that(
   "ReadStrelkaSBSVCFs",

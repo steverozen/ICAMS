@@ -2,7 +2,7 @@
 % Please edit documentation in R/INDELS_related_functions.R
 \name{CanonicalizeID}
 \alias{CanonicalizeID}
-\title{Determine the muation types of insertions and deletions.}
+\title{Determine the mutation types of insertions and deletions.}
 \usage{
 CanonicalizeID(context, ref, alt, pos)
 }
@@ -22,6 +22,6 @@ A vector of strings that are the canonical representations
  of the given insertions and deletions.
 }
 \description{
-Determine the muation types of insertions and deletions.
+Determine the mutation types of insertions and deletions.
 }
 \keyword{internal}

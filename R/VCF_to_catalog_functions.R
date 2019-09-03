@@ -837,7 +837,7 @@ ReadAndSplitMutectVCFs <- function(files) {
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL, 
+CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL, 
                                    sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
@@ -877,10 +877,10 @@ CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL,
   # e.g. ATGCT>T "ATGCTT" maps to AGCAT>A, "AGCATA"
   vcf$pyr.mut <- PyrPenta(vcf$mutation)
 
-  # One SBS mutation can be represented by more than 1 row in vcf after annotated by
-  # AddTranscript function if the mutation position falls into the range of
-  # multiple transcripts. When creating the 1536 and 96 catalog, we only need to
-  # count these mutations once.
+  # One SBS mutation can be represented by more than 1 row in vcf 
+  # after annotation by AddTranscript if the mutation position falls 
+  # is in multiple transcripts. When creating the 1536 and 96 catalog,
+  # we only need to count these mutations once.
   vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
               by = .(CHROM, ALT, POS)]
 
@@ -912,8 +912,11 @@ CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL,
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   colnames(mat96) <- sample.id
   
-  if (is.null(trans.ranges)) {
-    return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+  # if (is.null(trans.ranges)) {
+  #   return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+  # }
+  if (is.null(vcf$strand)) {
+     return(list(catSBS96 = mat96, catSBS1536 = mat1536))
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -947,6 +950,53 @@ CreateOneColSBSMatrix <- function(vcf, trans.ranges = NULL,
 
   return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
 }
+
+
+#' Add sequence and transcript information to an in-memory SBS VCF.
+#' 
+#' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
+#' 
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details. 
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
+#'
+#' @return An in-memory SBS VCF as a \code{data.table}.
+#' This has been annotated with the sequence context
+#' (column name \code{seq.21context})
+#' and with transcript information in the form of a gene symbol
+#' (e.g. \code{"TP53"}) and transcript strand. This information is
+#' in the columns transcript range
+#'    \code{trans.start.pos},
+#'   \code{trans.end.pos}, \code{trans.gene.symbol}, or
+#'   \code{trans.strand} columns to the output. These columns
+#'   are not added if \code{is.null(trans.ranges)}.
+#' 
+#' @export
+
+AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
+  SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
+  
+  # Delete the rows of SBS if the extracted sequence contains "N"
+  idx <- grep("N", substr(SBS.vcf$seq.21bases, 9, 13))
+  if (!length(idx) == 0) {
+    SBS.vcf <- SBS.vcf[-idx, ]
+    message(
+      'Rows in the SBS vcf where surrounding sequence contains "N" ',
+      'have been deleted so as not to conflict with downstream processing')
+  }
+  
+  CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
+  if (!is.null(trans.ranges)) {
+    SBS.vcf <- AddTranscript(SBS.vcf, trans.ranges)
+  }
+  return(as.data.table(SBS.vcf))
+}
+
 
 #' Create SBS catalogs from SBS VCFs
 #'
@@ -995,23 +1045,12 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   catSBS1536 <- empty.cats$catSBS1536
 
   for (i in 1:ncol) {
-    SBS <- list.of.SBS.vcfs[[i]]
+    SBS.vcf <- list.of.SBS.vcfs[[i]]
 
-    SBS <- AddSeqContext(SBS, ref.genome = ref.genome)
-
-    # Delete the rows of SBS if the extracted sequence contains "N"
-    idx <- grep("N", substr(SBS$seq.21bases, 9, 13))
-    if (!length(idx) == 0) {
-      SBS <- SBS[-idx, ]
-      message(
-        'Rows in the SBS vcf where surrounding sequence contains "N" ',
-        'have been deleted so as not to conflict with downstrea processing')
-    }
-
-    CheckSeqContextInVCF(SBS, "seq.21bases")
-    SBS <- AddTranscript(SBS, trans.ranges)
-    SBS.cat <- CreateOneColSBSMatrix(SBS, trans.ranges)
-    rm(SBS)
+    annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
+    
+    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf)
+                                     # , trans.ranges)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
       catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)

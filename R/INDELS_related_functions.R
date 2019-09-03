@@ -632,7 +632,7 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
   }
 }
 
-#' @title Determine the muation types of insertions and deletions.
+#' @title Determine the mutation types of insertions and deletions.
 #'
 #' @param context A vector of ample surrounding
 #'   sequence on each side the variants

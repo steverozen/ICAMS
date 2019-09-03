@@ -16,6 +16,8 @@ test_that("MutectVCFFilesToCatalog", {
                                   ref.genome = "hg38",
                                   trans.ranges = trans.ranges.GRCh38,
                                   region = "genome")
+  
+  # Test for case when trans.ranges is not supplied.
   cat4 <- MutectVCFFilesToCatalog("testdata/Mutect.GRCh38.vcf",
                                   ref.genome = "hg38")
   expect_equal(cat1$catSBS96, cat2$catSBS96)
