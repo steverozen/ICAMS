@@ -594,7 +594,8 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   dt.rm$delete.flag = TRUE
   out.SBS.dt <- merge(vcf.dt, dt.rm, by = c("CHROM", "POS"), all.x = TRUE)
   out.SBS.dt2 <- out.SBS.dt[is.na(delete.flag)]
-  out.SBS.df <- as.data.frame(out.SBS.dt2[, delete.flag := NULL])
+  out.SBS.df <- 
+    as.data.frame(out.SBS.dt2[, c("POS.plus.one", "delete.flag") := NULL])
   num.SBS.out <- nrow(out.SBS.df)
 
   # Now separate doublets (DBSs) from triplet and above base substitutions.
