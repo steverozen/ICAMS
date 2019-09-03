@@ -853,7 +853,7 @@ RevcDBS144 <- function(mutstring) {
 #' @keywords internal
 ReadTranscriptRanges <- function(file) {
   dt <- data.table::fread(file)
-  colnames(dt) <- c("chrom", "start", "end", "strand", "gene.name")
+  colnames(dt) <- c("chrom", "start", "end", "strand", "gene.symbol")
   chrOrder <- c((1:22), "X", "Y")
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
   data.table::setkeyv(dt, c("chrom", "start", "end"))
