@@ -2,33 +2,26 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{CreateOneColDBSMatrix}
 \alias{CreateOneColDBSMatrix}
-\title{Create double base catalog for *one* sample from
-a Variant Call Format (VCF) file}
+\title{Create the matrix a DBS catalog for *one* sample from an in-memory VCF.}
 \usage{
-CreateOneColDBSMatrix(vcf, trans.ranges = NULL, sample.id = "count")
+CreateOneColDBSMatrix(vcf, sample.id = "count")
 }
 \arguments{
-\item{vcf}{An in-memory VCF file annotated by the AddSeqContext and
-AddTranscript functions. It must *not* contain indels and must
-*not* contain SBS (single base substitutions), or triplet base
-substitutions etc.}
-
-\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
-transcript range and strand information. Please refer to
-\code{\link{TranscriptRanges}} for more details.}
+\item{vcf}{An in-memory VCF file annotated with sequence context and
+transcript information by function \code{\link{AnnotateDBSVCF}}. It must
+*not* contain indels and must *not* contain SBS (single base
+substitutions), or triplet base substitutions etc.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
 \value{
-A list of three 1-column matrices with the names
-\code{catDBS78}, \code{catDBS144}, and \code{catDBS136}.
- If trans.ranges is NULL, \code{catDBS144} is
-  not generated. Do not rely on the order of elements
-  in the list.
+A list of three 1-column matrices with the names \code{catDBS78},
+  \code{catDBS144}, and \code{catDBS136}. If trans.ranges is NULL,
+  \code{catDBS144} is not generated. Do not rely on the order of elements in
+  the list.
 }
 \description{
-Create double base catalog for *one* sample from
-a Variant Call Format (VCF) file
+Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 }
 \note{
 DBS 144 catalog only contains mutations in transcribed regions.

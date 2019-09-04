@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{AnnotateSBSVCF}
 \alias{AnnotateSBSVCF}
-\title{Add sequence and transcript information to an in-memory SBS VCF.}
+\title{Add sequence context and transcript information to an in-memory SBS VCF.}
 \usage{
 AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges = NULL)
 }
@@ -21,15 +21,23 @@ information.}
 \value{
 An in-memory SBS VCF as a \code{data.table}.
 This has been annotated with the sequence context
-(column name \code{seq.21context})
+(column name \code{seq.21bases})
 and with transcript information in the form of a gene symbol
 (e.g. \code{"TP53"}) and transcript strand. This information is
-in the columns transcript range
-   \code{trans.start.pos},
-  \code{trans.end.pos}, \code{trans.gene.symbol}, or
-  \code{trans.strand} columns to the output. These columns
-  are not added if \code{is.null(trans.ranges)}.
+in the columns \code{trans.start.pos}, \code{trans.end.pos}
+, \code{trans.strand} and \code{trans.gene.symbol} in the output. 
+These columns are not added if \code{is.null(trans.ranges)}.
 }
 \description{
-Add sequence and transcript information to an in-memory SBS VCF.
+Add sequence context and transcript information to an in-memory SBS VCF.
+}
+\examples{
+file <- c(system.file("extdata",
+                      "Strelka.SBS.GRCh37.vcf",
+                      package = "ICAMS"))
+list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+  annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+                                      trans.ranges = trans.ranges.GRCh37)}
 }
