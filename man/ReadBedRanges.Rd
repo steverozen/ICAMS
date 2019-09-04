@@ -10,7 +10,8 @@ ReadBedRanges(file)
 \item{file}{Path to the file in bed format.}
 }
 \value{
-A data.table keyed by chrom, start, and end.
+A data.table keyed by chrom, start, and end. It uses one-based
+  coordinates.
 }
 \description{
 Read chromosome and position information from a bed format file.

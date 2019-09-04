@@ -864,8 +864,9 @@ ReadTranscriptRanges <- function(file) {
 #'
 #' @param file Path to the file in bed format.
 #'
-#' @return A data.table keyed by chrom, start, and end.
-#'
+#' @return A data.table keyed by chrom, start, and end. It uses one-based
+#'   coordinates.
+#'   
 #' @keywords internal
 ReadBedRanges <- function(file) {
   dt <- data.table::fread(file)
