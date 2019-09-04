@@ -966,9 +966,6 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   mat96 <- mat96[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   colnames(mat96) <- sample.id
   
-  # if (is.null(trans.ranges)) {
-  #   return(list(catSBS96 = mat96, catSBS1536 = mat1536))
-  # }
   if (is.null(vcf$trans.strand)) {
      return(list(catSBS96 = mat96, catSBS1536 = mat1536))
   }
@@ -1229,7 +1226,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   rownames(DBS.mat.136) <- DBS.dt.136.2$rn
   colnames(DBS.mat.136)<- sample.id
   
-  if (is.null(trans.ranges)) {
+  if (is.null(vcf$trans.strand)) {
     return(list(catDBS78 = DBS.mat.78, catDBS136 = DBS.mat.136))
   }
   
