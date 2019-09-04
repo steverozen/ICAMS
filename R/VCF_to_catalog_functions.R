@@ -459,6 +459,11 @@ AddTranscript <- function(df, trans.ranges = NULL) {
   df.colnames <- colnames(df)
   trans.ranges.colnames <- colnames(trans.ranges)[-1]
   setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
+  
+  # Rename some of the columns in dt3
+  setnames(dt3, old = c("start", "end", "strand", "gene.symbol"), 
+           new = c("trans.start.pos", "trans.end.pos", "trans.strand", 
+                   "trans.gene.symbol"))
 
   # Delete redundant column in dt3
   dt4 <- dt3[, POS2 := NULL]
