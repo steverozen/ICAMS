@@ -118,7 +118,7 @@ NULL
 if(getRversion() >= "2.15.1") {
   utils::globalVariables(c("all.abundance",
                            "BSgenome.Mmusculus.UCSC.mm10",
-                           "POS2", "POS", 
+                           "POS2", "POS", "trans.strand",
                            "bothstrand", "strand", ".", "CHROM",
                            "ALT", "count", "rn", "occurrences", "type", "strand",
                            "bothstrand", "chrom", "exome.start", "exome.end",
