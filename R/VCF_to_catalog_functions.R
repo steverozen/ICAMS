@@ -1143,33 +1143,26 @@ AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
   return(as.data.table(DBS.vcf))
 }
 
-#' Create double base catalog for *one* sample from
-#' a Variant Call Format (VCF) file
+#' Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSeqContext and
-#'   AddTranscript functions. It must *not* contain indels and must
-#'   *not* contain SBS (single base substitutions), or triplet base
-#'   substitutions etc.
-#' 
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.  
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateDBSVCF}}. It must
+#'   *not* contain indels and must *not* contain SBS (single base
+#'   substitutions), or triplet base substitutions etc.
 #'   
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
 #'
-#' @return A list of three 1-column matrices with the names
-#' \code{catDBS78}, \code{catDBS144}, and \code{catDBS136}.
-#'  If trans.ranges is NULL, \code{catDBS144} is
-#'   not generated. Do not rely on the order of elements
-#'   in the list.
+#' @return A list of three 1-column matrices with the names \code{catDBS78},
+#'   \code{catDBS144}, and \code{catDBS136}. If trans.ranges is NULL,
+#'   \code{catDBS144} is not generated. Do not rely on the order of elements in
+#'   the list.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
-                                   sample.id = "count") {
+CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude SBSs
@@ -1196,7 +1189,7 @@ CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
   stopifnot(nchar(vcf$REF) == 2)
 
   # One DBS mutation can be represented by more than 1 row in vcf after annotated by
-  # AddTranscript function if the mutation position falls into the range of
+  # AnnotateDBSVCF function if the mutation position falls into the range of
   # multiple transcripts. When creating the 78 and 136 catalog, we only need to
   # count these mutations once.
   vcf1 <- vcf[, .(REF = REF[1], seq.21bases = seq.21bases[1]),
@@ -1247,19 +1240,19 @@ CreateOneColDBSMatrix <- function(vcf, trans.ranges = NULL,
   # One DBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 144 catalog, we only need to count these mutations once.
-  vcf3 <- vcf2[, .(REF = REF[1], strand = strand[1]),
+  vcf3 <- vcf2[, .(REF = REF[1], trans.strand = trans.strand[1]),
                by = .(CHROM, ALT, POS)]
 
   # Create the 144 DBS catalog matrix
   # There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
   # 4 x 4 x 3 x 3 = 144.
   tab.DBS.144  <-
-    table(paste0(vcf3$REF, vcf3$ALT), vcf3$strand, useNA = "ifany")
+    table(paste0(vcf3$REF, vcf3$ALT), vcf3$trans.strand, useNA = "ifany")
   stopifnot(sum(tab.DBS.144) == nrow(vcf3))
   DBS.dt.144 <- as.data.table(tab.DBS.144)
-  colnames(DBS.dt.144) <- c("rn", "strand", "count")
-  DBS.dt.144 <- DBS.dt.144[!is.na(strand)]
-  DBS.dt.144[strand == "-", rn := RevcDBS144(rn)]
+  colnames(DBS.dt.144) <- c("rn", "trans.strand", "count")
+  DBS.dt.144 <- DBS.dt.144[!is.na(trans.strand)]
+  DBS.dt.144[trans.strand == "-", rn := RevcDBS144(rn)]
   DBS.dt.144 <- DBS.dt.144[, .(count = sum(count)), by = rn]
   row.order.144 <- data.table(rn = ICAMS::catalog.row.order$DBS144)
 
