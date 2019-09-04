@@ -14,7 +14,8 @@ GetStrandedKmerCounts(k, ref.genome, stranded.ranges, filter.path,
 \code{\link{ICAMS}}.}
 
 \item{stranded.ranges}{A keyed data table which has stranded ranges
-information. It has four columns: chrom, start, end and strand.}
+information. It has four columns: chrom, start, end and strand. It should
+use one-based coordinate system.}
 
 \item{filter.path}{If given, homopolymers will be masked from
 genome(sequence). Only simple repeat masking is accepted now.}

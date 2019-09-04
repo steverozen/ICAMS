@@ -1555,7 +1555,8 @@ RemoveRangesOnBothStrand <- function(stranded.ranges) {
 #'   genome(sequence). Only simple repeat masking is accepted now.
 #'
 #' @param stranded.ranges A keyed data table which has stranded ranges
-#'   information. It has four columns: chrom, start, end and strand.
+#'   information. It has four columns: chrom, start, end and strand. It should
+#'   use one-based coordinate system.
 #'   
 #' @param verbose If \code{TRUE} generate progress messages.
 #'
