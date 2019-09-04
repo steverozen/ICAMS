@@ -52,7 +52,7 @@
 #' @format A \code{\link[data.table]{data.table}} which contains transcript
 #'   range and strand information for a particular reference genome.
 #'   \code{colname}s are \code{chrom}, \code{start}, \code{end}, \code{strand},
-#'   \code{gene.name}. It uses one-based coordinates.
+#'   \code{gene.symbol}. It uses one-based coordinates.
 #' 
 #' @source \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gff3.gz}
 #' 

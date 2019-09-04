@@ -1,3 +1,7 @@
+# ICAMS 2.0.9.000x
+* Added public AnnotateSBSVCF and AnnotateDBSVCF functions.
+* Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.*.
+
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
   as a 1-column matrix) and optionally infers the class from the

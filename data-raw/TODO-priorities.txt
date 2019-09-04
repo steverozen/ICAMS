@@ -1,14 +1,10 @@
 # ICAMS to do list, 2019 09 03
 
-
-Add test of case where trans.ranges is not supplied.
-
 ## Highest priority
 1.1 *** Steve Background signature subtraction (will take until early September)
 
 1.2 Steve and Nanhai Web and local shiny app design and initial implementation
-1.2.1 Steve find shiny expert to discuss (Alvin)
-1.2.2 Buy web server hardware?
+1.2.1 Use NUS AWS?
 1.2.3 Design points
 1.2.3.1 outputs the standard plots and catalogs.
 1.2.3.2 outputs a report with
