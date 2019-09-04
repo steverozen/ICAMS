@@ -822,15 +822,12 @@ ReadAndSplitMutectVCFs <- function(files) {
 
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
-#' @param vcf An in-memory VCF file annotated by the AddSeqContext and
-#'   AddTranscript functions. It must *not* contain indels and must *not*
-#'   contain DBS (double base substitutions), or triplet base substitutions
-#'   etc., even if encoded as neighboring SBS.
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateSBSVCF}}. It must
+#'   *not* contain indels and must *not* contain DBS (double base
+#'   substitutions), or triplet base substitutions etc., even if encoded as
+#'   neighboring SBS.
 #'   
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.  
-#'
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
@@ -843,8 +840,7 @@ ReadAndSplitMutectVCFs <- function(files) {
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL, 
-                                   sample.id = "count") {
+CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude DBSs
@@ -921,7 +917,7 @@ CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL,
   # if (is.null(trans.ranges)) {
   #   return(list(catSBS96 = mat96, catSBS1536 = mat1536))
   # }
-  if (is.null(vcf$strand)) {
+  if (is.null(vcf$trans.strand)) {
      return(list(catSBS96 = mat96, catSBS1536 = mat1536))
   }
   
@@ -932,19 +928,20 @@ CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL,
   # One SBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 192 catalog, we only need to count these mutations once.
-  vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], strand = strand[1]),
-              by = .(CHROM, ALT, POS)]
+  vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], 
+                   trans.strand = trans.strand[1]),
+               by = .(CHROM, ALT, POS)]
 
   # Create the 192 catalog matrix
   tab192  <- table(paste0(substr(vcf3$mutation, 2, 4),
                           substr(vcf3$mutation, 6, 6)),
-                   vcf3$strand,
+                   vcf3$trans.strand,
                    useNA = "ifany")
   stopifnot(sum(tab192) == nrow(vcf3))
   dt192 <- as.data.table(tab192)
-  colnames(dt192) <- c("rn", "strand", "count")
-  dt192 <- dt192[!is.na(strand)]
-  dt192[strand == "-", rn := RevcSBS96(rn)]
+  colnames(dt192) <- c("rn", "trans.strand", "count")
+  dt192 <- dt192[!is.na(trans.strand)]
+  dt192[trans.strand == "-", rn := RevcSBS96(rn)]
   dt192 <- dt192[ , .(count = sum(count)), by = rn]
   x192 <- data.table(rn = ICAMS::catalog.row.order$SBS192)
   x <- merge(x192, dt192, by = "rn", all.x = TRUE)
@@ -958,7 +955,7 @@ CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL,
 }
 
 
-#' Add sequence and transcript information to an in-memory SBS VCF.
+#' Add sequence context and transcript information to an in-memory SBS VCF.
 #' 
 #' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
 #' 
@@ -973,17 +970,24 @@ CreateOneColSBSMatrix <- function(vcf, # trans.ranges = NULL,
 #'
 #' @return An in-memory SBS VCF as a \code{data.table}.
 #' This has been annotated with the sequence context
-#' (column name \code{seq.21context})
+#' (column name \code{seq.21bases})
 #' and with transcript information in the form of a gene symbol
 #' (e.g. \code{"TP53"}) and transcript strand. This information is
-#' in the columns transcript range
-#'    \code{trans.start.pos},
-#'   \code{trans.end.pos}, \code{trans.gene.symbol}, or
-#'   \code{trans.strand} columns to the output. These columns
-#'   are not added if \code{is.null(trans.ranges)}.
-#' 
+#' in the columns \code{trans.start.pos}, \code{trans.end.pos}
+#' , \code{trans.strand} and \code{trans.gene.symbol} in the output. 
+#' These columns are not added if \code{is.null(trans.ranges)}.
+#'   
 #' @export
-
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)}
 AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
   SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
   
@@ -1056,7 +1060,6 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
     annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
     
     SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf)
-                                     # , trans.ranges)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
       catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
