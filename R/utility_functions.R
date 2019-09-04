@@ -1634,9 +1634,12 @@ GetStrandedKmerCounts <-
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param exome.range A keyed data table which has exome ranges information.
-#' It has three columns: chrom, start and end.
-#'
+#' @param exome.range A keyed data table which has exome ranges information. It
+#'   has three columns: chrom, start and end. It should use one-based coordinate
+#'   system. You can use the internal function in this package
+#'   \code{ICAMS:::ReadBedRanges} to read a BED file in 0-based coordinates and
+#'   convert it to 1-based coordinates.
+#'   
 #' @param filter.path If given, homopolymers will be masked from
 #'   genome(sequence). Only simple repeat masking is accepted now.
 #'   

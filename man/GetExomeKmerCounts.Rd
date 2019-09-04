@@ -18,8 +18,11 @@ genome(sequence). Only simple repeat masking is accepted now.}
 
 \item{verbose}{If \code{TRUE} generate progress messages.}
 
-\item{exome.range}{A keyed data table which has exome ranges information.
-It has three columns: chrom, start and end.}
+\item{exome.range}{A keyed data table which has exome ranges information. It
+has three columns: chrom, start and end. It should use one-based coordinate
+system. You can use the internal function in this package
+\code{ICAMS:::ReadBedRanges} to read a BED file in 0-based coordinates and
+convert it to 1-based coordinates.}
 }
 \value{
 Matrix of the counts of exome k-mer across the \code{ref.genome}
