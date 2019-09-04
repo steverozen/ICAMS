@@ -820,6 +820,58 @@ ReadAndSplitMutectVCFs <- function(files) {
   return(split.vcfs)
 }
 
+#' Add sequence context and transcript information to an in-memory SBS VCF.
+#' 
+#' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
+#' 
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details. 
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
+#'
+#' @return An in-memory SBS VCF as a \code{data.table}.
+#' This has been annotated with the sequence context
+#' (column name \code{seq.21bases})
+#' and with transcript information in the form of a gene symbol
+#' (e.g. \code{"TP53"}) and transcript strand. This information is
+#' in the columns \code{trans.start.pos}, \code{trans.end.pos}
+#' , \code{trans.strand} and \code{trans.gene.symbol} in the output. 
+#' These columns are not added if \code{is.null(trans.ranges)}.
+#'   
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)}
+AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
+  SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
+  
+  # Delete the rows of SBS if the extracted sequence contains "N"
+  idx <- grep("N", substr(SBS.vcf$seq.21bases, 9, 13))
+  if (!length(idx) == 0) {
+    SBS.vcf <- SBS.vcf[-idx, ]
+    message(
+      'Rows in the SBS vcf where surrounding sequence contains "N" ',
+      'have been deleted so as not to conflict with downstream processing')
+  }
+  
+  CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
+  if (!is.null(trans.ranges)) {
+    SBS.vcf <- AddTranscript(SBS.vcf, trans.ranges)
+  }
+  return(as.data.table(SBS.vcf))
+}
+
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
@@ -954,60 +1006,6 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
 }
 
-
-#' Add sequence context and transcript information to an in-memory SBS VCF.
-#' 
-#' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
-#' 
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details. 
-#'   If \code{is.null(trans.ranges)} do not add transcript range
-#'   information.
-#'
-#' @return An in-memory SBS VCF as a \code{data.table}.
-#' This has been annotated with the sequence context
-#' (column name \code{seq.21bases})
-#' and with transcript information in the form of a gene symbol
-#' (e.g. \code{"TP53"}) and transcript strand. This information is
-#' in the columns \code{trans.start.pos}, \code{trans.end.pos}
-#' , \code{trans.strand} and \code{trans.gene.symbol} in the output. 
-#' These columns are not added if \code{is.null(trans.ranges)}.
-#'   
-#' @export
-#' 
-#' @examples 
-#' file <- c(system.file("extdata",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-#'                                       trans.ranges = trans.ranges.GRCh37)}
-AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
-  SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
-  
-  # Delete the rows of SBS if the extracted sequence contains "N"
-  idx <- grep("N", substr(SBS.vcf$seq.21bases, 9, 13))
-  if (!length(idx) == 0) {
-    SBS.vcf <- SBS.vcf[-idx, ]
-    message(
-      'Rows in the SBS vcf where surrounding sequence contains "N" ',
-      'have been deleted so as not to conflict with downstream processing')
-  }
-  
-  CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
-  if (!is.null(trans.ranges)) {
-    SBS.vcf <- AddTranscript(SBS.vcf, trans.ranges)
-  }
-  return(as.data.table(SBS.vcf))
-}
-
-
 #' Create SBS catalogs from SBS VCFs
 #'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
@@ -1091,6 +1089,58 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
                abundance = NULL)
   return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
               catSBS1536 = catSBS1536))
+}
+
+#' Add sequence context and transcript information to an in-memory DBS VCF.
+#' 
+#' @param DBS.vcf An in-memory DBS VCF as a \code{data.frame}.
+#' 
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details. 
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
+#'
+#' @return An in-memory DBS VCF as a \code{data.table}.
+#' This has been annotated with the sequence context
+#' (column name \code{seq.21bases})
+#' and with transcript information in the form of a gene symbol
+#' (e.g. \code{"TP53"}) and transcript strand. This information is
+#' in the columns \code{trans.start.pos}, \code{trans.end.pos}
+#' , \code{trans.strand} and \code{trans.gene.symbol} in the output. 
+#' These columns are not added if \code{is.null(trans.ranges)}.
+#'   
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)}
+AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
+  DBS.vcf <- AddSeqContext(DBS.vcf, ref.genome = ref.genome)
+  
+  # Delete the rows of DBS if the extracted sequence contains "N"
+  idx <- grep("N", substr(DBS.vcf$seq.21bases, 10, 13))
+  if (!length(idx) == 0) {
+    DBS.vcf <- DBS.vcf[-idx, ]
+    message(
+      'Rows in the DBS vcf where surrounding sequence contains "N" ',
+      'have been deleted so as not to conflict with downstream processing')
+  }
+  
+  CheckSeqContextInVCF(DBS.vcf, "seq.21bases")
+  if (!is.null(trans.ranges)) {
+    DBS.vcf <- AddTranscript(DBS.vcf, trans.ranges)
+  }
+  return(as.data.table(DBS.vcf))
 }
 
 #' Create double base catalog for *one* sample from
