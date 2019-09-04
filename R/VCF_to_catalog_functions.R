@@ -1316,23 +1316,11 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 
 
   for (i in 1 : ncol) {
-    DBS <- list.of.DBS.vcfs[[i]]
+    DBS.vcf <- list.of.DBS.vcfs[[i]]
+    
+    annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges)
 
-    DBS <- AddSeqContext(DBS, ref.genome = ref.genome)
-
-    # Delete the rows of DBS if the extracted sequence contains "N"
-    idx <- grep("N", substr(DBS$seq.21bases, 10, 13))
-    if (!length(idx) == 0) {
-      DBS <- DBS[-idx, ]
-      message(
-        'Rows in the DBS vcf where surrounding sequence contains "N" ',
-        'have been deleted so as not to conflict with downstrea processing')
-    }
-
-    DBS <- AddTranscript(DBS, trans.ranges)
-    CheckSeqContextInVCF(DBS, "seq.21bases")
-    DBS.cat <- CreateOneColDBSMatrix(DBS, trans.ranges)
-    rm(DBS)
+    DBS.cat <- CreateOneColDBSMatrix(annotated.DBS.vcf)
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
     catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
     if (!is.null(trans.ranges)) {
