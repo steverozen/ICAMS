@@ -4,7 +4,7 @@
 \alias{CreateOneColIDMatrix}
 \title{Create one column of the matrix for an indel catalog from *one* in-memory VCF.}
 \usage{
-CreateOneColIDMatrix(ID.vcf, SBS.vcf)
+CreateOneColIDMatrix(ID.vcf, SBS.vcf = NULL)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
@@ -19,10 +19,11 @@ CreateOneColIDMatrix(ID.vcf, SBS.vcf)
   arise. In PCAWG, overlapping indel/SBS calls from different callers were
   included in the indel VCFs.}
 
-\item{SBS.vcf}{An in-memory VCF as a data frame. Because we have to work with
-some PCAWG data, we will look for neighboring indels and indels adjoining
-SBS. That means this functions takes an SBS VCF and an ID VCF from the same
-sample.}
+\item{SBS.vcf}{This argument defaults to \code{NULL} and
+is not used. Ideally this should be an in-memory SBS VCF 
+as a data frame. The rational is that for some data,
+complex indels might be represented as an idel withadjoining
+SBS.}
 }
 \value{
 A 1-column matrix containing the mutation catalog information.

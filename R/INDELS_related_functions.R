@@ -59,8 +59,8 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
 
   df$seq.context.width <- var.width * 6
   # 6 because we need to find out if the insertion or deletion is embedded
-  # in up to 5 additonal repeats of the inserted or deleted sequence.
-  # Then 6 to avoid possible future issues.
+  # in up to 5 additional repeats of the inserted or deleted sequence.
+  # Then add 1 to avoid possible future issues.
 
   # Extract sequence context from the reference genome
 
@@ -113,8 +113,7 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
   return(df)
 }
 
-#' @title Return the number of repeat units in which a deletion
-#' is embedded.
+#' @title Return the number of repeat units in which a deletion is embedded.
 #'
 #' @param context A string that embeds \code{rep.unit.seq} at position
 #'  \code{pos}
@@ -677,21 +676,25 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   arise. In PCAWG, overlapping indel/SBS calls from different callers were
 #'   included in the indel VCFs.
 #'
-#' @param SBS.vcf An in-memory VCF as a data frame. Because we have to work with
-#'   some PCAWG data, we will look for neighboring indels and indels adjoining
-#'   SBS. That means this functions takes an SBS VCF and an ID VCF from the same
-#'   sample.
+#' @param SBS.vcf This argument defaults to \code{NULL} and
+#'   is not used. Ideally this should be an in-memory SBS VCF 
+#'   as a data frame. The rational is that for some data,
+#'   complex indels might be represented as an idel withadjoining
+#'   SBS. 
 #'
 #' @return A 1-column matrix containing the mutation catalog information.
 #'
 #' @keywords internal
-CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
+CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
     rownames(catID) <- ICAMS::catalog.row.order$ID
     return(catID)
   }
+  
+  if (!is.null(SBS.vcf)) 
+    warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
 
   canon.ID <- CanonicalizeID(ID.vcf$seq.context,
                              ID.vcf$REF,
@@ -708,7 +711,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf) {
   # and N (the count)
 
   ID.dt2 <-
-    merge(row.order, ID.dt, by.x="rn", by.y="canon.ID", all = TRUE)
+    merge(row.order, ID.dt, by.x = "rn", by.y = "canon.ID", all = TRUE)
   ID.dt2[ is.na(N) , N := 0]
   stopifnot(setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID))
 
@@ -753,7 +756,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
   rownames(catID) <- ICAMS::catalog.row.order$ID
 
-  for (i in 1 : ncol) {
+  for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
     ID <- AddAndCheckSequenceID(ID, ref.genome = ref.genome)
     # Unlike the case for SBS and DBS, we do not
