@@ -1,6 +1,6 @@
 # ICAMS 2.0.9.000x
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF, and
-  CheckAndFixChrName.
+  AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.*.
 
 # ICAMS 2.0.9
