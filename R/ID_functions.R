@@ -1,18 +1,17 @@
-#' @title Add sequence context to a data frame with ID (insertion/deletion) mutation records,
-#'  and confirm that they match the given reference genome.
+#' @title Add sequence context to an in-memory ID (insertion/deletion) VCF, and
+#'   confirm that they match the given reference genome.
 #'
-#' @param df A data frame storing mutation records of a VCF file
-#'   containing only insertions and deletions. This function expects that
-#'   there is a "context base" to the left, for example REF = ACG, ALT = A
-#'  (deletion of CG) or REF = A, ALT = ACC (insertion of CC).
+#' @param ID.vcf An in-memory ID (insertion/deletion) VCF as a
+#'   \code{data.frame}. This function expects that there is a "context base" to
+#'   the left, for example REF = ACG, ALT = A (deletion of CG) or REF = A, ALT =
+#'   ACC (insertion of CC).
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param flag.mismatches If > 0, 
-#' then if there are mismatches to references, 
-#' generate messages showing the mismatched rows and continue.  Otherwise \code{stop}
-#' if there are mismatched rows.
+#' @param flag.mismatches If > 0, then if there are mismatches to references,
+#'   generate messages showing the mismatched rows and continue. Otherwise
+#'   \code{stop} if there are mismatched rows.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -21,6 +20,8 @@
 #' @importFrom BSgenome getSeq seqnames
 #'
 #' @importFrom stats start end
+#' 
+#' @importFrom utils write.csv
 #'
 #' @return A data frame with 2 new columns added to the input data frame:
 #' \enumerate{
@@ -29,12 +30,18 @@
 #'  \item \code{seq.context.width} The width of \code{seq.context} to the left
 #' }
 #' 
-#' @importFrom utils write.csv
-#'
-#' @keywords internal
-AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' ID.vcf <- ReadStrelkaIDVCFs(file)[[1]]
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.ID.vcf <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")}
+AnnotateIDVCF <- function(ID.vcf, ref.genome, flag.mismatches = 0) {
   ref.genome <- NormalizeGenomeArg(ref.genome)
-
+  df <- ID.vcf
   stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   if (any(df$REF == "" | df$ALT == "")) {
     # Not sure how to handle this yet; the code may work with minimal adjustment
@@ -53,17 +60,17 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
   }
   # First, figure out how much sequence context is needed.
   var.width <- abs(nchar(df$ALT) - nchar(df$REF))
-
+  
   is.del <- nchar(df$ALT) <= nchar(df$REF)
   var.width.in.genome <- ifelse(is.del, var.width, 0)
-
+  
   df$seq.context.width <- var.width * 6
   # 6 because we need to find out if the insertion or deletion is embedded
   # in up to 5 additional repeats of the inserted or deleted sequence.
   # Then add 1 to avoid possible future issues.
-
+  
   # Extract sequence context from the reference genome
-
+  
   # Check if the format of sequence names in df and genome are the same.
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
@@ -76,15 +83,15 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
             IRanges(start = df$POS - df$seq.context.width, # 10,
                     end = df$POS + var.width.in.genome + df$seq.context.width) # 10
     )
-
+  
   df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
-
+  
   seq.to.check <-
     substr(df$seq.context, df$seq.context.width + 1,
            df$seq.context.width + var.width.in.genome + 1)
-
+  
   mismatches <- which(seq.to.check != df$REF)
-
+  
   if (length(mismatches) > 0) {
     tmp.table <-
       data.frame(
@@ -655,7 +662,7 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #' @title Create one column of the matrix for an indel catalog from *one* in-memory VCF.
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
-#'   \code{\link{AddAndCheckSequenceID}} function. It must only
+#'   \code{\link{AnnotateIDVCF}} function. It must only
 #'   contain indels and must \strong{not} contain SBSs
 #'   (single base substitutions), DBSs, or triplet
 #'   base substitutions, etc.
@@ -748,7 +755,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
 
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AddAndCheckSequenceID(ID, ref.genome = ref.genome)
+    ID <- AnnotateIDVCF(ID, ref.genome = ref.genome)
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
     one.ID.column <- CreateOneColIDMatrix(ID)

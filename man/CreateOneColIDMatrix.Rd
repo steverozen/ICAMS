@@ -8,7 +8,7 @@ CreateOneColIDMatrix(ID.vcf, SBS.vcf = NULL)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
-  \code{\link{AddAndCheckSequenceID}} function. It must only
+  \code{\link{AnnotateIDVCF}} function. It must only
   contain indels and must \strong{not} contain SBSs
   (single base substitutions), DBSs, or triplet
   base substitutions, etc.
