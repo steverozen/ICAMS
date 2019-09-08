@@ -503,7 +503,12 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' how the computation is carried out.
 #
 #' @return A string that is the canonical representation
-#'  of the given deletion type. 
+#'  of the given deletion type. Return \code{NA} 
+#'  and raise a warning if
+#'  there is an un-normalized representation of
+#'  the deletion of a repeat unit.
+#'  See \code{FindDelMH} for details.
+#'  (This seems to be very rare.)
 #'
 #' @examples 
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 3) # "DEL:T:1:2"
@@ -537,8 +542,11 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
   # We have to look for microhomology
   microhomology.len <- FindDelMH(context, del.seq, pos, trace = trace)
   if (microhomology.len == -1) {
-    stop("Non-normalized deleted repeat: ",
-         "necessary to use a different indel caller or enhance this code")
+    warning("Non-normalized deleted repeat ignored:",
+            "\ncontext: ", context,
+            "\ndeleted sequence: ", del.seq,
+            "\nposition of deleted sequence: ", pos)
+    return(NA)
   }
 
   if (microhomology.len == 0) {
@@ -611,6 +619,12 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #' @return A string that is the canonical representation
 #'  of the type of the given
 #'  insertion or deletion.
+#'  Return \code{NA} 
+#'  and raise a warning if
+#'  there is an un-normalized representation of
+#'  the deletion of a repeat unit.
+#'  See \code{FindDelMH} for details.
+#'  (This seems to be very rare.)
 #'
 #' @keywords internal
 Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
@@ -697,7 +711,10 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
                              ID.vcf$REF,
                              ID.vcf$ALT,
                              ID.vcf$seq.context.width + 1)
-
+  
+  if (any(is.na(canon.ID))) warning("NA ID categories ignored")
+  canon.ID <- canon.ID[!is.na(canon.ID)]
+  
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
 

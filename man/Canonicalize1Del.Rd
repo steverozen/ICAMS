@@ -19,7 +19,12 @@ how the computation is carried out.}
 }
 \value{
 A string that is the canonical representation
- of the given deletion type.
+ of the given deletion type. Return \code{NA} 
+ and raise a warning if
+ there is an un-normalized representation of
+ the deletion of a repeat unit.
+ See \code{FindDelMH} for details.
+ (This seems to be very rare.)
 }
 \description{
 This function is primarily for internal use, but we export it

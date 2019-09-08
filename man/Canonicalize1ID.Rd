@@ -23,6 +23,12 @@ how the computation is carried out.}
 A string that is the canonical representation
  of the type of the given
  insertion or deletion.
+ Return \code{NA} 
+ and raise a warning if
+ there is an un-normalized representation of
+ the deletion of a repeat unit.
+ See \code{FindDelMH} for details.
+ (This seems to be very rare.)
 }
 \description{
 Given a single insertion or deletion in context categorize it.
