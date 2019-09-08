@@ -31,9 +31,8 @@ if (requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)) {
   new.chr.names <- 
     CheckAndFixChrNames(
       vcf.df =
-             data.frame(CHROM = c("1", "23"), stringsAsFactors = FALSE),
+        data.frame(CHROM = c("1", "23"), stringsAsFactors = FALSE),
       ref.genome =
-            BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38)}
-   
-
+        BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38)}
+        
 }
