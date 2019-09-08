@@ -1,5 +1,5 @@
 # ICAMS 2.0.9.000x
-* Added public functions AnnotateSBSVCF, AnnotateDBSVCF, and
+* Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.*.
 * Un-normalized deletions in a repeat (e.g.GAGG deleted from CCCAGGGAGGGTCCC
