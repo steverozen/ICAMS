@@ -854,7 +854,14 @@ RevcDBS144 <- function(mutstring) {
 ReadTranscriptRanges <- function(file) {
   dt <- data.table::fread(file)
   colnames(dt) <- c("chrom", "start", "end", "strand", "gene.symbol")
-  chrOrder <- c((1:22), "X", "Y")
+  
+  # Check whether the transcript ranges come from human or mouse genomes
+  if (length(unique(dt$chrom)) == 24) {
+    chrOrder <- c((1:22), "X", "Y")
+  } else if (length(unique(dt$chrom)) == 21) {
+    chrOrder <- c((1:19), "X", "Y")
+  }
+  
   dt$chrom <- factor(dt$chrom, chrOrder, ordered = TRUE)
   data.table::setkeyv(dt, c("chrom", "start", "end"))
   return(dt)
