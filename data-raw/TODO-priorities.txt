@@ -28,6 +28,8 @@ that and the rownames are correct).
 ... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
 ... HIGH Nanhai Extended sequence plotting for ID
 ... HIGH Nanhai Extended sequence plotting for DNS 
+... HIGH Read and Write SigProfiler formated Indel catalogs (and check if 1536, 192, etc are 
+    also different from PCAWG)
 
 ## Medium priority
 ... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
@@ -49,6 +51,7 @@ Nat.... MED Plot transcription strand bias as function of distance from TSS
 ... MEDIUM Maybe: Should it be possible to supply a directory as input to
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
+... MED Straned indel plot: see https://osf.io/2aj6t/wiki/4.%20Plotting%20Indels/ 
 
 ## Low priority
 ... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
