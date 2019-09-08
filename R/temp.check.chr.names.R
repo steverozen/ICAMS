@@ -1,5 +1,23 @@
+#' Check and, if possible, correct the chromosome names in a VCF \code{data.frame}.
+#' 
+#' @param vcf.df A VCF as a \code{data.frame}. Check the names in column
+#' \code{CHROM}.
+#' 
+#' @param ref.genome The reference genome with the chromosome names to check
+#' \code{vcf.df$CHROM} against; must be a Bioconductor 
+#' \code{\link[BSgenome]{BSgenome}}, e.g.
+#' \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}.
+#' 
+#' @return If the \code{vcf.df$CHROM} values are correct or
+#' can be corrected, then a vector of chromosome names
+#' that can be used as a replacement for \code{vcf.df$CHROM}.
+#' If the names in \code{vcf.df$CHROM} cannot be made to
+#' be consistent with the chromosome names in in \code{ref.genome},
+#' then \code{stop}.
+#' 
+#' @export
 
-CheckAndNormalizeChrNames <- function(vcf.df, ref.genome) {
+CheckAndFixChrNames <- function(vcf.df, ref.genome) {
   
   names.to.check <- unique(vcf.df$CHROM)
 

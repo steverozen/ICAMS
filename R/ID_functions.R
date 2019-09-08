@@ -68,17 +68,21 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
   # "chr1", "chr2", ....
-  vcf.chr.names <- unique(df$CHROM)
-  if (!all(vcf.chr.names %in% seqnames(ref.genome))) {
-    tmp.chr <- paste0("chr", vcf.chr.names)
-    if (!all(tmp.chr %in% seqnames(ref.genome))) {
-      stop("Cannot match chromosome names:\n",
-           sort(vcf.chr.names), "\nversus\n", sort(seqnames(ref.genome)))
+  
+  chr.names <- CheckAndFixChrNames(vcf.df = df, ref.genome = ref.genome)
+  if (FALSE) {
+    vcf.chr.names <- unique(df$CHROM)
+    if (!all(vcf.chr.names %in% seqnames(ref.genome))) {
+      tmp.chr <- paste0("chr", vcf.chr.names)
+      if (!all(tmp.chr %in% seqnames(ref.genome))) {
+        stop("Cannot match chromosome names:\n",
+             sort(vcf.chr.names), "\nversus\n", sort(seqnames(ref.genome)))
+      }
+      
+      chr.names <- paste0("chr", df$CHROM)
+    } else {
+      chr.names <- df$CHROM
     }
-
-    chr.names <- paste0("chr", df$CHROM)
-  } else {
-    chr.names <- df$CHROM
   }
   # Create a GRanges object with the needed width.
   Ranges <-
@@ -679,8 +683,8 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #' @param SBS.vcf This argument defaults to \code{NULL} and
 #'   is not used. Ideally this should be an in-memory SBS VCF 
 #'   as a data frame. The rational is that for some data,
-#'   complex indels might be represented as an idel withadjoining
-#'   SBS. 
+#'   complex indels might be represented as an indel with adjoining
+#'   SBSs. 
 #'
 #' @return A 1-column matrix containing the mutation catalog information.
 #'

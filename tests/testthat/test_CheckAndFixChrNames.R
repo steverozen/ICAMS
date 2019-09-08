@@ -1,6 +1,6 @@
-context("CheckAndNormalizeChrNames")
+context("CheckAndFixChrNames")
 
-test_that("All CheckAndNormalizeChrNames", {
+test_that("All CheckAndFixChrNames", {
   
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -15,33 +15,33 @@ test_that("All CheckAndNormalizeChrNames", {
   in.vcf <- make.input(c("1", "2")) 
   
   expect_equal(
-    CheckAndNormalizeChrNames(
+    CheckAndFixChrNames(
       vcf.df = in.vcf,
       ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5),
     c("1", "2"))
   
   expect_equal(
-    CheckAndNormalizeChrNames(
+    CheckAndFixChrNames(
       vcf.df = in.vcf,
       ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38),
     c("chr1", "chr2"))
   
   in.vcf <- make.input(c("1", "23"))
   expect_equal(
-    CheckAndNormalizeChrNames(
+    CheckAndFixChrNames(
       vcf.df = in.vcf,
       ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5),
     c("1", "X"))
   
   expect_equal(
-    CheckAndNormalizeChrNames(
+    CheckAndFixChrNames(
       vcf.df = in.vcf,
       ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38),
     c("chr1", "chrX"))
   
   bad.vcf <- make.input(c("1", "chr2"))
   expect_error(
-    CheckAndNormalizeChrNames(
+    CheckAndFixChrNames(
       vcf.df = bad.vcf,
       ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38))
 
