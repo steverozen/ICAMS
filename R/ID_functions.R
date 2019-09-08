@@ -68,22 +68,8 @@ AddAndCheckSequenceID <- function(df, ref.genome, flag.mismatches = 0) {
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
   # "chr1", "chr2", ....
-  
   chr.names <- CheckAndFixChrNames(vcf.df = df, ref.genome = ref.genome)
-  if (FALSE) {
-    vcf.chr.names <- unique(df$CHROM)
-    if (!all(vcf.chr.names %in% seqnames(ref.genome))) {
-      tmp.chr <- paste0("chr", vcf.chr.names)
-      if (!all(tmp.chr %in% seqnames(ref.genome))) {
-        stop("Cannot match chromosome names:\n",
-             sort(vcf.chr.names), "\nversus\n", sort(seqnames(ref.genome)))
-      }
-      
-      chr.names <- paste0("chr", df$CHROM)
-    } else {
-      chr.names <- df$CHROM
-    }
-  }
+  
   # Create a GRanges object with the needed width.
   Ranges <-
     GRanges(chr.names,
