@@ -2,6 +2,9 @@
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF, and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.*.
+* Un-normalized deletions in a repeat (e.g.GAGG deleted from CCCAGGGAGGGTCCC
+  should be normalize to a deletion of AGGG) are now ignored with a
+  warning rather than causing a stop().
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
