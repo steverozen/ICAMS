@@ -20,9 +20,20 @@ If the \code{vcf.df$CHROM} values are correct or
 can be corrected, then a vector of chromosome names
 that can be used as a replacement for \code{vcf.df$CHROM}.
 If the names in \code{vcf.df$CHROM} cannot be made to
-be consistent with the chromosome names in in \code{ref.genome},
+be consistent with the chromosome names in \code{ref.genome},
 then \code{stop}.
 }
 \description{
 Check and, if possible, correct the chromosome names in a VCF \code{data.frame}.
+}
+\examples{
+if (requireNamespace("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)) {
+  new.chr.names <- 
+    CheckAndFixChrNames(
+      vcf.df =
+             data.frame(CHROM = c("1", "23"), stringsAsFactors = FALSE),
+      ref.genome =
+            BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38)}
+   
+
 }
