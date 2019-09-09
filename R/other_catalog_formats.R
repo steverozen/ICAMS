@@ -105,3 +105,29 @@ ReadStapleGT96SBS <- function(file,
   return(df.cat)
 }
 
+
+
+# 1:Del:C:0 -> DEL:C:1:0
+# 
+# SigProID2ICAMS("DEL:C:1:0")
+
+TransRownames.ID.SigPro.ICAMS <- function(vector.of.rownames) {
+  retval <- 
+    matrix(unlist(strsplit(vector.of.rownames, ":")), nrow = 4)
+  rownames(retval) <- c("Indel_size", "Type", "Subtype", "Repeat_MH_size")
+  # NOTE: MH_size is the size of the repeat unit OR microhomology (MH)
+  ty <- retval["Type", , drop = FALSE]
+  ty <- toupper(ty)
+  ty <- sub("R", "repeats", ty)
+  ty <- sub("M", "MH", ty)
+  # Not done
+  return(retval)
+}
+
+TransRownames.ID.ICAMS.SigPro <- function(vector.of.rownames) {
+  retval <- 
+    matrix(unlist(strsplit(vector.of.rownames, ":")), nrow = 4)
+  # Not done
+  return(retval)
+  
+}

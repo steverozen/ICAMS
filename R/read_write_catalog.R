@@ -253,7 +253,8 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
   cn <- names(cos)
   ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
   # Repeat_MH_size is the size of repeat OR microhomology (MH)
-  if (strict) { for (i in 1 : 4) { stopifnot(cn[i] == ex.cn[i]) } }
+  # if (strict) { for (i in 1:4) { stopifnot(cn[i] == ex.cn[i]) } }
+  if (strict) stopifnot(cn[1:4] == ex.cn)
   names(cos)[1 : 4] <- ex.cn
   rn <- apply(cos[, 1 : 4], MARGIN = 1, paste, collapse = ":")
   # View(data.frame(mini=rn, good=ICAMS::catalog.row.order$ID))
