@@ -23,6 +23,34 @@
 #' 
 "catalog.row.order"
 
+#' Standard order of row names in a catalog.
+#'
+#' This data is designed for those
+#' who need to create their own catalogs from formats not
+#' supported by this package. The rownames denote the mutation
+#' types.  For example, for SBS96 catalogs, the rowname
+#'  AGAT represents a mutation from AGA > ATA.
+#'
+#' @format A list of character vectors indicating the standard
+#'   orders of row names in catalogs.
+#'
+#' @note In ID83 (insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5,
+#'
+#' @name CatalogRowOrder
+#' 
+#' @examples 
+#' catalog.row.order.sp$ID83
+#' # "DEL:C:1:0" "DEL:C:1:1" "DEL:C:1:2" "DEL:C:1:3" ...
+#' # There are altogether 83 row names to denote the mutation types
+#' # in ID83 catalog.
+#' 
+#' @name catalog.row.order.sp
+"catalog.row.order.sp"
+
+
+
+
 #' Transcript ranges data
 #'
 #' Transcript ranges and strand information for a particular reference genome.
@@ -82,6 +110,7 @@ NULL
 
 #' @rdname TranscriptRanges
 "trans.ranges.GRCm38"
+
 
 #' K-mer abundances.
 #'
