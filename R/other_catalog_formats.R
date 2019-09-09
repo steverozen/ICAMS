@@ -111,7 +111,7 @@ ReadStapleGT96SBS <- function(file,
 # 
 # SigProID2ICAMS("DEL:C:1:0")
 
-TransRownames.ID.SigPro.ICAMS <- function(vector.of.rownames) {
+TransRownames.ID.SigPro.PCAWG <- function(vector.of.rownames) {
   retval <- 
     matrix(unlist(strsplit(vector.of.rownames, ":")), nrow = 4)
   rownames(retval) <- c("Indel_size", "Type", "Subtype", "Repeat_MH_size")
@@ -124,7 +124,7 @@ TransRownames.ID.SigPro.ICAMS <- function(vector.of.rownames) {
   return(retval)
 }
 
-TransRownames.ID.ICAMS.SigPro <- function(vector.of.rownames) {
+TransRownames.ID.ICAMS.PCAWG <- function(vector.of.rownames) {
   retval <- 
     matrix(unlist(strsplit(vector.of.rownames, ":")), nrow = 4)
   # Not done
