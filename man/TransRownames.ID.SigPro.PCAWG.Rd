@@ -10,7 +10,6 @@ TransRownames.ID.SigPro.PCAWG(vector.of.rownames)
 For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.
 }
 \examples{
-. 
 ICAMS:::TransRownames.ID.SigPro.PCAWG("1:Del:C:0") # DEL:C:1:0;
 ICAMS:::TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") # INS:repeat:2:5+
 
