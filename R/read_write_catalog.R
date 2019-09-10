@@ -252,16 +252,14 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
   stopifnot(nrow(cos) == 83)
   
   if (any(grepl("Del:M:1", cos[ , 1]))) {
-    warning("Interpreting ", file, " as a SigProfiler insertion/deletion catalog")
-    stop("not finished")
     if (strict) {
       stop("Cannot interpret ", file, 
            " as a SigProfiler ID catalog when strict = TRUE")
-      
-      out <- as.matrix(cos[ , -1], drop = FALSE)
-    }
-    
-    # XXXX
+    } 
+    warning("Interpreting ", file, 
+            " as a SigProfiler insertion/deletion catalog")
+    rn <- TransRownames.ID.SigPro.PCAWG(unlist(cos[ , 1]))
+    out <- as.matrix(cos[ , -1, drop = FALSE])
   } else {
     cn <- names(cos)
     ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
@@ -270,14 +268,16 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
     if (strict) stopifnot(cn[1:4] == ex.cn)
     names(cos)[1:4] <- ex.cn
     rn <- apply(cos[ , 1:4], MARGIN = 1, paste, collapse = ":")
-    # View(data.frame(mini=rn, good=ICAMS::catalog.row.order$ID))
-    out <- as.matrix(cos[ , -(1:4)], drop = FALSE)
+    out <- as.matrix(cos[ , -(1:4), drop = FALSE])
+  }
+
+  stopifnot(setdiff(rn, ICAMS::catalog.row.order$ID) == c())
+  stopifnot(setdiff(ICAMS::catalog.row.order$ID, rn) == c())
+  if (strict) {
+    stopifnot(rn == ICAMS::catalog.row.order$ID)
   }
   rownames(out) <- rn
-  if (strict) {
-    stopifnot(rownames(out) == ICAMS::catalog.row.order$ID)
-  }
-  if (ncol(out) == 1) colnames(out) <- colnames(cos)[3]
+#   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3] 
   out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
