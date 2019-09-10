@@ -4,10 +4,7 @@ test_that("Read SigProfiler", {
   expect_warning(
   sp.cat <-
     ReadCatalog(
-      system.file(
-        "tests/testthat/testdata/sigProfiler_ID_signatures.csv",
-        package = "ICAMS",
-        mustWork = TRUE),
+      "testdata/sigProfiler_ID_signatures.csv",
       strict = FALSE)
   )
   
