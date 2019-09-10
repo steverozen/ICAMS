@@ -254,8 +254,14 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
   if (any(grepl("Del:M:1", cos[ , 1]))) {
     warning("Interpreting ", file, " as a SigProfiler insertion/deletion catalog")
     stop("not finished")
+    if (strict) {
+      stop("Cannot interpret ", file, 
+           " as a SigProfiler ID catalog when strict = TRUE")
+      
+      out <- as.matrix(cos[ , -1], drop = FALSE)
+    }
     
-    out <- as.matrix(cos[ , -1], drop = FALSE)
+    # XXXX
   } else {
     cn <- names(cos)
     ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")

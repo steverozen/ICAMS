@@ -108,7 +108,7 @@ ReadStapleGT96SBS <- function(file,
 
 #' For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.
 #'
-#' @examples . 
+#' @examples 
 #' ICAMS:::TransRownames.ID.SigPro.PCAWG("1:Del:C:0") # DEL:C:1:0;
 #' ICAMS:::TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") # INS:repeat:2:5+
 #'
@@ -138,7 +138,7 @@ TransRownames.ID.SigPro.PCAWG <- function(vector.of.rownames) {
   retval["Repeat_MH_size", ] <- repmh
   
   retval <- paste(ty,subty,indsi,repmh,sep = ":")
-  #  Each name in retval has the the order of an ICAMS/PCAWG7 name.
+  #  Each name in retval has the order of an ICAMS/PCAWG7 name.
   
   return(retval)
 }
