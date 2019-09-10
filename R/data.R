@@ -48,7 +48,30 @@
 #' @name catalog.row.order.sp
 "catalog.row.order.sp"
 
+#' Linker from PCAWG(ICAMS)-formatted to SigProExtractor-formatted indel names.
+#'
+#' This data is designed for converting ICAMS-formatted indel names to
+#' SigProExtractor-formatted indel names.
+#'
+#' @format A 83*1 matrix. Its contents (first column) contain SigProExtractor
+#' formatted indel names in SigProExtractor order. Its rownames refer to the 
+#' corresponding PCAWG(ICAMS)-formatted indel names.
+#'
+#' @name ICAMS.to.SigPro.ID
+"ICAMS.to.SigPro.ID"
 
+
+#' Linker from SigProExtractor-formatted to PCAWG(ICAMS)-formatted indel names.
+#'
+#' This data is designed for converting SigProExtractor-formatted indel names
+#' to ICAMS-formatted indel names.
+#'
+#' @format A 83*1 matrix. Its contents (first column) contain PCAWG(ICAMS)-
+#' formatted indel names in PCAWG(ICAMS) order. Its rownames refer to the 
+#' corresponding SigProExtractor indel names.
+#'
+#' @name SigPro.to.ICAMS.ID
+"SigPro.to.ICAMS.ID"
 
 
 #' Transcript ranges data

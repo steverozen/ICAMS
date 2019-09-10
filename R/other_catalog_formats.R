@@ -181,3 +181,36 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
   
   return(retval)
 }
+
+
+#' Write Indel Catalogs in SigProExtractor format.
+#' 
+#' Write Indel Catalogs in SigProExtractor format to a csv file.
+#' 
+#' @param catalog A catalog as defined in \code{\link{ICAMS}};
+#' see also \code{\link{as.catalog}}.
+#'
+#' @param file The path to the file to be created.
+#'
+#' @param strict If TRUE, do additional checks on the input, and stop if the
+#' checks fail.
+#'
+#' @note In ID (insertion and deletion) catalogs in SigProExtractor format, 
+#' deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
+#'
+#' @keywords internal
+WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE){
+  mut.categories <- rownames(catalog)
+  stopifnot(nrow(catalog) == 83)
+  if (strict) {
+    stopifnot(mut.categories == ICAMS::catalog.row.order$ID)
+  }
+  ## Change row headers to SigProExtractor-format
+  mut.categories <- TransRownames.ID.PCAWG.SigPro(mut.categories)
+  rownames(catalog) <- mut.categories
+  ## Change row order to SigProExtractor-order  
+  catalog <- catalog[ICAMS::ICAMS.to.SigPro.ID[,1], , drop = FALSE]
+  DT <- data.table("Mutation Types" = rownames(catalog),catalog)
+  ## Write the SigProExtractor-formatted catalog into a csv file
+  fwrite(DT, file = file)
+}
