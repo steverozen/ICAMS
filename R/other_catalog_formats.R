@@ -106,18 +106,11 @@ ReadStapleGT96SBS <- function(file,
 }
 
 
-#' For indels, convert sigproextractor-formatted rownames 
-#' into PCAWG-formatted rownames (used in ICAMS).
+#' For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.
 #'
-#' E.g. 
-#' TransRownames.ID.SigPro.PCAWG("1:Del:C:0") returns 
-#' DEL:C:1:0;
-#' TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") returns
-#' INS:repeat:2:5+
-#' 
-#' That is, executing the conversion
-#' 1:Del:C:0 -> DEL:C:1:0
-#' 2:Ins:R:5 -> INS:repeat:2:5+
+#' @examples . 
+#' ICAMS:::TransRownames.ID.SigPro.PCAWG("1:Del:C:0") # DEL:C:1:0;
+#' ICAMS:::TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") # INS:repeat:2:5+
 #'
 #' @keywords  internal
 #' 
@@ -144,25 +137,18 @@ TransRownames.ID.SigPro.PCAWG <- function(vector.of.rownames) {
   repmh <- sub("5", "5\\+", repmh)
   retval["Repeat_MH_size", ] <- repmh
   
-  ## Shuffle the order of retval so that it becomes the ICAMS-formatted names.
   retval <- paste(ty,subty,indsi,repmh,sep = ":")
-
+  #  Each name in retval has the the order of an ICAMS/PCAWG7 name.
+  
   return(retval)
 }
 
 
-#' For indels, convert PCAWG-formatted rownames (used in ICAMS)
-#' into sigproextractor-formatted rownames.
+#' For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames.
 #'
-#' E.g. 
-#' TransRownames.ID.PCAWG.SigPro("DEL:C:1:0") returns 
-#' 1:Del:C:0;
-#' TransRownames.ID.PCAWG.SigPro("INS:repeat:2:5+") returns
-#' 2:Ins:R:5
-#' 
-#' That is, executing the conversion
-#' DEL:C:1:0 -> 1:Del:C:0
-#' INS:repeat:2:5+ -> 2:Ins:R:5
+#' @examples
+#' ICAMS:::TransRownames.ID.PCAWG.SigPro("DEL:C:1:0") # 1:Del:C:0;
+#' ICAMS:::TransRownames.ID.PCAWG.SigPro("INS:repeat:2:5+") # 2:Ins:R:5
 #'
 #' @keywords  internal
 TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
@@ -190,8 +176,8 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
   repmh <- sub("5\\+", "5", repmh)
   retval["Repeat_MH_size", ] <- repmh
   
-  ## Shuffle the order of retval so that it becomes the ICAMS-formatted names.
   retval <- paste(indsi,ty,subty,repmh,sep = ":")
+  # Each name in retval has the order of a SigProfiler name.
   
   return(retval)
 }

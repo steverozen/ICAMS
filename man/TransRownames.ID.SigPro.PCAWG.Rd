@@ -2,21 +2,17 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{TransRownames.ID.SigPro.PCAWG}
 \alias{TransRownames.ID.SigPro.PCAWG}
-\title{For indels, convert sigproextractor-formatted rownames 
-into PCAWG-formatted rownames (used in ICAMS).}
+\title{For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.}
 \usage{
 TransRownames.ID.SigPro.PCAWG(vector.of.rownames)
 }
 \description{
-E.g. 
-TransRownames.ID.SigPro.PCAWG("1:Del:C:0") returns 
-DEL:C:1:0;
-TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") returns
-INS:repeat:2:5+
+For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.
 }
-\details{
-That is, executing the conversion
-1:Del:C:0 -> DEL:C:1:0
-2:Ins:R:5 -> INS:repeat:2:5+
+\examples{
+. 
+ICAMS:::TransRownames.ID.SigPro.PCAWG("1:Del:C:0") # DEL:C:1:0;
+ICAMS:::TransRownames.ID.SigPro.PCAWG("2:Ins:R:5") # INS:repeat:2:5+
+
 }
 \keyword{internal}

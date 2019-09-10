@@ -250,15 +250,23 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
                                      catalog.type = "counts", strict = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 83)
-  cn <- names(cos)
-  ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
-  # Repeat_MH_size is the size of repeat OR microhomology (MH)
-  # if (strict) { for (i in 1:4) { stopifnot(cn[i] == ex.cn[i]) } }
-  if (strict) stopifnot(cn[1:4] == ex.cn)
-  names(cos)[1 : 4] <- ex.cn
-  rn <- apply(cos[, 1 : 4], MARGIN = 1, paste, collapse = ":")
-  # View(data.frame(mini=rn, good=ICAMS::catalog.row.order$ID))
-  out <- as.matrix(cos[ , -(1 : 4)], drop = FALSE)
+  
+  if (any(grepl("Del:M:1", cos[ , 1]))) {
+    warning("Interpreting ", file, " as a SigProfiler insertion/deletion catalog")
+    stop("not finished")
+    
+    out <- as.matrix(cos[ , -1], drop = FALSE)
+  } else {
+    cn <- names(cos)
+    ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
+    # Repeat_MH_size is the size of repeat OR microhomology (MH)
+    # if (strict) { for (i in 1:4) { stopifnot(cn[i] == ex.cn[i]) } }
+    if (strict) stopifnot(cn[1:4] == ex.cn)
+    names(cos)[1:4] <- ex.cn
+    rn <- apply(cos[ , 1:4], MARGIN = 1, paste, collapse = ":")
+    # View(data.frame(mini=rn, good=ICAMS::catalog.row.order$ID))
+    out <- as.matrix(cos[ , -(1:4)], drop = FALSE)
+  }
   rownames(out) <- rn
   if (strict) {
     stopifnot(rownames(out) == ICAMS::catalog.row.order$ID)
