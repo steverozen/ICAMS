@@ -14,7 +14,7 @@ if (FALSE) {
     df$distBins[df$dist2TSS <= 800000 & df$dist2TSS > 700000]<-8
     df$distBins[df$dist2TSS <= 900000 & df$dist2TSS > 800000]<-9
     df$distBins[df$dist2TSS <= 1000000 & df$dist2TSS > 900000]<-10
-    return(df[,-colnames(df) == "dist2TSS"])
+    return(df[,colnames(df) == "dist2TSS"])
   }
   
   ## the ref.context and var.context columns are already oriented so the strand info is correct
