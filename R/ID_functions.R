@@ -312,11 +312,11 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
 #' @param trace If > 0, then generate various 
+#' messages showing how the computation is carried out.
 #' 
 #' @param warn.cryptic if \code{TRUE} generating a warning
 #'  if there is a cryptic repeat (see the example).
 #' 
-#' messages showing how the computation is carried out.
 #'
 #' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
