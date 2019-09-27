@@ -751,8 +751,8 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million", cex.lab = 0.8)
   } else if (attributes(catalog)$catalog.type == "counts") {
-    # Get ylim
-    ymax <- max(catalog[, 1]) * 1.3
+    # Set a minimum value for ymax to make the plot more informative
+    ymax <- 4 * ceiling(max(max(catalog[, 1]) * 1.3, 10) / 4)
 
     # Barplot
     bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
@@ -805,7 +805,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
   if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    y.axis.labels <- y.axis.values
   }
   text(0.35, y.axis.values, labels = y.axis.labels,
        las = 1, adj = 1, xpd = NA, cex = 0.75)
