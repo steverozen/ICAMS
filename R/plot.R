@@ -1324,8 +1324,8 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
                 1, 2, 3, 5))
 
   if (attributes(catalog)$catalog.type == "counts") {
-    # Get ylim
-    ymax <- max(catalog) * 1.3
+    # Set a minimum value for ymax to make the plot more informative
+    ymax <- 4 * ceiling(max(max(catalog[, 1]) * 1.3, 10) / 4)
 
     # Barplot
     bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
@@ -1398,7 +1398,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
     text(-9, ymax / 2, labels = "counts proportion",
          srt = 90, xpd = NA, cex = 0.8)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    y.axis.labels <- y.axis.values
     text(-9, ymax / 2, labels = "counts",
          srt = 90, xpd = NA, cex = 0.8)
   }
