@@ -11,9 +11,11 @@ AddSeqContext
 AddTranscript
 AGA
 AGAT
+AGGG
 AGT
 al
 AnnotateDBSVCF
+AnnotateIDVCF
 AnnotateSBSVCF
 ATA
 ATC
@@ -28,6 +30,7 @@ CanonicalizeQUAD
 catDBS
 catSBS
 CATTAT
+CCCAGGGAGGGTCCC
 CCDS
 CCT
 CheckAndFixChrName
@@ -37,6 +40,7 @@ chromEnd
 chromStart
 cisplatin
 cshlp
+csv
 dinucleotide
 DBS
 DBSs
@@ -44,6 +48,7 @@ doi
 ebi
 et
 exome
+GAGG
 GATK
 gencode
 Gencode
@@ -91,6 +96,8 @@ sanger
 SBS
 SBSs
 SignatureAnalyzer
+SigProExtractor
+SigProfiler
 steverozen
 StrandToPdf
 Strelka
@@ -111,6 +118,8 @@ TTC
 TTGA
 UCSC
 uk
+un
+Un
 undeleted
 unstranded
 untranscribed
