@@ -142,8 +142,8 @@ PlotCatalog.SBS96Catalog <-
       # Get ylim
       ymax <- max(catalog[, 1] * 1000000)
     } else if (attributes(catalog)$catalog.type == "counts") {
-      # Get ylim
-      ymax <- max(catalog[, 1])
+      # Set a minimum value for ymax to make the plot more informative
+      ymax <- 4 * ceiling(max(max(catalog[, 1]), 10) / 4)
 
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
@@ -185,7 +185,7 @@ PlotCatalog.SBS96Catalog <-
     if (attributes(catalog)$catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
-      y.axis.labels <- round(y.axis.values, 0)
+      y.axis.labels <- y.axis.values
     }
     if (grid) {
       text(-0.5, y.axis.values, labels = y.axis.labels,
