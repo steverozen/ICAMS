@@ -5,6 +5,7 @@
 * Un-normalized deletions in a repeat (e.g.GAGG deleted from CCCAGGGAGGGTCCC
   should be normalize to a deletion of AGGG) are now ignored with a
   warning rather than causing a stop().
+* Updated plotting functions to make y axis labels more informative.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
