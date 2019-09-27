@@ -8,6 +8,7 @@
   causing a stop().
 * Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
   crypic repeat in what is now the second example.
+* Updated plotting functions to make y axis labels more informative.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted

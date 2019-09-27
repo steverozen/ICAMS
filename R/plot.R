@@ -142,8 +142,8 @@ PlotCatalog.SBS96Catalog <-
       # Get ylim
       ymax <- max(catalog[, 1] * 1000000)
     } else if (attributes(catalog)$catalog.type == "counts") {
-      # Get ylim
-      ymax <- max(catalog[, 1])
+      # Set a minimum value for ymax to make the plot more informative
+      ymax <- 4 * ceiling(max(max(catalog[, 1]), 10) / 4)
 
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
@@ -185,7 +185,7 @@ PlotCatalog.SBS96Catalog <-
     if (attributes(catalog)$catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
-      y.axis.labels <- round(y.axis.values, 0)
+      y.axis.labels <- y.axis.values
     }
     if (grid) {
       text(-0.5, y.axis.values, labels = y.axis.labels,
@@ -288,8 +288,8 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
     cols <- rep(strand.col, num.classes / 2)
 
     if (attributes(cat)$catalog.type == "counts") {
-      # Get ylim
-      ymax <- max(cat[, 1]) * 1.3
+      # Set a minimum value for ymax to make the plot more informative
+      ymax <- 4 * ceiling(max(max(cat[, 1]) * 1.3, 10) / 4)
 
       # Barplot: side by side
       mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
@@ -351,7 +351,7 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
     if (attributes(cat)$catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
-      y.axis.labels <- round(y.axis.values, 0)
+      y.axis.labels <- y.axis.values
 
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
@@ -751,8 +751,8 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
                   lwd = 3, space = 1.35, border = NA, col = cols,
                   xpd = NA, ylab = "mut/million", cex.lab = 0.8)
   } else if (attributes(catalog)$catalog.type == "counts") {
-    # Get ylim
-    ymax <- max(catalog[, 1]) * 1.3
+    # Set a minimum value for ymax to make the plot more informative
+    ymax <- 4 * ceiling(max(max(catalog[, 1]) * 1.3, 10) / 4)
 
     # Barplot
     bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", ylim = c(0, ymax),
@@ -805,7 +805,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
   if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    y.axis.labels <- y.axis.values
   }
   text(0.35, y.axis.values, labels = y.axis.labels,
        las = 1, adj = 1, xpd = NA, cex = 0.75)
@@ -865,9 +865,9 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
       counts.strand[2 * i] <-
         sum(counts[seq(idx[i] + 2, idx[i + 1], by = 2)])
     }
-
-    # Get ylim
-    ymax <- max(counts.strand) * 1.3
+    
+    # Set a minimum value for ymax to make the plot more informative
+    ymax <- 4 * ceiling(max(max(counts.strand) * 1.3, 10) / 4)
 
     # Barplot: side by side
     mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
@@ -929,7 +929,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
   if (attributes(catalog)$catalog.type != "counts") {
     y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    y.axis.labels <- y.axis.values
   }
   Axis(side = 2, at = y.axis.values, las = 1, labels = FALSE)
   text(-0.35, y.axis.values, labels = y.axis.labels,
@@ -1324,8 +1324,8 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
                 1, 2, 3, 5))
 
   if (attributes(catalog)$catalog.type == "counts") {
-    # Get ylim
-    ymax <- max(catalog) * 1.3
+    # Set a minimum value for ymax to make the plot more informative
+    ymax <- 4 * ceiling(max(max(catalog[, 1]) * 1.3, 10) / 4)
 
     # Barplot
     bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
@@ -1398,7 +1398,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
     text(-9, ymax / 2, labels = "counts proportion",
          srt = 90, xpd = NA, cex = 0.8)
   } else {
-    y.axis.labels <- round(y.axis.values, 0)
+    y.axis.labels <- y.axis.values
     text(-9, ymax / 2, labels = "counts",
          srt = 90, xpd = NA, cex = 0.8)
   }
