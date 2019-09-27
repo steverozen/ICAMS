@@ -1,10 +1,13 @@
 # ICAMS 2.0.9.000x
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
-* Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.*.
-* Un-normalized deletions in a repeat (e.g.GAGG deleted from CCCAGGGAGGGTCCC
-  should be normalize to a deletion of AGGG) are now ignored with a
-  warning rather than causing a stop().
+* Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.
+* In FindDelMH, cryptic repeats (ie. un-normalized deletions in a repeat 
+  such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
+  to a deletion of AGGG) are now ignored with a warning rather than
+  causing a stop().
+* Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
+  crypic repeat in what is now the second example.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted

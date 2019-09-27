@@ -300,8 +300,8 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'                         ** --** --
 #' }
 #'
-#' \strong{This function only flags this
-#' case with a -1 return; it does not figure
+#' \strong{This function only flags these
+#' "crytpic repeats" with a -1 return; it does not figure
 #' out the repeat extent.}
 #'
 #' @param context The deleted sequence plus ample surrounding
@@ -312,6 +312,10 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
 #' @param trace If > 0, then generate various 
+#' 
+#' @param warn.cryptic if \code{TRUE} generating a warning
+#'  if there is a cryptic repeat (see the example).
+#' 
 #' messages showing how the computation is carried out.
 #'
 #' @return The length of the maximum microhomology of \code{del.sequence}
@@ -323,7 +327,26 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' # GAGAGG[CTAGAA]CTAGTT
 #' #        ----   ----
 #' FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
-FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
+#' 
+#' # A cryptic repeat
+#' # 
+#' # TAAATTATTTATTAATTTATTG
+#' # TAAATTA----TTAATTTATTG = TAAATTATTAATTTATTG
+#' # 
+#' # equivalent to
+#' #
+#' # TAAATTATTTATTAATTTATTG
+#' # TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG 
+#' # 
+#' # and
+#' #
+#' # TAAATTATTTATTAATTTATTG
+#' # TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG  
+#' 
+#' FindDelMH("TAAATTATTTATTAATTTATTG", "TTTA", 8, warn.cryptic = FALSE) # -1
+
+FindDelMH <- 
+  function(context, deleted.seq, pos, trace = 0, warn.cryptic = TRUE) {
   n <- nchar(deleted.seq)
 
   if (substr(context, pos, pos + n - 1) != deleted.seq) {
@@ -387,11 +410,11 @@ FindDelMH <- function(context, deleted.seq, pos, trace = 0) {
     ), collapse = ""))
 
   }
-  if (left.len + right.len == n) {
-    warning("There is unhandled cryptic repeat, returning -1")
+  if (left.len + right.len >= n) {
+    if (warn.cryptic) warning("There is unhandled cryptic repeat, returning -1")
     return(-1)
   }
-  return (left.len + right.len)
+  return(left.len + right.len)
 }
 
 #' @title Return the number of repeat units in which an insertion

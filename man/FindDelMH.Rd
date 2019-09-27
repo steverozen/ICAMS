@@ -4,7 +4,7 @@
 \alias{FindDelMH}
 \title{Return the length of microhomology at a deletion.}
 \usage{
-FindDelMH(context, deleted.seq, pos, trace = 0)
+FindDelMH(context, deleted.seq, pos, trace = 0, warn.cryptic = TRUE)
 }
 \arguments{
 \item{context}{The deleted sequence plus ample surrounding
@@ -14,7 +14,11 @@ sequence on each side (at least as long as \code{del.sequence}).}
 
 \item{pos}{The position of \code{del.sequence} in \code{context}.}
 
-\item{trace}{If > 0, then generate various 
+\item{trace}{If > 0, then generate various}
+
+\item{warn.cryptic}{if \code{TRUE} generating a warning
+ if there is a cryptic repeat (see the example).
+
 messages showing how the computation is carried out.}
 }
 \value{
@@ -117,12 +121,29 @@ GACT----AGTT GACTAGTT GACT[AGCT]AGTT
                         ** --** --
 }
 
-\strong{This function only flags this
-case with a -1 return; it does not figure
+\strong{This function only flags these
+"crytpic repeats" with a -1 return; it does not figure
 out the repeat extent.}
 }
 \examples{
 # GAGAGG[CTAGAA]CTAGTT
 #        ----   ----
 FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
+
+# A cryptic repeat
+# 
+# TAAATTATTTATTAATTTATTG
+# TAAATTA----TTAATTTATTG = TAAATTATTAATTTATTG
+# 
+# equivalent to
+#
+# TAAATTATTTATTAATTTATTG
+# TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG 
+# 
+# and
+#
+# TAAATTATTTATTAATTTATTG
+# TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG  
+
+FindDelMH("TAAATTATTTATTAATTTATTG", "TTTA", 8, warn.cryptic = FALSE) # -1
 }
