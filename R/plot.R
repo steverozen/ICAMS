@@ -288,8 +288,8 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
     cols <- rep(strand.col, num.classes / 2)
 
     if (attributes(cat)$catalog.type == "counts") {
-      # Get ylim
-      ymax <- max(cat[, 1]) * 1.3
+      # Set a minimum value for ymax to make the plot more informative
+      ymax <- 4 * ceiling(max(max(cat[, 1]) * 1.3, 10) / 4)
 
       # Barplot: side by side
       mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
@@ -351,7 +351,7 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
     if (attributes(cat)$catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
-      y.axis.labels <- round(y.axis.values, 0)
+      y.axis.labels <- y.axis.values
 
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
