@@ -871,7 +871,7 @@ AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
 #'   neighboring SBS.
 #'   
 #' @param sample.id Usually the sample id, but defaults to "count".
-#'
+#' 
 #' @import data.table
 #'
 #' @return A list of three 1-column matrices with the names
@@ -907,9 +907,12 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   stopifnot(nchar(vcf$ALT) == 1)
   stopifnot(nchar(vcf$REF) == 1)
   stopifnot(vcf$ALT != vcf$REF)
-  if (!all(vcf$REF == substr(vcf$seq.21bases, 11, 11))) {
-    stop("\nThe reference base in the ref.genome does not match the ", 
-         "purported reference base in the VCF file.\n",
+  mismatches <- which(vcf$REF != substr(vcf$seq.21bases, 11, 11))
+  if (length(mismatches) != 0) {
+    stop("\nSample ", sample.id, 
+         ":\nThe reference base in ref.genome does not match the ", 
+         "reference base in ", length(mismatches),
+         "rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
   

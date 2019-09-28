@@ -14,12 +14,11 @@ sequence on each side (at least as long as \code{del.sequence}).}
 
 \item{pos}{The position of \code{del.sequence} in \code{context}.}
 
-\item{trace}{If > 0, then generate various}
+\item{trace}{If > 0, then generate various 
+messages showing how the computation is carried out.}
 
 \item{warn.cryptic}{if \code{TRUE} generating a warning
- if there is a cryptic repeat (see the example).
-
-messages showing how the computation is carried out.}
+if there is a cryptic repeat (see the example).}
 }
 \value{
 The length of the maximum microhomology of \code{del.sequence}
@@ -122,7 +121,7 @@ GACT----AGTT GACTAGTT GACT[AGCT]AGTT
 }
 
 \strong{This function only flags these
-"crytpic repeats" with a -1 return; it does not figure
+"cryptic repeats" with a -1 return; it does not figure
 out the repeat extent.}
 }
 \examples{

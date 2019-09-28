@@ -301,7 +301,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' }
 #'
 #' \strong{This function only flags these
-#' "crytpic repeats" with a -1 return; it does not figure
+#' "cryptic repeats" with a -1 return; it does not figure
 #' out the repeat extent.}
 #'
 #' @param context The deleted sequence plus ample surrounding

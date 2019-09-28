@@ -2,12 +2,12 @@
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.
-* In FindDelMH, cryptic repeats (ie. un-normalized deletions in a repeat 
+* In FindDelMH, cryptic repeats (i.e. un-normalized deletions in a repeat 
   such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
   to a deletion of AGGG) are now ignored with a warning rather than
   causing a stop().
 * Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
-  crypic repeat in what is now the second example.
+  cryptic repeat in what is now the second example.
 * Updated plotting functions to make y axis labels more informative.
 
 # ICAMS 2.0.9

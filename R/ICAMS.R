@@ -102,7 +102,8 @@
 #' \item \code{\link{StrelkaSBSVCFFilesToCatalog}} creates 3 SBS catalogs (96,
 #' 192, 1536) and 3 DBS catalogs (78, 136, 144) from the Strelka SBS VCFs.
 #'
-#' \item \code{\link{StrelkaIDVCFFilesToCatalog}} creates ID (indel) catalog
+#' \item \code{\link{StrelkaIDVCFFilesToCatalog}} creates an ID 
+#' (small insertion and deletion) catalog
 #' from the Strelka ID VCFs.
 #'
 #' \item \code{\link{MutectVCFFilesToCatalog}} creates 3 SBS catalogs (96,
