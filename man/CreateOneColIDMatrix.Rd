@@ -26,7 +26,8 @@ complex indels might be represented as an indel with adjoining
 SBSs.}
 }
 \value{
-A 1-column matrix containing the mutation catalog information.
+A 1-column matrix containing the mutation 
+catalog information.
 }
 \description{
 Create one column of the matrix for an indel catalog from *one* in-memory VCF.

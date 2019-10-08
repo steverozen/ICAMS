@@ -1503,7 +1503,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
   vcfs <- ReadStrelkaIDVCFs(files)
-  return(VCFsToIDCatalogs(vcfs, ref.genome, region))
+  return(VCFsToIDCatalogs(vcfs, ref.genome, region)[[1]])
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF
@@ -1600,7 +1600,7 @@ MutectVCFFilesToCatalog <-
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
-           list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, region))))
+           list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, region)[[1]])))
   }
 
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF

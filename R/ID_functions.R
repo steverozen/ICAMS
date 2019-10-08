@@ -716,7 +716,8 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   complex indels might be represented as an indel with adjoining
 #'   SBSs. 
 #'
-#' @return A 1-column matrix containing the mutation catalog information.
+#' @return A 1-column matrix containing the mutation 
+#' catalog information.
 #'
 #' @keywords internal
 CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
@@ -738,6 +739,8 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
   if (any(is.na(canon.ID))) warning("NA ID categories ignored")
   canon.ID <- canon.ID[!is.na(canon.ID)]
   
+  out.ID.vcf <- cbind(ID.vcf, ID.class = canon.ID)
+  
   # Create the ID catalog matrix
   tab.ID <- table(canon.ID)
 
@@ -754,7 +757,8 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
   rownames(ID.mat) <- ID.dt2$rn
-  return(ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE])
+  return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
+              annotated.VCF = out.ID.vcf))
 }
 
 #' Create ID (insertion and deletion) catalog from ID VCFs
@@ -792,18 +796,23 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   # Create a 0-column matrix with the correct row labels.
   catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
   rownames(catID) <- ICAMS::catalog.row.order$ID
-
+  out.list.of.vcfs <- list()
+  
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
     ID <- AnnotateIDVCF(ID, ref.genome = ref.genome)
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
-    one.ID.column <- CreateOneColIDMatrix(ID)
+    tmp <- CreateOneColIDMatrix(ID)
+    one.ID.column <- tmp[[1]]
+    out.list.of.vcfs <- c(out.list.of.vcfs, tmp[[2]])
     rm(ID)
     catID <- cbind(catID, one.ID.column)
   }
 
   colnames(catID) <- names(list.of.vcfs)
-  return(as.catalog(catID, ref.genome = ref.genome,
-                    region = region, catalog.type = "counts"))
+  return(list(catalog = 
+                as.catalog(catID, ref.genome = ref.genome,
+                           region = region, catalog.type = "counts"),
+              annotated.vcfs = out.list.of.vcfs))
 }
