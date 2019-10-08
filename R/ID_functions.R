@@ -717,8 +717,8 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   complex indels might be represented as an indel with adjoining
 #'   SBSs. 
 #'
-#' @return A 1-column matrix containing the mutation 
-#' catalog information.
+#' @return A list of a 1-column matrix containing the mutation catalog
+#'   information and the annotated VCF with ID categories information added.
 #'
 #' @keywords internal
 CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
@@ -773,8 +773,10 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #'
-#' @return An S3 object containing an ID (indel) catalog with class
-#'   "catalog". See \code{\link{as.catalog}} for more details.
+#' @return A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
 #'   
 #' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -806,12 +808,13 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
     # add transcript information.
     tmp <- CreateOneColIDMatrix(ID)
     one.ID.column <- tmp[[1]]
-    out.list.of.vcfs <- c(out.list.of.vcfs, tmp[[2]])
+    out.list.of.vcfs <- c(out.list.of.vcfs, list(tmp[[2]]))
     rm(ID)
     catID <- cbind(catID, one.ID.column)
   }
 
   colnames(catID) <- names(list.of.vcfs)
+  names(out.list.of.vcfs) <- names(list.of.vcfs)
   return(list(catalog = 
                 as.catalog(catID, ref.genome = ref.genome,
                            region = region, catalog.type = "counts"),

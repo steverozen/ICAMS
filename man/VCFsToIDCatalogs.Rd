@@ -17,8 +17,10 @@ the sample ids in the output catalog.}
 "genome", "exome".}
 }
 \value{
-An S3 object containing an ID (indel) catalog with class
-  "catalog". See \code{\link{as.catalog}} for more details.
+A list of two elements. 1st element is an S3 object containing an ID
+  (small insertion and deletion) catalog with class "IndelCatalog". See
+  \code{\link{as.catalog}} for more details. 2nd element is a list of further
+  annotated VCFs.
 }
 \description{
 Create ID (insertion and deletion) catalog from ID VCFs
