@@ -348,7 +348,7 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
   SBS <- lapply(v1, function(x) x$SBS)
   DBS <- lapply(v1, function(x) x$DBS)
   ID  <- lapply(v1, function(x) x$ID)
-  other.subs <- lapply(v1, function(x) x$other.df)
+  other.subs <- lapply(v1, function(x) x$other)
   multiple.alternative.alleles <-
     lapply(v1, function(x) x$multiple.alt)
 
