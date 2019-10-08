@@ -49,14 +49,15 @@ AnnotateIDVCF <- function(ID.vcf, ref.genome, flag.mismatches = 0) {
   } else {
     # We expect either eg ref = ACG, alt = A (deletion of CG) or
     # ref = A, alt = ACC (insertion of CC)
-    stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
-    complex.indels.to.remove <- which((nchar(df$REF) > 1 & (nchar(df$ALT) > 1)))
+    complex.indels.to.remove <- 
+      which(substr(df$REF, 1, 1) != substr(df$ALT, 1, 1))
     if (length(complex.indels.to.remove > 0)) {
       temp <- tempfile(fileext = ".csv")
       warning("Removing complex indels; see ", temp)
       write.csv(file = temp, df[complex.indels.to.remove, 1:5])
       df <- df[ -complex.indels.to.remove, ]
     }
+    stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
   }
   # First, figure out how much sequence context is needed.
   var.width <- abs(nchar(df$ALT) - nchar(df$REF))
