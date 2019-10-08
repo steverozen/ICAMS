@@ -304,9 +304,15 @@ SplitOneMutectVCF <- function(vcf.df) {
   other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
 
   ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
+  complex.indels.to.remove <- 
+    which(substr(ID.df$REF, 1, 1) != substr(ID.df$ALT, 1, 1))
+  complex.indels <- ID.df[complex.indels.to.remove, ]
+  ID.df <- ID.df[-complex.indels.to.remove, ]
+  
+  other.df2 <- rbind(other.df, complex.indels)
 
   return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
-              other=other.df, multiple.alt = multiple.alt.df))
+              other = other.df2, multiple.alt = multiple.alt.df))
 
 }
 
