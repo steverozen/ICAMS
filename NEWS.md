@@ -9,8 +9,10 @@
 * Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
   cryptic repeat in what is now the second example.
 * Updated plotting functions to make y axis labels more informative.
-* Made the return from VCFsToIDCatalogs a list; 1st element is the spectrum catalog 
+* Made the return from function VCFsToIDCatalogs() a list; 1st element is the spectrum catalog 
   (previously the only return); 2nd element is a list of further annotated VCFs.
+* Updated splitting functions for Mutect VCF to detect and move complex
+  indels to "other" category.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
