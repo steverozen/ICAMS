@@ -166,12 +166,25 @@ NULL
 
 "all.abundance"
 
+#' Sample gene expression values for human GRCh37.
+#'
+#' This data is designed to be used as an example in function
+#' \code{\link{PlotTransBiasExp}} and \code{\link{PlotTransBiasExpToPdf}}.
+#'
+#' @format A data frame with two columns. The first column contains the gene
+#'   symbol, the second columns contains the gene expression values
+#'   TPM (Transcripts Per Kilobase Million).
+#'   
+#' @name sample.gene.expression.value.GRCh37
+"sample.gene.expression.value.GRCh37"
+
+
 # Quiets concerns of R CMD check about no visible binding for global variable
 if(getRversion() >= "2.15.1") {
-  utils::globalVariables(c("all.abundance",
-                           "BSgenome.Mmusculus.UCSC.mm10",
-                           "POS2", "POS", "trans.strand",
-                           "bothstrand", "strand", ".", "CHROM",
+  utils::globalVariables(c("all.abundance", "binomial", "trans.ranges.GRCh38",
+                           "BSgenome.Mmusculus.UCSC.mm10", "trans.ranges.GRCm38",
+                           "POS2", "POS", "trans.strand", "trans.gene.symbol",
+                           "bothstrand", "strand", ".", "CHROM", "Exp_Level",
                            "ALT", "count", "rn", "occurrences", "type", "strand",
                            "bothstrand", "chrom", "exome.start", "exome.end",
                            "count", "REF", "seq.21bases", "N", "pyr.mut", "nrn",
