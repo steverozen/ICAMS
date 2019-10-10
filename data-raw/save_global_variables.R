@@ -6,12 +6,14 @@ source("data-raw/load_abundance_from_files.R")
 source("data-raw/create_catalogs.R")
 source("data-raw/create_order_for_DBS136_plotting.R")
 source("data-raw/create_ranges.R")
+source("data-raw/create_sample_expression_level.R")
 
 usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
                   trans.ranges.GRCm38,
                   all.abundance,
+                  sample.gene.expression.value.GRCh37,
                   overwrite = TRUE)
 
 usethis::use_data(to.reorder.SBS.192.for.plotting,
