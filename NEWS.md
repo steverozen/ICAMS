@@ -13,6 +13,7 @@
   (previously the only return); 2nd element is a list of further annotated VCFs.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
+* Added two exported functions PlotTransBiasExp() and PlotTransBiasExpToPdf().
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
