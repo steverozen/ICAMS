@@ -74,6 +74,7 @@ indels
 IndelCatalog
 intron
 IUPAC
+Kilobase
 MakeVCFDBSdf
 mer
 mers
@@ -113,6 +114,7 @@ TG
 TGA
 ThreePlus
 ToPdf
+TPM
 transcriptional
 transcriptionally
 trinucleotide
