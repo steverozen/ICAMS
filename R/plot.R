@@ -147,9 +147,9 @@ PlotCatalog.SBS96Catalog <-
 
       # Barplot
       bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
-                    xaxs = "i", lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = "counts", cex.lab = 0.8)
-
+                    ylim = c(0, ymax), xaxs = "i", lwd = 3, space = 1.35, 
+                    border = NA, col = cols, ylab = "counts", cex.lab = 0.8)
+                    
       # Write the mutation counts on top of graph
       for (i in 1 : 6) {
         j <- 16 + 16 * (i - 1)
@@ -400,7 +400,7 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
       }
 
       # Get ylim
-      ymax <- max(counts.strand) * 1.3
+      ymax <- 4 * ceiling(max(max(counts.strand) * 1.3, 10) / 4)
 
       # Barplot: side by side
       mat <- matrix(counts.strand, nrow = 2, ncol = num.classes / 2)
