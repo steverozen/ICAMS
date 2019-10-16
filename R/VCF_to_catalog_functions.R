@@ -697,12 +697,24 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #'
 #' @param files Character vector of file paths to the VCF files.
 #'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'   
 #' @return A list of vcfs from \code{files}.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCFs <- function(files) {
+ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
   vcfs <- lapply(files, FUN = ReadStrelkaSBSVCF)
-  names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  if (is.null(names.of.VCFs)) {
+    names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  } else {
+    names(vcfs) <- names.of.VCFs
+  }
+  
   return(vcfs)
 }
 
@@ -710,6 +722,13 @@ ReadStrelkaSBSVCFs <- function(files) {
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'   
 #' @return A list of 3 in-memory objects as follows:
 #' \enumerate{
 #'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS or 3+BS mutations.
@@ -730,8 +749,8 @@ ReadStrelkaSBSVCFs <- function(files) {
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-ReadAndSplitStrelkaSBSVCFs <- function(files) {
-  vcfs <- ReadStrelkaSBSVCFs(files)
+ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
+  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(split.vcfs)
 }
@@ -739,6 +758,13 @@ ReadAndSplitStrelkaSBSVCFs <- function(files) {
 #' Read Strelka ID (insertion and deletion) VCF files.
 #'
 #' @param files Character vector of file paths to the VCF files.
+#'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
 #'
 #' @return A list of vcfs from \code{files}.
 #'
@@ -755,9 +781,14 @@ ReadAndSplitStrelkaSBSVCFs <- function(files) {
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
-ReadStrelkaIDVCFs <- function(files) {
+ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
-  names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  if (is.null(names.of.VCFs)) {
+    names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  } else {
+    names(vcfs) <- names.of.VCFs
+  }
+  
   return(vcfs)
 }
 
@@ -765,12 +796,24 @@ ReadStrelkaIDVCFs <- function(files) {
 #'
 #' @param files Character vector of file paths to the VCF files.
 #'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'   
 #' @return A list of vcfs from \code{files}.
 #'
 #' @keywords internal
-ReadMutectVCFs <- function(files) {
+ReadMutectVCFs <- function(files, names.of.VCFs = NULL) {
   vcfs <- lapply(files, FUN = ReadMutectVCF)
-  names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  if (is.null(names.of.VCFs)) {
+    names(vcfs) <- tools::file_path_sans_ext(basename(files))
+  } else {
+    names(vcfs) <- names.of.VCFs
+  }
+  
   return(vcfs)
 }
 
@@ -778,6 +821,13 @@ ReadMutectVCFs <- function(files) {
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'   
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
 #' into the first 3 VCFs, as follows:
@@ -810,8 +860,8 @@ ReadMutectVCFs <- function(files) {
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
-ReadAndSplitMutectVCFs <- function(files) {
-  vcfs <- ReadMutectVCFs(files)
+ReadAndSplitMutectVCFs <- function(files, names.of.VCFs = NULL) {
+  vcfs <- ReadMutectVCFs(files, names.of.VCFs)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(split.vcfs)
 }

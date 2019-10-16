@@ -4,10 +4,17 @@
 \alias{ReadStrelkaIDVCFs}
 \title{Read Strelka ID (insertion and deletion) VCF files.}
 \usage{
-ReadStrelkaIDVCFs(files)
+ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}
+
+\item{names.of.VCFs}{Character vector of names of the VCF files. The order
+of names in \code{names.of.VCFs} should match the order of VCF file paths
+in \code{files}. If \code{NULL}(default), this function will remove all of
+the path up to and including the last path separator (if any) and file
+paths without extensions (and the leading dot) will be used as the names of
+the VCF files.}
 }
 \value{
 A list of vcfs from \code{files}.
