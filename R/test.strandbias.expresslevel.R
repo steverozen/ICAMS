@@ -1,5 +1,6 @@
 StrandBiasAsExpressionLevel <- 
-  function(annotated.SBS.vcf, expression.level, ref.genome, n) {
+  function(annotated.SBS.vcf, expression.level, ref.genome, n # num.bins 
+           ) {
     
     ref.genome <- NormalizeGenomeArg(ref.genome)
     if (ref.genome@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5") {
@@ -64,6 +65,7 @@ StrandBiasAsExpressionLevel <-
     return(list(plotmatrix = result, logit.df = dt, p.value = p.value))
   }
 
+
 PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
   result <- list$plotmatrix
   foo1 <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -111,7 +113,7 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
 }
 
 
-#' Plot Transcriptional Strand Bias with Respect to Gene Expression Level
+#' Plot transcriptional strand bias with respect to gene expression level
 #'
 #' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
 #'   sequence context and transcript information. Please refer to
@@ -153,8 +155,9 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
 #' PlotTransBiasExp(annotated.SBS.vcf = annotated.SBS.vcf, 
 #'                  expression.level = sample.gene.expression.value.GRCh37, 
 #'                  ref.genome = "hg19", n = 4, plot.type = "C>A")
-PlotTransBiasExp <- function(annotated.SBS.vcf, expression.level, ref.genome, 
-                             n, plot.type, ymax = NULL) {
+PlotTransBiasExp <-
+  function(annotated.SBS.vcf, expression.level, ref.genome, 
+                             n, plot.type, ymax = NULL) { # change n to num.bins
   list1 <- StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
                                        ref.genome, n)
   PlotTransBiasExp1(list = list1, type = plot.type, n = n, ymax = ymax)
