@@ -91,10 +91,15 @@ PCAWG
 pentanucleotide
 PlotCatID
 PlotCatIDtoPdf
+PlotTransBiasExp
+PlotTransBiasExpToPdf
 POS
 PWM
 PyrPenta
 PyrTri
+ReadAndSplitMutectVCFs
+ReadAndSplitStrelkaSBSVCFs
+ReadStrelkaIDVCFs
 rowname
 sanger
 SBS
