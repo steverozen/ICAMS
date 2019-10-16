@@ -14,6 +14,9 @@
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
 * Added two exported functions PlotTransBiasExp() and PlotTransBiasExpToPdf().
+* Added an additional argument "names.of.VCFs" in functions
+ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs() and ReadStrelkaIDVCFs()
+for users to specify the names of VCF files.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
