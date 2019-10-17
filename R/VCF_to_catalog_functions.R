@@ -1422,6 +1422,13 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'  
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
@@ -1441,8 +1448,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'                                           trans.ranges = trans.ranges.GRCh37,
 #'                                           region = "genome")}
 StrelkaSBSVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, region = "unknown") {
-  vcfs <- ReadStrelkaSBSVCFs(files)
+  function(files, ref.genome, trans.ranges = NULL, 
+           region = "unknown", names.of.VCFs = NULL) {
+  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, trans.ranges, region)))
