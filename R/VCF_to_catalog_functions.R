@@ -1540,9 +1540,18 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'  
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
 #'
-#' @return An ID (indel) catalog with attributes added. See
-#'   \code{\link{as.catalog}} for more details.
+#' @return A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
 #'
 #' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -1557,9 +1566,10 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
 #'                                       region = "genome")}
-StrelkaIDVCFFilesToCatalog <- function(files, ref.genome, region = "unknown") {
-  vcfs <- ReadStrelkaIDVCFs(files)
-  return(VCFsToIDCatalogs(vcfs, ref.genome, region)[[1]])
+StrelkaIDVCFFilesToCatalog <- 
+  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL) {
+  vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
+  return(VCFsToIDCatalogs(vcfs, ref.genome, region))
 }
 
 #' Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF
