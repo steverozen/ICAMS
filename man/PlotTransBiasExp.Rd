@@ -2,7 +2,7 @@
 % Please edit documentation in R/test.strandbias.expresslevel.R
 \name{PlotTransBiasExp}
 \alias{PlotTransBiasExp}
-\title{Plot Transcriptional Strand Bias with Respect to Gene Expression Level}
+\title{Plot transcriptional strand bias with respect to gene expression level}
 \usage{
 PlotTransBiasExp(annotated.SBS.vcf, expression.level, ref.genome, n,
   plot.type, ymax = NULL)
@@ -33,7 +33,7 @@ specific mutation type.}
 \code{invisible(TRUE)}
 }
 \description{
-Plot Transcriptional Strand Bias with Respect to Gene Expression Level
+Plot transcriptional strand bias with respect to gene expression level
 }
 \examples{
 file <- c(system.file("extdata",
