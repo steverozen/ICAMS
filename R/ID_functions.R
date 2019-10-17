@@ -786,9 +786,9 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 #' 
 #' @examples 
 #' file <- c(system.file("extdata",
-#'                       "Mutect.GRCh37.vcf",
+#'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
+#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
