@@ -2,7 +2,8 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
-\title{Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF}
+\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+and plot them to PDF}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
   region = "unknown", names.of.VCFs = NULL, output.file)
@@ -33,8 +34,8 @@ A list whose first element is an ID (small insertion and deletion)
   annotated VCFs.
 }
 \description{
-Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
-and plot them to PDF
+Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+specified by \code{files} and plot them to PDF
 }
 \details{
 This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and

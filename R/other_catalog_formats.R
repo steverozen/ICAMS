@@ -195,7 +195,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #' checks fail.
 #'
-#' @note In ID (insertion and deletion) catalogs in SigProExtractor format, 
+#' @note In ID (small insertion and deletion) catalogs in SigProExtractor format, 
 #' deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
 #'
 #' @keywords internal

@@ -11,7 +11,7 @@ TransformCatalog(catalog, target.ref.genome = NULL,
 }
 \arguments{
 \item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
-must \strong{not} be an ID (indel) catalog.}
+must \strong{not} be an ID (small insertion and deletion) catalog.}
 
 \item{target.ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}. If \code{NULL}, then defaults to the

@@ -48,7 +48,7 @@ This function calls \code{\link{MutectVCFFilesToCatalog}} and
 }
 \note{
 SBS 192 and DBS 144 catalogs include only mutations in transcribed
-  regions. In ID (insertion and deletion) catalogs, deletion repeat sizes
+  regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation deletion
   repeat sizes range from 1 to 6+.
 }

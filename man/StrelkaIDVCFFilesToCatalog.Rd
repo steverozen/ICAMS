@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaIDVCFFilesToCatalog}
 \alias{StrelkaIDVCFFilesToCatalog}
-\title{Create ID (indel) catalog from Strelka ID VCF files}
+\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files}
 \usage{
 StrelkaIDVCFFilesToCatalog(files, ref.genome, region = "unknown",
   names.of.VCFs = NULL)
@@ -30,13 +30,14 @@ A list of two elements. 1st element is an S3 object containing an ID
   annotated VCFs.
 }
 \description{
-Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
+Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+specified by \code{files}
 }
 \details{
 This function calls \code{\link{VCFsToIDCatalogs}}
 }
 \note{
-In ID (insertion and deletion) catalogs, deletion repeat sizes
+In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }
