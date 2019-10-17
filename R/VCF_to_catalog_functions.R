@@ -1475,6 +1475,13 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'  
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
 #'
 #' @param output.file The name of the PDF file to be produced.
 #'
@@ -1502,10 +1509,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                                                     
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", output.file) {
+           region = "unknown", names.of.VCFs = NULL, output.file) {
     catalogs <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome,
-                                  trans.ranges, region)
+                                  trans.ranges, region, names.of.VCFs)
 
     PlotCatalogToPdf(catalogs$catSBS96, 
                      file = sub(".pdf", ".SBS96Catalog.pdf", 
