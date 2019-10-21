@@ -101,7 +101,7 @@ ReadStrelkaSBSVCF <- function(file) {
 #' @keywords internal
 ReadStrelkaIDVCF <- function(file) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+                 col.names = paste0("c", 1:100), as.is = TRUE)
 
   # Delete the columns which are totally empty
   df <- df[!sapply(df, function(x) all(is.na(x)))]
@@ -184,7 +184,7 @@ GetStrelkaVAF <-function(vcf) {
 #' @keywords internal
 MakeDataFrameFromMutectVCF <- function(file) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+                 col.names = paste0("c", 1:100), as.is = TRUE)
   
   # Delete the columns which are totally empty
   df <- df[!sapply(df, function(x) all(is.na(x)))]
@@ -197,6 +197,13 @@ MakeDataFrameFromMutectVCF <- function(file) {
   names <- c("CHROM", as.character(df1[1, ])[-1])
   df1 <- df1[-1, ]
   colnames(df1) <- names
+  
+  pound.chrom.idx <- which(df1$CHROM == "#CHROM")
+  if (length(pound.chrom.idx) > 0) {
+    warning("Removing ", length(pound.chrom.idx), 
+            " rows with #CHROM from file ", file)
+    df1 <- df1[-pound.chrom.idx, ]
+  }
   
   df1$POS <- as.integer(df1$POS)
   
@@ -242,7 +249,7 @@ ReadMutectVCF <- function(file) {
 #' @rdname GetVAF
 #'
 #' @export
-GetMutectVAF <-function(vcf) {
+GetMutectVAF <- function(vcf) {
   stopifnot("data.frame" %in% class(vcf))
   if (!any(grepl("/1", unlist(vcf[1, ])))) {
     stop("vcf does not appear to be a Mutect VCF, please check the data")
@@ -1510,6 +1517,11 @@ StrelkaSBSVCFFilesToCatalog <-
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, trans.ranges = NULL, 
            region = "unknown", names.of.VCFs = NULL, output.file) {
+    
+    if (missing(output.file)) {
+      stop("Argument output.file is missing")
+    }
+    
     catalogs <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome,
                                   trans.ranges, region, names.of.VCFs)
@@ -1640,6 +1652,11 @@ StrelkaIDVCFFilesToCatalog <-
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files, ref.genome, region = "unknown", 
            names.of.VCFs = NULL, output.file) {
+    
+    if (missing(output.file)) {
+      stop("Argument output.file is missing")
+    }
+    
     list <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
     PlotCatalogToPdf(list$catalog, file = sub(".pdf", ".IndelCatalog.pdf", 
@@ -1732,7 +1749,9 @@ MutectVCFFilesToCatalog <-
 #'   paths without extensions (and the leading dot) will be used as the names of
 #'   the VCF files.
 #'
-#' @param output.file The name of the PDF file to be produced.
+#' @param output.file The base name of the PDF file to be produced; multiple
+#'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
+#'   indicates the type of catalog plotted in the file.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
@@ -1758,49 +1777,57 @@ MutectVCFFilesToCatalog <-
 #'                                         region = "genome",
 #'                                         output.file = 
 #'                                         file.path(tempdir(), "Mutect.pdf"))}
-MutectVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL, output.file) {
+MutectVCFFilesToCatalogAndPlotToPdf <-   function(files, 
+                                                  ref.genome, 
+                                                  trans.ranges = NULL, 
+                                                  region = "unknown", 
+                                                  names.of.VCFs = NULL, 
+                                                  output.file = "") {
+    
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                               region, names.of.VCFs)
+    
+    # TODO(Nanhai): please factor out the code below and share
+    # with the analogous function for Strelka. Please change
+    # the documentation too. This could be further simplifed
+    # by using the name of the catalog in the list as
+    # the suffix of the file name.
+    
+    if (output.file != "") output.file <- paste0(output.file, ".")
 
     PlotCatalogToPdf(catalogs$catSBS96, 
-                     file = sub(".pdf", ".SBS96Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
+                     file = paste0(output.file, "SBS96Catalog.pdf"))
+                     
     if (!is.null(trans.ranges)) {
       PlotCatalogToPdf(catalogs$catSBS192, 
-                       file = sub(".pdf", ".SBS192Catalog.pdf", 
-                                  output.file, ignore.case = TRUE))
+                       file = paste0(output.file, "SBS192Catalog.pdf")) 
+  
       PlotCatalogToPdf(catalogs$catSBS192,
-                       file = sub(".pdf", ".SBS12Catalog.pdf", 
-                                  output.file, ignore.case = TRUE),
+                       file = paste0(output.file, "SBS12Catalog.pdf"), 
                        plot.SBS12 = TRUE)
       PlotCatalogToPdf(catalogs$catDBS144, 
-                       file = sub(".pdf", ".DBS144Catalog.pdf", 
-                                  output.file, ignore.case = TRUE))
+                       file = paste(output.file, "DBS144Catalog.pdf"))
     }
+    
     PlotCatalogToPdf(catalogs$catSBS1536,
-                     file = sub(".pdf", ".SBS1536Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    PlotCatalogToPdf(catalogs$catDBS78,
-                     file = sub(".pdf", ".DBS78Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    PlotCatalogToPdf(catalogs$catDBS136,
-                     file = sub(".pdf", ".DBS136Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    PlotCatalogToPdf(catalogs$catID,
-                     file = sub(".pdf", ".IndelCatalog.pdf", 
-                                output.file, ignore.case = TRUE))
+                     file = paste0(output.file, "SBS1536Catalog.pdf")) 
 
+    PlotCatalogToPdf(catalogs$catDBS78,
+                     file = paste0(output.file, "DBS78Catalog.pdf"))
+
+    PlotCatalogToPdf(catalogs$catDBS136,
+                     file = paste0(output.file, "DBS136Catalog.pdf")) 
+
+    PlotCatalogToPdf(catalogs$catID,
+                     file = paste0(output.file, "IndelCatalog.pdf"))
     return(catalogs)
   }
 
 #' @keywords internal
 CanonicalizeDBS <- function(ref.vec, alt.vec) {
-  canonical.ref <-
-    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
-  Canonicalize1DBS <- function(DBS) {
+
+    Canonicalize1DBS <- function(DBS) {
     if (DBS %in% ICAMS::catalog.row.order$DBS78) {
       return(DBS)
     } else {
@@ -1817,8 +1844,6 @@ CanonicalizeDBS <- function(ref.vec, alt.vec) {
 
 #' @keywords internal
 CanonicalizeQUAD <- function(quad) {
-  canonical.ref <-
-    c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
 
   Canonicalize1QUAD <- function(quad) {
     if (quad %in% ICAMS::catalog.row.order$DBS136) {

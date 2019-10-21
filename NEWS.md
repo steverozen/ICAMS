@@ -10,16 +10,26 @@
   cryptic repeat in what is now the second example.
 * Updated plotting functions to make y axis labels more informative.
 * Made the return from functions VCFsToIDCatalogs(), StrelkaIDVCFFilesToCatalog()
-and StrelkaIDVCFFilesToCatalogAndPlotToPdf() a list; 1st element is the spectrum catalog (previously the only return); 2nd element is a list of further annotated VCFs.
+  and StrelkaIDVCFFilesToCatalogAndPlotToPdf() a list; 1st element is the
+  spectrum catalog (previously the only return); 2nd element is a list of
+  further annotated VCFs.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
 * Added two exported functions PlotTransBiasExp() and PlotTransBiasExpToPdf().
-* Added an additional argument "names.of.VCFs" in functions
-ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
-MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
-StrelkaIDVCFFilesToCatalog(), StrelkaIDVCFFilesToCatalogAndPlotToPdf(),
-StrelkaSBSVCFFilesToCatalog and StrelkaSBSVCFFilesToCatalogAndPlotToPdf()
-for users to specify the names of VCF files.
+* Added an additional optional argument "names.of.VCFs" in functions
+  ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
+  MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
+  StrelkaIDVCFFilesToCatalog(), StrelkaIDVCFFilesToCatalogAndPlotToPdf(),
+  StrelkaSBSVCFFilesToCatalog and StrelkaSBSVCFFilesToCatalogAndPlotToPdf()
+  for users to specify the names of samples in the VCF files.
+* Changed the handling of the output.file argument in
+  MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
+  and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
+  so that an indicator of the catlog type plus ".pdf" is simply
+  appended to the base output.file name. Also
+  made this argument optional with sensible default behavior.
+* Added error checking on the order of rownames in the input of
+  as.catalog.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
