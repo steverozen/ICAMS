@@ -64,5 +64,5 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                         trans.ranges = trans.ranges.GRCh37,
                                         region = "genome",
                                         output.file = 
-                                        file.path(tempdir(), "Mutect.pdf"))}
+                                        file.path(tempdir(), "Mutect"))}
 }
