@@ -29,6 +29,19 @@ RemoveRowsWithPoundSign <- function(df, file) {
   }
 }
 
+#' @keywords internal
+RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
+  dups <- which(duplicated(df[, c("CHROM", "POS")]))
+  if (length(dups) > 0) {
+    warning("Rows with duplicated CHROM and POS removed: ",
+            dups)
+    df1 <- df[-dups, ]
+    return(df1)
+  } else {
+    return(df)
+  }
+}
+
 #' Read in the data lines of an SBS VCF created by Strelka version 1
 #'
 #' @importFrom utils read.csv
@@ -82,6 +95,7 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
   }
   
   df1 <- RemoveRowsWithPoundSign(df1, file)
+  df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
   
   return(df1)
 }
@@ -224,12 +238,6 @@ MakeDataFrameFromMutectVCF <- function(file) {
             'it has been renamed to "strand_old" so as ',
             'not to conflict with code in other parts of ICAMS package.')
   }
-  dups <- which(duplicated(df1[ , c("CHROM", "POS")]))
-  if (length(dups) > 0) {
-    warning("Rows with duplicated CHROM and POS removed: ",
-            dups)
-    df1 <- df1[-dups, ]
-  }
   
   # Is there any column in df1 with name "VAF"?
   # If there is, change its name to "VAF_old" so that it will
@@ -242,6 +250,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
   }
   
   df1 <- RemoveRowsWithPoundSign(df1, file)
+  df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
   
   return(StandardChromName(df1))
 }
