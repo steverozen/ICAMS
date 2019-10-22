@@ -1782,64 +1782,30 @@ MutectVCFFilesToCatalog <-
 #'                                         trans.ranges = trans.ranges.GRCh37,
 #'                                         region = "genome",
 #'                                         output.file = 
-#'                                         file.path(tempdir(), "Mutect.pdf"))}
-MutectVCFFilesToCatalogAndPlotToPdf <-   function(files, 
-                                                  ref.genome, 
-                                                  trans.ranges = NULL, 
-                                                  region = "unknown", 
-                                                  names.of.VCFs = NULL, 
-                                                  output.file = "") {
+#'                                         file.path(tempdir(), "Mutect"))}
+MutectVCFFilesToCatalogAndPlotToPdf <- function(files, 
+                                                ref.genome, 
+                                                trans.ranges = NULL, 
+                                                region = "unknown", 
+                                                names.of.VCFs = NULL, 
+                                                output.file = "") {
     
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                               region, names.of.VCFs)
     
-    # TODO(Nanhai): please factor out the code below and share
-    # with the analogous function for Strelka. Please change
-    # the documentation too. This could be further simplifed
-    # by using the name of the catalog in the list as
-    # the suffix of the file name.
-    
     if (output.file != "") output.file <- paste0(output.file, ".")
     
-    if (FALSE) {
     for (name in names(catalogs)) {
       PlotCatalogToPdf(catalogs[[name]],
                        file = paste0(output.file, name, ".pdf"))
       if (name == "catSBS192") {
         PlotCatalogToPdf(catalogs[[name]],
-                         file = paste0(output.file, "SBS12Catalog.pdf"),
+                         file = paste0(output.file, "SBS12.pdf"),
                          plot.SBS12 = TRUE)
-      }
-      
     }
-    }
-
-    PlotCatalogToPdf(catalogs$catSBS96, 
-                     file = paste0(output.file, "SBS96Catalog.pdf"))
-                     
-    if (!is.null(trans.ranges)) {
-      PlotCatalogToPdf(catalogs$catSBS192, 
-                       file = paste0(output.file, "SBS192Catalog.pdf")) 
-  
-      PlotCatalogToPdf(catalogs$catSBS192,
-                       file = paste0(output.file, "SBS12Catalog.pdf"), 
-                       plot.SBS12 = TRUE)
-      PlotCatalogToPdf(catalogs$catDBS144, 
-                       file = paste(output.file, "DBS144Catalog.pdf"))
     }
     
-    PlotCatalogToPdf(catalogs$catSBS1536,
-                     file = paste0(output.file, "SBS1536Catalog.pdf")) 
-
-    PlotCatalogToPdf(catalogs$catDBS78,
-                     file = paste0(output.file, "DBS78Catalog.pdf"))
-
-    PlotCatalogToPdf(catalogs$catDBS136,
-                     file = paste0(output.file, "DBS136Catalog.pdf")) 
-
-    PlotCatalogToPdf(catalogs$catID,
-                     file = paste0(output.file, "IndelCatalog.pdf"))
     return(catalogs)
   }
 
