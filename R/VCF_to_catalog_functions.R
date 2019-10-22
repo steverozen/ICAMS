@@ -1496,7 +1496,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   paths without extensions (and the leading dot) will be used as the names of
 #'   the VCF files.
 #'
-#' @param output.file The name of the PDF file to be produced.
+#' @param output.file The base name of the PDF files to be produced; multiple
+#'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
+#'   indicates the type of catalog plotted in the file.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and their graphs plotted to PDF
@@ -1518,44 +1520,29 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                             trans.ranges = trans.ranges.GRCh37,
 #'                                             region = "genome",
 #'                                             output.file = 
-#'                                             file.path(tempdir(), "StrelkaSBS.pdf"))}
-#'                                                                     
-StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL, output.file) {
-    
-    if (missing(output.file)) {
-      stop("Argument output.file is missing")
-    }
+#'                                             file.path(tempdir(), "StrelkaSBS"))}
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files, 
+                                                    ref.genome, 
+                                                    trans.ranges = NULL, 
+                                                    region = "unknown", 
+                                                    names.of.VCFs = NULL, 
+                                                    output.file = "") {
     
     catalogs <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome,
                                   trans.ranges, region, names.of.VCFs)
-
-    PlotCatalogToPdf(catalogs$catSBS96, 
-                     file = sub(".pdf", ".SBS96Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    if (!is.null(trans.ranges)) {
-      PlotCatalogToPdf(catalogs$catSBS192, 
-                       file = sub(".pdf", ".SBS192Catalog.pdf", 
-                                  output.file, ignore.case = TRUE))
-      PlotCatalogToPdf(catalogs$catSBS192,
-                       file = sub(".pdf", ".SBS12Catalog.pdf", 
-                                  output.file, ignore.case = TRUE),
-                       plot.SBS12 = TRUE)
-      PlotCatalogToPdf(catalogs$catDBS144, 
-                       file = sub(".pdf", ".DBS144Catalog.pdf", 
-                                  output.file, ignore.case = TRUE))
+    
+    if (output.file != "") output.file <- paste0(output.file, ".")
+    
+    for (name in names(catalogs)) {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      if (name == "catSBS192") {
+        PlotCatalogToPdf(catalogs[[name]],
+                         file = paste0(output.file, "SBS12.pdf"),
+                         plot.SBS12 = TRUE)
+      }
     }
-    PlotCatalogToPdf(catalogs$catSBS1536,
-                     file = sub(".pdf", ".SBS1536Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    PlotCatalogToPdf(catalogs$catDBS78,
-                     file = sub(".pdf", ".DBS78Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
-    PlotCatalogToPdf(catalogs$catDBS136,
-                     file = sub(".pdf", ".DBS136Catalog.pdf", 
-                                output.file, ignore.case = TRUE))
     
     return(catalogs)
   }
