@@ -16,6 +16,19 @@
 #' vaf <- GetStrelkaVAF(df)
 NULL
 
+#' @keywords internal
+RemoveRowsWithPoundSign <- function(df, file) {
+  pound.chrom.idx <- which(df$CHROM == "#CHROM")
+  if (length(pound.chrom.idx) > 0) {
+    warning("Removing ", length(pound.chrom.idx), 
+            " rows with #CHROM from file ", file)
+    df1 <- df[-pound.chrom.idx, ]
+    return(df1)
+  } else {
+    return(df)
+  }
+}
+
 #' Read in the data lines of an SBS VCF created by Strelka version 1
 #'
 #' @importFrom utils read.csv
@@ -27,7 +40,7 @@ NULL
 #' @keywords internal
 MakeDataFrameFromStrelkaSBSVCF <- function(file) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1 : 100), as.is = TRUE)
+                 col.names = paste0("c", 1:100), as.is = TRUE)
   
   # Delete the columns which are totally empty
   df <- df[!sapply(df, function(x) all(is.na(x)))]
@@ -67,6 +80,8 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
             'it has been renamed to "VAF_old" so as ',
             'not to conflict with code in other parts of ICAMS package.')
   }
+  
+  df1 <- RemoveRowsWithPoundSign(df1, file)
   
   return(df1)
 }
@@ -198,13 +213,6 @@ MakeDataFrameFromMutectVCF <- function(file) {
   df1 <- df1[-1, ]
   colnames(df1) <- names
   
-  pound.chrom.idx <- which(df1$CHROM == "#CHROM")
-  if (length(pound.chrom.idx) > 0) {
-    warning("Removing ", length(pound.chrom.idx), 
-            " rows with #CHROM from file ", file)
-    df1 <- df1[-pound.chrom.idx, ]
-  }
-  
   df1$POS <- as.integer(df1$POS)
   
   # Is there any column in df1 with name "strand"?
@@ -232,6 +240,8 @@ MakeDataFrameFromMutectVCF <- function(file) {
             'it has been renamed to "VAF_old" so as ',
             'not to conflict with code in other parts of ICAMS package.')
   }
+  
+  df1 <- RemoveRowsWithPoundSign(df1, file)
   
   return(StandardChromName(df1))
 }
