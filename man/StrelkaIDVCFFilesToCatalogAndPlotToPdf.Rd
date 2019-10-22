@@ -6,7 +6,7 @@
 and plot them to PDF}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
-  region = "unknown", names.of.VCFs = NULL, output.file)
+  region = "unknown", names.of.VCFs = NULL, output.file = "")
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka ID VCF files.}
@@ -24,7 +24,8 @@ the path up to and including the last path separator (if any) and file
 paths without extensions (and the leading dot) will be used as the names of
 the VCF files.}
 
-\item{output.file}{The name of the PDF file to be produced.}
+\item{output.file}{The base name of the PDF file to be produced; the file is
+ending in \code{catID.pdf}.}
 }
 \value{
 A list whose first element is an ID (small insertion and deletion)
@@ -55,6 +56,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
     StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
                                            region = "genome",
                                            output.file = 
-                                           file.path(tempdir(), "StrelkaID.pdf"))}
+                                           file.path(tempdir(), "StrelkaID"))}
                                                                    
 }

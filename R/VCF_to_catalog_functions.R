@@ -1617,7 +1617,8 @@ StrelkaIDVCFFilesToCatalog <-
 #'   paths without extensions (and the leading dot) will be used as the names of
 #'   the VCF files.
 #'
-#' @param output.file The name of the PDF file to be produced.
+#' @param output.file The base name of the PDF file to be produced; the file is
+#'   ending in \code{catID.pdf}.
 #'
 #' @return A list whose first element is an ID (small insertion and deletion)
 #'   catalog with its graph plotted to PDF with specified file name. The ID
@@ -1640,20 +1641,21 @@ StrelkaIDVCFFilesToCatalog <-
 #'     StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
 #'                                            region = "genome",
 #'                                            output.file = 
-#'                                            file.path(tempdir(), "StrelkaID.pdf"))}
+#'                                            file.path(tempdir(), "StrelkaID"))}
 #'                                                                    
-StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
-  function(files, ref.genome, region = "unknown", 
-           names.of.VCFs = NULL, output.file) {
-    
-    if (missing(output.file)) {
-      stop("Argument output.file is missing")
-    }
+StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files, 
+                                                   ref.genome, 
+                                                   region = "unknown", 
+                                                   names.of.VCFs = NULL, 
+                                                   output.file = "") {
     
     list <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
-    PlotCatalogToPdf(list$catalog, file = sub(".pdf", ".IndelCatalog.pdf", 
-                                              output.file, ignore.case = TRUE))
+    
+    if (output.file != "") output.file <- paste0(output.file, ".")
+    
+    PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
+    
     return(list)
   }
 
