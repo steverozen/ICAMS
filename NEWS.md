@@ -26,10 +26,12 @@
   MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
   and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
   so that an indicator of the catlog type plus ".pdf" is simply
-  appended to the base output.file name. Also
-  made this argument optional with sensible default behavior.
+  appended to the base output.file name. Also made this argument
+  optional with sensible default behavior.
 * Added error checking on the order of rownames in the input of
   as.catalog.
+* Added code to handle the case where the #CHROM lines appear
+  interspersed with rows for vairants in a Mutect VCF file.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted

@@ -28,7 +28,7 @@ the path up to and including the last path separator (if any) and file
 paths without extensions (and the leading dot) will be used as the names of
 the VCF files.}
 
-\item{output.file}{The base name of the PDF file to be produced; multiple
+\item{output.file}{The base name of the PDF files to be produced; multiple
 files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
 indicates the type of catalog plotted in the file.}
 }

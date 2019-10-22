@@ -216,6 +216,12 @@ MakeDataFrameFromMutectVCF <- function(file) {
             'it has been renamed to "strand_old" so as ',
             'not to conflict with code in other parts of ICAMS package.')
   }
+  dups <- which(duplicated(df1[ , c("CHROM", "POS")]))
+  if (length(dups) > 0) {
+    warning("Rows with duplicated CHROM and POS removed: ",
+            dups)
+    df1 <- df1[-dups, ]
+  }
   
   # Is there any column in df1 with name "VAF"?
   # If there is, change its name to "VAF_old" so that it will
@@ -1749,7 +1755,7 @@ MutectVCFFilesToCatalog <-
 #'   paths without extensions (and the leading dot) will be used as the names of
 #'   the VCF files.
 #'
-#' @param output.file The base name of the PDF file to be produced; multiple
+#' @param output.file The base name of the PDF files to be produced; multiple
 #'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
 #'   indicates the type of catalog plotted in the file.
 #'
@@ -1795,6 +1801,19 @@ MutectVCFFilesToCatalogAndPlotToPdf <-   function(files,
     # the suffix of the file name.
     
     if (output.file != "") output.file <- paste0(output.file, ".")
+    
+    if (FALSE) {
+    for (name in names(catalogs)) {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      if (name == "catSBS192") {
+        PlotCatalogToPdf(catalogs[[name]],
+                         file = paste0(output.file, "SBS12Catalog.pdf"),
+                         plot.SBS12 = TRUE)
+      }
+      
+    }
+    }
 
     PlotCatalogToPdf(catalogs$catSBS96, 
                      file = paste0(output.file, "SBS96Catalog.pdf"))
