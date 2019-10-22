@@ -42,7 +42,6 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   }
 }
 
-
 #' Is there any column in \code{df} with name "strand"?
 #' If there is, change its name to "strand_old" so that it will
 #' conflict with code in other parts of ICAMS package.
@@ -53,6 +52,21 @@ RenameColumnsWithNameStrand <- function(df) {
     colnames(df)[which(colnames(df) == "strand")] <- "strand_old"
     warning('There is column in VCF which has name "strand", ',
             'it has been renamed to "strand_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
+  }
+  return(df)
+}
+
+#' Is there any column in df1 with name "VAF"?
+#' If there is, change its name to "VAF_old" so that it will
+#' conflict with code in other parts of ICAMS package.
+#' 
+#' @keywords internal
+RenameColumnsWithNameVAF <- function(df) {
+  if ("VAF" %in% colnames(df)) {
+    colnames(df)[which(colnames(df) == "VAF")] <- "VAF_old"
+    warning('There is column in VCF which has name "VAF", ',
+            'it has been renamed to "VAF_old" so as ',
             'not to conflict with code in other parts of ICAMS package.')
   }
   return(df)
@@ -91,16 +105,7 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
   df1$POS <- as.integer(df1$POS)
   
   df1 <- RenameColumnsWithNameStrand(df1)
-  
-  # Is there any column in df1 with name "VAF"?
-  # If there is, change its name to "VAF_old" so that it will
-  # conflict with code in other parts of ICAMS package.
-  if ("VAF" %in% colnames(df1)) {
-    colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
-    warning('There is column in VCF which has name "VAF", ',
-            'it has been renamed to "VAF_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
-  }
+  df1 <- RenameColumnsWithNameVAF(df1)
   
   df1 <- RemoveRowsWithPoundSign(df1, file)
   df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
@@ -238,16 +243,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
   df1$POS <- as.integer(df1$POS)
   
   df1 <- RenameColumnsWithNameStrand(df1)
-  
-  # Is there any column in df1 with name "VAF"?
-  # If there is, change its name to "VAF_old" so that it will
-  # conflict with code in other parts of ICAMS package.
-  if ("VAF" %in% colnames(df1)) {
-    colnames(df1)[which(colnames(df1) == "VAF")] <- "VAF_old"
-    warning('There is column in VCF which has name "VAF", ',
-            'it has been renamed to "VAF_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
-  }
+  df1 <- RenameColumnsWithNameVAF(df1)
   
   df1 <- RemoveRowsWithPoundSign(df1, file)
   df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
