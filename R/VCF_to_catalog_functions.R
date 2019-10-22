@@ -42,6 +42,22 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   }
 }
 
+
+#' Is there any column in \code{df} with name "strand"?
+#' If there is, change its name to "strand_old" so that it will
+#' conflict with code in other parts of ICAMS package.
+#' 
+#' @keywords internal
+RenameColumnsWithNameStrand <- function(df) {
+  if ("strand" %in% colnames(df)) {
+    colnames(df)[which(colnames(df) == "strand")] <- "strand_old"
+    warning('There is column in VCF which has name "strand", ',
+            'it has been renamed to "strand_old" so as ',
+            'not to conflict with code in other parts of ICAMS package.')
+  }
+  return(df)
+}
+
 #' Read in the data lines of an SBS VCF created by Strelka version 1
 #'
 #' @importFrom utils read.csv
@@ -74,15 +90,7 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
   stopifnot(df1$REF != df1$ALT)
   df1$POS <- as.integer(df1$POS)
   
-  # Is there any column in df1 with name "strand"?
-  # If there is, change its name to "strand_old" so that it will
-  # conflict with code in other parts of ICAMS package.
-  if ("strand" %in% colnames(df1)) {
-    colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
-    warning('There is column in VCF which has name "strand", ',
-            'it has been renamed to "strand_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
-  }
+  df1 <- RenameColumnsWithNameStrand(df1)
   
   # Is there any column in df1 with name "VAF"?
   # If there is, change its name to "VAF_old" so that it will
@@ -229,15 +237,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
   
   df1$POS <- as.integer(df1$POS)
   
-  # Is there any column in df1 with name "strand"?
-  # If there is, change its name to "strand_old" so that it will
-  # conflict with code in other parts of ICAMS package.
-  if ("strand" %in% colnames(df1)) {
-    colnames(df1)[which(colnames(df1) == "strand")] <- "strand_old"
-    warning('There is column in VCF which has name "strand", ',
-            'it has been renamed to "strand_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
-  }
+  df1 <- RenameColumnsWithNameStrand(df1)
   
   # Is there any column in df1 with name "VAF"?
   # If there is, change its name to "VAF_old" so that it will
