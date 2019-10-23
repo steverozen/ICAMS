@@ -36,6 +36,7 @@
   a logic value indicating whether the plot is successful. The second element 
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
   useful for adding to the graph(currently only implemented for SBS96Catalog).
+* Added two exported functions PlotTransBiasDist2TSS() and PlotTransBiasDist2TSSToPDF().  
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
