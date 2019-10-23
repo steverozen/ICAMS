@@ -25,13 +25,17 @@
 * Changed the handling of the output.file argument in
   MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
   and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
-  so that an indicator of the catlog type plus ".pdf" is simply
+  so that an indicator of the catalog type plus ".pdf" is simply
   appended to the base output.file name. Also made this argument
   optional with sensible default behavior.
 * Added error checking on the order of rownames in the input of
   as.catalog.
 * Added code to handle the case where the #CHROM lines appear
-  interspersed with rows for vairants in a Mutect VCF file.
+  interspersed with rows for variants in a Mutect VCF file.
+* Made the return from function PlotCatalog() a list. The first element is 
+  a logic value indicating whether the plot is successful. The second element 
+  is a numeric vector giving the coordinates of all the bar midpoints drawn,
+  useful for adding to the graph(currently only implemented for SBS96Catalog).
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
