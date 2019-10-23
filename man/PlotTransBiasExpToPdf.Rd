@@ -41,10 +41,11 @@ list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-                                      trans.ranges = trans.ranges.GRCh37)}
-PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-                 expression.level = sample.gene.expression.value.GRCh37, 
-                 ref.genome = "hg19", n = 4, 
-                 plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
-                 file = file.path(tempdir(), "test.pdf"))
+                                      trans.ranges = trans.ranges.GRCh37)
+  PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
+                        expression.level = sample.gene.expression.value.GRCh37, 
+                        ref.genome = "hg19", n = 4, 
+                        plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
+                        file = file.path(tempdir(), "test.pdf"))
+}
 }

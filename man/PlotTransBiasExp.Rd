@@ -44,8 +44,8 @@ SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)
-                                      }
-PlotTransBiasExp(annotated.SBS.vcf = annotated.SBS.vcf, 
-                 expression.level = sample.gene.expression.value.GRCh37, 
-                 ref.genome = "hg19", n = 4, plot.type = "C>A")
+  PlotTransBiasExp(annotated.SBS.vcf = annotated.SBS.vcf, 
+                   expression.level = sample.gene.expression.value.GRCh37, 
+                   ref.genome = "hg19", n = 4, plot.type = "C>A")
+}
 }
