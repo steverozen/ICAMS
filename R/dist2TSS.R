@@ -110,7 +110,7 @@ Plotdist2TSS <- function(output, plot.type) {
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = c("C>A", "C>T"))
+#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
 #' }
 PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
   output <- dist2TSS(annotated.SBS.vcf, plot.type)

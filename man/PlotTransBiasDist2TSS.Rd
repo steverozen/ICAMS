@@ -31,6 +31,6 @@ SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)
-  PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = c("C>A", "C>T"))
+  PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
 }
 }
