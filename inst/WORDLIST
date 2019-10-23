@@ -41,6 +41,7 @@ chromStart
 cisplatin
 cshlp
 csv
+df
 dinucleotide
 DBS
 DBSs
@@ -91,6 +92,7 @@ nucleotides
 opar
 PCAWG
 pentanucleotide
+PlotCatalog
 PlotCatID
 PlotCatIDtoPdf
 PlotTransBiasExp
