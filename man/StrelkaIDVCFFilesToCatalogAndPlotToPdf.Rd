@@ -2,10 +2,11 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
-\title{Create ID (indel) catalog from Strelka ID VCF files and plot them to PDF}
+\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+and plot them to PDF}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
-  region = "unknown", output.file)
+  region = "unknown", names.of.VCFs = NULL, output.file = "")
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka ID VCF files.}
@@ -16,25 +17,35 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
-\item{output.file}{The name of the PDF file to be produced.}
+\item{names.of.VCFs}{Character vector of names of the VCF files. The order
+of names in \code{names.of.VCFs} should match the order of VCF file paths
+in \code{files}. If \code{NULL}(default), this function will remove all of
+the path up to and including the last path separator (if any) and file
+paths without extensions (and the leading dot) will be used as the names of
+the VCF files.}
+
+\item{output.file}{The base name of the PDF file to be produced; the file is
+ending in \code{catID.pdf}.}
 }
 \value{
-An ID (indel) catalog and its graph plotted to PDF with specified
-  file name. The ID (indel) catalog has attributes added. See
-  \code{\link{as.catalog}} for more details.
+A list whose first element is an ID (small insertion and deletion)
+  catalog with its graph plotted to PDF with specified file name. The ID
+  catalog has attributes added. See \code{\link{as.catalog}} for more
+  details. The second element of the returned list is a list of further
+  annotated VCFs.
 }
 \description{
-Create ID (indel) catalog from the Strelka ID VCFs specified by \code{files}
-and plot them to PDF
+Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+specified by \code{files} and plot them to PDF
 }
 \details{
 This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
 \code{\link{PlotCatalogToPdf}}
 }
 \note{
-In ID (insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
+In ID (small insertion and deletion) catalogs, deletion repeat sizes
+  range from 0 to 5+, but for plotting and end-user documentation deletion
+  repeat sizes range from 1 to 6+.
 }
 \examples{
 file <- c(system.file("extdata",
@@ -45,6 +56,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
     StrelkaIDVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19", 
                                            region = "genome",
                                            output.file = 
-                                           file.path(tempdir(), "StrelkaID.pdf"))}
+                                           file.path(tempdir(), "StrelkaID"))}
                                                                    
 }

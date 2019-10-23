@@ -11,14 +11,14 @@ test_that("PlotCatalog.DBS136Catalog function", {
                                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
   out <- PlotCatalog(cat.counts)
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   cat.density <-
     TransformCatalog(cat.counts, target.ref.genome = "GRCh37",
                      target.region = "genome",
                      target.catalog.type = "density")
   out <- PlotCatalog(cat.density)
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   cat.counts.signature <-
     TransformCatalog(cat.counts, target.ref.genome = "GRCh37",

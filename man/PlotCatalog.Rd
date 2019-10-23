@@ -34,7 +34,10 @@ SBS96Catalog.}
 implemented for SBS96Catalog.}
 }
 \value{
-\code{invisible(TRUE)}
+A list whose first element is a logic value indicating whether the
+  plot is successful. The second element is a numeric vector giving the
+  coordinates of all the bar midpoints drawn, useful for adding to the
+  graph(\strong{currently only implemented for SBS96Catalog}).
 }
 \description{
 Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The

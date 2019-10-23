@@ -43,6 +43,6 @@ test_that("StrelkaIDVCFFilesToCatalog", {
                                      ref.genome = "hg38")
   expect_equal(cat5, cat6)
   expect_equal(cat5, cat7)
-  expect_equal(attributes(cat8)$region, "unknown")
-  expect_null(attributes(cat8)$abundance)
+  expect_equal(attributes(cat8$catalog)$region, "unknown")
+  expect_null(attributes(cat8$catalog)$abundance)
 })

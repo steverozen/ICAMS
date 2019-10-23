@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{ReadStrelkaIDVCFs}
 \alias{ReadStrelkaIDVCFs}
-\title{Read Strelka ID (insertion and deletion) VCF files.}
+\title{Read Strelka ID (small insertion and deletion) VCF files.}
 \usage{
 ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
 }
@@ -20,10 +20,10 @@ the VCF files.}
 A list of vcfs from \code{files}.
 }
 \description{
-Read Strelka ID (insertion and deletion) VCF files.
+Read Strelka ID (small insertion and deletion) VCF files.
 }
 \note{
-In ID (insertion and deletion) catalogs, deletion repeat sizes
+In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }

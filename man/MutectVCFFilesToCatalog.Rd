@@ -5,7 +5,7 @@
 \title{Create SBS, DBS and Indel catalogs from Mutect VCF files}
 \usage{
 MutectVCFFilesToCatalog(files, ref.genome, trans.ranges = NULL,
-  region = "unknown")
+  region = "unknown", names.of.VCFs = NULL)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Mutect VCF files.}
@@ -19,6 +19,13 @@ transcript range and strand information. Please refer to
 
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
+
+\item{names.of.VCFs}{Character vector of names of the VCF files. The order
+of names in \code{names.of.VCFs} should match the order of VCF file paths
+in \code{files}. If \code{NULL}(default), this function will remove all of
+the path up to and including the last path separator (if any) and file
+paths without extensions (and the leading dot) will be used as the names of
+the VCF files.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
@@ -36,7 +43,7 @@ This function calls \code{\link{VCFsToSBSCatalogs}},
 }
 \note{
 SBS 192 and DBS 144 catalogs include only mutations in transcribed
-  regions. In ID (insertion and deletion) catalogs, deletion repeat sizes
+  regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation deletion
   repeat sizes range from 1 to 6+.
 }

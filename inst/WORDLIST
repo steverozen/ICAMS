@@ -41,6 +41,7 @@ chromStart
 cisplatin
 cshlp
 csv
+df
 dinucleotide
 DBS
 DBSs
@@ -83,12 +84,15 @@ Mmusculus
 MultiModalMuSig
 mutect
 Mutect
+MutectVCFFilesToCatalog
+MutectVCFFilesToCatalogAndPlotToPdf
 nd
 NN
 nucleotides
 opar
 PCAWG
 pentanucleotide
+PlotCatalog
 PlotCatID
 PlotCatIDtoPdf
 PlotTransBiasExp
@@ -110,6 +114,10 @@ SigProfiler
 steverozen
 StrandToPdf
 Strelka
+StrelkaIDVCFFilesToCatalog
+StrelkaIDVCFFilesToCatalogAndPlotToPdf
+StrelkaSBSVCFFilesToCatalog
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf
 SureSelect
 TAC
 TCT

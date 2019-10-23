@@ -478,7 +478,7 @@ AbundanceIsSame <- function(a1, a2) {
 #'
 #'
 #' @param catalog An SBS or DBS catalog as described in \code{\link{ICAMS}};
-#'  must \strong{not} be an ID (indel) catalog.
+#'  must \strong{not} be an ID (small insertion and deletion) catalog.
 #'
 #' @param target.ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}. If \code{NULL}, then defaults to the
@@ -1293,6 +1293,22 @@ InferRownames <- function(object) {
   return(ICAMS::catalog.row.order[[prefix]])
 }
 
+#' Check whether the rownames of \code{object} are correct, if yes then put the
+#' rows in the correct order.
+#'
+#' @keywords internal
+CheckAndReorderRownames <- function(object) {
+  prefix <- InferCatalogClassPrefix(object)
+  correct.rownames <- ICAMS::catalog.row.order[[prefix]]
+  difference <- setdiff(correct.rownames, rownames(object))
+  if(identical(difference, character(0))) {
+    return(object[correct.rownames, , drop = FALSE])
+  } else {
+    stop("\nThe input object does not have correct rownames to denote the\n", 
+         "mutation types. Mutation types that are missing are\n", 
+         paste(difference, collapse = " "))
+  }
+}
 
 #' Test if object is \code{BSgenome.Hsapiens.1000genome.hs37d5}.
 #'
@@ -1454,6 +1470,8 @@ as.catalog <- function(object,
       stop("Require correct rownames on object unless infer.rownames == TRUE")
     }
     rownames(object) <- InferRownames(object)
+  } else {
+    object <- CheckAndReorderRownames(object)
   }
 
   StopIfRegionIllegal(region)

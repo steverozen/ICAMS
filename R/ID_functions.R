@@ -762,7 +762,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
               annotated.VCF = out.ID.vcf))
 }
 
-#' Create ID (insertion and deletion) catalog from ID VCFs
+#' Create ID (small insertion and deletion) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory VCFs. The list names will be
 #' the sample ids in the output catalog.
@@ -778,7 +778,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
 #'   annotated VCFs.
 #'   
-#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'   
@@ -786,9 +786,9 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 #' 
 #' @examples 
 #' file <- c(system.file("extdata",
-#'                       "Mutect.GRCh37.vcf",
+#'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
+#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",

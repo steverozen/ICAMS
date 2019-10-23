@@ -9,14 +9,33 @@
 * Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
   cryptic repeat in what is now the second example.
 * Updated plotting functions to make y axis labels more informative.
-* Made the return from function VCFsToIDCatalogs() a list; 1st element is the spectrum catalog 
-  (previously the only return); 2nd element is a list of further annotated VCFs.
+* Made the return from functions VCFsToIDCatalogs(), StrelkaIDVCFFilesToCatalog()
+  and StrelkaIDVCFFilesToCatalogAndPlotToPdf() a list; 1st element is the
+  spectrum catalog (previously the only return); 2nd element is a list of
+  further annotated VCFs.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
 * Added two exported functions PlotTransBiasExp() and PlotTransBiasExpToPdf().
-* Added an additional argument "names.of.VCFs" in functions
-ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs() and ReadStrelkaIDVCFs()
-for users to specify the names of VCF files.
+* Added an additional optional argument "names.of.VCFs" in functions
+  ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
+  MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
+  StrelkaIDVCFFilesToCatalog(), StrelkaIDVCFFilesToCatalogAndPlotToPdf(),
+  StrelkaSBSVCFFilesToCatalog and StrelkaSBSVCFFilesToCatalogAndPlotToPdf()
+  for users to specify the names of samples in the VCF files.
+* Changed the handling of the output.file argument in
+  MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
+  and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
+  so that an indicator of the catalog type plus ".pdf" is simply
+  appended to the base output.file name. Also made this argument
+  optional with sensible default behavior.
+* Added error checking on the order of rownames in the input of
+  as.catalog.
+* Added code to handle the case where the #CHROM lines appear
+  interspersed with rows for variants in a Mutect VCF file.
+* Made the return from function PlotCatalog() a list. The first element is 
+  a logic value indicating whether the plot is successful. The second element 
+  is a numeric vector giving the coordinates of all the bar midpoints drawn,
+  useful for adding to the graph(currently only implemented for SBS96Catalog).
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ID_functions.R
 \name{VCFsToIDCatalogs}
 \alias{VCFsToIDCatalogs}
-\title{Create ID (insertion and deletion) catalog from ID VCFs}
+\title{Create ID (small insertion and deletion) catalog from ID VCFs}
 \usage{
 VCFsToIDCatalogs(list.of.vcfs, ref.genome, region = "unknown")
 }
@@ -23,18 +23,18 @@ A list of two elements. 1st element is an S3 object containing an ID
   annotated VCFs.
 }
 \description{
-Create ID (insertion and deletion) catalog from ID VCFs
+Create ID (small insertion and deletion) catalog from ID VCFs
 }
 \note{
-In ID (insertion and deletion) catalogs, deletion repeat sizes
+In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }
 \examples{
 file <- c(system.file("extdata",
-                      "Mutect.GRCh37.vcf",
+                      "Strelka.ID.GRCh37.vcf",
                       package = "ICAMS"))
-list.of.ID.vcfs <- ReadAndSplitMutectVCFs(file)$ID
+list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
  quietly = TRUE)) {
   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",

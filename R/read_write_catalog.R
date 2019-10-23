@@ -20,7 +20,7 @@
 #'
 #' @return A catalog as an S3 object; see \code{\link{as.catalog}}.
 #'
-#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'
@@ -53,7 +53,7 @@ ReadCatalog <- function(file, ref.genome = NULL, region = "unknown",
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
 #'
-#' @note In ID (insertion and deletion) catalogs, deletion repeat sizes
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'

@@ -57,9 +57,10 @@ test_that(
                  "does not appear to be a Strelka SBS VCF",
                  fixed = TRUE)
     
-    expect_error(ReadStrelkaSBSVCFs("testdata/Strelka.ID.GRCm38.vcf"),
-                 "does not appear to be a Strelka SBS VCF",
-                 fixed = TRUE)
+    expect_error(
+      expect_warning(ReadStrelkaSBSVCFs("testdata/Strelka.ID.GRCm38.vcf")),
+      "does not appear to be a Strelka SBS VCF",
+      fixed = TRUE)
   })
 
 test_that(
@@ -115,9 +116,10 @@ test_that(
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadMutectVCFs("testdata/Strelka.ID.GRCm38.vcf"),
-                 "does not appear to be a Mutect VCF",
-                 fixed = TRUE)
+    expect_error(
+      expect_warning(ReadMutectVCFs("testdata/Strelka.ID.GRCm38.vcf")),
+      "does not appear to be a Mutect VCF",
+      fixed = TRUE)
     
   }
 )
