@@ -95,6 +95,7 @@ pentanucleotide
 PlotCatalog
 PlotCatID
 PlotCatIDtoPdf
+PlotTransBiasDist
 PlotTransBiasExp
 PlotTransBiasExpToPdf
 POS
@@ -131,6 +132,8 @@ TPM
 transcriptional
 transcriptionally
 trinucleotide
+TSS
+TSSToPDF
 TT
 TTC
 TTGA
