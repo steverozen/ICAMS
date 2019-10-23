@@ -10,7 +10,7 @@ test_that("[ method for SBS96Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -27,7 +27,7 @@ test_that("[ method for SBS192Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -43,7 +43,7 @@ test_that("[ method for SBS1536Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -59,7 +59,7 @@ test_that("[ method for DBS78Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -76,7 +76,7 @@ test_that("[ method for DBS144Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -92,7 +92,7 @@ test_that("[ method for DBS136Catalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))
@@ -107,7 +107,7 @@ test_that("[ method for IndelCatalog", {
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
   out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
                            file = file.path(tempdir(), "test.pdf"))
-  expect_equal(out1, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   unlink(file.path(tempdir(), "test.pdf"))

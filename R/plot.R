@@ -32,7 +32,10 @@
 #'
 #' @import graphics
 #'
-#' @return \code{invisible(TRUE)}
+#' @return A list whose first element is a logic value indicating whether the
+#'   plot is successful. The second element is a numeric vector giving the
+#'   coordinates of all the bar midpoints drawn, useful for adding to the
+#'   graph(\strong{currently only implemented for SBS96Catalog}).
 #'
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
@@ -89,7 +92,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'   implemented for SBS96Catalog.
 #'
 #' @return \code{invisible(TRUE)}
-#'
+#'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
 #'   end-user documentation deletion repeat sizes range from 1 to 6+.
@@ -232,7 +235,7 @@ PlotCatalog.SBS96Catalog <-
       text((x.left + x.right)/2, ymax * 1.38, labels = maj.class.names, xpd = NA)
     }
 
-    invisible(TRUE)
+    return(list(plot.success = TRUE, plot.object = bp))
   }
 
 #' @export
@@ -482,7 +485,7 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
          font = 2, cex = cex, adj = c(0, 0))
   }
 
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -704,7 +707,7 @@ PlotCatalog.SBS1536Catalog <-
     }
   }
 
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -816,7 +819,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
   text(bp, -ymax / 15, labels = substr(rownames(catalog), 3, 3),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -949,7 +952,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
   text(bp[8], ymax, labels = colnames(catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1116,7 +1119,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1422,7 +1425,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   text(bp, -ymax * 0.15, labels = mut.type, cex = 0.65, xpd = NA)
   text(bottom.pos, -ymax * 0.27, labels = bottom.lab, cex = 0.75, xpd = NA)
 
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
