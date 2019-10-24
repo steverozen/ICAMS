@@ -13,7 +13,7 @@ usethis::use_data(catalog.row.order,
                   trans.ranges.GRCh38,
                   trans.ranges.GRCm38,
                   all.abundance,
-                  sample.gene.expression.value.GRCh37,
+                  gene.expression.level.example.GRCh37,
                   overwrite = TRUE)
 
 usethis::use_data(to.reorder.SBS.192.for.plotting,
