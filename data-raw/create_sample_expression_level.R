@@ -2,5 +2,7 @@
 
 cat(getwd(), "\n")
 
-sample.gene.expression.value.GRCh37 <- 
-  read.csv("data-raw/sample.expression.level.GRCh37.csv")
+gene.expression.level.example.GRCh37 <- 
+  read.table("data-raw/gene.expression.level.example.GRCh37.txt", header = TRUE)
+colnames(gene.expression.level.example.GRCh37) <-
+  c("Ensembl.gene.ID", "gene.symbol", "counts", "TPM")
