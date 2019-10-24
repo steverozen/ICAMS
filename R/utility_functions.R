@@ -789,8 +789,9 @@ CreateTransRanges <- function(file) {
 
   # Only keep the entries in dt3 with gene ID that is associated with CCDS ID.
   # Select the necessary columns and standardize the chromosome names.
-  dt4 <- dt3[gene.id %in% gene.id.CCDS, c(1, 4, 5, 7, 11)]
-  colnames(dt4) <- c("chrom", "start", "end", "strand", "gene.name")
+  dt4 <- dt3[gene.id %in% gene.id.CCDS, c(1, 4, 5, 7, 10, 11)]
+  colnames(dt4) <- c("chrom", "start", "end", "strand", 
+                     "Ensembl.gene.ID", "gene.name")
   dt5 <- StandardChromName(dt4)
 
   # Reorder dt5 according to chromosome name, start and end position
@@ -798,24 +799,35 @@ CreateTransRanges <- function(file) {
   dt5$chrom <- factor(dt5$chrom, chrOrder, ordered = TRUE)
   setkeyv(dt5, c("chrom", "start", "end"))
 
-  # Combine the overlapping ranges of the same gene if there is any
+  # Check whether one gene.name have multiple entries in dt5
   dt6 <- dt5[, count := .N, by = .(chrom, gene.name)]
   dt7 <- dt6[count == 1, ]
   dt8 <- dt6[count != 1, ]
   if (nrow(dt8) == 0) {
-    return(dt7[, c(1:5)])
+    return(dt7[, c(1:6)])
   } else {
-    gr <- GenomicRanges::makeGRangesFromDataFrame(dt8, keep.extra.columns = TRUE)
-    gr1 <- GenomicRanges::reduce(gr, with.revmap = TRUE)
-    GetGeneName <- function(idx, names){
-      return(names[idx])
-    }
-    mat <- t(sapply(gr1$revmap, FUN = GetGeneName, names = gr$gene.name))
-    unique.gene.name <- apply(mat, MARGIN = 1, FUN = unique)
-    GenomicRanges::mcols(gr1) <- unique.gene.name
-    dt9 <- as.data.table(gr1)[, c(1:3, 5:6)]
-    dt10 <- rbind(dt7[, c(1:5)], dt9, use.names = FALSE)
-    return(setkeyv(dt10, c("chrom", "start", "end")))
+    # Check and remove entries in dt8 if it has readthrough transcripts
+    dt9 <- dt[grep("readthrough", dt$V9), ]
+    info1 <- stri_split_fixed(dt9$V9, ";")
+    gene.id.readthrough.idx <- lapply(info1, grep, pattern = "gene_id")
+    gene.id.readthrough <-
+      unique(sapply(1:length(info1), ExtractInfo,
+                    list1 = info1, list2 = gene.id.readthrough.idx))
+    gene.id.readthrough1 <- 
+      sapply(stri_split_fixed(gene.id.readthrough, "="), "[", 2)
+    dt8$readthrough <- FALSE
+    dt9 <- dt8[Ensembl.gene.ID %in% gene.id.readthrough1, readthrough := TRUE]
+    dt10 <- dt9[readthrough == FALSE, ]
+    dt11 <- dplyr::distinct(dt10, chrom, gene.name, .keep_all = TRUE)
+    
+    # Rbind dt7 and dt11
+    dt12 <- rbind(dt7[, c(1:6)], dt11[, c(1:6)], use.names = FALSE)
+    
+    # Remove the string after dot in the Ensembl gene ID
+    Ensembl.gene.ID.withoutdot <- gsub("\\..*", "", dt12$Ensembl.gene.ID)
+    dt12$Ensembl.gene.ID <- Ensembl.gene.ID.withoutdot
+    
+    return(setkeyv(dt12, c("chrom", "start", "end")))
   }
 }
 
