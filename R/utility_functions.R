@@ -981,7 +981,8 @@ RevcDBS144 <- function(mutstring) {
 #' @keywords internal
 ReadTranscriptRanges <- function(file) {
   dt <- data.table::fread(file)
-  colnames(dt) <- c("chrom", "start", "end", "strand", "gene.symbol")
+  colnames(dt) <- c("chrom", "start", "end", "strand", 
+                    "Ensembl.gene.ID", "gene.symbol")
   
   # Check whether the transcript ranges come from human or mouse genomes
   if (length(unique(dt$chrom)) == 24) {
