@@ -166,17 +166,15 @@ NULL
 
 "all.abundance"
 
-#' Sample gene expression values for human GRCh37.
+#' Example gene expression level values for human GRCh37.
 #'
 #' This data is designed to be used as an example in function
 #' \code{\link{PlotTransBiasExp}} and \code{\link{PlotTransBiasExpToPdf}}.
 #'
-#' @format A data frame with two columns. The first column contains the gene
-#'   symbol, the second columns contains the gene expression values
-#'   TPM (Transcripts Per Kilobase Million).
+#' @format A \code{data.frame} which contains the transcription level of genes.
 #'   
-#' @name sample.gene.expression.value.GRCh37
-"sample.gene.expression.value.GRCh37"
+#' @name gene.expression.level.example.GRCh37
+"gene.expression.level.example.GRCh37"
 
 
 # Quiets concerns of R CMD check about no visible binding for global variable
