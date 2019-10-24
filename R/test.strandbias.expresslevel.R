@@ -1,36 +1,21 @@
 StrandBiasAsExpressionLevel <- 
-  function(annotated.SBS.vcf, expression.level, ref.genome, n # num.bins 
-           ) {
-    
-    ref.genome <- NormalizeGenomeArg(ref.genome)
-    if (ref.genome@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5") {
-      trans.ranges <- trans.ranges.GRCh37
-    } else if (ref.genome@pkgname == "BSgenome.Hsapiens.UCSC.hg38)") {
-      trans.ranges <- trans.ranges.GRCh38
-    } else if (ref.genome@pkgname == "BSgenome.Mmusculus.UCSC.mm10") {
-      trans.ranges <- trans.ranges.GRCm38
-    }
-    
-    TPM <- data.table(expression.level)
-    names(TPM) <- c("trans.gene.symbol", "TPM")
-    
-    # Exclude the lncRNA 
-    TPM <- TPM[trans.gene.symbol %in% trans.ranges$gene.symbol, ]
-    
-    # Remove duplicate entries---why multiple genes show twice in our RNA-seq
-    # data---needs to discuss further!!!
-    TPM <- unique(TPM, by = "trans.gene.symbol")
+  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, 
+           TPM.col, num.of.bins) {
+           
+    TPM <- data.table(expression.level[, c(Ensembl.gene.ID.col, TPM.col)])
+    names(TPM) <- c("trans.Ensembl.gene.ID", "TPM")
     
     # Delete genes expressed on both strands and NA gene symbol---some wierd
     # gene names --needs to discuss further!!!
     vcf <- annotated.SBS.vcf[-which(annotated.SBS.vcf$bothstrand == TRUE), ]
-    vcf <- vcf[-which(is.na(vcf$trans.gene.symbol) == TRUE), ]
-    df <- merge(vcf, TPM, by = "trans.gene.symbol", all.x = TRUE)
+    vcf <- vcf[-which(is.na(vcf$trans.Ensembl.gene.ID) == TRUE), ]
+    df <- merge(vcf, TPM, by = "trans.Ensembl.gene.ID", all.x = TRUE)
     df <- df[-which(is.na(df$TPM) == TRUE), ]
     df$Exp_Level <- NA
-    cutoffs <- stats::quantile(df$TPM, c(1:(n - 1)/n), na.rm = T)
+    cutoffs <- 
+      stats::quantile(df$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
     df[, "Exp_Level"] <- 
-      cut(df$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:n))
+      cut(df$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
     
     # Orient the ref.context and the var.context column
     df$mutation <- paste0(substr(df$seq.21bases, 10, 12), df$ALT)
@@ -38,7 +23,7 @@ StrandBiasAsExpressionLevel <-
     df$mutation <- 
       paste0((substr(df$mutation, 2, 2)), ">", substr(df$mutation, 4, 4))
     
-    # Create a table table for logistic regression
+    # Create a table for logistic regression
     dt <- df[, c("mutation", "TPM")]
     type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
     dt <- dt[mutation %in% type, `:=`(class, 1)]
@@ -47,15 +32,15 @@ StrandBiasAsExpressionLevel <-
     p.value <- summary(logit.model)$coefficients[2, 4]
     
     # Plot transcriptional strand bias as a function of gene expression
-    result <- matrix(data = 0, nrow = n, ncol = 12)
-    rownames(result) <- c(1:n)
+    result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
+    rownames(result) <- c(1:num.of.bins)
     
     
     mutation.type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G",
                        "G>T", "G>C", "G>A", "A>T", "A>G", "A>C")
     #i <- table(df$mutation[df$Exp_Level == 1])
     colnames(result) <- mutation.type
-    for (x in 1:n) {
+    for (x in 1:num.of.bins) {
       for (j in 1:12) {
         type <- mutation.type[j]
         result[x, type] <- nrow(df[mutation == type & Exp_Level == x, ])
@@ -66,7 +51,7 @@ StrandBiasAsExpressionLevel <-
   }
 
 
-PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
+PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
   result <- list$plotmatrix
   foo1 <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   if (!type %in% foo1) {
@@ -78,9 +63,9 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
                                  "#838383", "#40FF40", "#FF667F"), 
                      colDark = c("#00CCFF", "grey40", "#FF99CC", 
                                  "#C6C6C6", "#B0FFB0", "#FCB9C9"))
-  i = which(plotCombo[, "Target"] == type)
+  i <- which(plotCombo[, "Target"] == type)
   tmp <- t(result[, c(plotCombo[i, 1], plotCombo[i, 2])])
-  colnames(tmp) <- c(1:n)
+  colnames(tmp) <- c(1:num.of.bins)
   if (is.null(ymax)) {
     ymax <- max(tmp)
   }
@@ -108,7 +93,7 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
   dt <- dt[mutation != type, `:=`(class, 0)]
   logit.model <- glm(class ~ TPM, family = binomial, data = dt)
   p.value <- summary(logit.model)$coefficients[2, 4]
-  text(0.75 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
+  text(0.585 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
        cex = 0.8, pos = 4, offset = TRUE)
 }
 
@@ -118,16 +103,18 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
 #' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
 #'   sequence context and transcript information. Please refer to
 #'   \code{\link{AnnotateSBSVCF}} for more details.
+#'
+#' @param expression.level A \code{data.frame} which contains the transcription
+#'   level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
+#'   more details.
 #'   
-#' @param expression.level A two columns data.frame which contains the
-#'   transcription level of genes. The first column should be the gene symbols.
-#'   The second column should be the numeric expression level e.g.TPM
-#'   (Transcripts Per Kilobase Million).
+#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
+#'   information in \code{experession.level}.
+#' 
+#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
+#'   information in \code{experession.level}.
 #'   
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'   
-#' @param n The number of bins that will be plotted in the graph.
+#' @param num.of.bins The number of bins that will be plotted in the graph.
 #' 
 #' @param plot.type A character string indicating one mutation type to be
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
@@ -152,15 +139,20 @@ PlotTransBiasExp1 <- function(list, type, n, ymax = NULL) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
 #'   PlotTransBiasExp(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                    expression.level = sample.gene.expression.value.GRCh37, 
-#'                    ref.genome = "hg19", n = 4, plot.type = "C>A")
+#'                    expression.level = gene.expression.level.example.GRCh37, 
+#'                    Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
+#'                    num.of.bins = 4, plot.type = "C>A")
 #' }
 PlotTransBiasExp <-
-  function(annotated.SBS.vcf, expression.level, ref.genome, 
-                             n, plot.type, ymax = NULL) { # change n to num.bins
-  list1 <- StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
-                                       ref.genome, n)
-  PlotTransBiasExp1(list = list1, type = plot.type, n = n, ymax = ymax)
+  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, TPM.col,
+           num.of.bins, plot.type, ymax = NULL) { 
+                             
+  list1 <- 
+    StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
+                                Ensembl.gene.ID.col, TPM.col, num.of.bins)
+                                      
+  PlotTransBiasExp1(list = list1, type = plot.type, 
+                    num.of.bins = num.of.bins, ymax = ymax)
   invisible(TRUE)
 }
 
@@ -174,15 +166,17 @@ PlotTransBiasExp <-
 #'   sequence context and transcript information. Please refer to
 #'   \code{\link{AnnotateSBSVCF}} for more details.
 #'   
-#' @param expression.level A two columns data.frame which contains the
-#'   transcription level of genes. The first column should be the gene symbols.
-#'   The second column should be the numeric expression level e.g.TPM
-#'   (Transcripts Per Kilobase Million).
+#' @param expression.level A \code{data.frame} which contains the transcription
+#'   level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
+#'   more details.
 #'   
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
+#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
+#'   information in \code{experession.level}.
+#' 
+#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
+#'   information in \code{experession.level}.
 #'   
-#' @param n The number of bins that will be plotted in the graph.
+#' @param num.of.bins The number of bins that will be plotted in the graph.
 #' 
 #' @param plot.type A vector of character indicating types to be plotted. It
 #'   should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
@@ -203,15 +197,19 @@ PlotTransBiasExp <-
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
 #'   PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                         expression.level = sample.gene.expression.value.GRCh37, 
-#'                         ref.genome = "hg19", n = 4, 
+#'                         expression.level = gene.expression.level.example.GRCh37, 
+#'                         Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
+#'                         num.of.bins = 4, 
 #'                         plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
 #'                         file = file.path(tempdir(), "test.pdf"))
 #' }
-PlotTransBiasExpToPdf <- function(annotated.SBS.vcf, expression.level, 
-                                  ref.genome, n, plot.type, file) {
-  list <- StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
-                                      ref.genome, n)
+PlotTransBiasExpToPdf <- 
+  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col,
+           TPM.col, num.of.bins, plot.type, file) {
+  list <- 
+    StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
+                                Ensembl.gene.ID.col, TPM.col, 
+                                num.of.bins)
   
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -222,7 +220,7 @@ PlotTransBiasExpToPdf <- function(annotated.SBS.vcf, expression.level,
   type <- plot.type
   for (i in 1:num) {
     PlotTransBiasExp1(list = list, type = plot.type[i], 
-                      n = n, ymax = max(list$plotmatrix))
+                      num.of.bins = num.of.bins, ymax = max(list$plotmatrix))
   }
   
   grDevices::dev.off()

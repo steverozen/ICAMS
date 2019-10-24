@@ -4,23 +4,25 @@
 \alias{PlotTransBiasExpToPdf}
 \title{Plot Transcriptional Strand Bias on Expression level to PDF}
 \usage{
-PlotTransBiasExpToPdf(annotated.SBS.vcf, expression.level, ref.genome, n,
-  plot.type, file)
+PlotTransBiasExpToPdf(annotated.SBS.vcf, expression.level,
+  Ensembl.gene.ID.col, TPM.col, num.of.bins, plot.type, file)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An annotated SBS VCF as a data.table which contains
 sequence context and transcript information. Please refer to
 \code{\link{AnnotateSBSVCF}} for more details.}
 
-\item{expression.level}{A two columns data.frame which contains the
-transcription level of genes. The first column should be the gene symbols.
-The second column should be the numeric expression level e.g.TPM
-(Transcripts Per Kilobase Million).}
+\item{expression.level}{A \code{data.frame} which contains the transcription
+level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
+more details.}
 
-\item{ref.genome}{A \code{ref.genome} argument as described in
-\code{\link{ICAMS}}.}
+\item{Ensembl.gene.ID.col}{Name of column which has the Ensembl gene ID
+information in \code{experession.level}.}
 
-\item{n}{The number of bins that will be plotted in the graph.}
+\item{TPM.col}{Name of column which has the TPM (Transcripts Per Kilobase Million)
+information in \code{experession.level}.}
+
+\item{num.of.bins}{The number of bins that will be plotted in the graph.}
 
 \item{plot.type}{A vector of character indicating types to be plotted. It
 should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
@@ -43,8 +45,9 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)
   PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-                        expression.level = sample.gene.expression.value.GRCh37, 
-                        ref.genome = "hg19", n = 4, 
+                        expression.level = gene.expression.level.example.GRCh37, 
+                        Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
+                        num.of.bins = 4, 
                         plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
                         file = file.path(tempdir(), "test.pdf"))
 }
