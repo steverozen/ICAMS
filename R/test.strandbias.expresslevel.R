@@ -5,26 +5,35 @@ StrandBiasAsExpressionLevel <-
     TPM <- data.table(expression.level[, c(Ensembl.gene.ID.col, TPM.col)])
     names(TPM) <- c("trans.Ensembl.gene.ID", "TPM")
     
-    # Delete genes expressed on both strands and NA gene symbol---some wierd
+    # Delete genes expressed on both strands and NA Ensembl.gene.ID---some weird
     # gene names --needs to discuss further!!!
     vcf <- annotated.SBS.vcf[-which(annotated.SBS.vcf$bothstrand == TRUE), ]
     vcf <- vcf[-which(is.na(vcf$trans.Ensembl.gene.ID) == TRUE), ]
     df <- merge(vcf, TPM, by = "trans.Ensembl.gene.ID", all.x = TRUE)
     df <- df[-which(is.na(df$TPM) == TRUE), ]
-    df$Exp_Level <- NA
+    
+    # One SBS mutation can be represented by more than 1 row in df if the
+    # mutation position falls into the range of multiple transcripts on the same
+    # strand. We need to sum up the TPM values of multiple transcripts for one particular
+    # mutation.
+    df1 <- df[, .(REF = REF[1], ALT= ALT[1], trans.strand = trans.strand[1],
+                 seq.21bases = seq.21bases[1],
+                 TPM = sum(TPM)), by = .(CHROM, POS)]
+    
+    df1$Exp_Level <- NA
     cutoffs <- 
-      stats::quantile(df$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
-    df[, "Exp_Level"] <- 
-      cut(df$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
+      stats::quantile(df1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
+    df1[, "Exp_Level"] <- 
+      cut(df1$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
     
     # Orient the ref.context and the var.context column
-    df$mutation <- paste0(substr(df$seq.21bases, 10, 12), df$ALT)
-    df[trans.strand == "-", `:=`(mutation, RevcSBS96(mutation))]
-    df$mutation <- 
-      paste0((substr(df$mutation, 2, 2)), ">", substr(df$mutation, 4, 4))
+    df1$mutation <- paste0(substr(df1$seq.21bases, 10, 12), df1$ALT)
+    df1[trans.strand == "-", `:=`(mutation, RevcSBS96(mutation))]
+    df1$mutation <- 
+      paste0((substr(df1$mutation, 2, 2)), ">", substr(df1$mutation, 4, 4))
     
     # Create a table for logistic regression
-    dt <- df[, c("mutation", "TPM")]
+    dt <- df1[, c("mutation", "TPM")]
     type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
     dt <- dt[mutation %in% type, `:=`(class, 1)]
     dt <- dt[!mutation %in% type, `:=`(class, 0)]
@@ -35,15 +44,13 @@ StrandBiasAsExpressionLevel <-
     result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
     rownames(result) <- c(1:num.of.bins)
     
-    
     mutation.type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G",
                        "G>T", "G>C", "G>A", "A>T", "A>G", "A>C")
-    #i <- table(df$mutation[df$Exp_Level == 1])
     colnames(result) <- mutation.type
     for (x in 1:num.of.bins) {
       for (j in 1:12) {
         type <- mutation.type[j]
-        result[x, type] <- nrow(df[mutation == type & Exp_Level == x, ])
+        result[x, type] <- nrow(df1[mutation == type & Exp_Level == x, ])
       }
     }
     
