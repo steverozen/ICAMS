@@ -115,14 +115,13 @@
 #' 
 #' @examples 
 #' trans.ranges.GRCh37
-#' # chrom    start      end strand gene.name
-#' #     1    65419    71585      +     OR4F5
-#' #     1   367640   368634      +    OR4F29
-#' #     1   621059   622053      -    OR4F16
-#' #     1   859308   879961      +    SAMD11
-#' #     1   879583   894689      -     NOC2L
-#' #   ...      ...      ...    ...       ...
-#' 
+#' # chrom    start      end strand Ensembl.gene.ID  gene.symbol
+#' #     1    65419    71585      + ENSG00000186092        OR4F5
+#' #     1   367640   368634      + ENSG00000235249       OR4F29
+#' #     1   621059   622053      - ENSG00000284662       OR4F16
+#' #     1   859308   879961      + ENSG00000187634       SAMD11
+#' #     1   879583   894689      - ENSG00000188976        NOC2L
+#' #   ...      ...      ...    ...             ...          ... 
 NULL
 
 #' @rdname TranscriptRanges
@@ -174,6 +173,17 @@ NULL
 #' @format A \code{data.frame} which contains the transcription level of genes.
 #'   
 #' @name gene.expression.level.example.GRCh37
+#' 
+#' @examples 
+#' gene.expression.level.example.GRCh37
+#' Ensembl.gene.ID  gene.symbol  counts            TPM
+#' ENSG00000000003       TSPAN6    6007   3.392265e+01
+#' ENSG00000000005         TNMD       0   0.000000e+00
+#' ENSG00000000419         DPM1    4441   6.166937e+01
+#' ENSG00000000457        SCYL3    1368   3.334619e+00
+#' ENSG00000000460     C1orf112     916   2.416263e+00
+#'             ...          ...     ...            ...
+#' 
 "gene.expression.level.example.GRCh37"
 
 

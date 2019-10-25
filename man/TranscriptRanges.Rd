@@ -51,13 +51,12 @@ This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}}, \cr
 }
 \examples{
 trans.ranges.GRCh37
-# chrom    start      end strand gene.name
-#     1    65419    71585      +     OR4F5
-#     1   367640   368634      +    OR4F29
-#     1   621059   622053      -    OR4F16
-#     1   859308   879961      +    SAMD11
-#     1   879583   894689      -     NOC2L
-#   ...      ...      ...    ...       ...
-
+# chrom    start      end strand Ensembl.gene.ID  gene.symbol
+#     1    65419    71585      + ENSG00000186092        OR4F5
+#     1   367640   368634      + ENSG00000235249       OR4F29
+#     1   621059   622053      - ENSG00000284662       OR4F16
+#     1   859308   879961      + ENSG00000187634       SAMD11
+#     1   879583   894689      - ENSG00000188976        NOC2L
+#   ...      ...      ...    ...             ...          ... 
 }
 \keyword{datasets}

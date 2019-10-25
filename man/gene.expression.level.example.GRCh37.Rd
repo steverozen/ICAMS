@@ -12,4 +12,15 @@ gene.expression.level.example.GRCh37
 This data is designed to be used as an example in function
 \code{\link{PlotTransBiasExp}} and \code{\link{PlotTransBiasExpToPdf}}.
 }
+\examples{
+gene.expression.level.example.GRCh37
+Ensembl.gene.ID  gene.symbol  counts            TPM
+ENSG00000000003       TSPAN6    6007   3.392265e+01
+ENSG00000000005         TNMD       0   0.000000e+00
+ENSG00000000419         DPM1    4441   6.166937e+01
+ENSG00000000457        SCYL3    1368   3.334619e+00
+ENSG00000000460     C1orf112     916   2.416263e+00
+            ...          ...     ...            ...
+
+}
 \keyword{datasets}
