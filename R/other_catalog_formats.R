@@ -209,7 +209,7 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE){
   mut.categories <- TransRownames.ID.PCAWG.SigPro(mut.categories)
   rownames(catalog) <- mut.categories
   ## Change row order to SigProExtractor-order  
-  catalog <- catalog[ICAMS::ICAMS.to.SigPro.ID[,1], , drop = FALSE]
+  catalog <- catalog[ICAMS.to.SigPro.ID[,1], , drop = FALSE]
   DT <- data.table("Mutation Types" = rownames(catalog),catalog)
   ## Write the SigProExtractor-formatted catalog into a csv file
   fwrite(DT, file = file)
