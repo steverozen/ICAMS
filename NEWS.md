@@ -1,7 +1,8 @@
 # ICAMS 2.0.9.000x
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
-* Changed column name 'gene.name' to 'gene.symbol' in trans.ranges.
+* Changed column name 'gene.name' to 'gene.symbol' and added Ensembl gene ID 
+  information intrans.ranges. 
 * In FindDelMH, cryptic repeats (i.e. un-normalized deletions in a repeat 
   such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
   to a deletion of AGGG) are now ignored with a warning rather than
@@ -37,6 +38,7 @@
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
   useful for adding to the graph(currently only implemented for SBS96Catalog).
 * Added two exported functions PlotTransBiasDist2TSS() and PlotTransBiasDist2TSSToPDF().  
+* Added one more exported data gene.expression.level.example.GRCh37.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
