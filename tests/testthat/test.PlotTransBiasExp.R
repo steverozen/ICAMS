@@ -22,7 +22,8 @@ test_that("PlotTransBiasExpToPdf function", {
   annotated.SBS.vcf <- 
     AnnotateSBSVCF(list.of.vcfs$SBS.vcfs[[1]], "hg19", trans.ranges.GRCh37)
   out <- 
-    PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf,                          expression.level = gene.expression.level.example.GRCh37, 
+    PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf,
+                          expression.level = gene.expression.level.example.GRCh37, 
                           Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
                           num.of.bins = 4, 
                           plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
