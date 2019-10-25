@@ -168,7 +168,7 @@ TestMakeCatalogFromStrelkaIDVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
-  stopifnot(cat.ID == prev.catalog.indels)
+  stopifnot(cat.ID$catalog == prev.catalog.indels)
 
   message("ok\n")
 
