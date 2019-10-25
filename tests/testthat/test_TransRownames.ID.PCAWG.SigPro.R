@@ -1,5 +1,4 @@
 
-
 test_that("Check sigprofiler-formatted indel catalog rownames",
           {
             spIDCat <- read.csv("testdata/sigProfiler_ID_signatures.csv",

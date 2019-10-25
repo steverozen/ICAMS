@@ -330,10 +330,6 @@ Plotdist2TSS <- function(output, plot.type) {
 #' 
 #' @return \code{invisible(TRUE)}
 #' 
-#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
-#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
-#'   https://doi.org/10.1146/annurev.biochem.68.1.301
-#'   
 #' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
 #'   Genome-wide analysis of human global and transcription-coupled excision
 #'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
@@ -355,7 +351,7 @@ Plotdist2TSS <- function(output, plot.type) {
 PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
   output <- dist2TSS(annotated.SBS.vcf, plot.type)
   Plotdist2TSS(output, plot.type)
-  return(invisible(TRUE))
+  invisible(TRUE)
 }
 
 #' Plot transcription strand bias with respect to distance to transcription
@@ -371,10 +367,6 @@ PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
 #' @importFrom stats glm
 #' 
 #' @return \code{invisible(TRUE)}
-#' 
-#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
-#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
-#'   https://doi.org/10.1146/annurev.biochem.68.1.301
 #'   
 #' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
 #'   Genome-wide analysis of human global and transcription-coupled excision
@@ -392,11 +384,11 @@ PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSSToPDF(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'   PlotTransBiasDist2TSSToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
 #'                              plot.type = c("C>A","C>G","C>T","T>A","T>C"),
 #'                              file = file.path(tempdir(), "test.pdf"))
 #' }
-PlotTransBiasDist2TSSToPDF <- function(annotated.SBS.vcf, plot.type, file) {
+PlotTransBiasDist2TSSToPdf <- function(annotated.SBS.vcf, plot.type, file) {
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   opar <- par(mfrow = c(4, 2), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
   on.exit(par(opar))
