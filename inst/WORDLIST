@@ -17,6 +17,8 @@ al
 AnnotateDBSVCF
 AnnotateIDVCF
 AnnotateSBSVCF
+Annu
+annurev
 ATA
 ATC
 ATCs
@@ -24,6 +26,8 @@ ATG
 ATGs
 ATTG
 bioc
+biochem
+Biochem
 bioconductor
 BSgenome
 CanonicalizeQUAD
@@ -39,12 +43,14 @@ CHROM
 chromEnd
 chromStart
 cisplatin
+Conaway
 cshlp
 csv
 df
 dinucleotide
 DBS
 DBSs
+Dev
 doi
 ebi
 Ensembl
@@ -70,6 +76,7 @@ hs
 Hsapiens
 http
 https
+Hu
 ICAMS’
 indel
 indels
@@ -77,6 +84,7 @@ IndelCatalog
 intron
 IUPAC
 Kilobase
+Lieb
 MakeVCFDBSdf
 mer
 mers
@@ -107,9 +115,11 @@ ReadAndSplitMutectVCFs
 ReadAndSplitStrelkaSBSVCFs
 ReadStrelkaIDVCFs
 rowname
+Sancar
 sanger
 SBS
 SBSs
+Selby
 SignatureAnalyzer
 SigProExtractor
 SigProfiler
