@@ -1,109 +1,3 @@
-StrandBiasAsExpressionLevel <- 
-  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, 
-           TPM.col, num.of.bins) {
-    
-    TPM <- data.table(expression.level[, c(Ensembl.gene.ID.col, TPM.col)])
-    names(TPM) <- c("trans.Ensembl.gene.ID", "TPM")
-    
-    # Delete genes expressed on both strands and NA Ensembl.gene.ID
-    vcf <- annotated.SBS.vcf[-which(annotated.SBS.vcf$bothstrand == TRUE), ]
-    vcf <- vcf[-which(is.na(vcf$trans.Ensembl.gene.ID) == TRUE), ]
-    df <- merge(vcf, TPM, by = "trans.Ensembl.gene.ID", all.x = TRUE)
-    df <- df[-which(is.na(df$TPM) == TRUE), ]
-    
-    # One SBS mutation can be represented by more than 1 row in df if the
-    # mutation position falls into the range of multiple transcripts on the same
-    # strand. We need to sum up the TPM values of multiple transcripts for one particular
-    # mutation.
-    df1 <- df[, .(REF = REF[1], ALT= ALT[1], trans.strand = trans.strand[1],
-                  seq.21bases = seq.21bases[1],
-                  TPM = sum(TPM)), by = .(CHROM, POS)]
-    
-    df1$Exp_Level <- NA
-    cutoffs <- 
-      stats::quantile(df1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
-    df1[, "Exp_Level"] <- 
-      cut(df1$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
-    
-    # Orient the ref.context and the var.context column
-    df1$mutation <- paste0(substr(df1$seq.21bases, 10, 12), df1$ALT)
-    df1[trans.strand == "-", `:=`(mutation, RevcSBS96(mutation))]
-    df1$mutation <- 
-      paste0((substr(df1$mutation, 2, 2)), ">", substr(df1$mutation, 4, 4))
-    
-    # Create a table for logistic regression
-    dt <- df1[, c("mutation", "TPM")]
-    type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-    dt <- dt[mutation %in% type, `:=`(class, 1)]
-    dt <- dt[!mutation %in% type, `:=`(class, 0)]
-    logit.model <- stats::glm(class ~ TPM, family = binomial, data = dt)
-    p.value <- summary(logit.model)$coefficients[2, 4]
-    
-    # Plot transcriptional strand bias as a function of gene expression
-    result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
-    rownames(result) <- c(1:num.of.bins)
-    
-    mutation.type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G",
-                       "G>T", "G>C", "G>A", "A>T", "A>G", "A>C")
-    colnames(result) <- mutation.type
-    for (x in 1:num.of.bins) {
-      for (j in 1:12) {
-        type <- mutation.type[j]
-        result[x, type] <- nrow(df1[mutation == type & Exp_Level == x, ])
-      }
-    }
-    
-    return(list(plotmatrix = result, logit.df = dt, p.value = p.value))
-  }
-
-
-PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
-  result <- list$plotmatrix
-  foo1 <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-  if (!type %in% foo1) {
-    stop("please input: 'C>A','C>G','C>T','T>A','T>C','T>G'")
-  }
-  plotCombo <- cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
-                     rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
-                     colLight = c("#4040FF",  "black", "#FF4040", 
-                                  "#838383", "#40FF40", "#FF667F"), 
-                     colDark = c("#00CCFF", "grey40", "#FF99CC", 
-                                 "#C6C6C6", "#B0FFB0", "#FCB9C9"))
-  i <- which(plotCombo[, "Target"] == type)
-  tmp <- t(result[, c(plotCombo[i, 1], plotCombo[i, 2])])
-  colnames(tmp) <- c(1:num.of.bins)
-  if (is.null(ymax)) {
-    ymax <- max(tmp)
-  }
-  bp <- barplot(tmp, beside = T, main = plotCombo[i, "Target"], 
-                ylim = c(0, 1.5 * ymax), col = plotCombo[i, 3:4])
-  legend("topright", legend = c("Untranscribed", "Transcribed"), 
-         fill = plotCombo[i, 3:4], bty = "n", cex = 0.8)
-  
-  # drawing the triangle that represent expression value
-  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.35, xpd = NA)
-  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
-  segments(max(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
-  text(max(bp) * 1.06, -1.25 * ymax * 0.27, labels = "EXP", xpd = NA, cex = 0.7)
-  text(max(bp) * 1.06, -1.25 * ymax * 0.32, labels = "level", xpd = NA, cex = 0.7)
-  
-  # Carrying out logistic regression
-  dt <- data.table(list$logit.df)
-  revc1 <- function(string) {
-    start <- revc(substr(string, 1, 1))
-    end <- revc(substr(string, 3, 3))
-    return(paste0(start, ">", end))
-  }
-  dt <- dt[mutation %in% c(type, revc1(type)), ]
-  dt <- dt[mutation == type, `:=`(class, 1)]
-  dt <- dt[mutation != type, `:=`(class, 0)]
-  logit.model <- glm(class ~ TPM, family = binomial, data = dt)
-  p.value <- summary(logit.model)$coefficients[2, 4]
-  text(0.585 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
-       cex = 0.8, pos = 4, offset = TRUE)
-}
-
-
 #' Plot transcription strand bias with respect to gene expression level.
 #'
 #' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
@@ -178,9 +72,9 @@ PlotTransBiasExp <-
 #'   
 #' @param num.of.bins The number of bins that will be plotted in the graph.
 #' 
-#' @param plot.type A vector of character indicating types to be plotted. It
-#'   can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#'   The default is to print all the six mutation types.
+#' @param plot.type A character vector indicating mutation types to be plotted.
+#'   It can be one or several types from "C>A", "C>G", "C>T", "T>A", "T>C",
+#'   "T>G". The default is to print all the six mutation types.
 #' 
 #' @importFrom stats glm
 #' 
@@ -197,14 +91,14 @@ PlotTransBiasExp <-
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'   PlotTransBiasExpToPDF(annotated.SBS.vcf = annotated.SBS.vcf, 
 #'                         expression.level = gene.expression.level.example.GRCh37, 
 #'                         Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
 #'                         num.of.bins = 4, 
 #'                         plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
 #'                         file = file.path(tempdir(), "test.pdf"))
 #' }
-PlotTransBiasExpToPdf <- 
+PlotTransBiasExpToPDF <- 
   function(annotated.SBS.vcf, file, expression.level, Ensembl.gene.ID.col,
            TPM.col, num.of.bins, 
            plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
@@ -230,7 +124,200 @@ PlotTransBiasExpToPdf <-
     
   }
 
+StrandBiasAsExpressionLevel <- 
+  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, 
+           TPM.col, num.of.bins) {
+    
+    TPM <- data.table(expression.level[, c(Ensembl.gene.ID.col, TPM.col)])
+    names(TPM) <- c("trans.Ensembl.gene.ID", "TPM")
+    
+    # Delete genes expressed on both strands and NA Ensembl.gene.ID
+    vcf <- annotated.SBS.vcf[-which(annotated.SBS.vcf$bothstrand == TRUE), ]
+    vcf <- vcf[-which(is.na(vcf$trans.Ensembl.gene.ID) == TRUE), ]
+    df <- merge(vcf, TPM, by = "trans.Ensembl.gene.ID", all.x = TRUE)
+    df <- df[-which(is.na(df$TPM) == TRUE), ]
+    
+    # One SBS mutation can be represented by more than 1 row in df if the
+    # mutation position falls into the range of multiple transcripts on the same
+    # strand. We need to sum up the TPM values of multiple transcripts for one particular
+    # mutation.
+    df1 <- df[, .(REF = REF[1], ALT= ALT[1], trans.strand = trans.strand[1],
+                  seq.21bases = seq.21bases[1],
+                  TPM = sum(TPM)), by = .(CHROM, POS)]
+    
+    df1$Exp_Level <- NA
+    cutoffs <- 
+      stats::quantile(df1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
+    df1[, "Exp_Level"] <- 
+      cut(df1$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
+    
+    # Orient the ref.context and the var.context column
+    df1$mutation <- paste0(substr(df1$seq.21bases, 10, 12), df1$ALT)
+    df1[trans.strand == "-", `:=`(mutation, RevcSBS96(mutation))]
+    df1$mutation <- 
+      paste0((substr(df1$mutation, 2, 2)), ">", substr(df1$mutation, 4, 4))
+    
+    # Create a table for logistic regression
+    dt <- df1[, c("mutation", "TPM")]
+    type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+    dt <- dt[mutation %in% type, `:=`(class, 1)]
+    dt <- dt[!mutation %in% type, `:=`(class, 0)]
+    logit.model <- stats::glm(class ~ TPM, family = binomial, data = dt)
+    p.value <- summary(logit.model)$coefficients[2, 4]
+    
+    # Plot transcriptional strand bias as a function of gene expression
+    result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
+    rownames(result) <- c(1:num.of.bins)
+    
+    mutation.type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G",
+                       "G>T", "G>C", "G>A", "A>T", "A>G", "A>C")
+    colnames(result) <- mutation.type
+    for (x in 1:num.of.bins) {
+      for (j in 1:12) {
+        type <- mutation.type[j]
+        result[x, type] <- nrow(df1[mutation == type & Exp_Level == x, ])
+      }
+    }
+    
+    return(list(plotmatrix = result, logit.df = dt, p.value = p.value))
+  }
+
+PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
+  result <- list$plotmatrix
+  foo1 <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+  if (!type %in% foo1) {
+    stop("please input: 'C>A','C>G','C>T','T>A','T>C','T>G'")
+  }
+  plotCombo <- cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
+                     rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
+                     colLight = c("#4040FF",  "black", "#FF4040", 
+                                  "#838383", "#40FF40", "#FF667F"), 
+                     colDark = c("#00CCFF", "grey40", "#FF99CC", 
+                                 "#C6C6C6", "#B0FFB0", "#FCB9C9"))
+  i <- which(plotCombo[, "Target"] == type)
+  tmp <- t(result[, c(plotCombo[i, 1], plotCombo[i, 2])])
+  colnames(tmp) <- c(1:num.of.bins)
+  if (is.null(ymax)) {
+    ymax <- max(tmp)
+  }
+  bp <- barplot(tmp, beside = T, main = plotCombo[i, "Target"], 
+                ylim = c(0, 1.5 * ymax), col = plotCombo[i, 3:4])
+  legend("topright", legend = c("Untranscribed", "Transcribed"), 
+         fill = plotCombo[i, 3:4], bty = "n", cex = 0.8)
+  
+  # drawing the triangle that represent expression value
+  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.35, xpd = NA)
+  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
+  segments(max(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
+  text(max(bp) * 1.06, -1.25 * ymax * 0.27, labels = "EXP", xpd = NA, cex = 0.7)
+  text(max(bp) * 1.06, -1.25 * ymax * 0.32, labels = "level", xpd = NA, cex = 0.7)
+  
+  # Carrying out logistic regression
+  dt <- data.table(list$logit.df)
+  revc1 <- function(string) {
+    start <- revc(substr(string, 1, 1))
+    end <- revc(substr(string, 3, 3))
+    return(paste0(start, ">", end))
+  }
+  dt <- dt[mutation %in% c(type, revc1(type)), ]
+  dt <- dt[mutation == type, `:=`(class, 1)]
+  dt <- dt[mutation != type, `:=`(class, 0)]
+  logit.model <- glm(class ~ TPM, family = binomial, data = dt)
+  p.value <- summary(logit.model)$coefficients[2, 4]
+  text(0.585 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
+       cex = 0.8, pos = 4, offset = TRUE)
+}
+
 ##################################################################################
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site.
+#' 
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
+#'
+#' @param plot.type A character string indicating one mutation type to be
+#'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
+#' 
+#' @importFrom stats coef
+#' 
+#' @return \code{invisible(TRUE)}
+#' 
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
+#' @export
+#'
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)
+#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
+#' }
+PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
+  output <- dist2TSS(annotated.SBS.vcf, plot.type)
+  Plotdist2TSS(output, plot.type)
+  return(invisible(TRUE))
+}
+
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site to a PDF file.
+#'
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
+#'
+#' @param file The name of output file.
+#'
+#' @param plot.type A character vector indicating mutation types to be plotted.
+#'   It can be one or several types from "C>A", "C>G", "C>T", "T>A", "T>C",
+#'   "T>G". The default is to print all the six mutation types.
+#'
+#' @importFrom stats glm
+#' 
+#' @return \code{invisible(TRUE)}
+#' 
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
+#' @export
+#'
+#' @examples
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)
+#'   PlotTransBiasDist2TSSToPDF(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'                              plot.type = c("C>A","C>G","C>T","T>A","T>C"),
+#'                              file = file.path(tempdir(), "test.pdf"))
+#' }
+PlotTransBiasDist2TSSToPDF <- 
+  function(annotated.SBS.vcf, file,
+           plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  opar <- par(mfrow = c(4, 2), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+  on.exit(par(opar))
+  num <- length(plot.type)
+  type <- plot.type
+  for (i in 1:num) {
+    PlotTransBiasDist2TSS(annotated.SBS.vcf = annotated.SBS.vcf, 
+                          plot.type = plot.type[i])
+  }
+  
+  grDevices::dev.off()
+  invisible(TRUE)
+  
+}
+
 dist2TSS <- function(annotated.SBS.vcf, plot.type) {
   
   df <- annotated.SBS.vcf
@@ -316,99 +403,5 @@ Plotdist2TSS <- function(output, plot.type) {
   text (28.9, max(output2)*0.74, paste0('p value =', 
                                         formatC(output$pvalue, format = "e", digits = 2)), 
         cex=0.8, xpd = NA)
-}
-
-#' Plot transcription strand bias with respect to distance to transcription
-#' start site.
-#' 
-#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
-#'
-#' @param plot.type A character string indicating one mutation type to be
-#'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#' 
-#' @importFrom stats coef
-#' 
-#' @return \code{invisible(TRUE)}
-#' 
-#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
-#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
-#'   https://doi.org/10.1146/annurev.biochem.68.1.301
-#'   
-#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
-#'   Genome-wide analysis of human global and transcription-coupled excision
-#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
-#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
-#'   
-#' @export
-#'
-#' @examples 
-#' file <- c(system.file("extdata",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-#'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
-#' }
-PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
-  output <- dist2TSS(annotated.SBS.vcf, plot.type)
-  Plotdist2TSS(output, plot.type)
-  return(invisible(TRUE))
-}
-
-#' Plot transcription strand bias with respect to distance to transcription
-#' start site to a PDF file.
-#'
-#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
-#'
-#' @param plot.type A vector of character indicating types to be plotted. It
-#'   should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#'
-#' @param file The name of output file.
-#'    
-#' @importFrom stats glm
-#' 
-#' @return \code{invisible(TRUE)}
-#' 
-#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
-#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
-#'   https://doi.org/10.1146/annurev.biochem.68.1.301
-#'   
-#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
-#'   Genome-wide analysis of human global and transcription-coupled excision
-#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
-#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
-#'   
-#' @export
-#'
-#' @examples
-#' file <- c(system.file("extdata",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-#'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSSToPDF(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                              plot.type = c("C>A","C>G","C>T","T>A","T>C"),
-#'                              file = file.path(tempdir(), "test.pdf"))
-#' }
-PlotTransBiasDist2TSSToPDF <- function(annotated.SBS.vcf, plot.type, file) {
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-  opar <- par(mfrow = c(4, 2), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
-  on.exit(par(opar))
-  num <- length(plot.type)
-  type <- plot.type
-  for (i in 1:num) {
-    PlotTransBiasDist2TSS(annotated.SBS.vcf = annotated.SBS.vcf, 
-                          plot.type = plot.type[i])
-  }
-  
-  grDevices::dev.off()
-  invisible(TRUE)
-  
 }
 
