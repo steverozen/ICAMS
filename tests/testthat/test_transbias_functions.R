@@ -49,6 +49,7 @@ test_that("PlotTransBiasDist2TSSToPDF function", {
   annotated.SBS.vcf <- 
     AnnotateSBSVCF(list.of.vcfs$SBS.vcfs[[1]], "hg19", trans.ranges.GRCh37)
   out <- PlotTransBiasDist2TSSToPDF(annotated.SBS.vcf, 
+                                    plot.type = c("C>A", "C>G"),
                                     file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
   
