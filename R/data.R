@@ -81,6 +81,16 @@
 #' corresponding SigProExtractor indel names.
 #'
 #' @name SigPro.to.ICAMS.ID
+#' 
+#' @examples 
+#' SigPro.to.ICAMS.ID
+#' #              ICAMS.ID.names      
+#' # 1:Del:C:0    "DEL:C:1:0"    
+#' # 1:Del:C:1    "DEL:C:1:1"
+#' # 1:Del:C:2    "DEL:C:1:2"  
+#' # 1:Del:C:3    "DEL:C:1:3" 
+#' # 1:Del:C:4    "DEL:C:1:4"  
+#' #       ...           ...  
 "SigPro.to.ICAMS.ID"
 
 
