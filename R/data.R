@@ -196,13 +196,13 @@ NULL
 #' 
 #' @examples 
 #' gene.expression.level.example.GRCh37
-#' Ensembl.gene.ID  gene.symbol  counts            TPM
-#' ENSG00000000003       TSPAN6    6007   3.392265e+01
-#' ENSG00000000005         TNMD       0   0.000000e+00
-#' ENSG00000000419         DPM1    4441   6.166937e+01
-#' ENSG00000000457        SCYL3    1368   3.334619e+00
-#' ENSG00000000460     C1orf112     916   2.416263e+00
-#'             ...          ...     ...            ...
+#' # Ensembl.gene.ID  gene.symbol  counts            TPM
+#' # ENSG00000000003       TSPAN6    6007   3.392265e+01
+#' # ENSG00000000005         TNMD       0   0.000000e+00
+#' # ENSG00000000419         DPM1    4441   6.166937e+01
+#' # ENSG00000000457        SCYL3    1368   3.334619e+00
+#' # ENSG00000000460     C1orf112     916   2.416263e+00
+#' #             ...          ...     ...            ...
 #' 
 "gene.expression.level.example.GRCh37"
 
@@ -219,5 +219,6 @@ if(getRversion() >= "2.15.1") {
                            "mutation", "LOW", "ID", "REF.x", "REF.y", "ALT.x",
                            "ALT.y", "ref2alt", "minus1bs", "minus2bs", "plus1bs",
                            "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
-                           "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols"))
+                           "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
+                           "Ensembl.gene.ID", "readthrough"))
 }
