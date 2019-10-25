@@ -2,19 +2,17 @@
 % Please edit documentation in R/test.strandbias.expresslevel.R
 \name{PlotTransBiasExpToPdf}
 \alias{PlotTransBiasExpToPdf}
-\title{Plot Transcriptional Strand Bias on Expression level to PDF}
+\title{Plot Transcription Strand Bias on Expression level to PDF.}
 \usage{
 PlotTransBiasExpToPdf(annotated.SBS.vcf, expression.level,
   Ensembl.gene.ID.col, TPM.col, num.of.bins, plot.type, file)
 }
 \arguments{
-\item{annotated.SBS.vcf}{An annotated SBS VCF as a data.table which contains
-sequence context and transcript information. Please refer to
-\code{\link{AnnotateSBSVCF}} for more details.}
+\item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
 
 \item{expression.level}{A \code{data.frame} which contains the transcription
-level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
-more details.}
+level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+for more details.}
 
 \item{Ensembl.gene.ID.col}{Name of column which has the Ensembl gene ID
 information in \code{experession.level}.}
@@ -27,13 +25,13 @@ information in \code{experession.level}.}
 \item{plot.type}{A vector of character indicating types to be plotted. It
 should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
 
-\item{file}{The name of output file}
+\item{file}{The name of output file.}
 }
 \value{
 \code{invisible(TRUE)}
 }
 \description{
-Plot Transcriptional Strand Bias on Expression level to PDF
+Plot Transcription Strand Bias on Expression level to PDF.
 }
 \examples{
 file <- c(system.file("extdata",

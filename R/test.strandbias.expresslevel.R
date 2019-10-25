@@ -105,15 +105,13 @@ PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
 }
 
 
-#' Plot transcriptional strand bias with respect to gene expression level
+#' Plot transcription strand bias with respect to gene expression level.
 #'
-#' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
-#'   sequence context and transcript information. Please refer to
-#'   \code{\link{AnnotateSBSVCF}} for more details.
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
 #'
 #' @param expression.level A \code{data.frame} which contains the transcription
-#'   level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
-#'   more details.
+#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+#'   for more details.
 #'   
 #' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
 #'   information in \code{experession.level}.
@@ -127,7 +125,7 @@ PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 #'   
 #' @param ymax Limit for the y axis. If not specified, it defaults to NULL and
-#'   the y axis limit equals to 1.5 times of the maximum mutation counts in a
+#'   the y axis limit equals 1.5 times of the maximum mutation counts in a
 #'   specific mutation type.
 #'   
 #' @importFrom stats glm
@@ -165,17 +163,15 @@ PlotTransBiasExp <-
 
 
 
-#' Plot Transcriptional Strand Bias on Expression level to PDF
+#' Plot Transcription Strand Bias on Expression level to PDF.
 #'
-#' @param file The name of output file
+#' @param file The name of output file.
 #' 
-#' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
-#'   sequence context and transcript information. Please refer to
-#'   \code{\link{AnnotateSBSVCF}} for more details.
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
 #'   
 #' @param expression.level A \code{data.frame} which contains the transcription
-#'   level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
-#'   more details.
+#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+#'   for more details.
 #'   
 #' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
 #'   information in \code{experession.level}.

@@ -2,19 +2,17 @@
 % Please edit documentation in R/test.strandbias.expresslevel.R
 \name{PlotTransBiasExp}
 \alias{PlotTransBiasExp}
-\title{Plot transcriptional strand bias with respect to gene expression level}
+\title{Plot transcription strand bias with respect to gene expression level.}
 \usage{
 PlotTransBiasExp(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col,
   TPM.col, num.of.bins, plot.type, ymax = NULL)
 }
 \arguments{
-\item{annotated.SBS.vcf}{An annotated SBS VCF as a data.table which contains
-sequence context and transcript information. Please refer to
-\code{\link{AnnotateSBSVCF}} for more details.}
+\item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
 
 \item{expression.level}{A \code{data.frame} which contains the transcription
-level of genes. See \code{\link{gene.expression.level.example.GRCh37}} for
-more details.}
+level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+for more details.}
 
 \item{Ensembl.gene.ID.col}{Name of column which has the Ensembl gene ID
 information in \code{experession.level}.}
@@ -28,14 +26,14 @@ information in \code{experession.level}.}
 plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
 
 \item{ymax}{Limit for the y axis. If not specified, it defaults to NULL and
-the y axis limit equals to 1.5 times of the maximum mutation counts in a
+the y axis limit equals 1.5 times of the maximum mutation counts in a
 specific mutation type.}
 }
 \value{
 \code{invisible(TRUE)}
 }
 \description{
-Plot transcriptional strand bias with respect to gene expression level
+Plot transcription strand bias with respect to gene expression level.
 }
 \examples{
 file <- c(system.file("extdata",

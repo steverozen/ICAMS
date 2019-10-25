@@ -85,12 +85,10 @@ Plotdist2TSS <- function(output, plot.type) {
                                         cex=0.8, xpd = NA)
 }
 
-#' Plot transcriptional strand bias with respect to distance to transcription
-#' start site
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site.
 #' 
-#' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
-#'   sequence context and transcript information. Please refer to
-#'   \code{\link{AnnotateSBSVCF}} for more details.
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
 #'
 #' @param plot.type A character string indicating one mutation type to be
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
@@ -99,6 +97,15 @@ Plotdist2TSS <- function(output, plot.type) {
 #' 
 #' @return \code{invisible(TRUE)}
 #' 
+#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
+#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
+#'   https://doi.org/10.1146/annurev.biochem.68.1.301
+#'   
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
 #' @export
 #'
 #' @examples 
@@ -118,22 +125,29 @@ PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
   return(invisible(TRUE))
 }
 
-#' Plot transcriptional strand bias with respect to distance to transcription
-#' start site to a PDF file
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site to a PDF file.
 #'
-#' @param annotated.SBS.vcf An annotated SBS VCF as a data.table which contains
-#'   sequence context and transcript information. Please refer to
-#'   \code{\link{AnnotateSBSVCF}} for more details.
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
 #'
 #' @param plot.type A vector of character indicating types to be plotted. It
 #'   should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 #'
-#' @param file The name of output file
+#' @param file The name of output file.
 #'    
 #' @importFrom stats glm
 #' 
 #' @return \code{invisible(TRUE)}
 #' 
+#' @references Conaway, J. W. & Conaway, R. C. Transcription Elongation and
+#'   Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
+#'   https://doi.org/10.1146/annurev.biochem.68.1.301
+#'   
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
 #' @export
 #'
 #' @examples

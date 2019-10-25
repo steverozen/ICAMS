@@ -2,15 +2,13 @@
 % Please edit documentation in R/dist2TSS.R
 \name{PlotTransBiasDist2TSS}
 \alias{PlotTransBiasDist2TSS}
-\title{Plot transcriptional strand bias with respect to distance to transcription
-start site}
+\title{Plot transcription strand bias with respect to distance to transcription
+start site.}
 \usage{
 PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type)
 }
 \arguments{
-\item{annotated.SBS.vcf}{An annotated SBS VCF as a data.table which contains
-sequence context and transcript information. Please refer to
-\code{\link{AnnotateSBSVCF}} for more details.}
+\item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
 
 \item{plot.type}{A character string indicating one mutation type to be
 plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
@@ -19,8 +17,8 @@ plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
 \code{invisible(TRUE)}
 }
 \description{
-Plot transcriptional strand bias with respect to distance to transcription
-start site
+Plot transcription strand bias with respect to distance to transcription
+start site.
 }
 \examples{
 file <- c(system.file("extdata",
@@ -33,4 +31,14 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                       trans.ranges = trans.ranges.GRCh37)
   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
 }
+}
+\references{
+Conaway, J. W. & Conaway, R. C. Transcription Elongation and
+  Human Disease. \emph{Annu. Rev. Biochem}. 68, 301–319 (1999),
+  https://doi.org/10.1146/annurev.biochem.68.1.301
+
+Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+  Genome-wide analysis of human global and transcription-coupled excision
+  repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+  948–960 (2015), https://doi.org/10.1101/gad.261271.115
 }
