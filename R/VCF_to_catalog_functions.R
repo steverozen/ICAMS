@@ -33,9 +33,11 @@ RemoveRowsWithPoundSign <- function(df, file) {
 RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   dups <- which(duplicated(df[, c("CHROM", "POS")]))
   if (length(dups) > 0) {
-    warning("Rows with duplicated CHROM and POS removed: ",
-            dups)
-    df1 <- df[-dups, ]
+    dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
+    warning("In ", file, " ", 2 * length(dups), " rows out of ",
+            nrow(df), " had duplicate CHROM and POS and were removed: ",
+            dups, dups2)
+    df1 <- df[-c(dups, dups2), ]
     return(df1)
   } else {
     return(df)
