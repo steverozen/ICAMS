@@ -14,4 +14,14 @@ ICAMS.to.SigPro.ID
 This data is designed for converting ICAMS-formatted indel names to
 SigProExtractor-formatted indel names.
 }
+\examples{
+ICAMS.to.SigPro.ID
+#              SigPro.ID.names      
+# DEL:C:1:0    "1:Del:C:0"    
+# DEL:C:1:1    "1:Del:C:1"
+# DEL:C:1:2    "1:Del:C:2"  
+# DEL:C:1:3    "1:Del:C:3" 
+# DEL:C:1:4    "1:Del:C:4"  
+#       ...           ...      
+}
 \keyword{datasets}

@@ -58,6 +58,16 @@
 #' corresponding PCAWG(ICAMS)-formatted indel names.
 #'
 #' @name ICAMS.to.SigPro.ID
+#' 
+#' @examples 
+#' ICAMS.to.SigPro.ID
+#' #              SigPro.ID.names      
+#' # DEL:C:1:0    "1:Del:C:0"    
+#' # DEL:C:1:1    "1:Del:C:1"
+#' # DEL:C:1:2    "1:Del:C:2"  
+#' # DEL:C:1:3    "1:Del:C:3" 
+#' # DEL:C:1:4    "1:Del:C:4"  
+#' #       ...           ...      
 "ICAMS.to.SigPro.ID"
 
 
