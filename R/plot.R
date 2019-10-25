@@ -99,7 +99,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'
 #' @export
 #'
-#' @name PlotCatalogToPDF
+#' @name PlotCatalogToPdf
 #' 
 #' @examples 
 #' file <- system.file("extdata",
@@ -107,11 +107,11 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'                     package = "ICAMS")
 #' catSBS96 <- ReadCatalog(file)
 #' colnames(catSBS96) <- "sample"
-#' PlotCatalogToPDF(catSBS96, file = file.path(tempdir(), "test.pdf"))
-PlotCatalogToPDF <- 
+#' PlotCatalogToPdf(catSBS96, file = file.path(tempdir(), "test.pdf"))
+PlotCatalogToPdf <- 
   function(catalog, file, plot.SBS12 = NULL, 
            cex = NULL, grid = NULL, upper = NULL, xlabels = NULL) {
-  UseMethod(generic = "PlotCatalogToPDF")
+  UseMethod(generic = "PlotCatalogToPdf")
 }
 
 ###############################################################################
@@ -239,7 +239,7 @@ PlotCatalog.SBS96Catalog <-
   }
 
 #' @export
-PlotCatalogToPDF.SBS96Catalog <-
+PlotCatalogToPdf.SBS96Catalog <-
   function(catalog, file, plot.SBS12, cex = 0.8,
            grid = TRUE, upper = TRUE, xlabels = TRUE) {
     # Setting the width and length for A4 size plotting
@@ -489,7 +489,7 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
 }
 
 #' @export
-PlotCatalogToPDF.SBS192Catalog <-
+PlotCatalogToPdf.SBS192Catalog <-
   function(catalog, file, plot.SBS12 = FALSE, cex, grid, upper, xlabels) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -711,7 +711,7 @@ PlotCatalog.SBS1536Catalog <-
 }
 
 #' @export
-PlotCatalogToPDF.SBS1536Catalog <-
+PlotCatalogToPdf.SBS1536Catalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels) {
   grDevices::cairo_pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
@@ -823,7 +823,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
 }
 
 #' @export
-PlotCatalogToPDF.DBS78Catalog <-
+PlotCatalogToPdf.DBS78Catalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -956,7 +956,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
 }
 
 #' @export
-PlotCatalogToPDF.DBS144Catalog <-
+PlotCatalogToPdf.DBS144Catalog <-
   function(catalog, file, plot.SBS12, cex = 1, grid, upper, xlabels) {
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -1123,7 +1123,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
 }
 
 #' @export
-PlotCatalogToPDF.DBS136Catalog <-
+PlotCatalogToPdf.DBS136Catalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
@@ -1429,7 +1429,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
 }
 
 #' @export
-PlotCatalogToPDF.IndelCatalog <-
+PlotCatalogToPdf.IndelCatalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
