@@ -48,51 +48,6 @@
 #' @name catalog.row.order.sp
 "catalog.row.order.sp"
 
-#' Linker from PCAWG(ICAMS)-formatted to SigProExtractor-formatted indel names.
-#'
-#' This data is designed for converting ICAMS-formatted indel names to
-#' SigProExtractor-formatted indel names.
-#'
-#' @format A 83*1 matrix. Its contents (first column) contain SigProExtractor
-#' formatted indel names in SigProExtractor order. Its rownames refer to the 
-#' corresponding PCAWG(ICAMS)-formatted indel names.
-#'
-#' @name ICAMS.to.SigPro.ID
-#' 
-#' @examples 
-#' ICAMS.to.SigPro.ID
-#' #              SigPro.ID.names      
-#' # DEL:C:1:0    "1:Del:C:0"    
-#' # DEL:C:1:1    "1:Del:C:1"
-#' # DEL:C:1:2    "1:Del:C:2"  
-#' # DEL:C:1:3    "1:Del:C:3" 
-#' # DEL:C:1:4    "1:Del:C:4"  
-#' #       ...           ...      
-"ICAMS.to.SigPro.ID"
-
-
-#' Linker from SigProExtractor-formatted to PCAWG(ICAMS)-formatted indel names.
-#'
-#' This data is designed for converting SigProExtractor-formatted indel names
-#' to ICAMS-formatted indel names.
-#'
-#' @format A 83*1 matrix. Its contents (first column) contain PCAWG(ICAMS)-
-#' formatted indel names in PCAWG(ICAMS) order. Its rownames refer to the 
-#' corresponding SigProExtractor indel names.
-#'
-#' @name SigPro.to.ICAMS.ID
-#' 
-#' @examples 
-#' SigPro.to.ICAMS.ID
-#' #              ICAMS.ID.names      
-#' # 1:Del:C:0    "DEL:C:1:0"    
-#' # 1:Del:C:1    "DEL:C:1:1"
-#' # 1:Del:C:2    "DEL:C:1:2"  
-#' # 1:Del:C:3    "DEL:C:1:3" 
-#' # 1:Del:C:4    "DEL:C:1:4"  
-#' #       ...           ...  
-"SigPro.to.ICAMS.ID"
-
 
 #' Transcript ranges data
 #'
