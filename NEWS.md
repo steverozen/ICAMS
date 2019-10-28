@@ -39,6 +39,10 @@
   useful for adding to the graph (currently only implemented for SBS96Catalog).
 * Added two exported functions PlotTransBiasDist2TSS() and PlotTransBiasDist2TSSToPDF().  
 * Added one more exported data gene.expression.level.example.GRCh37.
+* Added an additional argument "tumor.col.names" in functions
+  ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
+  MutectVCFFilesToCatalogAndPlotToPdf() for users to specify the column names of
+  tumor sample in the Mutect VCF files.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
