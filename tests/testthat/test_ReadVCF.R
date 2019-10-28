@@ -26,7 +26,7 @@ test_that(
   "ReadMutectVCFs",
   { vcf <- ReadMutectVCFs("testdata/Mutect.GRCh37.vcf")
     vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
-    vcf2 <- ReadMutectVCFs("testdata/Mutect.GRCm38.vcf")
+    vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
     expect_equal(dim(vcf[[1]]), c(1851, 12))
     expect_equal(dim(vcf1[[1]]), c(1561, 12))
     expect_equal(dim(vcf2[[1]]), c(1895, 12))
