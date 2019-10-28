@@ -1,6 +1,13 @@
 #' Extract the VAFs (variant allele frequencies) from a VCF file.
 #'
 #' @param vcf Said VCF as a data.frame.
+#' 
+#' @param name.of.VCF Name of the VCF file. 
+#'   
+#' @param tumor.col.name Name of the column in VCF which contains the tumor
+#'   sample information. It \strong{must} have quotation marks. If
+#'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
+#'   use the 10th column to calculate VAFs.
 #'
 #' @return A vector of VAFs, one for each row of \code{vcf}.
 #'
@@ -259,23 +266,49 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #' @importFrom utils read.csv
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
-#'
+#' 
+#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#'   function will remove all of the path up to and including the last path
+#'   separator (if any) in \code{file} and file path without extensions (and the
+#'   leading dot) will be used as the name of the VCF file.
+#'   
+#' @param tumor.col.name Name of the column in VCF which contains the tumor
+#'   sample information. It \strong{must} have quotation marks. If
+#'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
+#'   use the 10th column to calculate VAFs. See\code{\link{GetMutectVAF}} for
+#'   more details.
+#'   
 #' @return A data frame storing mutation records of a VCF file with VAFs added.
 #'
 #' @keywords internal
-ReadMutectVCF <- function(file) {
+ReadMutectVCF <- 
+  function(file, name.of.VCF = NULL, tumor.col.name = NA) {
   df <- MakeDataFrameFromMutectVCF(file)
-  df$VAF <- GetMutectVAF(df)
+  if (is.null(name.of.VCF)) {
+    vcf.name <- tools::file_path_sans_ext(basename(file))
+  } else {
+    vcf.name <- name.of.VCF
+  }
+  
+  df$VAF <- GetMutectVAF(df, vcf.name, tumor.col.name)
   return(StandardChromName(df))
 }
 
 #' @rdname GetVAF
 #'
 #' @export
-GetMutectVAF <- function(vcf) {
+GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
   if (!any(grepl("/1", unlist(vcf[1, ])))) {
     stop("vcf does not appear to be a Mutect VCF, please check the data")
+  }
+  
+  if (!is.na(tumor.col.name)) {
+    if (!tumor.col.name %in% colnames(vcf)) {
+      stop("\n", dQuote(tumor.col.name), 
+           " is not one of the column names in vcf ",
+           ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)))
+    }
   }
 
   type1 <- c("F1R2", "F2R1")
@@ -298,10 +331,36 @@ GetMutectVAF <- function(vcf) {
     vafs <- sapply(1:length(info), FUN = CalculateVAF, list = info)
   }
   
+  CheckAndReturnVAFs <- function(vafs) {
+    idx.zero.vaf <- which(vafs == 0)
+    if(length(idx.zero.vaf) == 0) {
+      return(vafs)
+    } else {
+      warning("\nThere are rows which have zero VAF value in vcf ",
+              ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), "\n",
+              "Please check and specify the correct column name for tumor sample ",
+              "using argument 'tumor.col.name'")
+      return(vafs)
+    }
+  }
+  
+  GetAndReturnVAFs <- function(type, vector1, vector2) {
+    vafs <- GetVAFs(type, vector1, vector2)
+    CheckAndReturnVAFs(vafs)
+  }
+  
   if (all(type1 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    return(GetVAFs(type1, vcf$FORMAT, vcf[[10]]))
+    if(is.na(tumor.col.name)) {
+      GetAndReturnVAFs(type1, vcf$FORMAT, vcf[[10]])
+    } else {
+      GetAndReturnVAFs(type1, vcf$FORMAT, vcf[[tumor.col.name]])
+    }
   } else if (all(type2 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    return(GetVAFs(type2, vcf$FORMAT, vcf[[10]]))
+    if(is.na(tumor.col.name)) {
+      GetAndReturnVAFs(type2, vcf$FORMAT, vcf[[10]])
+    } else {
+      GetAndReturnVAFs(type2, vcf$FORMAT, vcf[[tumor.col.name]])
+    }
   }
 }
 
@@ -829,24 +888,43 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @param files Character vector of file paths to the VCF files.
 #'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
+#' @param names.of.VCFs Character vector of names of the VCF files. The order of
+#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
+#'   \code{files}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{files}
+#'   and file paths without extensions (and the leading dot) will be used as the
+#'   names of the VCF files.
+#'   
+#' @param tumor.col.names Character vector of column names in VCFs which contain
+#'   the tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of VCFs specified in \code{files}. If
+#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
+#'   use the 10th column in all the VCFs to calculate VAFs.
+#'   See\code{\link{GetMutectVAF}} for more details.
 #'   
 #' @return A list of vcfs from \code{files}.
 #'
 #' @keywords internal
-ReadMutectVCFs <- function(files, names.of.VCFs = NULL) {
-  vcfs <- lapply(files, FUN = ReadMutectVCF)
+ReadMutectVCFs <- 
+  function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
   if (is.null(names.of.VCFs)) {
-    names(vcfs) <- tools::file_path_sans_ext(basename(files))
+    vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
-    names(vcfs) <- names.of.VCFs
+    vcfs.names <- names.of.VCFs
+  }
+  num.of.files <- length(files)
+  if (all(is.na(tumor.col.names))) {
+    tumor.col.names <- rep(NA, num.of.files)
   }
   
+  GetMutectVCFs <- function(idx, files, vector1, vector2) {
+    ReadMutectVCF(file = files[idx], name.of.VCF = vector1[idx],
+                  tumor.col.name = vector2[idx])
+  }
+  
+  vcfs <- lapply(1:num.of.files, FUN = GetMutectVCFs, 
+                 files, vcfs.names, tumor.col.names)
+  names(vcfs) <- vcfs.names
   return(vcfs)
 }
 
@@ -854,12 +932,19 @@ ReadMutectVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
+#' @param names.of.VCFs Character vector of names of the VCF files. The order of
+#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
+#'   \code{files}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{files}
+#'   and file paths without extensions (and the leading dot) will be used as the
+#'   names of the VCF files.
+#'   
+#' @param tumor.col.names Character vector of column names in VCFs which contain
+#'   the tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of VCFs specified in \code{files}. If
+#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
+#'   use the 10th column in all the VCFs to calculate VAFs.
+#'   See\code{\link{GetMutectVAF}} for more details.
 #'   
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -893,8 +978,9 @@ ReadMutectVCFs <- function(files, names.of.VCFs = NULL) {
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
-ReadAndSplitMutectVCFs <- function(files, names.of.VCFs = NULL) {
-  vcfs <- ReadMutectVCFs(files, names.of.VCFs)
+ReadAndSplitMutectVCFs <- 
+  function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
+  vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(split.vcfs)
 }
@@ -1699,12 +1785,19 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
+#' @param names.of.VCFs Character vector of names of the VCF files. The order of
+#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
+#'   \code{files}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{files}
+#'   and file paths without extensions (and the leading dot) will be used as the
+#'   names of the VCF files.
+#'   
+#' @param tumor.col.names Character vector of column names in VCFs which contain
+#'   the tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of VCFs specified in \code{files}. If
+#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
+#'   use the 10th column in all the VCFs to calculate VAFs.
+#'   See\code{\link{GetMutectVAF}} for more details.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
@@ -1728,8 +1821,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL) {
-  vcfs <- ReadMutectVCFs(files, names.of.VCFs)
+           region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA) {
+  vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
   return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
            VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
@@ -1757,12 +1850,19 @@ MutectVCFFilesToCatalog <-
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
+#' @param names.of.VCFs Character vector of names of the VCF files. The order of
+#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
+#'   \code{files}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{files}
+#'   and file paths without extensions (and the leading dot) will be used as the
+#'   names of the VCF files.
+#'   
+#' @param tumor.col.names Character vector of column names in VCFs which contain
+#'   the tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of VCFs specified in \code{files}. If
+#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
+#'   use the 10th column in all the VCFs to calculate VAFs.
+#'   See\code{\link{GetMutectVAF}} for more details.
 #'
 #' @param output.file The base name of the PDF files to be produced; multiple
 #'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
@@ -1797,11 +1897,12 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
                                                 trans.ranges = NULL, 
                                                 region = "unknown", 
                                                 names.of.VCFs = NULL, 
+                                                tumor.col.names = NA,
                                                 output.file = "") {
     
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                              region, names.of.VCFs)
+                              region, names.of.VCFs, tumor.col.names)
     
     if (output.file != "") output.file <- paste0(output.file, ".")
     

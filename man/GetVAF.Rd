@@ -8,10 +8,17 @@
 \usage{
 GetStrelkaVAF(vcf)
 
-GetMutectVAF(vcf)
+GetMutectVAF(vcf, name.of.VCF = NULL, tumor.col.name = NA)
 }
 \arguments{
 \item{vcf}{Said VCF as a data.frame.}
+
+\item{name.of.VCF}{Name of the VCF file.}
+
+\item{tumor.col.name}{Name of the column in VCF which contains the tumor
+sample information. It \strong{must} have quotation marks. If
+\code{tumor.col.name} is equal to \code{NA}(default), this function will
+use the 10th column to calculate VAFs.}
 }
 \value{
 A vector of VAFs, one for each row of \code{vcf}.
