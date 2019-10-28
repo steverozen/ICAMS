@@ -13,7 +13,7 @@ ReadMutectVCF(file, name.of.VCF = NULL, tumor.col.name = NA)
 \item{tumor.col.name}{Name of the column in VCF which contains the tumor
 sample information. It \strong{must} have quotation marks. If
 \code{tumor.col.name} is equal to \code{NA}(default), this function will
-use the 10th column to calculate VAFs. See\code{\link{GetMutectVAF}} for
+use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
 
 \item{name.of.vcf}{Name of the VCF file. If \code{NULL}(default), this

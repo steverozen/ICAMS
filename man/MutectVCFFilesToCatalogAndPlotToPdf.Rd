@@ -33,7 +33,7 @@ the tumor sample information. The order of names in \code{tumor.col.names}
 should match the order of VCFs specified in \code{files}. If
 \code{tumor.col.names} is equal to \code{NA}(default), this function will
 use the 10th column in all the VCFs to calculate VAFs.
-See\code{\link{GetMutectVAF}} for more details.}
+See \code{\link{GetMutectVAF}} for more details.}
 
 \item{output.file}{The base name of the PDF files to be produced; multiple
 files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}

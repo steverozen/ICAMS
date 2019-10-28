@@ -275,7 +275,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #' @param tumor.col.name Name of the column in VCF which contains the tumor
 #'   sample information. It \strong{must} have quotation marks. If
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
-#'   use the 10th column to calculate VAFs. See\code{\link{GetMutectVAF}} for
+#'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
 #' @return A data frame storing mutation records of a VCF file with VAFs added.
@@ -900,7 +900,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'   should match the order of VCFs specified in \code{files}. If
 #'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
 #'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See\code{\link{GetMutectVAF}} for more details.
+#'   See \code{\link{GetMutectVAF}} for more details.
 #'   
 #' @return A list of vcfs from \code{files}.
 #'
@@ -944,7 +944,7 @@ ReadMutectVCFs <-
 #'   should match the order of VCFs specified in \code{files}. If
 #'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
 #'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See\code{\link{GetMutectVAF}} for more details.
+#'   See \code{\link{GetMutectVAF}} for more details.
 #'   
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -1797,7 +1797,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   should match the order of VCFs specified in \code{files}. If
 #'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
 #'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See\code{\link{GetMutectVAF}} for more details.
+#'   See \code{\link{GetMutectVAF}} for more details.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
@@ -1862,7 +1862,7 @@ MutectVCFFilesToCatalog <-
 #'   should match the order of VCFs specified in \code{files}. If
 #'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
 #'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See\code{\link{GetMutectVAF}} for more details.
+#'   See \code{\link{GetMutectVAF}} for more details.
 #'
 #' @param output.file The base name of the PDF files to be produced; multiple
 #'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
