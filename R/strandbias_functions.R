@@ -1,3 +1,129 @@
+#' Plot transcription strand bias with respect to gene expression level.
+#'
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
+#'
+#' @param expression.level A \code{data.frame} which contains the transcription
+#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+#'   for more details.
+#'   
+#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
+#'   information in \code{experession.level}.
+#' 
+#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
+#'   information in \code{experession.level}.
+#'   
+#' @param num.of.bins The number of bins that will be plotted in the graph.
+#' 
+#' @param plot.type A character string indicating one mutation type to be
+#'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
+#'   
+#' @param ymax Limit for the y axis. If not specified, it defaults to NULL and
+#'   the y axis limit equals 1.5 times of the maximum mutation counts in a
+#'   specific mutation type.
+#'   
+#' @importFrom stats glm
+#'   
+#' @return \code{invisible(TRUE)}
+#' 
+#' @export
+#'
+#' @examples 
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)
+#'   PlotTransBiasGeneExp(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'                        expression.level = gene.expression.level.example.GRCh37, 
+#'                        Ensembl.gene.ID.col = "Ensembl.gene.ID", 
+#'                        TPM.col = "TPM", num.of.bins = 4, plot.type = "C>A")
+#' }
+PlotTransBiasGeneExp <-
+  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, TPM.col,
+           num.of.bins, plot.type, ymax = NULL) { 
+    
+    list1 <- 
+      StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
+                                  Ensembl.gene.ID.col, TPM.col, num.of.bins)
+    
+    PlotGeneExp(list = list1, type = plot.type, 
+                num.of.bins = num.of.bins, ymax = ymax)
+    invisible(TRUE)
+  }
+
+#' Plot Transcription Strand Bias on Expression level to PDF.
+#'
+#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
+#' 
+#' @param file The name of output file.
+#'   
+#' @param expression.level A \code{data.frame} which contains the transcription
+#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
+#'   for more details.
+#'   
+#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
+#'   information in \code{experession.level}.
+#' 
+#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
+#'   information in \code{experession.level}.
+#'   
+#' @param num.of.bins The number of bins that will be plotted in the graph.
+#' 
+#' @param plot.type A vector of character indicating types to be plotted. It
+#'   can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
+#'   The default is to print all the six mutation types.
+#' 
+#' @importFrom stats glm
+#' 
+#' @return \code{invisible(TRUE)}
+#' 
+#' @export
+#'
+#' @examples
+#' file <- c(system.file("extdata",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
+#'                                       trans.ranges = trans.ranges.GRCh37)
+#'   PlotTransBiasGeneExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'                             expression.level = gene.expression.level.example.GRCh37, 
+#'                             Ensembl.gene.ID.col = "Ensembl.gene.ID", 
+#'                             TPM.col = "TPM", num.of.bins = 4, 
+#'                             plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
+#'                             file = file.path(tempdir(), "test.pdf"))
+#' }
+PlotTransBiasGeneExpToPdf <- 
+  function(annotated.SBS.vcf, file, expression.level, Ensembl.gene.ID.col,
+           TPM.col, num.of.bins, 
+           plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
+    list <- 
+      StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
+                                  Ensembl.gene.ID.col, TPM.col, 
+                                  num.of.bins)
+    
+    # Setting the width and length for A4 size plotting
+    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+    
+    opar <- par(mfrow = c(4, 3), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+    on.exit(par(opar))
+    num <- length(plot.type)
+    type <- plot.type
+    for (i in 1:num) {
+      PlotGeneExp(list = list, type = plot.type[i], 
+                  num.of.bins = num.of.bins, ymax = max(list$plotmatrix))
+    }
+    
+    grDevices::dev.off()
+    invisible(TRUE)
+    
+  }
+
 StrandBiasAsExpressionLevel <- 
   function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, 
            TPM.col, num.of.bins) {
@@ -56,8 +182,7 @@ StrandBiasAsExpressionLevel <-
     return(list(plotmatrix = result, logit.df = dt, p.value = p.value))
   }
 
-
-PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
+PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
   result <- list$plotmatrix
   foo1 <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
   if (!type %in% foo1) {
@@ -104,33 +229,24 @@ PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
 }
 
 
-#' Plot transcription strand bias with respect to gene expression level.
-#'
+##################################################################################
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site.
+#' 
 #' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
 #'
-#' @param expression.level A \code{data.frame} which contains the transcription
-#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
-#'   for more details.
-#'   
-#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
-#'   information in \code{experession.level}.
-#' 
-#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
-#'   information in \code{experession.level}.
-#'   
-#' @param num.of.bins The number of bins that will be plotted in the graph.
-#' 
 #' @param plot.type A character string indicating one mutation type to be
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#'   
-#' @param ymax Limit for the y axis. If not specified, it defaults to NULL and
-#'   the y axis limit equals 1.5 times of the maximum mutation counts in a
-#'   specific mutation type.
-#'   
-#' @importFrom stats glm
-#'   
+#' 
+#' @importFrom stats coef
+#' 
 #' @return \code{invisible(TRUE)}
 #' 
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
 #' @export
 #'
 #' @examples 
@@ -142,50 +258,33 @@ PlotTransBiasExp1 <- function(list, type, num.of.bins, ymax = NULL) {
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasExp(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                    expression.level = gene.expression.level.example.GRCh37, 
-#'                    Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
-#'                    num.of.bins = 4, plot.type = "C>A")
+#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
 #' }
-PlotTransBiasExp <-
-  function(annotated.SBS.vcf, expression.level, Ensembl.gene.ID.col, TPM.col,
-           num.of.bins, plot.type, ymax = NULL) { 
-    
-    list1 <- 
-      StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
-                                  Ensembl.gene.ID.col, TPM.col, num.of.bins)
-    
-    PlotTransBiasExp1(list = list1, type = plot.type, 
-                      num.of.bins = num.of.bins, ymax = ymax)
-    invisible(TRUE)
-  }
+PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
+  output <- dist2TSS(annotated.SBS.vcf, plot.type)
+  Plotdist2TSS(output, plot.type)
+  invisible(TRUE)
+}
 
-#' Plot Transcription Strand Bias on Expression level to PDF.
+#' Plot transcription strand bias with respect to distance to transcription
+#' start site to a PDF file.
 #'
 #' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
-#' 
-#' @param file The name of output file.
-#'   
-#' @param expression.level A \code{data.frame} which contains the transcription
-#'   level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
-#'   for more details.
-#'   
-#' @param Ensembl.gene.ID.col Name of column which has the Ensembl gene ID
-#'   information in \code{experession.level}.
-#' 
-#' @param TPM.col Name of column which has the TPM (Transcripts Per Kilobase Million)
-#'   information in \code{experession.level}.
-#'   
-#' @param num.of.bins The number of bins that will be plotted in the graph.
-#' 
+#'
 #' @param plot.type A vector of character indicating types to be plotted. It
-#'   can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#'   The default is to print all the six mutation types.
-#' 
+#'   should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
+#'
+#' @param file The name of output file.
+#'    
 #' @importFrom stats glm
 #' 
 #' @return \code{invisible(TRUE)}
-#' 
+#'   
+#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
+#'   Genome-wide analysis of human global and transcription-coupled excision
+#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
+#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
+#'   
 #' @export
 #'
 #' @examples
@@ -197,40 +296,26 @@ PlotTransBiasExp <-
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                         expression.level = gene.expression.level.example.GRCh37, 
-#'                         Ensembl.gene.ID.col = "Ensembl.gene.ID", TPM.col = "TPM",
-#'                         num.of.bins = 4, 
-#'                         plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
-#'                         file = file.path(tempdir(), "test.pdf"))
+#'   PlotTransBiasDist2TSSToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
+#'                              plot.type = c("C>A","C>G","C>T","T>A","T>C"),
+#'                              file = file.path(tempdir(), "test.pdf"))
 #' }
-PlotTransBiasExpToPdf <- 
-  function(annotated.SBS.vcf, file, expression.level, Ensembl.gene.ID.col,
-           TPM.col, num.of.bins, 
-           plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
-    list <- 
-      StrandBiasAsExpressionLevel(annotated.SBS.vcf, expression.level, 
-                                  Ensembl.gene.ID.col, TPM.col, 
-                                  num.of.bins)
-    
-    # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-    
-    opar <- par(mfrow = c(4, 3), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
-    on.exit(par(opar))
-    num <- length(plot.type)
-    type <- plot.type
-    for (i in 1:num) {
-      PlotTransBiasExp1(list = list, type = plot.type[i], 
-                        num.of.bins = num.of.bins, ymax = max(list$plotmatrix))
-    }
-    
-    grDevices::dev.off()
-    invisible(TRUE)
-    
+PlotTransBiasDist2TSSToPdf <- function(annotated.SBS.vcf, plot.type, file) {
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  opar <- par(mfrow = c(4, 2), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
+  on.exit(par(opar))
+  num <- length(plot.type)
+  type <- plot.type
+  for (i in 1:num) {
+    PlotTransBiasDist2TSS(annotated.SBS.vcf = annotated.SBS.vcf, 
+                          plot.type = plot.type[i])
   }
+  
+  grDevices::dev.off()
+  invisible(TRUE)
+  
+}
 
-##################################################################################
 dist2TSS <- function(annotated.SBS.vcf, plot.type) {
   
   df <- annotated.SBS.vcf
@@ -318,89 +403,5 @@ Plotdist2TSS <- function(output, plot.type) {
         cex=0.8, xpd = NA)
 }
 
-#' Plot transcription strand bias with respect to distance to transcription
-#' start site.
-#' 
-#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
-#'
-#' @param plot.type A character string indicating one mutation type to be
-#'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#' 
-#' @importFrom stats coef
-#' 
-#' @return \code{invisible(TRUE)}
-#' 
-#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
-#'   Genome-wide analysis of human global and transcription-coupled excision
-#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
-#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
-#'   
-#' @export
-#'
-#' @examples 
-#' file <- c(system.file("extdata",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-#'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSS(annotated.SBS.vcf, plot.type = "C>T")
-#' }
-PlotTransBiasDist2TSS <- function (annotated.SBS.vcf, plot.type){
-  output <- dist2TSS(annotated.SBS.vcf, plot.type)
-  Plotdist2TSS(output, plot.type)
-  invisible(TRUE)
-}
 
-#' Plot transcription strand bias with respect to distance to transcription
-#' start site to a PDF file.
-#'
-#' @param annotated.SBS.vcf An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.
-#'
-#' @param plot.type A vector of character indicating types to be plotted. It
-#'   should be within "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
-#'
-#' @param file The name of output file.
-#'    
-#' @importFrom stats glm
-#' 
-#' @return \code{invisible(TRUE)}
-#'   
-#' @references Hu, J., Adar, S., Selby, C. P., Lieb, J. D. & Sancar, A.
-#'   Genome-wide analysis of human global and transcription-coupled excision
-#'   repair of UV damage at single-nucleotide resolution. \emph{Genes Dev}. 29,
-#'   948–960 (2015), https://doi.org/10.1101/gad.261271.115
-#'   
-#' @export
-#'
-#' @examples
-#' file <- c(system.file("extdata",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
-#'                                       trans.ranges = trans.ranges.GRCh37)
-#'   PlotTransBiasDist2TSSToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-#'                              plot.type = c("C>A","C>G","C>T","T>A","T>C"),
-#'                              file = file.path(tempdir(), "test.pdf"))
-#' }
-PlotTransBiasDist2TSSToPdf <- function(annotated.SBS.vcf, plot.type, file) {
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
-  opar <- par(mfrow = c(4, 2), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
-  on.exit(par(opar))
-  num <- length(plot.type)
-  type <- plot.type
-  for (i in 1:num) {
-    PlotTransBiasDist2TSS(annotated.SBS.vcf = annotated.SBS.vcf, 
-                          plot.type = plot.type[i])
-  }
-  
-  grDevices::dev.off()
-  invisible(TRUE)
-  
-}
 
