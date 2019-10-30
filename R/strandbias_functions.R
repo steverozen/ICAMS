@@ -131,11 +131,11 @@ StrandBiasAsExpressionLevel <-
     TPM <- data.table(expression.level[, c(Ensembl.gene.ID.col, TPM.col)])
     names(TPM) <- c("trans.Ensembl.gene.ID", "TPM")
     
-    # Delete genes expressed on both strands and NA Ensembl.gene.ID
-    vcf <- annotated.SBS.vcf[-which(annotated.SBS.vcf$bothstrand == TRUE), ]
-    vcf <- vcf[-which(is.na(vcf$trans.Ensembl.gene.ID) == TRUE), ]
+    # Delete genes expressed on both strands and rows with NA
+    vcf <- annotated.SBS.vcf[annotated.SBS.vcf$bothstrand == FALSE, ]
+    vcf <- na.omit(vcf)
     df <- merge(vcf, TPM, by = "trans.Ensembl.gene.ID", all.x = TRUE)
-    df <- df[-which(is.na(df$TPM) == TRUE), ]
+    df <- na.omit(df)
     
     # One SBS mutation can be represented by more than 1 row in df if the
     # mutation position falls into the range of multiple transcripts on the same
@@ -147,7 +147,7 @@ StrandBiasAsExpressionLevel <-
     
     df1$Exp_Level <- NA
     cutoffs <- 
-      stats::quantile(df1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = T)
+      stats::quantile(df1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = TRUE)
     df1[, "Exp_Level"] <- 
       cut(df1$TPM, breaks = c(-Inf, cutoffs, Inf), labels = (1:num.of.bins))
     
@@ -188,29 +188,41 @@ PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
   if (!type %in% foo1) {
     stop("please input: 'C>A','C>G','C>T','T>A','T>C','T>G'")
   }
-  plotCombo <- cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
-                     rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
-                     colLight = c("#4040FF",  "black", "#FF4040", 
-                                  "#838383", "#40FF40", "#FF667F"), 
-                     colDark = c("#00CCFF", "grey40", "#FF99CC", 
-                                 "#C6C6C6", "#B0FFB0", "#FCB9C9"))
+  plotCombo <- 
+    cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
+          rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
+          colLight = c("#4040FF",  "black", "#FF4040", 
+                       "#838383", "#40FF40", "#FF667F"), 
+          colDark = c("#0000ff", "#000000", "#ff4040", # dark blue, black, red
+                      "#838383", "#40ff40", "#ff667f")) # grey, green, pink
   i <- which(plotCombo[, "Target"] == type)
   tmp <- t(result[, c(plotCombo[i, 1], plotCombo[i, 2])])
   colnames(tmp) <- c(1:num.of.bins)
+  
   if (is.null(ymax)) {
     ymax <- max(tmp)
   }
-  bp <- barplot(tmp, beside = T, main = plotCombo[i, "Target"], 
-                ylim = c(0, 1.5 * ymax), col = plotCombo[i, 3:4])
+  bp <- barplot(tmp, beside = TRUE, main = plotCombo[i, "Target"], 
+                ylim = c(0, ifelse(ymax != 0, 1.5 * ymax, 5)), 
+                col = plotCombo[i, 3:4], axisnames = FALSE)
   legend("topright", legend = c("Untranscribed", "Transcribed"), 
          fill = plotCombo[i, 3:4], bty = "n", cex = 0.8)
   
-  # drawing the triangle that represent expression value
-  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.35, xpd = NA)
-  segments(min(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
-  segments(max(bp), -1.25 * ymax * 0.35, max(bp), -1.25 * ymax * 0.25, xpd = NA)
-  text(max(bp) * 1.06, -1.25 * ymax * 0.27, labels = "EXP", xpd = NA, cex = 0.7)
-  text(max(bp) * 1.06, -1.25 * ymax * 0.32, labels = "level", xpd = NA, cex = 0.7)
+  # Draw a triangle that represent expression value
+  if (ymax != 0) {
+    y.pos <- c(-ymax * 0.2, -ymax * 0.2, -ymax * 0.1)
+  } else {
+    y.pos <- c(-1, -1, -0.5)
+  }
+  polygon(c(min(bp), max(bp), max(bp)), y.pos, xpd = NA, col = plotCombo[i, 3])
+  text(max(bp) * 1.06, ifelse(ymax != 0, -ymax * 0.12, -0.6), 
+       labels = "Exp", xpd = NA, cex = 0.7)
+  text(max(bp) * 1.06, ifelse(ymax != 0, -ymax * 0.18, -0.9),
+       labels = "level", xpd = NA, cex = 0.7)
+  text(min(bp), ifelse(ymax != 0, -ymax * 0.3, -1.5), 
+       labels = "Low", xpd = NA, cex = 0.7)
+  text(max(bp), ifelse(ymax != 0, -ymax * 0.3, -1.5), 
+       labels = "High", xpd = NA, cex = 0.7)
   
   # Carrying out logistic regression
   dt <- data.table(list$logit.df)
@@ -222,10 +234,13 @@ PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
   dt <- dt[mutation %in% c(type, revc1(type)), ]
   dt <- dt[mutation == type, `:=`(class, 1)]
   dt <- dt[mutation != type, `:=`(class, 0)]
-  logit.model <- glm(class ~ TPM, family = binomial, data = dt)
-  p.value <- summary(logit.model)$coefficients[2, 4]
-  text(0.585 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
-       cex = 0.8, pos = 4, offset = TRUE)
+  if (nrow(dt) != 0 ) {
+    logit.model <- glm(class ~ TPM, family = binomial, data = dt)
+    p.value <- summary(logit.model)$coefficients[2, 4]
+    text(0.585 * max(bp), 1.15 * ymax, labels = paste0("p = ", signif(p.value, 3)), 
+         cex = 0.8, pos = 4, offset = TRUE)
+  }
+  
 }
 
 
