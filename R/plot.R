@@ -125,12 +125,12 @@ PlotCatalog.SBS96Catalog <-
     stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SBS96)
 
-    class.col <- c("#0000ff",  # dark blue
-                   "#000000",  # black
-                   "#ff4040",  # red
-                   "#838383",  # grey
-                   "#40ff40",  # green
-                   "#ff667f")  # pink
+    class.col <- c("#0000ff",  
+                   "#000000",  
+                   "#ff4040",  
+                   "#838383",  
+                   "#40ff40",  
+                   "#ff667f")  
 
     cols <- rep(class.col, each = 16)
     maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
