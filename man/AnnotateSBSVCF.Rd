@@ -19,14 +19,13 @@ If \code{is.null(trans.ranges)} do not add transcript range
 information.}
 }
 \value{
-An in-memory SBS VCF as a \code{data.table}.
-This has been annotated with the sequence context
-(column name \code{seq.21bases})
-and with transcript information in the form of a gene symbol
-(e.g. \code{"TP53"}) and transcript strand. This information is
-in the columns \code{trans.start.pos}, \code{trans.end.pos}
-, \code{trans.strand} and \code{trans.gene.symbol} in the output. 
-These columns are not added if \code{is.null(trans.ranges)}.
+An in-memory SBS VCF as a \code{data.table}. This has been annotated
+  with the sequence context (column name \code{seq.21bases}) and with
+  transcript information in the form of a gene symbol (e.g. \code{"TP53"})
+  and transcript strand. This information is in the columns
+  \code{trans.start.pos}, \code{trans.end.pos} , \code{trans.strand},
+  \code{trans.Ensembl.gene.ID} and \code{trans.gene.symbol} in the output.
+  These columns are not added if \code{is.null(trans.ranges)}.
 }
 \description{
 Add sequence context and transcript information to an in-memory SBS VCF.
