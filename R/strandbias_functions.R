@@ -137,6 +137,7 @@ StrandBiasAsExpressionLevel <-
     
     # Construct gene expression levels according to num.of.bins
     dt <- data.table(TPM)
+    dt1 <- dt[trans.Ensembl.gene.ID %in% trans.ranges.GRCh37$Ensembl.gene.ID, ]
     # dt1 <- dt[TPM != 0, ]
     dt1$exp.level <- NA
     cutoffs <- 
