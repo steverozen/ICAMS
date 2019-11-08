@@ -137,7 +137,7 @@ StrandBiasAsExpressionLevel <-
     
     # Construct gene expression levels according to num.of.bins
     dt <- data.table(TPM)
-    dt1 <- dt[TPM != 0, ]
+    # dt1 <- dt[TPM != 0, ]
     dt1$exp.level <- NA
     cutoffs <- 
       stats::quantile(dt1$TPM, c(1:(num.of.bins - 1)/num.of.bins), na.rm = TRUE)
