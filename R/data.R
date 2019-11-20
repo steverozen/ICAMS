@@ -143,7 +143,7 @@ NULL
 #' Example gene expression level values for human GRCh37.
 #'
 #' This data is designed to be used as an example in function
-#' \code{\link{PlotTransBiasExp}} and \code{\link{PlotTransBiasExpToPdf}}.
+#' \code{\link{PlotTransBiasGeneExp}} and \code{\link{PlotTransBiasGeneExpToPdf}}.
 #'
 #' @format A \code{data.frame} which contains the transcription level of genes.
 #'   
@@ -175,5 +175,6 @@ if(getRversion() >= "2.15.1") {
                            "ALT.y", "ref2alt", "minus1bs", "minus2bs", "plus1bs",
                            "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
                            "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
-                           "Ensembl.gene.ID", "readthrough"))
+                           "Ensembl.gene.ID", "readthrough",
+                           "exp.level", "trans.Ensembl.gene.ID"))
 }

@@ -10,7 +10,7 @@ gene.expression.level.example.GRCh37
 }
 \description{
 This data is designed to be used as an example in function
-\code{\link{PlotTransBiasExp}} and \code{\link{PlotTransBiasExpToPdf}}.
+\code{\link{PlotTransBiasGeneExp}} and \code{\link{PlotTransBiasGeneExpToPdf}}.
 }
 \examples{
 gene.expression.level.example.GRCh37
