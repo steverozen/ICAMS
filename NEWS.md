@@ -16,7 +16,7 @@
   further annotated VCFs.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
-* Added two exported functions PlotTransBiasExp() and PlotTransBiasExpToPdf().
+* Added two exported functions PlotTransBiasGeneExp() and PlotTransBiasGeneExpToPdf().
 * Added an additional optional argument "names.of.VCFs" in functions
   ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
   MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
@@ -37,7 +37,6 @@
   a logical value indicating whether the plot is successful. The second element 
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
   useful for adding to the graph (currently only implemented for SBS96Catalog).
-* Added two exported functions PlotTransBiasDist2TSS() and PlotTransBiasDist2TSSToPDF().  
 * Added one more exported data gene.expression.level.example.GRCh37.
 * Added an additional argument "tumor.col.names" in functions
   ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
