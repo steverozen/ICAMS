@@ -140,27 +140,31 @@ NULL
 
 "all.abundance"
 
-#' Example gene expression level values for human GRCh37.
+#' Example gene expression data from two cell lines.
 #'
 #' This data is designed to be used as an example in function
 #' \code{\link{PlotTransBiasGeneExp}} and \code{\link{PlotTransBiasGeneExpToPdf}}.
 #'
-#' @format A \code{data.frame} which contains the transcription level of genes.
+#' @format A \code{\link{data.table}} which contains the expression values of genes.
 #'   
-#' @name gene.expression.level.example.GRCh37
+#' @name GeneExpressionData
 #' 
 #' @examples 
-#' gene.expression.level.example.GRCh37
+#' gene.expression.data.HepG2
 #' # Ensembl.gene.ID  gene.symbol  counts            TPM
-#' # ENSG00000000003       TSPAN6    6007   3.392265e+01
-#' # ENSG00000000005         TNMD       0   0.000000e+00
-#' # ENSG00000000419         DPM1    4441   6.166937e+01
-#' # ENSG00000000457        SCYL3    1368   3.334619e+00
-#' # ENSG00000000460     C1orf112     916   2.416263e+00
+#' # ENSG00000000003       TSPAN6    6007   33.922648455
+#' # ENSG00000000005         TNMD       0    0.000000000
+#' # ENSG00000000419         DPM1    4441   61.669371091
+#' # ENSG00000000457        SCYL3    1368    3.334619195
+#' # ENSG00000000460     C1orf112     916    2.416263423
 #' #             ...          ...     ...            ...
-#' 
-"gene.expression.level.example.GRCh37"
+NULL
 
+#' @rdname GeneExpressionData
+"gene.expression.data.HepG2"
+
+#' @rdname GeneExpressionData
+"gene.expression.data.MCF10A"
 
 # Quiets concerns of R CMD check about no visible binding for global variable
 if(getRversion() >= "2.15.1") {
