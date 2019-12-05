@@ -1197,6 +1197,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 
@@ -1458,6 +1460,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 
@@ -1553,7 +1557,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
-#'
+#' 
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 
@@ -1611,7 +1617,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
-#'
+#' 
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 
@@ -1806,6 +1814,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
 #'   repeat sizes range from 1 to 6+.
+#'   
+#' @section Comments:
+#' To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
+#' For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 #'
 #' @export
 #' 
@@ -1876,7 +1888,9 @@ MutectVCFFilesToCatalog <-
 #'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
 #'   repeat sizes range from 1 to 6+.
-#'
+#' 
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 

@@ -24,6 +24,8 @@
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'
+#' @inheritSection MutectVCFFilesToCatalog Comments
+#' 
 #' @export
 #' 
 #' @examples 

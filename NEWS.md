@@ -42,6 +42,11 @@
   ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
   MutectVCFFilesToCatalogAndPlotToPdf() for users to specify the column names of
   tumor sample in the Mutect VCF files.
+* Added a "Comments" section in the documentation of functions MutectVCFFilesToCatalog(),
+  MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalog(),
+  StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), VCFsToSBSCatalogs(),
+  VCFsToDBSCatalogs(), ReadCatalog() informing the user how to change
+  attributes of the generated catalog.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted

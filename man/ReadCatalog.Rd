@@ -36,6 +36,12 @@ In ID (small insertion and deletion) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation
   deletion repeat sizes range from 1 to 6+.
 }
+\section{Comments}{
+
+To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
+For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+}
+
 \examples{
 file <- system.file("extdata",
                     "strelka.regress.cat.sbs.96.csv",
