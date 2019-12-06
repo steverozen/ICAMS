@@ -2,28 +2,29 @@
 % Please edit documentation in R/strandbias_functions.R
 \name{PlotTransBiasGeneExpToPdf}
 \alias{PlotTransBiasGeneExpToPdf}
-\title{Plot Transcription Strand Bias on Expression level to PDF.}
+\title{Plot transcription strand bias with respect to gene expression values to a
+PDF file.}
 \usage{
-PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.level,
-  Ensembl.gene.ID.col, TPM.col, num.of.bins, plot.type = c("C>A", "C>G",
-  "C>T", "T>A", "T>C", "T>G"))
+PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
+  Ensembl.gene.ID.col, expression.value.col, num.of.bins,
+  plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"))
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
 
 \item{file}{The name of output file.}
 
-\item{expression.level}{A \code{data.frame} which contains the transcription
-level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
-for more details.}
+\item{expression.data}{A \code{\link{data.table}} which contains the
+expression values of genes. \cr See \code{\link{GeneExpressionData}} for more
+details.}
 
 \item{Ensembl.gene.ID.col}{Name of column which has the Ensembl gene ID
-information in \code{experession.level}.}
+information in \code{expression.data}.}
 
-\item{TPM.col}{Name of column which has the TPM (Transcripts Per Kilobase Million)
-information in \code{experession.level}.}
+\item{expression.value.col}{Name of column which has the gene expression
+values in \code{expression.data}.}
 
-\item{num.of.bins}{The number of bins that will be plotted in the graph.}
+\item{num.of.bins}{The number of bins that will be plotted on the graph.}
 
 \item{plot.type}{A vector of character indicating types to be plotted. It
 can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
@@ -33,7 +34,8 @@ The default is to print all the six mutation types.}
 \code{invisible(TRUE)}
 }
 \description{
-Plot Transcription Strand Bias on Expression level to PDF.
+Plot transcription strand bias with respect to gene expression values to a
+PDF file.
 }
 \examples{
 file <- c(system.file("extdata",
@@ -45,9 +47,9 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)
   PlotTransBiasGeneExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
-                            expression.level = gene.expression.level.example.GRCh37, 
+                            expression.data = gene.expression.data.HepG2, 
                             Ensembl.gene.ID.col = "Ensembl.gene.ID", 
-                            TPM.col = "TPM", num.of.bins = 4, 
+                            expression.value.col = "TPM", num.of.bins = 4, 
                             plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
                             file = file.path(tempdir(), "test.pdf"))
 }

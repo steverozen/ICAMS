@@ -2,25 +2,26 @@
 % Please edit documentation in R/strandbias_functions.R
 \name{PlotTransBiasGeneExp}
 \alias{PlotTransBiasGeneExp}
-\title{Plot transcription strand bias with respect to gene expression level.}
+\title{Plot transcription strand bias with respect to gene expression values.}
 \usage{
-PlotTransBiasGeneExp(annotated.SBS.vcf, expression.level,
-  Ensembl.gene.ID.col, TPM.col, num.of.bins, plot.type, ymax = NULL)
+PlotTransBiasGeneExp(annotated.SBS.vcf, expression.data,
+  Ensembl.gene.ID.col, expression.value.col, num.of.bins, plot.type,
+  ymax = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
 
-\item{expression.level}{A \code{data.frame} which contains the transcription
-level of genes. \cr See \code{\link{gene.expression.level.example.GRCh37}}
-for more details.}
+\item{expression.data}{A \code{\link{data.table}} which contains the
+expression values of genes. \cr See \code{\link{GeneExpressionData}} for more
+details.}
 
 \item{Ensembl.gene.ID.col}{Name of column which has the Ensembl gene ID
-information in \code{experession.level}.}
+information in \code{expression.data}.}
 
-\item{TPM.col}{Name of column which has the TPM (Transcripts Per Kilobase Million)
-information in \code{experession.level}.}
+\item{expression.value.col}{Name of column which has the gene expression
+values in \code{expression.data}.}
 
-\item{num.of.bins}{The number of bins that will be plotted in the graph.}
+\item{num.of.bins}{The number of bins that will be plotted on the graph.}
 
 \item{plot.type}{A character string indicating one mutation type to be
 plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
@@ -33,7 +34,7 @@ specific mutation type.}
 \code{invisible(TRUE)}
 }
 \description{
-Plot transcription strand bias with respect to gene expression level.
+Plot transcription strand bias with respect to gene expression values.
 }
 \examples{
 file <- c(system.file("extdata",
@@ -45,8 +46,9 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)
   PlotTransBiasGeneExp(annotated.SBS.vcf = annotated.SBS.vcf, 
-                       expression.level = gene.expression.level.example.GRCh37, 
+                       expression.data = gene.expression.data.HepG2, 
                        Ensembl.gene.ID.col = "Ensembl.gene.ID", 
-                       TPM.col = "TPM", num.of.bins = 4, plot.type = "C>A")
+                       expression.value.col = "TPM", num.of.bins = 4, 
+                       plot.type = "C>A")
 }
 }

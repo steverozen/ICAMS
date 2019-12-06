@@ -13,7 +13,7 @@ gene.expression.data.HepG2
 gene.expression.data.MCF10A
 }
 \description{
-This data is designed to be used as an example in function
+This data is designed to be used as an example in function \cr
 \code{\link{PlotTransBiasGeneExp}} and \code{\link{PlotTransBiasGeneExpToPdf}}.
 }
 \examples{

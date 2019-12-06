@@ -105,14 +105,15 @@ PlotCatalog
 PlotCatID
 PlotCatIDtoPdf
 PlotTransBiasDist
-PlotTransBiasExp
-PlotTransBiasExpToPdf
+PlotTransBiasGeneExp
+PlotTransBiasGeneExpToPdf
 POS
 PWM
 PyrPenta
 PyrTri
 ReadAndSplitMutectVCFs
 ReadAndSplitStrelkaSBSVCFs
+ReadCatalog
 ReadStrelkaIDVCFs
 rowname
 Sancar
@@ -161,5 +162,7 @@ VAFs
 vcfs
 VCF
 VCFs
+VCFsToDBSCatalogs
 VCFsToIDCatalogs
+VCFsToSBSCatalogs
 wikipedia
