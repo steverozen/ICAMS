@@ -6,11 +6,13 @@
 PDF file.}
 \usage{
 PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
-  Ensembl.gene.ID.col, expression.value.col, num.of.bins,
+  Ensembl.gene.ID.col, expression.value.col, trans.ranges, num.of.bins,
   plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"))
 }
 \arguments{
-\item{annotated.SBS.vcf}{An SBS VCF annotated by \code{\link{AnnotateSBSVCF}}.}
+\item{annotated.SBS.vcf}{An SBS VCF annotated by
+\code{\link{AnnotateSBSVCF}}. It \strong{must} have transcript range
+information added.}
 
 \item{file}{The name of output file.}
 
@@ -23,6 +25,10 @@ information in \code{expression.data}.}
 
 \item{expression.value.col}{Name of column which has the gene expression
 values in \code{expression.data}.}
+
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
+transcript range and strand information. Please refer to
+\code{\link{TranscriptRanges}} for more details.}
 
 \item{num.of.bins}{The number of bins that will be plotted on the graph.}
 
@@ -49,7 +55,9 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   PlotTransBiasGeneExpToPdf(annotated.SBS.vcf = annotated.SBS.vcf, 
                             expression.data = gene.expression.data.HepG2, 
                             Ensembl.gene.ID.col = "Ensembl.gene.ID", 
-                            expression.value.col = "TPM", num.of.bins = 4, 
+                            expression.value.col = "TPM", 
+                            trans.ranges = trans.ranges.GRCh37,
+                            num.of.bins = 4, 
                             plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
                             file = file.path(tempdir(), "test.pdf"))
 }
