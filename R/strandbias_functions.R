@@ -123,6 +123,46 @@ PlotTransBiasGeneExpToPdf <-
     
   }
 
+CalculateExpressionLevel <- function(dt, num.of.bins, type) {
+  dt1 <- dt[mutation == revcSBS6(type), ]
+  setorder(dt1, exp.value)
+  if (num.of.bins == 1) {
+    dt[, exp.level := num.of.bins]
+    return(dt)
+  } else {
+    dt1[, exp.level := cut(1:nrow(dt1), breaks = num.of.bins, labels = FALSE)]
+  }
+  
+  idx <- cumsum(table(dt1$exp.level)) + 1
+  break.points <- c(0, dt1[idx[1:(num.of.bins - 1)], exp.value], 
+                    max(dt$exp.value) + 1)
+  dup.idx <- which(duplicated(break.points))
+  
+  
+  GetExpLevel <- function(i, exp.value, break.points) {
+    lower <- break.points[i]
+    upper <- break.points[i + 1]
+    total.match <- sum(exp.value >= lower & exp.value < upper)
+    return(rep(i, total.match))
+  }
+  
+  setorder(dt, exp.value)
+  list <- lapply(1:num.of.bins, FUN = GetExpLevel, exp.value = dt$exp.value, 
+                 break.points = break.points)
+  exp.level <- do.call("c", list)
+  
+  if (length(dup.idx) != 0) {
+    idx.max <- max(dup.idx)
+    idx2 <- c(0, cumsum(table(dt1$exp.level) * 2))
+    for (i in 1:(idx.max - 1)) {
+      exp.level[(idx2[i] + 1):idx2[i + 1]] <- i
+    }
+  }
+  
+  dt$exp.level <- exp.level
+  return(dt)
+}
+
 StrandBiasGeneExp <- 
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
            expression.value.col, trans.ranges, num.of.bins) {
@@ -165,7 +205,7 @@ StrandBiasGeneExp <-
     dt2 <- dt2[mutation %in% type, `:=`(class, 1)]
     dt2 <- dt2[!mutation %in% type, `:=`(class, 0)]
     
-    logit.model <- stats::glm(class ~ log1p(exp.value), family = binomial, 
+    logit.model <- stats::glm(class ~ exp.value, family = binomial, 
                               data = dt2)
     p.value <- summary(logit.model)$coefficients[2, 4]
     
@@ -180,12 +220,7 @@ StrandBiasGeneExp <-
     for (i in 1:6) {
       type <- mutation.type[i]
       df2 <- df1[mutation %in% c(type, revcSBS6(type)), ]
-      setorder(df2, exp.value)
-      if (num.of.bins == 1) {
-        df2$exp.level <- num.of.bins
-      } else {
-        df2$exp.level <- cut(1:nrow(df2), breaks = num.of.bins, labels = FALSE)
-      }
+      df2 <- CalculateExpressionLevel(df2, num.of.bins, type)
       for (j in 1:num.of.bins) {
         result[j, type] <- nrow(df2[mutation == type & exp.level == j, ])
         result[j, revcSBS6(type)] <- 
@@ -244,7 +279,7 @@ PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
     #values <- sort(dt$exp.value, decreasing = TRUE)[1:2]
     #dt1 <- dt[!(exp.value %in% values), ]
     # dt1 <- dt[exp.value != outlier(exp.value), ]
-    logit.model <- stats::glm(class ~ log1p(exp.value), family = binomial, 
+    logit.model <- stats::glm(class ~ exp.value, family = binomial, 
                               data = dt)
     p.value <- summary(logit.model)$coefficients[2, 4]
     text(legend.list$rect$left * 1.005, 1.15 * ymax, 
