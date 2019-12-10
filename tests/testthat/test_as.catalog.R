@@ -3,14 +3,14 @@ context("as.catalog")
 test_that("as.catalog vector and no row names", {
  out <- as.catalog(numeric(1536), infer.rownames = TRUE)
  expect_equal(attr(out, "region", exact = TRUE), "unknown")
- expect_equal(class(out), c("SBS1536Catalog", "matrix"))
+ expect_true(inherits(out, "SBS1536Catalog"))
 }
 )
 
 test_that("as.catalog COMPOSITE", {
   out <- as.catalog(numeric(1697), infer.rownames = TRUE)
   expect_equal(attr(out, "region", exact = TRUE), "unknown")
-  expect_equal(class(out), c("COMPOSITECatalog", "matrix"))
+  expect_true(inherits(out, "COMPOSITECatalog"))
 })
 
 test_that("as.catalog checks and reorders correct rownames", {
