@@ -14,10 +14,6 @@
 #' @param expression.value.col Name of column which has the gene expression
 #'   values in \code{expression.data}.
 #'   
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
-#'   
 #' @param num.of.bins The number of bins that will be plotted on the graph.
 #' 
 #' @param plot.type A character string indicating one mutation type to be
@@ -46,17 +42,16 @@
 #'                        expression.data = gene.expression.data.HepG2, 
 #'                        Ensembl.gene.ID.col = "Ensembl.gene.ID", 
 #'                        expression.value.col = "TPM", 
-#'                        trans.ranges = trans.ranges.GRCh37,
 #'                        num.of.bins = 4, plot.type = "C>A")
 #' }
 PlotTransBiasGeneExp <-
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, trans.ranges, num.of.bins, plot.type, 
+           expression.value.col, num.of.bins, plot.type, 
            ymax = NULL) { 
     list1 <- 
       StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
                         Ensembl.gene.ID.col, expression.value.col, 
-                        trans.ranges, num.of.bins)
+                        num.of.bins)
     
     PlotGeneExp(list = list1, type = plot.type, 
                 num.of.bins = num.of.bins, ymax = ymax)
@@ -93,18 +88,17 @@ PlotTransBiasGeneExp <-
 #'                             expression.data = gene.expression.data.HepG2, 
 #'                             Ensembl.gene.ID.col = "Ensembl.gene.ID", 
 #'                             expression.value.col = "TPM", 
-#'                             trans.ranges = trans.ranges.GRCh37,
 #'                             num.of.bins = 4, 
 #'                             plot.type = c("C>A","C>G","C>T","T>A","T>C"), 
 #'                             file = file.path(tempdir(), "test.pdf"))
 #' }
 PlotTransBiasGeneExpToPdf <- 
   function(annotated.SBS.vcf, file, expression.data, Ensembl.gene.ID.col,
-           expression.value.col, trans.ranges, num.of.bins, 
+           expression.value.col, num.of.bins, 
            plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
     list <- StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
                               Ensembl.gene.ID.col, expression.value.col, 
-                              trans.ranges, num.of.bins)
+                              num.of.bins)
     
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -125,47 +119,73 @@ PlotTransBiasGeneExpToPdf <-
 
 CalculateExpressionLevel <- function(dt, num.of.bins, type) {
   dt1 <- dt[mutation == revcSBS6(type), ]
+  dt2 <- dt[mutation == type, ]
   setorder(dt1, exp.value)
+  setorder(dt2, exp.value)
   if (num.of.bins == 1) {
     dt[, exp.level := num.of.bins]
     return(dt)
   } else {
-    dt1[, exp.level := cut(1:nrow(dt1), breaks = num.of.bins, labels = FALSE)]
-  }
-  
-  idx <- cumsum(table(dt1$exp.level)) + 1
-  break.points <- c(0, dt1[idx[1:(num.of.bins - 1)], exp.value], 
-                    max(dt$exp.value) + 1)
-  dup.idx <- which(duplicated(break.points))
-  
-  
-  GetExpLevel <- function(i, exp.value, break.points) {
-    lower <- break.points[i]
-    upper <- break.points[i + 1]
-    total.match <- sum(exp.value >= lower & exp.value < upper)
-    return(rep(i, total.match))
-  }
-  
-  setorder(dt, exp.value)
-  list <- lapply(1:num.of.bins, FUN = GetExpLevel, exp.value = dt$exp.value, 
-                 break.points = break.points)
-  exp.level <- do.call("c", list)
-  
-  if (length(dup.idx) != 0) {
-    idx.max <- max(dup.idx)
-    idx2 <- c(0, cumsum(table(dt1$exp.level) * 2))
-    for (i in 1:(idx.max - 1)) {
-      exp.level[(idx2[i] + 1):idx2[i + 1]] <- i
+    if (nrow(dt1) <= num.of.bins) {
+      dt1$exp.level <- 1:nrow(dt1)
+      max.exp.value <- max(dt1$exp.value)
+      dt3 <- dt2[exp.value > max.exp.value, ]
+      break.points1 <- c(0, dt1[1:nrow(dt1), exp.value])
+      dt3[, exp.level := nrow(dt1) + 
+            cut(1:nrow(dt3), breaks = num.of.bins - nrow(dt1), labels = FALSE)]
+      index <- cumsum(table(dt3$exp.level))
+      break.points2 <- c(dt3[index, exp.value])
+      break.points <- c(break.points1, break.points2)
+      
+      GetExpLevel <- function(i, exp.value, break.points) {
+        lower <- break.points[i]
+        upper <- break.points[i + 1]
+        total.match <- sum(exp.value >lower & exp.value <= upper)
+        return(rep(i, total.match))
+      }
+      setorder(dt, exp.value)
+      list <- lapply(1:num.of.bins, FUN = GetExpLevel, exp.value = dt$exp.value, 
+                     break.points = break.points)
+      exp.level <- do.call("c", list)
+      dt$exp.level <- exp.level
+      return(dt)
+    } else {
+      dt1[, exp.level := cut(1:nrow(dt1), breaks = num.of.bins, labels = FALSE)]
+      idx <- cumsum(table(dt1$exp.level)) + 1
+      break.points <- c(0, dt1[idx[1:(num.of.bins - 1)], exp.value], 
+                        max(dt$exp.value) + 1)
+      dup.idx <- which(duplicated(break.points))
+      
+      
+      GetExpLevel1 <- function(i, exp.value, break.points) {
+        lower <- break.points[i]
+        upper <- break.points[i + 1]
+        total.match <- sum(exp.value >= lower & exp.value < upper)
+        return(rep(i, total.match))
+      }
+      
+      setorder(dt, exp.value)
+      list <- lapply(1:num.of.bins, FUN = GetExpLevel1, exp.value = dt$exp.value, 
+                     break.points = break.points)
+      exp.level <- do.call("c", list)
+      
+      if (length(dup.idx) != 0) {
+        idx.max <- max(dup.idx)
+        idx2 <- c(0, cumsum(table(dt1$exp.level) * 2))
+        for (i in 1:(idx.max - 1)) {
+          exp.level[(idx2[i] + 1):idx2[i + 1]] <- i
+        }
+      }
+      
+      dt$exp.level <- exp.level
+      return(dt)
     }
   }
-  
-  dt$exp.level <- exp.level
-  return(dt)
 }
 
 StrandBiasGeneExp <- 
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, trans.ranges, num.of.bins) {
+           expression.value.col, num.of.bins) {
     dt1 <- expression.data[, c(Ensembl.gene.ID.col, expression.value.col),
                            with = FALSE]
     idx <- which(colnames(dt1) == Ensembl.gene.ID.col)
@@ -220,11 +240,16 @@ StrandBiasGeneExp <-
     for (i in 1:6) {
       type <- mutation.type[i]
       df2 <- df1[mutation %in% c(type, revcSBS6(type)), ]
-      df2 <- CalculateExpressionLevel(df2, num.of.bins, type)
-      for (j in 1:num.of.bins) {
-        result[j, type] <- nrow(df2[mutation == type & exp.level == j, ])
-        result[j, revcSBS6(type)] <- 
-          nrow(df2[mutation == revcSBS6(type) & exp.level == j, ])
+      if (nrow(df2) == 0) {
+        result[, type] <- 0
+        result[, revcSBS6(type)] <- 0
+      } else {
+        df2 <- CalculateExpressionLevel(df2, num.of.bins, type)
+        for (j in 1:num.of.bins) {
+          result[j, type] <- nrow(df2[mutation == type & exp.level == j, ])
+          result[j, revcSBS6(type)] <- 
+            nrow(df2[mutation == revcSBS6(type) & exp.level == j, ])
+        }
       }
     }
     

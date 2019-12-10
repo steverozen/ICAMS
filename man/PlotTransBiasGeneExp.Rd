@@ -5,8 +5,8 @@
 \title{Plot transcription strand bias with respect to gene expression values.}
 \usage{
 PlotTransBiasGeneExp(annotated.SBS.vcf, expression.data,
-  Ensembl.gene.ID.col, expression.value.col, trans.ranges, num.of.bins,
-  plot.type, ymax = NULL)
+  Ensembl.gene.ID.col, expression.value.col, num.of.bins, plot.type,
+  ymax = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by
@@ -22,10 +22,6 @@ information in \code{expression.data}.}
 
 \item{expression.value.col}{Name of column which has the gene expression
 values in \code{expression.data}.}
-
-\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
-transcript range and strand information. Please refer to
-\code{\link{TranscriptRanges}} for more details.}
 
 \item{num.of.bins}{The number of bins that will be plotted on the graph.}
 
@@ -55,7 +51,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                        expression.data = gene.expression.data.HepG2, 
                        Ensembl.gene.ID.col = "Ensembl.gene.ID", 
                        expression.value.col = "TPM", 
-                       trans.ranges = trans.ranges.GRCh37,
                        num.of.bins = 4, plot.type = "C>A")
 }
 }
