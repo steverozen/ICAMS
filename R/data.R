@@ -179,6 +179,7 @@ if(getRversion() >= "2.15.1") {
                            "ALT.y", "ref2alt", "minus1bs", "minus2bs", "plus1bs",
                            "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
                            "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
-                           "Ensembl.gene.ID", "readthrough",
+                           "Ensembl.gene.ID", "readthrough", "exp.value", 
+                           "trans.end.pos", "trans.start.pos",
                            "exp.level", "trans.Ensembl.gene.ID"))
 }
