@@ -1,12 +1,13 @@
 # ICAMS to do list, 2019 09 03
 
 ## Highest priority
-1.1 *** Steve Background signature subtraction (will take until early September)
+1.1 *** Steve Background signature subtraction (will take until late December)
 
 1.2 Steve and Nanhai Web and local shiny app design and initial implementation
 1.2.1 Use NUS AWS?
 1.2.3 Design points
-1.2.3.1 outputs the standard plots and catalogs.
+1.2.3.1 outputs the standard plots and catalogs, including a readme with input info (VCFs
+        date, user who ran it)
 1.2.3.2 outputs a report with
        (Arnoud's idea, need to discuss) 
         Mutation loads (per mutation type, 
@@ -15,15 +16,8 @@
 1.2.3.3 outputs Percentage of DBS relative to SBS
 
 ## High priority
-... HIGH Nanhai -- steve thinks that as.catalog is not checking that the order of
-rows is correct; please check, and if necessary arrange for as.catalog to
-put the rows in the correct order (if the input matrix has rownames
-that and the rownames are correct).
-... HIGH  Nanhai Corrections to documentation for StrelkaSBSVCFFilesToCatalogAndPlotToPdf and 
-   similar functions.  These functions generate multiple PDF files and this is not
-   clear in the documentation; It is also not clear that the output.file is
-   just a base name, and it is not clear what the names of the output files will be.
-... HIGH Nanhai binom test for transcription strand bias
+
+... HIGH Nanhai binom test for transcription strand bias (for 12 channel strand bias analysis)
 ... HIGH Nanhai Corrections to extended sequence plotting for SBS (Arnoud re-review output)
 ... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
 ... HIGH Nanhai Extended sequence plotting for ID
@@ -34,16 +28,7 @@ that and the rownames are correct).
 ## Medium priority
 ... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
 Nat.... MED Plot transcription strand bias as function of distance from TSS
-... MED Chengyi Plot transcription strand bias as function of expression level (need to get new parameter -- expression data)
 ... MED Provide documentation on how row-names in catalogs encode mutations.
-... MED Also, in all plots, should we also include a comment box as our old script
-     also has; specifying the date of printing, and the genome/abundance of 
-     the data that was plotted? 
-     Also a additional text provided by user 
-     (Other processing information; should this be
-     an attribute, or just included as a user note --
-     example would be whether background removal was done, but could also
-     include signature extraction information (?)  
 ... MED Add error checking for cbinding catalogs with different attributes
 ... MED Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
 ... MED	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file? (allow exceptions for lacking first few rows, then requiring user input)
@@ -52,19 +37,13 @@ Nat.... MED Plot transcription strand bias as function of distance from TSS
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
 ... MED Straned indel plot: see https://osf.io/2aj6t/wiki/4.%20Plotting%20Indels/ 
+... MED Add Freebayes VCFs as an option in ICAMS.
 
 ## Low priority
 ... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
-... LOW Add Freebayes VCFs as an option in ICAMS.
 ... LOW More automatic tests for genomes that do not have built-in support
 ... LOW binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
-... LOW Nanhai Add test functions that create all types of plots and leave the .pdfs for visual
-    inspection relative to saved examples in data-raw.  Possibly extend to auto checking
-    by diffing the PDFs.
 ... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
 ... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
 ... VERY LOW Read in MAF files
-... VERY VERY VERY LOW Review Matas' comments on documentation
-
-## Maybe
 
