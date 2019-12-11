@@ -1,14 +1,14 @@
-# ICAMS 2.0.9.000x
+# ICAMS 2.0.10
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' and added Ensembl gene ID 
-  information intrans.ranges. 
+  information in package variable trans.ranges. 
 * In FindDelMH, cryptic repeats (i.e. un-normalized deletions in a repeat 
   such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
   to a deletion of AGGG) are now ignored with a warning rather than
   causing a stop().
 * Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
-  cryptic repeat in what is now the second example.
+  cryptic repeat in what is now the second example in the function documentation.
 * Updated plotting functions to make y axis labels more informative.
 * Made the return from functions VCFsToIDCatalogs(), StrelkaIDVCFFilesToCatalog()
   and StrelkaIDVCFFilesToCatalogAndPlotToPdf() a list; 1st element is the
@@ -29,8 +29,7 @@
   so that an indicator of the catalog type plus ".pdf" is simply
   appended to the base output.file name. Also made this argument
   optional with sensible default behavior.
-* Added error checking on the order of rownames in the input of
-  as.catalog.
+* Added error checking on the order of rownames in the input of as.catalog().
 * Added code to handle the case where the #CHROM lines appear
   interspersed with rows for variants in a Mutect VCF file.
 * Made the return from function PlotCatalog() a list. The first element is 
@@ -40,8 +39,9 @@
 * Added one more exported data gene.expression.level.example.GRCh37.
 * Added an additional argument "tumor.col.names" in functions
   ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
-  MutectVCFFilesToCatalogAndPlotToPdf() for users to specify the column names of
-  tumor sample in the Mutect VCF files.
+  MutectVCFFilesToCatalogAndPlotToPdf() to specify the column of the VCF
+  that contains sequencing statistics such as sequencing depth; this column
+  is often called "unknown" in Mutect.
 * Added a "Comments" section in the documentation of functions MutectVCFFilesToCatalog(),
   MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalog(),
   StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), VCFsToSBSCatalogs(),
