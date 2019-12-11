@@ -227,7 +227,19 @@ StrandBiasGeneExp <-
     
     logit.model <- stats::glm(class ~ exp.value, family = binomial, 
                               data = dt2)
-    p.value <- summary(logit.model)$coefficients[2, 4]
+    p.value.exp.value <- summary(logit.model)$coefficients[2, 4]
+    
+    # Calculate the overall "Pseudo R-squared" and its p-value
+    ll.null <- logit.model$null.deviance / -2
+    ll.proposed <- logit.model$deviance / -2
+    
+    # McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
+    (ll.null - ll.proposed) / ll.null
+    
+    # chi-square value = 2*(LL(Proposed) - LL(Null))
+    # p-value = 1 - pchisq(chi-square value, df)
+    p.value.model <- 1 - pchisq(2 * (ll.proposed - ll.null), 
+                                df = length(logit.model$coefficients) - 1)
     
     # Plot transcriptional strand bias as a function of gene expression
     result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
@@ -253,7 +265,8 @@ StrandBiasGeneExp <-
       }
     }
     
-    return(list(plotmatrix = result, logit.df = dt2, pvalue.overall = p.value))
+    return(list(plotmatrix = result, logit.df = dt2, 
+                pvalue.overall = p.value.exp.value))
   }
 
 PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
@@ -301,14 +314,25 @@ PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
   dt <- dt[mutation == type, `:=`(class, 1)]
   dt <- dt[mutation != type, `:=`(class, 0)]
   if (nrow(dt) != 0 ) {
-    #values <- sort(dt$exp.value, decreasing = TRUE)[1:2]
-    #dt1 <- dt[!(exp.value %in% values), ]
-    # dt1 <- dt[exp.value != outlier(exp.value), ]
+
     logit.model <- stats::glm(class ~ exp.value, family = binomial, 
                               data = dt)
-    p.value <- summary(logit.model)$coefficients[2, 4]
+    p.value.exp.value <- summary(logit.model)$coefficients[2, 4]
+    
+    # Calculate the overall "Pseudo R-squared" and its p-value
+    ll.null <- logit.model$null.deviance / -2
+    ll.proposed <- logit.model$deviance / -2
+    
+    # McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
+    (ll.null - ll.proposed) / ll.null
+    
+    # chi-square value = 2*(LL(Proposed) - LL(Null))
+    # p-value = 1 - pchisq(chi-square value, df)
+    p.value.model <- 1 - pchisq(2 * (ll.proposed - ll.null), 
+                                df = length(logit.model$coefficients) - 1)
+    
     text(legend.list$rect$left * 1.005, 1.15 * ymax, 
-         labels = paste0("p value = ", signif(p.value, 2)), 
+         labels = paste0("p value = ", signif(p.value.exp.value, 2)), 
          cex = 0.8, pos = 4)
   }
   
