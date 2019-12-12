@@ -36,7 +36,8 @@
   a logical value indicating whether the plot is successful. The second element 
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
   useful for adding to the graph (currently only implemented for SBS96Catalog).
-* Added one more exported data gene.expression.level.example.GRCh37.
+* Added two more exported data gene.expression.data.HepG2 and
+  gene.expression.data.MCF10A.
 * Added an additional argument "tumor.col.names" in functions
   ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
   MutectVCFFilesToCatalogAndPlotToPdf() to specify the column of the VCF
