@@ -43,11 +43,14 @@
   MutectVCFFilesToCatalogAndPlotToPdf() to specify the column of the VCF
   that contains sequencing statistics such as sequencing depth; this column
   is often called "unknown" in Mutect.
-* Added a "Comments" section in the documentation of functions MutectVCFFilesToCatalog(),
+* Added a "Comments" section in the documentation of functions     
+  MutectVCFFilesToCatalog(),
   MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalog(),
   StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), VCFsToSBSCatalogs(),
   VCFsToDBSCatalogs(), ReadCatalog() informing the user how to change
   attributes of the generated catalog.
+* Updated methods functions of "[" in ICAMS so that they are compatible with
+  development version of R.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
