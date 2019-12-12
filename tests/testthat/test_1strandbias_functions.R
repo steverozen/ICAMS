@@ -52,11 +52,11 @@ test_that("PlotTransBiasGeneExpToPdf function", {
     )
   
   
-  expect_equal(out, TRUE)
-  expect_equal(out1, TRUE)
-  expect_equal(out2, TRUE)
-  expect_equal(out3, TRUE)
-  expect_equal(out4, TRUE)
+  expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
+  expect_equal(out2$plot.success, TRUE)
+  expect_equal(out3$plot.success, TRUE)
+  expect_equal(out4$plot.success, TRUE)
   unlink(file.path(tempdir(), "test.pdf"))
   unlink(file.path(tempdir(), "test1.pdf"))
   unlink(file.path(tempdir(), "test2.pdf"))
@@ -75,12 +75,14 @@ test_that("PlotTransBiasGeneExp function", {
   vcf2 <- annotated.SBS.vcf[REF %in% c("C", "G"), ]
   vcf3 <- annotated.SBS.vcf[REF == "T",]
   vcf4 <- annotated.SBS.vcf[REF %in% c("A", "T"), ]
+  
   out <- 
     PlotTransBiasGeneExp(annotated.SBS.vcf = annotated.SBS.vcf, 
                          expression.data = gene.expression.data.HepG2, 
                          Ensembl.gene.ID.col = "Ensembl.gene.ID", 
                          expression.value.col = "TPM",
                          num.of.bins = 4, plot.type = "C>A")
+  
   out1 <- 
     PlotTransBiasGeneExp(annotated.SBS.vcf = vcf1, 
                          expression.data = gene.expression.data.HepG2, 
@@ -94,24 +96,21 @@ test_that("PlotTransBiasGeneExp function", {
                          Ensembl.gene.ID.col = "Ensembl.gene.ID", 
                          expression.value.col = "TPM",
                          num.of.bins = 4, plot.type = "C>A")
-  
   out3 <- 
     PlotTransBiasGeneExp(annotated.SBS.vcf = vcf3, 
                          expression.data = gene.expression.data.HepG2, 
                          Ensembl.gene.ID.col = "Ensembl.gene.ID", 
                          expression.value.col = "TPM",
                          num.of.bins = 4, plot.type = "C>A")
-  
   out4 <- 
     PlotTransBiasGeneExp(annotated.SBS.vcf = vcf4, 
                          expression.data = gene.expression.data.HepG2, 
                          Ensembl.gene.ID.col = "Ensembl.gene.ID", 
                          expression.value.col = "TPM",
                          num.of.bins = 4, plot.type = "C>A")
-  
-  expect_equal(out, TRUE)
-  expect_equal(out1, TRUE)
-  expect_equal(out2, TRUE)
-  expect_equal(out3, TRUE)
-  expect_equal(out4, TRUE)
+  expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
+  expect_equal(out2$plot.success, TRUE)
+  expect_equal(out3$plot.success, TRUE)
+  expect_equal(out4$plot.success, TRUE)
 })

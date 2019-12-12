@@ -1,10 +1,11 @@
-
+unlink("Rplots.pdf")
 test_that("Check sigprofiler-formatted indel catalog rownames",
-          {
+          { 
             spIDCat <- read.csv("testdata/sigProfiler_ID_signatures.csv",
                             row.names = 1, 
                             stringsAsFactors = F)
             expect_equal(ICAMS::catalog.row.order.sp$ID83,rownames(spIDCat))
+            unlink("Rplots.pdf")
           })
 
 
