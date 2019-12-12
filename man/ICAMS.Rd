@@ -264,12 +264,14 @@ immediately preceding and following bases).
  \enumerate{
 
 \item \code{\link{CatalogRowOrder}} Standard order of rownames in a catalog.
-The rownames encode the type of each mutation. The rownames denote the mutation
-types.  For example, for SBS96 catalogs, the rowname
- AGAT represents a mutation from AGA > ATA.
+The rownames encode the type of each mutation. For example, for SBS96
+catalogs, the rowname AGAT represents a mutation from AGA > ATA.
 
 \item \code{\link{TranscriptRanges}} Transcript ranges and strand information
 for a particular reference genome.
+
+\item \code{\link{GeneExpressionData}} Example gene expression data from two
+cell lines.
 
  }
 }

@@ -19,20 +19,12 @@ who need to create their own catalogs from formats not
 supported by this package. The rownames denote the mutation
 types.  For example, for SBS96 catalogs, the rowname
  AGAT represents a mutation from AGA > ATA.
-
-This data is designed for those
-who need to create their own catalogs from formats not
-supported by this package. The rownames denote the mutation
-types.  For example, for SBS96 catalogs, the rowname
- AGAT represents a mutation from AGA > ATA.
 }
 \note{
 In ID (small insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
-
-In ID83 (insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5,
+  range from 0 to 5+, but for plotting and end-user documentation deletion
+  repeat sizes range from 1 to 6+. In ID83 catalogs, deletion repeat sizes
+  range from 0 to 5.
 }
 \examples{
 catalog.row.order$SBS96
@@ -44,6 +36,5 @@ catalog.row.order.sp$ID83
 # "DEL:C:1:0" "DEL:C:1:1" "DEL:C:1:2" "DEL:C:1:3" ...
 # There are altogether 83 row names to denote the mutation types
 # in ID83 catalog.
-
 }
 \keyword{datasets}
