@@ -8,7 +8,7 @@ PDF file.}
 PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
   Ensembl.gene.ID.col, expression.value.col, num.of.bins,
   plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
-  strand.orientation = NULL)
+  damage.base = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by
@@ -33,12 +33,12 @@ values in \code{expression.data}.}
 can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 The default is to print all the six mutation types.}
 
-\item{strand.orientation}{The strand orientation used by the plot such that
+\item{damage.base}{The base used by the plot such that
 number of mutations whose reference base belong to
-\code{strand.orientation} are roughly the same for each bin on the plot for
+\code{damage.base} are roughly the same for each bin on the plot for
 better visualization. It can be either "purine" or "pyrimidine". If not
-specified, it defaults to NULL and the orientation having more mutations
-overall will be chosen to be the \code{strand.orientation}.}
+specified, it defaults to NULL and the base having more mutations
+overall will be chosen to be the \code{damage.base}.}
 }
 \value{
 A list whose first element is a logic value indicating whether the
