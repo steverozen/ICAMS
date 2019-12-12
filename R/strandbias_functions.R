@@ -19,14 +19,32 @@
 #' @param plot.type A character string indicating one mutation type to be
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 #'   
+#' @param strand.orientation The strand orientation used by the plot such that
+#'   number of mutations whose reference base belong to
+#'   \code{strand.orientation} are roughly the same for each bin on the plot for
+#'   better visualization. It can be either "purine" or "pyrimidine". If not
+#'   specified, it defaults to NULL and the orientation having more mutations
+#'   overall will be chosen to be the \code{strand.orientation}.
+#'   
 #' @param ymax Limit for the y axis. If not specified, it defaults to NULL and
 #'   the y axis limit equals 1.5 times of the maximum mutation counts in a
 #'   specific mutation type.
 #'   
 #' @importFrom stats glm
 #'   
-#' @return \code{invisible(TRUE)}
-#' 
+#' @return A list whose first element is a logic value indicating whether the
+#'   plot is successful. The second element is a named numeric vector containing
+#'   the p-values printed on the plot.
+#'   
+#' @section Note: 
+#' The p-values are calculated by logistic regression using function
+#' \code{\link[stats]{glm}}. The dependent variable is labeled "1" and "0" if
+#' the mutation from \code{annotated.SBS.vcf} falls onto the untranscribed and
+#' transcribed strand respectively. The independent variable is the binary
+#' logarithm of the gene expression value from \code{expression.data} plus one,
+#' i.e. \eqn{log_2 (x + 1)}{log2 (x + 1)} where \eqn{x} stands for gene
+#' expression value.
+#'   
 #' @export
 #'
 #' @examples 
@@ -46,16 +64,15 @@
 #' }
 PlotTransBiasGeneExp <-
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, num.of.bins, plot.type, 
+           expression.value.col, num.of.bins, plot.type, strand.orientation = NULL,
            ymax = NULL) { 
-    list1 <- 
-      StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
-                        Ensembl.gene.ID.col, expression.value.col, 
-                        num.of.bins)
+    list <- StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
+                              Ensembl.gene.ID.col, expression.value.col, 
+                              num.of.bins, strand.orientation)
     
-    PlotGeneExp(list = list1, type = plot.type, 
+    PlotGeneExp(list = list, type = plot.type, 
                 num.of.bins = num.of.bins, ymax = ymax)
-    invisible(TRUE)
+    return(list(plot.success = TRUE, p.values = list$p.values))
   }
 
 #' Plot transcription strand bias with respect to gene expression values to a
@@ -71,7 +88,9 @@ PlotTransBiasGeneExp <-
 #' 
 #' @importFrom stats glm
 #' 
-#' @return \code{invisible(TRUE)}
+#' @inherit PlotTransBiasGeneExp return
+#' 
+#' @inheritSection PlotTransBiasGeneExp Note
 #' 
 #' @export
 #'
@@ -95,10 +114,11 @@ PlotTransBiasGeneExp <-
 PlotTransBiasGeneExpToPdf <- 
   function(annotated.SBS.vcf, file, expression.data, Ensembl.gene.ID.col,
            expression.value.col, num.of.bins, 
-           plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")) {
+           plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
+           strand.orientation = NULL) {
     list <- StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
                               Ensembl.gene.ID.col, expression.value.col, 
-                              num.of.bins)
+                              num.of.bins, strand.orientation)
     
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -113,13 +133,34 @@ PlotTransBiasGeneExpToPdf <-
     }
     
     grDevices::dev.off()
-    invisible(TRUE)
+    return(list(plot.success = TRUE, p.values = list$p.values))
     
   }
 
-CalculateExpressionLevel <- function(dt, num.of.bins, type) {
-  dt1 <- dt[mutation == revcSBS6(type), ]
-  dt2 <- dt[mutation == type, ]
+#' @keywords internal
+CalculateExpressionLevel <- function(dt, num.of.bins, type, strand.orientation) {
+  dt.purine <- dt[mutation == revcSBS6(type), ]
+  dt.pyrimidine <- dt[mutation == type, ]
+  
+  if (is.null(strand.orientation)) {
+    if (nrow(dt.purine) >= nrow(dt.pyrimidine)) {
+      dt1 <- dt.purine
+      dt2 <- dt.pyrimidine
+    } else {
+      dt1 <- dt.pyrimidine
+      dt2 <- dt.purine
+    }
+  } else if (strand.orientation == "purine") {
+    dt1 <- dt.purine
+    dt2 <- dt.pyrimidine
+  } else if (strand.orientation == "pyrimidine") {
+    dt1 <- dt.pyrimidine
+    dt2 <- dt.purine
+  } else {
+    stop('\nThe input for strand.orientation must be one of NULL, "purine"',  
+         '\n"pyrimidine". Please check the value. ')
+  }
+  
   setorder(dt1, exp.value)
   setorder(dt2, exp.value)
   if (num.of.bins == 1) {
@@ -156,7 +197,6 @@ CalculateExpressionLevel <- function(dt, num.of.bins, type) {
                         max(dt$exp.value) + 1)
       dup.idx <- which(duplicated(break.points))
       
-      
       GetExpLevel1 <- function(i, exp.value, break.points) {
         lower <- break.points[i]
         upper <- break.points[i + 1]
@@ -183,9 +223,57 @@ CalculateExpressionLevel <- function(dt, num.of.bins, type) {
   }
 }
 
+#' @keywords internal
+CalculatePValues <- function(dt) {
+  # Construct a matrix which can later store the p-values
+  p.values <- rep(NA, 7)
+  names(p.values) <- c("overall", "C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+  
+  type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
+  setDT(dt)
+  dt <- dt[mutation %in% type, class := 1]
+  dt <- dt[!mutation %in% type, class := 0]
+  
+  logit.model <- stats::glm(class ~ log2(exp.value + 1), 
+                            family = binomial, 
+                            data = dt)
+  p.values["overall"] <- summary(logit.model)$coefficients[2, 4]
+  
+  for (i in 1:6) {
+    dt1 <- dt[mutation %in% c(type[i], revcSBS6(type[i])), ]
+    if (nrow(dt1) != 0) {
+      logit.model1 <- stats::glm(class ~ log2(exp.value + 1), 
+                                 family = binomial, 
+                                 data = dt1)
+      p.values[type[i]] <- summary(logit.model1)$coefficients[2, 4]
+    }
+  }
+  
+  return(p.values)
+}
+
+#' @keywords internal
+revcSBS6 <- function(string) {
+  start <- revc(substr(string, 1, 1))
+  end <- revc(substr(string, 3, 3))
+  return(paste0(start, ">", end))
+}
+
+#' @keywords internal
+PlotStrandBiasColorMatrix <- function() {
+  matrix <- cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
+                  rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
+                  colLight = c("#87CEFA",  "#A9A9A9", "#FFB6C1", 
+                               "#DCDCDC", "#CCFFCC", "#FFB2BF"), 
+                  colDark = c("#0000ff", "#000000", "#ff4040", 
+                              "#838383", "#40ff40", "#ff667f")) 
+  return(matrix)
+}
+
+#' @keywords internal
 StrandBiasGeneExp <- 
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, num.of.bins) {
+           expression.value.col, num.of.bins, strand.orientation) {
     dt1 <- expression.data[, c(Ensembl.gene.ID.col, expression.value.col),
                            with = FALSE]
     idx <- which(colnames(dt1) == Ensembl.gene.ID.col)
@@ -219,29 +307,11 @@ StrandBiasGeneExp <-
     df1$mutation <- 
       paste0((substr(df1$mutation, 2, 2)), ">", substr(df1$mutation, 4, 4))
     
-    # Create a table for logistic regression
-    dt2 <- df1
-    type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-    dt2 <- dt2[mutation %in% type, `:=`(class, 1)]
-    dt2 <- dt2[!mutation %in% type, `:=`(class, 0)]
+    # Carry out logistic regression and get the p-values
+    p.values <- CalculatePValues(df1)
     
-    logit.model <- stats::glm(class ~ exp.value, family = binomial, 
-                              data = dt2)
-    p.value.exp.value <- summary(logit.model)$coefficients[2, 4]
-    
-    # Calculate the overall "Pseudo R-squared" and its p-value
-    ll.null <- logit.model$null.deviance / -2
-    ll.proposed <- logit.model$deviance / -2
-    
-    # McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
-    (ll.null - ll.proposed) / ll.null
-    
-    # chi-square value = 2*(LL(Proposed) - LL(Null))
-    # p-value = 1 - pchisq(chi-square value, df)
-    p.value.model <- 1 - pchisq(2 * (ll.proposed - ll.null), 
-                                df = length(logit.model$coefficients) - 1)
-    
-    # Plot transcriptional strand bias as a function of gene expression
+    # Construct a matrix that later can be used to plot transcriptional strand
+    # bias as a function of gene expression
     result <- matrix(data = 0, nrow = num.of.bins, ncol = 12)
     rownames(result) <- c(1:num.of.bins)
     
@@ -256,7 +326,7 @@ StrandBiasGeneExp <-
         result[, type] <- 0
         result[, revcSBS6(type)] <- 0
       } else {
-        df2 <- CalculateExpressionLevel(df2, num.of.bins, type)
+        df2 <- CalculateExpressionLevel(df2, num.of.bins, type, strand.orientation)
         for (j in 1:num.of.bins) {
           result[j, type] <- nrow(df2[mutation == type & exp.level == j, ])
           result[j, revcSBS6(type)] <- 
@@ -265,10 +335,11 @@ StrandBiasGeneExp <-
       }
     }
     
-    return(list(plotmatrix = result, logit.df = dt2, 
-                pvalue.overall = p.value.exp.value))
+    return(list(plotmatrix = result, vcf.df = df1, 
+                p.values = p.values))
   }
 
+#' @keywords internal
 PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
   result <- list$plotmatrix
   allowed.type <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
@@ -307,49 +378,10 @@ PlotGeneExp <- function(list, type, num.of.bins, ymax = NULL) {
        labels = "High", xpd = NA)
   text(mean(c(min(bp), max(bp))), ifelse(ymax != 0, -ymax * 0.3, -1.5), 
        labels = "Expression", xpd = NA)
-  
-  # Carrying out logistic regression
-  dt <- data.table(list$logit.df)
-  dt <- dt[mutation %in% c(type, revcSBS6(type)), ]
-  dt <- dt[mutation == type, `:=`(class, 1)]
-  dt <- dt[mutation != type, `:=`(class, 0)]
-  if (nrow(dt) != 0 ) {
-
-    logit.model <- stats::glm(class ~ exp.value, family = binomial, 
-                              data = dt)
-    p.value.exp.value <- summary(logit.model)$coefficients[2, 4]
     
-    # Calculate the overall "Pseudo R-squared" and its p-value
-    ll.null <- logit.model$null.deviance / -2
-    ll.proposed <- logit.model$deviance / -2
-    
-    # McFadden's Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)
-    (ll.null - ll.proposed) / ll.null
-    
-    # chi-square value = 2*(LL(Proposed) - LL(Null))
-    # p-value = 1 - pchisq(chi-square value, df)
-    p.value.model <- 1 - pchisq(2 * (ll.proposed - ll.null), 
-                                df = length(logit.model$coefficients) - 1)
-    
+  if (!is.na(list$p.values[type])) {
     text(legend.list$rect$left * 1.005, 1.15 * ymax, 
-         labels = paste0("p value = ", signif(p.value.exp.value, 2)), 
+         labels = paste0("p-value = ", signif(list$p.values[type], 2)), 
          cex = 0.8, pos = 4)
   }
-  
-}
-
-revcSBS6 <- function(string) {
-  start <- revc(substr(string, 1, 1))
-  end <- revc(substr(string, 3, 3))
-  return(paste0(start, ">", end))
-}
-
-PlotStrandBiasColorMatrix <- function() {
-  matrix <- cbind(Target = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"), 
-                  rev = c("G>T", "G>C", "G>A", "A>T", "A>G", "A>C"), 
-                  colLight = c("#87CEFA",  "#A9A9A9", "#FFB6C1", 
-                               "#DCDCDC", "#CCFFCC", "#FFB2BF"), 
-                  colDark = c("#0000ff", "#000000", "#ff4040", 
-                              "#838383", "#40ff40", "#ff667f")) 
-  return(matrix)
 }

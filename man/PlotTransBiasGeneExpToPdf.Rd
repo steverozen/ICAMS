@@ -7,7 +7,8 @@ PDF file.}
 \usage{
 PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
   Ensembl.gene.ID.col, expression.value.col, num.of.bins,
-  plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"))
+  plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
+  strand.orientation = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by
@@ -31,14 +32,34 @@ values in \code{expression.data}.}
 \item{plot.type}{A vector of character indicating types to be plotted. It
 can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 The default is to print all the six mutation types.}
+
+\item{strand.orientation}{The strand orientation used by the plot such that
+number of mutations whose reference base belong to
+\code{strand.orientation} are roughly the same for each bin on the plot for
+better visualization. It can be either "purine" or "pyrimidine". If not
+specified, it defaults to NULL and the orientation having more mutations
+overall will be chosen to be the \code{strand.orientation}.}
 }
 \value{
-\code{invisible(TRUE)}
+A list whose first element is a logic value indicating whether the
+  plot is successful. The second element is a named numeric vector containing
+  the p-values printed on the plot.
 }
 \description{
 Plot transcription strand bias with respect to gene expression values to a
 PDF file.
 }
+\section{Note}{
+ 
+The p-values are calculated by logistic regression using function
+\code{\link[stats]{glm}}. The dependent variable is labeled "1" and "0" if
+the mutation from \code{annotated.SBS.vcf} falls onto the untranscribed and
+transcribed strand respectively. The independent variable is the binary
+logarithm of the gene expression value from \code{expression.data} plus one,
+i.e. \eqn{log_2 (x + 1)}{log2 (x + 1)} where \eqn{x} stands for gene
+expression value.
+}
+
 \examples{
 file <- c(system.file("extdata",
                       "Strelka.SBS.GRCh37.vcf",
