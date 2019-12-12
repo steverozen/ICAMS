@@ -6,7 +6,7 @@
 \usage{
 PlotTransBiasGeneExp(annotated.SBS.vcf, expression.data,
   Ensembl.gene.ID.col, expression.value.col, num.of.bins, plot.type,
-  strand.orientation = NULL, ymax = NULL)
+  damage.base = NULL, ymax = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by
@@ -28,12 +28,12 @@ values in \code{expression.data}.}
 \item{plot.type}{A character string indicating one mutation type to be
 plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".}
 
-\item{strand.orientation}{The strand orientation used by the plot such that
+\item{damage.base}{The base used by the plot such that
 number of mutations whose reference base belong to
-\code{strand.orientation} are roughly the same for each bin on the plot for
+\code{damage.base} are roughly the same for each bin on the plot for
 better visualization. It can be either "purine" or "pyrimidine". If not
-specified, it defaults to NULL and the orientation having more mutations
-overall will be chosen to be the \code{strand.orientation}.}
+specified, it defaults to NULL and the base having more mutations
+overall will be chosen to be the \code{damage.base}.}
 
 \item{ymax}{Limit for the y axis. If not specified, it defaults to NULL and
 the y axis limit equals 1.5 times of the maximum mutation counts in a
