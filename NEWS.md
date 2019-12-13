@@ -1,4 +1,6 @@
 # ICAMS 2.0.10
+* Updated methods so that they are compatible with new versions of
+  R, in which the class of a matrix is c("matrix", "array").
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' and added Ensembl gene ID 
@@ -16,7 +18,7 @@
   further annotated VCFs.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
-* Added two exported functions PlotTransBiasGeneExp() and PlotTransBiasGeneExpToPdf().
+* Added two exported functions PlotTransBiasGeneExp() and  PlotTransBiasGeneExpToPdf().
 * Added an additional optional argument "names.of.VCFs" in functions
   ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
   MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
@@ -49,8 +51,6 @@
   StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), VCFsToSBSCatalogs(),
   VCFsToDBSCatalogs(), ReadCatalog() informing the user how to change
   attributes of the generated catalog.
-* Updated methods functions of "[" in ICAMS so that they are compatible with
-  development version of R.
 
 # ICAMS 2.0.9
 * as.catalog supports creation of the catalog from a vector (interpreted
