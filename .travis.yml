@@ -6,6 +6,8 @@ cache: packages
 r:
   - release
   - devel
+  
+dist: bionic
 
 before_install:
   - sudo apt-get update 
