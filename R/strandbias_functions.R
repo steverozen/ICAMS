@@ -19,12 +19,17 @@
 #' @param plot.type A character string indicating one mutation type to be
 #'   plotted. It should be one of "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 #'   
-#' @param damage.base The base used by the plot such that
-#'   number of mutations whose reference base belong to
-#'   \code{damage.base} are roughly the same for each bin on the plot for
-#'   better visualization. It can be either "purine" or "pyrimidine". If not
-#'   specified, it defaults to NULL and the base having more mutations
-#'   overall will be chosen to be the \code{damage.base}.
+#' @param damaged.base One of \code{NULL}, \code{"purine"} or
+#'   \code{"pyrimidine"}. This function allocates approximately
+#'   equal numbers of mutations from \code{damaged.base} into
+#'   each of \code{num.of.bins} bin by expression level. E.g.
+#'   if \code{damaged.base} is \code{"purine"}, then mutations from
+#'   A and G will be allocated in approximately equal numbers to
+#'   each expression-level bin. The rationale for the name \code{damaged.base}
+#'   is that the direction of strand bias is a result of whether the damage
+#'   occurs on a purine or pyrimidine.
+#'   If \code{NULL}, the function attempts to infer the \code{damaged.base}
+#'   based on mutation counts.
 #'   
 #' @param ymax Limit for the y axis. If not specified, it defaults to NULL and
 #'   the y axis limit equals 1.5 times of the maximum mutation counts in a
@@ -64,11 +69,11 @@
 #' }
 PlotTransBiasGeneExp <-
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, num.of.bins, plot.type, damage.base = NULL,
+           expression.value.col, num.of.bins, plot.type, damaged.base = NULL,
            ymax = NULL) { 
     list <- StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
                               Ensembl.gene.ID.col, expression.value.col, 
-                              num.of.bins, damage.base)
+                              num.of.bins, damaged.base)
     
     PlotGeneExp(list = list, type = plot.type, 
                 num.of.bins = num.of.bins, ymax = ymax)
@@ -115,10 +120,10 @@ PlotTransBiasGeneExpToPdf <-
   function(annotated.SBS.vcf, file, expression.data, Ensembl.gene.ID.col,
            expression.value.col, num.of.bins, 
            plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
-           damage.base = NULL) {
+           damaged.base = NULL) {
     list <- StrandBiasGeneExp(annotated.SBS.vcf, expression.data, 
                               Ensembl.gene.ID.col, expression.value.col, 
-                              num.of.bins, damage.base)
+                              num.of.bins, damaged.base)
     
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -138,11 +143,11 @@ PlotTransBiasGeneExpToPdf <-
   }
 
 #' @keywords internal
-CalculateExpressionLevel <- function(dt, num.of.bins, type, damage.base) {
+CalculateExpressionLevel <- function(dt, num.of.bins, type, damaged.base) {
   dt.purine <- dt[mutation == revcSBS6(type), ]
   dt.pyrimidine <- dt[mutation == type, ]
   
-  if (is.null(damage.base)) {
+  if (is.null(damaged.base)) {
     if (nrow(dt.purine) >= nrow(dt.pyrimidine)) {
       dt1 <- dt.purine
       dt2 <- dt.pyrimidine
@@ -150,14 +155,14 @@ CalculateExpressionLevel <- function(dt, num.of.bins, type, damage.base) {
       dt1 <- dt.pyrimidine
       dt2 <- dt.purine
     }
-  } else if (damage.base == "purine") {
+  } else if (damaged.base == "purine") {
     dt1 <- dt.purine
     dt2 <- dt.pyrimidine
-  } else if (damage.base == "pyrimidine") {
+  } else if (damaged.base == "pyrimidine") {
     dt1 <- dt.pyrimidine
     dt2 <- dt.purine
   } else {
-    stop('\nThe input for damage.base must be one of NULL, "purine"',  
+    stop('\nThe input for damaged.base must be one of NULL, "purine"',  
          '\n"pyrimidine". Please check the value. ')
   }
   
@@ -273,7 +278,7 @@ PlotStrandBiasColorMatrix <- function() {
 #' @keywords internal
 StrandBiasGeneExp <- 
   function(annotated.SBS.vcf, expression.data, Ensembl.gene.ID.col, 
-           expression.value.col, num.of.bins, damage.base) {
+           expression.value.col, num.of.bins, damaged.base) {
     dt1 <- expression.data[, c(Ensembl.gene.ID.col, expression.value.col),
                            with = FALSE]
     idx <- which(colnames(dt1) == Ensembl.gene.ID.col)
@@ -326,7 +331,7 @@ StrandBiasGeneExp <-
         result[, type] <- 0
         result[, revcSBS6(type)] <- 0
       } else {
-        df2 <- CalculateExpressionLevel(df2, num.of.bins, type, damage.base)
+        df2 <- CalculateExpressionLevel(df2, num.of.bins, type, damaged.base)
         for (j in 1:num.of.bins) {
           result[j, type] <- nrow(df2[mutation == type & exp.level == j, ])
           result[j, revcSBS6(type)] <- 

@@ -8,7 +8,7 @@ PDF file.}
 PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
   Ensembl.gene.ID.col, expression.value.col, num.of.bins,
   plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
-  damage.base = NULL)
+  damaged.base = NULL)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by
@@ -33,12 +33,17 @@ values in \code{expression.data}.}
 can be one or more types from "C>A", "C>G", "C>T", "T>A", "T>C", "T>G".
 The default is to print all the six mutation types.}
 
-\item{damage.base}{The base used by the plot such that
-number of mutations whose reference base belong to
-\code{damage.base} are roughly the same for each bin on the plot for
-better visualization. It can be either "purine" or "pyrimidine". If not
-specified, it defaults to NULL and the base having more mutations
-overall will be chosen to be the \code{damage.base}.}
+\item{damaged.base}{One of \code{NULL}, \code{"purine"} or
+\code{"pyrimidine"}. This function allocates approximately
+equal numbers of mutations from \code{damaged.base} into
+each of \code{num.of.bins} bin by expression level. E.g.
+if \code{damaged.base} is \code{"purine"}, then mutations from
+A and G will be allocated in approximately equal numbers to
+each expression-level bin. The rationale for the name \code{damaged.base}
+is that the direction of strand bias is a result of whether the damage
+occurs on a purine or pyrimidine.
+If \code{NULL}, the function attempts to infer the \code{damaged.base}
+based on mutation counts.}
 }
 \value{
 A list whose first element is a logic value indicating whether the
