@@ -1,5 +1,5 @@
 ## Resubmission
-This is a new version with many updates. 
+This is a new version with many updates; most are backward compatible. 
 Please see NEWS.md for more details.
 
 ## Test environments
