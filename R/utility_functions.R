@@ -323,7 +323,7 @@ TCFromCou <- function(s, t) {
     }
     if (is.null(t[["abundance"]])) {
       if (!is.null(s[["abundance"]]))
-      stop("Cannot transform from counts.signature -> counts.signature ",
+      stop("Cannot transform from counts -> counts.signature ",
            "target abundance is NULL")
     }
     if (AbundanceIsSame(s[["abundance"]], t[["abundance"]])) {
@@ -494,15 +494,15 @@ AbundanceIsSame <- function(a1, a2) {
 #'   \code{catalog.type} attribute of \code{catalog}.
 #'   
 #' @param target.abundance  
-#'   A vector of counts different
-#'   source K-mer sequences for mutations. See
-#'   \code{\link{all.abundance}}. If \code{NULL},
-#'   then the function attempt to infer the \code{target.abundace}
-#'   from the class of \code{catalog} and the values of the
-#'   \code{target.ref.genome}, \code{target.region}, and
-#'   \code{target.catalog.type}. It is an error if the inferred
-#'   abundance is different from an non-\code{NULL} 
-#'   \code{target.abundance}.
+#'   A vector of counts, one for each source K-mer for mutations (e.g. for
+#'   strand-agnostic single nucleotide substitutions in trinucleotide -- i.e.
+#'   3-mer -- context, one count each for ACA, ACC, ACG, ... TTT). See
+#'   \code{\link{all.abundance}}. If \code{NULL}, the function tries to infer
+#'   \code{target.abundace} from the class of \code{catalog} and the value of
+#'   the \code{target.ref.genome}, \code{target.region}, and
+#'   \code{target.catalog.type}. If the \code{target.abundance} can be inferred
+#'   and is different from a supplied non-\code{NULL} value of
+#'   \code{target.abundance}, raise an error.
 #'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #'
