@@ -1,3 +1,7 @@
+# ICAMS 2.1.0.9000
+* Fixed a bug in function TransformCatalog() and updated its documentation
+  for parameter "target.abundance".
+
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
   Made the return from functions VCFsToIDCatalogs(), StrelkaIDVCFFilesToCatalog()
@@ -20,7 +24,7 @@
 * Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
   AnnotateIDVCF.
 * Changed column name 'gene.name' to 'gene.symbol' and added Ensembl gene ID 
-  information in package variable trans.ranges. 
+  information in package variable trans.ranges. 
 * In FindDelMH, cryptic repeats (i.e. un-normalized deletions in a repeat 
   such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
   to a deletion of AGGG) are now ignored with a warning rather than
