@@ -4,8 +4,14 @@
 \alias{ReadStapleGT96SBS}
 \title{Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T".}
 \usage{
-ReadStapleGT96SBS(file, ref.genome = NULL, region = "unknown",
-  catalog.type = "counts", abundance = NULL, sep = "\\t")
+ReadStapleGT96SBS(
+  file,
+  ref.genome = NULL,
+  region = "unknown",
+  catalog.type = "counts",
+  abundance = NULL,
+  sep = "\\t"
+)
 }
 \description{
 The file needs to have the rownames in the first column.

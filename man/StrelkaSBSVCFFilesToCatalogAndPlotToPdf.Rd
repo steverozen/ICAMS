@@ -4,9 +4,14 @@
 \alias{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}
 \title{Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF}
 \usage{
-StrelkaSBSVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
-  trans.ranges = NULL, region = "unknown", names.of.VCFs = NULL,
-  output.file = "")
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf(
+  files,
+  ref.genome,
+  trans.ranges = NULL,
+  region = "unknown",
+  names.of.VCFs = NULL,
+  output.file = ""
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka SBS VCF files.}
@@ -14,7 +19,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{trans.ranges}{a \code{\link[data.table]{data.table}} which contains
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 

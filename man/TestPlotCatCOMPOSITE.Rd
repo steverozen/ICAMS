@@ -4,8 +4,7 @@
 \alias{TestPlotCatCOMPOSITE}
 \title{Plot the a SignatureAnalyzer COMPOSITE signature or catalog into separate pdfs}
 \usage{
-TestPlotCatCOMPOSITE(catalog, filename.header, type,
-  id = colnames(catalog))
+TestPlotCatCOMPOSITE(catalog, filename.header, type, id = colnames(catalog))
 }
 \arguments{
 \item{catalog}{Catalog or signature matrix}

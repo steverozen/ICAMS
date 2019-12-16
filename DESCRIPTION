@@ -35,7 +35,7 @@ Imports: Biostrings,
     stringi,
     utils
 Depends: R (>= 3.5),
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Suggests: 
     testthat,
     BSgenome.Hsapiens.1000genomes.hs37d5,

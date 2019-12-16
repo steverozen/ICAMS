@@ -4,8 +4,13 @@
 \alias{ReadDukeNUSCat192}
 \title{Read a 192-channel spectra (or signature) catalog in Duke-NUS format.}
 \usage{
-ReadDukeNUSCat192(file, ref.genome = NULL, region = "unknown",
-  catalog.type = "counts", abundance = NULL)
+ReadDukeNUSCat192(
+  file,
+  ref.genome = NULL,
+  region = "unknown",
+  catalog.type = "counts",
+  abundance = NULL
+)
 }
 \value{
 A list with two elements

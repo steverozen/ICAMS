@@ -4,8 +4,7 @@
 \alias{ReadAndSplitMutectVCFs}
 \title{Read and split Mutect VCF files.}
 \usage{
-ReadAndSplitMutectVCFs(files, names.of.VCFs = NULL,
-  tumor.col.names = NA)
+ReadAndSplitMutectVCFs(files, names.of.VCFs = NULL, tumor.col.names = NA)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Mutect VCF files.}
@@ -52,7 +51,7 @@ into the first 3 VCFs, as follows:
 Read and split Mutect VCF files.
 }
 \examples{
-file <- c(system.file("extdata",
+file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitMutectVCFs(file)

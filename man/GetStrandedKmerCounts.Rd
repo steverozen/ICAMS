@@ -4,8 +4,13 @@
 \alias{GetStrandedKmerCounts}
 \title{Generate stranded k-mer abundance from a given genome and gene annotation file}
 \usage{
-GetStrandedKmerCounts(k, ref.genome, stranded.ranges, filter.path,
-  verbose = FALSE)
+GetStrandedKmerCounts(
+  k,
+  ref.genome,
+  stranded.ranges,
+  filter.path,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{k}{Length of k-mers (k>=2)}

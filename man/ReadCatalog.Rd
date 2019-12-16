@@ -4,8 +4,13 @@
 \alias{ReadCatalog}
 \title{Read catalog.}
 \usage{
-ReadCatalog(file, ref.genome = NULL, region = "unknown",
-  catalog.type = "counts", strict = TRUE)
+ReadCatalog(
+  file,
+  ref.genome = NULL,
+  region = "unknown",
+  catalog.type = "counts",
+  strict = TRUE
+)
 }
 \arguments{
 \item{file}{Path to a catalog on disk in the standardized format.}

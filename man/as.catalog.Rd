@@ -4,8 +4,14 @@
 \alias{as.catalog}
 \title{Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}.}
 \usage{
-as.catalog(object, ref.genome = NULL, region = "unknown",
-  catalog.type = "counts", abundance = NULL, infer.rownames = FALSE)
+as.catalog(
+  object,
+  ref.genome = NULL,
+  region = "unknown",
+  catalog.type = "counts",
+  abundance = NULL,
+  infer.rownames = FALSE
+)
 }
 \arguments{
 \item{object}{A numeric \code{matrix}, numeric \code{data.frame},

@@ -4,8 +4,7 @@
 \alias{GetExomeKmerCounts}
 \title{Generate exome k-mer abundance from a given reference genome}
 \usage{
-GetExomeKmerCounts(k, ref.genome, exome.ranges, filter.path,
-  verbose = FALSE)
+GetExomeKmerCounts(k, ref.genome, exome.ranges, filter.path, verbose = FALSE)
 }
 \arguments{
 \item{k}{Length of k-mers (k>=2)}

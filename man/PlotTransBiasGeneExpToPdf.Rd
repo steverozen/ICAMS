@@ -5,10 +5,16 @@
 \title{Plot transcription strand bias with respect to gene expression values to a
 PDF file.}
 \usage{
-PlotTransBiasGeneExpToPdf(annotated.SBS.vcf, file, expression.data,
-  Ensembl.gene.ID.col, expression.value.col, num.of.bins,
+PlotTransBiasGeneExpToPdf(
+  annotated.SBS.vcf,
+  file,
+  expression.data,
+  Ensembl.gene.ID.col,
+  expression.value.col,
+  num.of.bins,
   plot.type = c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G"),
-  damaged.base = NULL)
+  damaged.base = NULL
+)
 }
 \arguments{
 \item{annotated.SBS.vcf}{An SBS VCF annotated by

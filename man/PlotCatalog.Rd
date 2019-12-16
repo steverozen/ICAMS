@@ -4,8 +4,14 @@
 \alias{PlotCatalog}
 \title{Plot \strong{one} spectrum or signature.}
 \usage{
-PlotCatalog(catalog, plot.SBS12 = NULL, cex = NULL, grid = NULL,
-  upper = NULL, xlabels = NULL)
+PlotCatalog(
+  catalog,
+  plot.SBS12 = NULL,
+  cex = NULL,
+  grid = NULL,
+  upper = NULL,
+  xlabels = NULL
+)
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.

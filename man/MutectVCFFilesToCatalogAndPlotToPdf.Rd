@@ -4,9 +4,15 @@
 \alias{MutectVCFFilesToCatalogAndPlotToPdf}
 \title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF}
 \usage{
-MutectVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
-  trans.ranges = NULL, region = "unknown", names.of.VCFs = NULL,
-  tumor.col.names = NA, output.file = "")
+MutectVCFFilesToCatalogAndPlotToPdf(
+  files,
+  ref.genome,
+  trans.ranges = NULL,
+  region = "unknown",
+  names.of.VCFs = NULL,
+  tumor.col.names = NA,
+  output.file = ""
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Mutect VCF files.}
@@ -14,7 +20,7 @@ MutectVCFFilesToCatalogAndPlotToPdf(files, ref.genome,
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{trans.ranges}{a \code{\link[data.table]{data.table}} which contains
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 
@@ -68,7 +74,7 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata",
+file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {

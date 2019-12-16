@@ -3,7 +3,6 @@
 \docType{package}
 \name{ICAMS}
 \alias{ICAMS}
-\alias{ICAMS-package}
 \title{ICAMS: In-depth Characterization and Analysis of Mutational Signatures}
 \description{
 Analysis and visualization of experimentally elucidated mutational signatures

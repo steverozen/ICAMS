@@ -4,8 +4,12 @@
 \alias{VCFsToDBSCatalogs}
 \title{Create DBS catalogs from VCFs}
 \usage{
-VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome, trans.ranges = NULL,
-  region = "unknown")
+VCFsToDBSCatalogs(
+  list.of.DBS.vcfs,
+  ref.genome,
+  trans.ranges = NULL,
+  region = "unknown"
+)
 }
 \arguments{
 \item{list.of.DBS.vcfs}{List of in-memory data frames of pure DBS mutations
@@ -15,7 +19,7 @@ output catalog.}
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{trans.ranges}{a \code{\link[data.table]{data.table}} which contains
+\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
 
@@ -43,7 +47,7 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata",
+file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
