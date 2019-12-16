@@ -2039,7 +2039,7 @@ MutectVCFFilesToZipFile <- function(file,
     }
   }
   
-  file.names <- list.files(path = file, pattern = glob2rx("*.csv|pdf"))
+  file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
   zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
   unlink(file.names)
   return(catalogs)
