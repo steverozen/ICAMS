@@ -992,7 +992,7 @@ ReadAndSplitMutectVCFs <-
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details. 
 #'   If \code{is.null(trans.ranges)} do not add transcript range
@@ -1183,7 +1183,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -1264,7 +1264,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details. 
 #'   If \code{is.null(trans.ranges)} do not add transcript range
@@ -1446,7 +1446,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -1537,7 +1537,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -1592,7 +1592,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -1784,7 +1784,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
@@ -1853,7 +1853,7 @@ MutectVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
 #'
