@@ -1,4 +1,7 @@
-# ICAMS 2.1.0.9000
+# ICAMS 2.1.0.900x
+* Renamed internal function creating custom abundance to GetCustomKmerCounts().
+* Added three new exported functions MutectVCFFilesToZipFile(), 
+  StrelkaSBSVCFFilesToZipFile() and StrelkaIDVCFFilesToZipFile().
 * Fixed a bug in function TransformCatalog() and updated its documentation
   for parameter "target.abundance".
 
