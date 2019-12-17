@@ -33,7 +33,7 @@
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' ID.vcf <- ReadStrelkaIDVCFs(file)[[1]]
@@ -785,7 +785,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)

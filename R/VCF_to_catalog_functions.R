@@ -869,7 +869,7 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
@@ -1693,7 +1693,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1745,7 +1745,7 @@ StrelkaIDVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {

@@ -33,7 +33,7 @@ Add sequence context to an in-memory ID (insertion/deletion) VCF, and
   confirm that they match the given reference genome.
 }
 \examples{
-file <- c(system.file("extdata",
+file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.vcf",
                       package = "ICAMS"))
 ID.vcf <- ReadStrelkaIDVCFs(file)[[1]]
