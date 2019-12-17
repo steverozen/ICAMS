@@ -1734,9 +1734,9 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @return A list whose first element is an ID (small insertion and deletion)
 #'   catalog with its graph plotted to PDF with specified file name. The ID
-#'   catalog has attributes added. See \code{\link{as.catalog}} for more
-#'   details. The second element of the returned list is a list of further
-#'   annotated VCFs.
+#'   catalog has class attribute "IndelCatalog" added. See
+#'   \code{\link{as.catalog}} for more details. The second element of the
+#'   returned list is a list of further annotated VCFs.
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
@@ -1942,8 +1942,9 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' \code{\link[utils]{zip}}.
 #'
 #' @param file Full path of the directory which contains the Mutect VCF files.
-#'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case insensitive) and
-#'   share the same \code{ref.genome} and \code{region}.
+#'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case
+#'   insensitive) and share the \strong{same} \code{ref.genome} and
+#'   \code{region}.
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2057,7 +2058,8 @@ MutectVCFFilesToZipFile <- function(file,
 #'
 #' @param file Full path of the directory which contains the Strelka SBS VCF
 #'   files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
-#'   (case insensitive) and share the same \code{ref.genome} and \code{region}.
+#'   (case insensitive) and share the \strong{same} \code{ref.genome} and
+#'   \code{region}.
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2147,6 +2149,92 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
   zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
   unlink(file.names)
   return(catalogs)
+}
+
+#' Create a zip file which contains ID (small insertion and deletion) catalog
+#' and plot PDF from Strelka ID VCF files
+#' 
+#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' specified by \code{file}, save the catalog as CSV file, plot it to PDF and
+#' generate a zip archive of all the output files.
+#'
+#' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
+#' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
+#' \code{\link[utils]{zip}}.
+#'
+#' @param file Full path of the directory which contains the Strelka ID VCF
+#'   files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
+#'   insensitive) and share the \strong{same} \code{ref.genome} and
+#'   \code{region}.
+#'   
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'  
+#' @param names.of.VCFs Character vector of names of the VCF files. The order of
+#'   names in \code{names.of.VCFs} should match the order of VCFs listed in
+#'   \code{file}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{file}
+#'   and file paths without extensions (and the leading dot) will be used as the
+#'   names of the VCF files.
+#'   
+#' @param output.file The base name of the CSV and PDF file to be produced;
+#'   the file is ending in \code{catID.csv} and \code{catID.pdf} respectively.
+#'   
+#' @param zipfile.name The name of the zip file to be created. It should not
+#'   contain the file extension ".zip" and if not specified, the default is
+#'   "output".
+#'
+#' @return  A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
+#'
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation deletion
+#'   repeat sizes range from 1 to 6+.
+#' 
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Strelka-ID-vcf",
+#'                       package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- 
+#'     StrelkaIDVCFFilesToZipFile(file, ref.genome = "hg19", 
+#'                                region = "genome",
+#'                                output.file = 
+#'                                  file.path(tempdir(), "StrelkaID"),
+#'                                zipfile.name = "test")
+#'   unlink("test.zip")}
+StrelkaIDVCFFilesToZipFile <- function(file, 
+                                       ref.genome, 
+                                       region = "unknown", 
+                                       names.of.VCFs = NULL, 
+                                       output.file = "",
+                                       zipfile.name = "output") {
+  
+  old.directory <- getwd()
+  on.exit(setwd(old.directory))
+  current.dir <- list.dirs(path = file)[1]
+  setwd(current.dir)
+  
+  files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
+  list <-
+    StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
+  
+  if (output.file != "") output.file <- paste0(output.file, ".")
+  
+  WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
+  
+  PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
+  
+  file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
+  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  unlink(file.names)
+  return(list)
 }
 
 #' @keywords internal
