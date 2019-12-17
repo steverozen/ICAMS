@@ -14,7 +14,7 @@ test_that(
 test_that(
   "ReadStrelkaIDVCFs",
   {
-    vcf <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh37.vcf")
+    vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
     vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
     expect_equal(dim(vcf[[1]]), c(408, 19))
@@ -49,7 +49,7 @@ test_that(
 test_that(
   "ReadStrelkaSBSVCFs applied to Strelka ID VCF error",
   {
-    expect_error(ReadStrelkaSBSVCFs("testdata/Strelka.ID.GRCh37.vcf"),
+    expect_error(ReadStrelkaSBSVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf"),
                  "does not appear to be a Strelka SBS VCF",
                  fixed = TRUE)
     
@@ -108,7 +108,7 @@ test_that(
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadMutectVCFs("testdata/Strelka.ID.GRCh37.vcf"),
+    expect_error(ReadMutectVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     

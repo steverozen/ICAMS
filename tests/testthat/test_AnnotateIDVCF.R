@@ -4,7 +4,7 @@ test_that("AnnotateIDVCF function with hg19", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   load("testdata/test_AnnotateIDVCF.Rdata")
-  id.vcf <- ReadStrelkaIDVCF("testdata/Strelka.ID.GRCh37.vcf")
+  id.vcf <- ReadStrelkaIDVCF("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
   df <- 
     AnnotateIDVCF(id.vcf, 
                   ref.genome = 
