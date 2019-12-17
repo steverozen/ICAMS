@@ -1977,6 +1977,8 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param zipfile.name The name of the zip file to be created. It should not
 #'   contain the file extension ".zip" and if not specified, the default is
 #'   "output".
+#'   
+#' @importFrom utils glob2rx zip   
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and Indel catalog. If trans.ranges
@@ -2085,6 +2087,8 @@ MutectVCFFilesToZipFile <- function(file,
 #' @param zipfile.name The name of the zip file to be created. It should not
 #'   contain the file extension ".zip" and if not specified, the default is
 #'   "output".
+#'   
+#' @importFrom utils glob2rx zip   
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
@@ -2187,6 +2191,8 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
 #'   contain the file extension ".zip" and if not specified, the default is
 #'   "output".
 #'
+#' @importFrom utils glob2rx zip 
+#' 
 #' @return  A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further

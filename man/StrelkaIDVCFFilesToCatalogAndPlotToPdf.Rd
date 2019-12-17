@@ -35,9 +35,9 @@ ending in \code{catID.pdf}.}
 \value{
 A list whose first element is an ID (small insertion and deletion)
   catalog with its graph plotted to PDF with specified file name. The ID
-  catalog has attributes added. See \code{\link{as.catalog}} for more
-  details. The second element of the returned list is a list of further
-  annotated VCFs.
+  catalog has class attribute "IndelCatalog" added. See
+  \code{\link{as.catalog}} for more details. The second element of the
+  returned list is a list of further annotated VCFs.
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
@@ -53,7 +53,7 @@ In ID (small insertion and deletion) catalogs, deletion repeat sizes
   repeat sizes range from 1 to 6+.
 }
 \examples{
-file <- c(system.file("extdata",
+file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {

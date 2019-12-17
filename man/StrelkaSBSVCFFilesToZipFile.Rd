@@ -17,7 +17,8 @@ StrelkaSBSVCFFilesToZipFile(
 \arguments{
 \item{file}{Full path of the directory which contains the Strelka SBS VCF
 files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
-(case insensitive) and share the same \code{ref.genome} and \code{region}.}
+(case insensitive) and share the \strong{same} \code{ref.genome} and
+\code{region}.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
