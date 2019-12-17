@@ -62,4 +62,4 @@ devtools::install_github("steverozen/ICAMS")
 
 ## Reference manual
 
-https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.0.9000.pdf
+https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.0.9001.pdf
