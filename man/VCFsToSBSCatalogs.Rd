@@ -47,7 +47,7 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata/Mutect-vcf",
+file <- c(system.file("extdata/Mutect-vcf/",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS

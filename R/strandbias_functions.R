@@ -53,7 +53,7 @@
 #' @export
 #'
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -100,7 +100,7 @@ PlotTransBiasGeneExp <-
 #' @export
 #'
 #' @examples
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)

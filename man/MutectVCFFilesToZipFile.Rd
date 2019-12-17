@@ -82,7 +82,7 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata/Mutect-vcf",
+file <- c(system.file("extdata/Mutect-vcf/",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 

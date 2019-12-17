@@ -14,7 +14,7 @@
 #' @name GetVAF
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' MakeDataFrameFromStrelkaSBSVCF <- 
@@ -837,7 +837,7 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -974,7 +974,7 @@ ReadMutectVCFs <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
@@ -1009,7 +1009,7 @@ ReadAndSplitMutectVCFs <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -1202,7 +1202,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
@@ -1281,7 +1281,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -1465,7 +1465,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
@@ -1563,7 +1563,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1623,7 +1623,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1822,7 +1822,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1894,7 +1894,7 @@ MutectVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1993,7 +1993,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
+#' file <- c(system.file("extdata/Mutect-vcf/",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
