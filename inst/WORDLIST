@@ -61,6 +61,7 @@ GAGG
 GATK
 gencode
 Gencode
+GetCustomKmerCounts
 GC
 GG
 GGTA
@@ -97,6 +98,7 @@ mutect
 Mutect
 MutectVCFFilesToCatalog
 MutectVCFFilesToCatalogAndPlotToPdf
+MutectVCFFilesToZipFile
 nd
 NN
 nucleotides
@@ -131,8 +133,10 @@ StrandToPdf
 Strelka
 StrelkaIDVCFFilesToCatalog
 StrelkaIDVCFFilesToCatalogAndPlotToPdf
+StrelkaIDVCFFilesToZipFile
 StrelkaSBSVCFFilesToCatalog
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf
+StrelkaSBSVCFFilesToZipFile
 SureSelect
 TAC
 TCT
@@ -163,6 +167,7 @@ unstranded
 untranscribed
 VAF
 VAFs
+vcf
 vcfs
 VCF
 VCFs
