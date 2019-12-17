@@ -68,7 +68,7 @@ test_that("extended seq.context functions for Strelka GRCh38 vcf", {
 test_that("extended seq.context functions for Strelka GRCh37 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh37.vcf")
+  vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)

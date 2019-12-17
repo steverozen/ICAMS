@@ -4,7 +4,7 @@ test_that("AddSeqContext for GRCh37", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   load("testdata/test_AddSeqContext.Rdata")
-  list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh37.vcf")
+  list.of.vcf <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
   sbs.vcf <- list.of.vcf$SBS.vcfs[[1]]
   df <- 
     AddSeqContext(sbs.vcf, 
