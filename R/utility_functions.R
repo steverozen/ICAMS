@@ -1781,14 +1781,14 @@ GetStrandedKmerCounts <-
   return(kmer.counts)
 }
 
-#' Generate exome k-mer abundance from a given reference genome
+#' Generate custom k-mer abundance from a given reference genome
 #'
 #' @param k Length of k-mers (k>=2)
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param exome.range A keyed data table which has exome ranges information. It
+#' @param custom.range A keyed data table which has custom ranges information. It
 #'   has three columns: chrom, start and end. It should use one-based coordinate
 #'   system. You can use the internal function in this package
 #'   \code{ICAMS:::ReadBedRanges} to read a BED file in 0-based coordinates and
@@ -1805,20 +1805,20 @@ GetStrandedKmerCounts <-
 #'
 #' @importFrom IRanges IRanges
 #'
-#' @return Matrix of the counts of exome k-mer across the \code{ref.genome}
+#' @return Matrix of the counts of custom k-mer across the \code{ref.genome}
 #'
 #' @keywords internal
-GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path, 
-                               verbose = FALSE) {
-  exome.ranges <- StandardChromName(exome.ranges)
+GetCustomKmerCounts <- function(k, ref.genome, custom.ranges, filter.path, 
+                                verbose = FALSE) {
+  custom.ranges <- StandardChromName(custom.ranges)
   genome <- NormalizeGenomeArg(ref.genome)
   kmer.counts <- GenerateEmptyKmerCounts(k)
-
-  # Check whether chromosome names in exome.ranges are the same as in ref.genome
-  if (!(seqnames(genome)[1] %in% exome.ranges$chrom)) {
-    exome.ranges$chrom <- paste0("chr", exome.ranges$chrom)
+  
+  # Check whether chromosome names in custom.ranges are the same as in ref.genome
+  if (!(seqnames(genome)[1] %in% custom.ranges$chrom)) {
+    custom.ranges$chrom <- paste0("chr", custom.ranges$chrom)
   }
-
+  
   if (!missing(filter.path)) {
     filter.df <- fread(filter.path, header = FALSE, stringsAsFactors = FALSE)
     filter.df <- filter.df[filter.df$V6 <= 6]
@@ -1827,34 +1827,34 @@ GetExomeKmerCounts <- function(k, ref.genome, exome.ranges, filter.path,
     if (!(seqnames(genome)[1] %in% filter.df$V2)){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
-
+    
   }
   if (verbose) message("Start counting by chromosomes")
-
-  for (chr in unique(exome.ranges$chrom)) {
+  
+  for (chr in unique(custom.ranges$chrom)) {
     if (verbose) message(chr)
-    temp.exome.ranges <- exome.ranges[exome.ranges$chrom == chr, ]
-    exome.range.chr <-
-      with(temp.exome.ranges, GRanges(chrom, IRanges(start, end)))
-
-    # Remove the overlapping ranges in exome.range.chr
-    exome.range.chr <- IRanges::reduce(exome.range.chr)
-
+    temp.custom.ranges <- custom.ranges[custom.ranges$chrom == chr, ]
+    custom.range.chr <-
+      with(temp.custom.ranges, GRanges(chrom, IRanges(start, end)))
+    
+    # Remove the overlapping ranges in custom.range.chr
+    custom.range.chr <- IRanges::reduce(custom.range.chr)
+    
     if (!missing(filter.path)) {
       chr.filter.df <- filter.df[which(filter.df$V2 == chr), ]
       filter.chr <- with(chr.filter.df, GRanges(V2, IRanges(V3 + 1, V4)))
-      filtered.exome.range.chr <-
-        GenomicRanges::setdiff(exome.range.chr, filter.chr)
-      exome.seq <- BSgenome::getSeq(genome, filtered.exome.range.chr,
-                                    as.character = TRUE)
+      filtered.custom.range.chr <-
+        GenomicRanges::setdiff(custom.range.chr, filter.chr)
+      custom.seq <- BSgenome::getSeq(genome, filtered.custom.range.chr,
+                                     as.character = TRUE)
       #Filter shorter homopolymer and microsatellites by regex
-      exome.seq <- gsub(homopolymer.ms.regex.pattern, "N", exome.seq)
-
+      custom.seq <- gsub(homopolymer.ms.regex.pattern, "N", custom.seq)
+      
     } else {
-      exome.seq <- BSgenome::getSeq(genome, exome.range.chr,
-                                    as.character = TRUE)
+      custom.seq <- BSgenome::getSeq(genome, custom.range.chr,
+                                     as.character = TRUE)
     }
-    kmer.counts <- kmer.counts + GetSequenceKmerCounts(exome.seq, k)
+    kmer.counts <- kmer.counts + GetSequenceKmerCounts(custom.seq, k)
   }
   return(kmer.counts)
 }

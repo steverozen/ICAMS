@@ -6,8 +6,8 @@ cat(getwd(), "\n")
 # Code for generating masked exome k-mer counts
 tmp <- proc.time()
 hs37d5_masked_exome_unstranded_2bp <-
-  GetExomeKmerCounts(k = 2, ref.genome = "hg19",
-                     exome.ranges = exome.ranges.GRCh37,
+  GetCustomKmerCounts(k = 2, ref.genome = "hg19",
+                     custom.ranges = exome.ranges.GRCh37,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_exome_unstranded_2bp <- proc.time() - tmp
 write.csv(hs37d5_masked_exome_unstranded_2bp,
@@ -15,8 +15,8 @@ write.csv(hs37d5_masked_exome_unstranded_2bp,
 
 tmp <- proc.time()
 hs37d5_masked_exome_unstranded_3bp <-
-  GetExomeKmerCounts(k = 3, ref.genome = "hg19",
-                     exome.ranges = exome.ranges.GRCh37,
+  GetCustomKmerCounts(k = 3, ref.genome = "hg19",
+                     custom.ranges = exome.ranges.GRCh37,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_exome_unstranded_3bp <- proc.time() - tmp
 write.csv(hs37d5_masked_exome_unstranded_3bp,
@@ -24,8 +24,8 @@ write.csv(hs37d5_masked_exome_unstranded_3bp,
 
 tmp <- proc.time()
 hs37d5_masked_exome_unstranded_4bp <-
-  GetExomeKmerCounts(k = 4, ref.genome = "hg19",
-                     exome.ranges = exome.ranges.GRCh37,
+  GetCustomKmerCounts(k = 4, ref.genome = "hg19",
+                     custom.ranges = exome.ranges.GRCh37,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_exome_unstranded_4bp <- proc.time() - tmp
 write.csv(hs37d5_masked_exome_unstranded_4bp,
@@ -33,8 +33,8 @@ write.csv(hs37d5_masked_exome_unstranded_4bp,
 
 tmp <- proc.time()
 hs37d5_masked_exome_unstranded_5bp <-
-  GetExomeKmerCounts(k = 5, ref.genome = "hg19",
-                     exome.ranges = exome.ranges.GRCh37,
+  GetCustomKmerCounts(k = 5, ref.genome = "hg19",
+                     custom.ranges = exome.ranges.GRCh37,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg19.txt")
 t.hs37d5_masked_exome_unstranded_5bp <- proc.time() - tmp
 write.csv(hs37d5_masked_exome_unstranded_5bp,
@@ -43,8 +43,8 @@ write.csv(hs37d5_masked_exome_unstranded_5bp,
 #########################################################################################
 tmp <- proc.time()
 GRCh38_masked_exome_unstranded_2bp <-
-  GetExomeKmerCounts(k = 2, ref.genome = "hg38",
-                     exome.ranges = exome.ranges.GRCh38,
+  GetCustomKmerCounts(k = 2, ref.genome = "hg38",
+                     custom.ranges = exome.ranges.GRCh38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_exome_unstranded_2bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_unstranded_2bp,
@@ -52,8 +52,8 @@ write.csv(GRCh38_masked_exome_unstranded_2bp,
 
 tmp <- proc.time()
 GRCh38_masked_exome_unstranded_3bp <-
-  GetExomeKmerCounts(k = 3, ref.genome = "hg38",
-                     exome.ranges = exome.ranges.GRCh38,
+  GetCustomKmerCounts(k = 3, ref.genome = "hg38",
+                     custom.ranges = exome.ranges.GRCh38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_exome_unstranded_3bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_unstranded_3bp,
@@ -61,8 +61,8 @@ write.csv(GRCh38_masked_exome_unstranded_3bp,
 
 tmp <- proc.time()
 GRCh38_masked_exome_unstranded_4bp <-
-  GetExomeKmerCounts(k = 4, ref.genome = "hg38",
-                     exome.ranges = exome.ranges.GRCh38,
+  GetCustomKmerCounts(k = 4, ref.genome = "hg38",
+                     custom.ranges = exome.ranges.GRCh38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_exome_unstranded_4bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_unstranded_4bp,
@@ -70,8 +70,8 @@ write.csv(GRCh38_masked_exome_unstranded_4bp,
 
 tmp <- proc.time()
 GRCh38_masked_exome_unstranded_5bp <-
-  GetExomeKmerCounts(k = 5, ref.genome = "hg38",
-                     exome.ranges = exome.ranges.GRCh38,
+  GetCustomKmerCounts(k = 5, ref.genome = "hg38",
+                     custom.ranges = exome.ranges.GRCh38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.hg38.txt")
 t.GRCh38_masked_exome_unstranded_5bp <- proc.time() - tmp
 write.csv(GRCh38_masked_exome_unstranded_5bp,
@@ -80,8 +80,8 @@ write.csv(GRCh38_masked_exome_unstranded_5bp,
 ########################################################################################
 tmp <- proc.time()
 GRCm38_masked_exome_unstranded_2bp <-
-  GetExomeKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
-                     exome.ranges = exome.ranges.GRCm38,
+  GetCustomKmerCounts(k = 2, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     custom.ranges = exome.ranges.GRCm38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
 t.GRCm38_masked_exome_unstranded_2bp <- proc.time() - tmp
 write.csv(GRCm38_masked_exome_unstranded_2bp,
@@ -89,8 +89,8 @@ write.csv(GRCm38_masked_exome_unstranded_2bp,
 
 tmp <- proc.time()
 GRCm38_masked_exome_unstranded_3bp <-
-  GetExomeKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
-                     exome.ranges = exome.ranges.GRCm38,
+  GetCustomKmerCounts(k = 3, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     custom.ranges = exome.ranges.GRCm38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
 t.GRCm38_masked_exome_unstranded_3bp <- proc.time() - tmp
 write.csv(GRCm38_masked_exome_unstranded_3bp,
@@ -98,8 +98,8 @@ write.csv(GRCm38_masked_exome_unstranded_3bp,
 
 tmp <- proc.time()
 GRCm38_masked_exome_unstranded_4bp <-
-  GetExomeKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
-                     exome.ranges = exome.ranges.GRCm38,
+  GetCustomKmerCounts(k = 4, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     custom.ranges = exome.ranges.GRCm38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
 t.GRCm38_masked_exome_unstranded_4bp <- proc.time() - tmp
 write.csv(GRCm38_masked_exome_unstranded_4bp,
@@ -107,8 +107,8 @@ write.csv(GRCm38_masked_exome_unstranded_4bp,
 
 tmp <- proc.time()
 GRCm38_masked_exome_unstranded_5bp <-
-  GetExomeKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
-                     exome.ranges = exome.ranges.GRCm38,
+  GetCustomKmerCounts(k = 5, ref.genome = BSgenome.Mmusculus.UCSC.mm10,
+                     custom.ranges = exome.ranges.GRCm38,
                      filter.path = "data-raw/simple_repeat_files/simpleRepeat.mm10.txt")
 t.GRCm38_masked_exome_unstranded_5bp <- proc.time() - tmp
 write.csv(GRCm38_masked_exome_unstranded_5bp,
