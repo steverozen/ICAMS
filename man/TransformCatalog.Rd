@@ -5,9 +5,13 @@
 \title{Transform between counts and density spectrum catalogs
 and counts and density signature catalogs.}
 \usage{
-TransformCatalog(catalog, target.ref.genome = NULL,
-  target.region = NULL, target.catalog.type = NULL,
-  target.abundance = NULL)
+TransformCatalog(
+  catalog,
+  target.ref.genome = NULL,
+  target.region = NULL,
+  target.catalog.type = NULL,
+  target.abundance = NULL
+)
 }
 \arguments{
 \item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
