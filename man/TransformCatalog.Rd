@@ -5,13 +5,9 @@
 \title{Transform between counts and density spectrum catalogs
 and counts and density signature catalogs.}
 \usage{
-TransformCatalog(
-  catalog,
-  target.ref.genome = NULL,
-  target.region = NULL,
-  target.catalog.type = NULL,
-  target.abundance = NULL
-)
+TransformCatalog(catalog, target.ref.genome = NULL,
+  target.region = NULL, target.catalog.type = NULL,
+  target.abundance = NULL)
 }
 \arguments{
 \item{catalog}{An SBS or DBS catalog as described in \code{\link{ICAMS}};
@@ -52,8 +48,10 @@ Only the following transformations are legal:
 
 \enumerate{
 
-\item \code{counts -> counts} (used to transform
-   between the source abundance and \code{target.abundance})
+\item \code{counts -> counts} (deprecated, generates a warning;
+we strongly suggest that you work with densities if comparing
+spectra or signatures generated from data with
+different underlying abundances.)
 
 \item \code{counts -> density}
 

@@ -4,6 +4,8 @@
   StrelkaSBSVCFFilesToZipFile() and StrelkaIDVCFFilesToZipFile().
 * Fixed a bug in function TransformCatalog() and updated its documentation
   for parameter "target.abundance".
+* Deprecated counts -> counts transformation in TransformCatalog(); see documentation
+  for rationale.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 

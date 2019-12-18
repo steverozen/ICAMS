@@ -332,6 +332,10 @@ TCFromCou <- function(s, t) {
     return(TRUE)
   } else if (t$catalog.type == "counts") {
     # counts -> counts
+    warning("counts -> counts is deprecated; ",
+            "it simply infers new counts based on ",
+            "changes in abundance; ", 
+            "we strongly suggest that you work with densities")
     if (is.null(s[["abundance"]]) || is.null(t[["abundance"]])) {
       stop("Cannot transform from counts -> counts if either ",
            "source or target abundance is null")
@@ -444,9 +448,11 @@ AbundanceIsSame <- function(a1, a2) {
 #'
 #' \enumerate{
 #'
-#' \item \code{counts -> counts} (used to transform
-#'    between the source abundance and \code{target.abundance})
-#'
+#' \item \code{counts -> counts} (deprecated, generates a warning;
+#' we strongly suggest that you work with densities if comparing
+#' spectra or signatures generated from data with
+#' different underlying abundances.)
+#' 
 #' \item \code{counts -> density}
 #'
 #' \item \code{counts -> (counts.signature, density.signature)}
