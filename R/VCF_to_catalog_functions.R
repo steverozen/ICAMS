@@ -2185,10 +2185,12 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[utils]{zip}}.
 #'
-#' @param file Full path of the directory which contains the Strelka ID VCF
+#' @param dir Pathname of the directory which contains the Strelka ID VCF
 #'   files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param file Full pathname of the zip file to be created. 
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2224,17 +2226,18 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf",
+#' dir <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     StrelkaIDVCFFilesToZipFile(file, ref.genome = "hg19", 
+#'     StrelkaIDVCFFilesToZipFile(dir, file = tempdir(),
+#'                                ref.genome = "hg19", 
 #'                                region = "genome",
-#'                                output.file = 
-#'                                  file.path(tempdir(), "StrelkaID"),
+#'                                output.file = "StrelkaID",
 #'                                zipfile.name = "test")
-#'   unlink("test.zip")}
-StrelkaIDVCFFilesToZipFile <- function(file, 
+#'   unlink(paste0(tempdir(), "/test.zip"))}
+StrelkaIDVCFFilesToZipFile <- function(dir,
+                                       file, 
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
@@ -2243,7 +2246,7 @@ StrelkaIDVCFFilesToZipFile <- function(file,
   
   old.directory <- getwd()
   on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = file)[1]
+  current.dir <- list.dirs(path = dir)[1]
   setwd(current.dir)
   
   files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
@@ -2257,7 +2260,13 @@ StrelkaIDVCFFilesToZipFile <- function(file,
   PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
   
   file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
+  
+  # Make the zipping process quiet
+  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
+  
+  file.copy(from = zippedfile, to = file)
+  
   unlink(file.names)
   return(list)
 }

@@ -6,6 +6,7 @@
 and plot PDF from Strelka ID VCF files}
 \usage{
 StrelkaIDVCFFilesToZipFile(
+  dir,
   file,
   ref.genome,
   region = "unknown",
@@ -15,10 +16,12 @@ StrelkaIDVCFFilesToZipFile(
 )
 }
 \arguments{
-\item{file}{Full path of the directory which contains the Strelka ID VCF
+\item{dir}{Pathname of the directory which contains the Strelka ID VCF
 files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
 insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
+
+\item{file}{Full pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -62,14 +65,14 @@ In ID (small insertion and deletion) catalogs, deletion repeat sizes
   repeat sizes range from 1 to 6+.
 }
 \examples{
-file <- c(system.file("extdata/Strelka-ID-vcf",
+dir <- c(system.file("extdata/Strelka-ID-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    StrelkaIDVCFFilesToZipFile(file, ref.genome = "hg19", 
+    StrelkaIDVCFFilesToZipFile(dir, file = tempdir(),
+                               ref.genome = "hg19", 
                                region = "genome",
-                               output.file = 
-                                 file.path(tempdir(), "StrelkaID"),
+                               output.file = "StrelkaID",
                                zipfile.name = "test")
-  unlink("test.zip")}
+  unlink(paste0(tempdir(), "/test.zip"))}
 }
