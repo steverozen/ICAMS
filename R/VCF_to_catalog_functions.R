@@ -1941,10 +1941,12 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[utils]{zip}}.
 #'
-#' @param file Full path of the directory which contains the Mutect VCF files.
+#' @param dir Pathname of the directory which contains the Mutect VCF files.
 #'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param file Pathname of the zip file to be created.    
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -1996,7 +1998,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
@@ -2006,7 +2008,8 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'                             output.file = file.path(tempdir(), "Mutect"),
 #'                             zipfile.name = "test")
 #'   unlink("test.zip")}
-MutectVCFFilesToZipFile <- function(file, 
+MutectVCFFilesToZipFile <- function(dir,
+                                    file, 
                                     ref.genome, 
                                     trans.ranges = NULL, 
                                     region = "unknown", 
@@ -2017,7 +2020,7 @@ MutectVCFFilesToZipFile <- function(file,
   
   old.directory <- getwd()
   on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = file)[1]
+  current.dir <- list.dirs(path = dir)[1]
   setwd(current.dir)
   
   files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
@@ -2043,7 +2046,13 @@ MutectVCFFilesToZipFile <- function(file,
   }
   
   file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
+  
+  # Make the zipping process quiet
+  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
+  
+  file.copy(from = zippedfile, to = paste0(old.directory, "/", file))
+  
   unlink(file.names)
   return(catalogs)
 }

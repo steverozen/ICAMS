@@ -5,6 +5,7 @@
 \title{Create a zip file which contains catalogs and plot PDFs from Mutect VCF files}
 \usage{
 MutectVCFFilesToZipFile(
+  dir,
   file,
   ref.genome,
   trans.ranges = NULL,
@@ -16,10 +17,12 @@ MutectVCFFilesToZipFile(
 )
 }
 \arguments{
-\item{file}{Full path of the directory which contains the Mutect VCF files.
+\item{dir}{Pathname of the directory which contains the Mutect VCF files.
 Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
+
+\item{file}{Pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -83,7 +86,7 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata/Mutect-vcf/",
+file <- c(system.file("extdata/Mutect-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
