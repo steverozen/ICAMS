@@ -8,13 +8,15 @@ test_that("Transformation of a SBS 192 catalog", {
                        region = "transcript",
                        catalog.type = "counts")
   
-  x1 <- TransformCatalog(cat.t, target.ref.genome = "GRCh37",
-                         target.region = "exome",
-                         target.catalog.type = "counts")
-
-  x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
-                         target.region = "transcript",
-                         target.catalog.type = "counts")
+  x1 <- 
+    expect_warning(TransformCatalog(cat.t, target.ref.genome = "GRCh37",
+                                    target.region = "exome",
+                                    target.catalog.type = "counts"))
+  
+  x2 <- 
+    expect_warning(TransformCatalog(x1, target.ref.genome = "GRCh37",
+                                    target.region = "transcript",
+                                    target.catalog.type = "counts"))
   expect_equal(cat.t, x2)
   
   cat.density <- TransformCatalog(cat.t, target.ref.genome = "GRCh37",

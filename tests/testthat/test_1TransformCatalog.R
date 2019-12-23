@@ -9,14 +9,16 @@ and exome counts -> genome counts", {
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
 
-  x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
+  x1 <- 
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh37",
                          target.region = "exome",
-                         target.catalog.type = "counts")
+                         target.catalog.type = "counts"))
   
 
-  x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
+  x2 <- 
+    expect_warning(TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "genome",
-                         target.catalog.type = "counts")
+                         target.catalog.type = "counts"))
 
   expect_equal(cat, x2)
 
@@ -35,9 +37,10 @@ and genome counts -> exome count -> density", {
                          target.region = "genome",
                          target.catalog.type = "density")
 
-  x2 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
-                         target.region = "exome",
-                         target.catalog.type = "counts")
+  x2 <- 
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh37",
+                                    target.region = "exome",
+                                    target.catalog.type = "counts"))
 
   x3 <- TransformCatalog(x2, target.ref.genome = "GRCh37",
                          target.region = "exome",
@@ -64,9 +67,10 @@ and genome GRCh37 counts -> genome GRCh38 counts -> genome GRCh38 density", {
                          target.region = "genome",
                          target.catalog.type = "density")
 
-  x2 <- TransformCatalog(cat, target.ref.genome = "GRCh38",
-                         target.region = "genome",
-                         target.catalog.type = "counts")
+  x2 <- 
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh38",
+                                    target.region = "genome",
+                                    target.catalog.type = "counts"))
 
   x3 <- TransformCatalog(x2, target.ref.genome = "GRCh38",
                          target.region = "genome",
@@ -89,14 +93,15 @@ and genome GRCh37 counts -> genome GRCh37 density -> genome GRCh38 counts", {
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
 
-  x1 <- TransformCatalog(cat, target.ref.genome = "GRCh38",
-                         target.region = "genome",
-                         target.catalog.type = "counts")
-
+  x1 <- 
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh38",
+                                    target.region = "genome",
+                                    target.catalog.type = "counts"))
+  
   x2 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
                          target.region = "genome",
                          target.catalog.type = "density")
-
+  
   x3 <- TransformCatalog(x2, target.ref.genome = "GRCh38",
                          target.region = "genome",
                          target.catalog.type = "counts")
@@ -157,8 +162,10 @@ and genome counts.signature -> exome counts.signature", {
                      ref.genome = "GRCh37", region = "genome",
                      catalog.type = "counts")
 
-  x1 <- TransformCatalog(cat, target.ref.genome = "GRCh37",
-                         target.region = "exome", target.catalog.type = "counts")
+  x1 <- 
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh37",
+                                    target.region = "exome", 
+                                    target.catalog.type = "counts"))
 
   x2 <- TransformCatalog(x1, target.ref.genome = "GRCh37",
                          target.region = "exome",
@@ -228,9 +235,9 @@ and genome counts -> exome counts.signature", {
                      target.catalog.type = "counts.signature")
 
   exome.counts <-
-    TransformCatalog(cat, target.ref.genome = "GRCh37",
-                     target.region = "exome",
-                     target.catalog.type = "counts")
+    expect_warning(TransformCatalog(cat, target.ref.genome = "GRCh37",
+                                    target.region = "exome",
+                                    target.catalog.type = "counts"))
 
   exome.counts.signature2 <-
     TransformCatalog(exome.counts, target.ref.genome = "GRCh37",
