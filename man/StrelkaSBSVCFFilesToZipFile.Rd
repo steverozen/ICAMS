@@ -5,6 +5,7 @@
 \title{Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files}
 \usage{
 StrelkaSBSVCFFilesToZipFile(
+  dir,
   file,
   ref.genome,
   trans.ranges = NULL,
@@ -15,10 +16,12 @@ StrelkaSBSVCFFilesToZipFile(
 )
 }
 \arguments{
-\item{file}{Full path of the directory which contains the Strelka SBS VCF
+\item{dir}{Pathname of the directory which contains the Strelka SBS VCF
 files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
 (case insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
+
+\item{file}{Full pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -72,15 +75,15 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata/Strelka-SBS-vcf",
+dir <- c(system.file("extdata/Strelka-SBS-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    StrelkaSBSVCFFilesToZipFile(file, ref.genome = "hg19", 
+    StrelkaSBSVCFFilesToZipFile(file, file = tempdir(),
+                                ref.genome = "hg19", 
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome",
-                                output.file = 
-                                file.path(tempdir(), "StrelkaSBS"),
+                                output.file = "StrelkaSBS",
                                 zipfile.name = "test")
-  unlink("test.zip")}
+  unlink(paste0(tempdir(), "/test.zip"))}
 }
