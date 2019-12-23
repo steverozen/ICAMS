@@ -79,7 +79,7 @@ dir <- c(system.file("extdata/Strelka-SBS-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    StrelkaSBSVCFFilesToZipFile(file, file = tempdir(),
+    StrelkaSBSVCFFilesToZipFile(dir, file = tempdir(),
                                 ref.genome = "hg19", 
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome",

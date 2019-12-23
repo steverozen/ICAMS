@@ -22,7 +22,7 @@ Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 
-\item{file}{Pathname of the zip file to be created.}
+\item{file}{Full pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -86,14 +86,15 @@ For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
 \examples{
-file <- c(system.file("extdata/Mutect-vcf",
-                      package = "ICAMS"))
+dir <- c(system.file("extdata/Mutect-vcf",
+                     package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    MutectVCFFilesToZipFile(file, ref.genome = "hg19", 
+    MutectVCFFilesToZipFile(dir, file = tempdir(),
+                            ref.genome = "hg19", 
                             trans.ranges = trans.ranges.GRCh37,
                             region = "genome",
-                            output.file = file.path(tempdir(), "Mutect"),
+                            output.file = "Mutect",
                             zipfile.name = "test")
-  unlink("test.zip")}
+  unlink(paste0(tempdir(), "/test.zip"))}
 }
