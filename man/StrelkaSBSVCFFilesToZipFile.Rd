@@ -6,13 +6,12 @@
 \usage{
 StrelkaSBSVCFFilesToZipFile(
   dir,
-  file,
+  zipfile,
   ref.genome,
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = "",
-  zipfile.name = "output"
+  output.file = ""
 )
 }
 \arguments{
@@ -21,7 +20,7 @@ files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
 (case insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 
-\item{file}{Full pathname of the zip file to be created.}
+\item{zipfile}{Pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -33,20 +32,17 @@ transcript range and strand information. Please refer to
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order of
-names in \code{names.of.VCFs} should match the order of VCFs listed in
-\code{file}. If \code{NULL}(default), this function will remove all of the
-path up to and including the last path separator (if any) in \code{file}
-and file paths without extensions (and the leading dot) will be used as the
-names of the VCF files.}
+\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
+The order of names in \code{names.of.VCFs} should match the order of VCFs
+listed in \code{dir}. If \code{NULL}(default), this function will remove
+all of the path up to and including the last path separator (if any) in
+\code{dir} and file paths without extensions (and the leading dot) will be
+used as the names of the VCF files.}
 
-\item{output.file}{The base name of the CSV and PDF files to be produced;
-multiple files will be generated, each ending in \eqn{x}\code{.csv} or
-\eqn{x}\code{.pdf}, where \eqn{x} indicates the type of catalog.}
-
-\item{zipfile.name}{The name of the zip file to be created. It should not
-contain the file extension ".zip" and if not specified, the default is
-"output".}
+\item{output.file}{Optional. The base name of the CSV and PDF files to be
+produced; multiple files will be generated, each ending in
+\eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
+of catalog.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
@@ -56,13 +52,13 @@ A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
-Strelka SBS VCFs specified by \code{file}, save the catalogs as CSV files,
+Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
 plot them to PDF and generate a zip archive of all the output files.
 }
 \details{
 This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}},
 \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-\code{\link[utils]{zip}}.
+\code{\link[zip]{zipr}}.
 }
 \note{
 SBS 192 and DBS 144 catalogs include only mutations in transcribed
@@ -79,11 +75,11 @@ dir <- c(system.file("extdata/Strelka-SBS-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    StrelkaSBSVCFFilesToZipFile(dir, file = tempdir(),
+    StrelkaSBSVCFFilesToZipFile(dir, 
+                                zipfile = paste0(tempdir(), "/test.zip"),
                                 ref.genome = "hg19", 
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome",
-                                output.file = "StrelkaSBS",
-                                zipfile.name = "test")
+                                output.file = "StrelkaSBS")
   unlink(paste0(tempdir(), "/test.zip"))}
 }

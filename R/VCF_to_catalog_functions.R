@@ -2117,16 +2117,17 @@ MutectVCFFilesToZipFile <- function(dir,
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order of
-#'   names in \code{names.of.VCFs} should match the order of VCFs listed in
-#'   \code{dir}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{dir}
-#'   and file paths without extensions (and the leading dot) will be used as the
-#'   names of the VCF files.
+#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
+#'   The order of names in \code{names.of.VCFs} should match the order of VCFs
+#'   listed in \code{dir}. If \code{NULL}(default), this function will remove
+#'   all of the path up to and including the last path separator (if any) in
+#'   \code{dir} and file paths without extensions (and the leading dot) will be
+#'   used as the names of the VCF files.
 #'   
-#' @param output.file The base name of the CSV and PDF files to be produced;
-#'   multiple files will be generated, each ending in \eqn{x}\code{.csv} or
-#'   \eqn{x}\code{.pdf}, where \eqn{x} indicates the type of catalog.
+#' @param output.file Optional. The base name of the CSV and PDF files to be
+#'   produced; multiple files will be generated, each ending in
+#'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
+#'   of catalog.
 #'   
 #' @importFrom utils glob2rx
 #' 
@@ -2202,41 +2203,27 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' and plot PDF from Strelka ID VCF files
 #' 
 #' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
-#' specified by \code{file}, save the catalog as CSV file, plot it to PDF and
+#' specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
 #' generate a zip archive of all the output files.
 #'
 #' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[utils]{zip}}.
-#'
-#' @param dir Pathname of the directory which contains the Strelka ID VCF
-#'   files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
+#' \code{\link[zip]{zipr}}.
+#' 
+#' @inheritParams StrelkaSBSVCFFilesToZipFile
+#' 
+#' @param dir Pathname of the directory which contains the Strelka ID VCF files.
+#'   Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
-#' @param file Full pathname of the zip file to be created. 
-#'   
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
+#' @param output.file Optional. The base name of the CSV and PDF file to be
+#'   produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
+#'   respectively.
 #'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order of
-#'   names in \code{names.of.VCFs} should match the order of VCFs listed in
-#'   \code{file}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{file}
-#'   and file paths without extensions (and the leading dot) will be used as the
-#'   names of the VCF files.
-#'   
-#' @param output.file The base name of the CSV and PDF file to be produced;
-#'   the file is ending in \code{catID.csv} and \code{catID.pdf} respectively.
-#'   
-#' @param zipfile.name The name of the zip file to be created. It should not
-#'   contain the file extension ".zip" and if not specified, the default is
-#'   "output".
-#'
-#' @importFrom utils glob2rx zip 
+#' @importFrom utils glob2rx
+#' 
+#' @importFrom zip zipr 
 #' 
 #' @return  A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
@@ -2254,45 +2241,38 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     StrelkaIDVCFFilesToZipFile(dir, file = tempdir(),
+#'     StrelkaIDVCFFilesToZipFile(dir, 
+#'                                zipfile = paste0(tempdir(), "/test.zip"),
 #'                                ref.genome = "hg19", 
 #'                                region = "genome",
-#'                                output.file = "StrelkaID",
-#'                                zipfile.name = "test")
+#'                                output.file = "StrelkaID")
 #'   unlink(paste0(tempdir(), "/test.zip"))}
 StrelkaIDVCFFilesToZipFile <- function(dir,
-                                       file, 
+                                       zipfile, 
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
-                                       output.file = "",
-                                       zipfile.name = "output") {
-  
-  old.directory <- getwd()
-  on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = dir)[1]
-  setwd(current.dir)
-  
-  files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
+                                       output.file = ""){
+  files <- list.files(path = dir, pattern = "\\.vcf$", 
+                      full.names = TRUE, ignore.case = TRUE)
   list <-
     StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
   
-  if (output.file != "") output.file <- paste0(output.file, ".")
+  if (output.file != "") {
+    output.file <- paste0(tempdir(), "\\", output.file, ".")
+  } else {
+    output.file <- paste0(tempdir(), "\\", output.file)
+  }
   
   WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
   
   PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
   
-  file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
-  
-  # Make the zipping process quiet
-  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
-  
-  file.copy(from = zippedfile, to = file)
-  
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+                           full.names = TRUE)
+  zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
-  return(list)
+  invisible(list)
 }
 
 #' @keywords internal

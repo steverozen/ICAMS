@@ -40,12 +40,11 @@ test_that("StrelkaIDVCFFilesToZipFile function", {
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   dir <- "testdata/Strelka-ID-GRCh37"
   out <- StrelkaIDVCFFilesToZipFile(dir,
-                                    file = tempdir(),
+                                    zipfile = paste0(tempdir(), "/test.zip"),
                                     ref.genome = "hg19",
-                                    region = "genome",
-                                    zipfile.name = "test")
+                                    region = "genome")
   expect_type(out, "list")
-  name <- grep(".zip", list.files(tempdir()), value = TRUE)
+  name <- grep("\\.zip$", list.files(tempdir()), value = TRUE)
   expect_equal(name, "test.zip")
   unlink(paste0(tempdir(), "/test.zip"))
   graphics.off()

@@ -7,21 +7,20 @@ and plot PDF from Strelka ID VCF files}
 \usage{
 StrelkaIDVCFFilesToZipFile(
   dir,
-  file,
+  zipfile,
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = "",
-  zipfile.name = "output"
+  output.file = ""
 )
 }
 \arguments{
-\item{dir}{Pathname of the directory which contains the Strelka ID VCF
-files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
+\item{dir}{Pathname of the directory which contains the Strelka ID VCF files.
+Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
 insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 
-\item{file}{Full pathname of the zip file to be created.}
+\item{zipfile}{Pathname of the zip file to be created.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -29,19 +28,16 @@ insensitive) and share the \strong{same} \code{ref.genome} and
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order of
-names in \code{names.of.VCFs} should match the order of VCFs listed in
-\code{file}. If \code{NULL}(default), this function will remove all of the
-path up to and including the last path separator (if any) in \code{file}
-and file paths without extensions (and the leading dot) will be used as the
-names of the VCF files.}
+\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
+The order of names in \code{names.of.VCFs} should match the order of VCFs
+listed in \code{dir}. If \code{NULL}(default), this function will remove
+all of the path up to and including the last path separator (if any) in
+\code{dir} and file paths without extensions (and the leading dot) will be
+used as the names of the VCF files.}
 
-\item{output.file}{The base name of the CSV and PDF file to be produced;
-the file is ending in \code{catID.csv} and \code{catID.pdf} respectively.}
-
-\item{zipfile.name}{The name of the zip file to be created. It should not
-contain the file extension ".zip" and if not specified, the default is
-"output".}
+\item{output.file}{Optional. The base name of the CSV and PDF file to be
+produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
+respectively.}
 }
 \value{
 A list of two elements. 1st element is an S3 object containing an ID
@@ -51,13 +47,13 @@ A list of two elements. 1st element is an S3 object containing an ID
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
-specified by \code{file}, save the catalog as CSV file, plot it to PDF and
+specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
 generate a zip archive of all the output files.
 }
 \details{
 This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
 \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-\code{\link[utils]{zip}}.
+\code{\link[zip]{zipr}}.
 }
 \note{
 In ID (small insertion and deletion) catalogs, deletion repeat sizes
@@ -69,10 +65,10 @@ dir <- c(system.file("extdata/Strelka-ID-vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
-    StrelkaIDVCFFilesToZipFile(dir, file = tempdir(),
+    StrelkaIDVCFFilesToZipFile(dir, 
+                               zipfile = paste0(tempdir(), "/test.zip"),
                                ref.genome = "hg19", 
                                region = "genome",
-                               output.file = "StrelkaID",
-                               zipfile.name = "test")
+                               output.file = "StrelkaID")
   unlink(paste0(tempdir(), "/test.zip"))}
 }
