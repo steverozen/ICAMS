@@ -833,6 +833,7 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
+    CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
   }
   
@@ -907,6 +908,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
+    CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
   }
   
@@ -939,6 +941,7 @@ ReadMutectVCFs <-
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
+    CheckNamesOfVCFs(files, names.of.VCFs)
     vcfs.names <- names.of.VCFs
   }
   num.of.files <- length(files)
@@ -2162,6 +2165,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         output.file = "") {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
+  
   catalogs <-
     StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                                 region, names.of.VCFs)
@@ -2324,4 +2328,13 @@ CanonicalizeQUAD <- function(quad) {
 
   ret <- sapply(quad, FUN = Canonicalize1QUAD)
   return(ret)
+}
+
+#' @keywords internal
+CheckNamesOfVCFs <- function(files, names.of.VCFs) {
+  stopifnot(inherits(names.of.VCFs, "character"))
+  if (length(files) != length(names.of.VCFs)) {
+    stop("\nThe number of names in names.of.VCFs does not match ",
+         "the number of VCF files")
+  }
 }
