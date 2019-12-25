@@ -33,7 +33,8 @@ Imports: Biostrings,
     RColorBrewer,
     stats,
     stringi,
-    utils
+    utils,
+    zip
 Depends: R (>= 3.5),
 RoxygenNote: 7.0.2
 Suggests: 
