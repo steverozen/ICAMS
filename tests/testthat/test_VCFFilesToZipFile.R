@@ -23,13 +23,12 @@ test_that("StrelkaSBSVCFFilesToZipFile function", {
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   dir <- "testdata/Strelka-SBS-GRCh37"
   out <- StrelkaSBSVCFFilesToZipFile(dir,
-                                     file = tempdir(), 
+                                     zipfile = paste0(tempdir(), "/test.zip"), 
                                      ref.genome = "hg19",
                                      trans.ranges = trans.ranges.GRCh37,
-                                     region = "genome",
-                                     zipfile.name = "test")
+                                     region = "genome")
   expect_type(out, "list")
-  name <- grep(".zip", list.files(tempdir()), value = TRUE)
+  name <- grep("\\.zip$", list.files(tempdir()), value = TRUE)
   expect_equal(name, "test.zip")
   unlink(paste0(tempdir(), "/test.zip"))
   graphics.off()
