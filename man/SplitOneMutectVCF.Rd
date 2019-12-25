@@ -20,7 +20,7 @@ A list of in-memory objects with the elements:
    Additional information not fully implemented at this point because of
    limited immediate biological interest.
    \item{multiple.alt}: Rows that were removed before processing because they had
-   more than one alternative allele.
+   more than one alternate allele.
    }
 }
 \description{

@@ -378,7 +378,7 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
 #'    \item{multiple.alt}: Rows that were removed before processing because they had
-#'    more than one alternative allele.
+#'    more than one alternate allele.
 #'    }
 #'
 #'
@@ -629,7 +629,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
 #'    \item{multiple.alt}: Rows that were removed before processing because they had
-#'    more than one alternative allele.
+#'    more than one alternate allele.
 #'    }
 #'
 #' @keywords internal
@@ -756,21 +756,28 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #'
 #' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS VCF file contents.
 #'
-#' @return A list of 3 in-memory objects with the elements:
-#'    SBS.vcfs:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
-#'    DBS.vcfs:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
-#'    ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
+#' @return A list of in-memory objects with the elements: \enumerate{
+#'    \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
+#'    \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
+#'    \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
+#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
+#'    \code{SBS.vcfs} etc.)\
+#'    }
 #'
 #' @keywords internal
 SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
-  split.vcfs<- lapply(list.of.vcfs, FUN = SplitStrelkaSBSVCF)
-  SBS.vcfs <- lapply(split.vcfs, function(x) x$SBS.vcf)
-  DBS.vcfs <- lapply(split.vcfs, function(x) x$DBS.vcf)
-  ThreePlus <- lapply(split.vcfs, function(x) x$ThreePlus)
-  return(list(SBS.vcfs = SBS.vcfs, DBS.vcfs = DBS.vcfs, ThreePlus = ThreePlus))
+  split.vcfs <- lapply(list.of.vcfs, FUN = SplitStrelkaSBSVCF)
+  SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
+  DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
+  ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
+  mult.alt   <- lapply(split.vcfs, function(x) x$multiple.alt)
+  return(list(SBS.vcfs = SBS.vcfs,
+              DBS.vcfs = DBS.vcfs,
+              ThreePlus = ThreePlus,
+              multiple.alt = mult.alt))
 }
 
 #' Check that the sequence context information is consistent with the value of

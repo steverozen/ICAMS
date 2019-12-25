@@ -6,6 +6,9 @@
   for parameter "target.abundance".
 * Deprecated counts -> counts transformation in TransformCatalog(); see documentation
   for rationale.
+* Added code to handle multiple alternate alleles in Strelka VCFs, e.g cases 
+  where REF = T and ALT = A,C which indicates the alternate allele in some reads
+  is A and in some reads C.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 

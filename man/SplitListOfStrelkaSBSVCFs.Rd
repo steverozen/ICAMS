@@ -11,13 +11,16 @@ SplitListOfStrelkaSBSVCFs(list.of.vcfs)
 \item{list.of.vcfs}{A list of in-memory data frames containing Strelka SBS VCF file contents.}
 }
 \value{
-A list of 3 in-memory objects with the elements:
-   SBS.vcfs:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
-   DBS.vcfs:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
-   ThreePlus: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
+A list of in-memory objects with the elements: \enumerate{
+   \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
+   \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
+   \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
    information (reference sequence, alternative sequence, context, etc.)
    Additional information not fully implemented at this point because of
    limited immediate biological interest.
+   \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
+   \code{SBS.vcfs} etc.)\
+   }
 }
 \description{
 SBSs are single base substitutions,
