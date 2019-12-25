@@ -14,7 +14,7 @@
 #' @name GetVAF
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' MakeDataFrameFromStrelkaSBSVCF <- 
@@ -868,7 +868,7 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -900,7 +900,7 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf/",
+#' file <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
@@ -1005,7 +1005,7 @@ ReadMutectVCFs <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
@@ -1040,7 +1040,7 @@ ReadAndSplitMutectVCFs <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -1233,7 +1233,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
@@ -1312,7 +1312,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
@@ -1496,7 +1496,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
@@ -1594,7 +1594,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1654,7 +1654,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf/",
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1724,7 +1724,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf/",
+#' file <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1776,7 +1776,7 @@ StrelkaIDVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf/",
+#' file <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1853,7 +1853,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1925,7 +1925,7 @@ MutectVCFFilesToCatalog <-
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
+#' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -1972,10 +1972,12 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[utils]{zip}}.
 #'
-#' @param file Full path of the directory which contains the Mutect VCF files.
+#' @param dir Pathname of the directory which contains the Mutect VCF files.
 #'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param file Full pathname of the zip file to be created.    
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2027,17 +2029,19 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf/",
-#'                       package = "ICAMS"))
+#' dir <- c(system.file("extdata/Mutect-vcf",
+#'                      package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     MutectVCFFilesToZipFile(file, ref.genome = "hg19", 
+#'     MutectVCFFilesToZipFile(dir, file = tempdir(),
+#'                             ref.genome = "hg19", 
 #'                             trans.ranges = trans.ranges.GRCh37,
 #'                             region = "genome",
-#'                             output.file = file.path(tempdir(), "Mutect"),
+#'                             output.file = "Mutect",
 #'                             zipfile.name = "test")
-#'   unlink("test.zip")}
-MutectVCFFilesToZipFile <- function(file, 
+#'   unlink(paste0(tempdir(), "/test.zip"))}
+MutectVCFFilesToZipFile <- function(dir,
+                                    file, 
                                     ref.genome, 
                                     trans.ranges = NULL, 
                                     region = "unknown", 
@@ -2048,7 +2052,7 @@ MutectVCFFilesToZipFile <- function(file,
   
   old.directory <- getwd()
   on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = file)[1]
+  current.dir <- list.dirs(path = dir)[1]
   setwd(current.dir)
   
   files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
@@ -2074,7 +2078,13 @@ MutectVCFFilesToZipFile <- function(file,
   }
   
   file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
+  
+  # Make the zipping process quiet
+  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
+  
+  file.copy(from = zippedfile, to = file)
+  
   unlink(file.names)
   return(catalogs)
 }
@@ -2089,10 +2099,12 @@ MutectVCFFilesToZipFile <- function(file,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[utils]{zip}}.
 #'
-#' @param file Full path of the directory which contains the Strelka SBS VCF
+#' @param dir Pathname of the directory which contains the Strelka SBS VCF
 #'   files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
 #'   (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param file Full pathname of the zip file to be created.    
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2134,18 +2146,19 @@ MutectVCFFilesToZipFile <- function(file,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf",
+#' dir <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     StrelkaSBSVCFFilesToZipFile(file, ref.genome = "hg19", 
+#'     StrelkaSBSVCFFilesToZipFile(dir, file = tempdir(),
+#'                                 ref.genome = "hg19", 
 #'                                 trans.ranges = trans.ranges.GRCh37,
 #'                                 region = "genome",
-#'                                 output.file = 
-#'                                 file.path(tempdir(), "StrelkaSBS"),
+#'                                 output.file = "StrelkaSBS",
 #'                                 zipfile.name = "test")
-#'   unlink("test.zip")}
-StrelkaSBSVCFFilesToZipFile <- function(file, 
+#'   unlink(paste0(tempdir(), "/test.zip"))}
+StrelkaSBSVCFFilesToZipFile <- function(dir,
+                                        file, 
                                         ref.genome, 
                                         trans.ranges = NULL, 
                                         region = "unknown", 
@@ -2155,7 +2168,7 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
   
   old.directory <- getwd()
   on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = file)[1]
+  current.dir <- list.dirs(path = dir)[1]
   setwd(current.dir)
   
   files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
@@ -2181,7 +2194,13 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
   }
   
   file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
+  
+  # Make the zipping process quiet
+  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
+  
+  file.copy(from = zippedfile, to = file)
+  
   unlink(file.names)
   return(catalogs)
 }
@@ -2197,10 +2216,12 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[utils]{zip}}.
 #'
-#' @param file Full path of the directory which contains the Strelka ID VCF
+#' @param dir Pathname of the directory which contains the Strelka ID VCF
 #'   files. Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param file Full pathname of the zip file to be created. 
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2236,17 +2257,18 @@ StrelkaSBSVCFFilesToZipFile <- function(file,
 #' @export
 #' 
 #' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf",
+#' dir <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     StrelkaIDVCFFilesToZipFile(file, ref.genome = "hg19", 
+#'     StrelkaIDVCFFilesToZipFile(dir, file = tempdir(),
+#'                                ref.genome = "hg19", 
 #'                                region = "genome",
-#'                                output.file = 
-#'                                  file.path(tempdir(), "StrelkaID"),
+#'                                output.file = "StrelkaID",
 #'                                zipfile.name = "test")
-#'   unlink("test.zip")}
-StrelkaIDVCFFilesToZipFile <- function(file, 
+#'   unlink(paste0(tempdir(), "/test.zip"))}
+StrelkaIDVCFFilesToZipFile <- function(dir,
+                                       file, 
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
@@ -2255,7 +2277,7 @@ StrelkaIDVCFFilesToZipFile <- function(file,
   
   old.directory <- getwd()
   on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = file)[1]
+  current.dir <- list.dirs(path = dir)[1]
   setwd(current.dir)
   
   files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
@@ -2269,7 +2291,13 @@ StrelkaIDVCFFilesToZipFile <- function(file,
   PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
   
   file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zip(zipfile = paste0(zipfile.name, ".zip"), files = file.names, flags = "-q")
+  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
+  
+  # Make the zipping process quiet
+  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
+  
+  file.copy(from = zippedfile, to = file)
+  
   unlink(file.names)
   return(list)
 }
