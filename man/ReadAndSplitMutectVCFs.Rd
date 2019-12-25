@@ -51,7 +51,7 @@ into the first 3 VCFs, as follows:
 Read and split Mutect VCF files.
 }
 \examples{
-file <- c(system.file("extdata/Mutect-vcf/",
+file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitMutectVCFs(file)

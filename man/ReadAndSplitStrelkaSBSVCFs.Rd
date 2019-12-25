@@ -32,7 +32,7 @@ A list of 3 in-memory objects as follows:
 Read and split Strelka SBS VCF files.
 }
 \examples{
-file <- c(system.file("extdata/Strelka-SBS-vcf/",
+file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)

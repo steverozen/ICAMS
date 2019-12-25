@@ -2012,7 +2012,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
 #'     MutectVCFFilesToZipFile(dir, 
-#'                             zipfile = paste0(tempdir(), "/test.zip")),
+#'                             zipfile = paste0(tempdir(), "/test.zip"),
 #'                             ref.genome = "hg19", 
 #'                             trans.ranges = trans.ranges.GRCh37,
 #'                             region = "genome",
