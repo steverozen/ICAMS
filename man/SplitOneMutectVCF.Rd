@@ -11,8 +11,17 @@ SplitOneMutectVCF(vcf.df)
 VAFs, which are added by \code{\link{ReadMutectVCF}}.}
 }
 \value{
-A list with the SBS, DBS, and ID portions of the VCF file, plus two
-data.frames of other mutations
+A list of in-memory objects with the elements:
+\enumerate{
+   \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
+   \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
+   \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
+   information (reference sequence, alternative sequence, context, etc.)
+   Additional information not fully implemented at this point because of
+   limited immediate biological interest.
+   \item{multiple.alt}: Rows that were removed before processing because they had
+   more than one alternative allele.
+   }
 }
 \description{
 Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations

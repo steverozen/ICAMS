@@ -369,8 +369,18 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
 #'
-#' @return A list with the SBS, DBS, and ID portions of the VCF file, plus two
-#' data.frames of other mutations
+#' @return A list of in-memory objects with the elements:
+#' \enumerate{
+#'    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
+#'    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
+#'    \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
+#'    information (reference sequence, alternative sequence, context, etc.)
+#'    Additional information not fully implemented at this point because of
+#'    limited immediate biological interest.
+#'    \item{multiple.alt}: Rows that were removed before processing because they had
+#'    more than one alternative allele.
+#'    }
+#'
 #'
 #' @keywords internal
 SplitOneMutectVCF <- function(vcf.df) {
@@ -610,7 +620,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'
 #' @importFrom IRanges IRanges
 #'
-#' @return A list of 3 in-memory objects with the elements:
+#' @return A list of in-memory objects with the elements:
 #' \enumerate{
 #'    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
 #'    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
@@ -618,11 +628,25 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'    information (reference sequence, alternative sequence, context, etc.)
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
+#'    \item{multiple.alt}: Rows that were removed before processing because they had
+#'    more than one alternative allele.
 #'    }
 #'
 #' @keywords internal
 SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   stopifnot("data.frame" %in% class(vcf.df))
+  
+  # Strelka SBS VCFs can represent multiple non-reference alleles at the
+  # same site; the alleles are separated by commas in the ALT columm;
+  # these are quite rare and often dubious, so we ignore them.
+  multiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
+  multiple.alt.df <- vcf.df[multiple.alt, ]
+  
+  if (length(multiple.alt) != 0) {
+    df <- vcf.df[-multiple.alt, ]
+  } else {
+    df <- vcf.df
+  }
 
   # Record the total number of input variants for later sanity checking.
   num.in <- nrow(vcf.df)
@@ -669,7 +693,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   if (nrow(non.SBS) == 0) {
     # Thre are no non.SBS mutations in the input.
     # Everything in vcf.df is an SBS. We are finished.
-    empty <- vcf.df[-(1 : nrow(vcf.df)), ]
+    empty <- vcf.df[-(1:nrow(vcf.df)), ]
     return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
                 ThreePlus =
                   data.table(CHROM = character(),
@@ -718,7 +742,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   }
 
   return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
-              ThreePlus = other.ranges))
+              ThreePlus = other.ranges, multiple.alt = multiple.alt.df))
 }
 
 #' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving

@@ -13,7 +13,7 @@ SplitStrelkaSBSVCF(vcf.df, max.vaf.diff = 0.02)
 \item{max.vaf.diff}{The maximum difference of VAF, default value is 0.02.}
 }
 \value{
-A list of 3 in-memory objects with the elements:
+A list of in-memory objects with the elements:
 \enumerate{
    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
@@ -21,6 +21,8 @@ A list of 3 in-memory objects with the elements:
    information (reference sequence, alternative sequence, context, etc.)
    Additional information not fully implemented at this point because of
    limited immediate biological interest.
+   \item{multiple.alt}: Rows that were removed before processing because they had
+   more than one alternative allele.
    }
 }
 \description{
