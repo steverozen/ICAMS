@@ -2090,19 +2090,19 @@ MutectVCFFilesToZipFile <- function(dir,
 #' Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
-#' Strelka SBS VCFs specified by \code{file}, save the catalogs as CSV files,
+#' Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
 #' plot them to PDF and generate a zip archive of all the output files.
 #'
 #' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[utils]{zip}}.
+#' \code{\link[zip]{zipr}}.
 #'
 #' @param dir Pathname of the directory which contains the Strelka SBS VCF
 #'   files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
 #'   (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
-#' @param file Full pathname of the zip file to be created.    
+#' @param zipfile Pathname of the zip file to be created.    
 #'   
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -2116,8 +2116,8 @@ MutectVCFFilesToZipFile <- function(dir,
 #'  
 #' @param names.of.VCFs Character vector of names of the VCF files. The order of
 #'   names in \code{names.of.VCFs} should match the order of VCFs listed in
-#'   \code{file}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{file}
+#'   \code{dir}. If \code{NULL}(default), this function will remove all of the
+#'   path up to and including the last path separator (if any) in \code{dir}
 #'   and file paths without extensions (and the leading dot) will be used as the
 #'   names of the VCF files.
 #'   
@@ -2125,11 +2125,9 @@ MutectVCFFilesToZipFile <- function(dir,
 #'   multiple files will be generated, each ending in \eqn{x}\code{.csv} or
 #'   \eqn{x}\code{.pdf}, where \eqn{x} indicates the type of catalog.
 #'   
-#' @param zipfile.name The name of the zip file to be created. It should not
-#'   contain the file extension ".zip" and if not specified, the default is
-#'   "output".
-#'   
-#' @importFrom utils glob2rx zip   
+#' @importFrom utils glob2rx
+#' 
+#' @importFrom zip zipr 
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
@@ -2148,33 +2146,31 @@ MutectVCFFilesToZipFile <- function(dir,
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
-#'     StrelkaSBSVCFFilesToZipFile(dir, file = tempdir(),
+#'     StrelkaSBSVCFFilesToZipFile(dir, 
+#'                                 zipfile = paste0(tempdir(), "/test.zip"),
 #'                                 ref.genome = "hg19", 
 #'                                 trans.ranges = trans.ranges.GRCh37,
 #'                                 region = "genome",
-#'                                 output.file = "StrelkaSBS",
-#'                                 zipfile.name = "test")
+#'                                 output.file = "StrelkaSBS")
 #'   unlink(paste0(tempdir(), "/test.zip"))}
 StrelkaSBSVCFFilesToZipFile <- function(dir,
-                                        file, 
+                                        zipfile, 
                                         ref.genome, 
                                         trans.ranges = NULL, 
                                         region = "unknown", 
                                         names.of.VCFs = NULL, 
-                                        output.file = "",
-                                        zipfile.name = "output") {
-  
-  old.directory <- getwd()
-  on.exit(setwd(old.directory))
-  current.dir <- list.dirs(path = dir)[1]
-  setwd(current.dir)
-  
-  files <- grep("vcf", list.files(), ignore.case = TRUE, value = TRUE)
+                                        output.file = "") {
+  files <- list.files(path = dir, pattern = "\\.vcf$", 
+                      full.names = TRUE, ignore.case = TRUE)
   catalogs <-
     StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                                 region, names.of.VCFs)
   
-  if (output.file != "") output.file <- paste0(output.file, ".")
+  if (output.file != "") {
+    output.file <- paste0(tempdir(), "\\", output.file, ".")
+  } else {
+    output.file <- paste0(tempdir(), "\\", output.file)
+  }
   
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
@@ -2191,16 +2187,11 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
     }
   }
   
-  file.names <- list.files(pattern = glob2rx("*.csv|pdf"))
-  zippedfile <- paste0(tempdir(), "/", zipfile.name, ".zip")
-  
-  # Make the zipping process quiet
-  zip(zipfile = zippedfile, files = file.names, flags = "-q") 
-  
-  file.copy(from = zippedfile, to = file)
-  
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+                           full.names = TRUE)
+  zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
-  return(catalogs)
+  invisible(catalogs)
 }
 
 #' Create a zip file which contains ID (small insertion and deletion) catalog
