@@ -643,9 +643,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   multiple.alt.df <- vcf.df[multiple.alt, ]
   
   if (length(multiple.alt) != 0) {
-    df <- vcf.df[-multiple.alt, ]
-  } else {
-    df <- vcf.df
+    vcf.df <- vcf.df[-multiple.alt, ]
   }
 
   # Record the total number of input variants for later sanity checking.
