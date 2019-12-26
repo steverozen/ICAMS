@@ -19,9 +19,18 @@ MutectVCFFilesToCatalog(
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
-transcript range and strand information. Please refer to
-\code{\link{TranscriptRanges}} for more details.}
+\item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
+\code{\link{BSgenome}} object 
+\enumerate{
+  \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+  \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+  \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+}
+then the function will infer \code{trans.ranges} automatically. Otherwise,
+user will need to provide the necessary \code{trans.ranges}. Please refer to
+\code{\link{TranscriptRanges}} for more details.
+If \code{is.null(trans.ranges)} do not add transcript range
+information.}
 
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}

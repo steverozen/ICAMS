@@ -1024,9 +1024,16 @@ ReadAndSplitMutectVCFs <-
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details. 
+#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
+#'   \code{\link{BSgenome}} object 
+#'   \enumerate{
+#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'   }
+#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
+#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
 #'   If \code{is.null(trans.ranges)} do not add transcript range
 #'   information.
 #'
@@ -1062,6 +1069,7 @@ AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
   }
   
   CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
+  trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
     SBS.vcf <- AddTranscript(SBS.vcf, trans.ranges)
   }
@@ -1215,10 +1223,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
-#'
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
+#' 
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'
@@ -1249,6 +1255,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   catSBS96 <- empty.cats$catSBS96
   catSBS192 <- empty.cats$catSBS192
   catSBS1536 <- empty.cats$catSBS1536
+  trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
 
   for (i in 1:ncol) {
     SBS.vcf <- list.of.SBS.vcfs[[i]]
@@ -1296,11 +1303,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details. 
-#'   If \code{is.null(trans.ranges)} do not add transcript range
-#'   information.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @return An in-memory DBS VCF as a \code{data.table}. This has been annotated
 #'   with the sequence context (column name \code{seq.21bases}) and with
@@ -1334,6 +1337,7 @@ AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
   }
   
   CheckSeqContextInVCF(DBS.vcf, "seq.21bases")
+  trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
     DBS.vcf <- AddTranscript(DBS.vcf, trans.ranges)
   }
@@ -1478,9 +1482,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -1512,7 +1514,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
   catDBS78 <- empty.cats$catDBS78
   catDBS136 <- empty.cats$catDBS136
   catDBS144 <- empty.cats$catDBS144
-
+  trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
 
   for (i in 1 : ncol) {
     DBS.vcf <- list.of.DBS.vcfs[[i]]
@@ -1569,9 +1571,18 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
+#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
+#'   \code{\link{BSgenome}} object 
+#'   \enumerate{
+#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'   }
+#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
+#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -1624,9 +1635,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -1816,9 +1825,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -1885,9 +1892,7 @@ MutectVCFFilesToCatalog <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -2080,9 +2085,7 @@ MutectVCFFilesToZipFile <- function(dir,
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param trans.ranges a \code{\link[data.table]{data.table}} which contains
-#'   transcript range and strand information. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
+#' @inheritParams StrelkaSBSVCFFilesToCatalog
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
@@ -2286,5 +2289,22 @@ CheckNamesOfVCFs <- function(files, names.of.VCFs) {
   if (length(files) != length(names.of.VCFs)) {
     stop("\nThe number of names in names.of.VCFs does not match ",
          "the number of VCF files")
+  }
+}
+
+#' @keywords internal
+InferTransRanges <- function(ref.genome, trans.ranges) {
+  if (!is.null(trans.ranges)) {
+    return(trans.ranges)
+  } else {
+    if (IsGRCh37(ref.genome)) {
+      return(trans.ranges.GRCh37)
+    } else if (IsGRCh38(ref.genome)) {
+      return(trans.ranges.GRCh38)
+    } else if (IsGRCm38(ref.genome)) {
+      return(trans.ranges.GRCm38)
+    } else {
+      return(trans.ranges)
+    }
   }
 }
