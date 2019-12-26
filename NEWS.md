@@ -9,6 +9,10 @@
 * Added code to handle multiple alternate alleles in Strelka VCFs, e.g cases 
   where REF = T and ALT = A,C which indicates the alternate allele in some reads
   is A and in some reads C.
+* Added an internal function to infer trans ranges from input ref.genome.
+  Updated the documentation of the exported functions which have argument "trans.ranges"   to make it optional.
+* Updated documentation for optional arguments in the functions reading VCF files.
+  Used @inheritParams to reduce repetitive documentation.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
