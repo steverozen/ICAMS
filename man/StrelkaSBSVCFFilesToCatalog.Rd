@@ -34,12 +34,12 @@ information.}
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order
-of names in \code{names.of.VCFs} should match the order of VCF file paths
-in \code{files}. If \code{NULL}(default), this function will remove all of
-the path up to and including the last path separator (if any) and file
-paths without extensions (and the leading dot) will be used as the names of
-the VCF files.}
+\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
+The order of names in \code{names.of.VCFs} should match the order of VCF
+file paths in \code{files}. If \code{NULL}(default), this function will
+remove all of the path up to and including the last path separator (if any)
+in \code{files} and file paths without extensions (and the leading dot)
+will be used as the names of the VCF files.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
@@ -60,8 +60,9 @@ SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 }
 \section{Comments}{
 
-To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
-For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+To add or change attributes of the catalog, you can use function
+\code{\link[base]{attr}}. \cr For example, \code{attr(catalog, "abundance")
+<- custom.abundance}.
 }
 
 \examples{

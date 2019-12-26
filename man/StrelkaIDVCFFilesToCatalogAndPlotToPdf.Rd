@@ -22,15 +22,15 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order
-of names in \code{names.of.VCFs} should match the order of VCF file paths
-in \code{files}. If \code{NULL}(default), this function will remove all of
-the path up to and including the last path separator (if any) and file
-paths without extensions (and the leading dot) will be used as the names of
-the VCF files.}
+\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
+The order of names in \code{names.of.VCFs} should match the order of VCF
+file paths in \code{files}. If \code{NULL}(default), this function will
+remove all of the path up to and including the last path separator (if any)
+in \code{files} and file paths without extensions (and the leading dot)
+will be used as the names of the VCF files.}
 
-\item{output.file}{The base name of the PDF file to be produced; the file is
-ending in \code{catID.pdf}.}
+\item{output.file}{Optional. The base name of the PDF file to be produced;
+the file is ending in \code{catID.pdf}.}
 }
 \value{
 A list whose first element is an ID (small insertion and deletion)

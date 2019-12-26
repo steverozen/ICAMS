@@ -51,8 +51,9 @@ DBS 144 catalog only contains mutations in transcribed regions.
 }
 \section{Comments}{
 
-To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
-For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+To add or change attributes of the catalog, you can use function
+\code{\link[base]{attr}}. \cr For example, \code{attr(catalog, "abundance")
+<- custom.abundance}.
 }
 
 \examples{

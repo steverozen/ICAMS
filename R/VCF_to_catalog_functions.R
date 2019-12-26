@@ -4,8 +4,8 @@
 #' 
 #' @param name.of.VCF Name of the VCF file. 
 #'   
-#' @param tumor.col.name Name of the column in VCF which contains the tumor
-#'   sample information. It \strong{must} have quotation marks. If
+#' @param tumor.col.name Optional. Name of the column in VCF which contains the
+#'   tumor sample information. It \strong{must} have quotation marks. If
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
 #'   use the 10th column to calculate VAFs.
 #'
@@ -844,12 +844,7 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
 #' @return A list of 3 in-memory objects as follows:
 #' \enumerate{
@@ -879,15 +874,10 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 
 #' Read Strelka ID (small insertion and deletion) VCF files.
 #'
-#' @param files Character vector of file paths to the VCF files.
+#' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
 #' @return A list of vcfs from \code{files}.
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
@@ -964,19 +954,7 @@ ReadMutectVCFs <-
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order of
-#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
-#'   \code{files}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{files}
-#'   and file paths without extensions (and the leading dot) will be used as the
-#'   names of the VCF files.
-#'   
-#' @param tumor.col.names Character vector of column names in VCFs which contain
-#'   the tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of VCFs specified in \code{files}. If
-#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
-#'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
@@ -1220,14 +1198,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #'   -- no DBS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'
 #' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
 #'   catSBS192 catSBS1536. If trans.ranges = NULL, SBS 192 catalog will not be
 #'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
@@ -1235,7 +1207,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #' 
 #' @export
 #' 
@@ -1300,10 +1272,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' 
 #' @param DBS.vcf An in-memory DBS VCF as a \code{data.frame}.
 #' 
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return An in-memory DBS VCF as a \code{data.table}. This has been annotated
 #'   with the sequence context (column name \code{seq.21bases}) and with
@@ -1479,13 +1448,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #'   -- no SBS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
 #'   catDBS144 catDBS136. If trans.ranges = NULL, DBS 144 catalog will not be
@@ -1494,7 +1457,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #' 
 #' @export
 #' 
@@ -1568,32 +1531,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
-#'   \code{\link{BSgenome}} object 
-#'   \enumerate{
-#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
-#'   }
-#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
-#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
-#'   If \code{is.null(trans.ranges)} do not add transcript range
-#'   information.
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
 #'   and DBS 144 catalog will not be generated. Each catalog has attributes
@@ -1632,24 +1571,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
-#' @param output.file The base name of the PDF files to be produced; multiple
-#'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
-#'   indicates the type of catalog plotted in the file.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and their graphs plotted to PDF
@@ -1659,7 +1581,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #' 
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #' 
 #' @export
 #' 
@@ -1709,19 +1631,8 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'
 #' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
@@ -1757,21 +1668,10 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
-#' @param output.file The base name of the PDF file to be produced; the file is
-#'   ending in \code{catID.pdf}.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
+#' @param output.file Optional. The base name of the PDF file to be produced;
+#'   the file is ending in \code{catID.pdf}.
 #'
 #' @return A list whose first element is an ID (small insertion and deletion)
 #'   catalog with its graph plotted to PDF with specified file name. The ID
@@ -1822,27 +1722,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order of
-#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
-#'   \code{files}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{files}
-#'   and file paths without extensions (and the leading dot) will be used as the
-#'   names of the VCF files.
-#'   
-#' @param tumor.col.names Character vector of column names in VCFs which contain
-#'   the tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of VCFs specified in \code{files}. If
-#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
-#'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
@@ -1854,9 +1734,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
 #'   repeat sizes range from 1 to 6+.
 #'   
-#' @section Comments:
-#' To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
-#' For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #'
 #' @export
 #' 
@@ -1891,29 +1769,40 @@ MutectVCFFilesToCatalog <-
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
-#'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
+#'   
+#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
+#'   \code{\link{BSgenome}} object 
+#'   \enumerate{
+#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'   }
+#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
+#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
 #'
 #' @param region A character string designating a genomic region;
 #'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
 #'  
-#' @param names.of.VCFs Character vector of names of the VCF files. The order of
-#'   names in \code{names.of.VCFs} should match the order of VCF file paths in
-#'   \code{files}. If \code{NULL}(default), this function will remove all of the
-#'   path up to and including the last path separator (if any) in \code{files}
-#'   and file paths without extensions (and the leading dot) will be used as the
-#'   names of the VCF files.
+#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
+#'   The order of names in \code{names.of.VCFs} should match the order of VCF
+#'   file paths in \code{files}. If \code{NULL}(default), this function will
+#'   remove all of the path up to and including the last path separator (if any)
+#'   in \code{files} and file paths without extensions (and the leading dot)
+#'   will be used as the names of the VCF files.
 #'   
-#' @param tumor.col.names Character vector of column names in VCFs which contain
-#'   the tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of VCFs specified in \code{files}. If
-#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
-#'   use the 10th column in all the VCFs to calculate VAFs.
+#' @param tumor.col.names Optional. Character vector of column names in VCFs
+#'   which contain the tumor sample information. The order of names in
+#'   \code{tumor.col.names} should match the order of VCFs specified in
+#'   \code{files}. If \code{tumor.col.names} is equal to \code{NA}(default),
+#'   this function will use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'
-#' @param output.file The base name of the PDF files to be produced; multiple
-#'   files will be generated, each ending in \eqn{x}\code{.pdf}, where \eqn{x}
-#'   indicates the type of catalog plotted in the file.
+#' @param output.file Optional. The base name of the PDF files to be produced;
+#'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
+#'   \eqn{x} indicates the type of catalog plotted in the file.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
@@ -1926,7 +1815,10 @@ MutectVCFFilesToCatalog <-
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
 #'   repeat sizes range from 1 to 6+.
 #' 
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @section Comments:
+#' To add or change attributes of the catalog, you can use function
+#' \code{\link[base]{attr}}. \cr For example, \code{attr(catalog, "abundance")
+#' <- custom.abundance}.
 #' 
 #' @export
 #' 
@@ -1978,19 +1870,50 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[zip]{zipr}}.
 #'
-#' @inheritParams StrelkaSBSVCFFilesToZipFile
-#' 
 #' @param dir Pathname of the directory which contains the Mutect VCF files.
 #'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
-#' @param tumor.col.names Character vector of column names in VCFs which contain
+#' @param zipfile Pathname of the zip file to be created.    
+#'   
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}. 
+#'   
+#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
+#'   \code{\link{BSgenome}} object 
+#'   \enumerate{
+#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'   }
+#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
+#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
+#'   
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'  
+#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
+#'   The order of names in \code{names.of.VCFs} should match the order of VCFs
+#'   listed in \code{dir}. If \code{NULL}(default), this function will remove
+#'   all of the path up to and including the last path separator (if any) in
+#'   \code{dir} and file paths without extensions (and the leading dot) will be
+#'   used as the names of the VCF files.
+#'   
+#' @param tumor.col.names Optional. Character vector of column names in VCFs which contain
 #'   the tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of VCFs listed in \code{file}. If
+#'   should match the order of VCFs listed in \code{dir}. If
 #'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
+#'   
+#' @param output.file Optional. The base name of the CSV and PDF files to be
+#'   produced; multiple files will be generated, each ending in
+#'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
+#'   of catalog.
 #'
 #' @importFrom utils glob2rx 
 #' 
@@ -2007,7 +1930,9 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
 #'   repeat sizes range from 1 to 6+.
 #' 
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @section Comments:
+#' To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
+#' For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 #' 
 #' @export
 #' 
@@ -2080,28 +2005,8 @@ MutectVCFFilesToZipFile <- function(dir,
 #'   (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
-#' @param zipfile Pathname of the zip file to be created.    
-#'   
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
+#' @inheritParams MutectVCFFilesToZipFile
 #'
-#' @inheritParams StrelkaSBSVCFFilesToCatalog
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'  
-#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
-#'   The order of names in \code{names.of.VCFs} should match the order of VCFs
-#'   listed in \code{dir}. If \code{NULL}(default), this function will remove
-#'   all of the path up to and including the last path separator (if any) in
-#'   \code{dir} and file paths without extensions (and the leading dot) will be
-#'   used as the names of the VCF files.
-#'   
-#' @param output.file Optional. The base name of the CSV and PDF files to be
-#'   produced; multiple files will be generated, each ending in
-#'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
-#'   of catalog.
-#'   
 #' @importFrom utils glob2rx
 #' 
 #' @importFrom zip zipr 
@@ -2114,7 +2019,7 @@ MutectVCFFilesToZipFile <- function(dir,
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. 
 #' 
-#' @inheritSection MutectVCFFilesToCatalog Comments
+#' @inheritSection MutectVCFFilesToZipFile Comments
 #' 
 #' @export
 #' 
@@ -2183,7 +2088,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[zip]{zipr}}.
 #' 
-#' @inheritParams StrelkaSBSVCFFilesToZipFile
+#' @inheritParams MutectVCFFilesToZipFile
 #' 
 #' @param dir Pathname of the directory which contains the Strelka ID VCF files.
 #'   Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
