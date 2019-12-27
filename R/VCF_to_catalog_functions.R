@@ -169,7 +169,7 @@ ReadStrelkaIDVCF <- function(file) {
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
-    stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(df1), collapse=" "))
   }
   control <- unique(df1[ , "FORMAT"])
@@ -177,7 +177,7 @@ ReadStrelkaIDVCF <- function(file) {
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (all(each.base.col %in% colnames)) {
-    stop("\nvcf does not appear to be a Strelka ID VCF,", 
+    stop("\nVCF does not appear to be a Strelka ID VCF,", 
          "the value of column FORMAT is \n", 
          control)
   }
@@ -193,7 +193,7 @@ GetStrelkaVAF <-function(vcf) {
   stopifnot("data.frame" %in% class(vcf))
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
-    stop("\nvcf does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
   TUMOR <- vcf[ , "TUMOR"]
@@ -205,7 +205,7 @@ GetStrelkaVAF <-function(vcf) {
   vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (!all(each.base.col %in% colnames)) {
-    stop("\nvcf does not appear to be a Strelka SBS VCF,", 
+    stop("\nVCF does not appear to be a Strelka SBS VCF,", 
          "the value of column FORMAT is \n", 
          control)
   }
@@ -300,7 +300,7 @@ ReadMutectVCF <-
 GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
   if (!any(grepl("/1", unlist(vcf[1, ])))) {
-    stop("vcf does not appear to be a Mutect VCF, please check the data")
+    stop("\nVCF does not appear to be a Mutect VCF, please check the data")
   }
   
   if (!is.na(tumor.col.name)) {
