@@ -1,7 +1,9 @@
 # ICAMS 2.1.0.900x
+* (Non backward-compatible.)
+  Added a new dependency package "zip" in ICAMS, to be used in three new exported  
+  functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
+  StrelkaIDVCFFilesToZipFile(). 
 * Renamed internal function creating custom abundance to GetCustomKmerCounts().
-* Added three new exported functions MutectVCFFilesToZipFile(), 
-  StrelkaSBSVCFFilesToZipFile() and StrelkaIDVCFFilesToZipFile().
 * Fixed a bug in function TransformCatalog() and updated its documentation
   for parameter "target.abundance".
 * Deprecated counts -> counts transformation in TransformCatalog(); see documentation
@@ -13,6 +15,8 @@
   Updated the documentation of the exported functions which have argument "trans.ranges"   to make it optional.
 * Updated documentation for optional arguments in the functions reading VCF files.
   Used @inheritParams to reduce repetitive documentation.
+* Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
+  based on plot.type
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
