@@ -11,7 +11,7 @@ StrelkaIDVCFFilesToZipFile(
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = ""
+  base.filename = ""
 )
 }
 \arguments{
@@ -35,7 +35,7 @@ all of the path up to and including the last path separator (if any) in
 \code{dir} and file paths without extensions (and the leading dot) will be
 used as the names of the VCF files.}
 
-\item{output.file}{Optional. The base name of the CSV and PDF file to be
+\item{base.filename}{Optional. The base name of the CSV and PDF file to be
 produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
 respectively.}
 }
@@ -69,6 +69,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                zipfile = paste0(tempdir(), "/test.zip"),
                                ref.genome = "hg19", 
                                region = "genome",
-                               output.file = "StrelkaID")
+                               base.filename = "StrelkaID")
   unlink(paste0(tempdir(), "/test.zip"))}
 }

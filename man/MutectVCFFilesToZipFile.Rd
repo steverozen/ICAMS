@@ -12,7 +12,7 @@ MutectVCFFilesToZipFile(
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
-  output.file = ""
+  base.filename = ""
 )
 }
 \arguments{
@@ -56,7 +56,7 @@ should match the order of VCFs listed in \code{dir}. If
 use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
 
-\item{output.file}{Optional. The base name of the CSV and PDF files to be
+\item{base.filename}{Optional. The base name of the CSV and PDF files to be
 produced; multiple files will be generated, each ending in
 \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 of catalog.}
@@ -100,6 +100,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                             ref.genome = "hg19", 
                             trans.ranges = trans.ranges.GRCh37,
                             region = "genome",
-                            output.file = "Mutect")
+                            base.filename = "Mutect")
   unlink(paste0(tempdir(), "/test.zip"))}
 }

@@ -11,7 +11,7 @@ StrelkaSBSVCFFilesToZipFile(
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = ""
+  base.filename = ""
 )
 }
 \arguments{
@@ -48,7 +48,7 @@ all of the path up to and including the last path separator (if any) in
 \code{dir} and file paths without extensions (and the leading dot) will be
 used as the names of the VCF files.}
 
-\item{output.file}{Optional. The base name of the CSV and PDF files to be
+\item{base.filename}{Optional. The base name of the CSV and PDF files to be
 produced; multiple files will be generated, each ending in
 \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 of catalog.}
@@ -89,6 +89,6 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                 ref.genome = "hg19", 
                                 trans.ranges = trans.ranges.GRCh37,
                                 region = "genome",
-                                output.file = "StrelkaSBS")
+                                base.filename = "StrelkaSBS")
   unlink(paste0(tempdir(), "/test.zip"))}
 }

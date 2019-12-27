@@ -1910,7 +1910,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'   
-#' @param output.file Optional. The base name of the CSV and PDF files to be
+#' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 #'   of catalog.
@@ -1946,7 +1946,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'                             ref.genome = "hg19", 
 #'                             trans.ranges = trans.ranges.GRCh37,
 #'                             region = "genome",
-#'                             output.file = "Mutect")
+#'                             base.filename = "Mutect")
 #'   unlink(paste0(tempdir(), "/test.zip"))}
 MutectVCFFilesToZipFile <- function(dir,
                                     zipfile, 
@@ -1955,17 +1955,17 @@ MutectVCFFilesToZipFile <- function(dir,
                                     region = "unknown", 
                                     names.of.VCFs = NULL, 
                                     tumor.col.names = NA,
-                                    output.file = ""){
+                                    base.filename = ""){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   catalogs <-
     MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                             region, names.of.VCFs, tumor.col.names)
   
-  if (output.file != "") {
-    output.file <- paste0(tempdir(), "\\", output.file, ".")
+  if (base.filename != "") {
+    output.file <- paste0(tempdir(), "\\", base.filename, ".")
   } else {
-    output.file <- paste0(tempdir(), "\\", output.file)
+    output.file <- paste0(tempdir(), "\\", base.filename)
   }
   
   for (name in names(catalogs)) {
@@ -2033,7 +2033,7 @@ MutectVCFFilesToZipFile <- function(dir,
 #'                                 ref.genome = "hg19", 
 #'                                 trans.ranges = trans.ranges.GRCh37,
 #'                                 region = "genome",
-#'                                 output.file = "StrelkaSBS")
+#'                                 base.filename = "StrelkaSBS")
 #'   unlink(paste0(tempdir(), "/test.zip"))}
 StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         zipfile, 
@@ -2041,7 +2041,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         trans.ranges = NULL, 
                                         region = "unknown", 
                                         names.of.VCFs = NULL, 
-                                        output.file = "") {
+                                        base.filename = "") {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   
@@ -2049,10 +2049,10 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
     StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                                 region, names.of.VCFs)
   
-  if (output.file != "") {
-    output.file <- paste0(tempdir(), "\\", output.file, ".")
+  if (base.filename != "") {
+    output.file <- paste0(tempdir(), "\\", base.filename, ".")
   } else {
-    output.file <- paste0(tempdir(), "\\", output.file)
+    output.file <- paste0(tempdir(), "\\", base.filename)
   }
   
   for (name in names(catalogs)) {
@@ -2095,7 +2095,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
-#' @param output.file Optional. The base name of the CSV and PDF file to be
+#' @param base.filename Optional. The base name of the CSV and PDF file to be
 #'   produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
 #'   respectively.
 #'
@@ -2123,23 +2123,23 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #'                                zipfile = paste0(tempdir(), "/test.zip"),
 #'                                ref.genome = "hg19", 
 #'                                region = "genome",
-#'                                output.file = "StrelkaID")
+#'                                base.filename = "StrelkaID")
 #'   unlink(paste0(tempdir(), "/test.zip"))}
 StrelkaIDVCFFilesToZipFile <- function(dir,
                                        zipfile, 
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
-                                       output.file = ""){
+                                       base.filename = ""){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   list <-
     StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
   
-  if (output.file != "") {
-    output.file <- paste0(tempdir(), "\\", output.file, ".")
+  if (base.filename != "") {
+    output.file <- paste0(tempdir(), "\\", base.filename, ".")
   } else {
-    output.file <- paste0(tempdir(), "\\", output.file)
+    output.file <- paste0(tempdir(), "\\", base.filename)
   }
   
   WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
