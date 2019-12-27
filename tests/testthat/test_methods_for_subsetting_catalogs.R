@@ -13,6 +13,7 @@ test_that("[ method for SBS96Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -30,6 +31,7 @@ test_that("[ method for SBS192Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -46,6 +48,7 @@ test_that("[ method for SBS1536Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -62,6 +65,7 @@ test_that("[ method for DBS78Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -79,6 +83,7 @@ test_that("[ method for DBS144Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -95,6 +100,7 @@ test_that("[ method for DBS136Catalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -110,6 +116,8 @@ test_that("[ method for IndelCatalog", {
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
+  unlink("Rplots.pdf")
 })
 

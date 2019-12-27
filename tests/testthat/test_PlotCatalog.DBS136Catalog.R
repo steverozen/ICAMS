@@ -11,6 +11,7 @@ test_that("PlotCatalog.DBS136Catalog function", {
                                 region = "genome", catalog.type = "counts")
   cat.counts <- catalog.counts[, 1, drop = FALSE]
   out <- PlotCatalog(cat.counts)
+  graphics.off()
   expect_equal(out$plot.success, TRUE)
 
   cat.density <-
@@ -31,6 +32,7 @@ test_that("PlotCatalog.DBS136Catalog function", {
                      target.region = "genome",
                      target.catalog.type = "density.signature")
   expect_error(PlotCatalog(cat.density.signature))
+  graphics.off()
 })
 
 # cat("after testthat, oma = ", par("oma"), "\n")

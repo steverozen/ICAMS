@@ -41,4 +41,5 @@ test_that("PlotCatalog.SBS192Catalog function", {
   out1 <- PlotCatalog(cat.density.signature, plot.SBS12 = TRUE)
   expect_equal(out$plot.success, TRUE)
   expect_equal(out1$plot.success, TRUE)
+  graphics.off()
 })

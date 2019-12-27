@@ -18,4 +18,5 @@ test_that("PlotCatalog.IndelCatalog function", {
                region = "genome", catalog.type = "counts.signature")
   out <- PlotCatalog(cat.counts.signature)
   expect_equal(out$plot.success, TRUE)
+  graphics.off()
 })

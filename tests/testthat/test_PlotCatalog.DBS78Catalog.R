@@ -32,4 +32,5 @@ test_that("PlotCatalog.DBS78Catalog function", {
                      target.catalog.type = "density.signature")
   out <- PlotCatalog(cat.density.signature)
   expect_equal(out$plot.success, TRUE)
+  graphics.off()
 })

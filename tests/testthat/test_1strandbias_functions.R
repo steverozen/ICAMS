@@ -57,6 +57,7 @@ test_that("PlotTransBiasGeneExpToPdf function", {
   expect_equal(out2$plot.success, TRUE)
   expect_equal(out3$plot.success, TRUE)
   expect_equal(out4$plot.success, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
   unlink(file.path(tempdir(), "test1.pdf"))
   unlink(file.path(tempdir(), "test2.pdf"))
@@ -113,4 +114,5 @@ test_that("PlotTransBiasGeneExp function", {
   expect_equal(out2$plot.success, TRUE)
   expect_equal(out3$plot.success, TRUE)
   expect_equal(out4$plot.success, TRUE)
+  graphics.off()
 })

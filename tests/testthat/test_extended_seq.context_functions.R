@@ -13,6 +13,7 @@ test_that("extended seq.context functions for Mutect GRCh38 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
@@ -29,6 +30,7 @@ test_that("extended seq.context functions for Mutect GRCh37 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
@@ -46,6 +48,7 @@ test_that("extended seq.context functions for Mutect GRCm38 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
@@ -62,6 +65,7 @@ test_that("extended seq.context functions for Strelka GRCh38 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
@@ -78,6 +82,7 @@ test_that("extended seq.context functions for Strelka GRCh37 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })
 
@@ -94,5 +99,6 @@ test_that("extended seq.context functions for Strelka GRCm38 vcf", {
                  file = file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
   expect_equal(out, TRUE)
   expect_equal(out1, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "Extended.seq.context.21bases.pdf"))
 })

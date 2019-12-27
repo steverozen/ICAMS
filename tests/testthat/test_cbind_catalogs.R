@@ -13,6 +13,7 @@ test_that("cbind method for SBS96Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -30,6 +31,7 @@ test_that("cbind method for SBS192Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -46,6 +48,7 @@ test_that("cbind method for SBS1536Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -62,6 +65,7 @@ test_that("cbind method for DBS78Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -79,6 +83,7 @@ test_that("cbind method for DBS144Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -96,6 +101,7 @@ test_that("cbind method for DBS136Catalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
@@ -111,6 +117,7 @@ test_that("cbind method for IndelCatalog", {
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test.pdf"))
   expect_equal(out, TRUE)
+  graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
 })
 
