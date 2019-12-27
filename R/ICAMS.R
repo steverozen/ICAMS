@@ -127,9 +127,20 @@
 #' \item \code{\link{StrelkaIDVCFFilesToCatalogAndPlotToPdf}} creates an ID
 #' (small insertion and deletion) catalog from Strelka ID VCFs and plot it.
 #'
-#' \item \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}} creates all types of SBS, DBS,
-#' and ID catalogs from Mutect VCFs and plots the catalogs.
-#' }
+#' \item \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}} creates all types of
+#' SBS, DBS and ID catalogs from Mutect VCFs and plots the catalogs. }
+#' 
+#' @section Wrapper functions to create a zip file which contains catalogs and plot PDFs from VCF files:
+#' \enumerate{
+#' \item \code{\link{StrelkaSBSVCFFilesToZipFile}} creates a zip file which
+#' contains SBS and DBS catalogs and plot PDFs from Strelka SBS VCF files.
+#' 
+#' \item \code{\link{StrelkaIDVCFFilesToZipFile}} creates a zip file which
+#' contains ID (small insertion and deletion) catalog and plot PDF from
+#' Strelka ID VCF files.
+#' 
+#' \item \code{\link{MutectVCFFilesToZipFile}} creates a zip file which contains
+#' SBS, DBS and ID catalogs and plot PDFs from Mutect VCF files. }
 #'
 #' @section The \code{ref.genome} (reference genome) argument:
 #' 
