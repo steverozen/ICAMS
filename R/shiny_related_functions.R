@@ -236,7 +236,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
     names(vcfs) <- names.of.VCFs
   }
   if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "read VCFs")
+    updateProgress(value = 0.2, detail = "read VCFs")
   }
   return(vcfs)
 }
@@ -428,4 +428,75 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
   
   return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
               catDBS144 = catDBS144))
+}
+
+#' Create ID (small insertion and deletion) catalog from ID VCFs
+#'
+#' @param list.of.vcfs List of in-memory VCFs. The list names will be
+#' the sample ids in the output catalog.
+#'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @param region A character string acting as a region identifier, one of
+#' "genome", "exome".
+#'
+#' @return A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
+#'   
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
+#'   
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
+#'  quietly = TRUE)) {
+#'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
+#'                             region = "genome")}
+VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
+  .VCFsToIDCatalogs(list.of.vcfs, ref.genome, region)
+}
+
+#' The argument updateProgress is to be used in ICAMS.shiny package.
+#' @keywords internal
+.VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
+                              updateProgress = NULL) {
+  ncol <- length(list.of.vcfs)
+  
+  # Create a 0-column matrix with the correct row labels.
+  catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
+  rownames(catID) <- ICAMS::catalog.row.order$ID
+  out.list.of.vcfs <- list()
+  
+  for (i in 1:ncol) {
+    ID <- list.of.vcfs[[i]]
+    ID <- AnnotateIDVCF(ID, ref.genome = ref.genome)
+    # Unlike the case for SBS and DBS, we do not
+    # add transcript information.
+    tmp <- CreateOneColIDMatrix(ID)
+    one.ID.column <- tmp[[1]]
+    out.list.of.vcfs <- c(out.list.of.vcfs, list(tmp[[2]]))
+    rm(ID)
+    catID <- cbind(catID, one.ID.column)
+  }
+  
+  colnames(catID) <- names(list.of.vcfs)
+  names(out.list.of.vcfs) <- names(list.of.vcfs)
+  
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.6, detail = "generated ID catalogs")
+  }
+  
+  return(list(catalog = 
+                as.catalog(catID, ref.genome = ref.genome,
+                           region = region, catalog.type = "counts"),
+              annotated.vcfs = out.list.of.vcfs))
 }
