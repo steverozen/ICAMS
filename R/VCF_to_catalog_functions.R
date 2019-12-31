@@ -1364,50 +1364,6 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
     return(list)
   }
 
-#' Create SBS, DBS and Indel catalogs from Mutect VCF files
-#'
-#' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
-#' Indel catalog from the Mutect VCFs specified by \code{files}
-#'
-#' This function calls \code{\link{VCFsToSBSCatalogs}},
-#' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
-#'
-#' @param files Character vector of file paths to the Mutect VCF files.
-#'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#'
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
-#'   NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
-#'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
-#'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation deletion
-#'   repeat sizes range from 1 to 6+.
-#'   
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
-#'
-#' @export
-#' 
-#' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
-#'                       "Mutect.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
-#'                                       trans.ranges = trans.ranges.GRCh37,
-#'                                       region = "genome")}
-MutectVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA) {
-  vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-  split.vcfs <- SplitListOfMutectVCFs(vcfs)
-  return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, trans.ranges, region),
-           VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, trans.ranges, region),
-           list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, region)[[1]])))
-  }
-
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
