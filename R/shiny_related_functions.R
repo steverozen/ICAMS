@@ -106,6 +106,102 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   invisible(catalogs)
 }
 
+#' Create a zip file which contains ID (small insertion and deletion) catalog
+#' and plot PDF from Strelka ID VCF files
+#' 
+#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
+#' generate a zip archive of all the output files.
+#'
+#' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
+#' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
+#' \code{\link[zip]{zipr}}.
+#' 
+#' @inheritParams MutectVCFFilesToZipFile
+#' 
+#' @param dir Pathname of the directory which contains the Strelka ID VCF files.
+#'   Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
+#'   insensitive) and share the \strong{same} \code{ref.genome} and
+#'   \code{region}.
+#'   
+#' @param base.filename Optional. The base name of the CSV and PDF file to be
+#'   produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
+#'   respectively.
+#'
+#' @importFrom utils glob2rx
+#' 
+#' @importFrom zip zipr 
+#' 
+#' @return  A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
+#'
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation deletion
+#'   repeat sizes range from 1 to 6+.
+#' 
+#' @export
+#' 
+#' @examples 
+#' dir <- c(system.file("extdata/Strelka-ID-vcf",
+#'                       package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- 
+#'     StrelkaIDVCFFilesToZipFile(dir, 
+#'                                zipfile = paste0(tempdir(), "/test.zip"),
+#'                                ref.genome = "hg19", 
+#'                                region = "genome",
+#'                                base.filename = "StrelkaID")
+#'   unlink(paste0(tempdir(), "/test.zip"))}
+StrelkaIDVCFFilesToZipFile <- function(dir,
+                                       zipfile, 
+                                       ref.genome, 
+                                       region = "unknown", 
+                                       names.of.VCFs = NULL, 
+                                       base.filename = ""){
+  .StrelkaIDVCFFilesToZipFile(dir, zipfile, ref.genome, region,
+                              names.of.VCFs, base.filename)
+}
+
+#' The argument updateProgress is to be used in ICAMS.shiny package.
+#' @keywords internal
+.StrelkaIDVCFFilesToZipFile <- function(dir,
+                                       zipfile, 
+                                       ref.genome, 
+                                       region = "unknown", 
+                                       names.of.VCFs = NULL, 
+                                       base.filename = "",
+                                       updateProgress = NULL){
+  files <- list.files(path = dir, pattern = "\\.vcf$", 
+                      full.names = TRUE, ignore.case = TRUE)
+  list <-
+    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
+                                updateProgress)
+  
+  if (base.filename != "") {
+    output.file <- paste0(tempdir(), "\\", base.filename, ".")
+  } else {
+    output.file <- paste0(tempdir(), "\\", base.filename)
+  }
+  
+  WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.1, detail = "wrote catalog to CSV file")
+  }
+  
+  PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.1, detail = "plotted catalog to PDF file")
+  }
+  
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+                           full.names = TRUE)
+  zip::zipr(zipfile = zipfile, files = file.names)
+  unlink(file.names)
+  invisible(list)
+}
+
 #' Create SBS and DBS catalogs from Strelka SBS VCF files.
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
@@ -279,7 +375,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
     names(vcfs) <- names.of.VCFs
   }
   if (is.function(updateProgress)) {
-    updateProgress(value = 0.2, detail = "read VCFs")
+    updateProgress(value = 0.3, detail = "read VCFs")
   }
   return(vcfs)
 }
@@ -535,7 +631,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   names(out.list.of.vcfs) <- names(list.of.vcfs)
   
   if (is.function(updateProgress)) {
-    updateProgress(value = 0.6, detail = "generated ID catalogs")
+    updateProgress(value = 0.5, detail = "generated ID catalogs")
   }
   
   return(list(catalog = 
