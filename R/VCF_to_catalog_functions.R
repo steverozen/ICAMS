@@ -177,7 +177,7 @@ ReadStrelkaIDVCF <- function(file) {
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (all(each.base.col %in% colnames)) {
-    stop("\nVCF does not appear to be a Strelka ID VCF,", 
+    stop("\nVCF does not appear to be a Strelka ID VCF, ", 
          "the value of column FORMAT is \n", 
          control)
   }
@@ -205,7 +205,7 @@ GetStrelkaVAF <-function(vcf) {
   vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (!all(each.base.col %in% colnames)) {
-    stop("\nVCF does not appear to be a Strelka SBS VCF,", 
+    stop("\nVCF does not appear to be a Strelka SBS VCF, ", 
          "the value of column FORMAT is \n", 
          control)
   }
