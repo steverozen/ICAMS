@@ -156,3 +156,45 @@ StrelkaSBSVCFFilesToCatalog <-
              .VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
                                 trans.ranges, region, updateProgress)))
   }
+
+#' Read and split Strelka SBS VCF files.
+#'
+#' @param files Character vector of file paths to the Strelka SBS VCF files.
+#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#'   
+#' @return A list of 3 in-memory objects as follows:
+#' \enumerate{
+#'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS or 3+BS mutations.
+#'
+#'    \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS or 3+BS mutations.
+#'
+#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
+#'    rows that that in the input that did not represent SBSs or DBSs.
+#'
+#'    }
+#'
+#' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
+#'
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
+#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
+  .ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+}
+
+#' The argument updateProgress is to be used in ICAMS.shiny package.
+#' @keywords internal
+.ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL, 
+                                        updateProgress = NULL) {
+  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
+  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.1, detail = "read and split VCFs")
+  }
+  return(split.vcfs)
+}
