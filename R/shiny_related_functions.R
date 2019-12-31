@@ -157,6 +157,49 @@ StrelkaSBSVCFFilesToCatalog <-
                                 trans.ranges, region, updateProgress)))
   }
 
+#' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+#'
+#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' specified by \code{files}
+#' 
+#' This function calls \code{\link{VCFsToIDCatalogs}}
+#'
+#' @param files Character vector of file paths to the Strelka ID VCF files.
+#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
+#' @return A list of two elements. 1st element is an S3 object containing an ID
+#'   (small insertion and deletion) catalog with class "IndelCatalog". See
+#'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
+#'   annotated VCFs.
+#'
+#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
+#'   range from 0 to 5+, but for plotting and end-user documentation
+#'   deletion repeat sizes range from 1 to 6+.
+#'
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Strelka-ID-vcf",
+#'                       "Strelka.ID.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
+#'                                       region = "genome")}
+StrelkaIDVCFFilesToCatalog <- 
+  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL) {
+    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
+  }
+
+#' The argument updateProgress is to be used in ICAMS.shiny package.
+#' @keywords internal
+.StrelkaIDVCFFilesToCatalog <- 
+  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
+           updateProgress = NULL) {
+    vcfs <- .ReadStrelkaIDVCFs(files, names.of.VCFs, updateProgress)
+    return(.VCFsToIDCatalogs(vcfs, ref.genome, region, updateProgress))
+  }
+
 #' Read and split Strelka SBS VCF files.
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
