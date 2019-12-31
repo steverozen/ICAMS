@@ -885,51 +885,6 @@ ReadMutectVCFs <-
   return(vcfs)
 }
 
-#' Read and split Mutect VCF files.
-#'
-#' @param files Character vector of file paths to the Mutect VCF files.
-#'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#'   
-#' @return A list with 3 in-memory VCFs and two left-over
-#' VCF-like data frames with rows that were not incorporated
-#' into the first 3 VCFs, as follows:
-#'
-#' \enumerate{
-#'
-#'  \item \code{SBS} VCF with only single base substitutions.
-#'
-#'  \item \code{DBS} VCF with only doublet base substitutions
-#'   as called by Mutect.
-#'
-#'  \item \code{ID} VCF with only small insertions and deletions.
-#'
-#'  \item \code{other.subs} VCF like data.frame with
-#'  rows for coordinate substitutions involving
-#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
-#'
-#'  \item \code{multiple.alternative.alleles} VCF like data.frame with
-#'  rows for variants with multiple alternative alleles, for example
-#'  ACT mutated to both AGT and ACT at the same position.
-#'
-#' }
-#'
-#' @seealso \code{\link{MutectVCFFilesToCatalog}}
-#'
-#' @export
-#' 
-#' @examples 
-#' file <- c(system.file("extdata/Mutect-vcf",
-#'                       "Mutect.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
-ReadAndSplitMutectVCFs <- 
-  function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
-  vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-  split.vcfs <- SplitListOfMutectVCFs(vcfs)
-  return(split.vcfs)
-}
-
 #' Add sequence context and transcript information to an in-memory SBS VCF.
 #' 
 #' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
