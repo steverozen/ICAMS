@@ -291,3 +291,99 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
               catSBS1536 = catSBS1536))
 }
+
+#' Create DBS catalogs from VCFs
+#'
+#' Create a list of 3 catalogs (one each for DBS78, DBS144 and DBS136)
+#' out of the contents in list.of.DBS.vcfs. The VCFs must not contain
+#' any type of mutation other then DBSs.
+#'
+#' @param list.of.DBS.vcfs List of in-memory data frames of pure DBS mutations
+#'   -- no SBS or 3+BS mutations. The list names will be the sample ids in the
+#'   output catalog.
+#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#'
+#' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
+#'   catDBS144 catDBS136. If trans.ranges = NULL, DBS 144 catalog will not be
+#'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
+#'   for more details.
+#'
+#' @note DBS 144 catalog only contains mutations in transcribed regions.
+#'
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
+#' 
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.vcf",
+#'                       package = "ICAMS"))
+#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
+#'                                     trans.ranges = trans.ranges.GRCh37,
+#'                                     region = "genome")}
+VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
+                              trans.ranges = NULL, region = "unknown") {
+  .VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome, trans.ranges, region)
+}
+
+#' The argument updateProgress is to be used in ICAMS.shiny package.
+#' @keywords internal
+.VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
+                               trans.ranges = NULL, region = "unknown",
+                               updateProgress = NULL) {
+  ncol <- length(list.of.DBS.vcfs)
+  
+  catDBS78 <- empty.cats$catDBS78
+  catDBS136 <- empty.cats$catDBS136
+  catDBS144 <- empty.cats$catDBS144
+  trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
+  
+  for (i in 1 : ncol) {
+    DBS.vcf <- list.of.DBS.vcfs[[i]]
+    
+    annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges)
+    
+    DBS.cat <- CreateOneColDBSMatrix(annotated.DBS.vcf)
+    catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
+    catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
+    if (!is.null(trans.ranges)) {
+      catDBS144 <- cbind(catDBS144, DBS.cat$catDBS144)
+    }
+  }
+  
+  colnames(catDBS78) <- names(list.of.DBS.vcfs)
+  colnames(catDBS136) <- names(list.of.DBS.vcfs)
+  
+  catDBS78 <-
+    as.catalog(catDBS78, ref.genome = ref.genome,
+               region = region, catalog.type = "counts")
+  
+  catDBS136 <-
+    as.catalog(catDBS136, 
+               ref.genome = ref.genome,
+               region = region,
+               catalog.type = "counts",
+               abundance = NULL)
+  
+  if (is.null(trans.ranges)) {
+    return(list(catDBS78 = catDBS78, catDBS136 = catDBS136))
+  }
+  colnames(catDBS144) <- names(list.of.DBS.vcfs)
+  in.transcript.region <- ifelse(region == "genome", "transcript", region)
+  catDBS144 <-
+    as.catalog(catDBS144, 
+               ref.genome = ref.genome,
+               region = in.transcript.region, 
+               catalog.type = "counts",
+               abundance = NULL)
+  
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.3, detail = "generated DBS catalogs")
+  }
+  
+  return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
+              catDBS144 = catDBS144))
+}
