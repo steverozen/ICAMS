@@ -840,39 +840,6 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
   return(vcfs)
 }
 
-#' Read Strelka ID (small insertion and deletion) VCF files.
-#'
-#' @param files Character vector of file paths to the Strelka ID VCF files.
-#'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#' 
-#' @return A list of vcfs from \code{files}.
-#'
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation
-#'   deletion repeat sizes range from 1 to 6+.
-#'
-#' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
-#'
-#' @export
-#' 
-#' @examples 
-#' file <- c(system.file("extdata/Strelka-ID-vcf",
-#'                       "Strelka.ID.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadStrelkaIDVCFs(file)
-ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
-  vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
-  if (is.null(names.of.VCFs)) {
-    names(vcfs) <- tools::file_path_sans_ext(basename(files))
-  } else {
-    CheckNamesOfVCFs(files, names.of.VCFs)
-    names(vcfs) <- names.of.VCFs
-  }
-  
-  return(vcfs)
-}
-
 #' Read Mutect VCF files.
 #'
 #' @param files Character vector of file paths to the VCF files.
