@@ -584,7 +584,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
     names(vcfs) <- names.of.VCFs
   }
   if (is.function(updateProgress)) {
-    updateProgress(value = 0.3, detail = "read VCFs")
+    updateProgress(value = 0.1, detail = "read VCFs")
   }
   return(vcfs)
 }
