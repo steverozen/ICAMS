@@ -1521,46 +1521,6 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
               catDBS144 = catDBS144))
 }
 
-#' Create SBS and DBS catalogs from Strelka SBS VCF files.
-#'
-#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
-#' from the Strelka SBS VCFs specified by \code{files}
-#'
-#' This function calls \code{\link{VCFsToSBSCatalogs}} and
-#' \code{\link{VCFsToDBSCatalogs}}.
-#'
-#' @param files Character vector of file paths to the Strelka SBS VCF files.
-#'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#' 
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
-#'   and DBS 144 catalog will not be generated. Each catalog has attributes
-#'   added. See \code{\link{as.catalog}} for more details.
-#'
-#' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
-#' 
-#' @inheritSection MutectVCFFilesToCatalog Comments
-#' 
-#' @export
-#' 
-#' @examples 
-#' file <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       "Strelka.SBS.GRCh37.vcf",
-#'                       package = "ICAMS"))
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   catalogs <- StrelkaSBSVCFFilesToCatalog(file, ref.genome = "hg19",
-#'                                           trans.ranges = trans.ranges.GRCh37,
-#'                                           region = "genome")}
-StrelkaSBSVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL) {
-  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
-  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
-  return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, trans.ranges, region),
-           VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, trans.ranges, region)))
-  }
-
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
