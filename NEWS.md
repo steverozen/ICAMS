@@ -17,6 +17,10 @@
   Used @inheritParams to reduce repetitive documentation.
 * Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
   based on plot.type
+* Created multiple hidden internal functions(.StrelkaSBSVCFFilesToZipFile() for example) 
+  which take the argument updateProgress that can be used in ICAMS.shiny package to update the  
+  progress indicator.
+* Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
