@@ -51,6 +51,30 @@ test_that("CheckAndFixChrNames for human genome 37", {
       ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5),
     c("X", "Y"))
   
+  in.vcf6 <- make.input(c("23", "X"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf6,
+      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5))
+  
+  in.vcf7 <- make.input(c("chr23", "chrX"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf7,
+      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5))
+  
+  in.vcf8 <- make.input(c("24", "Y"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf8,
+      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5))
+  
+  in.vcf9 <- make.input(c("chr24", "chrY"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf9,
+      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5))
+  
   bad.vcf <- make.input(c("1", "chr2"))
   expect_error(
     CheckAndFixChrNames(
@@ -108,6 +132,30 @@ test_that("CheckAndFixChrNames for human genome 38", {
       vcf.df = in.vcf4,
       ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38),
     c("chrX", "chrY"))
+  
+  in.vcf6 <- make.input(c("23", "X"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf6,
+      ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38))
+  
+  in.vcf7 <- make.input(c("chr23", "chrX"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf7,
+      ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38))
+  
+  in.vcf8 <- make.input(c("24", "Y"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf8,
+      ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38))
+  
+  in.vcf9 <- make.input(c("chr24", "chrY"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf9,
+      ref.genome = BSgenome.Hsapiens.UCSC.hg38::BSgenome.Hsapiens.UCSC.hg38))
   
   bad.vcf <- make.input(c("1", "chr2"))
   expect_error(
@@ -167,6 +215,30 @@ test_that("CheckAndFixChrNames for mouse genome", {
       ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10),
     c("chrX", "chrY"))
   
+  in.vcf6 <- make.input(c("20", "X"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf6,
+      ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10))
+  
+  in.vcf7 <- make.input(c("chr20", "chrX"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf7,
+      ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10))
+  
+  in.vcf8 <- make.input(c("21", "Y"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf8,
+      ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10))
+  
+  in.vcf9 <- make.input(c("chr21", "chrY"))
+  expect_error(
+    CheckAndFixChrNames(
+      vcf.df = in.vcf9,
+      ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10))
+  
   bad.vcf <- make.input(c("1", "chr2"))
   expect_error(
     CheckAndFixChrNames(
@@ -174,3 +246,4 @@ test_that("CheckAndFixChrNames for mouse genome", {
       ref.genome = BSgenome.Mmusculus.UCSC.mm10::BSgenome.Mmusculus.UCSC.mm10))
 }
 )
+
