@@ -683,58 +683,60 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome) {
   
   organism <- BSgenome::organism(ref.genome)
   
+  CheckForPossibleMatchedChrName <- function(chr1, chr2) {
+    if (chr1 %in% names.to.check) {
+      # If chr2 is already in names.to.check, then stop
+      if (chr2 %in% names.to.check) {
+        stopmessage <- function() {
+          stop("\n", chr1, " and ", chr2, " both are chromosome names in input",
+               ", which should not be the case for ", organism, ". Please check ",
+               "your data or specify the correct ref.genome argument")
+        }
+        if (vcf.has.chr.prefix) {
+          if (grepl(pattern = "^chr", chr1)) {
+            stopmessage()
+          } else {
+            chr1 <- paste0("chr", chr1)
+            chr2 <- paste0("chr", chr2)
+            stopmessage()
+          }
+        } else {
+          if (!grepl(pattern = "^chr", chr1)) {
+            stopmessage()
+          } else {
+            chr1 <- gsub("chr", "", chr1)
+            chr2 <- gsub("chr", "", chr2)
+            stopmessage()
+          }
+        }
+      }
+      
+      new.chr.names[new.chr.names == chr1] <<- chr2
+      names.to.check <- setdiff(names.to.check, chr1)
+      names.to.check <<- unique(c(names.to.check, chr2))
+    }
+    }
+      
   if (organism == "Homo sapiens") {
     
     # Maybe the problem is that X and Y are encoded as chr23 and chr24
-    if ("chr23" %in% names.to.check) {
-      new.chr.names[new.chr.names == "chr23"] <- "chrX"
-      names.to.check <- setdiff(names.to.check, "chr23")
-      names.to.check <- unique(c(names.to.check, "chrX"))
-    }
-    if ("chr24" %in% names.to.check) {
-      new.chr.names[new.chr.names == "chr24"] <- "chrY"
-      names.to.check <- setdiff(names.to.check, "chr24")
-      names.to.check <- unique(c(names.to.check, "chrY"))
-    }
+    CheckForPossibleMatchedChrName("chr23", "chrX")
+    CheckForPossibleMatchedChrName("chr24", "chrY")
     
     # Maybe the problem is that X and Y are encoded as 23 and 24
-    if ("23" %in% names.to.check) {
-      new.chr.names[new.chr.names == "23"] <- "X"
-      names.to.check <- setdiff(names.to.check, "23")
-      names.to.check <- unique(c(names.to.check, "X"))
-    }
-    if ("24" %in% names.to.check) {
-      new.chr.names[new.chr.names == "24"] <- "Y"
-      names.to.check <- setdiff(names.to.check, "24")
-      names.to.check <- unique(c(names.to.check, "Y"))
-    }
+    CheckForPossibleMatchedChrName("23", "X")
+    CheckForPossibleMatchedChrName("24", "Y")
   }
   
   if (organism == "Mus musculus") {
     
     # Maybe the problem is that X and Y are encoded as chr20 and chr21
-    if ("chr20" %in% names.to.check) {
-      new.chr.names[new.chr.names == "chr20"] <- "chrX"
-      names.to.check <- setdiff(names.to.check, "chr20")
-      names.to.check <- unique(c(names.to.check, "chrX"))
-    }
-    if ("chr21" %in% names.to.check) {
-      new.chr.names[new.chr.names == "chr21"] <- "chrY"
-      names.to.check <- setdiff(names.to.check, "chr21")
-      names.to.check <- unique(c(names.to.check, "chrY"))
-    }
+    CheckForPossibleMatchedChrName("chr20", "chrX")
+    CheckForPossibleMatchedChrName("chr21", "chrY")
     
     # Maybe the problem is that X and Y are encoded as 20 and 21
-    if ("20" %in% names.to.check) {
-      new.chr.names[new.chr.names == "20"] <- "X"
-      names.to.check <- setdiff(names.to.check, "20")
-      names.to.check <- unique(c(names.to.check, "X"))
-    }
-    if ("21" %in% names.to.check) {
-      new.chr.names[new.chr.names == "21"] <- "Y"
-      names.to.check <- setdiff(names.to.check, "21")
-      names.to.check <- unique(c(names.to.check, "Y"))
-    }
+    CheckForPossibleMatchedChrName("20", "X")
+    CheckForPossibleMatchedChrName("21", "Y")
   }
   
   not.matched3 <- setdiff(names.to.check, ref.genome.names)
