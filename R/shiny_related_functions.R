@@ -49,9 +49,10 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         trans.ranges = NULL, 
                                         region = "unknown", 
                                         names.of.VCFs = NULL, 
-                                        base.filename = "") {
-  .StrelkaSBSVCFFilesToZipFile(dir, zipfile, ref.genome, trans.ranges,
-                               region, names.of.VCFs, base.filename)
+                                        base.filename = "",
+                                        updateProgress = NULL) {
+  .StrelkaSBSVCFFilesToZipFile(dir, zipfile, ref.genome, trans.ranges, region,
+                               names.of.VCFs, base.filename, updateProgress)
 }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.
@@ -159,9 +160,10 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
-                                       base.filename = ""){
+                                       base.filename = "",
+                                       updateProgress = NULL){
   .StrelkaIDVCFFilesToZipFile(dir, zipfile, ref.genome, region,
-                              names.of.VCFs, base.filename)
+                              names.of.VCFs, base.filename, updateProgress)
 }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.
@@ -256,6 +258,9 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 #'   of catalog.
+#'   
+#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
+#'   update the progress indicator.
 #'
 #' @importFrom utils glob2rx 
 #' 
@@ -297,9 +302,11 @@ MutectVCFFilesToZipFile <- function(dir,
                                     region = "unknown", 
                                     names.of.VCFs = NULL, 
                                     tumor.col.names = NA,
-                                    base.filename = ""){
+                                    base.filename = "",
+                                    updateProgress = NULL){
   .MutectVCFFilesToZipFile(dir, zipfile, ref.genome, trans.ranges, region, 
-                           names.of.VCFs, tumor.col.names, base.filename)
+                           names.of.VCFs, tumor.col.names, base.filename, 
+                           updateProgress)
 }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.

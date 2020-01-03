@@ -11,7 +11,8 @@ StrelkaSBSVCFFilesToZipFile(
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  base.filename = ""
+  base.filename = "",
+  updateProgress = NULL
 )
 }
 \arguments{
@@ -52,6 +53,9 @@ used as the names of the VCF files.}
 produced; multiple files will be generated, each ending in
 \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 of catalog.}
+
+\item{updateProgress}{Optional. Currently only used in ICAMS.shiny package to
+update the progress indicator.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
