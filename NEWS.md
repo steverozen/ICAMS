@@ -12,7 +12,8 @@
   where REF = T and ALT = A,C which indicates the alternate allele in some reads
   is A and in some reads C.
 * Added an internal function to infer trans ranges from input ref.genome.
-  Updated the documentation of the exported functions which have argument "trans.ranges"   to make it optional.
+  Updated the documentation of the exported functions which have argument "trans.ranges"
+  to make it optional.
 * Updated documentation for optional arguments in the functions reading VCF files.
   Used @inheritParams to reduce repetitive documentation.
 * Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
@@ -21,6 +22,7 @@
   which take the argument updateProgress that can be used in ICAMS.shiny package to update the  
   progress indicator.
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
+* Corrected error message in TransformCatalog.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 

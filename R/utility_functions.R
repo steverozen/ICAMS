@@ -297,7 +297,7 @@ TCFromCouSig <- function(s, t) {
     # counts.signature -> density.signature
      if (is.null(s[["abundance"]])) {
        stop("Cannot transform from counts.signature -> denisity.signature ",
-            "if target abundance is NULL")
+            "if source abundance is NULL")
      } else {
        return(TRUE)
      }
