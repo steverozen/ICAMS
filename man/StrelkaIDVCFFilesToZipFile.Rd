@@ -70,9 +70,9 @@ dir <- c(system.file("extdata/Strelka-ID-vcf",
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
     StrelkaIDVCFFilesToZipFile(dir, 
-                               zipfile = paste0(tempdir(), "/test.zip"),
+                               zipfile = file.path(tempdir(), "test.zip"),
                                ref.genome = "hg19", 
                                region = "genome",
                                base.filename = "StrelkaID")
-  unlink(paste0(tempdir(), "/test.zip"))}
+  unlink(file.path(tempdir(), "test.zip"))}
 }

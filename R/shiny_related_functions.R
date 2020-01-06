@@ -37,12 +37,12 @@
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
 #'     StrelkaSBSVCFFilesToZipFile(dir, 
-#'                                 zipfile = paste0(tempdir(), "/test.zip"),
+#'                                 zipfile = file.path(tempdir(), "test.zip"),
 #'                                 ref.genome = "hg19", 
 #'                                 trans.ranges = trans.ranges.GRCh37,
 #'                                 region = "genome",
 #'                                 base.filename = "StrelkaSBS")
-#'   unlink(paste0(tempdir(), "/test.zip"))}
+#'   unlink(file.path(tempdir(), "test.zip"))}
 StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         zipfile, 
                                         ref.genome, 
@@ -73,9 +73,9 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                  region, names.of.VCFs, updateProgress)
   
   if (base.filename != "") {
-    output.file <- paste0(tempdir(), "\\", base.filename, ".")
+    output.file <- file.path(tempdir(), paste0(base.filename, "."))
   } else {
-    output.file <- paste0(tempdir(), "\\", base.filename)
+    output.file <- file.path(tempdir(), base.filename)
   }
   
   for (name in names(catalogs)) {
@@ -150,11 +150,11 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
 #'     StrelkaIDVCFFilesToZipFile(dir, 
-#'                                zipfile = paste0(tempdir(), "/test.zip"),
+#'                                zipfile = file.path(tempdir(), "test.zip"),
 #'                                ref.genome = "hg19", 
 #'                                region = "genome",
 #'                                base.filename = "StrelkaID")
-#'   unlink(paste0(tempdir(), "/test.zip"))}
+#'   unlink(file.path(tempdir(), "test.zip"))}
 StrelkaIDVCFFilesToZipFile <- function(dir,
                                        zipfile, 
                                        ref.genome, 
@@ -182,9 +182,9 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                 updateProgress)
   
   if (base.filename != "") {
-    output.file <- paste0(tempdir(), "\\", base.filename, ".")
+    output.file <- file.path(tempdir(), paste0(base.filename, "."))
   } else {
-    output.file <- paste0(tempdir(), "\\", base.filename)
+    output.file <- file.path(tempdir(), base.filename)
   }
   
   WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
@@ -289,12 +289,12 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
 #'     MutectVCFFilesToZipFile(dir, 
-#'                             zipfile = paste0(tempdir(), "/test.zip"),
+#'                             zipfile = file.path(tempdir(), "test.zip"),
 #'                             ref.genome = "hg19", 
 #'                             trans.ranges = trans.ranges.GRCh37,
 #'                             region = "genome",
 #'                             base.filename = "Mutect")
-#'   unlink(paste0(tempdir(), "/test.zip"))}
+#'   unlink(file.path(tempdir(), "test.zip"))}
 MutectVCFFilesToZipFile <- function(dir,
                                     zipfile, 
                                     ref.genome, 
@@ -328,9 +328,9 @@ MutectVCFFilesToZipFile <- function(dir,
                              updateProgress)
   
   if (base.filename != "") {
-    output.file <- paste0(tempdir(), "\\", base.filename, ".")
+    output.file <- file.path(tempdir(), paste0(base.filename, "."))
   } else {
-    output.file <- paste0(tempdir(), "\\", base.filename)
+    output.file <- file.path(tempdir(), base.filename)
   }
   
   for (name in names(catalogs)) {

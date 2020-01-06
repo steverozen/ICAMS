@@ -100,10 +100,10 @@ dir <- c(system.file("extdata/Mutect-vcf",
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 
     MutectVCFFilesToZipFile(dir, 
-                            zipfile = paste0(tempdir(), "/test.zip"),
+                            zipfile = file.path(tempdir(), "test.zip"),
                             ref.genome = "hg19", 
                             trans.ranges = trans.ranges.GRCh37,
                             region = "genome",
                             base.filename = "Mutect")
-  unlink(paste0(tempdir(), "/test.zip"))}
+  unlink(file.path(tempdir(), "test.zip"))}
 }
