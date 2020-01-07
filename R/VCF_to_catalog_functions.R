@@ -299,8 +299,9 @@ ReadMutectVCF <-
 #' @export
 GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
-  if (!any(grepl("/1", unlist(vcf[1, ])))) {
-    stop("\nVCF does not appear to be a Mutect VCF, please check the data")
+  if (!any(grepl("/1", unlist(vcf[1, ]))) && !any(grepl("|1", unlist(vcf[1, ])))) {
+    stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+         " does not appear to be a Mutect VCF, please check the data")
   }
   
   if (!is.na(tumor.col.name)) {
