@@ -466,6 +466,9 @@ StrelkaIDVCFFilesToCatalog <-
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
+#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
+#'   update the progress indicator.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
@@ -490,10 +493,10 @@ StrelkaIDVCFFilesToCatalog <-
 #'                                       trans.ranges = trans.ranges.GRCh37,
 #'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA) {
+  function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
+           names.of.VCFs = NULL, tumor.col.names = NA, updateProgress = NULL) {
     .MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, region,
-                             names.of.VCFs, tumor.col.names)
+                             names.of.VCFs, tumor.col.names, updateProgress)
   }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.
