@@ -62,6 +62,7 @@ GATK
 gencode
 Gencode
 GetCustomKmerCounts
+GetMutectVAF
 GC
 GG
 GGTA
