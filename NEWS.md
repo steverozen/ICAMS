@@ -24,6 +24,7 @@
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 * Corrected error message in TransformCatalog.
 * Added optional argument updateProgress in the wrapper functions generating zip archive.
+* Fixed a bug in exported function GetMutectVAF().
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
