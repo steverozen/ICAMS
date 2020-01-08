@@ -25,6 +25,8 @@
 * Corrected error message in TransformCatalog.
 * Added optional argument updateProgress in the wrapper functions generating zip archive.
 * Fixed a bug in exported function GetMutectVAF().
+* Fixed bugs in functions generating zip archive from VCF files and added more 
+  automated test.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
