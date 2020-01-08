@@ -299,7 +299,8 @@ ReadMutectVCF <-
 #' @export
 GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
-  if (!any(grepl("/1", unlist(vcf[1, ]))) && !any(grepl("|1", unlist(vcf[1, ])))) {
+  if (!any(grepl("/1", unlist(vcf[1, ]), fixed = TRUE)) && 
+      !any(grepl("|1", unlist(vcf[1, ]), fixed = TRUE))) {
     stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
          " does not appear to be a Mutect VCF, please check the data")
   }
@@ -995,7 +996,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
     stop("\nSample ", sample.id, 
          ":\nThe reference base in ref.genome does not match the ", 
          "reference base in ", length(mismatches),
-         "rows in the VCF file.\n",
+         " rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
   
