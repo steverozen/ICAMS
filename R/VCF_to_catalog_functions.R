@@ -835,6 +835,8 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
+    # Check whether the number of VCFs match the number of names
+    # in names.of.VCFs
     CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
   }
@@ -868,6 +870,8 @@ ReadMutectVCFs <-
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
+    # Check whether the number of VCFs match the number of names
+    # in names.of.VCFs
     CheckNamesOfVCFs(files, names.of.VCFs)
     vcfs.names <- names.of.VCFs
   }
