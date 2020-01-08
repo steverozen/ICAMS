@@ -72,27 +72,29 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
     .StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                                  region, names.of.VCFs, updateProgress)
   
-  if (base.filename != "") {
-    output.file <- file.path(tempdir(), paste0(base.filename, "."))
-  } else {
-    output.file <- file.path(tempdir(), base.filename)
-  }
+  output.file <- ifelse(base.filename == "", tempdir(),
+                        file.path(tempdir(), paste0(base.filename, ".")))
   
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
-                 file = paste0(output.file, name, ".csv"))
+                 file = ifelse(base.filename == "", 
+                               file.path(output.file, paste0(name, ".csv")),
+                               paste0(output.file, name, ".csv")))
   }
-  
   if (is.function(updateProgress)) {
     updateProgress(value = 0.1, detail = "wrote catalogs to CSV files")
   }
   
   for (name in names(catalogs)) {
     PlotCatalogToPdf(catalogs[[name]],
-                     file = paste0(output.file, name, ".pdf"))
+                     file = ifelse(base.filename == "",
+                                   file.path(output.file, paste0(name, ".pdf")),
+                                   paste0(output.file, name, ".pdf")))
     if (name == "catSBS192") {
       PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, "SBS12.pdf"),
+                       file = ifelse(base.filename == "",
+                                     file.path(output.file, "SBS12.pdf"),
+                                     paste0(output.file, "SBS12.pdf")),
                        plot.SBS12 = TRUE)
     }
   }
@@ -181,18 +183,21 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
     .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
                                 updateProgress)
   
-  if (base.filename != "") {
-    output.file <- file.path(tempdir(), paste0(base.filename, "."))
-  } else {
-    output.file <- file.path(tempdir(), base.filename)
-  }
+  output.file <- ifelse(base.filename == "", tempdir(),
+                        file.path(tempdir(), paste0(base.filename, ".")))
   
-  WriteCatalog(list$catalog, file = paste0(output.file, "catID", ".csv"))
+  WriteCatalog(list$catalog, 
+               file = ifelse(base.filename == "", 
+                             file.path(output.file, "catID.csv"),
+                             paste0(output.file, "catID.csv")))
   if (is.function(updateProgress)) {
     updateProgress(value = 0.1, detail = "wrote catalog to CSV file")
   }
   
-  PlotCatalogToPdf(list$catalog, file = paste0(output.file, "catID", ".pdf"))
+  PlotCatalogToPdf(list$catalog, 
+                   file = ifelse(base.filename == "",
+                                 file.path(output.file, "catID.pdf"),
+                                 paste0(output.file, "catID.pdf")))
   if (is.function(updateProgress)) {
     updateProgress(value = 0.1, detail = "plotted catalog to PDF file")
   }
@@ -327,15 +332,14 @@ MutectVCFFilesToZipFile <- function(dir,
                              region, names.of.VCFs, tumor.col.names,
                              updateProgress)
   
-  if (base.filename != "") {
-    output.file <- file.path(tempdir(), paste0(base.filename, "."))
-  } else {
-    output.file <- file.path(tempdir(), base.filename)
-  }
+  output.file <- ifelse(base.filename == "", tempdir(),
+                        file.path(tempdir(), paste0(base.filename, ".")))
   
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
-                 file = paste0(output.file, name, ".csv"))
+                 file = ifelse(base.filename == "", 
+                               file.path(output.file, paste0(name, ".csv")),
+                               paste0(output.file, name, ".csv")))
   }
   if (is.function(updateProgress)) {
     updateProgress(value = 0.1, detail = "wrote catalogs to CSV files")
@@ -343,10 +347,14 @@ MutectVCFFilesToZipFile <- function(dir,
   
   for (name in names(catalogs)) {
     PlotCatalogToPdf(catalogs[[name]],
-                     file = paste0(output.file, name, ".pdf"))
+                     file = ifelse(base.filename == "",
+                                   file.path(output.file, paste0(name, ".pdf")),
+                                   paste0(output.file, name, ".pdf")))
     if (name == "catSBS192") {
       PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, "SBS12.pdf"),
+                       file = ifelse(base.filename == "",
+                                     file.path(output.file, "SBS12.pdf"),
+                                     paste0(output.file, "SBS12.pdf")),
                        plot.SBS12 = TRUE)
     }
   }
