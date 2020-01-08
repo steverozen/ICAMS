@@ -709,10 +709,11 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   
   for (i in 1:ncol) {
     SBS.vcf <- list.of.SBS.vcfs[[i]]
+    sample.id <- names(list.of.SBS.vcfs)[i]
     
     annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
     
-    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf)
+    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
       catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
