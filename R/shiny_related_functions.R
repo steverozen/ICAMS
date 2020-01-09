@@ -465,7 +465,7 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
-#' @inheritParams zip
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
 #'   update the progress indicator.
