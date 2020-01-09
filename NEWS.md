@@ -23,7 +23,7 @@
   progress indicator. 
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 * Corrected error message in TransformCatalog.
-* Added optional argument updateProgress in the wrapper functions generating zip archive.
+* Added optional argument updateProgress in the functions generating catalogs.
 * Fixed a bug in exported function GetMutectVAF().
 * Fixed bugs in functions generating zip archive from VCF files and added more 
   automated test.

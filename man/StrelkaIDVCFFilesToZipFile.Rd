@@ -11,8 +11,7 @@ StrelkaIDVCFFilesToZipFile(
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  base.filename = "",
-  updateProgress = NULL
+  base.filename = ""
 )
 }
 \arguments{
@@ -39,9 +38,6 @@ used as the names of the VCF files.}
 \item{base.filename}{Optional. The base name of the CSV and PDF file to be
 produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
 respectively.}
-
-\item{updateProgress}{Optional. Currently only used in ICAMS.shiny package to
-update the progress indicator.}
 }
 \value{
 A list of two elements. 1st element is an S3 object containing an ID
