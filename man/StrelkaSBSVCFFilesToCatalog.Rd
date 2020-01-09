@@ -9,7 +9,8 @@ StrelkaSBSVCFFilesToCatalog(
   ref.genome,
   trans.ranges = NULL,
   region = "unknown",
-  names.of.VCFs = NULL
+  names.of.VCFs = NULL,
+  updateProgress = NULL
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ file paths in \code{files}. If \code{NULL}(default), this function will
 remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
+
+\item{updateProgress}{Optional. Currently only used in ICAMS.shiny package to
+update the progress indicator.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS

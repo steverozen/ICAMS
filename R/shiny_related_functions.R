@@ -370,6 +370,9 @@ MutectVCFFilesToZipFile <- function(dir,
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
+#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
+#'   update the progress indicator.
+#' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
 #'   and DBS 144 catalog will not be generated. Each catalog has attributes
@@ -390,10 +393,10 @@ MutectVCFFilesToZipFile <- function(dir,
 #'                                           trans.ranges = trans.ranges.GRCh37,
 #'                                           region = "genome")}
 StrelkaSBSVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL) {
+  function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
+           names.of.VCFs = NULL, updateProgress = NULL) {
     .StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                 region, names.of.VCFs)
+                                 region, names.of.VCFs, updateProgress)
   }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.
@@ -420,6 +423,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
+#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
+#'   update the progress indicator.
+#' 
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
@@ -439,8 +445,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- 
-  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL) {
-    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
+  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
+           updateProgress = NULL) {
+    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
+                                updateProgress)
   }
 
 #' The argument updateProgress is to be used in ICAMS.shiny package.
@@ -462,7 +470,7 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' @inheritParams zip
 #' 
 #' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
 #'   update the progress indicator.
