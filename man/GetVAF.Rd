@@ -6,7 +6,7 @@
 \alias{GetMutectVAF}
 \title{Extract the VAFs (variant allele frequencies) from a VCF file.}
 \usage{
-GetStrelkaVAF(vcf)
+GetStrelkaVAF(vcf, name.of.VCF = NULL)
 
 GetMutectVAF(vcf, name.of.VCF = NULL, tumor.col.name = NA)
 }
