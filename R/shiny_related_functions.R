@@ -647,13 +647,12 @@ ReadAndSplitMutectVCFs <-
 .ReadAndSplitMutectVCFs <- 
   function(files, names.of.VCFs = NULL, tumor.col.names = NA, 
            updateProgress = NULL) {
-    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-    split.vcfs <- SplitListOfMutectVCFs(vcfs)
-    
     if (is.function(updateProgress)) {
-      updateProgress(value = 0.1, detail = "read and split VCFs")
+      updateProgress(value = 0.1, detail = "reading and splitting VCFs")
     }
     
+    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
+    split.vcfs <- SplitListOfMutectVCFs(vcfs)
     return(split.vcfs)
   }
 
@@ -700,6 +699,10 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 .VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
                                trans.ranges = NULL, region = "unknown",
                                updateProgress = NULL) {
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.1, detail = "generating SBS catalogs")
+  }
+  
   ncol <- length(list.of.SBS.vcfs)
   
   catSBS96 <- empty.cats$catSBS96
@@ -743,10 +746,6 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
                region = in.transcript.region, 
                catalog.type = "counts",
                abundance = NULL)
-  
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.3, detail = "generated SBS catalogs")
-  }
   
   return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
               catSBS1536 = catSBS1536))
@@ -794,6 +793,10 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 .VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
                                trans.ranges = NULL, region = "unknown",
                                updateProgress = NULL) {
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.3, detail = "generating DBS catalogs")
+  }
+  
   ncol <- length(list.of.DBS.vcfs)
   
   catDBS78 <- empty.cats$catDBS78
@@ -840,10 +843,6 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
                catalog.type = "counts",
                abundance = NULL)
   
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.3, detail = "generated DBS catalogs")
-  }
-  
   return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
               catDBS144 = catDBS144))
 }
@@ -887,6 +886,10 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
 #' @keywords internal
 .VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                               updateProgress = NULL) {
+  if (is.function(updateProgress)) {
+    updateProgress(value = 0.2, detail = "generating ID catalogs")
+  }
+  
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
@@ -908,10 +911,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   
   colnames(catID) <- names(list.of.vcfs)
   names(out.list.of.vcfs) <- names(list.of.vcfs)
-  
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "generated ID catalogs")
-  }
   
   return(list(catalog = 
                 as.catalog(catID, ref.genome = ref.genome,
