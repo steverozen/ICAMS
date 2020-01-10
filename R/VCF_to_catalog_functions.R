@@ -200,13 +200,15 @@ ReadStrelkaIDVCF <- function(file) {
 #' @rdname GetVAF
 #'
 #' @export
-GetStrelkaVAF <-function(vcf) {
+GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
   stopifnot("data.frame" %in% class(vcf))
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
-    stop("\nVCF does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
+         " does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
+  
   TUMOR <- vcf[ , "TUMOR"]
   control <- unique(vcf[ , "FORMAT"])
   alt     <- vcf[ , "ALT"]
