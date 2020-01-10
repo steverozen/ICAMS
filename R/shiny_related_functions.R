@@ -586,7 +586,8 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #' @keywords internal
 .ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL, 
                                updateProgress = NULL) {
-  vcfs <- lapply(files, FUN = ReadStrelkaIDVCF)
+  vcfs <- 
+    lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs)
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
