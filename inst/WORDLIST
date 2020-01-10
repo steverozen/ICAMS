@@ -63,6 +63,7 @@ gencode
 Gencode
 GetCustomKmerCounts
 GetMutectVAF
+GetStrelkaVAF
 GC
 GG
 GGTA
@@ -119,7 +120,9 @@ PyrTri
 ReadAndSplitMutectVCFs
 ReadAndSplitStrelkaSBSVCFs
 ReadCatalog
+ReadStrelkaIDVCF
 ReadStrelkaIDVCFs
+ReadStrelkaSBSVCF
 rowname
 Sancar
 sanger
