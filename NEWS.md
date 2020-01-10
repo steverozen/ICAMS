@@ -19,16 +19,17 @@
 * Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
   based on plot.type
 * Created multiple hidden internal functions(.StrelkaSBSVCFFilesToZipFile() for example) 
-  which take the argument updateProgress that can be used in ICAMS.shiny package to update the  
-  progress indicator. 
+  which take the argument updateProgress that can be used in ICAMS.shiny package 
+  to update the progress indicator.   
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 * Corrected error message in TransformCatalog.
 * Added optional argument updateProgress in the functions generating catalogs.
-* Fixed a bug in exported function GetMutectVAF().
-* Fixed bugs in functions generating zip archive from VCF files and added more 
-  automated test.
-* Added an additional argument "name.of.VCF" in internal functions
-ReadStrelkaSBSVCF(), ReadStrelkaIDVCF() and exported function GetStrelkaVAF().
+* Fixed a bug in exported function GetMutectVAF() and updated the warning
+  message to make it more informative. 
+* Fixed bugs in functions generating zip archive from VCF files and added 
+  more automated test. 
+* Added an additional argument "name.of.VCF" in internal functions 
+  ReadStrelkaSBSVCF(), ReadStrelkaIDVCF() and exported function GetStrelkaVAF().
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
