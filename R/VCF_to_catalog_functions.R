@@ -127,13 +127,24 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #' @importFrom utils read.csv
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
+#' 
+#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#'   function will remove all of the path up to and including the last path
+#'   separator (if any) in \code{file} and file path without extensions (and the
+#'   leading dot) will be used as the name of the VCF file.
 #'
 #' @return A data frame storing mutation records of a VCF file with VAFs added.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCF <- function(file) {
+ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   df <- MakeDataFrameFromStrelkaSBSVCF(file)
-  df$VAF <- GetStrelkaVAF(df)
+  if (is.null(name.of.VCF)) {
+    vcf.name <- tools::file_path_sans_ext(basename(file))
+  } else {
+    vcf.name <- name.of.VCF
+  }
+  
+  df$VAF <- GetStrelkaVAF(df, vcf.name)
   return(StandardChromName(df))
 }
 
