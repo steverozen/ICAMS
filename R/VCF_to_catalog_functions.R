@@ -371,10 +371,13 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
     if(length(idx.zero.vaf) == 0) {
       return(vafs)
     } else {
-      warning("\nThere are rows which have zero VAF value in vcf ",
+      zero.vaf.row <- length(idx.zero.vaf)
+      total.vaf.row <- length(vafs)
+      warning("\nThere are ", zero.vaf.row, " out of total ", total.vaf.row, 
+              " rows which have zero VAF value in vcf ",
               ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), "\n",
-              "Please check and specify the correct column name for tumor sample ",
-              "using argument 'tumor.col.name'")
+              "Please check the data and if necessary, specify the correct ", 
+              "column name for tumor sample using argument 'tumor.col.name'")
       return(vafs)
     }
   }
