@@ -153,15 +153,20 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #' @importFrom utils read.csv
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
+#' 
+#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#'   function will remove all of the path up to and including the last path
+#'   separator (if any) in \code{file} and file path without extensions (and the
+#'   leading dot) will be used as the name of the VCF file.
 #'
 #' @return A data frame storing mutation records of a VCF file.
-#'
+#'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @keywords internal
-ReadStrelkaIDVCF <- function(file) {
+ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1:100), as.is = TRUE)
 
@@ -177,10 +182,19 @@ ReadStrelkaIDVCF <- function(file) {
   df1 <- df1[-1, ]
   colnames(df1) <- names
   
+  # Get the name of VCF
+  if (is.null(name.of.VCF)) {
+    vcf.name <- tools::file_path_sans_ext(basename(file))
+  } else {
+    vcf.name <- name.of.VCF
+  }
+  
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
-    stop("\nVCF does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF ", 
+         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
+         "does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(df1), collapse=" "))
   }
   control <- unique(df1[ , "FORMAT"])
@@ -188,7 +202,9 @@ ReadStrelkaIDVCF <- function(file) {
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (all(each.base.col %in% colnames)) {
-    stop("\nVCF does not appear to be a Strelka ID VCF, ", 
+    stop("\nVCF ", 
+         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
+         "does not appear to be a Strelka ID VCF, ", 
          "the value of column FORMAT is \n", 
          control)
   }
@@ -204,8 +220,9 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
   stopifnot("data.frame" %in% class(vcf))
   if (!("TUMOR" %in% names(vcf)) ||
       !("FORMAT" %in% names(vcf))) {
-    stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
-         " does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF ", 
+         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
+         "does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
   
@@ -218,10 +235,13 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
   vaf <- numeric(nrow(vcf))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (!all(each.base.col %in% colnames)) {
-    stop("\nVCF does not appear to be a Strelka SBS VCF, ", 
+    stop("\nVCF ", 
+         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
+         "does not appear to be a Strelka SBS VCF, ", 
          "the value of column FORMAT is \n", 
          control)
   }
+  
   for (i in 1:length(vaf)) {
     row.i <- values[[i]]
     names(row.i) <- colnames
@@ -844,7 +864,8 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #'
 #' @keywords internal
 ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
-  vcfs <- lapply(files, FUN = ReadStrelkaSBSVCF)
+  vcfs <- 
+    lapply(files, FUN = ReadStrelkaSBSVCF, name.of.VCF = names.of.VCFs)
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
