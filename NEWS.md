@@ -27,6 +27,8 @@
 * Fixed a bug in exported function GetMutectVAF().
 * Fixed bugs in functions generating zip archive from VCF files and added more 
   automated test.
+* Added an additional argument "name.of.VCF" in internal functions
+ReadStrelkaSBSVCF(), ReadStrelkaIDVCF() and exported function GetStrelkaVAF().
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
