@@ -24,12 +24,12 @@ test_that(
 
 test_that(
   "ReadMutectVCFs",
-  { vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
-    vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
-    vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
-    expect_equal(dim(vcf[[1]]), c(1851, 12))
-    expect_equal(dim(vcf1[[1]]), c(1561, 12))
-    expect_equal(dim(vcf2[[1]]), c(1895, 12))
+  { list <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
+    list1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
+    list2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
+    expect_equal(dim(list$Mutect.GRCh37[[1]]), c(1851, 12))
+    expect_equal(dim(list1$Mutect.GRCh38[[1]]), c(1561, 12))
+    expect_equal(dim(list2$Mutect.GRCm38[[1]]), c(1895, 12))
   } )
 
 test_that(
