@@ -22,7 +22,9 @@ separator (if any) in \code{file} and file path without extensions (and the
 leading dot) will be used as the name of the VCF file.}
 }
 \value{
-A data frame storing mutation records of a VCF file with VAFs added.
+A list of two objects. The first object is a data frame storing mutation
+  records of a VCF file with VAFs added. The second object is a number indicating
+  the number of rows in the first object.
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file created by

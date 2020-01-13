@@ -482,14 +482,14 @@ MutectVCFFilesToCatalog <-
 .MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL, tumor.col.names = NA, updateProgress = NULL) {
-    split.vcfs <- 
+    list <- 
       .ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names,
                               updateProgress)
-    return(c(.VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
+    return(c(.VCFsToSBSCatalogs(list$split.vcfs$SBS, ref.genome, 
                                 trans.ranges, region, updateProgress),
-             .VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
+             .VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
                                 trans.ranges, region, updateProgress),
-             list(catID = .VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
+             list(catID = .VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
                                             region, updateProgress)[[1]])))
   }
 
@@ -584,29 +584,30 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list with 3 in-memory VCFs and two left-over
-#' VCF-like data frames with rows that were not incorporated
-#' into the first 3 VCFs, as follows:
-#'
+#' @return A list of two lists. The first list "split.vcfs" has the following
+#'   five items:
+#'   
 #' \enumerate{
 #'
-#'  \item \code{SBS} VCF with only single base substitutions.
+#'  \item \code{SBS} A list of VCFs with only single base substitutions.
 #'
-#'  \item \code{DBS} VCF with only doublet base substitutions
+#'  \item \code{DBS} A list of VCFs with only doublet base substitutions
 #'   as called by Mutect.
 #'
-#'  \item \code{ID} VCF with only small insertions and deletions.
+#'  \item \code{ID} A list of VCFs with only small insertions and deletions.
 #'
-#'  \item \code{other.subs} VCF like data.frame with
+#'  \item \code{other.subs} A list of VCF like data.frames with
 #'  rows for coordinate substitutions involving
 #'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
 #'
-#'  \item \code{multiple.alternative.alleles} VCF like data.frame with
-#'  rows for variants with multiple alternative alleles, for example
-#'  ACT mutated to both AGT and ACT at the same position.
+#'  \item \code{multiple.alternative.alleles} A list of VCF like data.frames
+#'  with rows for variants with multiple alternative alleles, for example ACT
+#'  mutated to both AGT and ACT at the same position.
 #'
 #' }
-#'
+#' The second list "nrow.vcf" contains information indicating number of data
+#' lines in the VCFs (excluding  meta-information lines and header line).
+#' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #'
 #' @export
@@ -630,9 +631,11 @@ ReadAndSplitMutectVCFs <-
       updateProgress(value = 0.1, detail = "reading and splitting VCFs")
     }
     
-    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-    split.vcfs <- SplitListOfMutectVCFs(vcfs)
-    return(split.vcfs)
+    list <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
+    list.of.vcfs <- lapply(list, FUN = "[[", 1)
+    nrow.vcf <- lapply(list, FUN = "[[", 2)
+    split.vcfs <- SplitListOfMutectVCFs(list.of.vcfs)
+    return(list(split.vcfs = split.vcfs, nrow.vcf = nrow.vcf))
   }
 
 
