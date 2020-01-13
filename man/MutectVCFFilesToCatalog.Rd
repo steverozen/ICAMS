@@ -49,9 +49,6 @@ which contain the tumor sample information. The order of names in
 \code{files}. If \code{tumor.col.names} is equal to \code{NA}(default),
 this function will use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
-
-\item{updateProgress}{Optional. Currently only used in ICAMS.shiny package to
-update the progress indicator.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS

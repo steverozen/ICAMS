@@ -50,26 +50,12 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         region = "unknown", 
                                         names.of.VCFs = NULL, 
                                         base.filename = "") {
-                                        
-  .StrelkaSBSVCFFilesToZipFile(dir, zipfile, ref.genome, trans.ranges, 
-                               region, names.of.VCFs, base.filename)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.StrelkaSBSVCFFilesToZipFile <- function(dir,
-                                         zipfile, 
-                                         ref.genome, 
-                                         trans.ranges = NULL, 
-                                         region = "unknown", 
-                                         names.of.VCFs = NULL, 
-                                         base.filename = "") {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   
   catalogs <-
     StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                 region, names.of.VCFs)
+                                region, names.of.VCFs)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -83,7 +69,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   for (name in names(catalogs)) {
     PlotCatalogToPdf(catalogs[[name]],
                      file = paste0(output.file, name, ".pdf"))
-                                   
+    
     if (name == "catSBS192") {
       PlotCatalogToPdf(catalogs[[name]],
                        file = paste0(output.file, "SBS12.pdf"),
@@ -152,20 +138,6 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
                                        base.filename = "") {
-                                       
-  .StrelkaIDVCFFilesToZipFile(dir, zipfile, ref.genome, region,
-                              names.of.VCFs, base.filename)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.StrelkaIDVCFFilesToZipFile <- function(dir,
-                                        zipfile, 
-                                        ref.genome, 
-                                        region = "unknown", 
-                                        names.of.VCFs = NULL, 
-                                        base.filename = ""){
-                                        
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   list <-
@@ -284,25 +256,11 @@ MutectVCFFilesToZipFile <- function(dir,
                                     names.of.VCFs = NULL, 
                                     tumor.col.names = NA,
                                     base.filename = ""){
-  .MutectVCFFilesToZipFile(dir, zipfile, ref.genome, trans.ranges, region, 
-                           names.of.VCFs, tumor.col.names, base.filename)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.MutectVCFFilesToZipFile <- function(dir,
-                                     zipfile, 
-                                     ref.genome, 
-                                     trans.ranges = NULL, 
-                                     region = "unknown", 
-                                     names.of.VCFs = NULL, 
-                                     tumor.col.names = NA,
-                                     base.filename = ""){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   catalogs <-
     MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                             region, names.of.VCFs, tumor.col.names)
+                            region, names.of.VCFs, tumor.col.names)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -316,7 +274,7 @@ MutectVCFFilesToZipFile <- function(dir,
   for (name in names(catalogs)) {
     PlotCatalogToPdf(catalogs[[name]],
                      file = paste0(output.file, name, ".pdf"))
-                                   
+    
     if (name == "catSBS192") {
       PlotCatalogToPdf(catalogs[[name]],
                        file = paste0(output.file, "SBS12.pdf"),
@@ -343,9 +301,6 @@ MutectVCFFilesToZipFile <- function(dir,
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
-#'   update the progress indicator.
-#' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
 #'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
 #'   and DBS 144 catalog will not be generated. Each catalog has attributes
@@ -367,22 +322,13 @@ MutectVCFFilesToZipFile <- function(dir,
 #'                                           region = "genome")}
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL, updateProgress = NULL) {
-    .StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                 region, names.of.VCFs, updateProgress)
-  }
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.StrelkaSBSVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, 
-           region = "unknown", names.of.VCFs = NULL, updateProgress = NULL) {
+           names.of.VCFs = NULL) {
     split.vcfs <- 
-      .ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs, updateProgress)
-    return(c(.VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
-                                trans.ranges, region, updateProgress),
-             .VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
-                                trans.ranges, region, updateProgress)))
+      ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+    return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
+                               trans.ranges, region),
+             VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
+                               trans.ranges, region)))
   }
 
 #' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
@@ -395,9 +341,6 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#' 
-#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
-#'   update the progress indicator.
 #' 
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
@@ -418,19 +361,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- 
-  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
-           updateProgress = NULL) {
-    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
-                                updateProgress)
-  }
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.StrelkaIDVCFFilesToCatalog <- 
-  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
-           updateProgress = NULL) {
-    vcfs <- .ReadStrelkaIDVCFs(files, names.of.VCFs, updateProgress)
-    return(.VCFsToIDCatalogs(vcfs, ref.genome, region, updateProgress))
+  function(files, ref.genome, region = "unknown", names.of.VCFs = NULL) {
+    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
+    return(VCFsToIDCatalogs(vcfs, ref.genome, region))
   }
 
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
@@ -445,9 +378,6 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @param updateProgress Optional. Currently only used in ICAMS.shiny package to
-#'   update the progress indicator.
-#'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
 #'   NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
@@ -473,24 +403,15 @@ StrelkaIDVCFFilesToCatalog <-
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL, tumor.col.names = NA, updateProgress = NULL) {
-    .MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, region,
-                             names.of.VCFs, tumor.col.names, updateProgress)
-  }
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.MutectVCFFilesToCatalog <-
-  function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL, tumor.col.names = NA, updateProgress = NULL) {
     list <- 
-      .ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names,
-                              updateProgress)
-    return(c(.VCFsToSBSCatalogs(list$split.vcfs$SBS, ref.genome, 
-                                trans.ranges, region, updateProgress),
-             .VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
-                                trans.ranges, region, updateProgress),
-             list(catID = .VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
-                                            region, updateProgress)[[1]])))
+      ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
+    
+    return(c(VCFsToSBSCatalogs(list$split.vcfs$SBS, ref.genome, 
+                               trans.ranges, region),
+             VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
+                               trans.ranges, region),
+             list(catID = VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
+                                           region)[[1]])))
   }
 
 #' Read and split Strelka SBS VCF files.
@@ -520,18 +441,8 @@ MutectVCFFilesToCatalog <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
-  .ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL, 
-                                        updateProgress = NULL) {
   vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.2, detail = "read and split VCFs")
-  }
   return(split.vcfs)
 }
 
@@ -557,13 +468,6 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
 ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
-  .ReadStrelkaIDVCFs(files, names.of.VCFs)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL, 
-                               updateProgress = NULL) {
   vcfs <- 
     lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs)
   if (is.null(names.of.VCFs)) {
@@ -571,9 +475,6 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   } else {
     CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
-  }
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "read VCFs")
   }
   return(vcfs)
 }
@@ -619,25 +520,12 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 ReadAndSplitMutectVCFs <- 
   function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
-    .ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
-  }
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.ReadAndSplitMutectVCFs <- 
-  function(files, names.of.VCFs = NULL, tumor.col.names = NA, 
-           updateProgress = NULL) {
-    if (is.function(updateProgress)) {
-      updateProgress(value = 0.1, detail = "reading and splitting VCFs")
-    }
-    
     list <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
     list.of.vcfs <- lapply(list, FUN = "[[", 1)
     nrow.vcf <- lapply(list, FUN = "[[", 2)
     split.vcfs <- SplitListOfMutectVCFs(list.of.vcfs)
     return(list(split.vcfs = split.vcfs, nrow.vcf = nrow.vcf))
   }
-
 
 #' Create SBS catalogs from SBS VCFs
 #'
@@ -673,18 +561,6 @@ ReadAndSplitMutectVCFs <-
 #'                                     region = "genome")}
 VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown") {
-  .VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome, trans.ranges, region)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
-                               trans.ranges = NULL, region = "unknown",
-                               updateProgress = NULL) {
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "generating SBS catalogs")
-  }
-  
   ncol <- length(list.of.SBS.vcfs)
   
   catSBS96 <- empty.cats$catSBS96
@@ -767,18 +643,6 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #'                                     region = "genome")}
 VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown") {
-  .VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome, trans.ranges, region)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
-                               trans.ranges = NULL, region = "unknown",
-                               updateProgress = NULL) {
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.3, detail = "generating DBS catalogs")
-  }
-  
   ncol <- length(list.of.DBS.vcfs)
   
   catDBS78 <- empty.cats$catDBS78
@@ -861,17 +725,6 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
-  .VCFsToIDCatalogs(list.of.vcfs, ref.genome, region)
-}
-
-#' The argument updateProgress is to be used in ICAMS.shiny package.
-#' @keywords internal
-.VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
-                              updateProgress = NULL) {
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.2, detail = "generating ID catalogs")
-  }
-  
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
