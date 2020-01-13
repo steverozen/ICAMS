@@ -12,8 +12,7 @@
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
-  base.filename = "",
-  updateProgress = NULL
+  base.filename = ""
 )
 }
 \description{

@@ -11,8 +11,7 @@
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  base.filename = "",
-  updateProgress = NULL
+  base.filename = ""
 )
 }
 \description{

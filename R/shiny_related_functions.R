@@ -63,14 +63,13 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                          trans.ranges = NULL, 
                                          region = "unknown", 
                                          names.of.VCFs = NULL, 
-                                         base.filename = "",
-                                         updateProgress = NULL) {
+                                         base.filename = "") {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   
   catalogs <-
-    .StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                 region, names.of.VCFs, updateProgress)
+    StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                                 region, names.of.VCFs)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -79,9 +78,6 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
                  file = paste0(output.file, name, ".csv"))
-  }
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "wrote catalogs to CSV files")
   }
   
   for (name in names(catalogs)) {
@@ -93,9 +89,6 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                        file = paste0(output.file, "SBS12.pdf"),
                        plot.SBS12 = TRUE)
     }
-  }
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "plotted catalogs to PDF files")
   }
   
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
@@ -171,13 +164,12 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                         ref.genome, 
                                         region = "unknown", 
                                         names.of.VCFs = NULL, 
-                                        base.filename = "",
-                                        updateProgress = NULL){
+                                        base.filename = ""){
+                                        
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   list <-
-    .StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
-                                updateProgress)
+    StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -185,15 +177,9 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   
   WriteCatalog(list$catalog, 
                file = paste0(output.file, "catID.csv"))
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "wrote catalog to CSV file")
-  }
   
   PlotCatalogToPdf(list$catalog, 
                    file = paste0(output.file, "catID.pdf"))
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "plotted catalog to PDF file")
-  }
   
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
                            full.names = TRUE)
@@ -311,14 +297,12 @@ MutectVCFFilesToZipFile <- function(dir,
                                      region = "unknown", 
                                      names.of.VCFs = NULL, 
                                      tumor.col.names = NA,
-                                     base.filename = "",
-                                     updateProgress = NULL){
+                                     base.filename = ""){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   catalogs <-
-    .MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                             region, names.of.VCFs, tumor.col.names,
-                             updateProgress)
+    MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                             region, names.of.VCFs, tumor.col.names)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -327,9 +311,6 @@ MutectVCFFilesToZipFile <- function(dir,
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
                  file = paste0(output.file, name, ".csv"))
-  }
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "wrote catalogs to CSV files")
   }
   
   for (name in names(catalogs)) {
@@ -341,9 +322,6 @@ MutectVCFFilesToZipFile <- function(dir,
                        file = paste0(output.file, "SBS12.pdf"),
                        plot.SBS12 = TRUE)
     }
-  }
-  if (is.function(updateProgress)) {
-    updateProgress(value = 0.1, detail = "plotted catalogs to PDF files")
   }
   
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 

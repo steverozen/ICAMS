@@ -17,10 +17,10 @@
 * Updated documentation for optional arguments in the functions reading VCF files.
   Used @inheritParams to reduce repetitive documentation.
 * Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
-  based on plot.type
-* Created multiple hidden internal functions(.StrelkaSBSVCFFilesToZipFile() for example) 
-  which take the argument updateProgress that can be used in ICAMS.shiny package 
-  to update the progress indicator.   
+based on plot.type
+* Created multiple hidden internal functions(.ReadAndSplitStrelkaSBSVCFs() for   
+  example) which take the argument updateProgress that can be used in ICAMS.shiny  
+  package to update the progress indicator.   
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 * Corrected error message in TransformCatalog.
 * Added optional argument updateProgress in the functions generating catalogs.
