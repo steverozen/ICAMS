@@ -311,8 +311,10 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
-#' @return A data frame storing mutation records of a VCF file with VAFs added.
-#'
+#' @return A list of two objects. The first object is a data frame storing mutation
+#'   records of a VCF file with VAFs added. The second object is a number indicating
+#'   the number of rows in the first object.
+#'   
 #' @keywords internal
 ReadMutectVCF <- 
   function(file, name.of.VCF = NULL, tumor.col.name = NA) {
@@ -324,7 +326,7 @@ ReadMutectVCF <-
   }
   
   df$VAF <- GetMutectVAF(df, vcf.name, tumor.col.name)
-  return(StandardChromName(df))
+  return(list(vcf = StandardChromName(df), nrow = nrow(df)))
 }
 
 #' @rdname GetVAF
@@ -899,7 +901,10 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'   
-#' @return A list of vcfs from \code{files}.
+#' @return A list of lists which contain information about VCFs from
+#'   \code{files}. Each list has two objects. The first object is a data frame
+#'   storing mutation records of a VCF file with VAFs added. The second object
+#'   is a number indicating the number of rows in the first object.
 #'
 #' @keywords internal
 ReadMutectVCFs <- 
