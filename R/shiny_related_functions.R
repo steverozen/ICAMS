@@ -323,11 +323,10 @@ MutectVCFFilesToZipFile <- function(dir,
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL) {
-    split.vcfs <- 
-      ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
-    return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
+    list <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+    return(c(VCFsToSBSCatalogs(list$split.vcfs$SBS.vcfs, ref.genome, 
                                trans.ranges, region),
-             VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
+             VCFsToDBSCatalogs(list$split.vcfs$DBS.vcfs, ref.genome, 
                                trans.ranges, region)))
   }
 
