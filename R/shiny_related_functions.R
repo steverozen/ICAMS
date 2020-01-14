@@ -137,11 +137,13 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                        ref.genome, 
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
-                                       base.filename = "") {
+                                       base.filename = "",
+                                       flag.mismatches = 0) {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   list <-
-    StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
+    StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
+                               flag.mismatches)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),

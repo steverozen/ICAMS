@@ -11,7 +11,8 @@ StrelkaIDVCFFilesToZipFile(
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  base.filename = ""
+  base.filename = "",
+  flag.mismatches = 0
 )
 }
 \arguments{
@@ -38,6 +39,11 @@ used as the names of the VCF files.}
 \item{base.filename}{Optional. The base name of the CSV and PDF file to be
 produced; the file is ending in \code{catID.csv} and \code{catID.pdf}
 respectively.}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of two elements. 1st element is an S3 object containing an ID
