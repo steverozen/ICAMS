@@ -326,7 +326,7 @@ ReadMutectVCF <-
   }
   
   df$VAF <- GetMutectVAF(df, vcf.name, tumor.col.name)
-  return(list(vcf = StandardChromName(df), nrow.vcf = nrow(df)))
+  return(list(vcf = StandardChromName(df), nrow.data = nrow(df)))
 }
 
 #' @rdname GetVAF

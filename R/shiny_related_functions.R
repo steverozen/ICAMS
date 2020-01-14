@@ -402,7 +402,7 @@ StrelkaIDVCFFilesToCatalog <-
 #'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL, tumor.col.names = NA, updateProgress = NULL) {
+           names.of.VCFs = NULL, tumor.col.names = NA) {
     list <- 
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
     
@@ -506,7 +506,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'  mutated to both AGT and ACT at the same position.
 #'
 #' }
-#' The second list "nrow.vcf" contains information indicating number of data
+#' The second list "nrow.data" contains information indicating number of data
 #' lines in the VCFs (excluding  meta-information lines and header line).
 #' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
@@ -522,9 +522,9 @@ ReadAndSplitMutectVCFs <-
   function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
     list <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
     list.of.vcfs <- lapply(list, FUN = "[[", 1)
-    nrow.vcf <- lapply(list, FUN = "[[", 2)
+    nrow.data <- lapply(list, FUN = "[[", 2)
     split.vcfs <- SplitListOfMutectVCFs(list.of.vcfs)
-    return(list(split.vcfs = split.vcfs, nrow.vcf = nrow.vcf))
+    return(list(split.vcfs = split.vcfs, nrow.data = nrow.data))
   }
 
 #' Create SBS catalogs from SBS VCFs
