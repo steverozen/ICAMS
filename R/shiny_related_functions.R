@@ -420,16 +420,23 @@ MutectVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list of 3 in-memory objects as follows:
+#' @return A list of two lists. The first list "split.vcfs" has the following
+#'   three items:
 #' \enumerate{
-#'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS or 3+BS mutations.
+#' 
+#'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
+#'    or 3+BS mutations.
+#'    
+#'    \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS
+#'    or 3+BS mutations.
 #'
-#'    \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS or 3+BS mutations.
-#'
-#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS, HIGH.POS. containing
-#'    rows that that in the input that did not represent SBSs or DBSs.
+#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
+#'    HIGH.POS. containing rows that that in the input that did not represent
+#'    SBSs or DBSs.
 #'
 #'    }
+#' The second list "nrow.data" contains information indicating number of data
+#' lines in the VCFs (excluding  meta-information lines and header line).
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'
@@ -441,9 +448,11 @@ MutectVCFFilesToCatalog <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
-  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
-  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
-  return(split.vcfs)
+  list <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
+  list.of.vcfs <- lapply(list, FUN = "[[", 1)
+  nrow.data <- lapply(list, FUN = "[[", 2)
+  split.vcfs <- SplitListOfStrelkaSBSVCFs(list.of.vcfs)
+  return(list(split.vcfs = split.vcfs, nrow.data = nrow.data))
 }
 
 #' Read Strelka ID (small insertion and deletion) VCF files.
