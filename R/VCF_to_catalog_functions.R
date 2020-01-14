@@ -1573,11 +1573,11 @@ InferTransRanges <- function(ref.genome, trans.ranges) {
     return(trans.ranges)
   } else {
     if (IsGRCh37(ref.genome)) {
-      return(trans.ranges.GRCh37)
+      return(ICAMS::trans.ranges.GRCh37)
     } else if (IsGRCh38(ref.genome)) {
-      return(trans.ranges.GRCh38)
+      return(ICAMS::trans.ranges.GRCh38)
     } else if (IsGRCm38(ref.genome)) {
-      return(trans.ranges.GRCm38)
+      return(ICAMS::trans.ranges.GRCm38)
     } else {
       return(trans.ranges)
     }
