@@ -52,10 +52,14 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         base.filename = "") {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
-  
-  catalogs <-
-    StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                region, names.of.VCFs)
+  vcf.names <- basename(files)
+  list <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+  nrow.data <- list$nrow.data
+  SBS.catalogs <- VCFsToSBSCatalogs(list$split.vcfs$SBS.vcfs, ref.genome, 
+                                    trans.ranges, region)
+  DBS.catalogs <- VCFsToDBSCatalogs(list$split.vcfs$DBS.vcfs, ref.genome, 
+                                    trans.ranges, region)
+  catalogs <- c(SBS.catalogs, DBS.catalogs)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -77,7 +81,10 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
     }
   }
   
-  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+  zipfile.name <- basename(zipfile)
+  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
+                    ref.genome, region, nrow.data)
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
@@ -799,11 +806,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 
 #' Create a run information text file from generating zip archive from VCF
 #' files.
-#' 
-#' @inheritParams GenerateZipFileFromMutectVCFs
-#' 
-#' @param nrow.data A list which contains information indicating number of data
-#'   lines in the VCFs (excluding  meta-information lines and header line).
 #' 
 #' @importFrom  stringi stri_pad
 #' 
