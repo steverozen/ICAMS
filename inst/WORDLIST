@@ -103,6 +103,7 @@ MutectVCFFilesToCatalogAndPlotToPdf
 MutectVCFFilesToZipFile
 nd
 NN
+nrow
 nucleotides
 opar
 PCAWG
@@ -120,6 +121,8 @@ PyrTri
 ReadAndSplitMutectVCFs
 ReadAndSplitStrelkaSBSVCFs
 ReadCatalog
+ReadMutectVCF
+ReadMutectVCFs
 ReadStrelkaIDVCF
 ReadStrelkaIDVCFs
 ReadStrelkaSBSVCF
