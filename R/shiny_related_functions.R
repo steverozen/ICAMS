@@ -433,6 +433,9 @@ MutectVCFFilesToCatalog <-
 #'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
 #'    HIGH.POS. containing rows that that in the input that did not represent
 #'    SBSs or DBSs.
+#'    
+#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
+#'    \code{SBS.vcfs} etc.)
 #'
 #'    }
 #' The second list "nrow.data" contains information indicating number of data

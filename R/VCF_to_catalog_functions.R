@@ -804,7 +804,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #'    Additional information not fully implemented at this point because of
 #'    limited immediate biological interest.
 #'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
-#'    \code{SBS.vcfs} etc.)\
+#'    \code{SBS.vcfs} etc.)
 #'    }
 #'
 #' @keywords internal
