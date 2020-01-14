@@ -37,6 +37,10 @@ based on plot.type
   more automated test. 
 * Added an additional argument "name.of.VCF" in internal functions 
   ReadStrelkaSBSVCF(), ReadStrelkaIDVCF() and exported function GetStrelkaVAF().
+* Added an optional argument "flag.mismatches" in functions VCFsToIDCatalogs(),
+  MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
+  MutectVCFFilesToZipFile(), StrelkaIDVCFFilesToCatalog(),
+  StrelkaIDVCFFilesToCatalogAndPlotToPdf() and StrelkaIDVCFFilesToZipFile().
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
