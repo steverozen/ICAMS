@@ -361,8 +361,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- 
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL) {
-    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
-    return(VCFsToIDCatalogs(vcfs, ref.genome, region))
+    list <- ReadStrelkaIDVCFs(files, names.of.VCFs)
+    list.of.vcfs <- lapply(list, FUN = "[[", 1)
+    return(VCFsToIDCatalogs(list.of.vcfs, ref.genome, region))
   }
 
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
