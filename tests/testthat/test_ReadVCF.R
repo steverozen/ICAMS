@@ -14,12 +14,12 @@ test_that(
 test_that(
   "ReadStrelkaIDVCFs",
   {
-    vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
-    vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
-    vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
-    expect_equal(dim(vcf[[1]]), c(408, 19))
-    expect_equal(dim(vcf1[[1]]), c(1574, 11))
-    expect_equal(dim(vcf2[[1]]), c(747, 19))
+    list <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
+    list1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
+    list2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
+    expect_equal(dim(list$Strelka.ID.GRCh37[[1]]), c(408, 19))
+    expect_equal(dim(list1$Strelka.ID.GRCh38[[1]]), c(1574, 11))
+    expect_equal(dim(list2$Strelka.ID.GRCm38[[1]]), c(747, 19))
   } )
 
 test_that(
