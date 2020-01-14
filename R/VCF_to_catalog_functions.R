@@ -867,7 +867,10 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #'   paths without extensions (and the leading dot) will be used as the names of
 #'   the VCF files.
 #'   
-#' @return A list of vcfs from \code{files}.
+#' @return A list of lists which contain information about VCFs from
+#'   \code{files}. Each list has two objects. The first object is a data frame
+#'   storing data lines of a VCF file with VAFs added. The second object
+#'   is a number indicating the number of rows in the first object.
 #'
 #' @keywords internal
 ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
