@@ -45,7 +45,7 @@ A list of two lists. The first list "split.vcfs" has the following
  mutated to both AGT and ACT at the same position.
 
 }
-The second list "nrow.vcf" contains information indicating number of data
+The second list "nrow.data" contains information indicating number of data
 lines in the VCFs (excluding  meta-information lines and header line).
 }
 \description{

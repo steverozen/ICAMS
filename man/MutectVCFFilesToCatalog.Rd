@@ -10,8 +10,7 @@ MutectVCFFilesToCatalog(
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  tumor.col.names = NA,
-  updateProgress = NULL
+  tumor.col.names = NA
 )
 }
 \arguments{

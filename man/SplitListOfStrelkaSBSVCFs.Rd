@@ -19,7 +19,7 @@ A list of in-memory objects with the elements: \enumerate{
    Additional information not fully implemented at this point because of
    limited immediate biological interest.
    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
-   \code{SBS.vcfs} etc.)\
+   \code{SBS.vcfs} etc.)
    }
 }
 \description{
