@@ -4,7 +4,12 @@
 \alias{VCFsToIDCatalogs}
 \title{Create ID (small insertion and deletion) catalog from ID VCFs}
 \usage{
-VCFsToIDCatalogs(list.of.vcfs, ref.genome, region = "unknown")
+VCFsToIDCatalogs(
+  list.of.vcfs,
+  ref.genome,
+  region = "unknown",
+  flag.mismatches = 0
+)
 }
 \arguments{
 \item{list.of.vcfs}{List of in-memory VCFs. The list names will be
@@ -15,6 +20,11 @@ the sample ids in the output catalog.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of two elements. 1st element is an S3 object containing an ID

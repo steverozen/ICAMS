@@ -720,6 +720,11 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
+#' 
+#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
+#'   references in the ID (insertion/deletion) VCF, generate messages showing
+#'   the mismatched rows and continue. Otherwise \code{stop} if there are
+#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
@@ -742,7 +747,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
-VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
+VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
+                             flag.mismatches = 0) {
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
@@ -752,7 +758,8 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown") {
   
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AnnotateIDVCF(ID, ref.genome = ref.genome)
+    ID <- AnnotateIDVCF(ID, ref.genome = ref.genome,
+                        flag.mismatches = flag.mismatches)
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
     tmp <- CreateOneColIDMatrix(ID)
