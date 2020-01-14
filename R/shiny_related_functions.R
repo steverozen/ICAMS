@@ -148,9 +148,11 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                        flag.mismatches = 0) {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
-  list <-
-    StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
-                               flag.mismatches)
+  vcf.names <- basename(files)
+  list0 <- ReadStrelkaIDVCFs(files, names.of.VCFs)
+  list.of.vcfs <- lapply(list0, FUN = "[[", 1)
+  nrow.data <- lapply(list0, FUN = "[[", 2)
+  list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -162,7 +164,10 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   PlotCatalogToPdf(list$catalog, 
                    file = paste0(output.file, "catID.pdf"))
   
-  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+  zipfile.name <- basename(zipfile)
+  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
+                    ref.genome, region, nrow.data)
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
