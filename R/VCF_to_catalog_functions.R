@@ -161,7 +161,9 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @return A data frame storing mutation records of a VCF file.
+#' @return A list of two objects. The first object is a data frame storing data
+#'   lines of the VCF file. The second object is a number indicating the number
+#'   of rows in the first object.
 #'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -212,7 +214,7 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   }
 
   df1$POS <- as.integer(df1$POS)
-  return(StandardChromName(df1))
+  return(list(vcf = StandardChromName(df1), nrow.data = nrow(df1)))
 }
 
 #' @rdname GetVAF
