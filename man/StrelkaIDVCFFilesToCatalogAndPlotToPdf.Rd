@@ -10,7 +10,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = ""
+  output.file = "",
+  flag.mismatches = 0
 )
 }
 \arguments{
@@ -31,6 +32,11 @@ will be used as the names of the VCF files.}
 
 \item{output.file}{Optional. The base name of the PDF file to be produced;
 the file is ending in \code{catID.pdf}.}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list whose first element is an ID (small insertion and deletion)

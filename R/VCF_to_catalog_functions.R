@@ -1407,10 +1407,12 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
                                                    ref.genome, 
                                                    region = "unknown", 
                                                    names.of.VCFs = NULL, 
-                                                   output.file = "") {
+                                                   output.file = "",
+                                                   flag.mismatches = 0) {
     
     list <-
-      StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs)
+      StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
+                                 flag.mismatches)
     
     if (output.file != "") output.file <- paste0(output.file, ".")
     
