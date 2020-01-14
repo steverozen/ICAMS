@@ -3,12 +3,12 @@ context("Reading VCFs")
 test_that(
   "ReadStrelkaSBSVCFs",
   {
-    vcf <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
-    vcf1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
-    vcf2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
-    expect_equal(dim(vcf[[1]]), c(798, 20))
-    expect_equal(dim(vcf1[[1]]), c(1574, 12))
-    expect_equal(dim(vcf2[[1]]), c(2870, 20))
+    list <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
+    list1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
+    list2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
+    expect_equal(dim(list$Strelka.SBS.GRCh37[[1]]), c(798, 20))
+    expect_equal(dim(list1$Strelka.SBS.GRCh38[[1]]), c(1574, 12))
+    expect_equal(dim(list2$Strelka.SBS.GRCm38[[1]]), c(2870, 20))
   } )
 
 test_that(
