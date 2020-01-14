@@ -462,8 +462,11 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
-#' 
-#' @return A list of vcfs from \code{files}.
+#'
+#' @return A list of lists which contain information about VCFs from
+#'   \code{files}. Each list has two objects. The first object is a data frame
+#'   storing data lines of a VCF file. The second object is a number indicating
+#'   the number of rows in the first object.
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -484,6 +487,8 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
+    # Check whether the number of VCFs match the number of names
+    # in names.of.VCFs
     CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
   }
