@@ -133,7 +133,9 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @return A data frame storing mutation records of a VCF file with VAFs added.
+#' @return A list of two objects. The first object is a data frame storing data
+#'   lines of a VCF file with VAFs added. The second object is a number
+#'   indicating the number of rows in the first object.
 #'
 #' @keywords internal
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
@@ -145,7 +147,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   }
   
   df$VAF <- GetStrelkaVAF(df, vcf.name)
-  return(StandardChromName(df))
+  return(list(vcf = StandardChromName(df), nrow.data = nrow(df)))
 }
 
 #' Read in the data lines of an ID VCF created by Strelka version 1
