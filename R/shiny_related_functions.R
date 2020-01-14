@@ -402,7 +402,7 @@ StrelkaIDVCFFilesToCatalog <-
 #'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL, tumor.col.names = NA) {
+           names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0) {
     list <- 
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
     
@@ -411,7 +411,7 @@ MutectVCFFilesToCatalog <-
              VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
                                trans.ranges, region),
              list(catID = VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
-                                           region)[[1]])))
+                                           region, flag.mismatches)[[1]])))
   }
 
 #' Read and split Strelka SBS VCF files.
