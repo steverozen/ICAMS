@@ -1,4 +1,15 @@
 # ICAMS 2.1.0.900x
+* (Non backward-compatible.) Changed the return of internal functions
+  ReadMutectVCF(), ReadStrelkaSBSVCF() and ReadStrelkaIDVCF() to a list of two
+  objects. The first object is a data frame storing data lines of the VCF file.
+  The second object is a number indicating the number of rows in the first object.
+* (Non backward-compatible.) Changed the return of internal functions
+  ReadMutectVCFs(), ReadStrelkaSBSVCFs() and exported function ReadStrelkaIDVCFs()
+  to a list of lists. Each list has two objects. The first object is a data frame
+  storing data lines of a VCF file. The second object is a number indicating the
+  number of rows in the first object.
+* (Non backward-compatible.) Changed the return of exported functions
+  ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs() to a list of two lists. 
 * (Non backward-compatible.)
   Added a new dependency package "zip" in ICAMS, to be used in three new exported  
   functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
@@ -18,12 +29,8 @@
   Used @inheritParams to reduce repetitive documentation.
 * Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
 based on plot.type
-* Created multiple hidden internal functions(.ReadAndSplitStrelkaSBSVCFs() for   
-  example) which take the argument updateProgress that can be used in ICAMS.shiny  
-  package to update the progress indicator.   
 * Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
 * Corrected error message in TransformCatalog.
-* Added optional argument updateProgress in the functions generating catalogs.
 * Fixed a bug in exported function GetMutectVAF() and updated the warning
   message to make it more informative. 
 * Fixed bugs in functions generating zip archive from VCF files and added 
