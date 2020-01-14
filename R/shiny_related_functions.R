@@ -571,7 +571,7 @@ ReadAndSplitMutectVCFs <-
 #' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
+#' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$split.vcfs$SBS
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
 #'                                     trans.ranges = trans.ranges.GRCh37,
@@ -653,7 +653,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
+#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$split.vcfs$DBS
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
 #'                                     trans.ranges = trans.ranges.GRCh37,
@@ -736,7 +736,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
+#' list <- ReadStrelkaIDVCFs(file)                      
+#' list.of.ID.vcfs <- lapply(list, FUN = "[[", 1)
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",

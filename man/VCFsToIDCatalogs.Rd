@@ -34,7 +34,8 @@ In ID (small insertion and deletion) catalogs, deletion repeat sizes
 file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.vcf",
                       package = "ICAMS"))
-list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
+list <- ReadStrelkaIDVCFs(file)                      
+list.of.ID.vcfs <- lapply(list, FUN = "[[", 1)
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
  quietly = TRUE)) {
   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
