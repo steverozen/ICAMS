@@ -1466,6 +1466,11 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param output.file Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 #'   \eqn{x} indicates the type of catalog plotted in the file.
+#'   
+#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
+#'   references in the ID (insertion/deletion) VCF, generate messages showing
+#'   the mismatched rows and continue. Otherwise \code{stop} if there are
+#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
@@ -1502,11 +1507,13 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
                                                 region = "unknown", 
                                                 names.of.VCFs = NULL, 
                                                 tumor.col.names = NA,
-                                                output.file = "") {
+                                                output.file = "",
+                                                flag.mismatches = 0) {
     
     catalogs <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                              region, names.of.VCFs, tumor.col.names)
+                              region, names.of.VCFs, tumor.col.names,
+                              flag.mismatches)
     
     if (output.file != "") output.file <- paste0(output.file, ".")
     

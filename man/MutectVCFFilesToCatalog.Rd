@@ -10,7 +10,8 @@ MutectVCFFilesToCatalog(
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  tumor.col.names = NA
+  tumor.col.names = NA,
+  flag.mismatches = 0
 )
 }
 \arguments{
@@ -48,6 +49,11 @@ which contain the tumor sample information. The order of names in
 \code{files}. If \code{tumor.col.names} is equal to \code{NA}(default),
 this function will use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS

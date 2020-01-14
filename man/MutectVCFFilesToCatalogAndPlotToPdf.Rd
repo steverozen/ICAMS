@@ -11,7 +11,8 @@ MutectVCFFilesToCatalogAndPlotToPdf(
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
-  output.file = ""
+  output.file = "",
+  flag.mismatches = 0
 )
 }
 \arguments{
@@ -53,6 +54,11 @@ See \code{\link{GetMutectVAF}} for more details.}
 \item{output.file}{Optional. The base name of the PDF files to be produced;
 multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 \eqn{x} indicates the type of catalog plotted in the file.}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
