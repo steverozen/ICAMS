@@ -214,6 +214,11 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 #'   of catalog.
+#'   
+#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
+#'   references in the ID (insertion/deletion) VCF, generate messages showing
+#'   the mismatched rows and continue. Otherwise \code{stop} if there are
+#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @importFrom utils glob2rx 
 #' 
@@ -255,12 +260,14 @@ MutectVCFFilesToZipFile <- function(dir,
                                     region = "unknown", 
                                     names.of.VCFs = NULL, 
                                     tumor.col.names = NA,
-                                    base.filename = ""){
+                                    base.filename = "",
+                                    flag.mismatches = 0){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   catalogs <-
     MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                            region, names.of.VCFs, tumor.col.names)
+                            region, names.of.VCFs, tumor.col.names,
+                            flag.mismatches)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
