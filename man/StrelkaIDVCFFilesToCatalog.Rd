@@ -8,7 +8,8 @@ StrelkaIDVCFFilesToCatalog(
   files,
   ref.genome,
   region = "unknown",
-  names.of.VCFs = NULL
+  names.of.VCFs = NULL,
+  flag.mismatches = 0
 )
 }
 \arguments{
@@ -26,6 +27,11 @@ file paths in \code{files}. If \code{NULL}(default), this function will
 remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
+
+\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
+references in the ID (insertion/deletion) VCF, generate messages showing
+the mismatched rows and continue. Otherwise \code{stop} if there are
+mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of two elements. 1st element is an S3 object containing an ID
