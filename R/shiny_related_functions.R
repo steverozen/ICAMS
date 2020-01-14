@@ -266,10 +266,16 @@ MutectVCFFilesToZipFile <- function(dir,
                                     flag.mismatches = 0){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
-  catalogs <-
-    MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                            region, names.of.VCFs, tumor.col.names,
-                            flag.mismatches)
+  vcf.names <- basename(files)
+  list <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
+  nrow.data <- list$nrow.data
+  SBS.catalogs <- VCFsToSBSCatalogs(list$split.vcfs$SBS, ref.genome, 
+                                    trans.ranges, region)
+  DBS.catalogs <- VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
+                                    trans.ranges, region)
+  ID.catalog <- VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
+                                 region, flag.mismatches)[[1]]
+  catalogs <- c(SBS.catalogs, DBS.catalogs, list(catID = ID.catalog))
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -291,7 +297,10 @@ MutectVCFFilesToZipFile <- function(dir,
     }
   }
   
-  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf"), 
+  zipfile.name <- basename(zipfile)
+  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
+                    ref.genome, region, nrow.data)
+  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
@@ -787,3 +796,105 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                            region = region, catalog.type = "counts"),
               annotated.vcfs = out.list.of.vcfs))
 }
+
+#' Create a run information text file from generating zip archive from VCF
+#' files.
+#' 
+#' @inheritParams GenerateZipFileFromMutectVCFs
+#' 
+#' @param nrow.data A list which contains information indicating number of data
+#'   lines in the VCFs (excluding  meta-information lines and header line).
+#' 
+#' @importFrom  stringi stri_pad
+#' 
+#' @importFrom tools md5sum
+#' 
+#' @keywords internal
+AddRunInformation <- 
+  function(files, vcf.names, zipfile.name, vcftype, ref.genome, 
+           region, nrow.data) {
+    
+    run.info <- 
+      file(description = file.path(tempdir(), "run-information.txt"), open = "w")
+    
+    # Add the header information
+    header <- paste0("run-information.txt file for ", zipfile.name, 
+                     " created on ", Sys.time())
+    char.length <- nchar(header)
+    writeLines(paste(rep("-", char.length), collapse = ""), run.info)
+    writeLines(header, run.info)
+    writeLines(paste(rep("-", char.length), collapse = ""), run.info)
+    
+    # Add section on purpose of ICAMS software
+    writeLines("", run.info)
+    writeLines("### About ICAMS ###", run.info)
+    writeLines(c("Analysis and visualization of experimentally elucidated mutational",
+                 "signatures – the kind of analysis and visualization in Boot et al.,",
+                 "'In-depth characterization of the cisplatin mutational signature in",
+                 "human cell lines and in esophageal and liver tumors', ", 
+                 "Genome Research 2018, https://doi.org/10.1101/gr.230219.117.",
+                 "'ICAMS' stands for In-depth Characterization and Analysis of",
+                 "Mutational Signatures. 'ICAMS' has functions to read in variant",
+                 "call files (VCFs) and to collate the corresponding catalogs of",
+                 "mutational spectra and to analyze and plot catalogs of mutational",
+                 "spectra and signatures. Handles both “counts-based” and ", 
+                 "“density-based” catalogs of mutational spectra or signatures."), 
+               run.info)
+    writeLines("", run.info)
+    writeLines(c("For complete documentation of ICAMS, please refer to ",
+                 "https://cran.rstudio.com/web/packages/ICAMS/index.html"), run.info)
+    writeLines("", run.info)
+    writeLines(c("Shiny interface of ICAMS is available at ",
+                 "https://jnh01.shinyapps.io/icams/"), run.info)
+    
+    # Add ICAMS and R version used
+    writeLines("", run.info)
+    writeLines("### Version of the software ###", run.info)
+    writeLines(paste0("ICAMS version: ", packageVersion("ICAMS")), run.info)
+    writeLines(paste0("R version:     ", getRversion()), run.info)
+    
+    # Add input parameters specified by the user
+    writeLines("", run.info)
+    writeLines("### Input parameters ###", run.info)
+    if (vcftype == "strelka.sbs") {
+      vcftype <- "Strelka SBS VCF"
+    } else if (vcftype == "strelka.id") {
+      vcftype <- "Strelka ID VCF"
+    } else if (vcftype == "mutect") {
+      vcftype <- "Mutect VCF"
+    }
+    
+    if (ref.genome == "hg19") {
+      ref.genome <- "Human GRCh37/hg19"
+    } else if (ref.genome == "hg38") {
+      ref.genome <- "Human GRCh38/hg38"
+    } else if (ref.genome == "mm10") {
+      ref.genome <- "Mouse GRCm38/mm10"
+    }
+    writeLines(paste0("Type of VCF:      ", vcftype), run.info)
+    writeLines(paste0("Reference genome: ", ref.genome), run.info)
+    writeLines(paste0("Region:           ", region), run.info)
+    
+    # Add input files information
+    writeLines("", run.info)
+    writeLines("### Input files ###", run.info)
+    max.num.of.char <- max(nchar(vcf.names))
+    # Add a description of the information listed for input files
+    writeLines(paste0(stringi::stri_pad("Name", width = max.num.of.char,
+                                        side = "right"), "  ", 
+                      "Number of data lines", "  ",
+                      "MD5"), run.info)
+    
+    num.of.file <- length(files)
+    
+    nrow <- sapply(nrow.data, FUN = "[[", 1)
+    for (i in 1:num.of.file) {
+      writeLines(paste0(stringi::stri_pad(vcf.names[i], 
+                                          width = max.num.of.char,
+                                          side = "right"), "  ",
+                        stringi::stri_pad(nrow[i], width = 20,
+                                          side = "right"), "  ",
+                        tools::md5sum(files[i])), run.info)
+    }
+    close(run.info)
+  }
