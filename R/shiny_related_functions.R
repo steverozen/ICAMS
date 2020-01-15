@@ -30,19 +30,6 @@
 #' @inheritSection MutectVCFFilesToZipFile Comments
 #' 
 #' @export
-#' 
-#' @examples 
-#' dir <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       package = "ICAMS"))
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   catalogs <- 
-#'     StrelkaSBSVCFFilesToZipFile(dir, 
-#'                                 zipfile = file.path(tempdir(), "test.zip"),
-#'                                 ref.genome = "hg19", 
-#'                                 trans.ranges = trans.ranges.GRCh37,
-#'                                 region = "genome",
-#'                                 base.filename = "StrelkaSBS")
-#'   unlink(file.path(tempdir(), "test.zip"))}
 StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         zipfile, 
                                         ref.genome, 
@@ -127,18 +114,6 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #'   repeat sizes range from 1 to 6+.
 #' 
 #' @export
-#' 
-#' @examples 
-#' dir <- c(system.file("extdata/Strelka-ID-vcf",
-#'                       package = "ICAMS"))
-#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   catalogs <- 
-#'     StrelkaIDVCFFilesToZipFile(dir, 
-#'                                zipfile = file.path(tempdir(), "test.zip"),
-#'                                ref.genome = "hg19", 
-#'                                region = "genome",
-#'                                base.filename = "StrelkaID")
-#'   unlink(file.path(tempdir(), "test.zip"))}
 StrelkaIDVCFFilesToZipFile <- function(dir,
                                        zipfile, 
                                        ref.genome, 

@@ -79,16 +79,3 @@ To add or change attributes of the catalog, you can use function \code{\link[bas
 For example, \code{attr(catalog, "abundance") <- custom.abundance}.
 }
 
-\examples{
-dir <- c(system.file("extdata/Strelka-SBS-vcf",
-                      package = "ICAMS"))
-if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- 
-    StrelkaSBSVCFFilesToZipFile(dir, 
-                                zipfile = file.path(tempdir(), "test.zip"),
-                                ref.genome = "hg19", 
-                                trans.ranges = trans.ranges.GRCh37,
-                                region = "genome",
-                                base.filename = "StrelkaSBS")
-  unlink(file.path(tempdir(), "test.zip"))}
-}
