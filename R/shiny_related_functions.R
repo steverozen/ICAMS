@@ -816,6 +816,8 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 #' 
 #' @importFrom tools md5sum
 #' 
+#' @importFrom utils packageVersion
+#' 
 #' @keywords internal
 AddRunInformation <- 
   function(files, vcf.names, zipfile.name, vcftype, ref.genome, 
@@ -836,7 +838,7 @@ AddRunInformation <-
     writeLines("", run.info)
     writeLines("### About ICAMS ###", run.info)
     writeLines(c("Analysis and visualization of experimentally elucidated mutational",
-                 "signatures – the kind of analysis and visualization in Boot et al.,",
+                 "signatures - the kind of analysis and visualization in Boot et al.,",
                  "'In-depth characterization of the cisplatin mutational signature in",
                  "human cell lines and in esophageal and liver tumors', ", 
                  "Genome Research 2018, https://doi.org/10.1101/gr.230219.117.",
@@ -844,8 +846,8 @@ AddRunInformation <-
                  "Mutational Signatures. 'ICAMS' has functions to read in variant",
                  "call files (VCFs) and to collate the corresponding catalogs of",
                  "mutational spectra and to analyze and plot catalogs of mutational",
-                 "spectra and signatures. Handles both “counts-based” and ", 
-                 "“density-based” catalogs of mutational spectra or signatures."), 
+                 'spectra and signatures. Handles both "counts-based" and ', 
+                 '"density-based" catalogs of mutational spectra or signatures.'), 
                run.info)
     writeLines("", run.info)
     writeLines(c("For complete documentation of ICAMS, please refer to ",
