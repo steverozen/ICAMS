@@ -1,33 +1,34 @@
-# ICAMS to do list, 2019 09 03
+# ICAMS to do list, 2020 02 03
+
+## Wait until after quarantine
+User testing of ICAMS shiny app --- can the users manage the interface?
 
 ## Highest priority
-1.1 *** Steve Background signature subtraction (will take until late December)
-
-1.2 Steve and Nanhai Web and local shiny app design and initial implementation
-1.2.1 Use NUS AWS?
-1.2.3 Design points
-1.2.3.1 outputs the standard plots and catalogs, including a readme with input info (VCFs
-        date, user who ran it)
-1.2.3.2 outputs a report with
-       (Arnoud's idea, need to discuss) 
-        Mutation loads (per mutation type, 
-        and compare to the background levels in
-        the background controls we have, and perhaps also cosine to the background signature?)
-1.2.3.3 outputs Percentage of DBS relative to SBS
+Design and implement the following for the shiny app:
+Add  to the "run_information" file the following: 
+** Total mutation loads (per mutation type, SBSs, DBSs, etc)
+** Strand bias statistics (need to calculate the stats):
+    [ binom test for transcription strand bias (for 12 channel strand bias analysis)]
 
 ## High priority
 
-... HIGH Nanhai binom test for transcription strand bias (for 12 channel strand bias analysis)
-... HIGH Nanhai Corrections to extended sequence plotting for SBS (Arnoud re-review output)
+
 ... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
 ... HIGH Nanhai Extended sequence plotting for ID
-... HIGH Nanhai Extended sequence plotting for DNS 
-... HIGH Read and Write SigProfiler formated Indel catalogs (and check if 1536, 192, etc are 
-    also different from PCAWG)
+... HIGH New arguments for PlotCatalog (allow graphics parameters, remove issues with labels in the wrong
+    place depending on the mar graphics parameter.
+... work with steve on background subtraction
+... default sample input in shiny
+
+## Steve
+Steve Background signature subtraction (will take until late December)
 
 ## Medium priority
+... MED Read and Write SigProfiler formated Indel catalogs (and check if 1536, 192, etc are 
+    also different from PCAWG)
+... MED HIGH Nanhai Extended sequence plotting for DNS 
 ... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
-Nat.... MED Plot transcription strand bias as function of distance from TSS
+Abandoned.... MED Plot transcription strand bias as function of distance from TSS
 ... MED Provide documentation on how row-names in catalogs encode mutations.
 ... MED Add error checking for cbinding catalogs with different attributes
 ... MED Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
@@ -37,7 +38,7 @@ Nat.... MED Plot transcription strand bias as function of distance from TSS
     StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
     the directory and put all the PDFs in that directory?
 ... MED Straned indel plot: see https://osf.io/2aj6t/wiki/4.%20Plotting%20Indels/ 
-... MED Add Freebayes VCFs as an option in ICAMS.
+... MED Add Freebayes VCFs as an option in ICAMS (should be same Mutect except for VAF calculation) 
 
 ## Low priority
 ... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
