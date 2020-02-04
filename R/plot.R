@@ -134,75 +134,67 @@ PlotCatalog.SBS96Catalog <-
 
     cols <- rep(class.col, each = 16)
     maj.class.names <- c("C>A", "C>G", "C>T", "T>A", "T>C", "T>G")
-    num.classes <- length(catalog)
+    num.classes <- 96
 
-    if (attributes(catalog)$catalog.type == "density") {
-      # Barplot
-      bp <- barplot(catalog[, 1] * 1000000, xaxt = "n", yaxt = "n", xaxs = "i",
-                    xlim = c(-1, 230), lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = "mut/million", cex.lab = 0.8)
-
-      # Get ylim
-      ymax <- max(catalog[, 1] * 1000000)
-    } else if (attributes(catalog)$catalog.type == "counts") {
+    to.plot <- catalog[ , 1]
+    catalog.type <- attributes(catalog)$catalog.type
+    if (catalog.type == "density") {
+      ylab <- "mut/million"
+      to.plot <- to.plot * 1000000
+      ymax <- max(to.plot)
+    } else if (catalog.type == "counts") {
       # Set a minimum value for ymax to make the plot more informative
-      ymax <- 4 * ceiling(max(max(catalog[, 1]), 10) / 4)
-
-      # Barplot
-      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = "n", xlim = c(-1, 230),
-                    ylim = c(0, ymax), xaxs = "i", lwd = 3, space = 1.35, 
-                    border = NA, col = cols, ylab = "counts", cex.lab = 0.8)
-                    
-      # Write the mutation counts on top of graph
-      for (i in 1 : 6) {
-        j <- 16 + 16 * (i - 1)
-        k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.20, labels = sum(catalog[k : (16 * i), ]),
-             adj = c(1, 1), xpd = NA, cex = cex)
-      }
-    } else if (attributes(catalog)$catalog.type %in%
+      ymax <- 4 * ceiling(max(max(to.plot), 10) / 4)
+      ylab = "counts"
+    } else if (catalog.type %in%
                c("counts.signature", "density.signature")) {
-      # Determine the y axis label
-      yaxislabel <- ifelse(attributes(catalog)$catalog.type == "counts.signature",
-                           "counts proportion", "density proportion")
-      # Get ylim
-      ymax <- max(catalog[, 1])
-
-      # Barplot
-      bp <- barplot(catalog[, 1], xaxt = "n", yaxt = 'n', xaxs = "i", xlim = c(-1, 230),
-                    lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = yaxislabel, cex.lab = 0.8)
+      ylab <- ifelse(catalog.type == "counts.signature",
+                     "counts proportion", "density proportion")
+      ymax <- max(to.plot)
+    } else {
+      stop("Programming error, illegal catalog type ", catalog.type)
     }
-
-    # Draw grid lines?
-    if (grid) {
-      segments(bp[1] - 0.5, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 0.5,
-               seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
-    }
+      
+    bp <- barplot(to.plot, xaxt = "n", yaxt = "n", xaxs = "i",
+                    xlim = c(-1, 230),
+                    ylim = c(0, ymax), lwd = 3, space = 1.35, border = NA,
+                    col = cols, ylab = ylab, cex.lab = 0.8)
 
     # Draw the x axis
     segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, col = 'grey35', lwd = 0.25)
+    
+    # Draw the sample name information on top of graph
+    text(bp[1], ymax * 1.08, labels = colnames(catalog), xpd = NA,
+         cex = cex, font = 2, adj = c(0, 0))
 
-    # Draw y axis
+    if (catalog.type == "counts") {
+      # Write the mutation counts on top of graph
+      for (i in 1:6) {
+        j <- 16 + 16 * (i - 1)
+        k <- 1 + 16 * (i - 1)
+        text(bp[j], ymax * 1.20, labels = sum(catalog[k:(16 * i), ]),
+             adj = c(1, 1), xpd = NA, cex = cex)
+      }
+    }
+
+    # Get locations for y axis annotations
     y.axis.values <- seq(0, ymax, ymax/4)
-    if (attributes(catalog)$catalog.type != "counts") {
+    if (catalog.type != "counts") {
       y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
     } else {
       y.axis.labels <- y.axis.values
     }
     if (grid) {
+      segments(bp[1] - 0.5, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 0.5,
+               seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
       text(-0.5, y.axis.values, labels = y.axis.labels,
            las = 1, adj = 1, xpd = NA, cex = cex)
-    } else {
+    }  else {
       Axis(side = 2, at = y.axis.values, las = 1, cex.axis = cex, labels = FALSE)
       text(-3.5, y.axis.values, labels = y.axis.labels, cex = cex,
            las = 1, adj = 1, xpd = NA)
     }
-
-    # Draw the sample name information on top of graph
-    text(bp[1], ymax * 1.08, labels = colnames(catalog), xpd = NA,
-         cex = cex, font = 2, adj = c(0, 0))
-
+    
     # Draw the labels along x axis?
     if (xlabels) {
       xlabel.idx <- seq(1, 96, by = 4)

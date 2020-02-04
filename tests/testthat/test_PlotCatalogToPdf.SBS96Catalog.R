@@ -1,4 +1,4 @@
-context("PlotCatalogToPdf.SBS96Catalog")
+context(paste("PlotCatalogToPdf.SBS96Catalog", tempdir()))
 
 test_that("PlotCatalogToPdf.SBS96Catalog function", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -38,9 +38,11 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
                      file = file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
   expect_equal(out, TRUE)
 
-  unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.density.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.counts.signature.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
+  if (Sys.getenv("ICAMS.SAVE.TEST.PDF") == "") {
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.density.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.signature.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
+  }
   graphics.off()
 })
