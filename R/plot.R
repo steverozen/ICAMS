@@ -25,11 +25,12 @@
 #'   the names of major mutation class on top of graph. Only implemented for
 #'   SBS96Catalog.
 #'
+#' @param ylim Has the usual meaning.
+#'
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
-#'   
-#' @param ylim Has the usual meaning.
+
 #'
 #' @import graphics
 #'
