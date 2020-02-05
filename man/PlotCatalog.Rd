@@ -24,10 +24,8 @@ C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
 ACA > AAA, ACA > AGA, ..., TCT > TAT, ...}
 
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-mutation counts(if it exists), y axis and its labels, x axis labels and
-its annotations(if it exists), sample name and legend(if it exists)
-should be magnified relative to the default. Only implemented for SBS96Catalog,
+\item{cex}{Has the usual meaning. Taken from \code{par("cex")} by
+default. Only implemented for SBS96Catalog,
 SBS192Catalog and DBS144Catalog.}
 
 \item{grid}{A logical value indicating whether to draw grid lines. Only
@@ -38,7 +36,10 @@ the names of major mutation class on top of graph. Only implemented for
 SBS96Catalog.}
 
 \item{xlabels}{A logical value indicating whether to draw x axis labels. Only
-implemented for SBS96Catalog.}
+implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
+set \code{par(tck = 0)} to suppress.}
+
+\item{ylim}{Has the usual meaning.}
 }
 \value{
 A list whose first element is a logic value indicating whether the
