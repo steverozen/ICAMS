@@ -11,7 +11,8 @@ PlotCatalogToPdf(
   cex = NULL,
   grid = NULL,
   upper = NULL,
-  xlabels = NULL
+  xlabels = NULL,
+  ylim = NULL
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ SBS96Catalog.}
 
 \item{xlabels}{A logical value indicating whether to draw x axis labels. Only
 implemented for SBS96Catalog.}
+
+\item{ylim}{Operates in the usual way.}
 }
 \value{
 \code{invisible(TRUE)}

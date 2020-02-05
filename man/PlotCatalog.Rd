@@ -10,7 +10,8 @@ PlotCatalog(
   cex = NULL,
   grid = NULL,
   upper = NULL,
-  xlabels = NULL
+  xlabels = NULL,
+  ylim = NULL
 )
 }
 \arguments{
