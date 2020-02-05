@@ -1,9 +1,9 @@
 # ICAMS 2.1.0.900x
 * Slight changes to behavior of PlotCatalog() and PlotCatalogToPdf() for class
-  SBS96Catalog: (New) Allow setting ylim, and use par("cex") and par("cex.main").
+  SBS96Catalog: (New) Allow setting ylim and cex.
   (New) For PlotCatalog (not PlotCatalogToPdf), allow plotting of a 96 x 2 catalog,
   in which case behavior is a stacked
-  bar chart. (New) Plot x axis tick marks if xlables is not TRUE; set
+  bar chart. (New) Plot x axis tick marks if xlabels is not TRUE; set
   \code{par(tck = 0)} to suppress. Minor changes in default font sizes.
 * (Non backward-compatible.) Changed the return of internal functions
   ReadMutectVCF(), ReadStrelkaSBSVCF() and ReadStrelkaIDVCF() to a list of two

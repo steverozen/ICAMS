@@ -77,10 +77,10 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' rather than SBS in trinucleotide context, e.g.
 #' ACA > AAA, ACA > AGA, ..., TCT > TAT, ... There are 12 bars in the graph.
 #'
-#' @param cex Has the usual meaning. Taken from \code{par("cex")} by
-#'   default. Only implemented for SBS96Catalog,
-#'   SBS192Catalog and DBS144Catalog.
-#'
+#' @param cex Has the usual meaning. A default value has been used by the
+#'   program internally. Only implemented for SBS96Catalog, SBS192Catalog and
+#'   DBS144Catalog.
+#'   
 #' @param grid A logical value indicating whether to draw grid lines. Only
 #'   implemented for SBS96Catalog.
 #'
@@ -158,7 +158,7 @@ PlotCatalog.SBS96Catalog <-
     } else if (catalog.type == "counts") {
       # Set a minimum value for ymax to make the plot more informative
       ymax <- 4 * ceiling(max(max(rowSums(catalog)), 10) / 4)
-      ylab = "counts"
+      ylab <- "counts"
     } else if (catalog.type %in%
                c("counts.signature", "density.signature")) {
       ylab <- ifelse(catalog.type == "counts.signature",
@@ -174,22 +174,24 @@ PlotCatalog.SBS96Catalog <-
     }
       
     bp <- barplot(to.plot, xaxt = "n", yaxt = "n", xaxs = "i",
-                    xlim = c(-1, 230),
-                    ylim = ylim, lwd = 3, space = 1.35, border = NA,
-                    col = cols, ylab = ylab, cex.lab = 0.8)
+                  xlim = c(-1, 230),
+                  ylim = ylim, lwd = 3, space = 1.35, border = NA,
+                  col = cols, ylab = ylab, cex.lab = cex * par("cex.lab"))
 
     # Draw the x axis
-    segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, col = 'grey35', lwd = 0.25)
+    segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, 
+             col = 'grey35', lwd = 0.25)
     
     # Print sample name at top left
     text(bp[1], ymax * 1.08, 
          labels = colnames(catalog)[ncol(catalog)], 
          xpd = NA,
-         cex = cex * par("cex.main"), font = 2, adj = c(0, 0))
+         cex = cex, font = 2, adj = c(0, 0))
 
     if (catalog.type == "counts") {
       # Write the mutation counts on top of graph
-      count.cex <- 0.5 * (par("cex.main") - 1) + 1
+      # count.cex <- 0.5 * (par("cex.main") - 1) + 1
+      count.cex <- cex
       for (i in 1:6) {
         j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
@@ -219,13 +221,14 @@ PlotCatalog.SBS96Catalog <-
     
     if (xlabels) {
       # Draw the labels along bottom of x axis
-      cex.smaller <- cex * 0.8
+      # cex.smaller <- cex * 0.8
+      cex.xlabel <- cex
       xlabel.idx <- seq(1, 96, by = 4)
       label <- c("A", "C", "G", "T")
 
       # Draw the first line of x axis label
       text(bp[xlabel.idx], -ymax / 7, labels = label,
-           cex = cex.smaller, adj = 0.5, xpd = NA)
+           cex = cex.xlabel, adj = 0.5, xpd = NA)
 
       x <- list(bp[xlabel.idx], bp[xlabel.idx + 1],
                 bp[xlabel.idx + 2], bp[xlabel.idx + 3])
@@ -233,14 +236,14 @@ PlotCatalog.SBS96Catalog <-
       # Draw the remaining lines of x axis labels
       for (i in 1 : 4) {
         text(x[[i]], y[i], 
-             labels = label[i], cex = cex.smaller 
+             labels = label[i], cex = cex.xlabel 
              , adj = 0.5, xpd = NA)
       }
       # Draw the text on the left plane
       text(1.5, -ymax / 7, labels = "preceded by 5'",
-           pos = 2, xpd = NA, cex = cex.smaller)
+           pos = 2, xpd = NA, cex = cex.xlabel)
       text(1.5, -ymax / 3.5, labels = "followed by 3'",
-           pos = 2, xpd = NA, cex = cex.smaller)
+           pos = 2, xpd = NA, cex = cex.xlabel)
     } else {
       every.fourth <- seq(from = 1, to = length(bp), by = 4)
       Axis(at = bp[every.fourth], side = 1, labels = FALSE, col = "grey35")
@@ -250,7 +253,8 @@ PlotCatalog.SBS96Catalog <-
       # Draw horizontal lines and names of major mutation class on top of graph
       x.left <- bp[seq(1, 81, 16)]
       x.right <- bp[seq(16, 96, 16)]
-      rect(xleft = x.left, ymax * 1.28, xright = x.right, ymax * 1.3,
+      rect(xleft = x.left, ybottom = ymax * 1.28, 
+           xright = x.right, ytop = ymax * 1.3,
            col = class.col, border = NA, xpd = NA, adj = 0.5)
       text((x.left + x.right)/2, ymax * 1.38, 
            labels = maj.class.names, xpd = NA)
