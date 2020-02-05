@@ -37,6 +37,7 @@ CATTAT
 CCCAGGGAGGGTCCC
 CCDS
 CCT
+cex
 CheckAndFixChrName
 chrom
 CHROM
@@ -109,6 +110,7 @@ opar
 PCAWG
 pentanucleotide
 PlotCatalog
+PlotCatalogToPdf
 PlotCatID
 PlotCatIDtoPdf
 PlotTransBiasDist
@@ -146,6 +148,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf
 StrelkaSBSVCFFilesToZipFile
 SureSelect
 TAC
+tck
 TCT
 TCTA
 tetranucleotide
@@ -183,4 +186,6 @@ VCFsToDBSCatalogs
 VCFsToIDCatalogs
 VCFsToSBSCatalogs
 wikipedia
+xlabels
+ylim
 ymax
