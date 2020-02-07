@@ -289,8 +289,9 @@ PlotCatalogToPdf.SBS96Catalog <-
   }
 
 #' @export
-PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
-                                      grid, upper, xlabels, ylim) {
+PlotCatalog.SBS192Catalog <- 
+  function(catalog, plot.SBS12 = FALSE, cex = par("cex"),
+           grid, upper, xlabels, ylim) {
   stopifnot(dim(catalog) == c(192, 1))
 
   if (plot.SBS12 == FALSE) {
@@ -389,22 +390,23 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
         j <- 32 + 32 * (i - 1)
         k <- 1 + 32 * (i - 1)
         text(bp[j], ymax * 0.92, labels = sum(cat[k : (32 * i), 1]),
-             adj = c(1, 1), xpd = NA, cex = 0.8)
+             adj = c(1, 1), xpd = NA, cex = cex)
       }
     }
     text(-0.5, y.axis.values, labels = y.axis.labels,
          las = 1, adj = 1, xpd = NA, cex = cex)
 
     # Draw the x axis labels
+    cex.xlabel <- 0.625 * cex
     context.pos <- (bp[seq(1, 191, 2)] + bp[seq(2, 192, 2)]) / 2
     xlabel.1 <- c("A", "C", "G", "T")
     xlabel.2 <- rep(c("A", "C", "G", "T"), each = 4)
-    text(context.pos, -ymax / 100, labels = rep(xlabel.1, 24), cex = 0.5,
+    text(context.pos, -ymax / 100, labels = rep(xlabel.1, 24), cex = cex.xlabel,
          srt = 90, adj = 1, xpd = NA)
     text(context.pos, -ymax / 18, labels = rep(c("C", "T"), each = 48),
-         cex = 0.5, srt = 90, adj = 1, xpd = NA)
+         cex = cex.xlabel, srt = 90, adj = 1, xpd = NA)
     text(context.pos, -ymax / 10, labels = rep(xlabel.2, 6),
-         cex = 0.5, srt = 90, adj = 1, xpd = NA)
+         cex = cex.xlabel, srt = 90, adj = 1, xpd = NA)
 
     # Write the name of the sample
     text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
@@ -518,7 +520,8 @@ PlotCatalog.SBS192Catalog <- function(catalog, plot.SBS12 = FALSE, cex = 0.8,
 
 #' @export
 PlotCatalogToPdf.SBS192Catalog <-
-  function(catalog, file, plot.SBS12 = FALSE, cex, grid, upper, xlabels, ylim) {
+  function(catalog, file, plot.SBS12 = FALSE, cex = 0.8, 
+           grid, upper, xlabels, ylim) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
@@ -532,13 +535,13 @@ PlotCatalogToPdf.SBS192Catalog <-
     par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
-      PlotCatalog(cat)
+      PlotCatalog(cat, cex = cex)
     }
   } else {
     par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
-      PlotCatalog(cat, plot.SBS12 = TRUE)
+      PlotCatalog(cat, plot.SBS12 = TRUE, cex = cex)
     }
   }
   
