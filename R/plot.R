@@ -326,8 +326,9 @@ PlotCatalog.SBS192Catalog <-
       # Barplot: side by side
       mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
-                    axes = FALSE, lwd = 3, xaxs = "i",
-                    border = NA, col = cols, xpd = NA, ylab = "counts")
+                    axes = FALSE, lwd = 3, xaxs = "i", 
+                    border = NA, col = cols, xpd = NA, ylab = "counts",
+                    cex.lab = cex * par("cex.lab") * 1.25)
     } else if (attributes(cat)$catalog.type %in%
                c("counts.signature", "density.signature")) {
       # Determine the y axis label
@@ -340,7 +341,8 @@ PlotCatalog.SBS192Catalog <-
       mat <- matrix(cat[, 1], nrow = 2, ncol = num.classes / 2)
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                     axes = FALSE, lwd = 3, xaxs = "i",
-                    border = NA, col = cols, xpd = NA, ylab = yaxislabel)
+                    border = NA, col = cols, xpd = NA, ylab = yaxislabel,
+                    cex.lab = cex * par("cex.lab") * 1.25)
     } else if (attributes(cat)$catalog.type == "density") {
       # Get the rate of mutations per million trinucleotides
       rate <- cat[, 1] * 1000000
@@ -352,7 +354,8 @@ PlotCatalog.SBS192Catalog <-
       mat <- matrix(rate, nrow = 2, ncol = num.classes / 2)
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax),
                     axes = FALSE, lwd = 3, xaxs = "i",
-                    border = NA, col = cols, xpd = NA, ylab = "mut/million")
+                    border = NA, col = cols, xpd = NA, ylab = "mut/million",
+                    cex.lab = cex * par("cex.lab") * 1.25)
     }
 
     # Draw lines above each class:
