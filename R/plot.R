@@ -268,10 +268,11 @@ PlotCatalogToPdf.SBS96Catalog <-
   function(catalog, file, plot.SBS12, cex = 0.8,
            grid = TRUE, upper = TRUE, xlabels = TRUE,
            ylim = NULL) {
+    old.par.tck.value <- par("tck")
     # Setting the width and length for A4 size plotting
     grDevices::cairo_pdf(file, width = 8.2677, 
                          height = 11.6929, onefile = TRUE)
-    
+    par(tck = old.par.tck.value)
     # opar <- par(no.readonly = TRUE)
     
     n <- ncol(catalog)
