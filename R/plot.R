@@ -443,7 +443,8 @@ PlotCatalog.SBS192Catalog <-
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                     width = 0.3, xaxs = "i", yaxs = "i",
                     axes = FALSE, ylab = "counts",
-                    border = NA, col = cols, xpd = NA)
+                    border = NA, col = cols, xpd = NA, 
+                    cex.lab = cex * par("cex.lab") * 1.25)
     } else if (attributes(cat)$catalog.type %in%
                c("counts.signature", "density.signature")) {
       # Determine the y axis label
@@ -468,7 +469,8 @@ PlotCatalog.SBS192Catalog <-
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                     width = 0.3, xaxs = "i", yaxs = "i",
                     axes = FALSE, ylab = yaxislabel,
-                    border = NA, col = cols, xpd = NA)
+                    border = NA, col = cols, xpd = NA,
+                    cex.lab = cex * par("cex.lab") * 1.25)
     } else if (attributes(cat)$catalog.type == "density") {
       # Get the rate of mutations per million trinucleotides
       rates <- cat[, 1] * 1000000
@@ -489,7 +491,8 @@ PlotCatalog.SBS192Catalog <-
       bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 5.5),
                     width = 0.3, xaxs = "i", yaxs = "i",
                     axes = FALSE, ylab = "mut/million",
-                    border = NA, col = cols, xpd = NA)
+                    border = NA, col = cols, xpd = NA,
+                    cex.lab = cex * par("cex.lab") * 1.25)
     }
 
     # Draw y axis
