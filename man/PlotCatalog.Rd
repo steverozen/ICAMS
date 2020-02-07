@@ -24,9 +24,8 @@ C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
 ACA > AAA, ACA > AGA, ..., TCT > TAT, ...}
 
-\item{cex}{Has the usual meaning. Taken from \code{par("cex")} by
-default. Only implemented for SBS96Catalog,
-SBS192Catalog and DBS144Catalog.}
+\item{cex}{Has the usual meaning. Taken from \code{par("cex")} by default.
+Only implemented for SBS96Catalog, SBS192Catalog and DBS144Catalog.}
 
 \item{grid}{A logical value indicating whether to draw grid lines. Only
 implemented for SBS96Catalog.}
@@ -39,7 +38,7 @@ SBS96Catalog.}
 implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 set \code{par(tck = 0)} to suppress.}
 
-\item{ylim}{Has the usual meaning.}
+\item{ylim}{Has the usual meaning. Only implemented for SBS96Catalog.}
 }
 \value{
 A list whose first element is a logic value indicating whether the

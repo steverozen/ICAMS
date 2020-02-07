@@ -14,9 +14,8 @@
 #' rather than SBS in trinucleotide context, e.g.
 #' ACA > AAA, ACA > AGA, ..., TCT > TAT, ...
 #'
-#' @param cex Has the usual meaning. Taken from \code{par("cex")} by
-#'   default. Only implemented for SBS96Catalog,
-#'   SBS192Catalog and DBS144Catalog.
+#' @param cex Has the usual meaning. Taken from \code{par("cex")} by default.
+#'   Only implemented for SBS96Catalog, SBS192Catalog and DBS144Catalog.
 #'
 #' @param grid A logical value indicating whether to draw grid lines. Only
 #'   implemented for SBS96Catalog.
@@ -25,7 +24,7 @@
 #'   the names of major mutation class on top of graph. Only implemented for
 #'   SBS96Catalog.
 #'
-#' @param ylim Has the usual meaning.
+#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog.
 #'
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
@@ -92,7 +91,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
 #'   
-#' @param ylim Has the usual meaning.
+#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog.
 #'
 #' @return \code{invisible(TRUE)}
 #'   
