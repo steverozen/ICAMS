@@ -874,7 +874,7 @@ PlotCatalogToPdf.DBS78Catalog <-
 }
 
 #' @export
-PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = 1,
+PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
                                       grid, upper, xlabels, ylim) {
   stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
