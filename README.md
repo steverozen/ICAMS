@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/steverozen/ICAMS.svg?branch=plot-test)](https://travis-ci.org/steverozen/ICAMS)
+status](https://travis-ci.org/steverozen/ICAMS.svg?branch=master)](https://travis-ci.org/steverozen/ICAMS)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 
 <!-- badges: end -->
@@ -58,4 +58,4 @@ devtools::install_github("steverozen/ICAMS")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.0.9007.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.0.9009.pdf>
