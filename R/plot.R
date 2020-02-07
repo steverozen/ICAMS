@@ -257,7 +257,7 @@ PlotCatalog.SBS96Catalog <-
            xright = x.right, ytop = ymax * 1.3,
            col = class.col, border = NA, xpd = NA, adj = 0.5)
       text((x.left + x.right)/2, ymax * 1.38, 
-           labels = maj.class.names, xpd = NA)
+           labels = maj.class.names, xpd = NA, cex = cex * 1.25)
     }
 
     return(list(plot.success = TRUE, plot.object = bp))
