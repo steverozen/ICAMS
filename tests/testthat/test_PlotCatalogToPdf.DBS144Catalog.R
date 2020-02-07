@@ -10,7 +10,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function", {
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
     PlotCatalogToPdf(catalog.counts,
-                     file = file.path(tempdir(), "PlotDBS144Catalog.counts.test.pdf"))
+                     file = file.path(tempdir(), "PlotCatDBS144.counts.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.density <-
@@ -19,7 +19,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function", {
                      target.catalog.type = "density")
   out <-
     PlotCatalogToPdf(catalog.density,
-                     file = file.path(tempdir(), "PlotDBS144Catalog.density.test.pdf"))
+                     file = file.path(tempdir(), "PlotCatDBS144.density.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.counts.signature <-
@@ -28,7 +28,7 @@ test_that("PlotCatalogToPdf.DBS144Catalog function", {
                      target.catalog.type = "counts.signature")
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
-                     file = file.path(tempdir(), "PlotDBS144Catalog.counts.signature.test.pdf"))
+                     file = file.path(tempdir(), "PlotCatDBS144.counts.signature.test.pdf"))
   expect_equal(out, TRUE)
 
   catalog.density.signature <-
@@ -37,12 +37,32 @@ test_that("PlotCatalogToPdf.DBS144Catalog function", {
                      target.catalog.type = "density.signature")
   out <-
     PlotCatalogToPdf(catalog.density.signature,
-                     file = file.path(tempdir(), "PlotDBS144Catalog.density.signature.test.pdf"))
+                     file = file.path(tempdir(), "PlotCatDBS144.density.signature.test.pdf"))
   expect_equal(out, TRUE)
-
-  unlink(file.path(tempdir(), "PlotDBS144Catalog.counts.test.pdf"))
-  unlink(file.path(tempdir(), "PlotDBS144Catalog.density.test.pdf"))
-  unlink(file.path(tempdir(), "PlotDBS144Catalog.counts.signature.test.pdf"))
-  unlink(file.path(tempdir(), "PlotDBS144Catalog.density.signature.test.pdf"))
+  
+  if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatDBS144.counts.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-DBS144",
+                                 "PlotCatDBS144.counts.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatDBS144.density.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-DBS144",
+                                 "PlotCatDBS144.density.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatDBS144.counts.signature.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-DBS144",
+                                 "PlotCatDBS144.counts.signature.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatDBS144.density.signature.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-DBS144",
+                                 "PlotCatDBS144.density.signature.test.pdf"))
+  } else {
+    unlink(file.path(tempdir(), "PlotCatDBS144.counts.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatDBS144.density.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatDBS144.counts.signature.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatDBS144.density.signature.test.pdf"))
+  }
+  
   graphics.off()
 })

@@ -38,9 +38,28 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
                      file = file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
   expect_equal(out, TRUE)
 
-  unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.density.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.counts.signature.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
+  if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatSBS96.counts.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-SBS96",
+                                 "PlotCatSBS96.counts.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatSBS96.density.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-SBS96",
+                                 "PlotCatSBS96.density.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatSBS96.counts.signature.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-SBS96",
+                                 "PlotCatSBS96.counts.signature.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatSBS96.density.signature.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-SBS96",
+                                 "PlotCatSBS96.density.signature.test.pdf"))
+  } else {
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.density.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.signature.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
+  }
   graphics.off()
 })

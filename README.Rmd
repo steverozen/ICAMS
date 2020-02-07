@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-  [![Travis build status](https://travis-ci.org/steverozen/ICAMS.svg?branch=master)](https://travis-ci.org/steverozen/ICAMS)
+  [![Travis build status](https://travis-ci.org/steverozen/ICAMS.svg?branch=plot-test)](https://travis-ci.org/steverozen/ICAMS)
   [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 
 <!-- badges: end -->
@@ -44,7 +44,8 @@ Install the stable version of ICAMS from [CRAN](https://cran.r-project.org/) wit
 install.packages("ICAMS")
 ```
 
-After that, install the necessary dependency package from [Bioconductor](https://www.bioconductor.org/) in order to successfully load ICAMS:
+After that, install the necessary dependency package
+from [Bioconductor](https://www.bioconductor.org/) in order to successfully load ICAMS:
 
 ``` r
 install.packages("BiocManager")

@@ -11,7 +11,8 @@ PlotCatalogToPdf(
   cex = NULL,
   grid = NULL,
   upper = NULL,
-  xlabels = NULL
+  xlabels = NULL,
+  ylim = NULL
 )
 }
 \arguments{
@@ -26,11 +27,9 @@ C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
 ACA > AAA, ACA > AGA, ..., TCT > TAT, ... There are 12 bars in the graph.}
 
-\item{cex}{A numerical value giving the amount by which mutation class labels,
-mutation counts(if it exists), y axis and its labels, x axis labels and
-its annotations(if it exists), sample name and legend(if it exists)
-should be magnified relative to the default. Only implemented for SBS96Catalog,
-SBS192Catalog and DBS144Catalog.}
+\item{cex}{Has the usual meaning. A default value has been used by the
+program internally. Only implemented for SBS96Catalog, SBS192Catalog and
+DBS144Catalog.}
 
 \item{grid}{A logical value indicating whether to draw grid lines. Only
 implemented for SBS96Catalog.}
@@ -40,7 +39,10 @@ the names of major mutation class on top of graph. Only implemented for
 SBS96Catalog.}
 
 \item{xlabels}{A logical value indicating whether to draw x axis labels. Only
-implemented for SBS96Catalog.}
+implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
+set \code{par(tck = 0)} to suppress.}
+
+\item{ylim}{Has the usual meaning. Only implemented for SBS96Catalog.}
 }
 \value{
 \code{invisible(TRUE)}
