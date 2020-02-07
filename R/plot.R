@@ -914,7 +914,8 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ylab = "counts",
-                  border = NA, col = cols, xpd = NA)
+                  border = NA, col = cols, xpd = NA,
+                  cex.lab = cex * par("cex.lab"))
   } else if (attributes(catalog)$catalog.type %in%
              c("counts.signature", "density.signature")) {
     # Determine the y axis label
@@ -940,7 +941,8 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ylab = yaxislabel,
-                  border = NA, col = cols, xpd = NA)
+                  border = NA, col = cols, xpd = NA,
+                  cex.lab = cex * par("cex.lab"))
   } else if (attributes(catalog)$catalog.type == "density") {
     # Get the rate of mutations per million dinucleotides for each major mutation class
     rate <- cat[, 1] * 1000000
@@ -961,7 +963,8 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
     bp <- barplot(mat, beside = TRUE, ylim = c(0, ymax), xlim = c(0, 9),
                   width = 0.3, xaxs = "i", yaxs = "i",
                   axes = FALSE, ylab = "mut/million",
-                  border = NA, col = cols, xpd = NA)
+                  border = NA, col = cols, xpd = NA,
+                  cex.lab = cex * par("cex.lab"))
   }
 
   # Draw y axis
