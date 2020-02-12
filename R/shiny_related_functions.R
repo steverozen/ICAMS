@@ -812,7 +812,7 @@ AddRunInformation <-
     
     # Add section on purpose of ICAMS software
     writeLines("", run.info)
-    writeLines("### About ICAMS ###", run.info)
+    writeLines("--- About ICAMS ---", run.info)
     writeLines(c("Analysis and visualization of experimentally elucidated mutational",
                  "signatures - the kind of analysis and visualization in Boot et al.,",
                  "'In-depth characterization of the cisplatin mutational signature in",
@@ -828,17 +828,16 @@ AddRunInformation <-
     writeLines("", run.info)
     writeLines(c("For complete documentation of ICAMS, please refer to ",
                  "https://cran.rstudio.com/web/packages/ICAMS/index.html"), run.info)
-    writeLines("", run.info)
     
     # Add ICAMS and R version used
     writeLines("", run.info)
-    writeLines("### Version of the software ###", run.info)
+    writeLines("--- Version of the software ---", run.info)
     writeLines(paste0("ICAMS version: ", packageVersion("ICAMS")), run.info)
     writeLines(paste0("R version:     ", getRversion()), run.info)
     
     # Add input parameters specified by the user
     writeLines("", run.info)
-    writeLines("### Input parameters ###", run.info)
+    writeLines("--- Input parameters ---", run.info)
     if (vcftype == "strelka.sbs") {
       vcftype <- "Strelka SBS VCF"
     } else if (vcftype == "strelka.id") {
@@ -860,17 +859,18 @@ AddRunInformation <-
     
     # Add input files information
     writeLines("", run.info)
-    writeLines("### Input files ###", run.info)
+    writeLines("--- Input files ---", run.info)
     max.num.of.char <- max(nchar(vcf.names))
     # Add a description of the information listed for input files
     writeLines(paste0(stringi::stri_pad("Name", width = max.num.of.char,
                                         side = "right"), "  ", 
-                      "Number of data lines", "  ",
+                      "# of data lines", "  ",
                       stringi::stri_pad("MD5", width = 32,
                                         side = "right"), "  ",
-                      "Number of SBS", "  ",
-                      "Number of DBS", "  ",
-                      "Number of ID", "  "),
+                      "# of SBS", "  ",
+                      "# of DBS", "  ",
+                      "# of ID", "  ",
+                      "# of excluded variants", "  "),
                run.info)
     
     num.of.file <- length(files)
@@ -880,16 +880,25 @@ AddRunInformation <-
       writeLines(paste0(stringi::stri_pad(vcf.names[i], 
                                           width = max.num.of.char,
                                           side = "right"), "  ",
-                        stringi::stri_pad(nrow[i], width = 20,
+                        stringi::stri_pad(nrow[i], width = 15,
                                           side = "right"), "  ",
                         tools::md5sum(files[i]), "  ",
-                        stringi::stri_pad(mutation.loads$SBS[i], width = 13,
+                        stringi::stri_pad(mutation.loads$SBS[i], width = 8,
                                           side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$DBS[i], width = 13,
+                        stringi::stri_pad(mutation.loads$DBS[i], width = 8,
                                           side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$ID[i], width = 12,
-                                          side = "right")), run.info)
+                        stringi::stri_pad(mutation.loads$ID[i], width = 7,
+                                          side = "right"), "  ",
+                        stringi::stri_pad(mutation.loads$excluded.variants[i], 
+                                          width = 22, side = "right")), 
+                 run.info)
+                                          
     }
+    # Add a disclaimer about excluded variants in the analysis
+    writeLines("", run.info)
+    writeLines(paste0("Disclaimer: Variants with mutiple alternate alleles are ",
+                      "excluded in the analysis."), run.info)
+              
     close(run.info)
   }
 
