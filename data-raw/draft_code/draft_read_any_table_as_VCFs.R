@@ -4,23 +4,37 @@
 
 library(data.table)
 
+
+
+# General workflow for a file with multiple samples
+# 
+# 
+# Read the file
+
 d1 <- fread("....path to file here.....csv")
 
-# assume microbiopsy_id is the ID we want
+
+# Make sure the essential columns are named as correctly
+# (manual, will vary from file to file)
+
 
 new.col.heads <- c("SampleID",
                    "data_access_id",
-                   "histological_feature",
+                   "field_we_dont_care_about",
                    "CHROM",
                    "POS",
                    "REF",
                    "ALT",
-                   "mut_depth",
-                   "total_depth",
+                   "field2",
+                   "field3",
                    "VAF")
 
 colnames(d1) <- new.col.heads
 
+
+# check for presence of indels
+# If they exist, need to check if there is context for the insertions
+# If not, can only try one's best
 indel.rows <- which(nchar(d1$REF) != nchar(d1$ALT))
 # Note, these data contain context for indels
 # 
@@ -34,23 +48,35 @@ d1 <- as.data.frame(d1)
 
 # Since this contains indels will try
 
+# Check if there are DBSs etc (not shown)
+# 
+# Check for complex indels
+# 
 # split.vcfs <- ICAMS:::SplitListOfMutectVCFs(vcfs)
 
 # Note, no DBSs -- possible problem dealing with VAFs -- not checked
 
 d2 <- d1[-indel.rows, ]
 
+
+# get  a list of VCFs
 vcfs <- split(d2, d2$SampleID)
 
 # id.vcfs <- split(di, di$SampleID)
 
+
+# This one will find DBSs if necessary
+# Probably the VAF column has to be present, so
+# if one wants this and there is no VAF probably just set all varfs to 50%
 split.vcfs2 <- ICAMS:::SplitListOfStrelkaSBSVCFs(vcfs)
 
-# There _are_ DBS.
+# There _are_ DBS, so this will find them
 # 
 
 library(BSgenome.Hsapiens.1000genomes.hs37d5)
 
+
+# generate the SBS catalogs
 SBS.cats <-
   ICAMS::VCFsToSBSCatalogs(
     split.vcfs2$SBS.vcfs, 
@@ -58,6 +84,10 @@ SBS.cats <-
     region = "genome")
 
 
+# not shown, generate the DBS catalogs
+
+
+# Generate the id catalogs
 # ID.cats <-
 #  ICAMS:::VCFsToIDCatalogs(
 #    id.vcfs,
@@ -68,7 +98,7 @@ SBS.cats <-
 # ICAMS::PlotCatalogToPdf(ID.cats$catalog, "indel.pdf")
 
 
-
+# get ppms
 SBS.ppms <- 
   ICAMS:::CreatePPMFromSBSVCFs(
     split.vcfs2$SBS.vcfs,
@@ -92,9 +122,5 @@ ICAMS:::PlotPPMToPdf(list.of.ppm = a.ppmm,
                      titles = names(a.ppmm))
 
 
-
-ee <- fread("...path to file here ....")
-colnames(ee) <- new.col.heads
-ee <- ee[nchar(ee$REF) == nchar(ee$ALT), ]
-eevcfs <- vcfs <- split(ee, ee$SampleID)
-
+# Plot everything
+# 
