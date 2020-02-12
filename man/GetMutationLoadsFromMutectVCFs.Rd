@@ -12,7 +12,20 @@ GetMutationLoadsFromMutectVCFs(list)
 }
 \value{
 A list containing the total mutation loads of Mutect VCF files
-  according to mutation type (SBS, DBS and ID).
+  according to mutation type:
+  
+\enumerate{
+
+ \item \code{SBS} Single base substitution.
+
+ \item \code{DBS} Double base substitution.
+
+ \item \code{ID} Small insertion and deletion.
+
+ \item \code{excluded.variants} Other types of mutations which
+ are excluded in the analysis in \code{\link{ICAMS}}.
+
+}
 }
 \description{
 Get mutation loads information from Mutect VCF files

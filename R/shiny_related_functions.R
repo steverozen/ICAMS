@@ -899,7 +899,20 @@ AddRunInformation <-
 #'   \code{\link{ReadAndSplitMutectVCFs}} to Mutect VCF files.
 #'
 #' @return A list containing the total mutation loads of Mutect VCF files
-#'   according to mutation type (SBS, DBS and ID).
+#'   according to mutation type:
+#'   
+#' \enumerate{
+#'
+#'  \item \code{SBS} Single base substitution.
+#'
+#'  \item \code{DBS} Double base substitution.
+#'
+#'  \item \code{ID} Small insertion and deletion.
+#'
+#'  \item \code{excluded.variants} Other types of mutations which
+#'  are excluded in the analysis in \code{\link{ICAMS}}.
+#'
+#' }
 #'   
 #' @keywords internal
 GetMutationLoadsFromMutectVCFs <- function(list) {
@@ -907,5 +920,10 @@ GetMutationLoadsFromMutectVCFs <- function(list) {
   mutation.loads$SBS <- sapply(list$split.vcfs$SBS, FUN = nrow)
   mutation.loads$DBS <- sapply(list$split.vcfs$DBS, FUN = nrow)
   mutation.loads$ID <- sapply(list$split.vcfs$ID, FUN = nrow)
+  num.of.other.subs <- sapply(list$split.vcfs$other.subs, FUN = nrow)
+  num.of.multiple.alternative.alleles <-
+    sapply(list$split.vcfs$multiple.alternative.alleles, FUN = nrow)
+  mutation.loads$excluded.variants <- 
+    num.of.other.subs + num.of.multiple.alternative.alleles
   return(mutation.loads)
 }
