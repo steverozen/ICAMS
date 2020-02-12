@@ -12,7 +12,8 @@ AddRunInformation(
   vcftype,
   ref.genome,
   region,
-  nrow.data
+  nrow.data,
+  mutation.loads
 )
 }
 \description{
