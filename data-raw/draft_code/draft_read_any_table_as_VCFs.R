@@ -4,7 +4,7 @@
 
 library(data.table)
 
-d1 <- fread("data-raw/draft_code/sup-table-5.csv")
+d1 <- fread("....path to file here.....csv")
 
 # assume microbiopsy_id is the ID we want
 
@@ -26,7 +26,7 @@ indel.rows <- which(nchar(d1$REF) != nchar(d1$ALT))
 # 
 del.rows <- which(d1$ALT == "-") # none
 
-di <- d1[indel.rows, ]
+# di <- d1[indel.rows, ]
 
 d1 <- as.data.frame(d1)
 
@@ -41,7 +41,8 @@ d1 <- as.data.frame(d1)
 d2 <- d1[-indel.rows, ]
 
 vcfs <- split(d2, d2$SampleID)
-id.vcfs <- split(di, di$SampleID)
+
+# id.vcfs <- split(di, di$SampleID)
 
 split.vcfs2 <- ICAMS:::SplitListOfStrelkaSBSVCFs(vcfs)
 
@@ -57,14 +58,14 @@ SBS.cats <-
     region = "genome")
 
 
-ID.cats <-
-  ICAMS:::VCFsToIDCatalogs(
-    id.vcfs,
-    ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
-    region = "genome",
-    flag.mismatches = 1
-  )
-ICAMS::PlotCatalogToPdf(ID.cats$catalog, "bladder-indel.pdf")
+# ID.cats <-
+#  ICAMS:::VCFsToIDCatalogs(
+#    id.vcfs,
+#    ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
+#   region = "genome",
+#    flag.mismatches = 1
+#  )
+# ICAMS::PlotCatalogToPdf(ID.cats$catalog, "indel.pdf")
 
 
 
@@ -87,12 +88,12 @@ a.ppmm <- ICAMS:::CreatePPMFromSBSVCFs(
     BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
   seq.context.width = 4)
 ICAMS:::PlotPPMToPdf(list.of.ppm = a.ppmm, 
-                     file = "A.to.A.or.Gextended.pdf",
+                     file = "A.to.A.or.G.extended.pdf",
                      titles = names(a.ppmm))
 
 
 
-ee <- fread("data-raw/draft_code/bladder-exome.csv")
+ee <- fread("...path to file here ....")
 colnames(ee) <- new.col.heads
 ee <- ee[nchar(ee$REF) == nchar(ee$ALT), ]
 eevcfs <- vcfs <- split(ee, ee$SampleID)
