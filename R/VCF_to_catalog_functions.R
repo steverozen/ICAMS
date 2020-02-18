@@ -628,9 +628,9 @@ AddTranscript <- function(df, trans.ranges = NULL) {
 #'
 #' @import data.table
 #'
-#' @return A minimal VCF with only the columns \code{CHROM},
-#' \code{POS}, \code{ID}, \code{REF}, \code{ALT}.
-#'
+#' @return A minimal VCF with only the columns \code{CHROM}, \code{POS},
+#'   \code{ID}, \code{REF}, \code{ALT}, \code{VAF}, \code{read.depth}.
+#'   
 #' @keywords internal
 MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
   tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "TUMOR", "VAF")]

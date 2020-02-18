@@ -14,8 +14,8 @@ MakeVCFDBSdf(DBS.range.df, SBS.vcf.dt)
 \code{DBS.range.df} was computed.}
 }
 \value{
-A minimal VCF with only the columns \code{CHROM},
-\code{POS}, \code{ID}, \code{REF}, \code{ALT}.
+A minimal VCF with only the columns \code{CHROM}, \code{POS},
+  \code{ID}, \code{REF}, \code{ALT}, \code{VAF}, \code{read.depth}.
 }
 \description{
 MakeVCFDBSdf Take DBS ranges and the original VCF and generate a VCF with
