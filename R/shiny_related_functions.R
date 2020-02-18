@@ -512,8 +512,8 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'  \item \code{ID} VCF with only small insertions and deletions.
 #'
 #'  \item \code{other.subs} VCF like data.frame with rows for coordinate
-#'  substitutions involving 3 or more nucleotides, e.g. ACT > TGA or AACT >
-#'  GGTA.
+#'  substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
+#'  GGTA) and rows for complex indels.
 #'
 #'  \item \code{multiple.alternative.alleles} VCF like data.frame with rows for
 #'  variants with multiple alternative alleles, for example ACT mutated to both
@@ -782,7 +782,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 #' @keywords internal
 AddRunInformation <- 
   function(files, vcf.names, zipfile.name, vcftype, ref.genome, 
-           region, nrow.data, mutation.loads) {
+           region, mutation.loads) {
     
     run.info <- 
       file(description = file.path(tempdir(), "run-information.txt"), open = "w")
@@ -860,13 +860,12 @@ AddRunInformation <-
     
     num.of.file <- length(files)
     
-    nrow <- sapply(nrow.data, FUN = "[[", 1)
     for (i in 1:num.of.file) {
       writeLines(paste0(stringi::stri_pad(vcf.names[i], 
                                           width = max.num.of.char,
                                           side = "right"), "  ",
-                        stringi::stri_pad(nrow[i], width = 15,
-                                          side = "right"), "  ",
+                        stringi::stri_pad(mutation.loads$total.variants[i], 
+                                          width = 15, side = "right"), "  ",
                         tools::md5sum(files[i]), "  ",
                         stringi::stri_pad(mutation.loads$SBS[i], width = 8,
                                           side = "right"), "  ",
@@ -881,9 +880,10 @@ AddRunInformation <-
     }
     # Add a disclaimer about excluded variants in the analysis
     writeLines("", run.info)
-    writeLines(paste0("Disclaimer: Variants with mutiple alternate alleles are ",
-                      "excluded in the analysis."), run.info)
-              
+    writeLines("Disclaimer:", run.info)
+    writeLines(paste0("Triplet and above base substitutions, ", 
+                      "complex indels and variants with multiple alternate ",
+                      "alleles are currently excluded in the analysis."), run.info)
     close(run.info)
   }
 
