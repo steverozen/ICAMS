@@ -628,7 +628,7 @@ AddTranscript <- function(df, trans.ranges = NULL) {
 #'
 #' @keywords internal
 MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
-  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT")]
+  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "TUMOR", "VAF")]
   DBS.range.dt <- as.data.table(DBS.range.df)
   tmp1 <- merge(DBS.range.dt, tmpvcf,
                 by.x = c("CHROM", "LOW"),
@@ -636,11 +636,18 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
   tmp2 <- merge(tmp1, tmpvcf,
                 by.x = c("CHROM", "HIGH"),
                 by.y = c("CHROM", "POS"))
+  # Calculate the read depth for tier1
+  tmp2[, DP.x := as.integer(sapply(strsplit(TUMOR.x, ":"), "[", 1))]
+  tmp2[, DP.y := as.integer(sapply(strsplit(TUMOR.y, ":"), "[", 1))]
+  tmp2[, read.depth := pmin(DP.x, DP.y)]
+  
+  tmp2[, VAF := rowMeans(cbind(VAF.x, VAF.y))]
   tmp2[, POS := LOW]
   tmp2[, ID := "From merged SBSs"]
   tmp2[, REF := paste0(REF.x, REF.y)]
   tmp2[, ALT := paste0(ALT.x, ALT.y)]
-  return(as.data.frame(tmp2[, c("CHROM", "POS", "ID", "REF", "ALT")]))
+  return(as.data.frame(tmp2[, c("CHROM", "POS", "ID", "REF", "ALT", 
+                                "VAF", "read.depth")]))
 }
 
 #' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
@@ -726,8 +733,8 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   dt2[, LOW := POS.y]
 
   # Keep only SBS pairs that have very similar VAFs (variant allele frequencies).
-  # If VAFs are not similar, the adjacent SBSs were likely to be "merely"
-  # asynchronous single base mutations, and a simultaneous doublet mutation.
+  # If VAFs are not similar, the adjacent SBSs are likely to be "merely"
+  # asynchronous single base mutations, opposed to a simultaneous doublet mutation.
   non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
   # If VAF.x or VAF.y is NA the row will not go into non.SBS.
   rm(dt2)
