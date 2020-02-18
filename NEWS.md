@@ -6,17 +6,6 @@
   bar chart. (New) Plot x axis tick marks if xlabels is not TRUE; set
   \code{par(tck = 0)} to suppress. 
   ? Minor changes in default font sizes.
-* (Non backward-compatible.) Changed the return of internal functions
-  ReadMutectVCF(), ReadStrelkaSBSVCF() and ReadStrelkaIDVCF() to a list of two
-  objects. The first object is a data frame storing data lines of the VCF file.
-  The second object is a number indicating the number of rows in the first object.
-* (Non backward-compatible.) Changed the return of internal functions
-  ReadMutectVCFs(), ReadStrelkaSBSVCFs() and exported function ReadStrelkaIDVCFs()
-  to a list of lists. Each list has two objects. The first object is a data frame
-  storing data lines of a VCF file. The second object is a number indicating the
-  number of rows in the first object.
-* (Non backward-compatible.) Changed the return of exported functions
-  ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs() to a list of two lists. 
 * Added a new dependency package "zip" in ICAMS, to be used in three new exported  
   functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
   StrelkaIDVCFFilesToZipFile(). 

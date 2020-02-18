@@ -17,8 +17,8 @@ in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
 }
 \value{
-A list of two lists. The first list "split.vcfs" has the following
-  three items:
+A list of 3 in-memory objects as follows:
+
 \enumerate{
 
    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
@@ -28,15 +28,13 @@ A list of two lists. The first list "split.vcfs" has the following
    or 3+BS mutations.
 
    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
-   HIGH.POS. containing rows that that in the input that did not represent
-   SBSs or DBSs.
+   HIGH.POS which contain rows in the input that did not represent SBSs or
+   DBSs.
    
    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
    \code{SBS.vcfs} etc.)
 
    }
-The second list "nrow.data" contains information indicating number of data
-lines in the VCFs (excluding  meta-information lines and header line).
 }
 \description{
 Read and split Strelka SBS VCF files.

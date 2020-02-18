@@ -329,10 +329,10 @@ MutectVCFFilesToZipFile <- function(dir,
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL) {
-    list <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
-    return(c(VCFsToSBSCatalogs(list$split.vcfs$SBS.vcfs, ref.genome, 
+    split.vcfs <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+    return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
                                trans.ranges, region),
-             VCFsToDBSCatalogs(list$split.vcfs$DBS.vcfs, ref.genome, 
+             VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
                                trans.ranges, region)))
   }
 
@@ -368,9 +368,8 @@ StrelkaSBSVCFFilesToCatalog <-
 StrelkaIDVCFFilesToCatalog <- 
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
            flag.mismatches = 0) {
-    list <- ReadStrelkaIDVCFs(files, names.of.VCFs)
-    list.of.vcfs <- lapply(list, FUN = "[[", 1)
-    return(VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches))
+    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
+    return(VCFsToIDCatalogs(vcfs, ref.genome, region, flag.mismatches))
   }
 
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
@@ -410,14 +409,14 @@ StrelkaIDVCFFilesToCatalog <-
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0) {
-    list <- 
+    split.vcfs <- 
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
     
-    return(c(VCFsToSBSCatalogs(list$split.vcfs$SBS, ref.genome, 
+    return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
                                trans.ranges, region),
-             VCFsToDBSCatalogs(list$split.vcfs$DBS, ref.genome, 
+             VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
                                trans.ranges, region),
-             list(catID = VCFsToIDCatalogs(list$split.vcfs$ID, ref.genome, 
+             list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
                                            region, flag.mismatches)[[1]])))
   }
 
@@ -427,8 +426,8 @@ MutectVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list of two lists. The first list "split.vcfs" has the following
-#'   three items:
+#' @return A list of 3 in-memory objects as follows:
+#' 
 #' \enumerate{
 #' 
 #'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
@@ -438,15 +437,13 @@ MutectVCFFilesToCatalog <-
 #'    or 3+BS mutations.
 #'
 #'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
-#'    HIGH.POS. containing rows that that in the input that did not represent
-#'    SBSs or DBSs.
+#'    HIGH.POS which contain rows in the input that did not represent SBSs or
+#'    DBSs.
 #'    
 #'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
 #'    \code{SBS.vcfs} etc.)
 #'
 #'    }
-#' The second list "nrow.data" contains information indicating number of data
-#' lines in the VCFs (excluding  meta-information lines and header line).
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'
@@ -458,11 +455,9 @@ MutectVCFFilesToCatalog <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
-  list <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
-  list.of.vcfs <- lapply(list, FUN = "[[", 1)
-  nrow.data <- lapply(list, FUN = "[[", 2)
-  split.vcfs <- SplitListOfStrelkaSBSVCFs(list.of.vcfs)
-  return(list(split.vcfs = split.vcfs, nrow.data = nrow.data))
+  vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
+  split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
+  return(split.vcfs)
 }
 
 #' Read Strelka ID (small insertion and deletion) VCF files.
@@ -471,10 +466,7 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
-#' @return A list of lists which contain information about VCFs from
-#'   \code{files}. Each list has two objects. The first object is a data frame
-#'   storing data lines of a VCF file. The second object is a number indicating
-#'   the number of rows in the first object.
+#' @return A list of data frames containing data lines of the VCF files.
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -509,29 +501,26 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list of two lists. The first list "split.vcfs" has the following
-#'   five items:
+#' @return A list with 3 in-memory VCFs and two left-over VCF-like data frames
+#'   with rows that were not incorporated into the first 3 VCFs, as follows:
 #'   
 #' \enumerate{
 #'
-#'  \item \code{SBS} A list of VCFs with only single base substitutions.
+#'  \item \code{SBS} VCF with only single base substitutions.
 #'
-#'  \item \code{DBS} A list of VCFs with only doublet base substitutions
-#'   as called by Mutect.
+#'  \item \code{DBS} VCF with only doublet base substitutions.
 #'
-#'  \item \code{ID} A list of VCFs with only small insertions and deletions.
+#'  \item \code{ID} VCF with only small insertions and deletions.
 #'
-#'  \item \code{other.subs} A list of VCF like data.frames with
-#'  rows for coordinate substitutions involving
-#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+#'  \item \code{other.subs} VCF like data.frame with rows for coordinate
+#'  substitutions involving 3 or more nucleotides, e.g. ACT > TGA or AACT >
+#'  GGTA.
 #'
-#'  \item \code{multiple.alternative.alleles} A list of VCF like data.frames
-#'  with rows for variants with multiple alternative alleles, for example ACT
-#'  mutated to both AGT and ACT at the same position.
+#'  \item \code{multiple.alternative.alleles} VCF like data.frame with rows for
+#'  variants with multiple alternative alleles, for example ACT mutated to both
+#'  AGT and ACT at the same position.
 #'
 #' }
-#' The second list "nrow.data" contains information indicating number of data
-#' lines in the VCFs (excluding  meta-information lines and header line).
 #' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #'
@@ -544,11 +533,9 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 ReadAndSplitMutectVCFs <- 
   function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
-    list <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-    list.of.vcfs <- lapply(list, FUN = "[[", 1)
-    nrow.data <- lapply(list, FUN = "[[", 2)
-    split.vcfs <- SplitListOfMutectVCFs(list.of.vcfs)
-    return(list(split.vcfs = split.vcfs, nrow.data = nrow.data))
+    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
+    split.vcfs <- SplitListOfMutectVCFs(vcfs)
+    return(split.vcfs)
   }
 
 #' Create SBS catalogs from SBS VCFs
@@ -578,7 +565,7 @@ ReadAndSplitMutectVCFs <-
 #' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$split.vcfs$SBS
+#' list.of.SBS.vcfs <- ReadAndSplitMutectVCFs(file)$SBS
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs.SBS <- VCFsToSBSCatalogs(list.of.SBS.vcfs, ref.genome = "hg19",
 #'                                     trans.ranges = trans.ranges.GRCh37,
@@ -660,7 +647,7 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$split.vcfs$DBS
+#' list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
 #'                                     trans.ranges = trans.ranges.GRCh37,
@@ -748,8 +735,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list <- ReadStrelkaIDVCFs(file)                      
-#' list.of.ID.vcfs <- lapply(list, FUN = "[[", 1)
+#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",

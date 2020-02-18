@@ -75,8 +75,8 @@ expression value.
 file <- c(system.file("extdata/Strelka-SBS-vcf/",
                       "Strelka.SBS.GRCh37.vcf",
                       package = "ICAMS"))
-list <- ReadAndSplitStrelkaSBSVCFs(file)
-SBS.vcf <- list$split.vcfs$SBS.vcfs[[1]]             
+list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)

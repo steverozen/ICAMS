@@ -41,8 +41,8 @@ Add sequence context and transcript information to an in-memory DBS VCF.
 file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.vcf",
                       package = "ICAMS"))
-list <- ReadAndSplitStrelkaSBSVCFs(file)
-DBS.vcf <- list$split.vcfs$DBS.vcfs[[1]]             
+list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]             
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)}

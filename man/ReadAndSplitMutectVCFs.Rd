@@ -24,29 +24,26 @@ this function will use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
 }
 \value{
-A list of two lists. The first list "split.vcfs" has the following
-  five items:
+A list with 3 in-memory VCFs and two left-over VCF-like data frames
+  with rows that were not incorporated into the first 3 VCFs, as follows:
   
 \enumerate{
 
- \item \code{SBS} A list of VCFs with only single base substitutions.
+ \item \code{SBS} VCF with only single base substitutions.
 
- \item \code{DBS} A list of VCFs with only doublet base substitutions
-  as called by Mutect.
+ \item \code{DBS} VCF with only doublet base substitutions.
 
- \item \code{ID} A list of VCFs with only small insertions and deletions.
+ \item \code{ID} VCF with only small insertions and deletions.
 
- \item \code{other.subs} A list of VCF like data.frames with
- rows for coordinate substitutions involving
- 3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+ \item \code{other.subs} VCF like data.frame with rows for coordinate
+ substitutions involving 3 or more nucleotides, e.g. ACT > TGA or AACT >
+ GGTA.
 
- \item \code{multiple.alternative.alleles} A list of VCF like data.frames
- with rows for variants with multiple alternative alleles, for example ACT
- mutated to both AGT and ACT at the same position.
+ \item \code{multiple.alternative.alleles} VCF like data.frame with rows for
+ variants with multiple alternative alleles, for example ACT mutated to both
+ AGT and ACT at the same position.
 
 }
-The second list "nrow.data" contains information indicating number of data
-lines in the VCFs (excluding  meta-information lines and header line).
 }
 \description{
 Read and split Mutect VCF files.

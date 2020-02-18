@@ -3,33 +3,33 @@ context("Reading VCFs")
 test_that(
   "ReadStrelkaSBSVCFs",
   {
-    list <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
-    list1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
-    list2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
-    expect_equal(dim(list$Strelka.SBS.GRCh37[[1]]), c(798, 20))
-    expect_equal(dim(list1$Strelka.SBS.GRCh38[[1]]), c(1574, 12))
-    expect_equal(dim(list2$Strelka.SBS.GRCm38[[1]]), c(2870, 20))
+    vcf <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
+    vcf1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
+    vcf2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
+    expect_equal(dim(vcf[[1]]), c(798, 20))
+    expect_equal(dim(vcf1[[1]]), c(1574, 12))
+    expect_equal(dim(vcf2[[1]]), c(2870, 20))
   } )
 
 test_that(
   "ReadStrelkaIDVCFs",
   {
-    list <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
-    list1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
-    list2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
-    expect_equal(dim(list$Strelka.ID.GRCh37[[1]]), c(408, 19))
-    expect_equal(dim(list1$Strelka.ID.GRCh38[[1]]), c(1574, 11))
-    expect_equal(dim(list2$Strelka.ID.GRCm38[[1]]), c(747, 19))
+    vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
+    vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
+    vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
+    expect_equal(dim(vcf[[1]]), c(408, 19))
+    expect_equal(dim(vcf1[[1]]), c(1574, 11))
+    expect_equal(dim(vcf2[[1]]), c(747, 19))
   } )
 
 test_that(
   "ReadMutectVCFs",
-  { list <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
-    list1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
-    list2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
-    expect_equal(dim(list$Mutect.GRCh37[[1]]), c(1851, 12))
-    expect_equal(dim(list1$Mutect.GRCh38[[1]]), c(1561, 12))
-    expect_equal(dim(list2$Mutect.GRCm38[[1]]), c(1895, 12))
+  { vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
+    vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
+    vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
+    expect_equal(dim(vcf[[1]]), c(1851, 12))
+    expect_equal(dim(vcf1[[1]]), c(1561, 12))
+    expect_equal(dim(vcf2[[1]]), c(1895, 12))
   } )
 
 test_that(

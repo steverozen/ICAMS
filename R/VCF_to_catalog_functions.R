@@ -133,9 +133,8 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @return A list of two objects. The first object is a data frame storing data
-#'   lines of a VCF file with VAFs added. The second object is a number
-#'   indicating the number of rows in the first object.
+#' @return A data frame storing data lines of a VCF file with VAFs (variant
+#'   allele frequencies) added.
 #'
 #' @keywords internal
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
@@ -147,7 +146,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   }
   
   df$VAF <- GetStrelkaVAF(df, vcf.name)
-  return(list(vcf = StandardChromName(df), nrow.data = nrow(df)))
+  return(StandardChromName(df))
 }
 
 #' Read in the data lines of an ID VCF created by Strelka version 1
@@ -161,9 +160,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @return A list of two objects. The first object is a data frame storing data
-#'   lines of the VCF file. The second object is a number indicating the number
-#'   of rows in the first object.
+#' @return A data frame storing data lines of the VCF file.
 #'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
@@ -214,7 +211,7 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   }
 
   df1$POS <- as.integer(df1$POS)
-  return(list(vcf = StandardChromName(df1), nrow.data = nrow(df1)))
+  return(StandardChromName(df1))
 }
 
 #' @rdname GetVAF
@@ -315,10 +312,9 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
-#' @return A list of two objects. The first object is a data frame storing data
-#'   lines of a VCF file with VAFs added. The second object is a number
-#'   indicating the number of rows in the first object.
-#'
+#' @return A data frame storing data lines of a VCF file with VAFs (variant
+#'   allele frequencies) added.
+#'   
 #' @keywords internal
 ReadMutectVCF <- 
   function(file, name.of.VCF = NULL, tumor.col.name = NA) {
@@ -330,7 +326,7 @@ ReadMutectVCF <-
   }
   
   df$VAF <- GetMutectVAF(df, vcf.name, tumor.col.name)
-  return(list(vcf = StandardChromName(df), nrow.data = nrow(df)))
+  return(StandardChromName(df))
 }
 
 #' @rdname GetVAF
@@ -672,15 +668,22 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #' @importFrom IRanges IRanges
 #'
 #' @return A list of in-memory objects with the elements:
+#' 
 #' \enumerate{
-#'    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
-#'    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
-#'    \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
-#'    information (reference sequence, alternative sequence, context, etc.)
-#'    Additional information not fully implemented at this point because of
-#'    limited immediate biological interest.
-#'    \item{multiple.alt}: Rows that were removed before processing because they had
-#'    more than one alternate allele.
+#'    \item \code{SBS.vcf}: Data frame of pure SBS mutations -- no DBS or 3+BS
+#'    mutations.
+#'
+#'    \item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
+#'    mutations.
+#'
+#'    \item \code{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS
+#'    and additional information (reference sequence, alternative sequence,
+#'    context, etc.) Additional information not fully implemented at this point
+#'    because of limited immediate biological interest.
+#'
+#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed
+#'    from \code{SBS.vcf} etc.)
+#'    
 #'    }
 #'
 #' @keywords internal
@@ -915,10 +918,8 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'   
-#' @return A list of lists which contain information about VCFs from
-#'   \code{files}. Each list has two objects. The first object is a data frame
-#'   storing data lines of a VCF file with VAFs added. The second object
-#'   is a number indicating the number of rows in the first object.
+#' @return A list of data frames which store data lines of VCF files with VAFs
+#'   (variant allele frequencies) added.
 #'
 #' @keywords internal
 ReadMutectVCFs <- 
@@ -981,8 +982,8 @@ ReadMutectVCFs <-
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list$split.vcfs$SBS.vcfs[[1]]             
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
@@ -1160,8 +1161,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.vcf",
 #'                       package = "ICAMS"))
-#' list <- ReadAndSplitStrelkaSBSVCFs(file)
-#' DBS.vcf <- list$split.vcfs$DBS.vcfs[[1]]             
+#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+#' DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]             
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
