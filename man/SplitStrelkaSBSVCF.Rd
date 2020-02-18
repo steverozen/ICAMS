@@ -27,9 +27,9 @@ A list of in-memory objects with the elements:
 }
 \description{
 SBSs are single base substitutions,
-e.g. C>T, A<G,....  DBSs are double base substitutions,
+e.g. C>T, A>G,....  DBSs are double base substitutions,
 e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 bases are rare, so this function just records them. These
-would be variants such ATG>CCT, AGAT > TCTA, ...
+would be variants such ATG>CCT, AGAT>TCTA, ...
 }
 \keyword{internal}

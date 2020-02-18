@@ -647,10 +647,10 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #' > 2 consecutive bases
 #'
 #' SBSs are single base substitutions,
-#' e.g. C>T, A<G,....  DBSs are double base substitutions,
+#' e.g. C>T, A>G,....  DBSs are double base substitutions,
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
-#' would be variants such ATG>CCT, AGAT > TCTA, ...
+#' would be variants such ATG>CCT, AGAT>TCTA, ...
 #'
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
 #'
@@ -711,7 +711,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   #
   # But first we just find pairs, so the
   # X chromosome example will appear as 2
-  # pairs CC > and CA > TG (more below).
+  # pairs CC > TT and CA > TG (more below).
 
   vcf.dt <- data.table(vcf.df)
   vcf.dt[, POS.plus.one := POS + 1]
