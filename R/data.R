@@ -166,6 +166,7 @@ if(getRversion() >= "2.15.1") {
                            "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
                            "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
                            "Ensembl.gene.ID", "readthrough", "exp.value", 
-                           "trans.end.pos", "trans.start.pos",
+                           "trans.end.pos", "trans.start.pos", "DP.x", "DP.y",
+                           "TUMOR.x", "TUMOR.y", "read.depth", "VAF",
                            "exp.level", "trans.Ensembl.gene.ID"))
 }
