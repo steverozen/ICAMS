@@ -409,17 +409,29 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
 #'
-#' @return A list of in-memory objects with the elements:
+#' @return A list with 3 in-memory VCFs and two left-over
+#' VCF-like data frames with rows that were not incorporated
+#' into the first 3 VCFs, as follows:
+#'
 #' \enumerate{
-#'    \item \code{SBS.vcf}:   Data frame of pure SBS mutations -- no DBS or 3+BS mutations
-#'    \item \code{DBS.vcf}:   Data frame of pure DBS mutations -- no SBS or 3+BS mutations
-#'    \item{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS and additional
-#'    information (reference sequence, alternative sequence, context, etc.)
-#'    Additional information not fully implemented at this point because of
-#'    limited immediate biological interest.
-#'    \item{multiple.alt}: Rows that were removed before processing because they had
-#'    more than one alternate allele.
-#'    }
+#'
+#'  \item \code{SBS} VCF with only single base substitutions.
+#'
+#'  \item \code{DBS} VCF with only doublet base substitutions
+#'   as called by Mutect.
+#'
+#'  \item \code{ID} VCF with only small insertions and deletions.
+#'
+#'  \item \code{other.subs} VCF like data.frame with
+#'  rows for coordinate substitutions involving
+#'  3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
+#'  and rows for complex indels.
+#'
+#'  \item \code{multiple.alt} VCF like data.frame with
+#'  rows for variants with multiple alternative alleles, for example
+#'  ACT mutated to both AGT and ACT at the same position.
+#'
+#' }
 #'
 #'
 #' @keywords internal
@@ -453,7 +465,7 @@ SplitOneMutectVCF <- function(vcf.df) {
   other.df2 <- rbind(other.df, complex.indels)
 
   return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
-              other = other.df2, multiple.alt = multiple.alt.df))
+              other.subs = other.df2, multiple.alt = multiple.alt.df))
 
 }
 
@@ -477,9 +489,10 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #'  \item \code{other.subs} VCF like data.frame with
 #'  rows for coordinate substitutions involving
-#'  3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+#'  3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
+#'  and rows for complex indels.
 #'
-#'  \item \code{multiple.alternative.alleles} VCF like data.frame with
+#'  \item \code{multiple.alt} VCF like data.frame with
 #'  rows for variants with multiple alternative alleles, for example
 #'  ACT mutated to both AGT and ACT at the same position.
 #'
@@ -491,15 +504,11 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
   SBS <- lapply(v1, function(x) x$SBS)
   DBS <- lapply(v1, function(x) x$DBS)
   ID  <- lapply(v1, function(x) x$ID)
-  other.subs <- lapply(v1, function(x) x$other)
-  multiple.alternative.alleles <-
-    lapply(v1, function(x) x$multiple.alt)
+  other.subs <- lapply(v1, function(x) x$other.subs)
+  multiple.alt <- lapply(v1, function(x) x$multiple.alt)
 
-  return(list(SBS = SBS, DBS = DBS, ID = ID,
-              other.subs = other.subs,
-              multiple.alternative.alleles
-              = multiple.alternative.alleles
-  ))
+  return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
+              multiple.alt = multiple.alt))
 }
 
 #' Add sequence context to a data frame with mutation records
@@ -804,19 +813,28 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' e.g. C>T, A<G,....  DBSs are double base substitutions,
 #' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 #' bases are rare, so this function just records them. These
-#' would be variants such ATG>CCT, AGAT > TCTA, ...
+#' would be variants such ATG>CCT, AGAT>TCTA, ...
 #'
-#' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS VCF file contents.
+#' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS
+#'   VCF file contents.
+#'   
+#' @return A list of in-memory objects with the elements: 
+#' \enumerate{
+#' 
+#'    \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no
+#'    DBS or 3+BS mutations.
 #'
-#' @return A list of in-memory objects with the elements: \enumerate{
-#'    \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no DBS or 3+BS mutations
-#'    \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no SBS or 3+BS mutations
-#'    \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS, HIGH.POS and additional
-#'    information (reference sequence, alternative sequence, context, etc.)
-#'    Additional information not fully implemented at this point because of
-#'    limited immediate biological interest.
-#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
-#'    \code{SBS.vcfs} etc.)
+#'    \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no
+#'    SBS or 3+BS mutations.
+#'
+#'    \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS,
+#'    HIGH.POS and additional information (reference sequence, alternative
+#'    sequence, context, etc.) Additional information not fully implemented at
+#'    this point because of limited immediate biological interest.
+#'
+#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed
+#'    from \code{SBS.vcfs} etc.)
+#'    
 #'    }
 #'
 #' @keywords internal

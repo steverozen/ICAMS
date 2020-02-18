@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{GetMutationLoadsFromMutectVCFs}
 \alias{GetMutationLoadsFromMutectVCFs}
-\title{Get mutation loads information from Mutect VCF files}
+\title{Get mutation loads information from Mutect VCF files.}
 \usage{
 GetMutationLoadsFromMutectVCFs(split.vcfs)
 }
@@ -28,6 +28,6 @@ A list containing mutation loads information from Mutect VCF files:
 }
 }
 \description{
-Get mutation loads information from Mutect VCF files
+Get mutation loads information from Mutect VCF files.
 }
 \keyword{internal}

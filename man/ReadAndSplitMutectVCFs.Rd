@@ -36,12 +36,12 @@ A list with 3 in-memory VCFs and two left-over VCF-like data frames
  \item \code{ID} VCF with only small insertions and deletions.
 
  \item \code{other.subs} VCF like data.frame with rows for coordinate
- substitutions involving 3 or more nucleotides, e.g. ACT > TGA or AACT >
- GGTA.
+ substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
+ GGTA) and rows for complex indels.
 
- \item \code{multiple.alternative.alleles} VCF like data.frame with rows for
- variants with multiple alternative alleles, for example ACT mutated to both
- AGT and ACT at the same position.
+ \item \code{multiple.alt} VCF like data.frame with
+ rows for variants with multiple alternative alleles, for example
+ ACT mutated to both AGT and ACT at the same position.
 
 }
 }

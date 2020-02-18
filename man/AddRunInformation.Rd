@@ -12,7 +12,6 @@ AddRunInformation(
   vcftype,
   ref.genome,
   region,
-  nrow.data,
   mutation.loads
 )
 }

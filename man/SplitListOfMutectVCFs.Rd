@@ -26,9 +26,10 @@ into the first 3 VCFs, as follows:
 
  \item \code{other.subs} VCF like data.frame with
  rows for coordinate substitutions involving
- 3 or more nucleotides, e.g. ACT > TGA or AACT > GGTA.
+ 3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
+ and rows for complex indels.
 
- \item \code{multiple.alternative.alleles} VCF like data.frame with
+ \item \code{multiple.alt} VCF like data.frame with
  rows for variants with multiple alternative alleles, for example
  ACT mutated to both AGT and ACT at the same position.
 
