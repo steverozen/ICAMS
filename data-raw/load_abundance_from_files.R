@@ -111,22 +111,22 @@ abundance.3bp.transcript.unstranded.GRCm38 <-
 abundance.2bp.transcript.unstranded.GRCm38 <-
   Collapse144AbundanceTo78(abundance.2bp.genome.stranded.GRCm38)
 ###########################################################################################################
-abundance.2bp.flat.unstranded <- rep(1, length(abundance.2bp.genome.unstranded.GRCh37))
+abundance.2bp.flat.unstranded <- rep(1L, length(abundance.2bp.genome.unstranded.GRCh37))
 names(abundance.2bp.flat.unstranded) <- names(abundance.2bp.genome.unstranded.GRCh37)
 
-abundance.2bp.flat.stranded <- rep(1, length(abundance.2bp.genome.stranded.GRCh37))
+abundance.2bp.flat.stranded <- rep(1L, length(abundance.2bp.genome.stranded.GRCh37))
 names(abundance.2bp.flat.stranded) <- names(abundance.2bp.genome.stranded.GRCh37)
 
-abundance.3bp.flat.unstranded <- rep(1, length(abundance.3bp.genome.unstranded.GRCh37))
+abundance.3bp.flat.unstranded <- rep(1L, length(abundance.3bp.genome.unstranded.GRCh37))
 names(abundance.3bp.flat.unstranded) <- names(abundance.3bp.genome.unstranded.GRCh37)
 
-abundance.3bp.flat.stranded <- rep(1, length(abundance.3bp.genome.stranded.GRCh37))
+abundance.3bp.flat.stranded <- rep(1L, length(abundance.3bp.genome.stranded.GRCh37))
 names(abundance.3bp.flat.stranded) <- names(abundance.3bp.genome.stranded.GRCh37)
 
-abundance.4bp.flat.unstranded <- rep(1, length(abundance.4bp.genome.unstranded.GRCh37))
+abundance.4bp.flat.unstranded <- rep(1L, length(abundance.4bp.genome.unstranded.GRCh37))
 names(abundance.4bp.flat.unstranded) <- names(abundance.4bp.genome.unstranded.GRCh37)
 
-abundance.5bp.flat.unstranded <- rep(1, length(abundance.5bp.genome.unstranded.GRCh37))
+abundance.5bp.flat.unstranded <- rep(1L, length(abundance.5bp.genome.unstranded.GRCh37))
 names(abundance.5bp.flat.unstranded) <- names(abundance.5bp.genome.unstranded.GRCh37)
 
 flat.abundance <- list(
