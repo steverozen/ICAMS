@@ -441,6 +441,37 @@ AbundanceIsSame <- function(a1, a2) {
   return(FALSE)
 }
 
+#' @keywords internal
+CheckCatalogAttributes <- function(catalog) {
+  ref.genome <- attr(catalog, "ref.genome", exact = TRUE)
+  catalog.type <- attr(catalog, "catalog.type", exact = TRUE)
+  abundance <- attr(catalog, "abundance", exact = TRUE)
+  region <- attr(catalog, "region", exact = TRUE)
+  check.result <- TRUE
+  
+  if (is.null(ref.genome)) {
+    check.result <<- TRUE
+  } else if (inherits(ref.genome, "BSgenome")) {
+    check.result <<- TRUE
+  } else if (ref.genome == "mixed") {
+    stop('Cannot perform transformation from a catalog with "mixed" ref.genome')
+  }
+  if (is.null(catalog.type)) {
+    stop("Cannot perform transformation from a catalog with NULL catalog.type")
+  }
+  if (is.null(abundance)) {
+    stop("Cannot perform transformation from a catalog with NULL abundance")
+  } else if (!inherits(abundance, "integer")) {
+    stop("Cannot perform transformation from a catalog with non integer abundance")
+  }
+  if (is.null(region)) {
+    stop("Cannot perform transformation from a catalog with NULL region")
+  } else if (region == "mixed") {
+    stop('Cannot perform transformation from a catalog with "mixed" region')
+  }
+  return(check.result)
+}
+
 #' Transform between counts and density spectrum catalogs
 #' and counts and density signature catalogs.
 #'
@@ -532,7 +563,9 @@ TransformCatalog <-
            target.region       = NULL, 
            target.catalog.type = NULL,
            target.abundance    = NULL) {
-  
+    # Check the attributes of the catalog
+    stopifnot(CheckCatalogAttributes(catalog))
+    
     # Check and normalize the arguments
     args <-
       CheckAndNormalizeTranCatArgs(
