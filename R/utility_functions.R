@@ -1973,15 +1973,136 @@ GetCustomKmerCounts <- function(k, ref.genome, custom.ranges, filter.path,
   }
 }
 
+#' @keywords internal
+CheckAndAssignAttributes <- function(x, list0) {
+  for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+    GetAttribute <- function(idx, list, at) {
+      attr(list[[idx]], at, exact = TRUE)
+    }
+    attributes.list <- lapply(1:ncol(x), FUN = GetAttribute, 
+                              list = list0, at = at)
+    
+    CheckNullAttribute <- function(x, attributes.list) {
+      is.null.result <- sapply(attributes.list, FUN = is.null)
+      # If all the attributes are NULL, then x will also have NULL attribute
+      if (all(is.null.result)) {
+        attr(x, at) <- NULL
+        return(list(is.null = TRUE, x = x))
+      } else if (any(is.null.result)) {
+        # If some attributes are NULL, then x will have a "mixed" attribute
+        attr(x, at) <- "mixed"
+        return(list(is.null = TRUE, x = x))
+      }
+    }
+    
+    if (at == "ref.genome") {
+      result.list <- CheckNullAttribute(x, attributes.list)
+      if (isTRUE(result.list$is.null)) {
+        x <- result.list$x
+      } else {
+        GetRefGenomeName <- function(object) {
+          return(object@pkgname)
+        }
+        ref.genome.check.result <- 
+          sapply(attributes.list, FUN = GetRefGenomeName)
+        if (length(unique(ref.genome.check.result)) == 1) {
+          attr(x, at) <- attributes.list[[1]]
+        } else {
+          attr(x, at) <- "mixed"
+        }
+      }
+    }
+    
+    if (at == "catalog.type") {
+      is.null.result <- sapply(attributes.list, FUN = is.null)
+      if (any(is.null.result)) {
+        # If any attribute is NULL, then stop
+        stop("Cannot perform cbind operation to catalogs with NULL",
+             " catalog.type")
+      } else {
+        catalog.type.check.result <- do.call("c", attributes.list)
+        if (length(unique(catalog.type.check.result)) == 1) {
+          attr(x, at) <- attributes.list[[1]]
+        } else {
+          stop("Cannot perform cbind operation to catalogs with different",
+               " catalog.type")
+        }
+      }
+    }
+    
+    if (at == "abundance") {
+      result.list <- CheckNullAttribute(x, attributes.list)
+      if (isTRUE(result.list$is.null)) {
+        x <- result.list$x
+      } else {
+        abundance.length.result <- sapply(attributes.list, FUN = length)
+        if (length(unique(abundance.length.result)) == 1) {
+          GetAbundanceNames <- function(abundance) {
+            return(sort(names(abundance)))
+          }
+          
+          abundance.names.list <- 
+            lapply(attributes.list, FUN = GetAbundanceNames)
+          CheckNamesOfAbundance <- function(abundance.names.list) {
+            num <- length(abundance.names.list)
+            ref.names <- abundance.names.list[[1]]
+            for (i in 2:num) {
+              if (!all(abundance.names.list[[i]] == ref.names)) {
+                return(FALSE)
+              } 
+            }
+            return(TRUE)
+          }
+          
+          CheckValuesOfAbundance <- function(abundance.list) {
+            num <- length(abundance.list)
+            ref.values <- abundance.list[[1]][abundance.names.list[[1]]]
+            for (i in 2:num) {
+              if (!all(abundance.list[[i]][abundance.names.list[[i]]] == 
+                       ref.values)) {
+                return(FALSE)
+              }
+            }
+            return(TRUE)
+          }
+          
+          if (CheckNamesOfAbundance(abundance.names.list) && 
+              CheckValuesOfAbundance(attributes.list)) {
+            attr(x, at) <- attributes.list[[1]]
+          } else {
+            attr(x, at) <- "mixed"
+          }
+        } else {
+          attr(x, at) <- "mixed"
+        }
+      }
+    }
+    
+    if (at == "region") {
+      result.list <- CheckNullAttribute(x, attributes.list)
+      if (isTRUE(result.list$is.null)) {
+        x <- result.list$x
+      } else {
+        region.check.result <- do.call("c", attributes.list)
+        if (length(unique(region.check.result)) == 1) {
+          attr(x, at) <- attributes.list[[1]]
+        } else {
+          attr(x, at) <- "mixed"
+        }
+      }
+    }
+  }
+  return(x)
+}
+
 # Redefine the cbind methods for catalogs
 #' @export
 `cbind.SBS96Catalog` <- function (..., deparse.level = 1) {
   x <- base::cbind.data.frame(..., deparse.level = deparse.level)
   x <- data.matrix(x)
   class(x) <- class(..1)
-  for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
-    attr(x, at) <- attr(..1, at, exact = TRUE)
-  }
+  list0 <- list(...)
+  x <- CheckAndAssignAttributes(x, list0)
   return(x)
 }
 
