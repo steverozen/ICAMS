@@ -2154,9 +2154,8 @@ CheckAndAssignAttributes <- function(x, list0) {
   x <- base::cbind.data.frame(..., deparse.level = deparse.level)
   x <- data.matrix(x)
   class(x) <- class(..1)
-  for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
-    attr(x, at) <- attr(..1, at, exact = TRUE)
-  }
+  list0 <- list(...)
+  x <- CheckAndAssignAttributes(x, list0)
   return(x)
 }
 
