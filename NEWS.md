@@ -39,6 +39,12 @@ based on plot.type
   MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
   MutectVCFFilesToZipFile(), StrelkaIDVCFFilesToCatalog(),
   StrelkaIDVCFFilesToCatalogAndPlotToPdf() and StrelkaIDVCFFilesToZipFile().
+* Updated methods of different types of catalogs for the generic function cbind()
+  to check the attributes of the incoming catalogs and assign attributes accordingly.
+* Changed the class of values in internal data "flat.abundance" from "numeric" to
+  "integer".
+* Updated function TransformCatalog() to check the attributes of the catalog to be 
+  transformed in the first place.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
