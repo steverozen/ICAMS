@@ -14,6 +14,7 @@ AGAT
 AGGG
 AGT
 al
+allel
 AnnotateDBSVCF
 AnnotateIDVCF
 AnnotateSBSVCF
@@ -34,6 +35,7 @@ CanonicalizeQUAD
 catDBS
 catSBS
 CATTAT
+cbind
 CCCAGGGAGGGTCCC
 CCDS
 CCT
