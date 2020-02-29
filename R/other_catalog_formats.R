@@ -93,7 +93,14 @@ ReadStapleGT96SBS <- function(file,
                    check.names      = FALSE,
                    sep              = sep)
   # Careful, df has 96 rows
-  stopifnot(nrow(df)==96)
+  stopifnot(nrow(df) == 96)
+  
+  if (ncol(df) == 1) {
+    stop("Only one column after reading ", file, 
+         "; do you need to set sep to something other than \"", sep, "\"?")
+    
+  }
+  
   c1 <- df[ , 1]
 
   # E.g. "A[C>A]T" -> "ACTA"
