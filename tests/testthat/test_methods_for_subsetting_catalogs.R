@@ -8,7 +8,7 @@ test_that("[ method for SBS96Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -26,7 +26,7 @@ test_that("[ method for SBS192Catalog", {
                                 catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -43,7 +43,7 @@ test_that("[ method for SBS1536Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -60,7 +60,7 @@ test_that("[ method for DBS78Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -78,7 +78,7 @@ test_that("[ method for DBS144Catalog", {
                                 catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -95,7 +95,7 @@ test_that("[ method for DBS136Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
@@ -111,7 +111,7 @@ test_that("[ method for IndelCatalog", {
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
   out1 <- PlotCatalog(catalog.counts[, 1, drop = FALSE])
-  out2 <- PlotCatalogToPdf(catalog.counts[, 1, drop = FALSE],
+  out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2, TRUE)
