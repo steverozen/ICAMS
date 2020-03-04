@@ -2015,14 +2015,6 @@ CheckAndAssignAttributes <- function(x, list0) {
     }
     attributes.list <- lapply(list0, FUN = GetAttribute2, at = at)
     
-    if (FALSE) {
-    GetAttribute <- function(idx, list, at) {
-      attr(list[[idx]], at, exact = TRUE)
-    }
-    attributes.list <- lapply(1:ncol(x), FUN = GetAttribute, 
-                              list = list0, at = at)
-    }
-    
     CheckNullAttribute <- function(x, attributes.list) {
       is.null.result <- sapply(attributes.list, FUN = is.null)
       # If all the attributes are NULL, then x will also have NULL attribute

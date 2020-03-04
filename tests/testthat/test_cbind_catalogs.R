@@ -8,15 +8,15 @@ test_that("cbind method for SBS96Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -154,15 +154,15 @@ test_that("cbind method for SBS192Catalog", {
                                 catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -299,15 +299,15 @@ test_that("cbind method for SBS1536Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -444,15 +444,15 @@ test_that("cbind method for DBS78Catalog", {
                                 region = "genome", catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -590,15 +590,15 @@ test_that("cbind method for DBS144Catalog", {
                                 catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -736,15 +736,15 @@ test_that("cbind method for DBS136Catalog", {
                                 catalog.type = "counts")
   colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
@@ -880,15 +880,15 @@ test_that("cbind method for IndelCatalog", {
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
 
-  cat1 <- catalog.counts[, 1, drop = FALSE]
-  cat2 <- catalog.counts[, 2, drop = FALSE]
+  cat1 <- catalog.counts[, 1:2]
+  cat2 <- catalog.counts[, 3, drop = FALSE]
   cat3 <- cbind(cat1, cat2)
   out <- PlotCatalogToPdf(cat3, file = file.path(tempdir(), "test0.pdf"))
   expect_equal(out, TRUE)
   
   # Test when performing cbind operation to catalogs with different "ref.genome"
   # attribute
-  cat4 <- catalog.counts[, 3, drop = FALSE]
+  cat4 <- catalog.counts[, 3:4]
   
   # When some catalog has NULL "ref.genome" attribute
   attr(cat4, "ref.genome") <- NULL
