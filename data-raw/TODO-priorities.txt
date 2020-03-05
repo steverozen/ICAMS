@@ -46,5 +46,6 @@ Abandoned.... MED Plot transcription strand bias as function of distance from TS
 ... LOW binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
 ... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
 ... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
+... LOW Update function TransformCatalog() to make it possible to transform from a "counts" catalog to a "counts.signature" catalog and assume that the target abundance is the same as the source abundance?
 ... VERY LOW Read in MAF files
 
