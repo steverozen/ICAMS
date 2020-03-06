@@ -2228,3 +2228,16 @@ IsBinomialTestApplicable <- function(catalog) {
     return(FALSE)
   }
 }
+
+#' @keywords internal
+AssignNumberOfAsterisks <- function(p.value) {
+  label <- NULL
+  if (p.value < 0.001) {
+    label <- "***"
+  } else if (p.value < 0.01) {
+    label <- "**"
+  } else if (p.value < 0.05) {
+    label <- "*"
+  }
+  return(label)
+}
