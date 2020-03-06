@@ -11,7 +11,7 @@ test_that("[ method for SBS96Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
@@ -46,7 +46,7 @@ test_that("[ method for SBS1536Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
@@ -63,7 +63,7 @@ test_that("[ method for DBS78Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
@@ -81,7 +81,7 @@ test_that("[ method for DBS144Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
@@ -98,7 +98,7 @@ test_that("[ method for DBS136Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
@@ -114,7 +114,7 @@ test_that("[ method for IndelCatalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))

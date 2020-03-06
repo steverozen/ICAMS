@@ -10,7 +10,7 @@ test_that("PlotCatalogToPdf.DBS136Catalog function", {
   out <-
     PlotCatalogToPdf(catalog.counts, 
                      file = file.path(tempdir(), "PlotCatDBS136.counts.test.pdf"))
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   catalog.density <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
@@ -19,7 +19,7 @@ test_that("PlotCatalogToPdf.DBS136Catalog function", {
   out <-
     PlotCatalogToPdf(catalog.density, 
                      file = file.path(tempdir(), "PlotCatDBS136.density.test.pdf"))
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   unlink(file.path(tempdir(), "PlotCatDBS136.counts.test.pdf"))
   unlink(file.path(tempdir(), "PlotCatDBS136.density.test.pdf"))

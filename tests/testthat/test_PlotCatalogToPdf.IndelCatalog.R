@@ -9,7 +9,7 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
   colnames(catalog.counts) <- paste0("Biliary-AdenoCA", 1 : 35)
   out <- PlotCatalogToPdf(catalog.counts, 
                           file = file.path(tempdir(), "PlotCatID.counts.test.pdf"))
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   catalog.counts.signature <-
     apply(catalog.counts, MARGIN = 2, function(x) x / sum(x))
@@ -19,7 +19,7 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
                      file = file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
-  expect_equal(out, TRUE)
+  expect_equal(out$plot.success, TRUE)
 
   unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
   unlink(file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))

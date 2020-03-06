@@ -285,7 +285,7 @@ PlotCatalogToPdf.SBS96Catalog <-
     }
     
     grDevices::dev.off()
-    invisible(TRUE)
+    return(list(plot.success = TRUE))
   }
 
 #' @export
@@ -810,7 +810,7 @@ PlotCatalogToPdf.SBS1536Catalog <-
   }
 
   grDevices::dev.off()
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 ###############################################################################
@@ -926,7 +926,7 @@ PlotCatalogToPdf.DBS78Catalog <-
   }
 
   grDevices::dev.off()
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1062,7 +1062,7 @@ PlotCatalogToPdf.DBS144Catalog <-
     }
 
     grDevices::dev.off()
-    invisible(TRUE)
+    return(list(plot.success = TRUE))
   }
 
 #' @export
@@ -1380,7 +1380,7 @@ PlotCatalogToPdf.DBS136Catalog <-
   }
 
   grDevices::dev.off()
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 ###############################################################################
@@ -1533,7 +1533,7 @@ PlotCatalogToPdf.IndelCatalog <-
     PlotCatalog(cat)
   }
   grDevices::dev.off()
-  invisible(TRUE)
+  return(list(plot.success = TRUE))
 }
 
 
