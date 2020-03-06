@@ -31,16 +31,28 @@
 #'   set \code{par(tck = 0)} to suppress.
 #'
 #' @import graphics
+#' 
+#' @importFrom stats binom.test p.adjust
 #'
 #' @return A list whose first element is a logic value indicating whether the
-#'   plot is successful. The second element is a numeric vector giving the
-#'   coordinates of all the bar midpoints drawn, useful for adding to the
-#'   graph(\strong{currently only implemented for SBS96Catalog}).
-#'
+#'   plot is successful. For \strong{SBS96Catalog}, the list will have a second
+#'   element, which is a numeric vector giving the coordinates of all the bar
+#'   midpoints drawn, useful for adding to the graph. For \strong{SBS192Catalog}
+#'   with "counts" catalog.type and non-null abundance, the list will have a
+#'   second element which is a list containing the p-values from two-tailed
+#'   binomial test.
+#'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
 #'   end-user documentation deletion repeat sizes range from 1 to 6+.
 #'
+#' @section Comments: For \strong{SBS192Catalog} with "counts" catalog.type and
+#'   non-null abundance, the returned p-values have been adjusted using
+#'   Bonferroni correction after performing binomial test to the mutation counts
+#'   on the transcribed and untranscribed strand according to each mutation
+#'   type. On the SBS12 plot, meanings of asterisks denoting p-values are as follows:
+#'   *P<0.05, **P<0.01, ***P<0.001.
+#'   
 #' @export
 #'
 #' @name PlotCatalog
@@ -93,12 +105,17 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'   
 #' @param ylim Has the usual meaning. Only implemented for SBS96Catalog.
 #'
-#' @return \code{invisible(TRUE)}
+#' @return A list whose first element is a logic value indicating whether the
+#'   plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
+#'   and non-null abundance, the list will have a second element which is a list
+#'   containing the p-values from two-tailed binomial test.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
 #'   end-user documentation deletion repeat sizes range from 1 to 6+.
 #'
+#' @inheritSection PlotCatalog Comments
+#' 
 #' @export
 #'
 #' @name PlotCatalogToPdf
