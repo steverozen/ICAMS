@@ -1089,7 +1089,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 
   # One SBS mutation can be represented by more than 1 row in vcf 
   # after annotation by AddTranscript if the mutation position falls 
-  # is in multiple transcripts. When creating the 1536 and 96 catalog,
+  # in multiple transcripts. When creating the 1536 and 96 catalog,
   # we only need to count these mutations once.
   vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
               by = .(CHROM, ALT, POS)]

@@ -944,7 +944,7 @@ AddRunInformation <-
                         "to the mutation counts on the transcribed and ",
                         "untranscribed strand according to each mutation type."), 
                  run.info)
-      writeLines("*P<0.05, **P<0.01, ***P<0.001(two tailed binomial test)", 
+      writeLines("*P<0.05, **P<0.01, ***P<0.001(two-tailed binomial test)", 
                  run.info)
     }
     close(run.info)
