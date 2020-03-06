@@ -601,8 +601,8 @@ PlotCatalogToPdf.SBS192Catalog <-
     p.values <- c(p.values, list$p.values)
   }
   grDevices::dev.off()
-  ifelse(is.null(p.values), return(list(plot.sucesss = TRUE)),
-         return(list(plot.sucesss = TRUE, p.values = p.values)))
+  ifelse(is.null(p.values), return(list(plot.success = TRUE)),
+         return(list(plot.success = TRUE, p.values = p.values)))
 }
 
 #' @export

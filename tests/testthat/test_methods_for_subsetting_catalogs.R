@@ -29,7 +29,7 @@ test_that("[ method for SBS192Catalog", {
   out2 <- PlotCatalogToPdf(catalog.counts[, 1:2],
                            file = file.path(tempdir(), "test.pdf"))
   expect_equal(out1$plot.success, TRUE)
-  expect_equal(out2, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   expect_error(PlotCatalog(catalog.counts[, 1]))
   graphics.off()
   unlink(file.path(tempdir(), "test.pdf"))
