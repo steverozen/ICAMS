@@ -42,6 +42,8 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   split.vcfs <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
   mutation.loads <- GetMutationLoadsFromStrelkaSBSVCFs(split.vcfs)
+  p.values <- NULL
+  
   SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
                                     trans.ranges, region)
   DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
@@ -62,15 +64,16 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
                      file = paste0(output.file, name, ".pdf"))
     
     if (name == "catSBS192") {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, "SBS12.pdf"),
-                       plot.SBS12 = TRUE)
+      list <- PlotCatalogToPdf(catalogs[[name]],
+                               file = paste0(output.file, "SBS12.pdf"),
+                               plot.SBS12 = TRUE)
+      p.values <- c(p.values, list$p.values)
     }
   }
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
-                    ref.genome, region, mutation.loads)
+                    ref.genome, region, mutation.loads, p.values)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -126,6 +129,8 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   list.of.vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
   mutation.loads <- GetMutationLoadsFromStrelkaIDVCFs(list.of.vcfs)
+  p.values <- NULL
+  
   list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches)
   
   output.file <- ifelse(base.filename == "",
@@ -140,7 +145,7 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
-                    ref.genome, region, mutation.loads)
+                    ref.genome, region, mutation.loads, p.values)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -255,6 +260,8 @@ MutectVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
   mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
+  p.values <- NULL
+  
   SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
                                     trans.ranges, region)
   DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
@@ -277,15 +284,16 @@ MutectVCFFilesToZipFile <- function(dir,
                      file = paste0(output.file, name, ".pdf"))
     
     if (name == "catSBS192") {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, "SBS12.pdf"),
-                       plot.SBS12 = TRUE)
+      list <- PlotCatalogToPdf(catalogs[[name]],
+                               file = paste0(output.file, "SBS12.pdf"),
+                               plot.SBS12 = TRUE)
+      p.values <- c(p.values, list$p.values)
     }
   }
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
-                    ref.genome, region, mutation.loads)
+                    ref.genome, region, mutation.loads, p.values)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -781,7 +789,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 #' @keywords internal
 AddRunInformation <- 
   function(files, vcf.names, zipfile.name, vcftype, ref.genome, 
-           region, mutation.loads) {
+           region, mutation.loads, p.values) {
     
     run.info <- 
       file(description = file.path(tempdir(), "run-information.txt"), open = "w")
@@ -846,11 +854,11 @@ AddRunInformation <-
     writeLines("--- Input files ---", run.info)
     max.num.of.char <- max(nchar(vcf.names))
     # Add a description of the information listed for input files
-    writeLines(paste0(stringi::stri_pad("Name", width = max.num.of.char,
-                                        side = "right"), "  ", 
+    writeLines(paste0(stri_pad("Name", width = max.num.of.char,
+                               side = "right"), "  ", 
                       "# of data lines", "  ",
-                      stringi::stri_pad("MD5", width = 32,
-                                        side = "right"), "  ",
+                      stri_pad("MD5", width = 32,
+                               side = "right"), "  ",
                       "# of SBS", "  ",
                       "# of DBS", "  ",
                       "# of ID", "  ",
@@ -860,22 +868,22 @@ AddRunInformation <-
     num.of.file <- length(files)
     
     for (i in 1:num.of.file) {
-      writeLines(paste0(stringi::stri_pad(vcf.names[i], 
-                                          width = max.num.of.char,
-                                          side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$total.variants[i], 
-                                          width = 15, side = "right"), "  ",
+      writeLines(paste0(stri_pad(vcf.names[i], 
+                                 width = max.num.of.char,
+                                 side = "right"), "  ",
+                        stri_pad(mutation.loads$total.variants[i], 
+                                 width = 15, side = "right"), "  ",
                         tools::md5sum(files[i]), "  ",
-                        stringi::stri_pad(mutation.loads$SBS[i], width = 8,
-                                          side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$DBS[i], width = 8,
-                                          side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$ID[i], width = 7,
-                                          side = "right"), "  ",
-                        stringi::stri_pad(mutation.loads$excluded.variants[i], 
-                                          width = 22, side = "right")), 
+                        stri_pad(mutation.loads$SBS[i], width = 8,
+                                 side = "right"), "  ",
+                        stri_pad(mutation.loads$DBS[i], width = 8,
+                                 side = "right"), "  ",
+                        stri_pad(mutation.loads$ID[i], width = 7,
+                                 side = "right"), "  ",
+                        stri_pad(mutation.loads$excluded.variants[i], 
+                                 width = 22, side = "right")), 
                  run.info)
-                                          
+      
     }
     # Add a disclaimer about excluded variants in the analysis
     writeLines("", run.info)
@@ -883,6 +891,62 @@ AddRunInformation <-
     writeLines(paste0("Triplet and above base substitutions, ", 
                       "complex indels and variants with multiple alternate ",
                       "alleles are currently excluded in the analysis."), run.info)
+    
+    # Add strand bias statistics for SBS12 plot
+    if (!is.null(p.values)) {
+      writeLines("", run.info)
+      writeLines("--- Transcription strand bias statistics ---", run.info)
+      max.num.of.char1 <- max(max(nchar(names(p.values))), 11)
+      
+      # Add a description of the information listed for strand bias statistics
+      writeLines(paste0(stri_pad("Sample name", 
+                                 width = max.num.of.char1,
+                                 side = "right"), "  ", 
+                        "Mutation type", "  ",
+                        stri_pad("C>A", width = 13, side = "right"), "  ",
+                        stri_pad("C>G", width = 13, side = "right"), "  ",
+                        stri_pad("C>T", width = 13, side = "right"), "  ",
+                        stri_pad("T>A", width = 13, side = "right"), "  ",
+                        stri_pad("T>C", width = 13, side = "right"), "  ",
+                        stri_pad("T>G", width = 13, side = "right"), "  "), 
+                 run.info)
+      
+      num.of.sample <- length(names(p.values))
+      
+      for (i in 1:num.of.sample) {
+        pvalues.info <- character(6)
+        for (j in 1:6) {
+          pvalues.info[j] <- 
+            stri_pad(paste0(formatC(p.values[[i]][j], format = "e", 
+                                    digits = 2), "(", 
+                            AssignNumberOfAsterisks(p.values[[i]][j]), 
+                            ")"), width = 13, side = "right")
+        }
+        writeLines(paste0(stri_pad(names(p.values)[i], 
+                                   width = max.num.of.char1,
+                                   side = "right"), "  ",
+                          stri_pad("P-value", 
+                                   width = 13, side = "right"), "  ",
+                          pvalues.info[1], "  ",
+                          pvalues.info[2], "  ",
+                          pvalues.info[3], "  ",
+                          pvalues.info[4], "  ",
+                          pvalues.info[5], "  ",
+                          pvalues.info[6]), run.info)
+        
+      }
+      
+      # Add a note about p-value
+      writeLines("", run.info)
+      writeLines("Note:", run.info)
+      writeLines(paste0("The p-values have been adjusted using Bonferroni ",
+                        "correction after performing binomial test ", 
+                        "to the mutation counts on the transcribed and ",
+                        "untranscribed strand according to each mutation type."), 
+                 run.info)
+      writeLines("*P<0.05, **P<0.01, ***P<0.001(two tailed binomial test)", 
+                 run.info)
+    }
     close(run.info)
   }
 
