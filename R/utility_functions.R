@@ -2212,3 +2212,19 @@ CalBaseCountsFrom3MerAbundance <- function(three.mer.abundance) {
   }
   return(base.counts)
 }
+
+#' @keywords internal
+IsBinomialTestApplicable <- function(catalog) {
+  catalog.type <- attributes(catalog)$catalog.type
+  abundance <- attributes(catalog)$abundance
+  
+  if(catalog.type == "counts" && !is.null(abundance)) {
+    if (length(abundance) == 64) {
+      return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  } else {
+    return(FALSE)
+  }
+}
