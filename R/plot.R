@@ -589,25 +589,20 @@ PlotCatalogToPdf.SBS192Catalog <-
   opar <- par(no.readonly = TRUE)
   on.exit(par(opar))
   n <- ncol(catalog)
-  # TODO(Nanhai): Please refactor the code below; just set the par
-  # and a variable called plot.SBS12 inside an the 'if' statement,
-  # then you only need one loop.
-  if (plot.SBS12 == FALSE) {
-    par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1))
-    for (i in 1 : n) {
-      cat <- catalog[, i, drop = FALSE]
-      PlotCatalog(cat, cex = cex)
-    }
-  } else {
-    par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2))
-    for (i in 1 : n) {
-      cat <- catalog[, i, drop = FALSE]
-      PlotCatalog(cat, plot.SBS12 = TRUE, cex = cex)
-    }
-  }
   
+  ifelse(plot.SBS12, 
+         par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2)),
+         par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1)))
+  
+  p.values <- NULL
+  for (i in 1:n) {
+    cat <- catalog[, i, drop = FALSE]
+    list <- PlotCatalog(cat, plot.SBS12 = plot.SBS12, cex = cex)
+    p.values <- c(p.values, list$p.values)
+  }
   grDevices::dev.off()
-  invisible(TRUE)
+  ifelse(is.null(p.values), return(list(plot.sucesss = TRUE)),
+         return(list(plot.sucesss = TRUE, p.values = p.values)))
 }
 
 #' @export
