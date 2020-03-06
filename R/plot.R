@@ -445,6 +445,56 @@ PlotCatalog.SBS192Catalog <-
                     axes = FALSE, ylab = "counts",
                     border = NA, col = cols, xpd = NA, 
                     cex.lab = cex * par("cex.lab") * 1.25)
+      
+      # Perform binomial test
+      if (IsBinomialTestApplicable(cat)) {
+        colnames(mat) <- maj.class.names
+        rownames(mat) <- c("transcribed", "untranscribed")
+        
+        # Calculate the proportion of pyrimidines on transcribed strand
+        # which can be used as the hypothesized probability of success
+        # in binomial test
+        counts <- CalBaseCountsFrom3MerAbundance(attributes(cat)$abundance)
+        prop.C <- counts["C"] / sum(counts["C"] + counts["G"])
+        prop.T <- counts["T"] / sum(counts["T"] + counts["A"])
+        props <- c(rep(prop.C, 3), rep(prop.T, 3))
+        names(props) <- maj.class.names
+        
+        p.values <- numeric(6)
+        names(p.values) <- maj.class.names
+        
+        for (type in maj.class.names) {
+          htest <- binom.test(x = mat[, type], p = props[type], 
+                              alternative = "two.sided")
+          p.values[type] <- htest$p.value
+        }
+        p.values <- p.adjust(p.values, method = "bonferroni")
+        list0 <- list()
+        list0[[colnames(cat)]] <- p.values
+        
+        # Draw asterisks on top of graph if p-value is significant
+        for (type in maj.class.names) {
+          p.value <- p.values[type]
+          if (p.value < 0.05) {
+            colnames(bp) <- maj.class.names
+            # Get the x coordinates of the line segment to be drawn
+            x1 <- bp[1, type]
+            x2 <- bp[2, type]
+            
+            # Get the y coordinates of the line segment to be drawn
+            y1 <- y2 <- max(mat[, type]) + max(mat) * 0.03
+            
+            # Draw the line segment
+            segments(x1, y1, x2, y2)
+            
+            # Draw the asterisk on top of line segment
+            x3 <- mean(c(x1, x2))
+            y3 <- y1 + max(mat) * 0.025
+            label <- AssignNumberOfAsterisks(p.value)
+            text(x3, y3, label)
+          }
+        }
+      }
     } else if (attributes(cat)$catalog.type %in%
                c("counts.signature", "density.signature")) {
       # Determine the y axis label
@@ -520,8 +570,13 @@ PlotCatalog.SBS192Catalog <-
     text(bp[5], ymax * 1.02, labels = colnames(catalog), xpd = NA,
          font = 2, cex = cex, adj = c(0, 0))
   }
-
-  return(list(plot.success = TRUE))
+    
+    # Check whether it is possible to return the p-values from binomial test
+    if (isTRUE(plot.SBS12) && IsBinomialTestApplicable(catalog)) {
+      return(list(plot.success = TRUE, p.values = list0))
+    } else {
+      return(list(plot.success = TRUE))
+    }
 }
 
 #' @export
