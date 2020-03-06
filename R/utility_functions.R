@@ -2198,3 +2198,17 @@ CheckAndAssignAttributes <- function(x, list0) {
   x <- CheckAndAssignAttributes(x, list0)
   return(x)
 }
+
+#' Calculate base counts from three mer abundance
+#' @keywords internal
+CalBaseCountsFrom3MerAbundance <- function(three.mer.abundance) {
+  base.counts <- integer(4)
+  names(base.counts) <- c("A", "C", "G", "T")
+  
+  tmp <- three.mer.abundance
+  names(tmp) <- substr(names(tmp), 2, 2)
+  for (base in c("A", "C", "G", "T")) {
+    base.counts[base] <- sum(tmp[names(tmp) == base])
+  }
+  return(base.counts)
+}
