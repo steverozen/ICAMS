@@ -7,12 +7,15 @@
 * (New) Added columns of VAF (variant allel frequency) and read depth information
   to the split DBS.vcfs from merged SBSs when calling function
   ReadAndSplitStrelkaSBSVCFs().
-* Slight changes to behavior of PlotCatalog() and PlotCatalogToPdf() for class
-  SBS96Catalog: (New) Allow setting ylim and cex.
+* Slight changes to behavior of PlotCatalog() and PlotCatalogToPdf():
+  For class SBS96Catalog: 
+  (New) Allow setting ylim and cex.
   (New) For PlotCatalog (not PlotCatalogToPdf), allow plotting of a 96 x 2 catalog,
-  in which case behavior is a stacked
-  bar chart. (New) Plot x axis tick marks if xlabels is not TRUE; set
-  \code{par(tck = 0)} to suppress. 
+  in which case behavior is a stacked bar chart. 
+  (New) Plot x axis tick marks if xlabels is not TRUE; set \code{par(tck = 0)} to  
+  suppress. 
+  For class IndelCatalog:
+  (New) Allow setting ylim.
   ? Minor changes in default font sizes.
 * Added a new dependency package "zip" in ICAMS, to be used in three new exported  
   functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
