@@ -24,8 +24,9 @@
 #'   the names of major mutation class on top of graph. Only implemented for
 #'   SBS96Catalog.
 #'
-#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog.
-#'
+#' @param ylim Has the usual meaning. Currently only implemented for
+#'   SBS96Catalog and IndelCatalog.
+#'   
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
@@ -101,9 +102,10 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
-#'   
-#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog.
 #'
+#' @param ylim Has the usual meaning. Currently only implemented for
+#'   SBS96Catalog and IndelCatalog.
+#'   
 #' @return A list whose first element is a logic value indicating whether the
 #'   plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
 #'   and non-null abundance, the list will have a second element which is a list
@@ -1412,7 +1414,7 @@ PlotCatalogToPdf.DBS136Catalog <-
 
 #' @export
 PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
-                                     grid, upper, xlabels, ylim){
+                                     grid, upper, xlabels, ylim = NULL){
   stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
@@ -1438,16 +1440,29 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
                 6, 6, 6, 6,
                 6, 6, 6, 6,
                 1, 2, 3, 5))
-
-  if (attributes(catalog)$catalog.type == "counts") {
+  
+  to.plot <- catalog[, 1]
+  catalog.type <- attributes(catalog)$catalog.type
+  if (catalog.type == "counts") {
     # Set a minimum value for ymax to make the plot more informative
-    ymax <- 4 * ceiling(max(max(catalog[, 1]) * 1.3, 10) / 4)
-
-    # Barplot
-    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
-                  lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
-                  xaxs = "i", yaxt = "n")
-
+    ymax <- 4 * ceiling(max(max(to.plot) * 1.3, 10) / 4)
+  } else if (catalog.type == "counts.signature") {
+    ymax <- ifelse(max(to.plot) * 1.3 > 1, 1, max(to.plot) * 1.3)
+  } else {
+    stop('\nCan only plot IndelCatalog with "counts" or "counts.signature" catalog.type.')
+  }
+  if (is.null(ylim)) {
+    ylim <- c(0, ymax)
+  } else {
+    ymax <- ylim[2]
+  }
+  
+  # Barplot
+  bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
+                lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
+                xaxs = "i", yaxt = "n")
+  
+  if (catalog.type == "counts") {
     # Calculate and draw the total counts for each major type
     counts <- integer(16)
     for (i in 1:16) {
@@ -1463,16 +1478,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
       text(idx2[i], ymax * 0.6, labels = counts[i],
            cex = 0.68, adj = 1, xpd = NA)
     }
-
-  } else if (attributes(catalog)$catalog.type == "counts.signature") {
-    # Get ylim
-    ymax <- ifelse(max(catalog[, 1]) * 1.3 > 1, 1, max(catalog[, 1]) * 1.3)
-
-    # Barplot
-    bp <- barplot(catalog[, 1], ylim = c(0, ymax), axes = FALSE, xaxt = "n",
-                  lwd = 3, space = 1.35, border = NA, col = cols, xpd = NA,
-                  xaxs = "i", yaxt = "n")
-  }
+  } 
 
   # Draw box and grid lines
   rect(xleft = bp[1] - 1.5, 0, xright = bp[num.classes] + 1, ymax, col = NA,
@@ -1543,7 +1549,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
 
 #' @export
 PlotCatalogToPdf.IndelCatalog <-
-  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim) {
+  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
@@ -1553,7 +1559,7 @@ PlotCatalogToPdf.IndelCatalog <-
   
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
-    PlotCatalog(cat)
+    PlotCatalog(cat, ylim = ylim)
   }
   grDevices::dev.off()
   return(list(plot.success = TRUE))
