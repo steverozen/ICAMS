@@ -46,8 +46,7 @@ A list whose first element is a logic value indicating whether the
   element, which is a numeric vector giving the coordinates of all the bar
   midpoints drawn, useful for adding to the graph. For \strong{SBS192Catalog}
   with "counts" catalog.type and non-null abundance, the list will have a
-  second element which is a list containing the p-values from two-tailed
-  binomial test.
+  second element which is a list containing the strand bias statistics.
 }
 \description{
 Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
@@ -62,11 +61,11 @@ The sizes of repeats involved in deletions range from 0 to 5+ in the
 }
 \section{Comments}{
  For \strong{SBS192Catalog} with "counts" catalog.type and
-  non-null abundance, the returned p-values have been adjusted using
-  Bonferroni correction after performing binomial test to the mutation counts
-  on the transcribed and untranscribed strand according to each mutation
-  type. On the SBS12 plot, meanings of asterisks denoting p-values are as follows:
-  *P<0.05, **P<0.01, ***P<0.001.
+  non-null abundance, the p-values in strand bias statistics have been
+  adjusted using Bonferroni correction after performing binomial test to the
+  mutation counts on the transcribed and untranscribed strand according to
+  each mutation type. On the SBS12 plot, meanings of asterisks denoting
+  p-values are as follows: *P<0.05, **P<0.01, ***P<0.001.
 }
 
 \examples{

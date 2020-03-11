@@ -39,19 +39,18 @@
 #'   element, which is a numeric vector giving the coordinates of all the bar
 #'   midpoints drawn, useful for adding to the graph. For \strong{SBS192Catalog}
 #'   with "counts" catalog.type and non-null abundance, the list will have a
-#'   second element which is a list containing the p-values from two-tailed
-#'   binomial test.
+#'   second element which is a list containing the strand bias statistics.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
 #'   end-user documentation deletion repeat sizes range from 1 to 6+.
 #'
 #' @section Comments: For \strong{SBS192Catalog} with "counts" catalog.type and
-#'   non-null abundance, the returned p-values have been adjusted using
-#'   Bonferroni correction after performing binomial test to the mutation counts
-#'   on the transcribed and untranscribed strand according to each mutation
-#'   type. On the SBS12 plot, meanings of asterisks denoting p-values are as follows:
-#'   *P<0.05, **P<0.01, ***P<0.001.
+#'   non-null abundance, the p-values in strand bias statistics have been
+#'   adjusted using Bonferroni correction after performing binomial test to the
+#'   mutation counts on the transcribed and untranscribed strand according to
+#'   each mutation type. On the SBS12 plot, meanings of asterisks denoting
+#'   p-values are as follows: *P<0.05, **P<0.01, ***P<0.001.
 #'   
 #' @export
 #'
@@ -108,7 +107,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' @return A list whose first element is a logic value indicating whether the
 #'   plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
 #'   and non-null abundance, the list will have a second element which is a list
-#'   containing the p-values from two-tailed binomial test.
+#'   containing the strand bias statistics.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
@@ -467,6 +466,7 @@ PlotCatalog.SBS192Catalog <-
       if (IsBinomialTestApplicable(cat)) {
         colnames(mat) <- maj.class.names
         rownames(mat) <- c("transcribed", "untranscribed")
+        strand.bias.statistics <- as.data.frame(t(mat))
         
         # Calculate the proportion of pyrimidines on transcribed strand
         # which can be used as the hypothesized probability of success
@@ -485,9 +485,13 @@ PlotCatalog.SBS192Catalog <-
                               alternative = "two.sided")
           p.values[type] <- htest$p.value
         }
+        
+        # Adjust p-values for multiple comparisons using Bonferroni correction
         p.values <- p.adjust(p.values, method = "bonferroni")
+        strand.bias.statistics$p.values <- p.values
+        
         list0 <- list()
-        list0[[colnames(cat)]] <- p.values
+        list0[[colnames(cat)]] <- strand.bias.statistics
         
         # Draw asterisks on top of graph if p-value is significant
         for (type in maj.class.names) {
@@ -590,7 +594,7 @@ PlotCatalog.SBS192Catalog <-
     
     # Check whether it is possible to return the p-values from binomial test
     if (isTRUE(plot.SBS12) && IsBinomialTestApplicable(catalog)) {
-      return(list(plot.success = TRUE, p.values = list0))
+      return(list(plot.success = TRUE, strand.bias.statistics = list0))
     } else {
       return(list(plot.success = TRUE))
     }
@@ -611,15 +615,17 @@ PlotCatalogToPdf.SBS192Catalog <-
          par(mfrow = c(4, 3), mar = c(2, 5, 2, 1), oma = c(2, 2, 2, 2)),
          par(mfrow = c(8, 1), mar = c(2, 4, 2, 2), oma = c(3, 2, 1, 1)))
   
-  p.values <- NULL
+  strand.bias.statistics <- NULL
   for (i in 1:n) {
     cat <- catalog[, i, drop = FALSE]
     list <- PlotCatalog(cat, plot.SBS12 = plot.SBS12, cex = cex)
-    p.values <- c(p.values, list$p.values)
+    strand.bias.statistics <- 
+      c(strand.bias.statistics, list$strand.bias.statistics)
   }
   grDevices::dev.off()
-  ifelse(is.null(p.values), return(list(plot.success = TRUE)),
-         return(list(plot.success = TRUE, p.values = p.values)))
+  ifelse(is.null(strand.bias.statistics), return(list(plot.success = TRUE)),
+         return(list(plot.success = TRUE, 
+                     strand.bias.statistics = strand.bias.statistics)))
 }
 
 #' @export
