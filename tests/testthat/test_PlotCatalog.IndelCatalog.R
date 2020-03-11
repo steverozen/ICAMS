@@ -10,13 +10,17 @@ test_that("PlotCatalog.IndelCatalog function", {
                        region = "genome", catalog.type = "counts")
   cat <- catalog[, 1, drop = FALSE]
   out <- PlotCatalog(cat)
+  out1 <- PlotCatalog(cat, ylim = c(0, 1000))
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
 
   cat.counts.signature <- apply(cat, MARGIN = 2, function(x) x / sum(x))
   cat.counts.signature <-
     as.catalog(cat.counts.signature, ref.genome = "GRCh37",
                region = "genome", catalog.type = "counts.signature")
   out <- PlotCatalog(cat.counts.signature)
+  out1 <- PlotCatalog(cat.counts.signature, ylim = c(0, 0.5))
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   graphics.off()
 })
