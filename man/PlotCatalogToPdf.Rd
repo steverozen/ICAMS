@@ -42,7 +42,8 @@ SBS96Catalog.}
 implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 set \code{par(tck = 0)} to suppress.}
 
-\item{ylim}{Has the usual meaning. Only implemented for SBS96Catalog.}
+\item{ylim}{Has the usual meaning. Currently only implemented for
+SBS96Catalog and IndelCatalog.}
 }
 \value{
 A list whose first element is a logic value indicating whether the
