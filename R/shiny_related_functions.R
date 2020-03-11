@@ -42,7 +42,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   split.vcfs <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
   mutation.loads <- GetMutationLoadsFromStrelkaSBSVCFs(split.vcfs)
-  p.values <- NULL
+  strand.bias.statistics<- NULL
   
   SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
                                     trans.ranges, region)
@@ -67,13 +67,14 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
       list <- PlotCatalogToPdf(catalogs[[name]],
                                file = paste0(output.file, "SBS12.pdf"),
                                plot.SBS12 = TRUE)
-      p.values <- c(p.values, list$p.values)
+      strand.bias.statistics<- c(strand.bias.statistics, 
+                                 list$strand.bias.statistics)
     }
   }
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
-                    ref.genome, region, mutation.loads, p.values)
+                    ref.genome, region, mutation.loads, strand.bias.statistics)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -129,7 +130,7 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   list.of.vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
   mutation.loads <- GetMutationLoadsFromStrelkaIDVCFs(list.of.vcfs)
-  p.values <- NULL
+  strand.bias.statistics<- NULL
   
   list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches)
   
@@ -145,7 +146,7 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
-                    ref.genome, region, mutation.loads, p.values)
+                    ref.genome, region, mutation.loads, strand.bias.statistics)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -260,7 +261,7 @@ MutectVCFFilesToZipFile <- function(dir,
   vcf.names <- basename(files)
   split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
   mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
-  p.values <- NULL
+  strand.bias.statistics<- NULL
   
   SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
                                     trans.ranges, region)
@@ -287,13 +288,13 @@ MutectVCFFilesToZipFile <- function(dir,
       list <- PlotCatalogToPdf(catalogs[[name]],
                                file = paste0(output.file, "SBS12.pdf"),
                                plot.SBS12 = TRUE)
-      p.values <- c(p.values, list$p.values)
+      strand.bias.statistics<- c(strand.bias.statistics, list$strand.bias.statistics)
     }
   }
   
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
-                    ref.genome, region, mutation.loads, p.values)
+                    ref.genome, region, mutation.loads, strand.bias.statistics)
   file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
@@ -789,7 +790,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 #' @keywords internal
 AddRunInformation <- 
   function(files, vcf.names, zipfile.name, vcftype, ref.genome, 
-           region, mutation.loads, p.values) {
+           region, mutation.loads, strand.bias.statistics) {
     
     run.info <- 
       file(description = file.path(tempdir(), "run-information.txt"), open = "w")
@@ -887,65 +888,84 @@ AddRunInformation <-
     }
     # Add a disclaimer about excluded variants in the analysis
     writeLines("", run.info)
-    writeLines("Disclaimer:", run.info)
-    writeLines(paste0("Triplet and above base substitutions, ", 
+    writeLines(paste0("Disclaimer: Triplet and above base substitutions, ", 
                       "complex indels and variants with multiple alternate ",
                       "alleles are currently excluded in the analysis."), run.info)
     
     # Add strand bias statistics for SBS12 plot
-    if (!is.null(p.values)) {
+    if (!is.null(strand.bias.statistics)) {
       writeLines("", run.info)
       writeLines("--- Transcription strand bias statistics ---", run.info)
-      max.num.of.char1 <- max(max(nchar(names(p.values))), 11)
-      
-      # Add a description of the information listed for strand bias statistics
-      writeLines(paste0(stri_pad("Sample name", 
-                                 width = max.num.of.char1,
-                                 side = "right"), "  ", 
-                        "Mutation type", "  ",
-                        stri_pad("C>A", width = 13, side = "right"), "  ",
-                        stri_pad("C>G", width = 13, side = "right"), "  ",
-                        stri_pad("C>T", width = 13, side = "right"), "  ",
-                        stri_pad("T>A", width = 13, side = "right"), "  ",
-                        stri_pad("T>C", width = 13, side = "right"), "  ",
-                        stri_pad("T>G", width = 13, side = "right"), "  "), 
-                 run.info)
-      
-      num.of.sample <- length(names(p.values))
+      list0 <- strand.bias.statistics
+      num.of.sample <- length(names(list0))
       
       for (i in 1:num.of.sample) {
-        pvalues.info <- character(6)
-        for (j in 1:6) {
-          pvalues.info[j] <- 
-            stri_pad(paste0(formatC(p.values[[i]][j], format = "e", 
-                                    digits = 2), "(", 
-                            AssignNumberOfAsterisks(p.values[[i]][j]), 
-                            ")"), width = 13, side = "right")
-        }
-        writeLines(paste0(stri_pad(names(p.values)[i], 
-                                   width = max.num.of.char1,
-                                   side = "right"), "  ",
-                          stri_pad("P-value", 
-                                   width = 13, side = "right"), "  ",
-                          pvalues.info[1], "  ",
-                          pvalues.info[2], "  ",
-                          pvalues.info[3], "  ",
-                          pvalues.info[4], "  ",
-                          pvalues.info[5], "  ",
-                          pvalues.info[6]), run.info)
+        transcribed.counts <- list0[[i]][, "transcribed"]
+        untranscribed.counts <- list0[[i]][, "untranscribed"]
+        p.values <- list0[[i]][, "p.values"]
+        p.values.symbol <- lapply(p.values, FUN = AssignNumberOfAsterisks)
+        p.values.sci <- formatC(p.values, format = "e", digits = 2)
         
+        transcribed.info <- character(0)
+        untranscribed.info <- character(0)
+        header1 <- header2 <- character(0)
+        mat <- matrix(0, nrow = num.of.sample, ncol = 6)
+        num.of.space1 <- num.of.space2 <- num.of.space3 <- mat
+        mutation.class <- rownames(list0[[1]])
+        
+        for (j in 1:6) {
+          # Calculate the number of space needed for writing "counts" information
+          num.of.space1[i, j] <- max(nchar(max(unlist(list0[[i]][j, c(1:2)]))), 6)
+          
+          # Calculate the number of space needed for writing "p-value" information
+          num.of.space2[i, j] <- max(nchar(p.values.sci[j]), 7)
+          
+          num.of.space3[i, j] <- num.of.space1[i, j] + num.of.space2[i, j] + 3
+          
+          header1 <- paste0(header1, 
+                            stri_pad(mutation.class[j], width = num.of.space3[i, j], 
+                                     side = "both"), "|")
+          
+          header2 <- paste0(header2, " ",
+                            stri_pad("counts", width = num.of.space1[i, j], 
+                                     side = "right"), " ",
+                            stri_pad("p-value", width = num.of.space2[i, j], 
+                                     side = "right"), " ", "|")
+          
+          transcribed.info <- 
+            paste0(transcribed.info, " ",
+                   stri_pad(transcribed.counts[j], width = num.of.space1[i, j], 
+                            side = "right"), " ", 
+                   stri_pad(p.values.sci[j], width = num.of.space2[i, j], 
+                            side = "right"), " ", "|")
+          
+          untranscribed.info <- 
+            paste0(untranscribed.info, " ",
+                   stri_pad(untranscribed.counts[j], width = num.of.space1[i, j], 
+                            side = "right"), " ", 
+                   stri_pad(ifelse(is.null(p.values.symbol[[j]]), 
+                                   "", p.values.symbol[[j]]), 
+                            width = num.of.space2[i, j], 
+                            side = "right"), " ", "|")
+        }
+        
+        # Add description lines of the information listed for strand bias statistics
+        writeLines(paste0(stri_pad("", width = 13), " |", header1), run.info)
+        writeLines(paste0(stri_pad("Strand", width = 13, side = "right"), " |",
+                          header2, "Sample name"), run.info)
+        
+        # Write the transcription strand bias statistics
+        writeLines(paste0(stri_pad("transcribed", width = 13, side = "right"),
+                          " |", transcribed.info, names(list0)[i]), run.info)
+        writeLines(paste0(stri_pad("untranscribed", width = 13, side = "right"),
+                          " |", untranscribed.info, names(list0)[i]), run.info)
+        
+        writeLines("", run.info)
       }
       
       # Add a note about p-value
-      writeLines("", run.info)
-      writeLines("Note:", run.info)
-      writeLines(paste0("The p-values have been adjusted using Bonferroni ",
-                        "correction after performing binomial test ", 
-                        "to the mutation counts on the transcribed and ",
-                        "untranscribed strand according to each mutation type."), 
-                 run.info)
-      writeLines("*P<0.05, **P<0.01, ***P<0.001(two-tailed binomial test)", 
-                 run.info)
+      writeLines(paste0("Legend: *P<0.05, **P<0.01, ***P<0.001 (two-tailed binomial ",
+                        "test with Bonferroni correction)"), run.info)
     }
     close(run.info)
   }
