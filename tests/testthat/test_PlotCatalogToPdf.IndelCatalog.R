@@ -20,8 +20,19 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
     PlotCatalogToPdf(catalog.counts.signature,
                      file = file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
   expect_equal(out$plot.success, TRUE)
-
-  unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
-  unlink(file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
+  
+  if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatID.counts.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-IndelCatalog",
+                                 "PlotCatID.counts.test.pdf"))
+    file.rename(from = file.path(tempdir(), 
+                                 "PlotCatID.counts.signature.test.pdf"),
+                to   = file.path("output-pdfs-for-comparision-IndelCatalog",
+                                 "PlotCatID.counts.signature.test.pdf"))
+  } else {
+    unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
+  }
   graphics.off()
 })
