@@ -51,7 +51,7 @@ AnnotateIDVCF <- function(ID.vcf, ref.genome, flag.mismatches = 0) {
     # ref = A, alt = ACC (insertion of CC)
     complex.indels.to.remove <- 
       which(substr(df$REF, 1, 1) != substr(df$ALT, 1, 1))
-    if (length(complex.indels.to.remove > 0)) {
+    if (length(complex.indels.to.remove) > 0) {
       temp <- tempfile(fileext = ".csv")
       warning("Removing complex indels; see ", temp)
       write.csv(file = temp, df[complex.indels.to.remove, 1:5])

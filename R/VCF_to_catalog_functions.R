@@ -458,7 +458,7 @@ SplitOneMutectVCF <- function(vcf.df) {
   complex.indels.to.remove <- 
     which(substr(ID.df$REF, 1, 1) != substr(ID.df$ALT, 1, 1))
   complex.indels <- ID.df[complex.indels.to.remove, ]
-  if (length(complex.indels.to.remove > 0)) {
+  if (length(complex.indels.to.remove) > 0) {
     ID.df <- ID.df[-complex.indels.to.remove, ]
   }
   
