@@ -53,6 +53,7 @@ based on plot.type
   "integer".
 * Updated function TransformCatalog() to check the attributes of the catalog to be 
   transformed in the first place.
+* Fixed bugs in code removing complex indels.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
