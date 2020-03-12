@@ -61,35 +61,35 @@ test_that("PlotCatalogToPdf.SBS192Catalog function", {
   if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS192.counts.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatSBS192.counts.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS192.density.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatSBS192.density.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS192.counts.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatSBS192.counts.signature.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS192.density.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatSBS192.density.signature.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatalog.SBS12.counts.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatalog.SBS12.counts.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatalog.SBS12.density.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatalog.SBS12.density.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatalog.SBS12.counts.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatalog.SBS12.counts.signature.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatalog.SBS12.density.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS192",
+                to   = file.path("pdfs-for-comparision-SBS192",
                                  "PlotCatalog.SBS12.density.signature.test.pdf"))
   } else {
     unlink(file.path(tempdir(), "PlotCatSBS192.counts.test.pdf"))

@@ -41,19 +41,19 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
   if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS96.counts.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS96",
+                to   = file.path("pdfs-for-comparision-SBS96",
                                  "PlotCatSBS96.counts.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS96.density.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS96",
+                to   = file.path("pdfs-for-comparision-SBS96",
                                  "PlotCatSBS96.density.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS96.counts.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS96",
+                to   = file.path("pdfs-for-comparision-SBS96",
                                  "PlotCatSBS96.counts.signature.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatSBS96.density.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-SBS96",
+                to   = file.path("pdfs-for-comparision-SBS96",
                                  "PlotCatSBS96.density.signature.test.pdf"))
   } else {
     unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))

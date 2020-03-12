@@ -24,11 +24,11 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
   if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatID.counts.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-IndelCatalog",
+                to   = file.path("pdfs-for-comparision-IndelCatalog",
                                  "PlotCatID.counts.test.pdf"))
     file.rename(from = file.path(tempdir(), 
                                  "PlotCatID.counts.signature.test.pdf"),
-                to   = file.path("output-pdfs-for-comparision-IndelCatalog",
+                to   = file.path("pdfs-for-comparision-IndelCatalog",
                                  "PlotCatID.counts.signature.test.pdf"))
   } else {
     unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
