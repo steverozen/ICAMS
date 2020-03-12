@@ -778,6 +778,41 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
               annotated.vcfs = out.list.of.vcfs))
 }
 
+#' @param list A list containing strand bias statistics.
+#'
+#' @return A matrix containing the space information.
+#' 
+#' @keywords internal
+CalculateNumberOfSpace <- function(list) {
+  mat <- matrix(0, nrow = 6, ncol = 3)
+  rownames(mat) <- rownames(list[[1]])
+  colnames(mat) <- c("space.counts", "space.p.value", "space.total")
+  
+  GetInformation <- function(df, info) {
+    if (info == "counts") {
+      df1 <- df[, c("transcribed", "untranscribed")]
+      df1$max.counts <- apply(df1, MARGIN = 1, FUN = max)
+      df1$counts.space <- nchar(df1$max.counts)
+      return(df1[, "counts.space", drop = FALSE])
+    } else if (info == "p.value") {
+      df$p.values.sci <- formatC(df$p.values, format = "e", digits = 2)
+      df$p.values.space <- nchar(df$p.values.sci)
+      return(df[, "p.values.space", drop = FALSE])
+    }
+  }
+  list.counts.space <- lapply(list, FUN = GetInformation, info = "counts")
+  list.p.values.space <- lapply(list, FUN = GetInformation, info = "p.value")
+  df.counts.space <- do.call("cbind", list.counts.space)
+  df.p.values.space <- do.call("cbind", list.p.values.space)
+  
+  mat[, "space.counts"] <- 
+    pmax(apply(df.counts.space, MARGIN = 1, FUN = max), nchar("counts"))
+  mat[, "space.p.value"] <- 
+    pmax(apply(df.p.values.space, MARGIN = 1, FUN = max), nchar("p-value"))
+  mat[, "space.total"] <- rowSums(mat) + 3
+  return(mat)
+}
+
 #' Create a run information text file from generating zip archive from VCF
 #' files.
 #' 
@@ -898,6 +933,7 @@ AddRunInformation <-
       writeLines("--- Transcription strand bias statistics ---", run.info)
       list0 <- strand.bias.statistics
       num.of.sample <- length(names(list0))
+      space.mat <- CalculateNumberOfSpace(list0)
       
       for (i in 1:num.of.sample) {
         transcribed.counts <- list0[[i]][, "transcribed"]
@@ -909,43 +945,39 @@ AddRunInformation <-
         transcribed.info <- character(0)
         untranscribed.info <- character(0)
         header1 <- header2 <- character(0)
-        mat <- matrix(0, nrow = num.of.sample, ncol = 6)
-        num.of.space1 <- num.of.space2 <- num.of.space3 <- mat
         mutation.class <- rownames(list0[[1]])
         
         for (j in 1:6) {
-          # Calculate the number of space needed for writing "counts" information
-          num.of.space1[i, j] <- max(nchar(max(unlist(list0[[i]][j, c(1:2)]))), 6)
-          
-          # Calculate the number of space needed for writing "p-value" information
-          num.of.space2[i, j] <- max(nchar(p.values.sci[j]), 7)
-          
-          num.of.space3[i, j] <- num.of.space1[i, j] + num.of.space2[i, j] + 3
-          
-          header1 <- paste0(header1, 
-                            stri_pad(mutation.class[j], width = num.of.space3[i, j], 
+          header1 <- paste0(header1, stri_pad(mutation.class[j], 
+                                     width = space.mat[j, "space.total"], 
                                      side = "both"), "|")
           
-          header2 <- paste0(header2, " ",
-                            stri_pad("counts", width = num.of.space1[i, j], 
-                                     side = "right"), " ",
-                            stri_pad("p-value", width = num.of.space2[i, j], 
-                                     side = "right"), " ", "|")
+          header2 <- 
+            paste0(header2, " ", 
+                   stri_pad("counts", 
+                            width = space.mat[j, "space.counts"], 
+                            side = "right"), " ",
+                   stri_pad("p-value", 
+                            width = space.mat[j, "space.p.value"], 
+                            side = "right"), " ", "|")
           
           transcribed.info <- 
             paste0(transcribed.info, " ",
-                   stri_pad(transcribed.counts[j], width = num.of.space1[i, j], 
+                   stri_pad(transcribed.counts[j], 
+                            width = space.mat[j, "space.counts"], 
                             side = "right"), " ", 
-                   stri_pad(p.values.sci[j], width = num.of.space2[i, j], 
+                   stri_pad(p.values.sci[j], 
+                            width = space.mat[j, "space.p.value"], 
                             side = "right"), " ", "|")
           
           untranscribed.info <- 
             paste0(untranscribed.info, " ",
-                   stri_pad(untranscribed.counts[j], width = num.of.space1[i, j], 
+                   stri_pad(untranscribed.counts[j], 
+                            width = space.mat[j, "space.counts"], 
                             side = "right"), " ", 
                    stri_pad(ifelse(is.null(p.values.symbol[[j]]), 
                                    "", p.values.symbol[[j]]), 
-                            width = num.of.space2[i, j], 
+                            width = space.mat[j, "space.p.value"], 
                             side = "right"), " ", "|")
         }
         
