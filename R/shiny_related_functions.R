@@ -778,6 +778,9 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
               annotated.vcfs = out.list.of.vcfs))
 }
 
+#' Calculate the number of space needed to add strand bias statistics to
+#' the run-information.txt file.
+#' 
 #' @param list A list containing strand bias statistics.
 #'
 #' @return A matrix containing the space information.
