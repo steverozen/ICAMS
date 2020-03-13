@@ -6,9 +6,9 @@ test_that(
     vcf <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
     vcf1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
     vcf2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
-    expect_equal(dim(vcf[[1]]), c(798, 20))
-    expect_equal(dim(vcf1[[1]]), c(1574, 12))
-    expect_equal(dim(vcf2[[1]]), c(2870, 20))
+    expect_equal(dim(vcf[[1]]), c(798, 21))
+    expect_equal(dim(vcf1[[1]]), c(1574, 13))
+    expect_equal(dim(vcf2[[1]]), c(2870, 21))
   } )
 
 test_that(
@@ -27,9 +27,9 @@ test_that(
   { vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
     vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
     vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
-    expect_equal(dim(vcf[[1]]), c(1851, 12))
-    expect_equal(dim(vcf1[[1]]), c(1561, 12))
-    expect_equal(dim(vcf2[[1]]), c(1895, 12))
+    expect_equal(dim(vcf[[1]]), c(1851, 13))
+    expect_equal(dim(vcf1[[1]]), c(1561, 13))
+    expect_equal(dim(vcf2[[1]]), c(1895, 13))
   } )
 
 test_that(
