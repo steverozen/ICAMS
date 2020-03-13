@@ -30,6 +30,19 @@
 #' @inheritSection MutectVCFFilesToZipFile Comments
 #' 
 #' @export
+#' 
+#' @examples 
+#' dir <- c(system.file("extdata/Strelka-SBS-vcf",
+#'                      package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- 
+#'     StrelkaSBSVCFFilesToZipFile(dir, 
+#'                                 zipfile = file.path(tempdir(), "test.zip"),
+#'                                 ref.genome = "hg19", 
+#'                                 trans.ranges = trans.ranges.GRCh37,
+#'                                 region = "genome",
+#'                                 base.filename = "Strelka-SBS")
+#'   unlink(file.path(tempdir(), "test.zip"))}
 StrelkaSBSVCFFilesToZipFile <- function(dir,
                                         zipfile, 
                                         ref.genome, 
@@ -75,7 +88,7 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
                     ref.genome, region, mutation.loads, strand.bias.statistics)
-  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
+  file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
