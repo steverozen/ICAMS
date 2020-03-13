@@ -1,4 +1,6 @@
 # ICAMS 2.1.0.90xx
+* (Non backward-compatible.) Changed the return of function GetStrelkaVAF() and  
+  GetMutectVAF() to a data frame which contains the VAF and read depth information.
 * (Non backward-compatible.) Made the return from function PlotCatalogToPdf() a
   list. The first element is a logical value indicating whether the plot is
   successful. The second element is a list containing the strand bias statistics 
