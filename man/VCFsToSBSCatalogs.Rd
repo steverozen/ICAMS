@@ -37,9 +37,9 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 }
 \value{
 A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-  catSBS192 catSBS1536. If trans.ranges = NULL, SBS 192 catalog will not be
-  generated. Each catalog has attributes added. See \code{\link{as.catalog}}
-  for more details.
+  catSBS192 catSBS1536. If trans.ranges is not provided by user and cannot be
+  inferred by ICAMS, SBS 192 catalog will not be generated. Each catalog has
+  attributes added. See \code{\link{as.catalog}} for more details.
 }
 \description{
 Create a list of 3 catalogs (one each for 96, 192, 1536)

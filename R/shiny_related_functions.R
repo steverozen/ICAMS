@@ -20,9 +20,10 @@
 #' @importFrom zip zipr 
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
-#'   and DBS 144 catalog will not be generated and plotted. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#'   catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
+#'   by user and cannot be inferred by ICAMS, then SBS 192 and DBS 144 catalog
+#'   will not be generated and plotted. Each catalog has attributes added. See
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. 
@@ -340,9 +341,10 @@ MutectVCFFilesToZipFile <- function(dir,
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). If trans.ranges = NULL, SBS 192
-#'   and DBS 144 catalog will not be generated. Each catalog has attributes
-#'   added. See \code{\link{as.catalog}} for more details.
+#'   catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
+#'   by user and cannot be inferred by ICAMS, SBS 192 and DBS 144 catalog will
+#'   not be generated. Each catalog has attributes added. See
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
 #' 
@@ -583,9 +585,9 @@ ReadAndSplitMutectVCFs <-
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-#'   catSBS192 catSBS1536. If trans.ranges = NULL, SBS 192 catalog will not be
-#'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
-#'   for more details.
+#'   catSBS192 catSBS1536. If trans.ranges is not provided by user and cannot be
+#'   inferred by ICAMS, SBS 192 catalog will not be generated. Each catalog has
+#'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
@@ -665,9 +667,9 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-#'   catDBS144 catDBS136. If trans.ranges = NULL, DBS 144 catalog will not be
-#'   generated. Each catalog has attributes added. See \code{\link{as.catalog}}
-#'   for more details.
+#'   catDBS144 catDBS136. If trans.ranges is not provided by user and cannot be
+#'   inferred by ICAMS, DBS 144 catalog will not be generated. Each catalog has
+#'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
