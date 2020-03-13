@@ -307,7 +307,7 @@ MutectVCFFilesToZipFile <- function(dir,
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
                     ref.genome, region, mutation.loads, strand.bias.statistics)
-  file.names <- list.files(path = tempdir(), pattern = glob2rx("*.csv|pdf|txt"), 
+  file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
