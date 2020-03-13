@@ -4,7 +4,8 @@
 \alias{GetVAF}
 \alias{GetStrelkaVAF}
 \alias{GetMutectVAF}
-\title{Extract the VAFs (variant allele frequencies) from a VCF file.}
+\title{Extract the VAFs (variant allele frequencies) and read depth information from
+a VCF file.}
 \usage{
 GetStrelkaVAF(vcf, name.of.VCF = NULL)
 
@@ -21,10 +22,12 @@ tumor sample information. It \strong{must} have quotation marks. If
 use the 10th column to calculate VAFs.}
 }
 \value{
-A vector of VAFs, one for each row of \code{vcf}.
+The original \code{vcf} with two additional columns added which
+  contain the VAF(variant allele frequency) and read depth information.
 }
 \description{
-Extract the VAFs (variant allele frequencies) from a VCF file.
+Extract the VAFs (variant allele frequencies) and read depth information from
+a VCF file.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",

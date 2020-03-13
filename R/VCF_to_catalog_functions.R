@@ -1,5 +1,6 @@
-#' Extract the VAFs (variant allele frequencies) from a VCF file.
-#'
+#' Extract the VAFs (variant allele frequencies) and read depth information from
+#' a VCF file.
+#' 
 #' @param vcf Said VCF as a data.frame.
 #' 
 #' @param name.of.VCF Name of the VCF file. 
@@ -9,7 +10,8 @@
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
 #'   use the 10th column to calculate VAFs.
 #'
-#' @return A vector of VAFs, one for each row of \code{vcf}.
+#' @return The original \code{vcf} with two additional columns added which
+#'   contain the VAF(variant allele frequency) and read depth information.
 #'
 #' @name GetVAF
 #' 
