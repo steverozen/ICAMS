@@ -234,6 +234,8 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   values <- strsplit(TUMOR, split=":", fixed=TRUE)
   vaf <- numeric(nrow(vcf))
+  read.depth <- integer(nrow(vcf))
+  
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (!all(each.base.col %in% colnames)) {
     stop("\nVCF ", 
@@ -254,8 +256,10 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
     total.read.count <- sum(tier1.counts)
     alt.count <- tier1.counts[paste0(alt[i], "U")]
     vaf[i] <- alt.count/total.read.count
+    read.depth[i] <- total.read.count
   }
-  return(vaf)
+  
+  return(cbind(vcf, VAF = vaf, read.depth = read.depth))
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file created by Mutect
