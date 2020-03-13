@@ -145,8 +145,8 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
     vcf.name <- name.of.VCF
   }
   
-  df$VAF <- GetStrelkaVAF(df, vcf.name)
-  return(StandardChromName(df))
+  df1 <- GetStrelkaVAF(df, vcf.name)
+  return(StandardChromName(df1))
 }
 
 #' Read in the data lines of an ID VCF created by Strelka version 1
