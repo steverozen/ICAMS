@@ -359,28 +359,29 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   CalculateVAF <- function(idx, list) {
     values <- list[[idx]]
     x <- as.integer(unlist(strsplit(values, ",")))
-    vaf <- sum(x[2], x[4]) / sum(x)
+    return(data.frame(VAF = sum(x[2], x[4]) / sum(x), read.depth = sum(x)))
   }
   
   GetVAFs <- function(type, vector1, vector2) {
     info <- lapply(1:length(vector1), FUN = ExtractInfo, type = type,
                    vector1 = vector1, vector2 = vector2)
-    vafs <- sapply(1:length(info), FUN = CalculateVAF, list = info)
+    vafs <- lapply(1:length(info), FUN = CalculateVAF, list = info)
+    do.call("rbind", vafs)
   }
   
   CheckAndReturnVAFs <- function(vafs) {
-    idx.zero.vaf <- which(vafs == 0)
+    idx.zero.vaf <- which(vafs$VAF == 0)
     if(length(idx.zero.vaf) == 0) {
-      return(vafs)
+      return(cbind(vcf, vafs))
     } else {
       zero.vaf.row <- length(idx.zero.vaf)
-      total.vaf.row <- length(vafs)
+      total.vaf.row <- nrow(vafs)
       warning("\nThere are ", zero.vaf.row, " out of total ", total.vaf.row, 
               " rows which have zero VAF value in vcf ",
               ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), "\n",
               "Please check the data and if necessary, specify the correct ", 
               "column name for tumor sample using argument 'tumor.col.name'")
-      return(vafs)
+      return(cbind(vcf, vafs))
     }
   }
   
