@@ -22,7 +22,7 @@
 #' MakeDataFrameFromStrelkaSBSVCF <- 
 #'   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
 #' df <- MakeDataFrameFromStrelkaSBSVCF(file)
-#' vaf <- GetStrelkaVAF(df)
+#' df1 <- GetStrelkaVAF(df)
 NULL
 
 #' @keywords internal

@@ -36,5 +36,5 @@ file <- c(system.file("extdata/Strelka-SBS-vcf",
 MakeDataFrameFromStrelkaSBSVCF <- 
   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
 df <- MakeDataFrameFromStrelkaSBSVCF(file)
-vaf <- GetStrelkaVAF(df)
+df1 <- GetStrelkaVAF(df)
 }
