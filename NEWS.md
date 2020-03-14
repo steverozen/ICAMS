@@ -1,10 +1,10 @@
-# ICAMS 2.1.0.90xx
+# ICAMS 2.1.1
 * (Non backward-compatible.) Changed the return of function GetStrelkaVAF() and  
   GetMutectVAF() to a data frame which contains the VAF and read depth information.
 * (Non backward-compatible.) Made the return from function PlotCatalogToPdf() a
   list. The first element is a logical value indicating whether the plot is
   successful. The second element is a list containing the strand bias statistics 
-  (currently only implemented for SBS192Catalog with "counts" catalog.type
+  (only for SBS192Catalog with "counts" catalog.type
   and non-null abundance and argument plot.SBS12 = TRUE).
 * (New) Added columns of VAF (variant allel frequency) and read depth information
   to the split DBS.vcfs from merged SBSs when calling function
@@ -18,7 +18,6 @@
   suppress. 
   For class IndelCatalog:
   (New) Allow setting ylim.
-  ? Minor changes in default font sizes.
 * Added a new dependency package "zip" in ICAMS, to be used in three new exported  
   functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
   StrelkaIDVCFFilesToZipFile(). 
@@ -67,7 +66,7 @@ based on plot.type
   Made the return from function PlotCatalog() a list. The first element is 
   a logical value indicating whether the plot is successful. The second element 
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
-  useful for adding to the graph (currently only implemented for SBS96Catalog).
+  useful for adding to the graph (only implemented for SBS96Catalog).
 * (Slightly non-backward compatible.) Changed the handling of the output.file argument in
   MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
   and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
