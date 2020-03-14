@@ -39,7 +39,7 @@
 #'   plot is successful. For \strong{SBS96Catalog}, the list will have a second
 #'   element, which is a numeric vector giving the coordinates of all the bar
 #'   midpoints drawn, useful for adding to the graph. For \strong{SBS192Catalog}
-#'   with "counts" catalog.type and non-null abundance, the list will have a
+#'   with "counts" catalog.type and non-NULL abundance, the list will have a
 #'   second element which is a list containing the strand bias statistics.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
@@ -47,11 +47,12 @@
 #'   end-user documentation deletion repeat sizes range from 1 to 6+.
 #'
 #' @section Comments: For \strong{SBS192Catalog} with "counts" catalog.type and
-#'   non-null abundance, the p-values in strand bias statistics have been
-#'   adjusted using Bonferroni correction after performing binomial test to the
-#'   mutation counts on the transcribed and untranscribed strand according to
-#'   each mutation type. On the SBS12 plot, meanings of asterisks denoting
-#'   p-values are as follows: *P<0.05, **P<0.01, ***P<0.001.
+#'   non-NULL abundance, the strand bias statistics are Benjamini-Hochberg
+#'   q-values based on two-sided binomial tests of the mutation counts
+#'   on the transcribed and untranscribed strands relative to the 
+#'   actual abundances of C and T on the transcribed strand.
+#'   On the SBS12 plot, asterisks indicate q-values as follows
+#'   *, \eqn{Q<0.05}; **, \eqn{Q<0.01}; ***, \eqn{Q<0.001}.
 #'   
 #' @export
 #'
@@ -474,8 +475,8 @@ PlotCatalog.SBS192Catalog <-
         # which can be used as the hypothesized probability of success
         # in binomial test
         counts <- CalBaseCountsFrom3MerAbundance(attributes(cat)$abundance)
-        prop.C <- counts["C"] / sum(counts["C"] + counts["G"])
-        prop.T <- counts["T"] / sum(counts["T"] + counts["A"])
+        prop.C <- counts["G"] / sum(counts["C"] + counts["G"])
+        prop.T <- counts["A"] / sum(counts["T"] + counts["A"])
         props <- c(rep(prop.C, 3), rep(prop.T, 3))
         names(props) <- maj.class.names
         
@@ -488,9 +489,9 @@ PlotCatalog.SBS192Catalog <-
           p.values[type] <- htest$p.value
         }
         
-        # Adjust p-values for multiple comparisons using Bonferroni correction
-        p.values <- p.adjust(p.values, method = "bonferroni")
-        strand.bias.statistics$p.values <- p.values
+        # Adjust p-values for multiple comparisons to Benjamini-Hochberg false discovery rate
+        p.values <- p.adjust(p.values, method = "BH")
+        strand.bias.statistics$q.values <- p.values
         
         list0 <- list()
         list0[[colnames(cat)]] <- strand.bias.statistics

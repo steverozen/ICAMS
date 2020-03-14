@@ -825,7 +825,7 @@ CalculateNumberOfSpace <- function(list) {
       df1$counts.space <- nchar(df1$max.counts)
       return(df1[, "counts.space", drop = FALSE])
     } else if (info == "p.value") {
-      df$p.values.sci <- formatC(df$p.values, format = "e", digits = 2)
+      df$p.values.sci <- formatC(df$q.values, format = "e", digits = 2)
       df$p.values.space <- nchar(df$p.values.sci)
       return(df[, "p.values.space", drop = FALSE])
     }
@@ -928,7 +928,7 @@ AddRunInformation <-
                       "# of SBS", "  ",
                       "# of DBS", "  ",
                       "# of ID", "  ",
-                      "# of excluded variants", "  "),
+                      "# of excluded variants*", "  "),
                run.info)
     
     num.of.file <- length(files)
@@ -953,9 +953,9 @@ AddRunInformation <-
     }
     # Add a disclaimer about excluded variants in the analysis
     writeLines("", run.info)
-    writeLines(paste0("Disclaimer: Triplet and above base substitutions, ", 
-                      "complex indels and variants with multiple alternate ",
-                      "alleles are currently excluded in the analysis."), run.info)
+    writeLines(paste0("* Triplet and above base substitutions, ", 
+                      "complex indels, and variants with multiple alternative ",
+                      "alleles are excluded from the analysis."), run.info)
     
     # Add strand bias statistics for SBS12 plot
     if (!is.null(strand.bias.statistics)) {
@@ -987,7 +987,7 @@ AddRunInformation <-
                    stri_pad("counts", 
                             width = space.mat[j, "space.counts"], 
                             side = "right"), " ",
-                   stri_pad("p-value", 
+                   stri_pad("Q-value", 
                             width = space.mat[j, "space.p.value"], 
                             side = "right"), " ", "|")
           
@@ -1026,15 +1026,16 @@ AddRunInformation <-
       }
       
       # Add a description about the symbol denoting p-value
-      writeLines(paste0("Legend: *P<0.05, **P<0.01, ***P<0.001 (two-tailed binomial ",
-                        "test with Bonferroni correction)"), run.info)
+      writeLines(
+        paste0("Legend: *q<0.05, **q<0.01, ***q<0.001 (Benjamini-Hochberg ",
+               "false discovery rates based on two-tailed binomial tests"), run.info)
       
       # Add a note about direction of strand bias
-      writeLines(paste0("Direction of strand bias: Less mutation counts on ",
-                        "transcribed strand means DNA damage occurs on ",
+      writeLines(paste0("Direction of strand bias: Fewer mutations on ",
+                        "transcribed strand indicates that DNA damage occurred on ",
                         "pyrimidines,"), run.info) 
-      writeLines(paste0("                          less mutation counts on ", 
-                        "untranscribed strand means DNA damage occurs on ", 
+      writeLines(paste0("                          Fewer mutations on ", 
+                        "untranscribed strand indicates that DNA damage occurred on ", 
                         "purines."), run.info)
     }
     close(run.info)
