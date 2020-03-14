@@ -4,7 +4,9 @@
 \name{all.abundance}
 \alias{all.abundance}
 \title{K-mer abundances.}
-\format{See Description.}
+\format{
+See Description.
+}
 \usage{
 all.abundance
 }
