@@ -3,10 +3,10 @@ This is a new version with many updates; most are backward compatible.
 Please see NEWS.md for more details.
 
 ## Test environments
-* Local Windows 10 install: R 3.6.2
+* Local Windows 10 install: R 3.6.3
+* Local OS X Mojave install: R 3.6.3
+* Local Ubuntu 18.04.3 LTS: R 3.6.3 
 * Travis-CI Ubuntu 16.04.6 LTS: R 3.6.2
-* Local OS X Mojave install: R 3.6.1
-* Local Ubuntu 18.04.3 LTS: R 3.6.2 
 
 ## R CMD check results
 There were no ERRORs, WARGNINGs, or NOTEs
