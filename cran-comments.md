@@ -6,6 +6,7 @@ Please see NEWS.md for more details.
 * Local Windows 10 install: R 3.6.2
 * Travis-CI Ubuntu 16.04.6 LTS: R 3.6.2
 * Local OS X Mojave install: R 3.6.1
+* Local Ubuntu 18.04.3 LTS: R 3.6.2 
 
 ## R CMD check results
 There were no ERRORs, WARGNINGs, or NOTEs
