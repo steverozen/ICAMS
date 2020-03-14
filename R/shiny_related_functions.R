@@ -816,7 +816,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
 CalculateNumberOfSpace <- function(list) {
   mat <- matrix(0, nrow = 6, ncol = 3)
   rownames(mat) <- rownames(list[[1]])
-  colnames(mat) <- c("space.counts", "space.p.value", "space.total")
+  colnames(mat) <- c("space.counts", "space.q.value", "space.total")
   
   GetInformation <- function(df, info) {
     if (info == "counts") {
@@ -824,21 +824,21 @@ CalculateNumberOfSpace <- function(list) {
       df1$max.counts <- apply(df1, MARGIN = 1, FUN = max)
       df1$counts.space <- nchar(df1$max.counts)
       return(df1[, "counts.space", drop = FALSE])
-    } else if (info == "p.value") {
-      df$p.values.sci <- formatC(df$q.values, format = "e", digits = 2)
-      df$p.values.space <- nchar(df$p.values.sci)
-      return(df[, "p.values.space", drop = FALSE])
+    } else if (info == "q.value") {
+      df$q.values.sci <- formatC(df$q.values, format = "e", digits = 2)
+      df$q.values.space <- nchar(df$q.values.sci)
+      return(df[, "q.values.space", drop = FALSE])
     }
   }
   list.counts.space <- lapply(list, FUN = GetInformation, info = "counts")
-  list.p.values.space <- lapply(list, FUN = GetInformation, info = "p.value")
+  list.q.values.space <- lapply(list, FUN = GetInformation, info = "q.value")
   df.counts.space <- do.call("cbind", list.counts.space)
-  df.p.values.space <- do.call("cbind", list.p.values.space)
+  df.q.values.space <- do.call("cbind", list.q.values.space)
   
   mat[, "space.counts"] <- 
     pmax(apply(df.counts.space, MARGIN = 1, FUN = max), nchar("counts"))
-  mat[, "space.p.value"] <- 
-    pmax(apply(df.p.values.space, MARGIN = 1, FUN = max), nchar("p-value"))
+  mat[, "space.q.value"] <- 
+    pmax(apply(df.q.values.space, MARGIN = 1, FUN = max), nchar("p-value"))
   mat[, "space.total"] <- rowSums(mat) + 3
   return(mat)
 }
@@ -968,9 +968,9 @@ AddRunInformation <-
       for (i in 1:num.of.sample) {
         transcribed.counts <- list0[[i]][, "transcribed"]
         untranscribed.counts <- list0[[i]][, "untranscribed"]
-        p.values <- list0[[i]][, "p.values"]
-        p.values.symbol <- lapply(p.values, FUN = AssignNumberOfAsterisks)
-        p.values.sci <- formatC(p.values, format = "e", digits = 2)
+        q.values <- list0[[i]][, "q.values"]
+        q.values.symbol <- lapply(q.values, FUN = AssignNumberOfAsterisks)
+        q.values.sci <- formatC(q.values, format = "e", digits = 2)
         
         transcribed.info <- character(0)
         untranscribed.info <- character(0)
@@ -988,7 +988,7 @@ AddRunInformation <-
                             width = space.mat[j, "space.counts"], 
                             side = "right"), " ",
                    stri_pad("Q-value", 
-                            width = space.mat[j, "space.p.value"], 
+                            width = space.mat[j, "space.q.value"], 
                             side = "right"), " ", "|")
           
           transcribed.info <- 
@@ -996,8 +996,8 @@ AddRunInformation <-
                    stri_pad(transcribed.counts[j], 
                             width = space.mat[j, "space.counts"], 
                             side = "right"), " ", 
-                   stri_pad(p.values.sci[j], 
-                            width = space.mat[j, "space.p.value"], 
+                   stri_pad(q.values.sci[j], 
+                            width = space.mat[j, "space.q.value"], 
                             side = "right"), " ", "|")
           
           untranscribed.info <- 
@@ -1005,9 +1005,9 @@ AddRunInformation <-
                    stri_pad(untranscribed.counts[j], 
                             width = space.mat[j, "space.counts"], 
                             side = "right"), " ", 
-                   stri_pad(ifelse(is.null(p.values.symbol[[j]]), 
-                                   "", p.values.symbol[[j]]), 
-                            width = space.mat[j, "space.p.value"], 
+                   stri_pad(ifelse(is.null(q.values.symbol[[j]]), 
+                                   "", q.values.symbol[[j]]), 
+                            width = space.mat[j, "space.q.value"], 
                             side = "right"), " ", "|")
         }
         
@@ -1027,8 +1027,8 @@ AddRunInformation <-
       
       # Add a description about the symbol denoting p-value
       writeLines(
-        paste0("Legend: *q<0.05, **q<0.01, ***q<0.001 (Benjamini-Hochberg ",
-               "false discovery rates based on two-tailed binomial tests"), run.info)
+        paste0("Legend: *Q<0.05, **Q<0.01, ***Q<0.001 (Benjamini-Hochberg ",
+               "false discovery rates based on two-tailed binomial tests)"), run.info)
       
       # Add a note about direction of strand bias
       writeLines(paste0("Direction of strand bias: Fewer mutations on ",

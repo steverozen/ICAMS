@@ -490,16 +490,16 @@ PlotCatalog.SBS192Catalog <-
         }
         
         # Adjust p-values for multiple comparisons to Benjamini-Hochberg false discovery rate
-        p.values <- p.adjust(p.values, method = "BH")
-        strand.bias.statistics$q.values <- p.values
+        q.values <- p.adjust(p.values, method = "BH")
+        strand.bias.statistics$q.values <- q.values
         
         list0 <- list()
         list0[[colnames(cat)]] <- strand.bias.statistics
         
         # Draw asterisks on top of graph if p-value is significant
         for (type in maj.class.names) {
-          p.value <- p.values[type]
-          if (p.value < 0.05) {
+          q.value <- q.values[type]
+          if (q.value < 0.05) {
             colnames(bp) <- maj.class.names
             # Get the x coordinates of the line segment to be drawn
             x1 <- bp[1, type]
@@ -514,7 +514,7 @@ PlotCatalog.SBS192Catalog <-
             # Draw the asterisk on top of line segment
             x3 <- mean(c(x1, x2))
             y3 <- y1 + max(mat) * 0.025
-            label <- AssignNumberOfAsterisks(p.value)
+            label <- AssignNumberOfAsterisks(q.value)
             text(x3, y3, label)
           }
         }
