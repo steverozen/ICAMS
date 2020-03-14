@@ -24,8 +24,8 @@
 #'   the names of major mutation class on top of graph. Only implemented for
 #'   SBS96Catalog.
 #'
-#' @param ylim Has the usual meaning. Currently only implemented for
-#'   SBS96Catalog and IndelCatalog.
+#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog and
+#'   IndelCatalog.
 #'   
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
@@ -104,8 +104,8 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
 #'
-#' @param ylim Has the usual meaning. Currently only implemented for
-#'   SBS96Catalog and IndelCatalog.
+#' @param ylim Has the usual meaning. Only implemented for SBS96Catalog and
+#'   IndelCatalog.
 #'   
 #' @return A list whose first element is a logic value indicating whether the
 #'   plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
