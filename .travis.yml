@@ -5,6 +5,6 @@ sudo: required
 cache: packages
 r:
   - release
-  
+  - devel
 before_install:
   - sudo apt-get update 
