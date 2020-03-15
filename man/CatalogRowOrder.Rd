@@ -6,14 +6,8 @@
 \alias{catalog.row.order}
 \alias{catalog.row.order.sp}
 \title{Standard order of row names in a catalog.}
-\format{
-A list of character vectors indicating the standard
-  orders of row names in catalogs.
-
-An object of class \code{list} of length 8.
-
-An object of class \code{list} of length 1.
-}
+\format{A list of character vectors indicating the standard
+  orders of row names in catalogs.}
 \usage{
 catalog.row.order
 

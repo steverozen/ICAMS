@@ -7,18 +7,10 @@
 \alias{trans.ranges.GRCh38}
 \alias{trans.ranges.GRCm38}
 \title{Transcript ranges data}
-\format{
-A \code{\link[data.table]{data.table}} which contains transcript
+\format{A \code{\link[data.table]{data.table}} which contains transcript
   range and strand information for a particular reference genome.
   \code{colname}s are \code{chrom}, \code{start}, \code{end}, \code{strand},
-  \code{Ensembl.gene.ID}, \code{gene.symbol}. It uses one-based coordinates.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 19083 rows and 6 columns.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 19096 rows and 6 columns.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 20325 rows and 6 columns.
-}
+  \code{Ensembl.gene.ID}, \code{gene.symbol}. It uses one-based coordinates.}
 \source{
 \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gff3.gz}
 
