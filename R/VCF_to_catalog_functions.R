@@ -759,14 +759,15 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   rm(dt2)
 
   if (nrow(non.SBS) == 0) {
-    # Thre are no non.SBS mutations in the input.
+    # There are no non.SBS mutations in the input.
     # Everything in vcf.df is an SBS. We are finished.
     empty <- vcf.df[-(1:nrow(vcf.df)), ]
     return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
                 ThreePlus =
                   data.table(CHROM = character(),
                              LOW.POS = numeric(),
-                             HIGH.POS = numeric())))
+                             HIGH.POS = numeric()),
+                multiple.alt = empty))
   }
 
   # Remove non SBS rows from the output VCF for the SBSs
