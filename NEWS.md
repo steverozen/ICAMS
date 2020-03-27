@@ -1,3 +1,7 @@
+# ICAMS 2.1.1.90xx
+* Fixed a bug in internal function SplitStrelkaSBSVCF() when there are no
+non.SBS mutations in the input.
+
 # ICAMS 2.1.1
 * (Non backward-compatible.) Changed the return of function GetStrelkaVAF() and  
   GetMutectVAF() to a data frame which contains the VAF and read depth information.
