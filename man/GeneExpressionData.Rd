@@ -6,7 +6,13 @@
 \alias{gene.expression.data.HepG2}
 \alias{gene.expression.data.MCF10A}
 \title{Example gene expression data from two cell lines.}
-\format{A \code{\link{data.table}} which contains the expression values of genes.}
+\format{
+A \code{\link{data.table}} which contains the expression values of genes.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 57736 rows and 4 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 57736 rows and 4 columns.
+}
 \usage{
 gene.expression.data.HepG2
 

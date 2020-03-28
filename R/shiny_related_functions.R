@@ -314,7 +314,8 @@ MutectVCFFilesToZipFile <- function(dir,
       list <- PlotCatalogToPdf(catalogs[[name]],
                                file = paste0(output.file, "SBS12.pdf"),
                                plot.SBS12 = TRUE)
-      strand.bias.statistics<- c(strand.bias.statistics, list$strand.bias.statistics)
+      strand.bias.statistics <- 
+        c(strand.bias.statistics, list$strand.bias.statistics)
     }
   }
   
