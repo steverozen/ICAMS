@@ -1,123 +1,123 @@
 # ICAMS 2.1.1.90xx
-* Fixed a bug in internal function SplitStrelkaSBSVCF() when there are no
+* Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no
 non.SBS mutations in the input.
 
 # ICAMS 2.1.1
-* (Non backward-compatible.) Changed the return of function GetStrelkaVAF() and  
-  GetMutectVAF() to a data frame which contains the VAF and read depth information.
-* (Non backward-compatible.) Made the return from function PlotCatalogToPdf() a
+* (Non backward-compatible.) Changed the return of function `GetStrelkaVAF` and  
+  `GetMutectVAF` to a data frame which contains the VAF and read depth information.
+* (Non backward-compatible.) Made the return from function `PlotCatalogToPdf` a
   list. The first element is a logical value indicating whether the plot is
   successful. The second element is a list containing the strand bias statistics 
   (only for SBS192Catalog with "counts" catalog.type
-  and non-NULL abundance and argument plot.SBS12 = TRUE).
+  and non-NULL abundance and argument `plot.SBS12` = TRUE).
 * (New) Added columns of VAF (variant allel frequency) and read depth information
   to the split DBS.vcfs from merged SBSs when calling function
-  ReadAndSplitStrelkaSBSVCFs().
-* Slight changes to behavior of PlotCatalog() and PlotCatalogToPdf():
+  `ReadAndSplitStrelkaSBSVCFs`.
+* Slight changes to behavior of `PlotCatalog` and `PlotCatalogToPdf`:
   For class SBS96Catalog: 
   (New) Allow setting ylim and cex.
-  (New) For PlotCatalog (not PlotCatalogToPdf), allow plotting of a 96 x 2 catalog,
+  (New) For `PlotCatalog` (not `PlotCatalogToPdf`), allow plotting of a 96 x 2 catalog,
   in which case behavior is a stacked bar chart. 
-  (New) Plot x axis tick marks if xlabels is not TRUE; set \code{par(tck = 0)} to  
+  (New) Plot x axis tick marks if `xlabels` is not TRUE; set `par(tck = 0)` to  
   suppress. 
   For class IndelCatalog:
   (New) Allow setting ylim.
 * Added a new dependency package "zip" in ICAMS, to be used in three new exported  
-  functions MutectVCFFilesToZipFile(), StrelkaSBSVCFFilesToZipFile() and 
-  StrelkaIDVCFFilesToZipFile(). 
-* Renamed internal function creating custom abundance to GetCustomKmerCounts().
-* Fixed a bug in function TransformCatalog() and updated its documentation
-  for parameter "target.abundance".
-* Deprecated counts -> counts transformation in TransformCatalog(); see documentation
+  functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and 
+  `StrelkaIDVCFFilesToZipFile`. 
+* Renamed internal function creating custom abundance to `GetCustomKmerCounts`.
+* Fixed a bug in function `TransformCatalog` and updated its documentation
+  for parameter `target.abundance`.
+* Deprecated counts -> counts transformation in `TransformCatalog`; see documentation
   for rationale.
 * Added code to handle multiple alternate alleles in Strelka VCFs, e.g cases 
   where REF = T and ALT = A,C which indicates the alternate allele in some reads
   is A and in some reads C.
 * Added an internal function to infer trans ranges from input ref.genome.
-  Updated the documentation of the exported functions which have argument "trans.ranges"
+  Updated the documentation of the exported functions which have argument `trans.ranges`
   to make it optional.
 * Updated documentation for optional arguments in the functions reading VCF files.
   Used @inheritParams to reduce repetitive documentation.
-* Updated function PlotTransBiasGeneExpToPdf() so that ymax on the plot will be changed 
+* Updated function `PlotTransBiasGeneExpToPdf` so that ymax on the plot will be changed 
 based on plot.type
-* Fixed bugs in internal function CheckAndFixChrNames() and updated the automated tests.
-* Corrected error message in TransformCatalog.
-* Fixed a bug in exported function GetMutectVAF() and updated the warning
+* Fixed bugs in internal function `CheckAndFixChrNames` and updated the automated tests.
+* Corrected error message in `TransformCatalog`.
+* Fixed a bug in exported function `GetMutectVAF` and updated the warning
   message to make it more informative. 
 * Fixed bugs in functions generating zip archive from VCF files and added 
   more automated test. 
-* Added an additional argument "name.of.VCF" in internal functions 
-  ReadStrelkaSBSVCF(), ReadStrelkaIDVCF() and exported function GetStrelkaVAF().
-* Added an optional argument "flag.mismatches" in functions VCFsToIDCatalogs(),
-  MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
-  MutectVCFFilesToZipFile(), StrelkaIDVCFFilesToCatalog(),
-  StrelkaIDVCFFilesToCatalogAndPlotToPdf() and StrelkaIDVCFFilesToZipFile().
-* Updated methods of different types of catalogs for the generic function cbind()
+* Added an additional argument `name.of.VCF` in internal functions 
+  `ReadStrelkaSBSVCF`, `ReadStrelkaIDVCF` and exported function `GetStrelkaVAF`.
+* Added an optional argument `flag.mismatches` in functions `VCFsToIDCatalogs`,
+  `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
+  `MutectVCFFilesToZipFile`, `StrelkaIDVCFFilesToCatalog`,
+  `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and `StrelkaIDVCFFilesToZipFile`.
+* Updated methods of different types of catalogs for the generic function `cbind`
   to check the attributes of the incoming catalogs and assign attributes accordingly.
-* Changed the class of values in internal data "flat.abundance" from "numeric" to
+* Changed the class of values in internal data `flat.abundance` from "numeric" to
   "integer".
-* Updated function TransformCatalog() to check the attributes of the catalog to be 
+* Updated function `TransformCatalog` to check the attributes of the catalog to be 
   transformed in the first place.
 * Fixed bugs in code removing complex indels.
 
 # ICAMS 2.0.10
 * (Non backward-compatible.) 
-  Made the return from functions VCFsToIDCatalogs(), StrelkaIDVCFFilesToCatalog()
-  and StrelkaIDVCFFilesToCatalogAndPlotToPdf() a list; 1st element is the
+  Made the return from functions `VCFsToIDCatalogs`, `StrelkaIDVCFFilesToCatalog`
+  and `StrelkaIDVCFFilesToCatalogAndPlotToPdf` a list; 1st element is the
   spectrum catalog (previously the only return); 2nd element is a list of
   VCFs with additional annotations.
 * (Non backward-compatible.) 
-  Made the return from function PlotCatalog() a list. The first element is 
+  Made the return from function `PlotCatalog` a list. The first element is 
   a logical value indicating whether the plot is successful. The second element 
   is a numeric vector giving the coordinates of all the bar midpoints drawn,
   useful for adding to the graph (only implemented for SBS96Catalog).
-* (Slightly non-backward compatible.) Changed the handling of the output.file argument in
-  MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), 
-  and StrelkaIDVCFFilesToCatalogAndPlotToPdf()
+* (Slightly non-backward compatible.) Changed the handling of the `output.file` argument in
+  `MutectVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, 
+  and `StrelkaIDVCFFilesToCatalogAndPlotToPdf`
   so that an indicator of the catalog type plus ".pdf" is simply
-  appended to the base output.file name. Also made this argument
+  appended to the base `output.file` name. Also made this argument
   optional with sensible default behavior.
 * Updated methods so that they are compatible with new versions of
   R, in which the class of a matrix is c("matrix", "array").
-* Added public functions AnnotateSBSVCF, AnnotateDBSVCF and
-  AnnotateIDVCF.
+* Added public functions `AnnotateSBSVCF`, `AnnotateDBSVCF` and
+  `AnnotateIDVCF`.
 * Changed column name 'gene.name' to 'gene.symbol' and added Ensembl gene ID 
-  information in package variable trans.ranges. 
-* In FindDelMH, cryptic repeats (i.e. un-normalized deletions in a repeat 
+  information in exported package variables `trans.ranges.GRCh37`, `trans.ranges.GRCh38`   and `trans.ranges.GRCm38`.
+* In `FindDelMH`, cryptic repeats (i.e. un-normalized deletions in a repeat 
   such as GAGG deleted from CCCAGGGAGGGTCCC, which should be normalized
   to a deletion of AGGG) are now ignored with a warning rather than
-  causing a stop().
-* Fixed a rarely encountered bug in FindDelMH, which previously did not flag the
+  causing a `stop`.
+* Fixed a rarely encountered bug in `FindDelMH`, which previously did not flag the
   cryptic repeat in what is now the second example in the function documentation.
 * Updated plotting functions to make y axis labels more informative.
 * Updated splitting functions for Mutect VCF to detect and move complex
   indels to "other" category.
-* Added two exported functions PlotTransBiasGeneExp() and  PlotTransBiasGeneExpToPdf().
-* Added an additional optional argument "names.of.VCFs" in functions
-  ReadAndSplitMutectVCFs(), ReadAndSplitStrelkaSBSVCFs(), ReadStrelkaIDVCFs(),
-  MutectVCFFilesToCatalog(), MutectVCFFilesToCatalogAndPlotToPdf(),
-  StrelkaIDVCFFilesToCatalog(), StrelkaIDVCFFilesToCatalogAndPlotToPdf(),
-  StrelkaSBSVCFFilesToCatalog and StrelkaSBSVCFFilesToCatalogAndPlotToPdf()
+* Added two exported functions `PlotTransBiasGeneExp` and  `PlotTransBiasGeneExpToPdf`.
+* Added an additional optional argument `names.of.VCFs` in functions
+  `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `ReadStrelkaIDVCFs`,
+  `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
+  `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`,
+  `StrelkaSBSVCFFilesToCatalog` and `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`
   for users to specify the names of samples in the VCF files.
-* Added error checking on the order of rownames in the input of as.catalog().
+* Added error checking on the order of rownames in the input of `as.catalog`.
 * Added code to handle the case where the #CHROM lines appear
   interspersed with rows for variants in a Mutect VCF file.
-* Added two exported package variables, gene.expression.data.HepG2 and
-  gene.expression.data.MCF10A.
-* Added an additional optional argument "tumor.col.names" in functions
-  ReadAndSplitMutectVCFs(), MutectVCFFilesToCatalog() and
-  MutectVCFFilesToCatalogAndPlotToPdf() to specify the column of the VCF
+* Added two exported package variables, `gene.expression.data.HepG2` and
+  `gene.expression.data.MCF10A`.
+* Added an additional optional argument `tumor.col.names` in functions
+  `ReadAndSplitMutectVCFs`, `MutectVCFFilesToCatalog` and
+  `MutectVCFFilesToCatalogAndPlotToPdf` to specify the column of the VCF
   that contains sequencing statistics such as sequencing depth; this column
   is often called "unknown" in Mutect.
 * Added a "Comments" section in the documentation of functions     
-  MutectVCFFilesToCatalog(),
-  MutectVCFFilesToCatalogAndPlotToPdf(), StrelkaSBSVCFFilesToCatalog(),
-  StrelkaSBSVCFFilesToCatalogAndPlotToPdf(), VCFsToSBSCatalogs(),
-  VCFsToDBSCatalogs(), ReadCatalog() informing the user how to change
+  `MutectVCFFilesToCatalog`,
+  `MutectVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToCatalog`,
+  `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `VCFsToSBSCatalogs`,
+  `VCFsToDBSCatalogs`, `ReadCatalog` informing the user how to change
   attributes of the generated catalog.
 
 # ICAMS 2.0.9
-* as.catalog supports creation of the catalog from a vector (interpreted
+* `as.catalog` supports creation of the catalog from a vector (interpreted
   as a 1-column matrix) and optionally infers the class from the
   number of rows in the input.
 * Exported some functions that are used in categorizing deletions as 
