@@ -1,6 +1,9 @@
 # ICAMS 2.1.1.90xx
-* Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no
-non.SBS mutations in the input.
+## Added
+* New sample VCFs in folder ICAMS/inst/extdata/sample-VCFs that can be used in ICAMS' Shiny interface.
+
+## Fixed
+* Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.
 
 # ICAMS 2.1.1
 * (Non backward-compatible.) Changed the return of function `GetStrelkaVAF` and  
