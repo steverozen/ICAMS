@@ -73,7 +73,7 @@ To add or change attributes of the catalog, you can use function
 
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
-                      "Strelka.SBS.GRCh37.vcf",
+                      "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 

@@ -91,7 +91,7 @@ To add or change attributes of the catalog, you can use function
 
 \examples{
 file <- c(system.file("extdata/Mutect-vcf",
-                      "Mutect.GRCh37.vcf",
+                      "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <- 

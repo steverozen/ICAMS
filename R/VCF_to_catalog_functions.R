@@ -17,7 +17,7 @@
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' MakeDataFrameFromStrelkaSBSVCF <- 
 #'   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
@@ -1006,7 +1006,7 @@ ReadMutectVCFs <-
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 #' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             
@@ -1185,7 +1185,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 #' DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]             
@@ -1363,7 +1363,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
-#'                       "Strelka.SBS.GRCh37.vcf",
+#'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 
@@ -1428,7 +1428,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Strelka-ID-vcf",
-#'                       "Strelka.ID.GRCh37.vcf",
+#'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catID <- 
@@ -1528,7 +1528,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' 
 #' @examples 
 #' file <- c(system.file("extdata/Mutect-vcf",
-#'                       "Mutect.GRCh37.vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- 

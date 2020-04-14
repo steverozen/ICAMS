@@ -39,7 +39,7 @@ Add sequence context and transcript information to an in-memory SBS VCF.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
-                      "Strelka.SBS.GRCh37.vcf",
+                      "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]             

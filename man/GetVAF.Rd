@@ -31,7 +31,7 @@ a VCF file.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
-                      "Strelka.SBS.GRCh37.vcf",
+                      "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 MakeDataFrameFromStrelkaSBSVCF <- 
   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")

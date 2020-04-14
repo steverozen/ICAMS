@@ -41,7 +41,7 @@ Read and split Strelka SBS VCF files.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
-                      "Strelka.SBS.GRCh37.vcf",
+                      "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
 }
