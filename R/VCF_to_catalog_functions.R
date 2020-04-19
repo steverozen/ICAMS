@@ -195,9 +195,8 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
-    stop("\nVCF ", 
-         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
-         "does not appear to be a Strelka VCF, column names are \n",
+    stop("\nVCF ", dQuote(vcf.name),
+         " does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(df1), collapse=" "))
   }
   control <- unique(df1[ , "FORMAT"])
@@ -205,9 +204,8 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   each.base.col <- c("AU", "CU", "GU", "TU")
   if (all(each.base.col %in% colnames)) {
-    stop("\nVCF ", 
-         ifelse(is.null(name.of.VCF), "", paste0(dQuote(name.of.VCF), " ")), 
-         "does not appear to be a Strelka ID VCF, ", 
+    stop("\nVCF ", dQuote(vcf.name),
+         " does not appear to be a Strelka ID VCF, ", 
          "the value of column FORMAT is \n", 
          control)
   }
