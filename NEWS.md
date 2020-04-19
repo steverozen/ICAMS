@@ -1,4 +1,7 @@
-# ICAMS 2.1.1.90xx
+# ICAMS 2.1.2
+## Changed
+* Updated internal function `ReadStrelkaIDVCF` to make the error message more informative.
+
 ## Fixed
 * Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.
 
