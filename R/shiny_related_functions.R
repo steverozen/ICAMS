@@ -784,13 +784,16 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   rownames(catID) <- ICAMS::catalog.row.order$ID
   out.list.of.vcfs <- list()
   
+  
+  vcf.names <- names(list.of.vcfs)
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
-    ID <- AnnotateIDVCF(ID, ref.genome = ref.genome,
-                        flag.mismatches = flag.mismatches)
+    list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
+                          flag.mismatches = flag.mismatches,
+                          name.of.VCF = vcf.names[i])
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
-    tmp <- CreateOneColIDMatrix(ID)
+    tmp <- CreateOneColIDMatrix(list$annotated.vcf)
     one.ID.column <- tmp[[1]]
     out.list.of.vcfs <- c(out.list.of.vcfs, list(tmp[[2]]))
     rm(ID)

@@ -2,9 +2,17 @@
 ## Added
 * Created an internal function `MakeDataFrameFromVCF` to read in data lines of a VCF.
 * New argument `name.of.VCF` in internal function `CheckAndFixChrNames` to make the error message more informative.
+* New argument `name.of.VCF` in *exported* function `AnnotateIDVCF` to make the error message more informative.
 
 ## Changed
 * Updated internal function `ReadStrelkaIDVCF` to make the error message more informative.
+* **Non backward-compatible**. Changed the return of *exported* function `AnnotateIDVCF` to a list. The first element `annotated.vcf` contains the annotated VCF. If there are rows that are discarded, the function will generate a warning and
+a second element `discarded.variants` will be included in the returned list.
+
+## Deprecated
+* Argument `flag.mismatches` deprecated in *exported* function `AnnotateIDVCF`. If there are mismatches to references, the
+function will automatically discard these rows. User can refer to the
+element `discarded.variants` in the return value for more details.
 
 ## Fixed
 * Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.

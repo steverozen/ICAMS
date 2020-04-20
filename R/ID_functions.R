@@ -9,9 +9,11 @@
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param flag.mismatches If > 0, then if there are mismatches to references,
-#'   generate messages showing the mismatched rows and continue. Otherwise
-#'   \code{stop} if there are mismatched rows.
+#' @param flag.mismatches Deprecated. If there are mismatches to references, the
+#'   function will automatically discard these rows. User can refer to the
+#'   element discarded.variants in the return value for more details.
+#'   
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -22,13 +24,27 @@
 #' @importFrom stats start end
 #' 
 #' @importFrom utils write.csv
+#' 
+#' @importFrom dplyr bind_rows
 #'
-#' @return A data frame with 2 new columns added to the input data frame:
-#' \enumerate{
-#'  \item \code{seq.context} The sequence embedding the variant.
+#' @return A list whose first element "annotated.vcf" contains the original VCF data
+#'   frame with 2 new columns added to the input data frame:
+#'   \enumerate{ 
+#'   \item \code{seq.context}
+#'   The sequence embedding the variant.
 #'
-#'  \item \code{seq.context.width} The width of \code{seq.context} to the left
-#' }
+#'   \item \code{seq.context.width} The width of \code{seq.context} to the left.
+#'   }
+#'   If there are rows that are discarded from the original VCF data frame, the
+#'   function will generate a warning and a second element "discarded.variants"
+#'   will be included in the return value. The discarded variants can belong to the 
+#'   following types:
+#'   \enumerate{
+#'   \item Variants which have the same number of bases for REF and ALT alleles.
+#'   \item Variants which have empty REF or ALT allels.
+#'   \item Complex indels.
+#'   \item Variants with mismatches between VCF and reference sequence.
+#'   }
 #' 
 #' @export
 #' 
@@ -38,34 +54,66 @@
 #'                       package = "ICAMS"))
 #' ID.vcf <- ReadStrelkaIDVCFs(file)[[1]]
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'   annotated.ID.vcf <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")}
-AnnotateIDVCF <- function(ID.vcf, ref.genome, flag.mismatches = 0) {
+#'   list <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")
+#'   annotated.ID.vcf <- list$annotated.vcf}
+AnnotateIDVCF <- 
+  function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL) {
   ref.genome <- NormalizeGenomeArg(ref.genome)
   df <- ID.vcf
-  stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
-  if (any(df$REF == "" | df$ALT == "")) {
-    # Not sure how to handle this yet; the code may work with minimal adjustment
-    stop("Cannot handle VCF with indel representation with one allele the empty string")
-  } else {
-    # We expect either eg ref = ACG, alt = A (deletion of CG) or
-    # ref = A, alt = ACC (insertion of CC)
-    complex.indels.to.remove <- 
-      which(substr(df$REF, 1, 1) != substr(df$ALT, 1, 1))
-    if (length(complex.indels.to.remove) > 0) {
-      temp <- tempfile(fileext = ".csv")
-      warning("Removing complex indels; see ", temp)
-      write.csv(file = temp, df[complex.indels.to.remove, 1:5])
-      df <- df[ -complex.indels.to.remove, ]
-    }
-    stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
-  }
-  # First, figure out how much sequence context is needed.
-  var.width <- abs(nchar(df$ALT) - nchar(df$REF))
   
-  is.del <- nchar(df$ALT) <= nchar(df$REF)
+  # Create an empty data frame for discarded variants
+  discarded.variants <- df[0, ]
+  
+  # Remove variants which have the same number of bases 
+  # for REF and ALT alleles
+  idx <- which(nchar(df$REF) == nchar(df$ALT))
+  if (length(idx) > 0) {
+    discarded.variants <- dplyr::bind_rows(discarded.variants, df[idx, ])
+    df1 <- df[-idx, ]
+  } else {
+    df1 <- df
+  }
+  
+  # stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
+  
+  # Remove variants which have empty REF or ALT allels
+  idx1 <- which(df1$REF == "" | df1$ALT == "")
+  if (length(idx1) > 0) {
+    discarded.variants <- dplyr::bind_rows(discarded.variants, df1[idx1, ])
+    df2 <- df1[-idx1, ]
+  } else {
+    df2 <- df1
+  }
+  
+  # if (any(df1$REF == "" | df1$ALT == "")) {
+    # Not sure how to handle this yet; the code may work with minimal adjustment
+    #stop("Cannot handle VCF with indel representation with one allele the empty string")
+  #} else {
+  
+  # We expect either eg ref = ACG, alt = A (deletion of CG) or
+  # ref = A, alt = ACC (insertion of CC)
+  complex.indels.to.remove <- 
+    which(substr(df2$REF, 1, 1) != substr(df2$ALT, 1, 1))
+  if (length(complex.indels.to.remove) > 0) {
+    # temp <- tempfile(fileext = ".csv")
+    # warning("Removing complex indels; see ", temp)
+    # write.csv(file = temp, df[complex.indels.to.remove, 1:5])
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, df2[complex.indels.to.remove, ])
+    df3 <- df2[-complex.indels.to.remove, ]
+  } else {
+    df3 <- df2
+  }
+    #stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
+  #}
+  
+  # First, figure out how much sequence context is needed.
+  var.width <- abs(nchar(df3$ALT) - nchar(df3$REF))
+  
+  is.del <- nchar(df3$ALT) <= nchar(df3$REF)
   var.width.in.genome <- ifelse(is.del, var.width, 0)
   
-  df$seq.context.width <- var.width * 6
+  df3$seq.context.width <- var.width * 6
   # 6 because we need to find out if the insertion or deletion is embedded
   # in up to 5 additional repeats of the inserted or deleted sequence.
   # Then add 1 to avoid possible future issues.
@@ -76,39 +124,51 @@ AnnotateIDVCF <- function(ID.vcf, ref.genome, flag.mismatches = 0) {
   # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
   # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
   # "chr1", "chr2", ....
-  chr.names <- CheckAndFixChrNames(vcf.df = df, ref.genome = ref.genome)
+  chr.names <- CheckAndFixChrNames(vcf.df = df3, ref.genome = ref.genome,
+                                   name.of.VCF = name.of.VCF)
   
   # Create a GRanges object with the needed width.
   Ranges <-
     GRanges(chr.names,
-            IRanges(start = df$POS - df$seq.context.width, # 10,
-                    end = df$POS + var.width.in.genome + df$seq.context.width) # 10
+            IRanges(start = df3$POS - df3$seq.context.width, # 10,
+                    end = df3$POS + var.width.in.genome + 
+                          df3$seq.context.width) # 10
     )
   
-  df$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
+  df3$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
   
   seq.to.check <-
-    substr(df$seq.context, df$seq.context.width + 1,
-           df$seq.context.width + var.width.in.genome + 1)
+    substr(df3$seq.context, df3$seq.context.width + 1,
+           df3$seq.context.width + var.width.in.genome + 1)
   
-  mismatches <- which(seq.to.check != df$REF)
+  mismatches <- which(seq.to.check != df3$REF)
   
   if (length(mismatches) > 0) {
-    tmp.table <-
-      data.frame(
-        df$CHROM, df$POS, df$REF, df$ALT, df$seq.context, seq.to.check)
-    tmp.table <- tmp.table[mismatches, ]
-    temp <- tempfile(fileext = ".csv")
-    write.csv(file = temp, tmp.table)
-    if (flag.mismatches > 0) {
-      warning("Discarding rows with mismatches between VCF ",
-              "and reference sequence, see ", temp)
-      df <- df[-mismatches, ]
-    } else {
-      stop("Mismatches between VCF and reference sequence; see ", temp)
-    }
+    #tmp.table <-
+      #data.frame(
+        #df3$CHROM, df3$POS, df3$REF, df3$ALT, df3$seq.context, seq.to.check)
+    #tmp.table <- tmp.table[mismatches, ]
+    #temp <- tempfile(fileext = ".csv")
+    #write.csv(file = temp, tmp.table)
+    #if (flag.mismatches > 0) {
+      #warning("Discarding rows with mismatches between VCF ", 
+              #dQuote(name.of.VCF), " and reference sequence, see ", temp)
+    df3$seq.to.check <- seq.to.check
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, df3[mismatches, ])
+      df3 <- df3[-mismatches, ]
+    #} else {
+      #stop("Mismatches between VCF ", dQuote(name.of.VCF), 
+           #" and reference sequence; see ", temp)
+    #}
   }
-  return(df)
+  if (nrow(discarded.variants) > 0) {
+    warning("\nSome variants were discarded, see element discarded.variants", 
+            " in the return value")
+    return(list(annotated.vcf = df3, discarded.variants = discarded.variants))
+  } else {
+    return(list(annotated.vcf = df3))
+  }
 }
 
 #' @title Return the number of repeat units in which a deletion is embedded.

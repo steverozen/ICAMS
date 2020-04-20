@@ -4,7 +4,7 @@
 \alias{CheckAndFixChrNames}
 \title{Check and, if possible, correct the chromosome names in a VCF \code{data.frame}.}
 \usage{
-CheckAndFixChrNames(vcf.df, ref.genome)
+CheckAndFixChrNames(vcf.df, ref.genome, name.of.VCF = NULL)
 }
 \arguments{
 \item{vcf.df}{A VCF as a \code{data.frame}. Check the names in column
@@ -14,6 +14,8 @@ CheckAndFixChrNames(vcf.df, ref.genome)
 \code{vcf.df$CHROM} against; must be a Bioconductor 
 \code{\link[BSgenome]{BSgenome}}, e.g.
 \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}.}
+
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 If the \code{vcf.df$CHROM} values are correct or
