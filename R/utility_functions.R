@@ -668,6 +668,8 @@ StandardChromName <- function(df) {
 #' @param vcf.df A VCF as a \code{data.frame}. Check the names in column
 #' \code{CHROM}.
 #' 
+#' @param name.of.VCF Name of the VCF file.
+#' 
 #' @param ref.genome The reference genome with the chromosome names to check
 #' \code{vcf.df$CHROM} against; must be a Bioconductor 
 #' \code{\link[BSgenome]{BSgenome}}, e.g.
@@ -681,11 +683,12 @@ StandardChromName <- function(df) {
 #' then \code{stop}.
 #' 
 #' @keywords internal
-CheckAndFixChrNames <- function(vcf.df, ref.genome) {
+CheckAndFixChrNames <- function(vcf.df, ref.genome, name.of.VCF = NULL) {
   names.to.check <- unique(vcf.df$CHROM)
   # Check whether the naming of chromosomes in vcf.df is consistent
   if(!sum(grepl("^chr", names.to.check)) %in% c(0, length(names.to.check))) {
-    stop("Naming of chromosomes in input is not consistent: ",
+    stop("\nNaming of chromosomes in VCF ", dQuote(name.of.VCF), 
+         " is not consistent: ",
          paste(names.to.check, collapse = " "))
   }
   
@@ -721,7 +724,8 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome) {
       # If chr2 is already in names.to.check, then stop
       if (chr2 %in% names.to.check) {
         stopmessage <- function() {
-          stop("\n", chr1, " and ", chr2, " both are chromosome names in input",
+          stop("\n", chr1, " and ", chr2, " both are chromosome names in VCF ",
+               dQuote(name.of.VCF),
                ", which should not be the case for ", organism, ". Please check ",
                "your data or specify the correct ref.genome argument")
         }
@@ -775,8 +779,8 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome) {
   not.matched3 <- setdiff(names.to.check, ref.genome.names)
   if (length(not.matched3) == 0) return(new.chr.names)
   
-  stop("Chromosome names in input not in ref.genome for ",
-       organism, ": ", 
+  stop("\nChromosome names in VCF ", dQuote(name.of.VCF), 
+       " not in ref.genome for ", organism, ": ", 
        # We report the _original_ list of not matched names
        paste(not.matched, collapse = " "))
 }

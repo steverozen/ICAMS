@@ -1,6 +1,7 @@
 # ICAMS 2.1.2
 ## Added
 * Created an internal function `MakeDataFrameFromVCF` to read in data lines of a VCF.
+* New argument `name.of.VCF` in internal function `CheckAndFixChrNames` to make the error message more informative.
 
 ## Changed
 * Updated internal function `ReadStrelkaIDVCF` to make the error message more informative.
