@@ -16,10 +16,10 @@ test_that(
   {
     vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
-    vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
+    vcf2 <- expect_warning(ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf"))
     expect_equal(dim(vcf[[1]]), c(408, 19))
     expect_equal(dim(vcf1[[1]]), c(1574, 11))
-    expect_equal(dim(vcf2[[1]]), c(747, 19))
+    expect_equal(dim(vcf2[[1]]), c(745, 19))
   } )
 
 test_that(

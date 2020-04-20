@@ -45,7 +45,7 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
     dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
     warning("In ", file, " ", 2 * length(dups), " rows out of ",
             nrow(df), " had duplicate CHROM and POS and were removed: ",
-            dups, dups2)
+            dups2, " ", dups)
     df1 <- df[-c(dups, dups2), ]
     return(df1)
   } else {
@@ -151,6 +151,47 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   return(StandardChromName(df1))
 }
 
+#' Read in the data lines of a Variant Call Format (VCF) file
+#'
+#' @importFrom utils read.csv
+#'
+#' @param file The name/path of the VCF file, or a complete URL.
+#'
+#' @return A data frame storing mutation records of a VCF file.
+#'
+#' @keywords internal
+MakeDataFrameFromVCF <- function(file) {
+  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
+                 col.names = paste0("c", 1:100), as.is = TRUE)
+  
+  # Delete the columns which are totally empty
+  df <- df[!sapply(df, function(x) all(is.na(x)))]
+  
+  # Delete meta-information lines which start with "##"
+  if (any(grepl("^##", df[, 1]))) {
+    idx <- grep("^##", df[, 1])
+    df1 <- df[-idx, ]
+  } else {
+    df1 <- df
+  }
+  
+  # Extract the names of columns in the VCF file
+  names <- c("CHROM", as.character(df1[1, ])[-1])
+  df1 <- df1[-1, ]
+  colnames(df1) <- names
+  
+  stopifnot(df1$REF != df1$ALT)
+  df1$POS <- as.integer(df1$POS)
+  
+  df1 <- RenameColumnsWithNameStrand(df1)
+  df1 <- RenameColumnsWithNameVAF(df1)
+  
+  df1 <- RemoveRowsWithPoundSign(df1, file)
+  df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
+  
+  return(df1)
+}
+
 #' Read in the data lines of an ID VCF created by Strelka version 1
 #'
 #' @importFrom utils read.csv
@@ -170,20 +211,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
-  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1:100), as.is = TRUE)
-
-  # Delete the columns which are totally empty
-  df <- df[!sapply(df, function(x) all(is.na(x)))]
-
-  # Delete meta-information lines which start with "##"
-  idx <- grep("^##", df[, 1])
-  df1 <- df[-idx, ]
-
-  # Extract the names of columns in the VCF file
-  names <- c("CHROM", as.character(df1[1, ])[-1])
-  df1 <- df1[-1, ]
-  colnames(df1) <- names
+  df1 <- MakeDataFrameFromVCF(file)
   
   # Get the name of VCF
   if (is.null(name.of.VCF)) {
@@ -210,7 +238,6 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
          control)
   }
 
-  df1$POS <- as.integer(df1$POS)
   return(StandardChromName(df1))
 }
 
