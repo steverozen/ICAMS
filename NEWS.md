@@ -4,6 +4,7 @@
 
 ## Fixed
 * Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.
+* Fixed a bug in internal function `MakeDataFrameFromMutectVCF` when a Mutect VCF has no meta-information lines.
 
 # ICAMS 2.1.1
 * (Non backward-compatible.) Changed the return of function `GetStrelkaVAF` and  

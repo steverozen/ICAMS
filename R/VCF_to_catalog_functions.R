@@ -130,7 +130,7 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #' 
-#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
@@ -157,7 +157,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #' 
-#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
@@ -279,14 +279,19 @@ MakeDataFrameFromMutectVCF <- function(file) {
   df <- df[!sapply(df, function(x) all(is.na(x)))]
   
   # Delete meta-information lines which start with "##"
-  idx <- grep("^##", df[, 1])
-  df1 <- df[-idx, ]
+  if (any(grepl("^##", df[, 1]))) {
+    idx <- grep("^##", df[, 1])
+    df1 <- df[-idx, ]
+  } else {
+    df1 <- df
+  }
   
   # Extract the names of columns in the VCF file
   names <- c("CHROM", as.character(df1[1, ])[-1])
   df1 <- df1[-1, ]
   colnames(df1) <- names
   
+  stopifnot(df1$REF != df1$ALT)
   df1$POS <- as.integer(df1$POS)
   
   df1 <- RenameColumnsWithNameStrand(df1)
@@ -295,7 +300,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
   df1 <- RemoveRowsWithPoundSign(df1, file)
   df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
   
-  return(StandardChromName(df1))
+  return(df1)
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file created by
@@ -305,7 +310,7 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #' 
-#' @param name.of.vcf Name of the VCF file. If \code{NULL}(default), this
+#' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
