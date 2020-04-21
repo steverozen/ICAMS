@@ -12,7 +12,7 @@ a second element `discarded.variants` will be included in the returned list.
 ## Deprecated
 * Argument `flag.mismatches` deprecated in *exported* function `AnnotateIDVCF`. If there are mismatches to references, the
 function will automatically discard these rows. User can refer to the
-element `discarded.variants` in the return value for more details.
+element `discarded.variants` in the return value for the discarded variants.
 
 ## Fixed
 * Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.
