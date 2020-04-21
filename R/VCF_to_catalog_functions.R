@@ -1350,6 +1350,15 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   # 144 catalog, we only need to count these mutations once.
   vcf3 <- vcf2[, .(REF = REF[1], trans.strand = trans.strand[1]),
                by = .(CHROM, ALT, POS)]
+  
+  # If vcf3 has empty rows, we will return 1-column DBS144 matrix with all
+  # values being 0 and the correct row labels
+  if (nrow(vcf3) == 0) {
+    DBS.mat.144 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1)
+    rownames(DBS.mat.144) <- ICAMS::catalog.row.order$DBS144
+    list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144, catDBS136 = DBS.mat.136)
+  }
 
   # Create the 144 DBS catalog matrix
   # There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
