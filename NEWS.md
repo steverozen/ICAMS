@@ -17,6 +17,7 @@ element `discarded.variants` in the return value for more details.
 ## Fixed
 * Fixed a bug in internal function `SplitStrelkaSBSVCF` when there are no non.SBS mutations in the input.
 * Fixed a bug in internal function `MakeDataFrameFromMutectVCF` when a Mutect VCF has no meta-information lines.
+* Fixed a bug in internal function `CreateOneColSBSMatrix` when an annotated SBS VCF has variants on transcribed regions that **all** fall on transcripts on **both** strand.
 
 # ICAMS 2.1.1
 * (Non backward-compatible.) Changed the return of function `GetStrelkaVAF` and  

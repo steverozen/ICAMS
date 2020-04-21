@@ -1174,6 +1174,15 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1], 
                    trans.strand = trans.strand[1]),
                by = .(CHROM, ALT, POS)]
+  
+  # If vcf3 has empty rows, we will return 1-column SBS192 matrix with all
+  # values being 0 and the correct row labels
+  if (nrow(vcf3) == 0) {
+    mat192 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1)
+    rownames(mat192) <- ICAMS::catalog.row.order$SBS192
+    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
+  }
 
   # Create the 192 catalog matrix
   tab192  <- table(paste0(substr(vcf3$mutation, 2, 4),
