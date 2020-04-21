@@ -6,9 +6,10 @@ Please see NEWS.md for more details.
 * Local Windows 10 install: R 3.6.3
 * Local OS X Mojave install: R 3.6.3
 * Travis-CI Ubuntu 16.04.6 LTS: R 3.6.2 and devel
+* Winbuilder R version 4.0.0 RC (2020-04-17 r78247)
 
 ## R CMD check results
-There were no ERRORs, WARGNINGs, or NOTEs
+There were no ERRORs, WARNINGs, or NOTEs
 
 ## Downstream dependencies
 None
