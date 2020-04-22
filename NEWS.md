@@ -1,3 +1,7 @@
+# ICAMS 2.1.2.90xx
+## Added
+* Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.
+
 # ICAMS 2.1.2
 ## Added
 * Created an internal function `MakeDataFrameFromVCF` to read in data lines of a VCF.
