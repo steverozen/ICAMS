@@ -1,6 +1,6 @@
 ## Resubmission
 This is a new version with many updates; most are backward compatible. 
-Please see NEWS.md for more details.
+Please see [NEWS.md](https://github.com/steverozen/ICAMS/blob/master/NEWS.md) for more details.
 
 ## Test environments
 * Local Windows 10 install: R 3.6.3
