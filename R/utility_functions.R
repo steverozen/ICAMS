@@ -1665,7 +1665,7 @@ GetGenomeKmerCounts <- function(k, ref.genome, filter.path, verbose = FALSE) {
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
-    if (!(seqnames(genome)[1] %in% filter.df$V2)){
+    if (!(filter.df$V2[1] %in% seqnames(genome))){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
   }
@@ -1776,7 +1776,7 @@ GetStrandedKmerCounts <-
   kmer.counts <- GenerateEmptyKmerCounts(k)
 
   # Check whether chromosome names in stranded.ranges are the same as in ref.genome
-  if (!(seqnames(genome)[1] %in% stranded.ranges$chrom)) {
+  if (!(stranded.ranges$chrom[1] %in% seqnames(genome))) {
     stranded.ranges$chrom <- paste0("chr", stranded.ranges$chrom)
   }
 
@@ -1785,7 +1785,7 @@ GetStrandedKmerCounts <-
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
-    if (!(seqnames(genome)[1] %in% filter.df$V2)){
+    if (!(filter.df$V2[1] %in% seqnames(genome))){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
   }
@@ -1860,7 +1860,7 @@ GetCustomKmerCounts <- function(k, ref.genome, custom.ranges, filter.path,
   kmer.counts <- GenerateEmptyKmerCounts(k)
   
   # Check whether chromosome names in custom.ranges are the same as in ref.genome
-  if (!(seqnames(genome)[1] %in% custom.ranges$chrom)) {
+  if (!(custom.ranges$chrom[1] %in% seqnames(genome))) {
     custom.ranges$chrom <- paste0("chr", custom.ranges$chrom)
   }
   
@@ -1869,7 +1869,7 @@ GetCustomKmerCounts <- function(k, ref.genome, custom.ranges, filter.path,
     filter.df <- filter.df[filter.df$V6 <= 6]
     filter.df <- StandardChromName(filter.df[, 2:ncol(filter.df)])
     # Check whether chromosome names in filter.df are the same as in ref.genome
-    if (!(seqnames(genome)[1] %in% filter.df$V2)){
+    if (!(filter.df$V2[1] %in% seqnames(genome))){
       filter.df$V2 <- paste0("chr", filter.df$V2)
     }
     
