@@ -17,8 +17,8 @@ MutectVCFFilesToZipFile(
 )
 }
 \arguments{
-\item{dir}{Pathname of the directory which contains the Mutect VCF files.
-Each Mutect VCF \strong{must} have a file extension ".vcf" (case
+\item{dir}{Pathname of the directory which contains \strong{only} the Mutect
+VCF files. Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 

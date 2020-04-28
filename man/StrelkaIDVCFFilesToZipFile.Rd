@@ -16,9 +16,9 @@ StrelkaIDVCFFilesToZipFile(
 )
 }
 \arguments{
-\item{dir}{Pathname of the directory which contains the Strelka ID VCF files.
-Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
-insensitive) and share the \strong{same} \code{ref.genome} and
+\item{dir}{Pathname of the directory which contains \strong{only} the Strelka
+ID VCF files. Each Strelka ID VCF \strong{must} have a file extension
+".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 
 \item{zipfile}{Pathname of the zip file to be created.}

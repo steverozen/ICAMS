@@ -8,9 +8,9 @@
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[zip]{zipr}}.
 #'
-#' @param dir Pathname of the directory which contains the Strelka SBS VCF
-#'   files. Each Strelka SBS VCF \strong{must} have a file extension ".vcf"
-#'   (case insensitive) and share the \strong{same} \code{ref.genome} and
+#' @param dir Pathname of the directory which contains \strong{only} the Strelka
+#'   SBS VCF files. Each Strelka SBS VCF \strong{must} have a file extension
+#'   ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
 #' @inheritParams MutectVCFFilesToZipFile
@@ -109,9 +109,9 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' 
 #' @inheritParams MutectVCFFilesToZipFile
 #' 
-#' @param dir Pathname of the directory which contains the Strelka ID VCF files.
-#'   Each Strelka ID VCF \strong{must} have a file extension ".vcf" (case
-#'   insensitive) and share the \strong{same} \code{ref.genome} and
+#' @param dir Pathname of the directory which contains \strong{only} the Strelka
+#'   ID VCF files. Each Strelka ID VCF \strong{must} have a file extension
+#'   ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
 #' @param base.filename Optional. The base name of the CSV and PDF file to be
@@ -190,8 +190,8 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
 #' \code{\link[zip]{zipr}}.
 #'
-#' @param dir Pathname of the directory which contains the Mutect VCF files.
-#'   Each Mutect VCF \strong{must} have a file extension ".vcf" (case
+#' @param dir Pathname of the directory which contains \strong{only} the Mutect
+#'   VCF files. Each Mutect VCF \strong{must} have a file extension ".vcf" (case
 #'   insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'   
