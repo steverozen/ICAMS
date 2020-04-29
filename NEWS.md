@@ -2,6 +2,9 @@
 ## Added
 * Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.
 
+## Changed
+* Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
+
 ## Fixed
 * Fixed bugs in `if` statement in internal functions
 `GetCustomKmerCounts`、`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
