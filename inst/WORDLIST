@@ -95,8 +95,10 @@ intron
 IUPAC
 Kilobase
 Lieb
+macOS
 MakeVCFDBSdf
 MCF
+md
 mer
 mers
 microhomology
@@ -128,6 +130,7 @@ PyrTri
 ReadAndSplitMutectVCFs
 ReadAndSplitStrelkaSBSVCFs
 ReadCatalog
+README
 ReadMutectVCF
 ReadMutectVCFs
 ReadStrelkaIDVCF
