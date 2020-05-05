@@ -38,7 +38,7 @@ Imports: Biostrings,
 Depends: R (>= 3.5),
 RoxygenNote: 7.1.0
 Suggests: 
-    testthat,
     BSgenome.Hsapiens.1000genomes.hs37d5,
     BSgenome.Hsapiens.UCSC.hg38,
-    BSgenome.Mmusculus.UCSC.mm10
+    BSgenome.Mmusculus.UCSC.mm10,
+    testthat
