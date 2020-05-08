@@ -1,51 +1,44 @@
-# ICAMS to do list, 2020 02 03
+# ICAMS to do list, 2020 05 08
 
 ## Wait until after quarantine
 User testing of ICAMS shiny app --- can the users manage the interface?
-
-## Highest priority
-Design and implement the following for the shiny app:
-Add  to the "run_information" file the following: 
-** Total mutation loads (per mutation type, SBSs, DBSs, etc)
-** Strand bias statistics (need to calculate the stats):
-    [ binom test for transcription strand bias (for 12 channel strand bias analysis)]
+* Exploratory interface
+* Mutographs in PCAW7 paper 
+* UI design
+* Signature assignment graph in the Shiny app(WARNING if DBS or Indel counts are very low)
+* One tab for the basic files
+* Interactive tab for mutographs (assignment): one mutation class at a time
+* Link that will be sent to the user that shows the analysis results
+* Not sure how to do assignments properly
 
 ## High priority
 
-
-... HICH Nanhai Add test of error reporting when user supplies incorrect ref.genome (ref.genome)
-... HIGH Nanhai Extended sequence plotting for ID
-... HIGH New arguments for PlotCatalog (allow graphics parameters, remove issues with labels in the wrong
-    place depending on the mar graphics parameter.
-... work with steve on background subtraction
-... default sample input in shiny
-
-## Steve
-Steve Background signature subtraction (will take until late December)
-
-## Medium priority
-... MED Read and Write SigProfiler formated Indel catalogs (and check if 1536, 192, etc are 
-    also different from PCAWG)
-... MED HIGH Nanhai Extended sequence plotting for DNS 
-... MED  Make a full transcriptional strand bias plot for DBS144 catalog.
-Abandoned.... MED Plot transcription strand bias as function of distance from TSS
-... MED Provide documentation on how row-names in catalogs encode mutations.
-... MED Add error checking for cbinding catalogs with different attributes
-... MED Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
-... MED	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file? (allow exceptions for lacking first few rows, then requiring user input)
-... MED Utility function to split VCF by VAF according to Arnoud? suggestion previously.
-... MEDIUM Maybe: Should it be possible to supply a directory as input to
-    StrelkaSBSVCFFilesToCatalogAndPlotToPDF and then take any VCF files in 
-    the directory and put all the PDFs in that directory?
-... MED Straned indel plot: see https://osf.io/2aj6t/wiki/4.%20Plotting%20Indels/ 
-... MED Add Freebayes VCFs as an option in ICAMS (should be same Mutect except for VAF calculation) 
-
-## Low priority
-... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
-... LOW More automatic tests for genomes that do not have built-in support
-... LOW binomial tests for extended sequence context (e.g. enrichment of A 3 bp 5' of the mutation)
-... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script)
+... Add a new function ReadSBSVCF(with optional argument variant.caller? getvaf = TRUE/FALSE). 
+    default will be a function that returns NA (downstream change to handle NAs)
+... Add Freebayes VCFs as an option in ICAMS (should be same Mutect except for VAF calculation) 
+... default sample input in shiny (UI)
 ... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
 ... LOW Update function TransformCatalog() to make it possible to transform from a "counts" catalog to a "counts.signature" catalog and assume that the target abundance is the same as the source abundance?
-... VERY LOW Read in MAF files
+
+## Medium priority
+... MED Stack bar chart in AA　paper - click one of the bar to the mutograph(drill down),
+... MED New arguments for PlotCatalog (allow graphics parameters, remove issues with labels in the wrong
+    place depending on the mar graphics parameter. (Priotise as when needed)
+... MED Utility function to split VCF by VAF according to Arnoud? suggestion previously. (internal function)
+
+
+## Low priority
+... LOW Update WriteCatalog() function to write the attributes of a catalog in the first few rows?
+... LOW	Update ReadCatalog() function to automatically read in the attributes of the input catalog based on the first few rows in the file? (allow exceptions for lacking first few rows, then requiring user input)
+... LOW Provide documentation on how row-names in catalogs encode mutations.
+... LOW Read and Write SigProfiler formated Indel catalogs (and check if 1536, 192, etc are 
+    also different from PCAWG)
+... Low Nanhai Extended sequence plotting for ID (interactive model, not in Dec submission)
+... LOW Should we create an intermediate catalog class that captures commonalties among all catalogs (e.g. the cbind and [ methods?)
+... LOW More automatic tests for genomes that do not have built-in support
+... LOW Function to filter VCF for homopolymers for human and mouse (consult w/ Mo, maybe make script) - check homopolymers detection code in Indel
+... VERY LOW Read in MAF files (upon user request) -- may have some available code now
+... LOW  Make a full transcriptional strand bias plot for DBS144 catalog.(upon user request)
+... Very Low Nanhai Extended sequence plotting for DNS 
+... Very low Straned indel plot: see https://osf.io/2aj6t/wiki/4.%20Plotting%20Indels/ (only upon request)
 
