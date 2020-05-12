@@ -785,7 +785,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   # If VAFs are not similar, the adjacent SBSs are likely to be "merely"
   # asynchronous single base mutations, opposed to a simultaneous doublet mutation.
   non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
-  TODO: if (any(is.na(VAF.x)) || any(is.na(VAF.y)))
+  # TODO: if (any(is.na(VAF.x)) || any(is.na(VAF.y)))
   # If VAF.x or VAF.y is NA the row will not go into non.SBS.
   rm(dt2)
 
