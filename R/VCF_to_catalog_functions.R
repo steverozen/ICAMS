@@ -785,6 +785,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   # If VAFs are not similar, the adjacent SBSs are likely to be "merely"
   # asynchronous single base mutations, opposed to a simultaneous doublet mutation.
   non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
+  TODO: if (any(is.na(VAF.x)) || any(is.na(VAF.y)))
   # If VAF.x or VAF.y is NA the row will not go into non.SBS.
   rm(dt2)
 
@@ -1387,8 +1388,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
 #'
-#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from the
-#' Strelka SBS VCFs specified by \code{files} and plot them to PDF
+#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
+#' the Strelka SBS VCFs specified by \code{files} and plot them to PDF. The
+#' function will find and merge adjacent SBS pairs into DBS if their VAFs are
+#' very similar. The default threshold value for VAF is 0.02.
 #'
 #' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}} and
 #' \code{\link{PlotCatalogToPdf}}

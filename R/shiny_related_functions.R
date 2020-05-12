@@ -2,7 +2,9 @@
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
 #' Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
-#' plot them to PDF and generate a zip archive of all the output files.
+#' plot them to PDF and generate a zip archive of all the output files. The
+#' function will find and merge adjacent SBS pairs into DBS if their VAFs are
+#' very similar. The default threshold value for VAF is 0.02.
 #'
 #' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
@@ -331,9 +333,11 @@ MutectVCFFilesToZipFile <- function(dir,
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files.
 #'
-#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
-#' from the Strelka SBS VCFs specified by \code{files}
-#'
+#' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
+#' the Strelka SBS VCFs specified by \code{files}. The function will find and
+#' merge adjacent SBS pairs into DBS if their VAFs are very similar. The default
+#' threshold value for VAF is 0.02.
+#' 
 #' This function calls \code{\link{VCFsToSBSCatalogs}} and
 #' \code{\link{VCFsToDBSCatalogs}}.
 #'
@@ -456,6 +460,9 @@ MutectVCFFilesToCatalog <-
   }
 
 #' Read and split Strelka SBS VCF files.
+#' 
+#' The function will find and merge adjacent SBS pairs into DBS if their VAFs
+#' are very similar. The default threshold value for VAF is 0.02.
 #'
 #' @param files Character vector of file paths to the Strelka SBS VCF files.
 #'

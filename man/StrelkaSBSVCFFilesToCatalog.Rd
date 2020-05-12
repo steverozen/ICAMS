@@ -49,8 +49,10 @@ A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
   \code{\link{as.catalog}} for more details.
 }
 \description{
-Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144)
-from the Strelka SBS VCFs specified by \code{files}
+Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
+the Strelka SBS VCFs specified by \code{files}. The function will find and
+merge adjacent SBS pairs into DBS if their VAFs are very similar. The default
+threshold value for VAF is 0.02.
 }
 \details{
 This function calls \code{\link{VCFsToSBSCatalogs}} and

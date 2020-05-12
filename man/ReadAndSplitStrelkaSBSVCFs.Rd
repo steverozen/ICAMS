@@ -37,7 +37,8 @@ A list of 3 in-memory objects as follows:
    }
 }
 \description{
-Read and split Strelka SBS VCF files.
+The function will find and merge adjacent SBS pairs into DBS if their VAFs
+are very similar. The default threshold value for VAF is 0.02.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
