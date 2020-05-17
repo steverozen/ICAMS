@@ -798,7 +798,11 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
                              ID.vcf$seq.context.width + 1)
   
   if (any(is.na(canon.ID))) warning("NA ID categories ignored")
+  idx <- which(is.na(canon.ID))
   canon.ID <- canon.ID[!is.na(canon.ID)]
+  if (length(idx) > 0) {
+    ID.vcf <- ID.vcf[-idx, ]
+  }
   
   out.ID.vcf <- cbind(ID.vcf, ID.class = canon.ID)
   

@@ -10,7 +10,7 @@
 ## Fixed
 * Fixed bugs in `if` statement in internal functions
 `GetCustomKmerCounts`、`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
-
+* Fixed a bug in internal function `CreateOneColIDMatrix` when there is NA ID category.
 <br/>
 
 # ICAMS 2.1.2
