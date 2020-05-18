@@ -27,7 +27,33 @@ make.row.order1536 <- function() {
   return(list(standard = retval1, mini = retval2))
 }
 
+make.row.order.sp1536 <- function() {
+  # Make the row order of 1536 pentanucleotide mutation types in SigProfiler
+  # format
+  all4 <- c("A", "C", "G", "T")
+  retval <- character(1536)
+  i <- 1
+  
+  for (minus2 in all4) {
+    for (minus1 in all4) {
+      for (center in c("C", 'T')) {
+        for (alt in setdiff(all4, center)) {
+          for (plus1 in all4) {
+            for (plus2 in all4) {
+              retval[i] <-
+                paste0(minus2, minus1, "[", center, ">", alt, "]", plus1, plus2)
+              i <- i + 1
+            }
+          }
+        }
+      }
+    }
+  }
+  return(retval)
+}
+
 catalog.row.order.SBS.1536 <- make.row.order1536()$standard
+catalog.row.order.sp.SBS.1536 <- make.row.order.sp1536()
 
 catalog.row.order.SBS.192 <-
   c("AAAC","AACC","AAGC","AATC","CAAC","CACC","CAGC","CATC","GAAC",
@@ -923,6 +949,7 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
                                         catalog.row.order.ID))
 
 catalog.row.order.sp <- list(SBS96 = catalog.row.order.sp.SBS.96,
+                             SBS1536 = catalog.row.order.sp.SBS.1536,
                              ID83 = catalog.row.order.sp.ID.83)
 
 catalog.row.headers.COMPOSITE <-
