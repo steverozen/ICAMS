@@ -151,6 +151,9 @@ catalog.row.order.DBS.78 <-
     "TGCC", "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC", "TTAG",
     "TTCA", "TTCC", "TTCG", "TTGA", "TTGC", "TTGG")
 
+catalog.row.order.sp.DBS.78 <-
+  paste0(catalog.row.headers.DBS.78$Ref, ">", catalog.row.headers.DBS.78$Var)
+
 # There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
 # 4 x 4 x 3 x 3 = 144.
 catalog.row.order.DBS.144 <-
@@ -950,6 +953,7 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
 
 catalog.row.order.sp <- list(SBS96 = catalog.row.order.sp.SBS.96,
                              SBS1536 = catalog.row.order.sp.SBS.1536,
+                             DBS78 = catalog.row.order.sp.DBS.78,
                              ID83 = catalog.row.order.sp.ID.83)
 
 catalog.row.headers.COMPOSITE <-
