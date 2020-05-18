@@ -7,8 +7,10 @@ source("data-raw/create_catalogs.R")
 source("data-raw/create_order_for_DBS136_plotting.R")
 source("data-raw/create_ranges.R")
 source("data-raw/create_gene_expression_data.R")
+source("data-raw/create_ICAMS_SigPro_ID.R")
 
 usethis::use_data(catalog.row.order,
+                  catalog.row.order.sp,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
                   trans.ranges.GRCm38,
