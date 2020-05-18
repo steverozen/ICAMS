@@ -12,7 +12,7 @@ A list of character vectors indicating the standard
 
 An object of class \code{list} of length 8.
 
-An object of class \code{list} of length 1.
+An object of class \code{list} of length 4.
 }
 \usage{
 catalog.row.order
