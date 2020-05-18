@@ -299,7 +299,8 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
   })
   
   row.names(input.catalog) <- unlist(new.list)
-  input.catalog <- input.catalog[ICAMS::catalog.row.order.sp$SBS96, ]
+  input.catalog <- 
+    input.catalog[ICAMS::catalog.row.order.sp$SBS96, , drop = FALSE]
   DT <- as.data.table(input.catalog)
   input.sigpro <- cbind("MutationType" = ICAMS::catalog.row.order.sp$SBS96, DT)
   write.table(input.sigpro, file, sep = sep, col.names = TRUE,
