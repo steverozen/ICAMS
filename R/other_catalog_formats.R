@@ -271,4 +271,37 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
 ## #       ...           ...  
 "SigPro.to.ICAMS.ID"
 
-
+#' Covert an ICAMS SBS96 Catalog to SigProfiler format
+#'
+#' @param input.catalog Either a character string, in which case this is the
+#'   path to a file containing a spectra catalog in \code{\link[ICAMS]{ICAMS}}
+#'   format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.
+#'   
+#' @param file The path of the file to be written.
+#' 
+#' @param sep Separtor to use in the output file. 
+#'
+#' @importFrom data.table as.data.table
+#' 
+#' @importFrom utils write.table 
+#' 
+#' @keywords internal
+ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
+  if (inherits(input.catalog, "character")) {
+    input.catalog <- ICAMS::ReadCatalog(input.catalog, strict = FALSE)
+  } 
+  new.list <- lapply(row.names(input.catalog), function(x){
+    new <- paste(substring(x, 1, 1), "[",
+                 substring(x, 2, 2), ">",
+                 substring(x, 4, 4), "]",
+                 substring(x, 3, 3), sep = "")
+    
+  })
+  
+  row.names(input.catalog) <- unlist(new.list)
+  input.catalog <- input.catalog[ICAMS::catalog.row.order.sp$SBS96, ]
+  DT <- as.data.table(input.catalog)
+  input.sigpro <- cbind("MutationType" = ICAMS::catalog.row.order.sp$SBS96, DT)
+  write.table(input.sigpro, file, sep = sep, col.names = TRUE,
+              row.names = FALSE, quote = FALSE)
+}
