@@ -143,6 +143,7 @@ SBS
 SBSs
 Selby
 SignatureAnalyzer
+SignatureProfiler
 SigProExtractor
 SigProfiler
 steverozen
