@@ -192,7 +192,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 
 #' Write Indel Catalogs in SigProExtractor format.
 #' 
-#' Write Indel Catalogs in SigProExtractor format to a csv file.
+#' Write Indel Catalogs in SigProExtractor format to a file.
 #' 
 #' @param catalog A catalog as defined in \code{\link{ICAMS}};
 #' see also \code{\link{as.catalog}}.
@@ -201,12 +201,16 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 #'
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #' checks fail.
+#' 
+#' @param sep Separtor to use in the output file. In older version 
+#'  SignatureProfiler read comma-separated files; as of May 2020 it
+#'  reads tab-separated files.
 #'
 #' @note In ID (small insertion and deletion) catalogs in SigProExtractor format, 
 #' deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
 #'
 #' @keywords internal
-WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE){
+WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
   mut.categories <- rownames(catalog)
   stopifnot(nrow(catalog) == 83)
   if (strict) {
@@ -219,7 +223,7 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE){
   catalog <- catalog[ICAMS.to.SigPro.ID[,1], , drop = FALSE]
   DT <- data.table("Mutation Types" = rownames(catalog),catalog)
   ## Write the SigProExtractor-formatted catalog into a csv file
-  fwrite(DT, file = file)
+  fwrite(DT, file = file, sep = sep)
 }
 
 ## Linker from PCAWG(ICAMS)-formatted to SigProExtractor-formatted indel names.
