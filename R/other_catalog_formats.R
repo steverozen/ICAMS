@@ -202,7 +202,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #' checks fail.
 #' 
-#' @param sep Separtor to use in the output file. In older version 
+#' @param sep Separator to use in the output file. In older version 
 #'  SignatureProfiler read comma-separated files; as of May 2020 it
 #'  reads tab-separated files.
 #'
@@ -271,15 +271,15 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
 ## #       ...           ...  
 "SigPro.to.ICAMS.ID"
 
-#' Covert an ICAMS SBS96 Catalog to SigProfiler format
+#' Covert an ICAMS SBS96 Catalog to SignatureProfiler format.
 #'
 #' @param input.catalog Either a character string, in which case this is the
-#'   path to a file containing a spectra catalog in \code{\link[ICAMS]{ICAMS}}
+#'   path to a file containing a catalog in \code{\link[ICAMS]{ICAMS}}
 #'   format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.
 #'   
 #' @param file The path of the file to be written.
 #' 
-#' @param sep Separtor to use in the output file. 
+#' @param sep Separator to use in the output file. 
 #'
 #' @importFrom data.table as.data.table
 #' 

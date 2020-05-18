@@ -15,7 +15,7 @@ see also \code{\link{as.catalog}}.}
 \item{strict}{If TRUE, do additional checks on the input, and stop if the
 checks fail.}
 
-\item{sep}{Separtor to use in the output file. In older version 
+\item{sep}{Separator to use in the output file. In older version 
 SignatureProfiler read comma-separated files; as of May 2020 it
 reads tab-separated files.}
 }
