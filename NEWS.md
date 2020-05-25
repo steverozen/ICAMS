@@ -3,8 +3,7 @@
 * Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.
 * Added documentation to *exported* functions `ReadAndSplitStrelkaSBSVCFs`,
 `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf` and `StrelkaSBSVCFFilesToZipFile` informing the user that the function will find and merge adjacent SBS pairs into DBS if their VAFs are very similar. The default threshold value for VAF is 0.02.
-* Added new exported data of catalog row order for SBS96, SBS1536 and DBS78 in SignatureProfiler
-format to `catalog.row.order.sp`.
+* Added new exported data of catalog row order for SBS96, SBS1536 and DBS78 in SigProfiler format to `catalog.row.order.sp`.
 * Created a new internal function `ConvertICAMSCatalogToSigProSBS96`.
 
 ## Changed

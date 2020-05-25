@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{WriteCatalogIndelSigPro}
 \alias{WriteCatalogIndelSigPro}
-\title{Write Indel Catalogs in SigProExtractor format.}
+\title{Write Indel Catalogs in SigProExtractor format}
 \usage{
 WriteCatalogIndelSigPro(catalog, file, strict = TRUE, sep = "\\t")
 }
@@ -16,7 +16,7 @@ see also \code{\link{as.catalog}}.}
 checks fail.}
 
 \item{sep}{Separator to use in the output file. In older version 
-SignatureProfiler read comma-separated files; as of May 2020 it
+SigProfiler read comma-separated files; as of May 2020 it
 reads tab-separated files.}
 }
 \description{

@@ -1,4 +1,4 @@
-#' Read a 192-channel spectra (or signature) catalog in Duke-NUS format.
+#' Read a 192-channel spectra (or signature) catalog in Duke-NUS format
 #'
 #' WARNING: will not work with \code{region = "genome"}. For this
 #' you must first read with \code{region = "unknown"}, then
@@ -34,7 +34,7 @@ ReadDukeNUSCat192 <- function(file,
   list(cat96 = cat96, cat192 = cat192)
 }
 
-#' Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}.
+#' Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}
 #'
 #' @param c1 A vector of character strings with the mutation indicated by
 #' e.g. \code{[C>A]} in the middle.
@@ -49,7 +49,7 @@ Unstaple96 <- function(c1) {
   return(retval)
 }
 
-#' Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}.
+#' Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}
 #'
 #' This is an internal function needed for generating
 #' "non-canonical" row number formats for catalogs.
@@ -74,7 +74,7 @@ Restaple96 <- function(c1) {
 }
 
 
-#' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T".
+#' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T"
 #'
 #' The file needs to have the rownames in the first column.
 #' @keywords internal
@@ -113,7 +113,7 @@ ReadStapleGT96SBS <- function(file,
 }
 
 
-#' For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames.
+#' For indels, convert SigProfiler rownames into ICAMS/PCAWG7 rownames
 #'
 #' @examples 
 #' ICAMS:::TransRownames.ID.SigPro.PCAWG("1:Del:C:0") # DEL:C:1:0;
@@ -151,7 +151,7 @@ TransRownames.ID.SigPro.PCAWG <- function(vector.of.rownames) {
 }
 
 
-#' For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames.
+#' For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames
 #'
 #' @examples
 #' ICAMS:::TransRownames.ID.PCAWG.SigPro("DEL:C:1:0") # 1:Del:C:0;
@@ -190,7 +190,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 }
 
 
-#' Write Indel Catalogs in SigProExtractor format.
+#' Write Indel Catalogs in SigProExtractor format
 #' 
 #' Write Indel Catalogs in SigProExtractor format to a file.
 #' 
@@ -203,7 +203,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 #' checks fail.
 #' 
 #' @param sep Separator to use in the output file. In older version 
-#'  SignatureProfiler read comma-separated files; as of May 2020 it
+#'  SigProfiler read comma-separated files; as of May 2020 it
 #'  reads tab-separated files.
 #'
 #' @note In ID (small insertion and deletion) catalogs in SigProExtractor format, 
@@ -226,7 +226,7 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
   fwrite(DT, file = file, sep = sep)
 }
 
-## Linker from PCAWG(ICAMS)-formatted to SigProExtractor-formatted indel names.
+## Linker from PCAWG(ICAMS)-formatted to SigProExtractor-formatted indel names
 ##
 ## This data is designed for converting ICAMS-formatted indel names to
 ## SigProExtractor-formatted indel names.
@@ -249,7 +249,7 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
 "ICAMS.to.SigPro.ID"
 
 
-## Linker from SigProExtractor-formatted to PCAWG(ICAMS)-formatted indel names.
+## Linker from SigProExtractor-formatted to PCAWG(ICAMS)-formatted indel names
 ##
 ## This data is designed for converting SigProExtractor-formatted indel names
 ## to ICAMS-formatted indel names.
@@ -271,8 +271,8 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
 ## #       ...           ...  
 "SigPro.to.ICAMS.ID"
 
-#' Covert an ICAMS SBS96 Catalog to SignatureProfiler format.
-#'
+#' Covert an ICAMS SBS96 Catalog to SigProfiler format
+#' 
 #' @param input.catalog Either a character string, in which case this is the
 #'   path to a file containing a catalog in \code{\link[ICAMS]{ICAMS}}
 #'   format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{ReadStapleGT96SBS}
 \alias{ReadStapleGT96SBS}
-\title{Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T".}
+\title{Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T"}
 \usage{
 ReadStapleGT96SBS(
   file,

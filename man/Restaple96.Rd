@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{Restaple96}
 \alias{Restaple96}
-\title{Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}.}
+\title{Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}}
 \usage{
 Restaple96(c1)
 }

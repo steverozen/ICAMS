@@ -2,12 +2,12 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{TransRownames.ID.PCAWG.SigPro}
 \alias{TransRownames.ID.PCAWG.SigPro}
-\title{For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames.}
+\title{For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames}
 \usage{
 TransRownames.ID.PCAWG.SigPro(vector.of.rownames)
 }
 \description{
-For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames.
+For indels, convert ICAMS/PCAWG7 rownames into SigProfiler rownames
 }
 \examples{
 ICAMS:::TransRownames.ID.PCAWG.SigPro("DEL:C:1:0") # 1:Del:C:0;

@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{ReadDukeNUSCat192}
 \alias{ReadDukeNUSCat192}
-\title{Read a 192-channel spectra (or signature) catalog in Duke-NUS format.}
+\title{Read a 192-channel spectra (or signature) catalog in Duke-NUS format}
 \usage{
 ReadDukeNUSCat192(
   file,

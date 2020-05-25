@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{ConvertICAMSCatalogToSigProSBS96}
 \alias{ConvertICAMSCatalogToSigProSBS96}
-\title{Covert an ICAMS SBS96 Catalog to SignatureProfiler format.}
+\title{Covert an ICAMS SBS96 Catalog to SigProfiler format}
 \usage{
 ConvertICAMSCatalogToSigProSBS96(input.catalog, file, sep = "\\t")
 }
@@ -16,6 +16,6 @@ format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.}
 \item{sep}{Separator to use in the output file.}
 }
 \description{
-Covert an ICAMS SBS96 Catalog to SignatureProfiler format.
+Covert an ICAMS SBS96 Catalog to SigProfiler format
 }
 \keyword{internal}
