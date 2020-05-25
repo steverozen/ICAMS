@@ -3,7 +3,7 @@
 \name{PlotTransBiasGeneExpToPdf}
 \alias{PlotTransBiasGeneExpToPdf}
 \title{Plot transcription strand bias with respect to gene expression values to a
-PDF file.}
+PDF file}
 \usage{
 PlotTransBiasGeneExpToPdf(
   annotated.SBS.vcf,
@@ -58,7 +58,7 @@ A list whose first element is a logic value indicating whether the
 }
 \description{
 Plot transcription strand bias with respect to gene expression values to a
-PDF file.
+PDF file
 }
 \section{Note}{
  

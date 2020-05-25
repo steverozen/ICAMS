@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{ReadAndSplitMutectVCFs}
 \alias{ReadAndSplitMutectVCFs}
-\title{Read and split Mutect VCF files.}
+\title{Read and split Mutect VCF files}
 \usage{
 ReadAndSplitMutectVCFs(files, names.of.VCFs = NULL, tumor.col.names = NA)
 }
@@ -46,7 +46,7 @@ A list with 3 in-memory VCFs and two left-over VCF-like data frames
 }
 }
 \description{
-Read and split Mutect VCF files.
+Read and split Mutect VCF files
 }
 \examples{
 file <- c(system.file("extdata/Mutect-vcf",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/strandbias_functions.R
 \name{PlotTransBiasGeneExp}
 \alias{PlotTransBiasGeneExp}
-\title{Plot transcription strand bias with respect to gene expression values.}
+\title{Plot transcription strand bias with respect to gene expression values}
 \usage{
 PlotTransBiasGeneExp(
   annotated.SBS.vcf,
@@ -57,7 +57,7 @@ A list whose first element is a logic value indicating whether the
   the p-values printed on the plot.
 }
 \description{
-Plot transcription strand bias with respect to gene expression values.
+Plot transcription strand bias with respect to gene expression values
 }
 \section{Note}{
  

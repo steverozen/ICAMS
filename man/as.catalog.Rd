@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{as.catalog}
 \alias{as.catalog}
-\title{Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}.}
+\title{Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}}
 \usage{
 as.catalog(
   object,
@@ -53,7 +53,7 @@ If \code{TRUE}, \strong{be sure the order of rows is correct.}}
 A catalog as described in \code{\link{ICAMS}}.
 }
 \description{
-Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}.
+Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}
 }
 \examples{
 # Create an SBS96 catalog with all mutation counts equal to 1.  

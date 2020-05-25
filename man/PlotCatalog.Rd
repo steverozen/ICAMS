@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalog}
 \alias{PlotCatalog}
-\title{Plot \strong{one} spectrum or signature.}
+\title{Plot \strong{one} spectrum or signature}
 \usage{
 PlotCatalog(
   catalog,

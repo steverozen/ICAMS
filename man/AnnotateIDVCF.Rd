@@ -3,7 +3,7 @@
 \name{AnnotateIDVCF}
 \alias{AnnotateIDVCF}
 \title{Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-  confirm that they match the given reference genome.}
+  confirm that they match the given reference genome}
 \usage{
 AnnotateIDVCF(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL)
 }
@@ -44,7 +44,7 @@ A list whose first element "annotated.vcf" contains the original VCF data
 }
 \description{
 Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-  confirm that they match the given reference genome.
+  confirm that they match the given reference genome
 }
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf/",

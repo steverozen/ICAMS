@@ -1,5 +1,5 @@
 #' Extract the VAFs (variant allele frequencies) and read depth information from
-#' a VCF file.
+#' a VCF file
 #' 
 #' @param vcf Said VCF as a data.frame.
 #' 
@@ -1005,7 +1005,7 @@ ReadMutectVCFs <-
   return(vcfs)
 }
 
-#' Add sequence context and transcript information to an in-memory SBS VCF.
+#' Add sequence context and transcript information to an in-memory SBS VCF
 #' 
 #' @param SBS.vcf An in-memory SBS VCF as a \code{data.frame}.
 #' 
@@ -1207,7 +1207,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
 }
 
-#' Add sequence context and transcript information to an in-memory DBS VCF.
+#' Add sequence context and transcript information to an in-memory DBS VCF
 #' 
 #' @param DBS.vcf An in-memory DBS VCF as a \code{data.frame}.
 #' 
@@ -1402,9 +1402,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144) and their graphs plotted to PDF
-#'   with specified file name. If trans.ranges = NULL, SBS 192 and DBS 144
-#'   catalog will not be generated and plotted. Each catalog has attributes
-#'   added. See \code{\link{as.catalog}} for more details.
+#'   with specified file name. If \code{trans.ranges} is not provided by user
+#'   and cannot be inferred by ICAMS, SBS 192 and DBS 144 catalog will not be
+#'   generated and plotted. Each catalog has attributes added. See
+#'   \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #' 
@@ -1561,9 +1562,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
 #'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
-#'   plotted to PDF with specified file name. If trans.ranges = NULL, SBS 192
-#'   and DBS 144 catalog will not be generated and plotted. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#'   plotted to PDF with specified file name. If \code{trans.ranges} is not
+#'   provided by user and cannot be inferred by ICAMS, SBS 192 and DBS 144
+#'   catalog will not be generated and plotted. Each catalog has attributes
+#'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes

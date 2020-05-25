@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{AnnotateSBSVCF}
 \alias{AnnotateSBSVCF}
-\title{Add sequence context and transcript information to an in-memory SBS VCF.}
+\title{Add sequence context and transcript information to an in-memory SBS VCF}
 \usage{
 AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges = NULL)
 }
@@ -35,7 +35,7 @@ An in-memory SBS VCF as a \code{data.table}. This has been annotated
   These columns are not added if \code{is.null(trans.ranges)}.
 }
 \description{
-Add sequence context and transcript information to an in-memory SBS VCF.
+Add sequence context and transcript information to an in-memory SBS VCF
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",

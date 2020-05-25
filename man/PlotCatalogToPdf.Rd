@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{PlotCatalogToPdf}
 \alias{PlotCatalogToPdf}
-\title{Plot catalog to a PDF file.}
+\title{Plot catalog to a PDF file}
 \usage{
 PlotCatalogToPdf(
   catalog,

@@ -5,7 +5,7 @@
 \alias{GetStrelkaVAF}
 \alias{GetMutectVAF}
 \title{Extract the VAFs (variant allele frequencies) and read depth information from
-a VCF file.}
+a VCF file}
 \usage{
 GetStrelkaVAF(vcf, name.of.VCF = NULL)
 
@@ -27,7 +27,7 @@ The original \code{vcf} with two additional columns added which
 }
 \description{
 Extract the VAFs (variant allele frequencies) and read depth information from
-a VCF file.
+a VCF file
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",

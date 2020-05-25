@@ -57,8 +57,9 @@ mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-  catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
-  NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+  catalogs (one each for 78, 136, and 144) and ID catalog. If
+  \code{trans.ranges} is not provided by user and cannot be inferred by
+  ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
   attributes added. See \code{\link{as.catalog}} for more details.
 }
 \description{

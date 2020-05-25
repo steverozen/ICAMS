@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaSBSVCFFilesToCatalog}
 \alias{StrelkaSBSVCFFilesToCatalog}
-\title{Create SBS and DBS catalogs from Strelka SBS VCF files.}
+\title{Create SBS and DBS catalogs from Strelka SBS VCF files}
 \usage{
 StrelkaSBSVCFFilesToCatalog(
   files,
@@ -43,9 +43,9 @@ will be used as the names of the VCF files.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-  catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
-  by user and cannot be inferred by ICAMS, SBS 192 and DBS 144 catalog will
-  not be generated. Each catalog has attributes added. See
+  catalogs (one each for 78, 136, and 144). If \code{trans.ranges} is not
+  provided by user and cannot be inferred by ICAMS, SBS 192 and DBS 144
+  catalog will not be generated. Each catalog has attributes added. See
   \code{\link{as.catalog}} for more details.
 }
 \description{

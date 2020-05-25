@@ -1,4 +1,4 @@
-#' Read catalog.
+#' Read catalog
 #'
 #' Read a catalog in standardized format from path.
 #'

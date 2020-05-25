@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{ReadStrelkaIDVCFs}
 \alias{ReadStrelkaIDVCFs}
-\title{Read Strelka ID (small insertion and deletion) VCF files.}
+\title{Read Strelka ID (small insertion and deletion) VCF files}
 \usage{
 ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
 }
@@ -20,7 +20,7 @@ will be used as the names of the VCF files.}
 A list of data frames containing data lines of the VCF files.
 }
 \description{
-Read Strelka ID (small insertion and deletion) VCF files.
+Read Strelka ID (small insertion and deletion) VCF files
 }
 \note{
 In ID (small insertion and deletion) catalogs, deletion repeat sizes

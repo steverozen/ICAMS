@@ -3,7 +3,7 @@
 \name{TransformCatalog}
 \alias{TransformCatalog}
 \title{Transform between counts and density spectrum catalogs
-and counts and density signature catalogs.}
+and counts and density signature catalogs}
 \usage{
 TransformCatalog(
   catalog,
@@ -45,7 +45,7 @@ A catalog as defined in \code{\link{ICAMS}}.
 }
 \description{
 Transform between counts and density spectrum catalogs
-and counts and density signature catalogs.
+and counts and density signature catalogs
 }
 \details{
 Only the following transformations are legal:

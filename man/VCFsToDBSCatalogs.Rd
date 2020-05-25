@@ -37,9 +37,10 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 }
 \value{
 A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-  catDBS144 catDBS136. If trans.ranges is not provided by user and cannot be
-  inferred by ICAMS, DBS 144 catalog will not be generated. Each catalog has
-  attributes added. See \code{\link{as.catalog}} for more details.
+  catDBS144 catDBS136. If \code{trans.ranges} is not provided by user and
+  cannot be inferred by ICAMS, DBS 144 catalog will not be generated. Each
+  catalog has attributes added. See \code{\link{as.catalog}} for more
+  details.
 }
 \description{
 Create a list of 3 catalogs (one each for DBS78, DBS144 and DBS136)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_write_catalog.R
 \name{ReadCatalog}
 \alias{ReadCatalog}
-\title{Read catalog.}
+\title{Read catalog}
 \usage{
 ReadCatalog(
   file,

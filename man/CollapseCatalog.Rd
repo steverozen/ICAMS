@@ -5,7 +5,7 @@
 \alias{Collapse192CatalogTo96}
 \alias{Collapse1536CatalogTo96}
 \alias{Collapse144CatalogTo78}
-\title{"Collapse" a catalog.}
+\title{"Collapse" a catalog}
 \usage{
 Collapse192CatalogTo96(catalog)
 

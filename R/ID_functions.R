@@ -1,5 +1,5 @@
 #' @title Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-#'   confirm that they match the given reference genome.
+#'   confirm that they match the given reference genome
 #'
 #' @param ID.vcf An in-memory ID (insertion/deletion) VCF as a
 #'   \code{data.frame}. This function expects that there is a "context base" to
@@ -171,7 +171,7 @@ AnnotateIDVCF <-
   }
 }
 
-#' @title Return the number of repeat units in which a deletion is embedded.
+#' @title Return the number of repeat units in which a deletion is embedded
 #'
 #' @param context A string that embeds \code{rep.unit.seq} at position
 #'  \code{pos}
@@ -265,7 +265,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
   return(left.count + right.count)
 }
 
-#' @title Return the length of microhomology at a deletion.
+#' @title Return the length of microhomology at a deletion
 #'
 #' @details
 #'
@@ -556,7 +556,7 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 }
 
 
-#' Given a deletion and its sequence context, categorize it.
+#' Given a deletion and its sequence context, categorize it
 #' 
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.

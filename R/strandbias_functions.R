@@ -1,4 +1,4 @@
-#' Plot transcription strand bias with respect to gene expression values.
+#' Plot transcription strand bias with respect to gene expression values
 #'
 #' @param annotated.SBS.vcf An SBS VCF annotated by
 #'   \code{\link{AnnotateSBSVCF}}. It \strong{must} have transcript range
@@ -81,7 +81,7 @@ PlotTransBiasGeneExp <-
   }
 
 #' Plot transcription strand bias with respect to gene expression values to a
-#' PDF file.
+#' PDF file
 #' 
 #' @inheritParams PlotTransBiasGeneExp
 #' 

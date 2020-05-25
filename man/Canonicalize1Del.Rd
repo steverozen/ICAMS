@@ -2,7 +2,7 @@
 % Please edit documentation in R/ID_functions.R
 \name{Canonicalize1Del}
 \alias{Canonicalize1Del}
-\title{Given a deletion and its sequence context, categorize it.}
+\title{Given a deletion and its sequence context, categorize it}
 \usage{
 Canonicalize1Del(context, del.seq, pos, trace = 0)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ID_functions.R
 \name{FindMaxRepeatDel}
 \alias{FindMaxRepeatDel}
-\title{Return the number of repeat units in which a deletion is embedded.}
+\title{Return the number of repeat units in which a deletion is embedded}
 \usage{
 FindMaxRepeatDel(context, rep.unit.seq, pos)
 }
@@ -22,7 +22,7 @@ embedded, not including
 the input \code{rep.unit.seq} in the count.
 }
 \description{
-Return the number of repeat units in which a deletion is embedded.
+Return the number of repeat units in which a deletion is embedded
 }
 \details{
 This function is primarily for internal use, but we export it

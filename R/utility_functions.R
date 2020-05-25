@@ -1,4 +1,4 @@
-#' "Collapse" a catalog.
+#' "Collapse" a catalog
 #' 
 #' @description 
 #' \enumerate{
@@ -473,7 +473,7 @@ CheckCatalogAttributes <- function(catalog) {
 }
 
 #' Transform between counts and density spectrum catalogs
-#' and counts and density signature catalogs.
+#' and counts and density signature catalogs
 #'
 #' @details Only the following transformations are legal:
 #'
@@ -949,7 +949,7 @@ PyrPenta <- function(mutstring) {
   return(output)
 }
 
-#' Reverse complement every string in \code{string.vec}.
+#' Reverse complement every string in \code{string.vec}
 #' 
 #' Based on \code{\link{reverseComplement}}.
 #' Handles IUPAC ambiguity codes but not "u" (uracil). \cr
@@ -1456,7 +1456,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 
   }
 
-#' Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}.
+#' Create a catalog from a \code{matrix}, \code{data.frame}, or \code{vector}
 #'
 #' @param object A numeric \code{matrix}, numeric \code{data.frame},
 #' or \code{vector}.

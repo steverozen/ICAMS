@@ -5,7 +5,7 @@
 \alias{GeneExpressionData}
 \alias{gene.expression.data.HepG2}
 \alias{gene.expression.data.MCF10A}
-\title{Example gene expression data from two cell lines.}
+\title{Example gene expression data from two cell lines}
 \format{
 A \code{\link{data.table}} which contains the expression values of genes.
 

@@ -3,7 +3,7 @@
 \docType{data}
 \name{all.abundance}
 \alias{all.abundance}
-\title{K-mer abundances.}
+\title{K-mer abundances}
 \format{
 See Description.
 }

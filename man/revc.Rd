@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{revc}
 \alias{revc}
-\title{Reverse complement every string in \code{string.vec}.}
+\title{Reverse complement every string in \code{string.vec}}
 \usage{
 revc(string.vec)
 }

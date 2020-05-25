@@ -2,7 +2,7 @@
 % Please edit documentation in R/ID_functions.R
 \name{FindDelMH}
 \alias{FindDelMH}
-\title{Return the length of microhomology at a deletion.}
+\title{Return the length of microhomology at a deletion}
 \usage{
 FindDelMH(context, deleted.seq, pos, trace = 0, warn.cryptic = TRUE)
 }
@@ -25,7 +25,7 @@ The length of the maximum microhomology of \code{del.sequence}
   in \code{context}.
 }
 \description{
-Return the length of microhomology at a deletion.
+Return the length of microhomology at a deletion
 }
 \details{
 This function is primarily for internal use, but we export it

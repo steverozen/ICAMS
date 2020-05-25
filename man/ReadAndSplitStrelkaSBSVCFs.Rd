@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{ReadAndSplitStrelkaSBSVCFs}
 \alias{ReadAndSplitStrelkaSBSVCFs}
-\title{Read and split Strelka SBS VCF files.}
+\title{Read and split Strelka SBS VCF files}
 \usage{
 ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs = NULL)
 }

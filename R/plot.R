@@ -1,4 +1,4 @@
-#' Plot \strong{one} spectrum or signature.
+#' Plot \strong{one} spectrum or signature
 #'
 #' Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
 #' type of graph is based on one attribute("catalog.type") of the input catalog.
@@ -72,7 +72,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
   UseMethod(generic = "PlotCatalog")
 }
 
-#' Plot catalog to a PDF file.
+#' Plot catalog to a PDF file
 #'
 #' Plot catalog to a PDF file. The type of graph is based on one
 #' attribute("catalog.type") of the input catalog. You can first use

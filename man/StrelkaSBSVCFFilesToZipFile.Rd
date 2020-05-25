@@ -55,10 +55,10 @@ of catalog.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-  catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
-  by user and cannot be inferred by ICAMS, then SBS 192 and DBS 144 catalog
-  will not be generated and plotted. Each catalog has attributes added. See
-  \code{\link{as.catalog}} for more details.
+  catalogs (one each for 78, 136, and 144). If \code{trans.ranges} is not
+  provided by user and cannot be inferred by ICAMS, then SBS 192 and DBS 144
+  catalog will not be generated and plotted. Each catalog has attributes
+  added. See \code{\link{as.catalog}} for more details.
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the

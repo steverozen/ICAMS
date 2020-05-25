@@ -22,10 +22,10 @@
 #' @importFrom zip zipr 
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
-#'   by user and cannot be inferred by ICAMS, then SBS 192 and DBS 144 catalog
-#'   will not be generated and plotted. Each catalog has attributes added. See
-#'   \code{\link{as.catalog}} for more details.
+#'   catalogs (one each for 78, 136, and 144). If \code{trans.ranges} is not
+#'   provided by user and cannot be inferred by ICAMS, then SBS 192 and DBS 144
+#'   catalog will not be generated and plotted. Each catalog has attributes
+#'   added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. 
@@ -247,8 +247,9 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' @importFrom zip zipr 
 #'
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and Indel catalog. If trans.ranges
-#'   = NULL, SBS 192 and DBS 144 catalog will not be generated and plotted. Each
+#'   catalogs (one each for 78, 136, and 144) and Indel catalog. If
+#'   \code{trans.ranges} is not provided by user and cannot be inferred by
+#'   ICAMS, SBS 192 and DBS 144 catalog will not be generated and plotted. Each
 #'   catalog has attributes added. See \code{\link{as.catalog}} for more
 #'   details.
 #'
@@ -331,7 +332,7 @@ MutectVCFFilesToZipFile <- function(dir,
   invisible(catalogs)
 }
 
-#' Create SBS and DBS catalogs from Strelka SBS VCF files.
+#' Create SBS and DBS catalogs from Strelka SBS VCF files
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 #' the Strelka SBS VCFs specified by \code{files}. The function will find and
@@ -346,9 +347,9 @@ MutectVCFFilesToZipFile <- function(dir,
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-#'   catalogs (one each for 78, 136, and 144). If trans.ranges is not provided
-#'   by user and cannot be inferred by ICAMS, SBS 192 and DBS 144 catalog will
-#'   not be generated. Each catalog has attributes added. See
+#'   catalogs (one each for 78, 136, and 144). If \code{trans.ranges} is not
+#'   provided by user and cannot be inferred by ICAMS, SBS 192 and DBS 144
+#'   catalog will not be generated. Each catalog has attributes added. See
 #'   \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
@@ -424,8 +425,9 @@ StrelkaIDVCFFilesToCatalog <-
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and ID catalog. If trans.ranges =
-#'   NULL, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#'   catalogs (one each for 78, 136, and 144) and ID catalog. If
+#'   \code{trans.ranges} is not provided by user and cannot be inferred by
+#'   ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
@@ -459,7 +461,7 @@ MutectVCFFilesToCatalog <-
                                            region, flag.mismatches)[[1]])))
   }
 
-#' Read and split Strelka SBS VCF files.
+#' Read and split Strelka SBS VCF files
 #' 
 #' The function will find and merge adjacent SBS pairs into DBS if their VAFs
 #' are very similar. The default threshold value for VAF is 0.02.
@@ -502,7 +504,7 @@ ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
   return(split.vcfs)
 }
 
-#' Read Strelka ID (small insertion and deletion) VCF files.
+#' Read Strelka ID (small insertion and deletion) VCF files
 #'
 #' @param files Character vector of file paths to the Strelka ID VCF files.
 #'
@@ -537,7 +539,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   return(vcfs)
 }
 
-#' Read and split Mutect VCF files.
+#' Read and split Mutect VCF files
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
@@ -593,9 +595,10 @@ ReadAndSplitMutectVCFs <-
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-#'   catSBS192 catSBS1536. If trans.ranges is not provided by user and cannot be
-#'   inferred by ICAMS, SBS 192 catalog will not be generated. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#'   catSBS192 catSBS1536. If \code{trans.ranges} is not provided by user and
+#'   cannot be inferred by ICAMS, SBS 192 catalog will not be generated. Each
+#'   catalog has attributes added. See \code{\link{as.catalog}} for more
+#'   details.
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'
@@ -675,9 +678,10 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-#'   catDBS144 catDBS136. If trans.ranges is not provided by user and cannot be
-#'   inferred by ICAMS, DBS 144 catalog will not be generated. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#'   catDBS144 catDBS136. If \code{trans.ranges} is not provided by user and
+#'   cannot be inferred by ICAMS, DBS 144 catalog will not be generated. Each
+#'   catalog has attributes added. See \code{\link{as.catalog}} for more
+#'   details.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
