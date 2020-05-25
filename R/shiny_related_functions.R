@@ -127,7 +127,8 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' @return  A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
-#'   annotated VCFs.
+#'   annotated VCFs (three additional columns \code{seq.context.width},
+#'   \code{seq.context} and \code{ID.class} are added to the original VCF).
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
@@ -246,9 +247,23 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' 
 #' @importFrom zip zipr 
 #'
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and Indel catalog. If
-#'   \code{trans.ranges} is not provided by user and cannot be inferred by
+#' @return  A list containing the following objects: 
+#' \itemize{
+#'
+#'   \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 3 SBS
+#'   catalogs (one each for 96, 192, and 1536).
+#'   
+#'   \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of 3 DBS
+#'   catalogs (one each for 78, 136, and 144).
+#'
+#'   \item \code{catID}: A \strong{list} of two elements. 1st element is a
+#'   matrix of the ID (small insertion and deletion) catalog. 2nd element is a
+#'   list of further annotated VCFs (three additional columns
+#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
+#'   to the original VCF).
+#'
+#'   } 
+#'   If \code{trans.ranges} is not provided by user and cannot be inferred by
 #'   ICAMS, SBS 192 and DBS 144 catalog will not be generated and plotted. Each
 #'   catalog has attributes added. See \code{\link{as.catalog}} for more
 #'   details.
@@ -297,7 +312,7 @@ MutectVCFFilesToZipFile <- function(dir,
   DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
                                     trans.ranges, region)
   ID.catalog <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                 region, flag.mismatches)[[1]]
+                                 region, flag.mismatches)
   catalogs <- c(SBS.catalogs, DBS.catalogs, list(catID = ID.catalog))
   
   output.file <- ifelse(base.filename == "",
@@ -305,20 +320,30 @@ MutectVCFFilesToZipFile <- function(dir,
                         file.path(tempdir(), paste0(base.filename, ".")))
   
   for (name in names(catalogs)) {
-    WriteCatalog(catalogs[[name]],
-                 file = paste0(output.file, name, ".csv"))
+    if (name == "catID") {
+      WriteCatalog(catalogs[[name]]$catalog,
+                   file = paste0(output.file, name, ".csv"))
+    } else {
+      WriteCatalog(catalogs[[name]],
+                   file = paste0(output.file, name, ".csv"))
+    }
   }
   
   for (name in names(catalogs)) {
-    PlotCatalogToPdf(catalogs[[name]],
-                     file = paste0(output.file, name, ".pdf"))
-    
-    if (name == "catSBS192") {
-      list <- PlotCatalogToPdf(catalogs[[name]],
-                               file = paste0(output.file, "SBS12.pdf"),
-                               plot.SBS12 = TRUE)
-      strand.bias.statistics <- 
-        c(strand.bias.statistics, list$strand.bias.statistics)
+    if (name == "catID") {
+      PlotCatalogToPdf(catalogs[[name]]$catalog,
+                       file = paste0(output.file, name, ".pdf"))
+    } else {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      
+      if (name == "catSBS192") {
+        list <- PlotCatalogToPdf(catalogs[[name]],
+                                 file = paste0(output.file, "SBS12.pdf"),
+                                 plot.SBS12 = TRUE)
+        strand.bias.statistics <- 
+          c(strand.bias.statistics, list$strand.bias.statistics)
+      }
     }
   }
   
@@ -390,8 +415,9 @@ StrelkaSBSVCFFilesToCatalog <-
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
-#'   annotated VCFs.
-#'
+#'   annotated VCFs (three additional columns \code{seq.context.width},
+#'   \code{seq.context} and \code{ID.class} are added to the original VCF).
+#'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
@@ -424,11 +450,24 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and ID catalog. If
-#'   \code{trans.ranges} is not provided by user and cannot be inferred by
-#'   ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#' @return  A list containing the following objects:
+#' \itemize{
+#' 
+#' \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
+#' 3 SBS catalogs (one each for 96, 192, and 1536).
+#' 
+#' \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+#' 3 DBS catalogs (one each for 78, 136, and 144).
+#' 
+#' \item \code{catID}: A \strong{list} of two elements. 1st element is a matrix
+#' of the ID (small insertion and deletion) catalog. 2nd element is a list of
+#' further annotated VCFs (three additional columns \code{seq.context.width},
+#' \code{seq.context} and \code{ID.class} are added to the original VCF).
+#' 
+#' }
+#' If \code{trans.ranges} is not provided by user and cannot be inferred by
+#' ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#' attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
@@ -458,7 +497,7 @@ MutectVCFFilesToCatalog <-
              VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
                                trans.ranges, region),
              list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                           region, flag.mismatches)[[1]])))
+                                           region, flag.mismatches))))
   }
 
 #' Read and split Strelka SBS VCF files
@@ -769,7 +808,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @return A list of two elements. 1st element is an S3 object containing an ID
 #'   (small insertion and deletion) catalog with class "IndelCatalog". See
 #'   \code{\link{as.catalog}} for more details. 2nd element is a list of further
-#'   annotated VCFs.
+#'   annotated VCFs (three additional columns \code{seq.context.width},
+#'   \code{seq.context} and \code{ID.class} are added to the original VCF).
 #'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation

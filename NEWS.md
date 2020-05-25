@@ -8,6 +8,12 @@ format to `catalog.row.order.sp`.
 * Created a new internal function `ConvertICAMSCatalogToSigProSBS96`.
 
 ## Changed
+* **(Non backward-compatible)** Changed the return of functions
+`MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf` and
+`MutectVCFFilesToZipFile`. The object `catID` in the returned list has been
+changed from a matrix catalog to a **list**: 1st element is a matrix of the ID
+(small insertion and deletion) catalog. 2nd element is a list of further
+annotated VCFs (three additional columns `seq.context.width` , `seq.context` and `ID.class` are added to the original VCF).
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 
 ## Fixed

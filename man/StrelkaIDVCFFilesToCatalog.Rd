@@ -37,7 +37,8 @@ mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 A list of two elements. 1st element is an S3 object containing an ID
   (small insertion and deletion) catalog with class "IndelCatalog". See
   \code{\link{as.catalog}} for more details. 2nd element is a list of further
-  annotated VCFs.
+  annotated VCFs (three additional columns \code{seq.context.width},
+  \code{seq.context} and \code{ID.class} are added to the original VCF).
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs

@@ -43,7 +43,9 @@ A list whose first element is an ID (small insertion and deletion)
   catalog with its graph plotted to PDF with specified file name. The ID
   catalog has class attribute "IndelCatalog" added. See
   \code{\link{as.catalog}} for more details. The second element of the
-  returned list is a list of further annotated VCFs.
+  returned list is a list of further annotated VCFs (three additional columns
+  \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
+  to the original VCF).
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs

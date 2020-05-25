@@ -1470,7 +1470,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   catalog with its graph plotted to PDF with specified file name. The ID
 #'   catalog has class attribute "IndelCatalog" added. See
 #'   \code{\link{as.catalog}} for more details. The second element of the
-#'   returned list is a list of further annotated VCFs.
+#'   returned list is a list of further annotated VCFs (three additional columns
+#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
+#'   to the original VCF).
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
@@ -1560,12 +1562,26 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   the mismatched rows and continue. Otherwise \code{stop} if there are
 #'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144), Indel catalog and their graphs
-#'   plotted to PDF with specified file name. If \code{trans.ranges} is not
-#'   provided by user and cannot be inferred by ICAMS, SBS 192 and DBS 144
-#'   catalog will not be generated and plotted. Each catalog has attributes
-#'   added. See \code{\link{as.catalog}} for more details.
+#' @return  A list containing the following objects with catalog graphs plotted
+#'   to PDF with specified file name:
+#'   \itemize{
+#'
+#'   \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 3 SBS
+#'   catalogs (one each for 96, 192, and 1536).
+#'
+#'   \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of 3 DBS
+#'   catalogs (one each for 78, 136, and 144).
+#'
+#'   \item \code{catID}: A \strong{list} of two elements. 1st element is a
+#'   matrix of the ID (small insertion and deletion) catalog. 2nd element is a
+#'   list of further annotated VCFs (three additional columns
+#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
+#'   to the original VCF).
+#'
+#'   }
+#'   If \code{trans.ranges} is not provided by user and cannot be inferred by
+#'   ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
 #'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
@@ -1607,13 +1623,18 @@ MutectVCFFilesToCatalogAndPlotToPdf <- function(files,
     if (output.file != "") output.file <- paste0(output.file, ".")
     
     for (name in names(catalogs)) {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, name, ".pdf"))
-      if (name == "catSBS192") {
+      if (name == "catID") {
+        PlotCatalogToPdf(catalogs[[name]]$catalog,
+                         file = paste0(output.file, name, ".pdf"))
+      } else {
         PlotCatalogToPdf(catalogs[[name]],
-                         file = paste0(output.file, "SBS12.pdf"),
-                         plot.SBS12 = TRUE)
-    }
+                         file = paste0(output.file, name, ".pdf"))
+        if (name == "catSBS192") {
+          PlotCatalogToPdf(catalogs[[name]],
+                           file = paste0(output.file, "SBS12.pdf"),
+                           plot.SBS12 = TRUE)
+        }
+      }
     }
     
     return(catalogs)
