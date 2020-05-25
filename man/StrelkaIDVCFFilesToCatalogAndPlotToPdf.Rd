@@ -39,13 +39,14 @@ the mismatched rows and continue. Otherwise \code{stop} if there are
 mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
-A list whose first element is an ID (small insertion and deletion)
-  catalog with its graph plotted to PDF with specified file name. The ID
-  catalog has class attribute "IndelCatalog" added. See
-  \code{\link{as.catalog}} for more details. The second element of the
-  returned list is a list of further annotated VCFs (three additional columns
-  \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
-  to the original VCF).
+A list whose first element \code{catalog} is an ID (small insertion
+  and deletion) catalog with its graph plotted to PDF with specified file
+  name. The ID catalog has attributes added. See \code{\link{as.catalog}} for
+  more details. The second element \code{annotated.vcfs} is a list of data
+  frames which contain the original VCF with three additional columns
+  \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
+  category assignment of each ID mutation in VCF can be obtained from
+  \code{ID.class} column.
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs

@@ -1466,13 +1466,14 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param output.file Optional. The base name of the PDF file to be produced;
 #'   the file is ending in \code{catID.pdf}.
 #'
-#' @return A list whose first element is an ID (small insertion and deletion)
-#'   catalog with its graph plotted to PDF with specified file name. The ID
-#'   catalog has class attribute "IndelCatalog" added. See
-#'   \code{\link{as.catalog}} for more details. The second element of the
-#'   returned list is a list of further annotated VCFs (three additional columns
-#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
-#'   to the original VCF).
+#' @return A list whose first element \code{catalog} is an ID (small insertion
+#'   and deletion) catalog with its graph plotted to PDF with specified file
+#'   name. The ID catalog has attributes added. See \code{\link{as.catalog}} for
+#'   more details. The second element \code{annotated.vcfs} is a list of data
+#'   frames which contain the original VCF with three additional columns
+#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
+#'   category assignment of each ID mutation in VCF can be obtained from
+#'   \code{ID.class} column.
 #'
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
@@ -1563,7 +1564,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @return  A list containing the following objects with catalog graphs plotted
-#'   to PDF with specified file name:
+#'   to PDF with specified file name: 
 #'   \itemize{
 #'
 #'   \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 3 SBS
@@ -1572,11 +1573,13 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of 3 DBS
 #'   catalogs (one each for 78, 136, and 144).
 #'
-#'   \item \code{catID}: A \strong{list} of two elements. 1st element is a
-#'   matrix of the ID (small insertion and deletion) catalog. 2nd element is a
-#'   list of further annotated VCFs (three additional columns
-#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
-#'   to the original VCF).
+#'   \item \code{catID}: A \strong{list} of two elements. 1st element
+#'   \code{catalog} is the ID (small insertion and deletion) catalog. 2nd
+#'   element \code{annotated.vcfs} is a list of data frames which contain the
+#'   original VCF ID mutation rows with three additional columns
+#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
+#'   category assignment of each ID mutation in VCF can be obtained from
+#'   \code{ID.class} column.
 #'
 #'   }
 #'   If \code{trans.ranges} is not provided by user and cannot be inferred by

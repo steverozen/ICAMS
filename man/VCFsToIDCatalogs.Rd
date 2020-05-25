@@ -12,7 +12,7 @@ VCFsToIDCatalogs(
 )
 }
 \arguments{
-\item{list.of.vcfs}{List of in-memory VCFs. The list names will be
+\item{list.of.vcfs}{List of in-memory ID VCFs. The list names will be
 the sample ids in the output catalog.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
@@ -27,11 +27,13 @@ the mismatched rows and continue. Otherwise \code{stop} if there are
 mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \value{
-A list of two elements. 1st element is an S3 object containing an ID
-  (small insertion and deletion) catalog with class "IndelCatalog". See
-  \code{\link{as.catalog}} for more details. 2nd element is a list of further
-  annotated VCFs (three additional columns \code{seq.context.width},
-  \code{seq.context} and \code{ID.class} are added to the original VCF).
+A list of two elements. 1st element \code{catalog} is the ID (small
+  insertion and deletion) catalog with attributes added. See
+  \code{\link{as.catalog}} for more details. 2nd element
+  \code{annotated.vcfs} is a list of data frames which contain the original
+  VCF with three additional columns \code{seq.context.width},
+  \code{seq.context} and \code{ID.class} added. The category assignment of
+  each ID mutation in VCF can be obtained from \code{ID.class} column.
 }
 \description{
 Create ID (small insertion and deletion) catalog from ID VCFs

@@ -73,17 +73,19 @@ A list containing the following objects:
 
   \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 3 SBS
   catalogs (one each for 96, 192, and 1536).
-  
+
   \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of 3 DBS
   catalogs (one each for 78, 136, and 144).
 
-  \item \code{catID}: A \strong{list} of two elements. 1st element is a
-  matrix of the ID (small insertion and deletion) catalog. 2nd element is a
-  list of further annotated VCFs (three additional columns
-  \code{seq.context.width}, \code{seq.context} and \code{ID.class} are added
-  to the original VCF).
+  \item \code{catID}: A \strong{list} of two elements. 1st element
+  \code{catalog} is the ID (small insertion and deletion) catalog. 2nd
+  element \code{annotated.vcfs} is a list of data frames which contain the
+  original VCF ID mutation rows with three additional columns
+  \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
+  category assignment of each ID mutation in VCF can be obtained from
+  \code{ID.class} column.
 
-  } 
+  }
   If \code{trans.ranges} is not provided by user and cannot be inferred by
   ICAMS, SBS 192 and DBS 144 catalog will not be generated and plotted. Each
   catalog has attributes added. See \code{\link{as.catalog}} for more
