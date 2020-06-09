@@ -72,7 +72,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
                   package = "ICAMS",
                   mustWork = TRUE),
       ref.genome = "GRCh37", region = "genome", catalog.type = "counts")
-  stopifnot(cats$catID == prev.catalog.indels)
+  stopifnot(cats$catID$catalog == prev.catalog.indels)
 
   message("ok\n")
 
