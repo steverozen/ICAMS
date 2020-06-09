@@ -5,8 +5,9 @@
 #' 
 #' @param name.of.VCF Name of the VCF file. 
 #'   
-#' @param tumor.col.name Optional. Name of the column in VCF which contains the
-#'   tumor sample information. It \strong{must} have quotation marks. If
+#' @param tumor.col.name Optional. Only applicable to \strong{Mutect} VCFs. Name
+#'   of the column in \strong{Mutect} VCF which contains the tumor sample
+#'   information. It \strong{must} have quotation marks. If
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
 #'   use the 10th column to calculate VAFs.
 #'
@@ -450,6 +451,43 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
       GetAndReturnVAFs(type2, vcf$FORMAT, vcf[[tumor.col.name]])
     }
   }
+}
+
+#' @rdname GetVAF
+#'
+#' @export
+GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
+  # From header of freebayes vcf file:
+  # SRF = "Number of reference observations on the forward strand"
+  # SRR = "Number of reference observations on the reverse strand"
+  # SAF = "Number of alternate observations on the forward strand"
+  # SAR = "Number of alternate observations on the reverse strand"
+  key.words <- c("SRF", "SRR", "SAF", "SAR")
+  
+  # Check whether the vcf is indeed a freebayes vcf
+  if(!all(sapply(key.words, FUN = grepl, x = vcf$INFO[1]))) {
+    stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+         " does not appear to be a freebayes VCF, please check the data")
+  }
+  
+  info.list <- strsplit(vcf$INFO, split = ";")
+  CalculateVAF <- function(vector, key.words) {
+    # Get the index of those items in vector that contain key.words
+    idx <- sapply(key.words, FUN = grep, x = vector)
+    
+    # Get the necessary information for calculating VAF
+    info <- vector[idx]
+    info1 <- unlist(strsplit(info, split = "="))
+    info2 <- as.integer(info1[c(2, 4, 6, 8)])
+    names(info2) <- key.words
+    
+    return(data.frame(VAF = sum(info2[3:4]) / sum(info2), 
+                      read.depth = sum(info2)))
+  }
+  
+  list1 <- lapply(info.list, FUN = CalculateVAF, key.words = key.words)
+  vafs <- do.call("rbind", list1)
+  return(cbind(vcf, vafs))  
 }
 
 #' @title Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations

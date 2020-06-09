@@ -5,6 +5,7 @@
 `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf` and `StrelkaSBSVCFFilesToZipFile` informing the user that the function will find and merge adjacent SBS pairs into DBS if their VAFs are very similar. The default threshold value for VAF is 0.02.
 * Added new exported data of catalog row order for SBS96, SBS1536 and DBS78 in SigProfiler format to `catalog.row.order.sp`.
 * Created a new internal function `ConvertICAMSCatalogToSigProSBS96`.
+* Added a new *exported* function `GetFreebayesVAF` for calculating variant allel frequencies from Freebayes VCF.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions

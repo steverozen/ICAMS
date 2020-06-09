@@ -4,20 +4,24 @@
 \alias{GetVAF}
 \alias{GetStrelkaVAF}
 \alias{GetMutectVAF}
+\alias{GetFreebayesVAF}
 \title{Extract the VAFs (variant allele frequencies) and read depth information from
 a VCF file}
 \usage{
 GetStrelkaVAF(vcf, name.of.VCF = NULL)
 
 GetMutectVAF(vcf, name.of.VCF = NULL, tumor.col.name = NA)
+
+GetFreebayesVAF(vcf, name.of.VCF = NULL)
 }
 \arguments{
 \item{vcf}{Said VCF as a data.frame.}
 
 \item{name.of.VCF}{Name of the VCF file.}
 
-\item{tumor.col.name}{Optional. Name of the column in VCF which contains the
-tumor sample information. It \strong{must} have quotation marks. If
+\item{tumor.col.name}{Optional. Only applicable to \strong{Mutect} VCFs. Name
+of the column in \strong{Mutect} VCF which contains the tumor sample
+information. It \strong{must} have quotation marks. If
 \code{tumor.col.name} is equal to \code{NA}(default), this function will
 use the 10th column to calculate VAFs.}
 }
