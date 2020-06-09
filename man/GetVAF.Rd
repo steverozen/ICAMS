@@ -19,7 +19,7 @@ GetFreebayesVAF(vcf, name.of.VCF = NULL)
 
 \item{name.of.VCF}{Name of the VCF file.}
 
-\item{tumor.col.name}{Optional. Only applicable to \strong{Mutect} VCFs. Name
+\item{tumor.col.name}{Optional. Only applicable to \strong{Mutect} VCF. Name
 of the column in \strong{Mutect} VCF which contains the tumor sample
 information. It \strong{must} have quotation marks. If
 \code{tumor.col.name} is equal to \code{NA}(default), this function will
@@ -37,8 +37,7 @@ a VCF file
 file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
-MakeDataFrameFromStrelkaSBSVCF <- 
-  getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
-df <- MakeDataFrameFromStrelkaSBSVCF(file)
+MakeDataFrameFromVCF <- getFromNamespace("MakeDataFrameFromVCF", "ICAMS")
+df <- MakeDataFrameFromVCF(file)
 df1 <- GetStrelkaVAF(df)
 }

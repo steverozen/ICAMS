@@ -15,8 +15,9 @@ separator (if any) in \code{file} and file path without extensions (and the
 leading dot) will be used as the name of the VCF file.}
 }
 \value{
-A data frame storing data lines of a VCF file with VAFs (variant
-  allele frequencies) added.
+A data frame storing data lines of the VCF file with two additional
+  columns added which contain the VAF(variant allele frequency) and read
+  depth information.
 }
 \description{
 Read in the data lines of an SBS VCF created by Strelka version 1

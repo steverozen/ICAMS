@@ -1,7 +1,7 @@
-context("Reading VCFs")
+context("Read VCFs")
 
 test_that(
-  "ReadStrelkaSBSVCFs",
+  "Read Strelka SBS VCFs",
   {
     vcf <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
     vcf1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
@@ -9,10 +9,20 @@ test_that(
     expect_equal(dim(vcf[[1]]), c(798, 21))
     expect_equal(dim(vcf1[[1]]), c(1574, 13))
     expect_equal(dim(vcf2[[1]]), c(2870, 21))
+    
+    list <- ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf",
+                     variant.caller = "strelka")
+    list1 <- ReadVCFs("testdata/Strelka.SBS.GRCh38.vcf",
+                      variant.caller = "strelka")
+    list2 <- ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
+                      variant.caller = "strelka")
+    expect_equal(vcf, list)
+    expect_equal(vcf1, list1)
+    expect_equal(vcf2, list2)
   } )
 
 test_that(
-  "ReadStrelkaIDVCFs",
+  "Read Strelka ID VCFs",
   {
     vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf")
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
@@ -20,16 +30,38 @@ test_that(
     expect_equal(dim(vcf[[1]]), c(408, 19))
     expect_equal(dim(vcf1[[1]]), c(1574, 11))
     expect_equal(dim(vcf2[[1]]), c(745, 19))
+    
+    list <- ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf",
+                     variant.caller = "strelka")
+    list1 <- ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
+                     variant.caller = "strelka")
+    list2 <- expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
+                                    variant.caller = "strelka"))
+    # Delete the VAF and read.depth columns which are all NA
+    expect_equal(list[[1]][, 1:(ncol(list[[1]]) - 2)], vcf[[1]])
+    expect_equal(list1[[1]][, 1:(ncol(list1[[1]]) - 2)], vcf1[[1]])
+    expect_equal(list2[[1]][, 1:(ncol(list2[[1]]) - 2)], vcf2[[1]])
   } )
 
 test_that(
-  "ReadMutectVCFs",
-  { vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
+  "Read Mutect VCFs",
+  { 
+    vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
     vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
     vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
     expect_equal(dim(vcf[[1]]), c(1851, 13))
     expect_equal(dim(vcf1[[1]]), c(1561, 13))
     expect_equal(dim(vcf2[[1]]), c(1895, 13))
+    
+    list <- ReadVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf",
+                     variant.caller = "mutect")
+    list1 <- ReadVCFs("testdata/Mutect.GRCh38.vcf",
+                      variant.caller = "mutect")
+    list2 <- expect_warning(ReadVCFs("testdata/Mutect.GRCm38.vcf",
+                                     variant.caller = "mutect"))
+    expect_equal(list, vcf)
+    expect_equal(list1, vcf1)
+    expect_equal(list2, vcf2)
   } )
 
 test_that(
@@ -44,6 +76,19 @@ test_that(
                  fixed = TRUE)
     
     expect_error(ReadStrelkaSBSVCFs("testdata/Mutect.GRCm38.vcf"))
+    
+    expect_error(ReadVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf",
+                          variant.caller = "strelka"),
+                 "does not appear to be a Strelka VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadVCFs("testdata/Mutect.GRCh38.vcf",
+                          variant.caller = "strelka"),
+                 "does not appear to be a Strelka VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadVCFs("testdata/Mutect.GRCm38.vcf",
+                          variant.caller = "strelka"))
   })
 
 test_that(
@@ -120,6 +165,36 @@ test_that(
       expect_warning(ReadMutectVCFs("testdata/Strelka.ID.GRCm38.vcf")),
       "does not appear to be a Mutect VCF",
       fixed = TRUE)
+   
+    expect_error(ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf",
+                          variant.caller = "mutect"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
     
+    expect_error(ReadVCFs("testdata/Strelka.SBS.GRCh38.vcf",
+                          variant.caller = "mutect"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
+                          variant.caller = "mutect"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf",
+                          variant.caller = "mutect"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
+    expect_error(ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
+                          variant.caller = "mutect"),
+                 "does not appear to be a Mutect VCF",
+                 fixed = TRUE)
+    
+    expect_error(
+      expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
+                              variant.caller = "mutect")),
+      "does not appear to be a Mutect VCF",
+      fixed = TRUE) 
   }
 )

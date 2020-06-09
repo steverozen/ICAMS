@@ -5,7 +5,7 @@
 #' 
 #' @param name.of.VCF Name of the VCF file. 
 #'   
-#' @param tumor.col.name Optional. Only applicable to \strong{Mutect} VCFs. Name
+#' @param tumor.col.name Optional. Only applicable to \strong{Mutect} VCF. Name
 #'   of the column in \strong{Mutect} VCF which contains the tumor sample
 #'   information. It \strong{must} have quotation marks. If
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
@@ -20,9 +20,8 @@
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' MakeDataFrameFromStrelkaSBSVCF <- 
-#'   getFromNamespace("MakeDataFrameFromStrelkaSBSVCF", "ICAMS")
-#' df <- MakeDataFrameFromStrelkaSBSVCF(file)
+#' MakeDataFrameFromVCF <- getFromNamespace("MakeDataFrameFromVCF", "ICAMS")
+#' df <- MakeDataFrameFromVCF(file)
 #' df1 <- GetStrelkaVAF(df)
 NULL
 
@@ -136,8 +135,9 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @return A data frame storing data lines of a VCF file with VAFs (variant
-#'   allele frequencies) added.
+#' @return A data frame storing data lines of the VCF file with two additional
+#'   columns added which contain the VAF(variant allele frequency) and read
+#'   depth information.
 #'
 #' @keywords internal
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
@@ -349,8 +349,9 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
-#' @return A data frame storing data lines of a VCF file with VAFs (variant
-#'   allele frequencies) added.
+#' @return A data frame storing data lines of the VCF file with two additional
+#'   columns added which contain the VAF(variant allele frequency) and read
+#'   depth information.
 #'   
 #' @keywords internal
 ReadMutectVCF <- 
@@ -488,6 +489,158 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
   list1 <- lapply(info.list, FUN = CalculateVAF, key.words = key.words)
   vafs <- do.call("rbind", list1)
   return(cbind(vcf, vafs))  
+}
+
+#' Read in the data lines of a Variant Call Format (VCF) file
+#'
+#' @importFrom utils read.csv
+#'
+#' @param file The name/path of the VCF file, or a complete URL.
+#' 
+#' @param variant.caller Name of the variant caller that produces the VCF, can be either
+#' \code{strelka}, \code{mutect} or \code{freebayes}. This information is needed to 
+#' calculate the VAFs(variant allel frequencies). If \code{NULL}(default), then VAF and
+#' read depth information will not be added to the original VCF.
+#' 
+#' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
+#'   function will remove all of the path up to and including the last path
+#'   separator (if any) in \code{file} and file path without extensions (and the
+#'   leading dot) will be used as the name of the VCF file.
+#'   
+#' @param tumor.col.name Optional. Only applicable to \strong{Mutect} VCF. Name
+#'   of the column in \strong{Mutect} VCF which contains the tumor sample
+#'   information. It \strong{must} have quotation marks. If
+#'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
+#'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
+#'   more details.
+#'   
+#' @return A data frame storing data lines of the VCF file with two additional
+#'   columns added which contain the VAF(variant allele frequency) and read
+#'   depth information.
+#'   
+#' @keywords internal
+ReadVCF <- 
+  function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
+    df1 <- df <- MakeDataFrameFromVCF(file)
+    df1$VAF <- NA
+    df1$read.depth <- NA
+    
+    if (is.null(variant.caller)) {
+      return(StandardChromName(df1))
+    } 
+    
+    # Check whether the variant caller is supported by ICAMS
+    if (!variant.caller %in% c("strelka", "mutect", "freebayes")) {
+      stop(paste0("\nVariant caller", variant.caller, "is not supported by",
+                  " ICAMS, please specify either ", dQuote("strelka"), ", ", 
+                  dQuote("mutect"), " or ", dQuote("freebayes")))
+    }
+    
+    # Get the name of VCF
+    if (is.null(name.of.VCF)) {
+      vcf.name <- tools::file_path_sans_ext(basename(file))
+    } else {
+      vcf.name <- name.of.VCF
+    }
+    
+    if (variant.caller == "strelka") {
+      # Check whether the input VCF is a Strelka VCF
+      if (!("TUMOR" %in% names(df)) ||
+          !("FORMAT" %in% names(df))) {
+        stop("\nVCF ", dQuote(vcf.name),
+             " does not appear to be a Strelka VCF, column names are \n",
+             paste(colnames(df), collapse=" "))
+      }
+      
+      # Check for any SBS in df and only calcuate VAF for those SBS variants
+      SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      if (length(SBS.idx) == 0) {
+        return(StandardChromName(df1))
+      } else {
+        SBS.df <- df[SBS.idx, ]
+        SBS.df1 <- GetStrelkaVAF(SBS.df, vcf.name)
+        df1[SBS.idx, ]$VAF <- SBS.df1$VAF
+        df1[SBS.idx, ]$read.depth <- SBS.df1$read.depth
+        return(StandardChromName(df1))
+      }
+    }  
+    
+    if (variant.caller == "mutect") {
+      df2 <- GetMutectVAF(df, vcf.name, tumor.col.name)
+      return(StandardChromName(df2))
+    }
+    
+    if (variant.caller == "freebayes") {
+      # Check for any SBS in df and only calcuate VAF for those SBS variants
+      SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      if (length(SBS.idx) == 0) {
+        return(StandardChromName(df1))
+      } else {
+        SBS.df <- df[SBS.idx, ]
+        SBS.df1 <- GetFreebayesVAF(SBS.df, vcf.name)
+        df1[SBS.idx, ]$VAF <- SBS.df1$VAF
+        df1[SBS.idx, ]$read.depth <- SBS.df1$read.depth
+        return(StandardChromName(df1))
+      }
+    }
+  }
+
+#' Read VCF files
+#'
+#' @param files Character vector of file paths to the VCF files.
+#' 
+#' @param variant.caller Name of the variant caller that produces \strong{all}
+#'   the VCFs specified by \code{files}, can be either \code{strelka},
+#'   \code{mutect} or \code{freebayes}. This information is needed to calculate
+#'   the VAFs(variant allel frequencies). If \code{NULL}(default), then VAF and
+#'   read depth information will not be added to the original VCFs.
+#'
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'
+#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
+#'   Character vector of column names in \strong{Mutect} VCFs which contain the
+#'   tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
+#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
+#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
+#'   See \code{\link{GetMutectVAF}} for more details.
+#'   
+#' @return A list of data frames storing data lines of the VCF files with two
+#'   additional columns added which contain the VAF(variant allele frequency)
+#'   and read depth information.
+#'
+#' @keywords internal
+ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL, 
+                     tumor.col.names = NA) {
+  if (is.null(names.of.VCFs)) {
+    vcfs.names <- tools::file_path_sans_ext(basename(files))
+  } else {
+    # Check whether the number of VCFs match the number of names
+    # in names.of.VCFs
+    CheckNamesOfVCFs(files, names.of.VCFs)
+    vcfs.names <- names.of.VCFs
+  }
+  
+  num.of.files <- length(files)
+  if (all(is.na(tumor.col.names))) {
+    tumor.col.names <- rep(NA, num.of.files)
+  }
+  
+  ReadVCF1 <- function(idx, files, variant.caller, vector1, vector2) {
+    ReadVCF(file = files[idx], variant.caller = variant.caller,
+            name.of.VCF = vector1[idx], tumor.col.name = vector2[idx])
+  }
+  
+  vcfs <- lapply(1:num.of.files, FUN = ReadVCF1, files = files, 
+                 variant.caller = variant.caller, 
+                 vector1 = vcfs.names, vector2 = tumor.col.names)
+  names(vcfs) <- vcfs.names
+  return(vcfs)
 }
 
 #' @title Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
