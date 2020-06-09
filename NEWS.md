@@ -6,8 +6,8 @@
 * Added new exported data of catalog row order for SBS96, SBS1536 and DBS78 in SigProfiler format to `catalog.row.order.sp`.
 * Created a new internal function `ConvertICAMSCatalogToSigProSBS96`.
 * Added a new *exported* function `GetFreebayesVAF` for calculating variant allel frequencies from Freebayes VCF.
-* Created two internal function `ReadVCF` and `ReadVCFs` with argument `variant.caller` that allows user to specify the variant caller that produced
-the VCFs.
+* Created two internal function `ReadVCF` and `ReadVCFs` with argument `variant.caller` that allows user to specify the variant caller that produced the VCFs. These two functions are able to read mixed VCFs.
+* Added test data for Strelka mixed VCF (GRCh37).
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions

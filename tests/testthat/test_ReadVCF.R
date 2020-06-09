@@ -1,5 +1,16 @@
 context("Read VCFs")
 
+test_that("Read Strelka mixed VCF", {
+  file <- "testdata/Strelka.mixed.GRCh37.vcf"
+  file1 <- "testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf"
+  file2 <- "testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf"
+  vcf <- ReadVCFs(files = file, variant.caller = "strelka")
+  vcf1 <- ReadStrelkaSBSVCFs(files = file1)
+  vcf2 <- ReadStrelkaIDVCFs(files = file2)
+  rownames(vcf[[1]]) <- 1:nrow(vcf[[1]])
+  expect_equal(vcf[[1]], dplyr::bind_rows(vcf1[[1]], vcf2[[1]]))
+})
+
 test_that(
   "Read Strelka SBS VCFs",
   {
