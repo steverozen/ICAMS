@@ -20,6 +20,8 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Fixed bugs in `if` statement in internal functions
 `GetCustomKmerCounts`、`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
 * Fixed a bug in internal function `CreateOneColIDMatrix` when there is NA ID category.
+* Fixed a bug in *exported* function `GetMutectVAF` for checking whether the
+VCF is indeed a Mutect VCF.
 
 <br/>
 

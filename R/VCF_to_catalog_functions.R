@@ -370,11 +370,23 @@ ReadMutectVCF <-
 #' @export
 GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
-  if (!any(grepl("/1", unlist(vcf[1, ]), fixed = TRUE)) && 
-      !any(grepl("|1", unlist(vcf[1, ]), fixed = TRUE))) {
+  
+  # Specify the possible variable names in Mutect VCF that stores count of reads
+  # information
+  type1 <- c("F1R2", "F2R1")
+  type2 <- c("REF_F1R2", "ALT_F1R2", "REF_F2R1", "ALT_F2R1")
+  
+  if (!all(sapply(type1, FUN = grepl, x = vcf$FORMAT[1])) &&
+      !all(sapply(type2, FUN = grepl, x = vcf$FORMAT[1]))) {
     stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
          " does not appear to be a Mutect VCF, please check the data")
   }
+  
+  #if (!any(grepl("/1", unlist(vcf[1, ]), fixed = TRUE)) && 
+  #    !any(grepl("|1", unlist(vcf[1, ]), fixed = TRUE))) {
+  #  stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+  #       " does not appear to be a Mutect VCF, please check the data")
+  #}
   
   if (!is.na(tumor.col.name)) {
     if (!tumor.col.name %in% colnames(vcf)) {
@@ -384,8 +396,7 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
     }
   }
 
-  type1 <- c("F1R2", "F2R1")
-  type2 <- c("REF_F1R2", "ALT_F1R2", "REF_F2R1", "ALT_F2R1")
+
   
   ExtractInfo <- function(idx, type, vector1, vector2) {
     pos <- match(type, unlist(strsplit(vector1[idx], ":")))
