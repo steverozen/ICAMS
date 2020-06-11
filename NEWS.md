@@ -8,6 +8,9 @@
 * Added a new *exported* function `GetFreebayesVAF` for calculating variant allel frequencies from Freebayes VCF.
 * Created two internal function `ReadVCF` and `ReadVCFs` with argument `variant.caller` that allows user to specify the variant caller that produced the VCFs. These two functions are able to read mixed VCFs.
 * Added test data for Strelka mixed VCF (GRCh37).
+* Added time zone information to file "run-information.txt" when calling
+functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
+`StrelkaIDVCFFilesToZipFile`.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions
