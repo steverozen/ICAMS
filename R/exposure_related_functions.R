@@ -28,3 +28,19 @@ ReadExposure <- function(file, check.names = TRUE) {
   }
   return(data.matrix(retval))
 }
+
+#' @title Write exposure matrix to a file
+#'
+#' @param exposure.matrix Matrix of exposures.
+#'
+#' @param file File to which to write the exposure matrix (as a CSV file).
+#'
+#' @importFrom utils write.csv
+#' 
+#' @export
+WriteExposure <- function(exposure.matrix, file) {
+  old.digits <- getOption("digits")
+  options(digits = 22)
+  write.csv(exposure.matrix, file, row.names = TRUE)
+  on.exit(options(digits = old.digits)) 
+}
