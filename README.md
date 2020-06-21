@@ -32,20 +32,21 @@ signatures.
 
 ## Installation
 
-Install the stable version of ICAMS from
-[CRAN](https://cran.r-project.org/) with the R command line:
-
-``` r
-install.packages("ICAMS")
-```
-
-After that, install the necessary dependency package from
-[Bioconductor](https://www.bioconductor.org/) in order to successfully
-load ICAMS:
+To begin with, install the necessary dependency package from
+[Bioconductor](https://www.bioconductor.org/) for ICAMS:
 
 ``` r
 install.packages("BiocManager")
 BiocManager::install("BSgenome")
+```
+
+For first time installation, it may take a long time, please be patient.
+
+Afterwards, install the stable version of ICAMS from
+[CRAN](https://cran.r-project.org/) with the R command line:
+
+``` r
+install.packages("ICAMS")
 ```
 
 ### Development version
@@ -62,8 +63,7 @@ Alternatively, you can download the latest [Windows
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9005.zip)
 or [macOS
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9005.tgz)
-to your computer and install ICAMS
-locally:
+to your computer and install ICAMS locally:
 
 ``` r
 install.packages(pkgs = "path-to-binary-file", repos = NULL)

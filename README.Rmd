@@ -39,18 +39,20 @@ Analysis and visualization of experimentally elucidated mutational
 
 ## Installation
 
-Install the stable version of ICAMS from [CRAN](https://cran.r-project.org/) with the R command line:
-
-``` r
-install.packages("ICAMS")
-```
-
-After that, install the necessary dependency package
-from [Bioconductor](https://www.bioconductor.org/) in order to successfully load ICAMS:
+To begin with, install the necessary dependency package from
+[Bioconductor](https://www.bioconductor.org/) for ICAMS:
 
 ``` r
 install.packages("BiocManager")
 BiocManager::install("BSgenome")
+```
+
+For first time installation, it may take a long time, please be patient.
+
+Afterwards, install the stable version of ICAMS from [CRAN](https://cran.r-project.org/) with the R command line:
+
+``` r
+install.packages("ICAMS")
 ```
 
 ### Development version
