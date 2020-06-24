@@ -2,15 +2,17 @@
 % Please edit documentation in R/exposure_related_functions.R
 \name{WriteExposure}
 \alias{WriteExposure}
-\title{Write exposure matrix to a file}
+\title{Write an exposure matrix to a file}
 \usage{
-WriteExposure(exposure.matrix, file)
+WriteExposure(exposure, file)
 }
 \arguments{
-\item{exposure.matrix}{Matrix of exposures.}
+\item{exposure}{Exposures as a numerical matrix (or data.frame) with
+signatures in rows and samples in columns. Rownames are taken as the
+signature names and column names are taken as the sample IDs.}
 
 \item{file}{File to which to write the exposure matrix (as a CSV file).}
 }
 \description{
-Write exposure matrix to a file
+Write an exposure matrix to a file
 }

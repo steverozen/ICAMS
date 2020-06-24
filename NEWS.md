@@ -11,6 +11,8 @@
 * Added time zone information to file "run-information.txt" when calling
 functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 `StrelkaIDVCFFilesToZipFile`.
+* Added new *exported* functions `ReadExposure`, `WriteExposure`, `SortExposure`,
+`PlotExposure` and `PlotExposureToPdf`.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions
