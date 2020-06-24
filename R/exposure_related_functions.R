@@ -29,18 +29,36 @@ ReadExposure <- function(file, check.names = TRUE) {
   return(data.matrix(retval))
 }
 
-#' @title Write exposure matrix to a file
+#' @title Write an exposure matrix to a file
 #'
-#' @param exposure.matrix Matrix of exposures.
+#' @param exposure Exposures as a numerical matrix (or data.frame) with
+#'   signatures in rows and samples in columns. Rownames are taken as the
+#'   signature names and column names are taken as the sample IDs.
 #'
 #' @param file File to which to write the exposure matrix (as a CSV file).
 #'
 #' @importFrom utils write.csv
 #' 
 #' @export
-WriteExposure <- function(exposure.matrix, file) {
+WriteExposure <- function(exposure, file) {
   old.digits <- getOption("digits")
   options(digits = 22)
-  write.csv(exposure.matrix, file, row.names = TRUE)
+  write.csv(exposure, file, row.names = TRUE)
   on.exit(options(digits = old.digits)) 
+}
+
+#' Sort columns of an exposure matrix from largest to smallest (or vice versa)
+#'
+#' @param exposure Exposures as a numerical matrix (or data.frame) with
+#'   signatures in rows and samples in columns. Rownames are taken as the
+#'   signature names and column names are taken as the sample IDs.
+#'   
+#' @param decreasing If \code{TRUE}, sort from largest to smallest.
+#' 
+#' @return The original \code{exposure} with columns sorted.
+#'
+#' @export
+SortExposure <- function(exposure, decreasing = TRUE) {
+  retval <- exposure[, order(colSums(exposure), decreasing = decreasing)]
+  return(retval)
 }
