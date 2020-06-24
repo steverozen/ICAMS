@@ -268,3 +268,30 @@ PlotExposure <- function(exposure,
     #plot.legend <- FALSE
   }
 }
+
+#' Plot exposures in multiple plots each with a manageable number of samples to PDF
+#' 
+#' @inheritParams PlotExposure
+#' 
+#' @param file The name of the PDF file to be produced.
+#'
+#' @export
+PlotExposureToPdf <- function(
+  exposure,
+  file,
+  samples.per.line    = 30,
+  plot.proportion     = FALSE,
+  ...
+) {
+  # Setting the width and length for A4 size plotting
+  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  
+  opar <- par(mfrow = c(2, 1), mar = c(2, 2, 3, 2), oma = c(3, 3, 0, 2))
+  on.exit(par(opar))
+  
+  PlotExposure(exposure = exposure, samples.per.line = samples.per.line,
+               plot.proportion = plot.proportion)
+  
+  grDevices::dev.off()
+  invisible(list(plot.success = TRUE))
+}
