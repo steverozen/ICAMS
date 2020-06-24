@@ -79,9 +79,7 @@ SortExposure <- function(exposure, decreasing = TRUE) {
 #'
 #' @param ... Parameters passed to \code{\link[graphics]{barplot}}.
 #'
-#' @importFrom grDevices dev.off pdf
-#' 
-#' @importFrom graphics barplot legend mtext par text
+#' @import graphics 
 #' 
 #' @return An invisible numeric vector giving the coordinates of all the bar
 #'   midpoints drawn, useful for adding to the graph.
@@ -210,3 +208,63 @@ PlotExposureInternal <-
     
     invisible(bp)
   }
+
+#' Plot exposures in multiple plots each with a manageable number of samples
+#'
+#' @param exposure Exposures as a numerical matrix (or data.frame) with
+#'   signatures in rows and samples in columns. Rownames are taken as the
+#'   signature names and column names are taken as the sample IDs. If you want
+#'   \code{exposure} sorted from largest to smallest use \code{\link{SortExp}}.
+#'   Do not use column names that start with multiple underscores. The exposures
+#'   will often be mutation counts, but could also be e.g. mutations per
+#'   megabase.
+#'
+#' @param plot.proportion Plot exposure proportions rather than counts.
+#'
+#' @param samples.per.line Number of samples to show in each plot.
+#'
+#' @param ... Other arguments passed to \code{\link{PlotExposure}}. If
+#'   \code{ylab} is not included, it defaults to a value depending on
+#'   \code{plot.proportion}. If \code{col} is not supplied the function tries to
+#'   do something reasonable.
+#'
+#' @export
+PlotExposure <- function(exposure,
+                         samples.per.line    = 30,
+                         plot.proportion     = FALSE,
+                         ...
+) {
+  new.xlim = c(0, samples.per.line * 1.25)
+  args <- list(...)
+  ylab <- args$ylab
+  if (is.null(ylab)) {
+    ylab <- ifelse(plot.proportion,
+                   "Proportion of mutations",
+                   "Number of mutations")
+  }
+  
+  n.sample <- ncol(exposure)
+  num.ranges <- n.sample %/% samples.per.line
+  size.of.last.range <- n.sample %% samples.per.line
+  if (size.of.last.range > 0) {
+    padding.len <- samples.per.line - size.of.last.range
+    padding <- matrix(0,nrow = nrow(exposure), ncol = padding.len)
+    # The column names starting with lots of underscore
+    # will not be plotted in the final output.
+    colnames(padding) <- paste("_____", 1:ncol(padding), sep = "_")
+    exposure <- cbind(exposure, padding)
+    starts <- 0:num.ranges * samples.per.line + 1
+  } else {
+    starts <- 0:(num.ranges - 1) *samples.per.line + 1
+  }
+  ends   <- starts + samples.per.line - 1
+  
+  plot.legend <- TRUE
+  for (i in 1:length(starts)) {
+    PlotExposureInternal(exposure[ , starts[i]:ends[i]],
+                         plot.proportion = plot.proportion,
+                         plot.legend    = plot.legend,
+                         ...)
+    #plot.legend <- FALSE
+  }
+}
