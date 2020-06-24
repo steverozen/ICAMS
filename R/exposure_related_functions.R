@@ -62,3 +62,151 @@ SortExposure <- function(exposure, decreasing = TRUE) {
   retval <- exposure[, order(colSums(exposure), decreasing = decreasing)]
   return(retval)
 }
+
+#' Plot a single exposure plot
+#'
+#' @param exposure Exposures as a numerical matrix (or data.frame) with
+#'    signatures in rows and samples in columns. Rownames are taken
+#'    as the signature names and column names are taken as the
+#'    sample IDs. If you want \code{exp} sorted from largest to smallest
+#'    use \code{\link{SortExp}}. Do not use column names that start
+#'    with multiple underscores. The exposures will often be mutation
+#'    counts, but could also be e.g. mutations per megabase.
+#'
+#' @param plot.proportion Plot exposure proportions rather than counts.
+#'
+#' @param plot.legend If \code{TRUE}, plot a legend.
+#'
+#' @param ... Parameters passed to \code{\link[graphics]{barplot}}.
+#'
+#' @importFrom grDevices dev.off pdf
+#' 
+#' @importFrom graphics barplot legend mtext par text
+#' 
+#' @return An invisible numeric vector giving the coordinates of all the bar
+#'   midpoints drawn, useful for adding to the graph.
+#'
+#' @keywords internal
+PlotExposureInternal <-
+  function(exposure, # This is actually the exposure "counts"
+           plot.proportion = FALSE,
+           plot.legend     = TRUE,
+           ...
+  ) {
+    exposure <- as.matrix(exposure) # in case it is a data frame
+    num.sigs  <- nrow(exposure)
+    num.samples <- ncol(exposure)
+    
+    three.dots <- list(...)
+    if (is.null(three.dots$col)) {
+      if (num.sigs <= 8) {
+        three.dots$col <- 
+          c("red", "black", "grey", "yellow", "blue", "brown", "green4", "skyblue")
+      } else {
+        # Lots of signatures; use shaded lines to differentiate
+        three.dots$col <- grDevices::rainbow(num.sigs, alpha = 1)
+      }
+    }
+    if (num.sigs <= 12) {
+      p.dense = -1 # will repeat as needed, -1 = solid
+      p.angle = 0  # ditto
+    } else {
+      # Lots of signatures; use shaded lines to differentiate
+      p.dense = c(-1, 50, 50, 50, 50) # will repeat as needed, -1 = solid
+      p.angle = c(0, 45, 135, 45, 135)  # ditto
+    }
+    # For legend, we need to put in reverse order. make sure this matches
+    # order used in barplot
+    num.repeats = ceiling(num.sigs/length(p.dense))
+    p.dense.rev = rev(rep(p.dense, num.repeats)[1:num.sigs])
+    p.angle.rev = rev(rep(p.angle, num.repeats)[1:num.sigs])
+    
+    
+    # l.cex = if (num.sigs > 15) 1.2 else 1 # char expansion for legend (was 0.7)
+    # direction = 2 # 1 = always horizontal, 2 = perpendicular to axis
+    
+    if (plot.proportion) {
+      # Matrix divided by vector goes col-wise, not row-wise, so transpose twice
+      plot.what <- t(t(exposure)/colSums(exposure))
+      
+      # If some columns in exposure matrix are "padded", i.e. all the values
+      # are 0, then the division above will make NaNs. We try to replace all
+      # NaN with 0
+      plot.what[is.na(plot.what)] <- 0
+    } else {
+      plot.what <- exposure
+    }
+    
+    # plot.what <-
+    #  cbind(plot.what,
+    #        matrix(0,
+    #               nrow = nrow(plot.what),
+    #               ncol = round(ncol(plot.what) * 0.15)))
+    
+    # Ignore column names; we'll plot them separately to make them fit
+    bp = do.call(
+      barplot,
+      args = c(list(height   = plot.what,
+                    las      = 1,
+                    #yaxt     = "s",
+                    xaxt     = "n", # Do not plot the X axis
+                    density  = p.dense,
+                    angle    = p.angle,
+                    border   = "white", # ifelse(num.samples>200,NA,1),
+                    #cex.main = 1.2,
+                    xlim     = c(0, round(ncol(plot.what) * 1.25)),
+                    ylim     = c(0, max(colSums(plot.what)) * 1.1)),
+               three.dots))
+    
+    # Get max y values for plot region, put legend at top right
+    #dims = par("usr") # c(x.min, x.max, y.min, y.max)
+    #y.max = dims[4]
+    
+    if (plot.legend) {
+      # Less space between rows (y.intersp), and between box & label (x.intersp)
+      # reverse the order, so sig 1 is at bottom (to match the stacked bar graph)
+      #legend.x <- dims[2] * 0.95 #ncol(exposure) * 0.7   # Nanhai, we could pass in legend.x and legend.y as optional arguments from the caller
+      #legend.y <- y.max
+      legend(#x         = legend.x,
+        #y         = legend.y,
+        "right",
+        inset     = -0.08,
+        legend    = rev(row.names(exposure)),
+        density   = p.dense.rev,
+        angle     = p.angle.rev,
+        #bg        = NA,
+        xpd       = NA,
+        fill      = three.dots$col[num.sigs:1],
+        x.intersp = 0.3, #0.4,
+        y.intersp = 1, #0.8,
+        bty       = "n",
+        border    = "white",
+        cex       = 0.9,
+        title     = "Signature")
+      #text(x= legend.x, y = legend.y, labels = "Signature", 
+      #xpd = NA, adj = -0.09)#-0.09)
+    }
+    
+    # Now add sample names, rotated to hopefully fit
+    # don't even try to show all if there are too many
+    if (num.samples <= 200) {
+      if (length(bp) < 50) {
+        size.adj <- 0.75 
+      } else if (length(bp) < 80) {
+        size.adj <- 0.65  
+      } else if (length(bp) < 100) {
+        size.adj <- 0.4 # .5
+      } else if (length(bp) < 120) {
+        size.adj <- 0.4
+      } else if (length(bp) < 150) {
+        size.adj <- 0.3
+      } else {
+        size.adj <- 0.3
+      }
+      cnames <- colnames(exposure)
+      cnames <- sub("_____.*", "", cnames)
+      mtext(cnames, side = 1, at = bp, las = 2, cex = size.adj)
+    }
+    
+    invisible(bp)
+  }
