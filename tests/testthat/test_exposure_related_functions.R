@@ -16,3 +16,10 @@ test_that("Read and write exposure", {
   file2 <- "testdata/tiny.exposure.dup.csv"
   expect_error(x <- ReadExposure(file2, check = FALSE))
 })
+
+test_that("PlotExposureInternal function", {
+  exposure <- ReadExposure("testdata/synthetic.exposure.csv")
+  PlotExposureInternal(SortExposure(exposure[, 1:30]), cex.legend = 0.5)
+  PlotExposureInternal(SortExposure(exposure[ , 1:30]), plot.proportion = TRUE,
+                       cex.legend = 0.5)
+})

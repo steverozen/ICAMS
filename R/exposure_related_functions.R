@@ -76,7 +76,10 @@ SortExposure <- function(exposure, decreasing = TRUE) {
 #' @param plot.proportion Plot exposure proportions rather than counts.
 #'
 #' @param plot.legend If \code{TRUE}, plot a legend.
-#'
+#' 
+#' @param cex.legend A numerical value giving the amount by which legend
+#'   plotting text and symbols should be magnified relative to the default.
+#'   
 #' @param ... Parameters passed to \code{\link[graphics]{barplot}}.
 #'
 #' @import graphics 
@@ -89,6 +92,7 @@ PlotExposureInternal <-
   function(exposure, # This is actually the exposure "counts"
            plot.proportion = FALSE,
            plot.legend     = TRUE,
+           cex.legend      = 0.9,
            ...
   ) {
     exposure <- as.matrix(exposure) # in case it is a data frame
@@ -179,7 +183,7 @@ PlotExposureInternal <-
         y.intersp = 1, #0.8,
         bty       = "n",
         border    = "white",
-        cex       = 0.9,
+        cex       = cex.legend,
         title     = "Signature")
       #text(x= legend.x, y = legend.y, labels = "Signature", 
       #xpd = NA, adj = -0.09)#-0.09)
