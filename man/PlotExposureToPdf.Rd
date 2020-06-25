@@ -9,6 +9,7 @@ PlotExposureToPdf(
   file,
   samples.per.line = 30,
   plot.proportion = FALSE,
+  cex.legend = 0.9,
   ...
 )
 }
@@ -26,6 +27,9 @@ could also be e.g. mutations per megabase.}
 \item{samples.per.line}{Number of samples to show in each plot.}
 
 \item{plot.proportion}{Plot exposure proportions rather than counts.}
+
+\item{cex.legend}{A numerical value giving the amount by which legend
+plotting text and symbols should be magnified relative to the default.}
 
 \item{...}{Other arguments passed to \code{\link{PlotExposure}}. If
 \code{ylab} is not included, it defaults to a value depending on

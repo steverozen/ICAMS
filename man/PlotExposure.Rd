@@ -25,6 +25,9 @@ could also be e.g. mutations per megabase.}
 
 \item{plot.proportion}{Plot exposure proportions rather than counts.}
 
+\item{cex.legend}{A numerical value giving the amount by which legend
+plotting text and symbols should be magnified relative to the default.}
+
 \item{...}{Other arguments passed to \code{\link{PlotExposure}}. If
 \code{ylab} is not included, it defaults to a value depending on
 \code{plot.proportion}. If \code{col} is not supplied the function tries to

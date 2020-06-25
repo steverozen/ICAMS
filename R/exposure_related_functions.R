@@ -246,6 +246,9 @@ PlotExposureInternal <-
 #' @param plot.proportion Plot exposure proportions rather than counts.
 #'
 #' @param samples.per.line Number of samples to show in each plot.
+#' 
+#' @param cex.legend A numerical value giving the amount by which legend
+#'   plotting text and symbols should be magnified relative to the default.
 #'
 #' @param ... Other arguments passed to \code{\link{PlotExposure}}. If
 #'   \code{ylab} is not included, it defaults to a value depending on
@@ -321,6 +324,7 @@ PlotExposureToPdf <- function(exposure,
                               file,  
                               samples.per.line = 30,
                               plot.proportion  = FALSE,
+                              cex.legend       = 0.9,
                               ...
 ) {
   # Setting the width and length for A4 size plotting
@@ -329,8 +333,11 @@ PlotExposureToPdf <- function(exposure,
   opar <- par(mfrow = c(2, 1), mar = c(2, 2, 3, 2), oma = c(3, 3, 0, 2))
   on.exit(par(opar))
   
-  PlotExposure(exposure = exposure, samples.per.line = samples.per.line,
-               plot.proportion = plot.proportion, ... = ...)
+  PlotExposure(exposure         = exposure, 
+               samples.per.line = samples.per.line,
+               plot.proportion  = plot.proportion, 
+               cex.legend       = cex.legend,
+               ...              = ...)
   
   grDevices::dev.off()
   invisible(list(plot.success = TRUE))
