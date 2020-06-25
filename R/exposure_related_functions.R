@@ -198,7 +198,7 @@ PlotExposureInternal <-
         angle     = p.angle.rev,
         #bg        = NA,
         xpd       = NA,
-        fill      = rev(three.dots$col),
+        fill      = rev(three.dots$col[1:num.sigs]),
         x.intersp = 0.3, #0.4,
         y.intersp = 1, #0.8,
         bty       = "n",
