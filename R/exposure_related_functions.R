@@ -236,6 +236,7 @@ PlotExposureInternal <-
 PlotExposure <- function(exposure,
                          samples.per.line    = 30,
                          plot.proportion     = FALSE,
+                         cex.legend          = 0.9,
                          ...
 ) {
   new.xlim = c(0, samples.per.line * 1.25)
@@ -267,7 +268,8 @@ PlotExposure <- function(exposure,
   for (i in 1:length(starts)) {
     PlotExposureInternal(exposure[ , starts[i]:ends[i]],
                          plot.proportion = plot.proportion,
-                         plot.legend    = plot.legend,
+                         plot.legend     = plot.legend,
+                         cex.legend      = cex.legend,
                          ...)
     #plot.legend <- FALSE
   }
