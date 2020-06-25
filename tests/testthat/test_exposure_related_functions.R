@@ -23,3 +23,28 @@ test_that("PlotExposureInternal function", {
   PlotExposureInternal(SortExposure(exposure[ , 1:30]), plot.proportion = TRUE,
                        cex.legend = 0.5)
 })
+
+test_that("PlotExposure function", {
+  exposure <- ReadExposure("testdata/synthetic.exposure.csv")
+  
+  old.par <- par(mfcol = c(2, 1), mar = c(2, 3, 3.5, 2), oma = c(2, 1, 0, 1))
+  on.exit(par(old.par))
+  PlotExposure(exposure = SortExposure(exposure[, 1:43]),
+               main = "test", cex.main = 0.8, cex.legend = 0.35)
+  
+  par(old.par)
+  PlotExposure(exposure = SortExposure(exposure[, 1:30]),  # Test a trick edge case
+               main = "test1", cex.legend = 0.5)
+  
+  PlotExposure(exposure = SortExposure(exposure[, 3:6]), 
+               samples.per.line = 4, cex.legend = 0.5)
+  
+  par(mfcol = c(2, 1), mar = c(2, 3, 1.5, 2), oma = c(2, 1, 0, 1))
+  PlotExposure(exposure = SortExposure(exposure[, 1:43 ]),
+               plot.proportion = TRUE, cex.legend = 0.3)
+  
+  par(old.par)
+  PlotExposure(exposure = SortExposure(exposure[, 3:6]),
+               samples.per.line = 4, plot.proportion = TRUE, 
+               col = c("red", "white"), cex.legend = 0.5)
+})
