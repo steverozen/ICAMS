@@ -16,10 +16,10 @@ PlotExposureToPdf(
 \item{exposure}{Exposures as a numerical matrix (or data.frame) with
 signatures in rows and samples in columns. Rownames are taken as the
 signature names and column names are taken as the sample IDs. If you want
-\code{exposure} sorted from largest to smallest use \code{\link{SortExp}}.
-Do not use column names that start with multiple underscores. The exposures
-will often be mutation counts, but could also be e.g. mutations per
-megabase.}
+\code{exposure} sorted from largest to smallest, use
+\code{\link{SortExposure}}. Do not use column names that start with
+multiple underscores. The exposures will often be mutation counts, but
+could also be e.g. mutations per megabase.}
 
 \item{file}{The name of the PDF file to be produced.}
 
@@ -34,4 +34,11 @@ do something reasonable.}
 }
 \description{
 Plot exposures in multiple plots each with a manageable number of samples to PDF
+}
+\examples{
+file <- system.file("extdata",
+                    "synthetic.exposure.csv",
+                    package = "ICAMS")
+exposure <- ReadExposure(file)
+PlotExposureToPdf(exposure, file = file.path(tempdir(), "exposure.pdf"))
 }

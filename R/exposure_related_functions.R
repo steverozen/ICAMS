@@ -14,6 +14,12 @@
 #' @importFrom utils read.csv
 #' 
 #' @export
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "synthetic.exposure.csv",
+#'                     package = "ICAMS")
+#' exposure <- ReadExposure(file)
 ReadExposure <- function(file, check.names = TRUE) {
   if (check.names) {
     headers <- read.csv(file, nrow = 1, header = FALSE, stringsAsFactors = FALSE)
@@ -40,6 +46,13 @@ ReadExposure <- function(file, check.names = TRUE) {
 #' @importFrom utils write.csv
 #' 
 #' @export
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "synthetic.exposure.csv",
+#'                     package = "ICAMS")
+#' exposure <- ReadExposure(file)
+#' WriteExposure(exposure, file = file.path(tempdir(), "synthetic.exposure.csv"))
 WriteExposure <- function(exposure, file) {
   old.digits <- getOption("digits")
   options(digits = 22)
@@ -58,6 +71,13 @@ WriteExposure <- function(exposure, file) {
 #' @return The original \code{exposure} with columns sorted.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "synthetic.exposure.csv",
+#'                     package = "ICAMS")
+#' exposure <- ReadExposure(file)
+#' exposure.sorted <- SortExposure(exposure)
 SortExposure <- function(exposure, decreasing = TRUE) {
   retval <- exposure[, order(colSums(exposure), decreasing = decreasing)]
   return(retval)
@@ -66,12 +86,12 @@ SortExposure <- function(exposure, decreasing = TRUE) {
 #' Plot a single exposure plot
 #'
 #' @param exposure Exposures as a numerical matrix (or data.frame) with
-#'    signatures in rows and samples in columns. Rownames are taken
-#'    as the signature names and column names are taken as the
-#'    sample IDs. If you want \code{exp} sorted from largest to smallest
-#'    use \code{\link{SortExp}}. Do not use column names that start
-#'    with multiple underscores. The exposures will often be mutation
-#'    counts, but could also be e.g. mutations per megabase.
+#'   signatures in rows and samples in columns. Rownames are taken as the
+#'   signature names and column names are taken as the sample IDs. If you want
+#'   \code{exp} sorted from largest to smallest, use \code{\link{SortExposure}}.
+#'   Do not use column names that start with multiple underscores. The exposures
+#'   will often be mutation counts, but could also be e.g. mutations per
+#'   megabase.
 #'
 #' @param plot.proportion Plot exposure proportions rather than counts.
 #'
@@ -178,7 +198,7 @@ PlotExposureInternal <-
         angle     = p.angle.rev,
         #bg        = NA,
         xpd       = NA,
-        fill      = three.dots$col[num.sigs:1],
+        fill      = rev(three.dots$col),
         x.intersp = 0.3, #0.4,
         y.intersp = 1, #0.8,
         bty       = "n",
@@ -207,10 +227,10 @@ PlotExposureInternal <-
       }
       cnames <- colnames(exposure)
       cnames <- sub("_____.*", "", cnames)
-      mtext(cnames, side = 1, at = bp, las = 2, cex = size.adj)
+      mtext(cnames, side = 1, line = 0.38, at = bp, las = 2, cex = size.adj)
     }
     
-    invisible(bp)
+    invisible(list(plot.success = TRUE, plot.object = bp))
   }
 
 #' Plot exposures in multiple plots each with a manageable number of samples
@@ -218,10 +238,10 @@ PlotExposureInternal <-
 #' @param exposure Exposures as a numerical matrix (or data.frame) with
 #'   signatures in rows and samples in columns. Rownames are taken as the
 #'   signature names and column names are taken as the sample IDs. If you want
-#'   \code{exposure} sorted from largest to smallest use \code{\link{SortExp}}.
-#'   Do not use column names that start with multiple underscores. The exposures
-#'   will often be mutation counts, but could also be e.g. mutations per
-#'   megabase.
+#'   \code{exposure} sorted from largest to smallest, use
+#'   \code{\link{SortExposure}}. Do not use column names that start with
+#'   multiple underscores. The exposures will often be mutation counts, but
+#'   could also be e.g. mutations per megabase.
 #'
 #' @param plot.proportion Plot exposure proportions rather than counts.
 #'
@@ -233,10 +253,17 @@ PlotExposureInternal <-
 #'   do something reasonable.
 #'
 #' @export
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "synthetic.exposure.csv",
+#'                     package = "ICAMS")
+#' exposure <- ReadExposure(file)
+#' PlotExposure(exposure[, 1:30])
 PlotExposure <- function(exposure,
-                         samples.per.line    = 30,
-                         plot.proportion     = FALSE,
-                         cex.legend          = 0.9,
+                         samples.per.line = 30,
+                         plot.proportion  = FALSE,
+                         cex.legend       = 0.9,
                          ...
 ) {
   new.xlim = c(0, samples.per.line * 1.25)
@@ -270,9 +297,10 @@ PlotExposure <- function(exposure,
                          plot.proportion = plot.proportion,
                          plot.legend     = plot.legend,
                          cex.legend      = cex.legend,
-                         ...)
+                         ...             = ...)
     #plot.legend <- FALSE
   }
+  invisible(list(plot.success = TRUE))
 }
 
 #' Plot exposures in multiple plots each with a manageable number of samples to PDF
@@ -282,12 +310,18 @@ PlotExposure <- function(exposure,
 #' @param file The name of the PDF file to be produced.
 #'
 #' @export
-PlotExposureToPdf <- function(
-  exposure,
-  file,
-  samples.per.line    = 30,
-  plot.proportion     = FALSE,
-  ...
+#' 
+#' @examples 
+#' file <- system.file("extdata",
+#'                     "synthetic.exposure.csv",
+#'                     package = "ICAMS")
+#' exposure <- ReadExposure(file)
+#' PlotExposureToPdf(exposure, file = file.path(tempdir(), "exposure.pdf"))
+PlotExposureToPdf <- function(exposure,
+                              file,  
+                              samples.per.line = 30,
+                              plot.proportion  = FALSE,
+                              ...
 ) {
   # Setting the width and length for A4 size plotting
   grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
@@ -296,7 +330,7 @@ PlotExposureToPdf <- function(
   on.exit(par(opar))
   
   PlotExposure(exposure = exposure, samples.per.line = samples.per.line,
-               plot.proportion = plot.proportion)
+               plot.proportion = plot.proportion, ... = ...)
   
   grDevices::dev.off()
   invisible(list(plot.success = TRUE))

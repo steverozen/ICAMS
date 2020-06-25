@@ -22,3 +22,9 @@ Matrix of exposures.
 \description{
 Read an exposure matrix from a file
 }
+\examples{
+file <- system.file("extdata",
+                    "synthetic.exposure.csv",
+                    package = "ICAMS")
+exposure <- ReadExposure(file)
+}

@@ -16,3 +16,10 @@ signature names and column names are taken as the sample IDs.}
 \description{
 Write an exposure matrix to a file
 }
+\examples{
+file <- system.file("extdata",
+                    "synthetic.exposure.csv",
+                    package = "ICAMS")
+exposure <- ReadExposure(file)
+WriteExposure(exposure, file = file.path(tempdir(), "synthetic.exposure.csv"))
+}
