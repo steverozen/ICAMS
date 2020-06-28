@@ -7,15 +7,22 @@
 PlotExposureToPdf(
   exposure,
   file,
+  mfrow = c(2, 1),
+  mar = c(2, 4, 3, 2),
+  oma = c(3, 2, 0, 2),
   samples.per.line = 30,
   plot.proportion = FALSE,
+  xlim = NULL,
+  ylim = NULL,
+  legend.x = NULL,
+  legend.y = NULL,
   cex.legend = 0.9,
   ...
 )
 }
 \arguments{
-\item{exposure}{Exposures as a numerical matrix (or data.frame) with
-signatures in rows and samples in columns. Rownames are taken as the
+\item{exposure}{Exposures as a numerical \code{matrix} (or \code{data.frame})
+with signatures in rows and samples in columns. Rownames are taken as the
 signature names and column names are taken as the sample IDs. If you want
 \code{exposure} sorted from largest to smallest, use
 \code{\link{SortExposure}}. Do not use column names that start with
@@ -24,17 +31,40 @@ could also be e.g. mutations per megabase.}
 
 \item{file}{The name of the PDF file to be produced.}
 
+\item{mfrow}{A vector of the form \code{c(nr, nc)}.
+Subsequent figures will be drawn in an \code{nr}-by-\code{nc}
+array on the device by rows.}
+
+\item{mar}{A numerical vector of the form \code{c(bottom,
+left, top, right)} which gives the number of lines of margin to be
+specified on the four sides of the plot.}
+
+\item{oma}{A vector of the form \code{c(bottom, left, top,
+right)} giving the size of the outer margins in lines of text.}
+
 \item{samples.per.line}{Number of samples to show in each plot.}
 
 \item{plot.proportion}{Plot exposure proportions rather than counts.}
 
+\item{xlim, ylim}{Limits for the x and y axis. If \code{NULL}(default), the
+function tries to do something reasonable.}
+
+\item{legend.x, legend.y}{The x and y co-ordinates to be used to position the
+legend.}
+
 \item{cex.legend}{A numerical value giving the amount by which legend
 plotting text and symbols should be magnified relative to the default.}
 
-\item{...}{Other arguments passed to \code{\link{PlotExposure}}. If
+\item{...}{Other arguments passed to \code{\link[graphics]{barplot}}. If
 \code{ylab} is not included, it defaults to a value depending on
 \code{plot.proportion}. If \code{col} is not supplied the function tries to
 do something reasonable.}
+}
+\value{
+An \strong{invisible} list whose first element is a logic value
+  indicating whether the plot is successful. The second element is a numeric
+  vector giving the coordinates of all the bar midpoints drawn, useful for
+  adding to the graph.
 }
 \description{
 Plot exposures in multiple plots each with a manageable number of samples to PDF

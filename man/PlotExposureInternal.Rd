@@ -7,32 +7,44 @@
 PlotExposureInternal(
   exposure,
   plot.proportion = FALSE,
-  plot.legend = TRUE,
+  xlim = NULL,
+  ylim = NULL,
+  legend.x = NULL,
+  legend.y = NULL,
   cex.legend = 0.9,
   ...
 )
 }
 \arguments{
-\item{exposure}{Exposures as a numerical matrix (or data.frame) with
-signatures in rows and samples in columns. Rownames are taken as the
+\item{exposure}{Exposures as a numerical \code{matrix} (or \code{data.frame})
+with signatures in rows and samples in columns. Rownames are taken as the
 signature names and column names are taken as the sample IDs. If you want
-\code{exp} sorted from largest to smallest, use \code{\link{SortExposure}}.
-Do not use column names that start with multiple underscores. The exposures
-will often be mutation counts, but could also be e.g. mutations per
-megabase.}
+\code{exposure} sorted from largest to smallest, use
+\code{\link{SortExposure}}. Do not use column names that start with
+multiple underscores. The exposures will often be mutation counts, but
+could also be e.g. mutations per megabase.}
 
 \item{plot.proportion}{Plot exposure proportions rather than counts.}
 
-\item{plot.legend}{If \code{TRUE}, plot a legend.}
+\item{xlim, ylim}{Limits for the x and y axis. If \code{NULL}(default), the
+function tries to do something reasonable.}
+
+\item{legend.x, legend.y}{The x and y co-ordinates to be used to position the
+legend.}
 
 \item{cex.legend}{A numerical value giving the amount by which legend
 plotting text and symbols should be magnified relative to the default.}
 
-\item{...}{Parameters passed to \code{\link[graphics]{barplot}}.}
+\item{...}{Other arguments passed to \code{\link[graphics]{barplot}}. If
+\code{ylab} is not included, it defaults to a value depending on
+\code{plot.proportion}. If \code{col} is not supplied the function tries to
+do something reasonable.}
 }
 \value{
-An invisible numeric vector giving the coordinates of all the bar
-  midpoints drawn, useful for adding to the graph.
+An \strong{invisible} list whose first element is a logic value
+  indicating whether the plot is successful. The second element is a numeric
+  vector giving the coordinates of all the bar midpoints drawn, useful for
+  adding to the graph.
 }
 \description{
 Plot a single exposure plot
