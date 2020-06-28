@@ -11,8 +11,11 @@
 * Added time zone information to file "run-information.txt" when calling
 functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 `StrelkaIDVCFFilesToZipFile`.
+* Added an internal function `PlotExposureInternal`.
 * Added new *exported* functions `ReadExposure`, `WriteExposure`, `SortExposure`,
 `PlotExposure` and `PlotExposureToPdf`.
+* Added new parameters `xlim`, `ylim`, `legend.x` and `legend.y` to functions `PlotExposureInternal`, `PlotExposure` and `PlotExposureToPdf`.
+* Added new parameters `mfrow`, `mar`, `oma` to function `PlotExposureToPdf`.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions
@@ -30,6 +33,8 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Fixed a bug in internal function `CreateOneColIDMatrix` when there is NA ID category.
 * Fixed a bug in *exported* function `GetMutectVAF` for checking whether the
 VCF is indeed a Mutect VCF.
+* Fixed a bug in *exported* function `SortExposure` when the exposure matrix only has one column.
+* Fixed the bug that ylab is getting lost in exposure plotting functions.
 
 <br/>
 
