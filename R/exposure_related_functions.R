@@ -20,7 +20,7 @@
 #'                     "synthetic.exposure.csv",
 #'                     package = "ICAMS")
 #' exposure <- ReadExposure(file)
-ReadExposure <- function(file, check.names = TRUE) {
+ReadExposure <- function(file, check.names = FALSE) {
   if (check.names) {
     headers <- read.csv(file, nrow = 1, header = FALSE, stringsAsFactors = FALSE)
     double.colon <- grep("::", unlist(headers)[-1], fixed = TRUE)

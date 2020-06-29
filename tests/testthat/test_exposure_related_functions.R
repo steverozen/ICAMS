@@ -2,7 +2,7 @@ context("Exposure related functions")
 
 test_that("Read and write exposure", {
   file <- "testdata/tiny.exposure.csv"
-  expect_warning(x <- ReadExposure(file))
+  x <- ReadExposure(file)
   tfile <- tempfile()
   WriteExposure(x, tfile)
   reread.x <- ReadExposure(tfile)

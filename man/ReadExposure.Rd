@@ -4,7 +4,7 @@
 \alias{ReadExposure}
 \title{Read an exposure matrix from a file}
 \usage{
-ReadExposure(file, check.names = TRUE)
+ReadExposure(file, check.names = FALSE)
 }
 \arguments{
 \item{file}{CSV file containing an exposure matrix.}

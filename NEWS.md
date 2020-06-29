@@ -26,6 +26,7 @@ changed from a matrix catalog to a **list**: 1st element is a matrix of the ID
 annotated VCFs (three additional columns `seq.context.width` , `seq.context` and `ID.class` are added to the original VCF).
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
+* Changed the default value for parameter `check.names` to `FALSE` for function `ReadExposure`.
 
 ## Fixed
 * Fixed bugs in `if` statement in internal functions
