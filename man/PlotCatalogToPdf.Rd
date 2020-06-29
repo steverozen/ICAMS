@@ -46,10 +46,11 @@ set \code{par(tck = 0)} to suppress.}
 IndelCatalog.}
 }
 \value{
-A list whose first element is a logic value indicating whether the
-  plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
-  and non-null abundance and \code{plot.SBS12 = TRUE}, the list will have a
-  second element which is a list containing the strand bias statistics.
+An \strong{invisible} list whose first element is a logic value
+  indicating whether the plot is successful. For \strong{SBS192Catalog} with
+  "counts" catalog.type and non-null abundance and \code{plot.SBS12 = TRUE},
+  the list will have a second element which is a list containing the strand
+  bias statistics.
 }
 \description{
 Plot catalog to a PDF file. The type of graph is based on one

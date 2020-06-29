@@ -27,6 +27,7 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
 * Changed the default value for parameter `check.names` to `FALSE` for function `ReadExposure`.
+* Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.
 
 ## Fixed
 * Fixed bugs in `if` statement in internal functions

@@ -35,13 +35,13 @@
 #' 
 #' @importFrom stats binom.test p.adjust
 #'
-#' @return A list whose first element is a logic value indicating whether the
-#'   plot is successful. For \strong{SBS96Catalog}, the list will have a second
-#'   element, which is a numeric vector giving the coordinates of all the bar
-#'   midpoints drawn, useful for adding to the graph. For \strong{SBS192Catalog}
-#'   with "counts" catalog.type and non-NULL abundance and \code{plot.SBS12 =
-#'   TRUE}, the list will have a second element which is a list containing the
-#'   strand bias statistics.
+#' @return An \strong{invisible} list whose first element is a logic value
+#'   indicating whether the plot is successful. For \strong{SBS96Catalog}, the
+#'   list will have a second element, which is a numeric vector giving the
+#'   coordinates of all the bar midpoints drawn, useful for adding to the graph.
+#'   For \strong{SBS192Catalog} with "counts" catalog.type and non-NULL
+#'   abundance and \code{plot.SBS12 = TRUE}, the list will have a second element
+#'   which is a list containing the strand bias statistics.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
@@ -108,10 +108,11 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' @param ylim Has the usual meaning. Only implemented for SBS96Catalog and
 #'   IndelCatalog.
 #'   
-#' @return A list whose first element is a logic value indicating whether the
-#'   plot is successful. For \strong{SBS192Catalog} with "counts" catalog.type
-#'   and non-null abundance and \code{plot.SBS12 = TRUE}, the list will have a
-#'   second element which is a list containing the strand bias statistics.
+#' @return An \strong{invisible} list whose first element is a logic value
+#'   indicating whether the plot is successful. For \strong{SBS192Catalog} with
+#'   "counts" catalog.type and non-null abundance and \code{plot.SBS12 = TRUE},
+#'   the list will have a second element which is a list containing the strand
+#'   bias statistics.
 #'   
 #' @note The sizes of repeats involved in deletions range from 0 to 5+ in the
 #'   mutational-spectra and signature catalog rownames, but for plotting and
@@ -279,7 +280,7 @@ PlotCatalog.SBS96Catalog <-
            labels = maj.class.names, xpd = NA, cex = cex * 1.25)
     }
 
-    return(list(plot.success = TRUE, plot.object = bp))
+    invisible(list(plot.success = TRUE, plot.object = bp))
   }
 
 #' @export
@@ -305,7 +306,7 @@ PlotCatalogToPdf.SBS96Catalog <-
     }
     
     grDevices::dev.off()
-    return(list(plot.success = TRUE))
+    invisible(list(plot.success = TRUE))
   }
 
 #' @export
@@ -598,9 +599,9 @@ PlotCatalog.SBS192Catalog <-
     
     # Check whether it is possible to return the p-values from binomial test
     if (isTRUE(plot.SBS12) && IsBinomialTestApplicable(catalog)) {
-      return(list(plot.success = TRUE, strand.bias.statistics = list0))
+      invisible(list(plot.success = TRUE, strand.bias.statistics = list0))
     } else {
-      return(list(plot.success = TRUE))
+      invisible(list(plot.success = TRUE))
     }
 }
 
@@ -627,9 +628,12 @@ PlotCatalogToPdf.SBS192Catalog <-
       c(strand.bias.statistics, list$strand.bias.statistics)
   }
   grDevices::dev.off()
-  ifelse(is.null(strand.bias.statistics), return(list(plot.success = TRUE)),
-         return(list(plot.success = TRUE, 
-                     strand.bias.statistics = strand.bias.statistics)))
+  if (is.null(strand.bias.statistics)) {
+    invisible(list(plot.success = TRUE))
+  } else {
+    invisible(list(plot.success = TRUE, 
+                   strand.bias.statistics = strand.bias.statistics))
+  }
 }
 
 #' @export
@@ -821,7 +825,7 @@ PlotCatalog.SBS1536Catalog <-
     }
   }
 
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -837,7 +841,7 @@ PlotCatalogToPdf.SBS1536Catalog <-
   }
 
   grDevices::dev.off()
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 ###############################################################################
@@ -933,7 +937,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
   text(bp, -ymax / 15, labels = substr(rownames(catalog), 3, 3),
        cex = 0.5, srt = 90, adj = 1, xpd = NA)
 
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -953,7 +957,7 @@ PlotCatalogToPdf.DBS78Catalog <-
   }
 
   grDevices::dev.off()
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1069,7 +1073,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
   text(bp[8], ymax, labels = colnames(catalog), xpd = NA,
        font = 2, cex = cex, adj = c(0, 0))
 
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1089,7 +1093,7 @@ PlotCatalogToPdf.DBS144Catalog <-
     }
 
     grDevices::dev.off()
-    return(list(plot.success = TRUE))
+    invisible(list(plot.success = TRUE))
   }
 
 #' @export
@@ -1236,7 +1240,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
   text(rep(0.5, 5), seq(0.7, 0.3, length.out = 5),
        paste(ref[6:10], maxima[6:10], sep = " = "), adj = 0, cex = 1.2, xpd = NA)
   
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1407,7 +1411,7 @@ PlotCatalogToPdf.DBS136Catalog <-
   }
 
   grDevices::dev.off()
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 ###############################################################################
@@ -1546,7 +1550,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   text(bp, -ymax * 0.15, labels = mut.type, cex = 0.65, xpd = NA)
   text(bottom.pos, -ymax * 0.27, labels = bottom.lab, cex = 0.75, xpd = NA)
 
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 #' @export
@@ -1564,7 +1568,7 @@ PlotCatalogToPdf.IndelCatalog <-
     PlotCatalog(cat, ylim = ylim)
   }
   grDevices::dev.off()
-  return(list(plot.success = TRUE))
+  invisible(list(plot.success = TRUE))
 }
 
 
