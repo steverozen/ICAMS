@@ -1560,7 +1560,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
     DBS.mat.144 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1)
     rownames(DBS.mat.144) <- ICAMS::catalog.row.order$DBS144
-    list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144, catDBS136 = DBS.mat.136)
+    return(list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144, catDBS136 = DBS.mat.136))
   }
 
   # Create the 144 DBS catalog matrix

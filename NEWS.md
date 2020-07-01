@@ -37,6 +37,7 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 VCF is indeed a Mutect VCF.
 * Fixed a bug in *exported* function `SortExposure` when the exposure matrix only has one column.
 * Fixed the bug that ylab is getting lost in exposure plotting functions.
+* Fixed a bug in internal function `CreateOneColDBSMatrix` when the DBS VCF does not have any variant on the transcribed region.
 
 <br/>
 
