@@ -60,9 +60,9 @@ devtools::install_github("steverozen/ICAMS")
 ```
 
 Alternatively, you can download the latest [Windows
-binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9010.zip)
+binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9011.zip)
 or [macOS
-binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9010.tgz)
+binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9011.tgz)
 to your computer and install ICAMS locally:
 
 ``` r
@@ -71,4 +71,4 @@ install.packages(pkgs = "path-to-binary-file", repos = NULL)
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.2.9010.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.2.9011.pdf>
