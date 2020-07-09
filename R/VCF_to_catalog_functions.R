@@ -784,13 +784,13 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
   
   # Create a GRanges object with the needed width.
   Ranges <-
-    GRanges(chr.names,
-            IRanges(start = df$POS - seq.context.width, # 10,
-                    end = df$POS + seq.context.width) # 10
+    GenomicRanges::GRanges(chr.names,
+                           IRanges::IRanges(start = df$POS - seq.context.width, # 10,
+                                            end = df$POS + seq.context.width) # 10
     )
 
   # Extract sequence context from the reference genome
-  df$extracted.seq <- getSeq(ref.genome, Ranges, as.character = TRUE)
+  df$extracted.seq <- BSgenome::getSeq(ref.genome, Ranges, as.character = TRUE)
 
   names(df)[names(df) == "extracted.seq"] <-
     paste0("seq.", 2 * seq.context.width + 1, "bases")
@@ -1021,8 +1021,9 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   # For ease of testing, keep only the genomic range information.
   non.SBS <- non.SBS[, c("CHROM", "LOW", "HIGH")]
   ranges <-
-    GRanges(non.SBS$CHROM, IRanges(start = non.SBS$LOW, end = non.SBS$HIGH))
-  rranges <- reduce(ranges) # Merge overlapping ranges
+    GenomicRanges::GRanges(non.SBS$CHROM, 
+                           IRanges::IRanges(start = non.SBS$LOW, end = non.SBS$HIGH))
+  rranges <- GenomicRanges::reduce(ranges) # Merge overlapping ranges
   DBS.plus <- as.data.frame(rranges)
   if ((sum(DBS.plus$width) + num.SBS.out) != num.in) {
     if ((sum(DBS.plus$width) + num.SBS.out) > num.in) {
