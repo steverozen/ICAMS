@@ -55,8 +55,8 @@ To use new features, you can install ICAMS from the master branch on
 [GitHub](https://github.com/), which may not be stable:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("steverozen/ICAMS")
+install.packages("remotes")
+remotes::install_github("steverozen/ICAMS")
 ```
 
 Alternatively, you can download the latest [Windows
