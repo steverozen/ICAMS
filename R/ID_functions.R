@@ -163,7 +163,7 @@ AnnotateIDVCF <-
     #}
   }
   if (nrow(discarded.variants) > 0) {
-    warning("\nSome variants were discarded, see element discarded.variants", 
+    warning("\nSome ID variants were discarded, see element discarded.variants", 
             " in the return value")
     return(list(annotated.vcf = df3, discarded.variants = discarded.variants))
   } else {
