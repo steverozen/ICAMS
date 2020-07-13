@@ -38,16 +38,6 @@ references in the ID (insertion/deletion) VCF, generate messages showing
 the mismatched rows and continue. Otherwise \code{stop} if there are
 mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
 }
-\value{
-A list whose first element \code{catalog} is an ID (small insertion
-  and deletion) catalog with its graph plotted to PDF with specified file
-  name. The ID catalog has attributes added. See \code{\link{as.catalog}} for
-  more details. The second element \code{annotated.vcfs} is a list of data
-  frames which contain the original VCF with three additional columns
-  \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
-  category assignment of each ID mutation in VCF can be obtained from
-  \code{ID.class} column.
-}
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
 specified by \code{files} and plot them to PDF
@@ -56,11 +46,36 @@ specified by \code{files} and plot them to PDF
 This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
 \code{\link{PlotCatalogToPdf}}
 }
-\note{
-In ID (small insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation deletion
-  repeat sizes range from 1 to 6+.
+\section{Value}{
+
+A \strong{list} of elements:
+\itemize{
+\item \code{catalog}: The ID (small insertion and deletion) catalog with
+attributes added. See \code{\link{as.catalog}} for more details.
+\item \code{annotated.vcfs}: A list of data frames which contain the original VCF
+ID mutation rows with three additional columns \code{seq.context.width},
+\code{seq.context} and \code{ID.class} added. The category assignment of each
+ID mutation in VCF can be obtained from \code{ID.class} column.
+\item \code{discarded.variants}:
+\strong{Only appearing when there are ID variants that were discarded}.
+A list of data frames which contain the discarded variants from the original VCF.
+The discarded variants can belong to the following types:
+\enumerate{
+\item Variants which have the same number of bases for REF and ALT alleles.
+\item Variants which have empty REF or ALT allels.
+\item Complex indels.
+\item Variants with mismatches between VCF and reference sequence.
 }
+}
+}
+
+\section{Note}{
+
+In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+from 0 to 5+, but for plotting and end-user documentation deletion repeat
+sizes range from 1 to 6+.
+}
+
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf",
                       "Strelka.ID.GRCh37.s1.vcf",

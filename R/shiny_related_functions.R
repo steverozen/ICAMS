@@ -124,18 +124,10 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' 
 #' @importFrom zip zipr 
 #' 
-#' @return A list of two elements. 1st element \code{catalog} is the ID (small
-#'   insertion and deletion) catalog with attributes added. See
-#'   \code{\link{as.catalog}} for more details. 2nd element
-#'   \code{annotated.vcfs} is a list of data frames which contain the original
-#'   VCF with three additional columns \code{seq.context.width},
-#'   \code{seq.context} and \code{ID.class} added. The category assignment of
-#'   each ID mutation in VCF can be obtained from \code{ID.class} column.
-#'
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation deletion
-#'   repeat sizes range from 1 to 6+.
+#' @inheritSection VCFsToIDCatalogs Value 
 #' 
+#' @inheritSection VCFsToIDCatalogs Note
+#'
 #' @export
 #' 
 #' @examples  
@@ -249,37 +241,11 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' 
 #' @importFrom zip zipr 
 #'
-#' @return  A list containing the following objects: 
-#' \itemize{
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
 #'
-#'   \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 3 SBS
-#'   catalogs (one each for 96, 192, and 1536).
-#'
-#'   \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of 3 DBS
-#'   catalogs (one each for 78, 136, and 144).
-#'
-#'   \item \code{catID}: A \strong{list} of two elements. 1st element
-#'   \code{catalog} is the ID (small insertion and deletion) catalog. 2nd
-#'   element \code{annotated.vcfs} is a list of data frames which contain the
-#'   original VCF ID mutation rows with three additional columns
-#'   \code{seq.context.width}, \code{seq.context} and \code{ID.class} added. The
-#'   category assignment of each ID mutation in VCF can be obtained from
-#'   \code{ID.class} column.
-#'
-#'   }
-#'   If \code{trans.ranges} is not provided by user and cannot be inferred by
-#'   ICAMS, SBS 192 and DBS 144 catalog will not be generated and plotted. Each
-#'   catalog has attributes added. See \code{\link{as.catalog}} for more
-#'   details.
-#'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
-#'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation deletion
-#'   repeat sizes range from 1 to 6+.
-#' 
-#' @section Comments:
-#' To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
-#' For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
+#'   
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #' 
 #' @export
 #' 
@@ -416,18 +382,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @return A list of two elements. 1st element \code{catalog} is the ID (small
-#'   insertion and deletion) catalog with attributes added. See
-#'   \code{\link{as.catalog}} for more details. 2nd element
-#'   \code{annotated.vcfs} is a list of data frames which contain the original
-#'   VCF with three additional columns \code{seq.context.width},
-#'   \code{seq.context} and \code{ID.class} added. The category assignment of
-#'   each ID mutation in VCF can be obtained from \code{ID.class} column.
+#' @inheritSection VCFsToIDCatalogs Value 
 #' 
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation
-#'   deletion repeat sizes range from 1 to 6+.
-#'
+#' @inheritSection VCFsToIDCatalogs Note
+#' 
 #' @export
 #' 
 #' @examples 
@@ -456,31 +414,9 @@ StrelkaIDVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @return  A list containing the following objects:
-#' \itemize{
-#' 
-#' \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
-#' 3 SBS catalogs (one each for 96, 192, and 1536).
-#' 
-#' \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
-#' 3 DBS catalogs (one each for 78, 136, and 144).
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
 #'
-#' \item \code{catID}: A \strong{list} of two elements. 1st element
-#' \code{catalog} is the ID (small insertion and deletion) catalog. 2nd element
-#' \code{annotated.vcfs} is a list of data frames which contain the original VCF
-#' ID mutation rows with three additional columns \code{seq.context.width},
-#' \code{seq.context} and \code{ID.class} added. The category assignment
-#' of each ID mutation in VCF can be obtained from \code{ID.class} column.
-#' 
-#' }
-#' If \code{trans.ranges} is not provided by user and cannot be inferred by
-#' ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
-#' attributes added. See \code{\link{as.catalog}} for more details.
-#'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed
-#'   regions. In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation deletion
-#'   repeat sizes range from 1 to 6+.
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
 #'   
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #'
@@ -813,17 +749,32 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'   the mismatched rows and continue. Otherwise \code{stop} if there are
 #'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
 #'
-#' @return A list of two elements. 1st element \code{catalog} is the ID (small
-#'   insertion and deletion) catalog with attributes added. See
-#'   \code{\link{as.catalog}} for more details. 2nd element
-#'   \code{annotated.vcfs} is a list of data frames which contain the original
-#'   VCF with three additional columns \code{seq.context.width},
-#'   \code{seq.context} and \code{ID.class} added. The category assignment of
-#'   each ID mutation in VCF can be obtained from \code{ID.class} column.
+#' @section Value:
+#' A \strong{list} of elements:
+#'   * \code{catalog}: The ID (small insertion and deletion) catalog with
+#'   attributes added. See \code{\link{as.catalog}} for more details.
+#' 
+#'   * \code{annotated.vcfs}: A list of data frames which contain the original VCF
+#' ID mutation rows with three additional columns \code{seq.context.width},
+#' \code{seq.context} and \code{ID.class} added. The category assignment of each
+#' ID mutation in VCF can be obtained from \code{ID.class} column.
+#' 
+#'   * \code{discarded.variants}: 
+#' \strong{Only appearing when there are ID variants that were discarded}.
+#' A list of data frames which contain the discarded variants from the original VCF.
+#' The discarded variants can belong to the following types:
+#' \enumerate{
+#' \item Variants which have the same number of bases for REF and ALT alleles.
+#' \item Variants which have empty REF or ALT allels.
+#' \item Complex indels.
+#' \item Variants with mismatches between VCF and reference sequence.
+#' }
+#' @md
 #'   
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation
-#'   deletion repeat sizes range from 1 to 6+.
+#' @section Note:
+#'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+#'  from 0 to 5+, but for plotting and end-user documentation deletion repeat
+#'  sizes range from 1 to 6+.
 #'   
 #' @export
 #' 
@@ -843,8 +794,8 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   # Create a 0-column matrix with the correct row labels.
   catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
   rownames(catID) <- ICAMS::catalog.row.order$ID
-  out.list.of.vcfs <- list()
-  
+  out.list.of.vcfs <- discarded.variants <- list()
+  discarded.variants.vcf.name <- character()
   
   vcf.names <- names(list.of.vcfs)
   for (i in 1:ncol) {
@@ -852,6 +803,12 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
     list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
                           flag.mismatches = flag.mismatches,
                           name.of.VCF = vcf.names[i])
+    if (!is.null(list$discarded.variants)) {
+      discarded.variants <- 
+        c(discarded.variants, list(list$discarded.variants))
+      discarded.variants.vcf.name <- 
+        c(discarded.variants.vcf.name, vcf.names[i])
+    }
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
     tmp <- CreateOneColIDMatrix(list$annotated.vcf)
@@ -863,11 +820,21 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   
   colnames(catID) <- names(list.of.vcfs)
   names(out.list.of.vcfs) <- names(list.of.vcfs)
+  names(discarded.variants) <- discarded.variants.vcf.name
   
-  return(list(catalog = 
-                as.catalog(catID, ref.genome = ref.genome,
-                           region = region, catalog.type = "counts"),
-              annotated.vcfs = out.list.of.vcfs))
+  if (length(discarded.variants) == 0) {
+    return(list(catalog = 
+                  as.catalog(catID, ref.genome = ref.genome,
+                             region = region, catalog.type = "counts"),
+                annotated.vcfs = out.list.of.vcfs))
+  } else {
+    return(list(catalog = 
+                  as.catalog(catID, ref.genome = ref.genome,
+                             region = region, catalog.type = "counts"),
+                annotated.vcfs = out.list.of.vcfs,
+                discarded.variants = discarded.variants))
+  }
+  
 }
 
 #' Calculate the number of space needed to add strand bias statistics to
