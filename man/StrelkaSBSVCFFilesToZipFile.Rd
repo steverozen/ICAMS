@@ -78,8 +78,9 @@ SBS 192 and DBS 144 catalogs include only mutations in transcribed
 }
 \section{Comments}{
 
-To add or change attributes of the catalog, you can use function \code{\link[base]{attr}}. \cr
-For example, \code{attr(catalog, "abundance") <- custom.abundance}.
+To add or change attributes of the catalog, you can use function
+\code{\link[base]{attr}}. \cr For example, \code{attr(catalog, "abundance")
+<- custom.abundance}.
 }
 
 \examples{
