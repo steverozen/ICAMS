@@ -150,25 +150,36 @@ PlotExposureInternal <-
       }
     }
     
+    barplot.col <- character(num.sigs)
+    barplot.col <- 
+      suppressWarnings(replace(barplot.col, 1:num.sigs, args$col))
+    
+    barplot.density <- barplot.angle <- numeric(num.sigs)
+    
     if (num.sigs <= 12) {
       # Specify the density of shading lines, in lines per inch, for the bars or
       # bar components. Will repeat as needed, non-positive values of density
       # inhibit the drawing of shading lines.
-      density <- -1 
+      barplot.density <- rep(-1, num.sigs)
+      
       # Sepcify the slope of shading lines, given as an angle in degrees
       # (counter-clockwise), for the bars or bar components. Will repeat as
       # needed.
-      angle <- 0  
+      barplot.angle <- rep(0, num.sigs)
     } else {
       # Lots of signatures; use shading lines to differentiate
-      density <- c(-1, 50, 50, 50, 50) # Will repeat as needed
-      angle <- c(0, 45, 135, 45, 135)  # Ditto
+      barplot.density <-
+        suppressWarnings(replace(barplot.density, 1:num.sigs, 
+                                 c(-1, 50, 50, 50, 50)))
+      barplot.angle <-
+        suppressWarnings(replace(barplot.angle, 1:num.sigs, 
+                                 c(0, 45, 135, 45, 135)))
     }
-    # For legend, we need to put density and angle in reversed order to make
+    # For legend, we need to put colour, density and angle in reversed order to make
     # sure this matches order used in barplot.
-    num.repeats <- ceiling(num.sigs / length(density))
-    density.rev <- rev(rep(density, num.repeats)[1:num.sigs])
-    angle.rev <- rev(rep(angle, num.repeats)[1:num.sigs])
+    legend.col <- rev(barplot.col)
+    legend.density <- rev(barplot.density)
+    legend.angle <- rev(barplot.angle)
     
     if (plot.proportion) {
       # Matrix divided by vector goes column-wise, not row-wise, so transpose twice
@@ -207,8 +218,8 @@ PlotExposureInternal <-
                     xaxs     = "i", # No extra spacing at each end of x axis
                     xaxt     = "n", # Do not plot the X axis
                     yaxt     = "n", # Do not plot the Y axis
-                    density  = density,
-                    angle    = angle,
+                    density  = barplot.density,
+                    angle    = barplot.angle,
                     border   = "white", 
                     xlim     = xlim,
                     ylim     = ylim),
@@ -238,10 +249,10 @@ PlotExposureInternal <-
     legend(x         = legend.x,
            y         = legend.y,
            legend    = rev(row.names(exposure)),
-           density   = density.rev,
-           angle     = angle.rev,
+           density   = legend.density,
+           angle     = legend.angle,
            xpd       = NA,
-           fill      = rev(args$col),
+           fill      = legend.col,
            x.intersp = 0.3, 
            y.intersp = 1, 
            bty       = "n",
@@ -378,7 +389,7 @@ PlotExposure <- function(exposure,
 PlotExposureToPdf <- function(exposure,
                               file,  
                               mfrow            = c(2, 1),
-                              mar              = c(2, 4, 3, 2),
+                              mar              = c(6, 4, 3, 2),
                               oma              = c(3, 2, 0, 2),
                               samples.per.line = 30,
                               plot.proportion  = FALSE,
