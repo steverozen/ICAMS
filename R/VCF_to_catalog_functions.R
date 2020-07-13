@@ -380,9 +380,18 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   
   if (!all(sapply(type1, FUN = grepl, x = vcf$FORMAT[1])) &&
       !all(sapply(type2, FUN = grepl, x = vcf$FORMAT[1]))) {
-    stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
-         " does not appear to be a Mutect VCF, please check the data")
+    
+    warning("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " does not appear to be a Mutect VCF, please check the data")
+    
+    vcf$VAF <- NA
+    vcf$read.depth <- NA
+    return(vcf)
+    
+    #stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+    #     " does not appear to be a Mutect VCF, please check the data")
   }
+
   
   #if (!any(grepl("/1", unlist(vcf[1, ]), fixed = TRUE)) && 
   #    !any(grepl("|1", unlist(vcf[1, ]), fixed = TRUE))) {
@@ -398,8 +407,6 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
     }
   }
 
-
-  
   ExtractInfo <- function(idx, type, vector1, vector2) {
     pos <- match(type, unlist(strsplit(vector1[idx], ":")))
     values <- unlist(strsplit(vector2[idx], ":"))[pos]

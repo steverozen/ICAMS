@@ -152,60 +152,58 @@ test_that(
 test_that(
   "ReadMutectVCFs applied to Strelka VCF error",
   {
-    expect_error(ReadMutectVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf"),
-                 "does not appear to be a Mutect VCF",
-                 fixed = TRUE)
-
-    expect_error(ReadMutectVCFs("testdata/Strelka.SBS.GRCh38.vcf"),
+    expect_warning(ReadMutectVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE)
+    
+    expect_warning(ReadMutectVCFs("testdata/Strelka.SBS.GRCh38.vcf"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE)
+    
+    expect_warning(ReadMutectVCFs("testdata/Strelka.SBS.GRCm38.vcf"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE)
+    
+    expect_warning(ReadMutectVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE)
+    
+    expect_warning(ReadMutectVCFs("testdata/Strelka.ID.GRCh38.vcf"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadMutectVCFs("testdata/Strelka.SBS.GRCm38.vcf"),
-                 "does not appear to be a Mutect VCF",
-                 fixed = TRUE)
-    
-    expect_error(ReadMutectVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf"),
-                 "does not appear to be a Mutect VCF",
-                 fixed = TRUE)
-    
-    expect_error(ReadMutectVCFs("testdata/Strelka.ID.GRCh38.vcf"),
-                 "does not appear to be a Mutect VCF",
-                 fixed = TRUE)
-    
-    expect_error(
-      expect_warning(ReadMutectVCFs("testdata/Strelka.ID.GRCm38.vcf")),
-      "does not appear to be a Mutect VCF",
-      fixed = TRUE)
+    expect_warning(ReadMutectVCFs("testdata/Strelka.ID.GRCm38.vcf"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE)
    
-    expect_error(ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf",
+    expect_warning(ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf",
                           variant.caller = "mutect"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadVCFs("testdata/Strelka.SBS.GRCh38.vcf",
+    expect_warning(ReadVCFs("testdata/Strelka.SBS.GRCh38.vcf",
                           variant.caller = "mutect"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
+    expect_warning(ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
                           variant.caller = "mutect"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf",
+    expect_warning(ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.vcf",
                           variant.caller = "mutect"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
+    expect_warning(ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
                           variant.caller = "mutect"),
                  "does not appear to be a Mutect VCF",
                  fixed = TRUE)
     
-    expect_error(
-      expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
-                              variant.caller = "mutect")),
-      "does not appear to be a Mutect VCF",
-      fixed = TRUE) 
+    expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
+                            variant.caller = "mutect"),
+                   "does not appear to be a Mutect VCF",
+                   fixed = TRUE) 
   }
 )
