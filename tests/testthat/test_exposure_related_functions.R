@@ -94,11 +94,19 @@ test_that("PlotExposure function", {
   expect_equal(out4$plot.success, TRUE)
   
   par(old.par)
-  out5 <- PlotExposure(exposure = SortExposure(exposure[, 3:6]),
+  
+  # Only plot selected samples with selected signatures
+  out5 <- PlotExposure(exposure = SortExposure(exposure[1:4, 3:6]),
                        samples.per.line = 4, plot.proportion = TRUE, 
                        col = c("red", "blue"), cex.legend = 0.45,
                        legend.x = 4.5)
   expect_equal(out5$plot.success, TRUE)
+  
+  out6 <- PlotExposure(exposure = SortExposure(exposure[, 3:6]),
+                       samples.per.line = 4, plot.proportion = TRUE, 
+                       col = c("red", "blue"), cex.legend = 0.45,
+                       legend.x = 4.5)
+  expect_equal(out6$plot.success, TRUE)
   graphics.off()
 })
 
