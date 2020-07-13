@@ -38,6 +38,7 @@ VCF is indeed a Mutect VCF.
 * Fixed a bug in *exported* function `SortExposure` when the exposure matrix only has one column.
 * Fixed the bug that ylab is getting lost in exposure plotting functions.
 * Fixed a bug in internal function `CreateOneColDBSMatrix` when the DBS VCF does not have any variant on the transcribed region.
+* Fixed a bug in internal function `PlotExposureInternal` for legend color and changed the default margin setting in *exported* function `PlotExposureToPdf`.
 
 <br/>
 

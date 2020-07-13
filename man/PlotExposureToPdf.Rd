@@ -8,7 +8,7 @@ PlotExposureToPdf(
   exposure,
   file,
   mfrow = c(2, 1),
-  mar = c(2, 4, 3, 2),
+  mar = c(6, 4, 3, 2),
   oma = c(3, 2, 0, 2),
   samples.per.line = 30,
   plot.proportion = FALSE,
