@@ -401,7 +401,7 @@ PlotExposureToPdf <- function(exposure,
                               ...
 ) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   opar <- par(mfrow = mfrow, mar = mar, oma = oma)
   on.exit(par(opar))

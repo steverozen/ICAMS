@@ -28,6 +28,7 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
 * Changed the default value for parameter `check.names` to `FALSE` for function `ReadExposure`.
 * Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.
+* Used `grDevices::pdf` instead of `grDevices::cairo_pdf` in functions that produce PDF graphics: `PlotCatalogToPdf`, `PlotExposureToPdf` and `PlotTransBiasGeneExpToPdf` because the original plots on some Linux system look blurry.
 
 ## Fixed
 * Fixed bugs in `if` statement in internal functions

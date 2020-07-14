@@ -290,7 +290,7 @@ PlotCatalogToPdf.SBS96Catalog <-
            ylim = NULL) {
     old.par.tck.value <- par("tck")
     # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(file, width = 8.2677, 
+    grDevices::pdf(file, width = 8.2677, 
                          height = 11.6929, onefile = TRUE)
     par(tck = old.par.tck.value)
     # opar <- par(no.readonly = TRUE)
@@ -610,7 +610,7 @@ PlotCatalogToPdf.SBS192Catalog <-
   function(catalog, file, plot.SBS12 = FALSE, cex = 0.8, 
            grid, upper, xlabels, ylim) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   opar <- par(no.readonly = TRUE)
   on.exit(par(opar))
@@ -831,7 +831,7 @@ PlotCatalog.SBS1536Catalog <-
 #' @export
 PlotCatalogToPdf.SBS1536Catalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim) {
-  grDevices::cairo_pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
+  grDevices::pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
 
@@ -944,7 +944,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
 PlotCatalogToPdf.DBS78Catalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
 
   # opar <- par(no.readonly = TRUE)
   n <- ncol(catalog)
@@ -1080,7 +1080,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
 PlotCatalogToPdf.DBS144Catalog <-
   function(catalog, file, plot.SBS12, cex = 1, grid, upper, xlabels, ylim) {
     # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
     # opar <- par(no.readonly = TRUE)
     n <- ncol(catalog)
@@ -1250,7 +1250,7 @@ PlotCatalogToPdf.DBS136Catalog <-
   n <- ncol(catalog)
 
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   opar <- par(no.readonly = TRUE)
   on.exit(par(opar))
   par(oma = c(1, 2, 1, 1))
@@ -1557,7 +1557,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
 PlotCatalogToPdf.IndelCatalog <-
   function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim = NULL) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   n <- ncol(catalog)
   opar <- par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
@@ -1614,7 +1614,7 @@ PlotPPM <- function(ppm, title) {
 #' @keywords internal
 PlotPPMToPdf <- function(list.of.ppm, file, titles = names(list.of.ppm)) {
   # Setting the width and length for A4 size plotting
-  grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+  grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   n <- length(list.of.ppm)
   opar <- par(mfrow = c(4, 2), mar = c(4, 5.5, 2, 1), oma = c(1, 1, 2, 1))

@@ -126,7 +126,7 @@ PlotTransBiasGeneExpToPdf <-
                               num.of.bins, damaged.base)
     
     # Setting the width and length for A4 size plotting
-    grDevices::cairo_pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
+    grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
     opar <- par(mfrow = c(4, 3), mar = c(8, 5.5, 2, 1), oma = c(1, 1, 2, 1))
     on.exit(par(opar))
