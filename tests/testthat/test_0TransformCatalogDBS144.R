@@ -1,4 +1,4 @@
-context("TransformCatalogSBS192")
+context("TransformCatalogDBS144")
 
 test_that("Transformation of a DBS 144 catalog", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))

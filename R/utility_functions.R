@@ -324,7 +324,24 @@ TCFromCou <- function(s, t) {
     if (is.null(t[["abundance"]])) {
       if (!is.null(s[["abundance"]]))
       stop("Cannot transform from counts -> counts.signature ",
-           "target abundance is NULL")
+           "target abundance is NULL and source abundance in not NULL")
+    }
+    # Source and target catalog both have NULL abundance
+    if (is.null(s[["abundance"]]) && is.null(t[["abundance"]])) {
+      # If source and target catalog have different ref.genome, 
+      # raise an error
+      if (!RefGenomeIsSame(s[["ref.genome"]], t[["ref.genome"]])) {
+        stop("Cannot transform from counts -> counts.signature ",
+             "source and target catalog both have NULL abundance,",
+             "but have different ref.genome")
+      }
+      # If source and target catalog have different region, 
+      # raise an error
+      if (!RegionIsSame(s[["region"]], t[["region"]])) {
+        stop("Cannot transform from counts -> counts.signature ",
+             "source and target catalog both have NULL abundance,",
+             "but have different region")
+      }
     }
     if (AbundanceIsSame(s[["abundance"]], t[["abundance"]])) {
       return("sig.only")
@@ -442,7 +459,27 @@ AbundanceIsSame <- function(a1, a2) {
 }
 
 #' @keywords internal
-CheckCatalogAttributes <- function(catalog) {
+RefGenomeIsSame <- function(a1, a2) {
+  if (is.null(a1)  && is.null(a2))  return(TRUE)
+  if (is.null(a1)  && !is.null(a2)) return(FALSE)
+  if (!is.null(a1) && is.null(a2))  return(FALSE)
+  a1 <- NormalizeGenomeArg(a1)
+  a2 <- NormalizeGenomeArg(a2)
+  if (a1@pkgname == a2@pkgname) return(TRUE)
+  return(FALSE)
+}
+
+#' @keywords internal
+RegionIsSame <- function(a1, a2) {
+  if (is.null(a1)  && is.null(a2))  return(TRUE)
+  if (is.null(a1)  && !is.null(a2)) return(FALSE)
+  if (!is.null(a1) && is.null(a2))  return(FALSE)
+  if (a1 == a2) return(TRUE)
+  return(FALSE)
+}
+
+#' @keywords internal
+CheckCatalogAttributes <- function(catalog, target.catalog.type) {
   ref.genome <- attr(catalog, "ref.genome", exact = TRUE)
   catalog.type <- attr(catalog, "catalog.type", exact = TRUE)
   abundance <- attr(catalog, "abundance", exact = TRUE)
@@ -460,7 +497,9 @@ CheckCatalogAttributes <- function(catalog) {
     stop("Cannot perform transformation from a catalog with NULL catalog.type")
   }
   if (is.null(abundance)) {
-    stop("Cannot perform transformation from a catalog with NULL abundance")
+    if (!(catalog.type == "counts" && target.catalog.type == "counts.signature")) {
+      stop("Cannot perform transformation from a catalog with NULL abundance")
+    }
   } else if (!inherits(abundance, "integer")) {
     stop("Cannot perform transformation from a catalog with non integer abundance")
   }
@@ -564,7 +603,7 @@ TransformCatalog <-
            target.catalog.type = NULL,
            target.abundance    = NULL) {
     # Check the attributes of the catalog
-    stopifnot(CheckCatalogAttributes(catalog))
+    stopifnot(CheckCatalogAttributes(catalog, target.catalog.type))
     
     # Check and normalize the arguments
     args <-

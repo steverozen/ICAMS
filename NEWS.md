@@ -16,6 +16,9 @@ functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 `PlotExposure` and `PlotExposureToPdf`.
 * Added new parameters `xlim`, `ylim`, `legend.x` and `legend.y` to functions `PlotExposureInternal`, `PlotExposure` and `PlotExposureToPdf`.
 * Added new parameters `mfrow`, `mar`, `oma` to function `PlotExposureToPdf`.
+* Enabled "counts" -> "counts.signature" catalog transformation when the source catalog
+has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
+and `region` attribute as the source catalog, otherwise the function will raise an error.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions

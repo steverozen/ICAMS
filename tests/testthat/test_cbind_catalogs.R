@@ -945,14 +945,19 @@ test_that("cbind method for IndelCatalog", {
                                 target.catalog.type = "counts.signature"))
   
   # Test when all catalogs have NULL "abundance" attribute
+  
+  # ID catalog will have NULL "abundance" even if you specify the ref.genome
+  # and region argument
   cat9 <- cat10 <- cat1
   combined.cat6 <- cbind(cat9, cat10)
   expect_equal(attr(combined.cat6, "abundance"), NULL)
   out6 <- 
     PlotCatalogToPdf(combined.cat6, file = file.path(tempdir(), "test6.pdf"))
   expect_equal(out6$plot.success, TRUE)
-  expect_error(TransformCatalog(combined.cat6, target.ref.genome = "hg19",
-                                target.catalog.type = "counts.signature"))
+  combined.cat6.counts.sig <- 
+    TransformCatalog(combined.cat6, 
+                     target.ref.genome = "hg19",
+                     target.catalog.type = "counts.signature")
   
   # Test when performing cbind operation to catalogs with different "region"
   # attribute

@@ -299,3 +299,90 @@ test_that("Error test: counts.singature -> counts or density,
                                             target.catalog.type = "density"))
             })
 
+test_that("Transform a counts catalog with NULL abundance,
+          to counts.signature catalog", {
+            catSBS96.counts <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
+                                           ref.genome = "hg19",
+                                           catalog.type = "counts")
+            catSBS96.counts.sig <- 
+              TransformCatalog(catSBS96.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catSBS96.counts.sig) == rep(1, 4)), 4)
+            
+            expect_error(
+              TransformCatalog(catSBS96.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            
+            catSBS192.counts <- ReadCatalog("testdata/regress.cat.sbs.192.csv",
+                                            catalog.type = "counts")
+            catSBS192.counts.sig <- 
+              TransformCatalog(catSBS192.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catSBS192.counts.sig) == rep(1, 4)), 4)
+            expect_error(
+              TransformCatalog(catSBS192.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            
+            catSBS1536.counts <- ReadCatalog("testdata/regress.cat.sbs.1536.csv",
+                                             catalog.type = "counts")
+            catSBS1536.counts.sig <- 
+              TransformCatalog(catSBS1536.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catSBS1536.counts.sig) == rep(1, 4)), 4)
+            expect_error(
+              TransformCatalog(catSBS1536.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            
+            catDBS78.counts <- ReadCatalog("testdata/regress.cat.dbs.78.csv",
+                                           catalog.type = "counts")
+            catDBS78.counts.sig <- 
+              TransformCatalog(catDBS78.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catDBS78.counts.sig) == rep(1, 4)), 4)
+            expect_error(
+              TransformCatalog(catDBS78.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            catDBS144.counts <- ReadCatalog("testdata/regress.cat.dbs.144.csv",
+                                            catalog.type = "counts")
+            catDBS144.counts.sig <- 
+              TransformCatalog(catDBS144.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catDBS144.counts.sig) == rep(1, 4)), 4)
+            expect_error(
+              TransformCatalog(catDBS144.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            
+            catDBS136.counts <- ReadCatalog("testdata/regress.cat.dbs.136.csv",
+                                            catalog.type = "counts")
+            catDBS136.counts.sig <- 
+              TransformCatalog(catDBS136.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catDBS136.counts.sig) == rep(1, 4)), 4)
+            expect_error(
+              TransformCatalog(catDBS136.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+            
+            
+            catID.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
+                                        catalog.type = "counts")
+            catID.counts.sig <- 
+              TransformCatalog(catID.counts,
+                               target.catalog.type = "counts.signature")
+            expect_equal(sum(colSums(catID.counts.sig) == rep(1, 35)), 35)
+            expect_error(
+              TransformCatalog(catID.counts, target.ref.genome = "hg38",
+                               target.catalog.type = "counts.signature")
+            )
+})
+
