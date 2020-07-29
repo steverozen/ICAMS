@@ -7,8 +7,6 @@ TestMakeCatalogFromMutectVCFs <- function() {
 
   cats <-
     MutectVCFFilesToCatalog(file, ref.genome = "GRCh37",
-                            # Use default transcript ranges
-                            trans.ranges = trans.ranges.GRCh37,
                             region = "genome")
 
   prev.catalog.192 <-

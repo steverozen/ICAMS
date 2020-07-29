@@ -11,11 +11,6 @@
 * Added time zone information to file "run-information.txt" when calling
 functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 `StrelkaIDVCFFilesToZipFile`.
-* Added an internal function `PlotExposureInternal`.
-* Added new *exported* functions `ReadExposure`, `WriteExposure`, `SortExposure`,
-`PlotExposure` and `PlotExposureToPdf`.
-* Added new parameters `xlim`, `ylim`, `legend.x` and `legend.y` to functions `PlotExposureInternal`, `PlotExposure` and `PlotExposureToPdf`.
-* Added new parameters `mfrow`, `mar`, `oma` to function `PlotExposureToPdf`.
 * Enabled "counts" -> "counts.signature" catalog transformation when the source catalog
 has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
 and `region` attribute as the source catalog, otherwise the function will raise an error.
@@ -29,9 +24,7 @@ changed from a matrix catalog to a **list**: 1st element is a matrix of the ID
 annotated VCFs (three additional columns `seq.context.width` , `seq.context` and `ID.class` are added to the original VCF).
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
-* Changed the default value for parameter `check.names` to `FALSE` for function `ReadExposure`.
 * Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.
-* Used `grDevices::pdf` instead of `grDevices::cairo_pdf` in functions that produce PDF graphics: `PlotCatalogToPdf`, `PlotExposureToPdf` and `PlotTransBiasGeneExpToPdf` because the original plots on some Linux system look blurry.
 
 ## Fixed
 * Fixed bugs in `if` statement in internal functions
@@ -39,10 +32,7 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Fixed a bug in internal function `CreateOneColIDMatrix` when there is NA ID category.
 * Fixed a bug in *exported* function `GetMutectVAF` for checking whether the
 VCF is indeed a Mutect VCF.
-* Fixed a bug in *exported* function `SortExposure` when the exposure matrix only has one column.
-* Fixed the bug that ylab is getting lost in exposure plotting functions.
 * Fixed a bug in internal function `CreateOneColDBSMatrix` when the DBS VCF does not have any variant on the transcribed region.
-* Fixed a bug in internal function `PlotExposureInternal` for legend color and changed the default margin setting in *exported* function `PlotExposureToPdf`.
 
 <br/>
 
