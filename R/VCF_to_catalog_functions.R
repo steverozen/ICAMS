@@ -29,12 +29,13 @@ NULL
 RemoveRowsWithPoundSign <- function(df, file) {
   pound.chrom.idx <- which(df$CHROM == "#CHROM")
   if (length(pound.chrom.idx) > 0) {
-    warning("Removing ", length(pound.chrom.idx), 
-            " rows with #CHROM from file ", file)
+    warning("In ", file, " ", length(pound.chrom.idx), " row out of ",
+            nrow(df), " had value #CHROM in column 'CHROM' and were removed.",
+            "See discarded.variants in the return value for more details")
     df1 <- df[-pound.chrom.idx, ]
-    return(df1)
+    return(list(df = df1, discarded.variants = df[pound.chrom.idx, ]))
   } else {
-    return(df)
+    return(list(df = df))
   }
 }
 
