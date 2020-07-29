@@ -21,7 +21,7 @@
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' MakeDataFrameFromVCF <- getFromNamespace("MakeDataFrameFromVCF", "ICAMS")
-#' df <- MakeDataFrameFromVCF(file)
+#' df <- MakeDataFrameFromVCF(file)$df
 #' df1 <- GetStrelkaVAF(df)
 NULL
 
@@ -188,10 +188,24 @@ MakeDataFrameFromVCF <- function(file) {
   df1 <- RenameColumnsWithNameStrand(df1)
   df1 <- RenameColumnsWithNameVAF(df1)
   
-  df1 <- RemoveRowsWithPoundSign(df1, file)
-  df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
+  # Create an empty data frame for discarded variants
+  discarded.variants <- df1[0, ]
   
-  return(df1)
+  retval <- RemoveRowsWithPoundSign(df1, file)
+  if (!is.null(retval$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  }
+  retval2 <- RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file)
+  if (!is.null(retval2$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  }
+  if (nrow(discarded.variants) == 0) {
+    return(list(df = retval2$df))
+  } else {
+    return(list(df = retval2$df, discarded.variants = discarded.variants))
+  }
 }
 
 #' Read in the data lines of an ID VCF created by Strelka version 1
