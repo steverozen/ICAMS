@@ -30,7 +30,7 @@ RemoveRowsWithPoundSign <- function(df, file) {
   pound.chrom.idx <- which(df$CHROM == "#CHROM")
   if (length(pound.chrom.idx) > 0) {
     warning("In ", file, " ", length(pound.chrom.idx), " row out of ",
-            nrow(df), " had value #CHROM in column 'CHROM' and were removed.",
+            nrow(df), " had value #CHROM in column 'CHROM' and were removed. ",
             "See discarded.variants in the return value for more details")
     df1 <- df[-pound.chrom.idx, ]
     return(list(df = df1, discarded.variants = df[pound.chrom.idx, ]))
@@ -44,13 +44,13 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   dups <- which(duplicated(df[, c("CHROM", "POS")]))
   if (length(dups) > 0) {
     dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
-    warning("In ", file, " ", 2 * length(dups), " rows out of ",
-            nrow(df), " had duplicate CHROM and POS and were removed: ",
-            paste(dups2, collapse = " "), " ", paste(dups, collapse = " "))
+    warning("In ", file, " ", 2 * length(dups), " row out of ",
+            nrow(df), " had duplicate CHROM and POS and were removed. ",
+            "See discarded.variants in the return value for more details")
     df1 <- df[-c(dups, dups2), ]
-    return(df1)
+    return(list(df = df1, discarded.variants = df[c(dups, dups2), ]))
   } else {
-    return(df)
+    return(list(df = df))
   }
 }
 
