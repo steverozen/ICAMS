@@ -56,7 +56,7 @@ To use new features, you can install ICAMS from the master branch on
 
 ``` r
 install.packages("remotes")
-remotes::install_github("steverozen/ICAMS")
+remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the latest [Windows

@@ -61,7 +61,7 @@ To use new features, you can install ICAMS from the master branch on [GitHub](ht
 
 ``` r
 install.packages("remotes")
-remotes::install_github("steverozen/ICAMS")
+remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 Alternatively, you can download the latest [Windows binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9014.zip) or [macOS binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9014.tgz) to your computer and install ICAMS locally:
 
