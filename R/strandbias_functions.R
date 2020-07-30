@@ -253,7 +253,15 @@ CalculatePValues <- function(dt) {
       logit.model1 <- stats::glm(class ~ log2(exp.value + 1), 
                                  family = binomial, 
                                  data = dt1)
-      p.values[type[i]] <- summary(logit.model1)$coefficients[2, 4]
+      # Calculate the number of unique expression values in dt1
+      num.exp.value <- length(unique(dt1$exp.value))
+      if (num.exp.value == 1) {
+        # If there is only one unique expression value in dt1, then this
+        # predictor variable will be dropped from the logistic regression model
+        p.values[type[i]] <- NA
+      } else {
+        p.values[type[i]] <- summary(logit.model1)$coefficients[2, 4]
+      }
     }
   }
   

@@ -33,6 +33,7 @@ annotated VCFs (three additional columns `seq.context.width` , `seq.context` and
 * Fixed a bug in *exported* function `GetMutectVAF` for checking whether the
 VCF is indeed a Mutect VCF.
 * Fixed a bug in internal function `CreateOneColDBSMatrix` when the DBS VCF does not have any variant on the transcribed region.
+* Fixed a bug in internal function `CalculatePValues` when there is only one unique expression value.
 
 <br/>
 
