@@ -196,11 +196,13 @@ MakeDataFrameFromVCF <- function(file) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
   }
+  
   retval2 <- RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file)
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
   }
+  
   if (nrow(discarded.variants) == 0) {
     return(list(df = retval2$df))
   } else {
@@ -371,15 +373,33 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #' @keywords internal
 ReadMutectVCF <- 
   function(file, name.of.VCF = NULL, tumor.col.name = NA) {
-  df <- MakeDataFrameFromMutectVCF(file)
+  retval <- MakeDataFrameFromVCF(file)
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
   } else {
     vcf.name <- name.of.VCF
   }
+  df1 <- GetMutectVAF(retval$df, vcf.name, tumor.col.name)
   
-  df1 <- GetMutectVAF(df, vcf.name, tumor.col.name)
-  return(StandardChromName(df1))
+  # Create an empty data frame for discarded variants
+  discarded.variants <- retval$df[0, ]
+  
+  if (!is.null(retval$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  }
+  
+  retval2 <- StandardChromName(df1)
+  if (!is.null(retval2$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  }
+  
+  if (nrow(discarded.variants) == 0) {
+    return(list(df = retval2$df))
+  } else {
+    return(list(df = retval2$df, discarded.variants = discarded.variants))
+  }
 }
 
 #' @rdname GetVAF

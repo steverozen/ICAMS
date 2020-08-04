@@ -38,6 +38,6 @@ file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 MakeDataFrameFromVCF <- getFromNamespace("MakeDataFrameFromVCF", "ICAMS")
-df <- MakeDataFrameFromVCF(file)
+df <- MakeDataFrameFromVCF(file)$df
 df1 <- GetStrelkaVAF(df)
 }
