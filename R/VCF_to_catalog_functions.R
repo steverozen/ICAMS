@@ -1409,6 +1409,38 @@ CheckSBSClassInVCF <- function(vcf, mat, sample.id) {
   }
 }
 
+#' Add and check SBS class in an annotated VCF with the corresponding mutation
+#' matrix
+#' 
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateSBSVCF}}. It must
+#'   *not* contain indels and must *not* contain DBS (double base
+#'   substitutions), or triplet base substitutions etc., even if encoded as
+#'   neighboring SBS.
+#'   
+#' @param mat96 The SBS96 mutation count matrix.
+#' 
+#' @param mat1536 The SBS1536 mutation count matrix.
+#' 
+#' @param mat192 The SBS192 mutation count matrix.
+#' 
+#' @param sample.id Usually the sample id, but defaults to "count".
+#'
+#' @return The original \code{vcf} with three additional columns
+#'   \code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
+#'
+#' @keywords internal
+AddAndCheckSBSClassInVCF <- 
+  function(vcf, mat96, mat1536, mat192 = NULL, sample.id) {
+    vcf1 <- AddSBSClass(vcf)
+    CheckSBSClassInVCF(vcf1, mat96, sample.id)
+    CheckSBSClassInVCF(vcf1, mat1536, sample.id)
+    if (!is.null(mat192)) {
+      CheckSBSClassInVCF(vcf1, mat192, sample.id)
+    }
+    return(vcf1)
+  }
+
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
@@ -1418,6 +1450,10 @@ CheckSBSClassInVCF <- function(vcf, mat, sample.id) {
 #'   neighboring SBS.
 #'   
 #' @param sample.id Usually the sample id, but defaults to "count".
+#' 
+#' @param return.annotated.vcf Whether to return the annotated VCF with
+#'   additional columns showing the mutation class for each variant. Default is
+#'   FALSE.
 #' 
 #' @import data.table
 #'
@@ -1429,7 +1465,8 @@ CheckSBSClassInVCF <- function(vcf, mat, sample.id) {
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
+CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
+                                  return.annotated.vcf = FALSE) {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude DBSs
@@ -1462,8 +1499,6 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
          " rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
-  # Add SBS mutation class to vcf
-  vcf.SBS.class <- AddSBSClass(vcf)
   
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21bases, 9, 13)
@@ -1509,7 +1544,13 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   colnames(mat96) <- sample.id
   
   if (is.null(vcf$trans.strand)) {
-     return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+    if (return.annotated.vcf == FALSE) {
+      return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+    } else {
+      vcf.SBS.class <- AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
+      return(list(catSBS96 = mat96, catSBS1536 = mat1536,
+                  annotated.vcf = vcf.SBS.class))
+    }
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -1529,7 +1570,14 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
     mat192 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1)
     rownames(mat192) <- ICAMS::catalog.row.order$SBS192
-    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
+    if (return.annotated.vcf == FALSE) {
+      return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
+    } else {
+      vcf.SBS.class <- 
+        AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
+      return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
+                  annotated.vcf = vcf.SBS.class))
+    }
   }
 
   # Create the 192 catalog matrix
@@ -1550,8 +1598,15 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
   rownames(mat192) <- unlist(x[, 1])
   mat192 <- mat192[ICAMS::catalog.row.order$SBS192, , drop = FALSE]
   colnames(mat192) <- sample.id
-
-  return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
+  
+  if (return.annotated.vcf == FALSE) {
+    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
+  } else {
+    vcf.SBS.class <- 
+      AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
+    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
+                annotated.vcf = vcf.SBS.class))
+  }
 }
 
 #' Add sequence context and transcript information to an in-memory DBS VCF

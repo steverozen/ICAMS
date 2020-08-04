@@ -4,7 +4,7 @@
 \alias{CreateOneColSBSMatrix}
 \title{Create the matrix an SBS catalog for *one* sample from an in-memory VCF.}
 \usage{
-CreateOneColSBSMatrix(vcf, sample.id = "count")
+CreateOneColSBSMatrix(vcf, sample.id = "count", return.annotated.vcf = FALSE)
 }
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
@@ -14,6 +14,10 @@ substitutions), or triplet base substitutions etc., even if encoded as
 neighboring SBS.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
+
+\item{return.annotated.vcf}{Whether to return the annotated VCF with
+additional columns showing the mutation class for each variant. Default is
+FALSE.}
 }
 \value{
 A list of three 1-column matrices with the names
