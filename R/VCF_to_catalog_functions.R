@@ -366,9 +366,11 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
-#' @return A data frame storing data lines of the VCF file with two additional
-#'   columns added which contain the VAF(variant allele frequency) and read
-#'   depth information.
+#' @return A \strong{list} whose first element \code{df} is a data frame storing
+#'   data lines of the VCF file with two additional columns added which contain
+#'   the VAF(variant allele frequency) and read depth information. A second element
+#'   \code{discarded.variants} \strong{only} appears if there are variants that 
+#'   are excluded from the analysis.
 #'   
 #' @keywords internal
 ReadMutectVCF <- 
@@ -389,7 +391,7 @@ ReadMutectVCF <-
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
   }
   
-  retval2 <- StandardChromName(df1)
+  retval2 <- StandardChromName(df1, file)
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
@@ -1220,9 +1222,12 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'   
-#' @return A list of data frames which store data lines of VCF files with VAFs
-#'   (variant allele frequencies) added.
-#'
+#' @return A list of \strong{lists}. Each list has a first element \code{df}
+#'   which is a data frame that stores data lines of a VCF with additional
+#'   columns \code{VAF} (variant allele frequency) and \code{read.depth} added.
+#'   A second element \code{discarded.variants} \strong{only} appears if there
+#'   are variants that are excluded from the analysis.
+#'   
 #' @keywords internal
 ReadMutectVCFs <- 
   function(files, names.of.VCFs = NULL, tumor.col.names = NA) {

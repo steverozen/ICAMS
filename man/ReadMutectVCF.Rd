@@ -22,9 +22,11 @@ use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
 }
 \value{
-A data frame storing data lines of the VCF file with two additional
-  columns added which contain the VAF(variant allele frequency) and read
-  depth information.
+A \strong{list} whose first element \code{df} is a data frame storing
+  data lines of the VCF file with two additional columns added which contain
+  the VAF(variant allele frequency) and read depth information. A second element
+  \code{discarded.variants} \strong{only} appears if there are variants that 
+  are excluded from the analysis.
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file created by
