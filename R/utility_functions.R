@@ -85,7 +85,7 @@ Collapse1536CatalogTo96 <- function(catalog) {
 
   # The next gsub replaces the string representing a
   # single-base mutation in pentanucleotide with the corresponding
-  # sring for that mutation in a trinucleotide context.
+  # string for that mutation in a trinucleotide context.
   dt$rn <- gsub(".(...).(.)", "\\1\\2", rn, perl = TRUE)
   dt96 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   mat96 <- as.matrix(dt96[, -1])

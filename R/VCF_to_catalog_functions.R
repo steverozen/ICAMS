@@ -1334,6 +1334,38 @@ AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
   return(as.data.table(SBS.vcf))
 }
 
+
+#' Add SBS mutation class to an annotated SBS VCF
+#' 
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateSBSVCF}}. It must
+#'   *not* contain indels and must *not* contain DBS (double base
+#'   substitutions), or triplet base substitutions etc., even if encoded as
+#'   neighboring SBS.
+#'
+#' @return The original \code{vcf} with three additional columns
+#'   \code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
+#'   
+#' @keywords internal
+AddSBSMutationClass <- function(vcf) {
+  col.names <- colnames(vcf)
+  vcf$SBS1536.class <- paste0(substr(vcf$seq.21bases, 9, 13), vcf$ALT)
+  vcf$SBS1536.class <- PyrPenta(vcf$SBS1536.class)
+  vcf$SBS96.class <- paste0(substr(vcf$SBS1536.class, 2, 4),
+                            substr(vcf$SBS1536.class, 6, 6))
+  vcf$SBS192.class <- NA
+  idx <- which(!is.na(vcf$trans.strand) & (vcf$bothstrand == FALSE))
+  vcf$SBS192.class[idx] <- vcf$SBS96.class[idx]
+  idx1 <- which(vcf$trans.strand == "-" & (vcf$bothstrand == FALSE))
+  vcf$SBS192.class[idx1] <- RevcSBS96(vcf$SBS192.class[idx1])
+  
+  # Reorder the columns of vcf
+  new.col.names <- c(col.names, "SBS96.class", "SBS192.class", "SBS1536.class")
+  data.table::setDT(vcf)
+  setcolorder(vcf, new.col.names)
+  return(vcf)
+}
+
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
@@ -1387,6 +1419,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
          " rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
+  
   
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21bases, 9, 13)
