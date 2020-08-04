@@ -1347,7 +1347,7 @@ AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
 #'   \code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
 #'   
 #' @keywords internal
-AddSBSMutationClass <- function(vcf) {
+AddSBSClass <- function(vcf) {
   col.names <- colnames(vcf)
   vcf$SBS1536.class <- paste0(substr(vcf$seq.21bases, 9, 13), vcf$ALT)
   vcf$SBS1536.class <- PyrPenta(vcf$SBS1536.class)
@@ -1364,6 +1364,49 @@ AddSBSMutationClass <- function(vcf) {
   data.table::setDT(vcf)
   setcolorder(vcf, new.col.names)
   return(vcf)
+}
+
+#' Check SBS mutation class in VCF with the corresponding mutation matrix
+#'
+#' @param vcf An annotated SBS VCF with columns of SBS mutation
+#'   classes added by \code{AddSBSClass}.
+#'   
+#' @param mat The mutation count matrix.
+#' 
+#' @param sample.id Usually the sample id, but defaults to "count".
+#'
+#' @keywords internal
+CheckSBSClassInVCF <- function(vcf, mat, sample.id) {
+  if (nrow(mat) %in% c(96, 1536)) {
+    # One SBS mutation can be represented by more than 1 row in vcf
+    # after annotation by AddTranscript if the mutation position falls in multiple
+    # transcripts. When creating the SBS96 and SBS1536 mutation matrix,
+    # we only need to count these mutations once.
+    df <- dplyr::distinct(vcf, CHROM, ALT, POS, .keep_all = TRUE)
+    
+    if (nrow(df) != colSums(mat)) {
+      stop("In sample ", sample.id, ", the number of SBS", nrow(mat), 
+           " variants in the annotated VCF is not the same as the total ", 
+           "counts in mutation matrix.")
+    }
+  } else {
+    # Only keep those mutations that fall within transcribed region
+    # when generating SBS192 mutation matrix.
+    df1 <- vcf[!is.na(trans.strand), ]
+    
+    # Discard variants that fall on transcripts on both strand.
+    df2 <- df1[bothstrand == FALSE, ]
+    
+    # One SBS mutation can be represented by more than 1 row in df2 if the mutation
+    # position falls into the range of multiple transcripts on the same strand. We
+    # only need to count these mutations once.
+    df3 <- dplyr::distinct(df2, CHROM, ALT, POS, .keep_all = TRUE)
+    if (nrow(df3) != colSums(mat)) {
+      stop("In sample ", sample.id, ", the number of SBS", nrow(mat), 
+           " variants in the annotated VCF is not the same as the total ", 
+           "counts in mutation matrix.")
+    }
+  }
 }
 
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
@@ -1419,7 +1462,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count") {
          " rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
-  
+  # Add SBS mutation class to vcf
+  vcf.SBS.class <- AddSBSClass(vcf)
   
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21bases, 9, 13)
