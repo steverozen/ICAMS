@@ -528,26 +528,36 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list with 3 in-memory VCFs and two left-over VCF-like data frames
-#'   with rows that were not incorporated into the first 3 VCFs, as follows:
-#'   
-#' \enumerate{
+#' @section Value: A list containing the following objects:
 #'
-#'  \item \code{SBS} VCF with only single base substitutions.
+#'   1. \code{SBS}: List of VCFs with only single base substitutions.
 #'
-#'  \item \code{DBS} VCF with only doublet base substitutions.
 #'
-#'  \item \code{ID} VCF with only small insertions and deletions.
+#'   2. \code{DBS}: List of VCFs with only doublet base substitutions as called
+#'   by Mutect.
 #'
-#'  \item \code{other.subs} VCF like data.frame with rows for coordinate
-#'  substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
-#'  GGTA) and rows for complex indels.
+#'   3. \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'  \item \code{multiple.alt} VCF like data.frame with
-#'  rows for variants with multiple alternative alleles, for example
-#'  ACT mutated to both AGT and ACT at the same position.
+#'   4. \code{other.subs}: List of VCF like data.frames with rows for coordinate
+#'   substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
+#'   GGTA) and rows for complex indels.
 #'
-#' }
+#'   5. \code{multiple.alt}: List of VCF like data.frames with rows for variants
+#'   with multiple alternative alleles, for example ACT mutated to both AGT and
+#'   ACT at the same position.
+#'
+#'   6. \code{discarded.variants}: \strong{Only appearing when there are
+#'   variants that were discarded.} List of VCF like data.frames with rows for
+#'   variants that are excluded in the analysis. The discarded variants belong
+#'   to the following categories:
+#'       * Duplicated "CHROM" and "POS" values.
+#'       * Chromosome names that contain "#".
+#'       * Chromosome names that contain "GL".
+#'       * Chromosome names that contain "KI".
+#'       * Chromosome names that contain "random".
+#'       * Chromosome names that contain "Hs".
+#'       * Chromosome names that contain "M".
+#' @md
 #' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
 #'

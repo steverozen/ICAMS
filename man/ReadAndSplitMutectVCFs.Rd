@@ -23,31 +23,38 @@ which contain the tumor sample information. The order of names in
 this function will use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
 }
-\value{
-A list with 3 in-memory VCFs and two left-over VCF-like data frames
-  with rows that were not incorporated into the first 3 VCFs, as follows:
-  
-\enumerate{
-
- \item \code{SBS} VCF with only single base substitutions.
-
- \item \code{DBS} VCF with only doublet base substitutions.
-
- \item \code{ID} VCF with only small insertions and deletions.
-
- \item \code{other.subs} VCF like data.frame with rows for coordinate
- substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
- GGTA) and rows for complex indels.
-
- \item \code{multiple.alt} VCF like data.frame with
- rows for variants with multiple alternative alleles, for example
- ACT mutated to both AGT and ACT at the same position.
-
-}
-}
 \description{
 Read and split Mutect VCF files
 }
+\section{Value}{
+ A list containing the following objects:
+\enumerate{
+\item \code{SBS}: List of VCFs with only single base substitutions.
+\item \code{DBS}: List of VCFs with only doublet base substitutions as called
+by Mutect.
+\item \code{ID}: List of VCFs with only small insertions and deletions.
+\item \code{other.subs}: List of VCF like data.frames with rows for coordinate
+substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
+GGTA) and rows for complex indels.
+\item \code{multiple.alt}: List of VCF like data.frames with rows for variants
+with multiple alternative alleles, for example ACT mutated to both AGT and
+ACT at the same position.
+\item \code{discarded.variants}: \strong{Only appearing when there are
+variants that were discarded.} List of VCF like data.frames with rows for
+variants that are excluded in the analysis. The discarded variants belong
+to the following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
+}
+}
+
 \examples{
 file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
