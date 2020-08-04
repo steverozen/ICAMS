@@ -757,41 +757,61 @@ SplitOneMutectVCF <- function(vcf.df) {
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
 #'
-#' @return A list with 3 in-memory VCFs and two left-over
-#' VCF-like data frames with rows that were not incorporated
-#' into the first 3 VCFs, as follows:
+#' @section Value: A list containing the following objects:
 #'
-#' \enumerate{
+#'   1. \code{SBS}: List of VCFs with only single base substitutions.
 #'
-#'  \item \code{SBS} VCF with only single base substitutions.
 #'
-#'  \item \code{DBS} VCF with only doublet base substitutions
-#'   as called by Mutect.
+#'   2. \code{DBS}: List of VCFs with only doublet base substitutions as called
+#'   by Mutect.
 #'
-#'  \item \code{ID} VCF with only small insertions and deletions.
+#'   3. \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'  \item \code{other.subs} VCF like data.frame with
-#'  rows for coordinate substitutions involving
-#'  3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
-#'  and rows for complex indels.
+#'   4. \code{other.subs}: List of VCF like data.frames with rows for coordinate
+#'   substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
+#'   GGTA) and rows for complex indels.
 #'
-#'  \item \code{multiple.alt} VCF like data.frame with
-#'  rows for variants with multiple alternative alleles, for example
-#'  ACT mutated to both AGT and ACT at the same position.
+#'   5. \code{multiple.alt}: List of VCF like data.frames with rows for variants
+#'   with multiple alternative alleles, for example ACT mutated to both AGT and
+#'   ACT at the same position.
 #'
-#' }
+#'   6. \code{discarded.variants}: \strong{Only appearing when there are
+#'   variants that were discarded.} List of VCF like data.frames with rows for
+#'   variants that are excluded in the analysis. The discarded variants belong
+#'   to the following categories:
+#'       * Duplicated "CHROM" and "POS" values.
+#'       * Chromosome names that contain "#".
+#'       * Chromosome names that contain "GL".
+#'       * Chromosome names that contain "KI".
+#'       * Chromosome names that contain "random".
+#'       * Chromosome names that contain "Hs".
+#'       * Chromosome names that contain "M".
+#' @md
 #'
 #' @keywords internal
 SplitListOfMutectVCFs <- function(list.of.vcfs) {
-  v1 <- lapply(list.of.vcfs, SplitOneMutectVCF)
+  list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
+  list.of.discarded.variants <- 
+    lapply(list.of.vcfs, function(f2) f2$discarded.variants)
+  # Remove NULL elements from list.of.discarded.variants
+  list.of.discarded.variants2 <- 
+    Filter(Negate(is.null), list.of.discarded.variants)
+  
+  v1 <- lapply(list.of.vcfs.df, SplitOneMutectVCF)
   SBS <- lapply(v1, function(x) x$SBS)
   DBS <- lapply(v1, function(x) x$DBS)
   ID  <- lapply(v1, function(x) x$ID)
   other.subs <- lapply(v1, function(x) x$other.subs)
   multiple.alt <- lapply(v1, function(x) x$multiple.alt)
-
-  return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
-              multiple.alt = multiple.alt))
+  
+  if (length(list.of.discarded.variants2) == 0){
+    return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
+                multiple.alt = multiple.alt))
+  } else {
+    return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
+                multiple.alt = multiple.alt, 
+                discarded.variants = list.of.discarded.variants2))
+  }
 }
 
 #' Add sequence context to a data frame with mutation records
