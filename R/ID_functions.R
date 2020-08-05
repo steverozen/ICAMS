@@ -85,27 +85,18 @@ AnnotateIDVCF <-
     df2 <- df1
   }
   
-  # if (any(df1$REF == "" | df1$ALT == "")) {
-    # Not sure how to handle this yet; the code may work with minimal adjustment
-    #stop("Cannot handle VCF with indel representation with one allele the empty string")
-  #} else {
-  
   # We expect either eg ref = ACG, alt = A (deletion of CG) or
   # ref = A, alt = ACC (insertion of CC)
   complex.indels.to.remove <- 
     which(substr(df2$REF, 1, 1) != substr(df2$ALT, 1, 1))
   if (length(complex.indels.to.remove) > 0) {
-    # temp <- tempfile(fileext = ".csv")
-    # warning("Removing complex indels; see ", temp)
-    # write.csv(file = temp, df[complex.indels.to.remove, 1:5])
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df2[complex.indels.to.remove, ])
     df3 <- df2[-complex.indels.to.remove, ]
   } else {
     df3 <- df2
   }
-    #stopifnot(substr(df$REF, 1, 1) == substr(df$ALT, 1, 1))
-  #}
+  stopifnot(substr(df3$REF, 1, 1) == substr(df3$ALT, 1, 1))
   
   # First, figure out how much sequence context is needed.
   var.width <- abs(nchar(df3$ALT) - nchar(df3$REF))
@@ -144,23 +135,10 @@ AnnotateIDVCF <-
   mismatches <- which(seq.to.check != df3$REF)
   
   if (length(mismatches) > 0) {
-    #tmp.table <-
-      #data.frame(
-        #df3$CHROM, df3$POS, df3$REF, df3$ALT, df3$seq.context, seq.to.check)
-    #tmp.table <- tmp.table[mismatches, ]
-    #temp <- tempfile(fileext = ".csv")
-    #write.csv(file = temp, tmp.table)
-    #if (flag.mismatches > 0) {
-      #warning("Discarding rows with mismatches between VCF ", 
-              #dQuote(name.of.VCF), " and reference sequence, see ", temp)
     df3$seq.to.check <- seq.to.check
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df3[mismatches, ])
       df3 <- df3[-mismatches, ]
-    #} else {
-      #stop("Mismatches between VCF ", dQuote(name.of.VCF), 
-           #" and reference sequence; see ", temp)
-    #}
   }
   if (nrow(discarded.variants) > 0) {
     warning("\nSome ID variants were discarded, see element discarded.variants", 
