@@ -869,19 +869,17 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
   names(discarded.variants) <- vcf.names
   
   if (is.null(trans.ranges)) {
-    return(list(catDBS78 = catDBS78, catDBS136 = catDBS136))
+    CheckAndReturnDBSCatalogs(catDBS78, catDBS136, discarded.variants,
+                              annotated.vcfs)
   }
+  
   colnames(catDBS144) <- names(list.of.DBS.vcfs)
   in.transcript.region <- ifelse(region == "genome", "transcript", region)
-  catDBS144 <-
-    as.catalog(catDBS144, 
-               ref.genome = ref.genome,
-               region = in.transcript.region, 
-               catalog.type = "counts",
-               abundance = NULL)
+  catDBS144 <- as.catalog(catDBS144, ref.genome = ref.genome,
+               region = in.transcript.region, catalog.type = "counts")
   
-  return(list(catDBS78 = catDBS78, catDBS136 = catDBS136, 
-              catDBS144 = catDBS144))
+  CheckAndReturnDBSCatalogs(catDBS78, catDBS136, catDBS144,
+                            discarded.variants, annotated.vcfs)
 }
 
 #' Create ID (small insertion and deletion) catalog from ID VCFs
