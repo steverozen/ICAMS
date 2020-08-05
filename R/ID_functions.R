@@ -142,7 +142,7 @@ AnnotateIDVCF <-
   }
   if (nrow(discarded.variants) > 0) {
     warning("\nSome ID variants were discarded, see element discarded.variants", 
-            " in the return value")
+            " in the return value for more details")
     return(list(annotated.vcf = df3, discarded.variants = discarded.variants))
   } else {
     return(list(annotated.vcf = df3))
@@ -754,18 +754,25 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   as a data frame. The rational is that for some data,
 #'   complex indels might be represented as an indel with adjoining
 #'   SBSs. 
+#'   
+#' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @return A list of a 1-column matrix containing the mutation catalog
-#'   information and the annotated VCF with ID categories information added.
-#'
+#'   information and the annotated VCF with ID categories information added. If
+#'   some ID variants were excluded in the analysis, an additional element
+#'   \code{discarded.variants} will appear in the return list.
+#'   
 #' @keywords internal
-CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
+CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count") {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
-    catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1)
-    rownames(catID) <- ICAMS::catalog.row.order$ID
-    return(catID)
+    catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1,
+                    dimnames = list(ICAMS::catalog.row.order$ID, sample.id))
+    return(list(catalog = catID, annotated.VCF = ID.vcf))
   }
+  
+  # Create an empty data frame for discarded variants
+  discarded.variants <- ID.vcf[0, ]
   
   if (!is.null(SBS.vcf)) 
     warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
@@ -775,31 +782,55 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL) {
                              ID.vcf$ALT,
                              ID.vcf$seq.context.width + 1)
   
-  if (any(is.na(canon.ID))) warning("NA ID categories ignored")
-  idx <- which(is.na(canon.ID))
-  canon.ID <- canon.ID[!is.na(canon.ID)]
-  if (length(idx) > 0) {
-    ID.vcf <- ID.vcf[-idx, ]
-  }
-  
   out.ID.vcf <- cbind(ID.vcf, ID.class = canon.ID)
   
+  idx <- which(is.na(out.ID.vcf$ID.class))
+  if (length(idx) > 0) {
+    warning("Variants with NA ID.class are discarded, see element ",
+            "discarded.variants in the return value for more details")
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, out.ID.vcf[idx, ])
+    out.ID.vcf <- out.ID.vcf[-idx, ]
+  }
+  
+  idx1 <- which(!out.ID.vcf$ID.class %in% ICAMS::catalog.row.order$ID)
+  if (length(idx1) > 0) {
+    warning("ID variants which cannot be categorized according to the ",
+            "canonical representation are discarded, see element ",
+            "discarded.variants in the return value for more details")
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, out.ID.vcf[idx1, ])
+    out.ID.vcf <- out.ID.vcf[-idx1, ]
+  }
+  
   # Create the ID catalog matrix
-  tab.ID <- table(canon.ID)
+  ID.class <- out.ID.vcf$ID.class
+  tab.ID <- table(ID.class)
 
   row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
 
   ID.dt <- as.data.table(tab.ID)
-  # ID.dt has two columns, names cannon.dt (from the table() function
+  # ID.dt has two columns, names ID.class (from the table() function)
   # and N (the count)
 
   ID.dt2 <-
-    merge(row.order, ID.dt, by.x = "rn", by.y = "canon.ID", all = TRUE)
+    merge(row.order, ID.dt, by.x = "rn", by.y = "ID.class", all = TRUE)
   ID.dt2[ is.na(N) , N := 0]
-  stopifnot(setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID))
+  if (!setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID)) {
+    stop("\nThe set of ID categories generated from sample ", sample.id,
+         " is not the same as the catalog row order for ID used in ICAMS.",
+         "\nSee catalog.row.order$ID for more details.")
+  }
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
   rownames(ID.mat) <- ID.dt2$rn
-  return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
-              annotated.VCF = out.ID.vcf))
+  colnames(ID.mat) <- sample.id
+  if (nrow(discarded.variants) == 0) {
+    return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
+                annotated.VCF = out.ID.vcf))
+  } else {
+    return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
+                annotated.VCF = out.ID.vcf, 
+                discarded.variants = discarded.variants))
+  }
 }
