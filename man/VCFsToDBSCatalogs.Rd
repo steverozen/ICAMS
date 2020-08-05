@@ -8,7 +8,8 @@ VCFsToDBSCatalogs(
   list.of.DBS.vcfs,
   ref.genome,
   trans.ranges = NULL,
-  region = "unknown"
+  region = "unknown",
+  return.annotated.vcfs = FALSE
 )
 }
 \arguments{

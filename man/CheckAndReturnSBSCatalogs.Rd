@@ -24,8 +24,8 @@ CheckAndReturnSBSCatalogs(
 \item{annotated.vcfs}{A list of annotated VCFs.}
 }
 \value{
-A list of catalogs. Also return the discarded variants and annotated
-VCFs if they exit.
+A list of SBS catalogs. Also return the discarded variants and
+  annotated VCFs if they exit.
 }
 \description{
 Check and return SBS catalogs

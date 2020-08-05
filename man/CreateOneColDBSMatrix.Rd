@@ -4,7 +4,7 @@
 \alias{CreateOneColDBSMatrix}
 \title{Create the matrix a DBS catalog for *one* sample from an in-memory VCF.}
 \usage{
-CreateOneColDBSMatrix(vcf, sample.id = "count")
+CreateOneColDBSMatrix(vcf, sample.id = "count", return.annotated.vcf = FALSE)
 }
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
