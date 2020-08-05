@@ -1788,6 +1788,37 @@ CheckDBSClassInVCF <- function(vcf, mat, sample.id) {
   }
 }
 
+#' Add and check DBS class in an annotated VCF with the corresponding DBS
+#' mutation matrix
+#'
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateDBSVCF}}. It must
+#'   *not* contain indels and must *not* contain SBS (single base
+#'   substitutions), or triplet base substitutions etc.
+#'   
+#' @param mat78 The DBS78 mutation count matrix.
+#' 
+#' @param mat136 The DBS136 mutation count matrix.
+#' 
+#' @param mat144 The DBS144 mutation count matrix.
+#' 
+#' @param sample.id Usually the sample id, but defaults to "count".
+#'
+#' @return The original \code{vcf} with three additional columns
+#'   \code{DBS78.class}, \code{DBS136.class} and \code{DBS144.class} added.
+#'
+#' @keywords internal
+AddAndCheckDBSClassInVCF <- 
+  function(vcf, mat78, mat136, mat144 = NULL, sample.id) {
+    vcf1 <- AddDBSClass(vcf)
+    CheckDBSClassInVCF(vcf1, mat78, sample.id)
+    CheckDBSClassInVCF(vcf1, mat136, sample.id)
+    if (!is.null(mat144)) {
+      CheckDBSClassInVCF(vcf1, mat144, sample.id)
+    }
+    return(vcf1)
+  }
+
 #' Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
