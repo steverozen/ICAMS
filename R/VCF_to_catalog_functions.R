@@ -1316,16 +1316,6 @@ ReadMutectVCFs <-
 #'                                       trans.ranges = trans.ranges.GRCh37)}
 AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
   SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
-  
-  # Delete the rows of SBS if the extracted sequence contains "N"
-  idx <- grep("N", substr(SBS.vcf$seq.21bases, 9, 13))
-  if (!length(idx) == 0) {
-    SBS.vcf <- SBS.vcf[-idx, ]
-    message(
-      'Rows in the SBS vcf where surrounding sequence contains "N" ',
-      'have been deleted so as not to conflict with downstream processing')
-  }
-  
   CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
@@ -1441,6 +1431,73 @@ AddAndCheckSBSClassInVCF <-
     return(vcf1)
   }
 
+#' Check and return the SBS mutation matrix
+#'
+#' @inheritParams AddAndCheckSBSClassInVCF
+#' 
+#' @param discarded.variants A \code{data.frame} which contains rows of SBS
+#'   variants whose pentanucleotide context contains "N".
+#' 
+#' @param return.annotated.vcf Whether to return the annotated VCF with
+#'   additional columns showing the mutation class for each variant. Default is
+#'   FALSE.
+#'
+#' @inheritSection CreateOneColSBSMatrix Value
+#'
+#' @keywords internal
+CheckAndReturnSBSMatrix <- 
+  function(vcf, discarded.variants, mat96, mat1536, mat192 = NULL, 
+           return.annotated.vcf = FALSE, sample.id = "counts") {
+    
+    if (nrow(discarded.variants) == 0) {
+      if (is.null(mat192)) {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catSBS96 = mat96, catSBS1536 = mat1536))
+        } else {
+          vcf.SBS.class <- 
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
+          return(list(catSBS96 = mat96, catSBS1536 = mat1536,
+                      annotated.vcf = vcf.SBS.class))
+        }
+      } else {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catSBS96 = mat96, catSBS192 = mat192, 
+                      catSBS1536 = mat1536))
+        } else {
+          vcf.SBS.class <- 
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
+          return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
+                      annotated.vcf = vcf.SBS.class))
+        }
+      }
+    } else {
+      if (is.null(mat192)) {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catSBS96 = mat96, catSBS1536 = mat1536,
+                      discarded.variants = discarded.variants))
+        } else {
+          vcf.SBS.class <- 
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
+          return(list(catSBS96 = mat96, catSBS1536 = mat1536,
+                      annotated.vcf = vcf.SBS.class,
+                      discarded.variants = discarded.variants))
+        }
+      } else {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catSBS96 = mat96, catSBS192 = mat192, 
+                      catSBS1536 = mat1536, 
+                      discarded.variants = discarded.variants))
+        } else {
+          vcf.SBS.class <- 
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
+          return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
+                      annotated.vcf = vcf.SBS.class,
+                      discarded.variants = discarded.variants))
+        }
+      }
+    }
+  }
+
 #' Create the matrix an SBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
@@ -1457,11 +1514,16 @@ AddAndCheckSBSClassInVCF <-
 #' 
 #' @import data.table
 #'
-#' @return A list of three 1-column matrices with the names
-#' \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}.
-#'  If trans.ranges is NULL, \code{catSBS192} is not generated.
-#'  Do not rely on the order of elements in the list.
-#'
+#' @section Value: A list of three 1-column matrices with the names
+#'   \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}. If transcript
+#'   information is not available in \code{vcf}, \code{catSBS192} is not
+#'   generated. Do not rely on the order of elements in the list. If
+#'   \code{return.annotated.vcf} = TRUE, another element \code{annotated.vcf}
+#'   will appear in the list. If there are SBS variants whose pentanucleotide
+#'   context contains "N", they will be excluded in the analysis and an
+#'   additional element \code{discarded.variants} will appear in the return
+#'   list.
+#'  
 #' @note catSBS192 only contains mutations in transcribed regions.
 #'
 #' @keywords internal
@@ -1473,19 +1535,25 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # before calling the function. This function does not detect DBSs.
 
   if (0 == nrow(vcf)) {
-    # Create 1-column matrix with all values being 0 and the correct row labels.
-    catSBS96 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS96), ncol = 1)
-    rownames(catSBS96) <- ICAMS::catalog.row.order$SBS96
+    # Create 1-column matrix with all values being 0 and the correct row and
+    # column labels.
+    catSBS96 <- 
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS96), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$SBS96, sample.id))
     catSBS192 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1)
-    rownames(catSBS192) <- ICAMS::catalog.row.order$SBS192
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
     catSBS1536 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS1536), ncol = 1)
-    rownames(catSBS1536) <- ICAMS::catalog.row.order$SBS1536
-
-    return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
-                catSBS1536 = catSBS1536))
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS1536), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$SBS1536, sample.id))
+    
+    if (return.annotated.vcf == FALSE) {
+      return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                  catSBS1536 = catSBS1536))
+    } else {
+      return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                  catSBS1536 = catSBS1536, annotated.vcf = vcf))
+    }
   }
 
   stopifnot(nchar(vcf$ALT) == 1)
@@ -1499,6 +1567,21 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
          " rows in the VCF file.\n",
          "Please check the ref.genome argument.")
   }
+  
+  discarded.variants <- vcf[0]
+  # Delete the rows of SBS if the extracted sequence contains "N"
+  idx <- grep("N", substr(vcf$seq.21bases, 9, 13))
+    if (!length(idx) == 0) {
+      discarded.variants <- rbind(discarded.variants, vcf[idx, ])
+      vcf <- vcf[-idx, ]
+      message(
+        'Variants in the SBS vcf where pentanucleotide context contains "N" ',
+        'have been deleted so as not to conflict with downstream processing. ',
+        'See discarded.variants in the return value for more details.')
+    }
+  
+  # Keep a copy of the original vcf
+  vcf0 <- vcf
   
   # Create 2 new columns that show the 3072 and 1536 mutation type
   context <- substr(vcf$seq.21bases, 9, 13)
@@ -1544,13 +1627,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   colnames(mat96) <- sample.id
   
   if (is.null(vcf$trans.strand)) {
-    if (return.annotated.vcf == FALSE) {
-      return(list(catSBS96 = mat96, catSBS1536 = mat1536))
-    } else {
-      vcf.SBS.class <- AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
-      return(list(catSBS96 = mat96, catSBS1536 = mat1536,
-                  annotated.vcf = vcf.SBS.class))
-    }
+    CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, 
+                            mat1536, return.annotated.vcf, sample.id)
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -1568,16 +1646,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # values being 0 and the correct row labels
   if (nrow(vcf3) == 0) {
     mat192 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1)
-    rownames(mat192) <- ICAMS::catalog.row.order$SBS192
-    if (return.annotated.vcf == FALSE) {
-      return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
-    } else {
-      vcf.SBS.class <- 
-        AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
-      return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
-                  annotated.vcf = vcf.SBS.class))
-    }
+      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
+    CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
+                            return.annotated.vcf, sample.id)
   }
 
   # Create the 192 catalog matrix
@@ -1599,14 +1671,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   mat192 <- mat192[ICAMS::catalog.row.order$SBS192, , drop = FALSE]
   colnames(mat192) <- sample.id
   
-  if (return.annotated.vcf == FALSE) {
-    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536))
-  } else {
-    vcf.SBS.class <- 
-      AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
-    return(list(catSBS96 = mat96, catSBS192 = mat192, catSBS1536 = mat1536,
-                annotated.vcf = vcf.SBS.class))
-  }
+  CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
+                          return.annotated.vcf, sample.id)
 }
 
 #' Add sequence context and transcript information to an in-memory DBS VCF
@@ -1637,14 +1703,17 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
 AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
   DBS.vcf <- AddSeqContext(DBS.vcf, ref.genome = ref.genome)
   
-  # Delete the rows of DBS if the extracted sequence contains "N"
-  idx <- grep("N", substr(DBS.vcf$seq.21bases, 10, 13))
-  if (!length(idx) == 0) {
-    DBS.vcf <- DBS.vcf[-idx, ]
-    message(
-      'Rows in the DBS vcf where surrounding sequence contains "N" ',
-      'have been deleted so as not to conflict with downstream processing')
+  if (FALSE) {
+    # Delete the rows of DBS if the extracted sequence contains "N"
+    idx <- grep("N", substr(DBS.vcf$seq.21bases, 10, 13))
+    if (!length(idx) == 0) {
+      DBS.vcf <- DBS.vcf[-idx, ]
+      message(
+        'Rows in the DBS vcf where surrounding sequence contains "N" ',
+        'have been deleted so as not to conflict with downstream processing')
+    }
   }
+  
   
   CheckSeqContextInVCF(DBS.vcf, "seq.21bases")
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
