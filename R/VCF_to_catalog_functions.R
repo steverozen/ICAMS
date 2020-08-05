@@ -1723,6 +1723,28 @@ AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
   return(as.data.table(DBS.vcf))
 }
 
+#' Add DBS mutation class to an annotated DBS VCF
+#'
+#' @param vcf An in-memory VCF file annotated with sequence context and
+#'   transcript information by function \code{\link{AnnotateDBSVCF}}. It must
+#'   *not* contain indels and must *not* contain SBS (single base
+#'   substitutions), or triplet base substitutions etc.
+#'
+#' @return The original \code{vcf} with three additional columns
+#'   \code{DBS78.class}, \code{DBS136.class} and \code{DBS144.class} added.
+#'   
+#' @keywords internal
+AddDBSClass <- function(vcf) {
+  vcf$DBS78.class <- CanonicalizeDBS(vcf$REF, vcf$ALT)
+  vcf$DBS136.class <- CanonicalizeQUAD(substr(vcf$seq.21bases, 10, 13))
+  vcf$DBS144.class <- NA
+  idx <- which(!is.na(vcf$trans.strand) & (vcf$bothstrand == FALSE))
+  vcf$DBS144.class[idx] <- paste0(vcf$REF[idx], vcf$ALT[idx])
+  idx1 <- which(vcf$trans.strand == "-" & (vcf$bothstrand == FALSE))
+  vcf$DBS144.class[idx1] <- RevcDBS144(vcf$DBS144.class[idx1])
+  return(vcf)
+}  
+
 #' Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
