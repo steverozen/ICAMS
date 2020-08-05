@@ -575,6 +575,68 @@ ReadAndSplitMutectVCFs <-
     return(split.vcfs)
   }
 
+#' Check and return SBS catalogs
+#'
+#' @param catSBS96 An SBS96 catalog.
+#' 
+#' @param catSBS1536 An SBS1536 catalog.
+#' 
+#' @param catSBS192 An SBS192 catalog.
+#' 
+#' @param discarded.variants A list of discarded variants.
+#' 
+#' @param annotated.vcfs A list of annotated VCFs.
+#'
+#' @return A list of catalogs. Also return the discarded variants and annotated
+#' VCFs if they exit.
+#' 
+#' @keywords internal
+CheckAndReturnSBSCatalogs <- 
+  function(catSBS96, catSBS1536, catSBS192 = NULL, discarded.variants,
+           annotated.vcfs) {
+    if (is.null(catSBS192)) {
+      if (length(discarded.variants) == 0) {
+        if (length(annotated.vcfs) == 0) {
+          return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536))
+        } else {
+          return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536,
+                      annotated.vcfs = annotated.vcfs))
+        }
+      } else {
+        if (length(annotated.vcfs) == 0) {
+          return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536,
+                      discarded.variants = discarded.variants))
+        } else {
+          return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536,
+                      discarded.variants = discarded.variants,
+                      annotated.vcfs = annotated.vcfs))
+        }
+      }
+    } else {
+      if (length(discarded.variants) == 0) {
+        if (length(annotated.vcfs) == 0) {
+          return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                      catSBS1536 = catSBS1536))
+        } else {
+          return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                      catSBS1536 = catSBS1536,
+                      annotated.vcfs = annotated.vcfs))
+        }
+      } else {
+        if (length(annotated.vcfs) == 0) {
+          return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                      catSBS1536 = catSBS1536,
+                      discarded.variants = discarded.variants))
+        } else {
+          return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                      catSBS1536 = catSBS1536,
+                      discarded.variants = discarded.variants,
+                      annotated.vcfs = annotated.vcfs))
+        }
+      }
+    }
+  }
+
 #' Create SBS catalogs from SBS VCFs
 #'
 #' Create a list of 3 catalogs (one each for 96, 192, 1536)
@@ -609,7 +671,8 @@ ReadAndSplitMutectVCFs <-
 #'                                     trans.ranges = trans.ranges.GRCh37,
 #'                                     region = "genome")}
 VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
-                              trans.ranges = NULL, region = "unknown") {
+                              trans.ranges = NULL, region = "unknown",
+                              return.annotated.vcfs = FALSE) {
   ncol <- length(list.of.SBS.vcfs)
   
   catSBS96 <- empty.cats$catSBS96
@@ -617,45 +680,53 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   catSBS1536 <- empty.cats$catSBS1536
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   
+  annotated.vcfs <- discarded.variants <- list()
+  vcf.names <- character()
+  
   for (i in 1:ncol) {
     SBS.vcf <- list.of.SBS.vcfs[[i]]
     sample.id <- names(list.of.SBS.vcfs)[i]
-    
     annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
-    
-    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id)
+    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
+                                     return.annotated.vcfs)
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
       catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)
     }
     catSBS1536 <- cbind(catSBS1536, SBS.cat$catSBS1536)
+    if (return.annotated.vcfs == TRUE) {
+      annotated.vcfs <- c(annotated.vcfs, list(SBS.cat$annotated.vcf))
+    }
+    if (!is.null(SBS.cat$discarded.variants)) {
+      discarded.variants <- 
+        c(discarded.variants, list(SBS.cat$discarded.variants))
+      vcf.names <- c(vcf.names, sample.id)
+    }
   }
   
-  colnames(catSBS96) <- names(list.of.SBS.vcfs)
-  colnames(catSBS1536) <- names(list.of.SBS.vcfs)
+  colnames(catSBS96) <- colnames(catSBS1536) <- names(list.of.SBS.vcfs)
+  catSBS96 <- as.catalog(catSBS96, ref.genome = ref.genome,
+                         region = region, catalog.type = "counts")
+  catSBS1536 <- as.catalog(catSBS1536, ref.genome = ref.genome,
+                           region = region, catalog.type = "counts")
+  if (return.annotated.vcfs == TRUE) {
+    names(annotated.vcfs) <- names(list.of.SBS.vcfs)
+  }
+  names(discarded.variants) <- vcf.names
   
-  catSBS96 <-
-    as.catalog(catSBS96, ref.genome = ref.genome,
-               region = region, catalog.type = "counts")
-  
-  catSBS1536 <-
-    as.catalog(catSBS1536, ref.genome = ref.genome,
-               region = region, catalog.type = "counts",
-               abundance = NULL)
   if (is.null(trans.ranges)) {
-    return(list(catSBS96 = catSBS96, catSBS1536 = catSBS1536))
+    CheckAndReturnSBSCatalogs(catSBS96, catSBS1536, discarded.variants,
+                              annotated.vcfs)
   }
   
   colnames(catSBS192) <- names(list.of.SBS.vcfs)
   in.transcript.region <- ifelse(region == "genome", "transcript", region)
-  catSBS192 <-
-    as.catalog(catSBS192, ref.genome = ref.genome,
-               region = in.transcript.region, 
-               catalog.type = "counts",
-               abundance = NULL)
+  catSBS192 <- as.catalog(catSBS192, ref.genome = ref.genome,
+                          region = in.transcript.region, 
+                          catalog.type = "counts")
   
-  return(list(catSBS96 = catSBS96, catSBS192 = catSBS192, 
-              catSBS1536 = catSBS1536))
+  CheckAndReturnSBSCatalogs(catSBS96, catSBS1536, catSBS192, 
+                            discarded.variants, annotated.vcfs)
 }
 
 #' Create DBS catalogs from VCFs
