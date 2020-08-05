@@ -1399,8 +1399,8 @@ CheckSBSClassInVCF <- function(vcf, mat, sample.id) {
   }
 }
 
-#' Add and check SBS class in an annotated VCF with the corresponding mutation
-#' matrix
+#' Add and check SBS class in an annotated VCF with the corresponding SBS
+#' mutation matrix
 #' 
 #' @param vcf An in-memory VCF file annotated with sequence context and
 #'   transcript information by function \code{\link{AnnotateSBSVCF}}. It must
@@ -1819,6 +1819,73 @@ AddAndCheckDBSClassInVCF <-
     return(vcf1)
   }
 
+#' Check and return the DBS mutation matrix
+#'
+#' @inheritParams AddAndCheckDBSClassInVCF
+#' 
+#' @param discarded.variants A \code{data.frame} which contains rows of DBS
+#'   variants whose tetranucleotide context contains "N".
+#'   
+#' @param return.annotated.vcf Whether to return the annotated VCF with
+#'   additional columns showing the mutation class for each variant. Default is
+#'   FALSE.
+#'
+#' @inheritSection CreateOneColDBSMatrix Value
+#'
+#' @keywords internal
+CheckAndReturnDBSMatrix <- 
+  function(vcf, discarded.variants, mat78, mat136, mat144 = NULL, 
+           return.annotated.vcf = FALSE, sample.id = "counts") {
+    
+    if (nrow(discarded.variants) == 0) {
+      if (is.null(mat144)) {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catDBS78 = mat78, catDBS136 = mat136))
+        } else {
+          vcf.DBS.class <- 
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, sample.id)
+          return(list(catDBS78 = mat78, catDBS136 = mat136,
+                      annotated.vcf = vcf.DBS.class))
+        }
+      } else {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catDBS78 = mat78, catDBS144 = mat144, 
+                      catDBS136 = mat136))
+        } else {
+          vcf.DBS.class <- 
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, mat144, sample.id)
+          return(list(catDBS78 = mat78, catDBS144 = mat144, catDBS136 = mat136,
+                      annotated.vcf = vcf.DBS.class))
+        }
+      }
+    } else {
+      if (is.null(mat144)) {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catDBS78 = mat78, catDBS136 = mat136,
+                      discarded.variants = discarded.variants))
+        } else {
+          vcf.DBS.class <- 
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, sample.id)
+          return(list(catDBS78 = mat78, catDBS136 = mat136,
+                      annotated.vcf = vcf.DBS.class,
+                      discarded.variants = discarded.variants))
+        }
+      } else {
+        if (return.annotated.vcf == FALSE) {
+          return(list(catDBS78 = mat78, catDBS144 = mat144, 
+                      catDBS136 = mat136, 
+                      discarded.variants = discarded.variants))
+        } else {
+          vcf.DBS.class <- 
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, mat144, sample.id)
+          return(list(catDBS78 = mat78, catDBS144 = mat144, catDBS136 = mat136,
+                      annotated.vcf = vcf.DBS.class,
+                      discarded.variants = discarded.variants))
+        }
+      }
+    }
+  }
+
 #' Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 #'
 #' @param vcf An in-memory VCF file annotated with sequence context and
@@ -1830,10 +1897,14 @@ AddAndCheckDBSClassInVCF <-
 #'
 #' @import data.table
 #'
-#' @return A list of three 1-column matrices with the names \code{catDBS78},
-#'   \code{catDBS144}, and \code{catDBS136}. If trans.ranges is NULL,
+#' @section Value: A list of three 1-column matrices with the names \code{catDBS78},
+#'   \code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
 #'   \code{catDBS144} is not generated. Do not rely on the order of elements in
-#'   the list.
+#'   the list. If \code{return.annotated.vcf} = TRUE, another element
+#'   \code{annotated.vcf} will appear in the list. If there are DBS variants
+#'   whose tetranucleotide context contains "N", they will be excluded in the
+#'   analysis and an additional element \code{discarded.variants} will appear in
+#'   the return list.
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
@@ -1949,8 +2020,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   rownames(DBS.mat.144) <- DBS.dt.144.2$rn
   colnames(DBS.mat.144)<- sample.id
 
-  return(list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144,
-              catDBS136 = DBS.mat.136))
+  return(list(catDBS78 = DBS.mat.78, catDBS136 = DBS.mat.136,
+              catDBS144 = DBS.mat.144))
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF

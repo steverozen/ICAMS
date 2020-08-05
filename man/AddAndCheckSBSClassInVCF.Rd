@@ -2,8 +2,8 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{AddAndCheckSBSClassInVCF}
 \alias{AddAndCheckSBSClassInVCF}
-\title{Add and check SBS class in an annotated VCF with the corresponding mutation
-matrix}
+\title{Add and check SBS class in an annotated VCF with the corresponding SBS
+mutation matrix}
 \usage{
 AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192 = NULL, sample.id)
 }
@@ -27,7 +27,7 @@ The original \code{vcf} with three additional columns
   \code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
 }
 \description{
-Add and check SBS class in an annotated VCF with the corresponding mutation
-matrix
+Add and check SBS class in an annotated VCF with the corresponding SBS
+mutation matrix
 }
 \keyword{internal}
