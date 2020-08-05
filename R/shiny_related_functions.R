@@ -893,11 +893,11 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #' 
-#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
-#'   references in the ID (insertion/deletion) VCF, generate messages showing
-#'   the mismatched rows and continue. Otherwise \code{stop} if there are
-#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
-#'
+#' @param flag.mismatches Deprecated. If there are mismatches to references in
+#'   the ID (insertion/deletion) VCF, the function will automatically discard
+#'   these rows. User can refer to the element discarded.variants in the return
+#'   value for more details. See \code{\link{AnnotateIDVCF}} for more details.
+#'   
 #' @section Value:
 #' A \strong{list} of elements:
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
@@ -917,7 +917,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' \item Variants which have empty REF or ALT allels.
 #' \item Complex indels.
 #' \item Variants with mismatches between VCF and reference sequence.
-#' }
+#' \item Variants which cannot be categorized according to the canonical
+#' representation. See catalog.row.order$ID for the canonical representation. }
 #' @md
 #'   
 #' @section Note:
@@ -949,22 +950,33 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   vcf.names <- names(list.of.vcfs)
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
+    sample.id <- names(list.of.vcfs)[i]
     list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
                           flag.mismatches = flag.mismatches,
                           name.of.VCF = vcf.names[i])
+    
+    # Create an empty data frame for discarded variants
+    df <- ID[0, ]
+    
     if (!is.null(list$discarded.variants)) {
-      discarded.variants <- 
-        c(discarded.variants, list(list$discarded.variants))
-      discarded.variants.vcf.name <- 
-        c(discarded.variants.vcf.name, vcf.names[i])
+      df <- dplyr::bind_rows(df, list$discarded.variants)
     }
     # Unlike the case for SBS and DBS, we do not
     # add transcript information.
-    tmp <- CreateOneColIDMatrix(list$annotated.vcf)
+    tmp <- CreateOneColIDMatrix(list$annotated.vcf, sample.id = sample.id)
     one.ID.column <- tmp[[1]]
     out.list.of.vcfs <- c(out.list.of.vcfs, list(tmp[[2]]))
     rm(ID)
     catID <- cbind(catID, one.ID.column)
+    
+    if (!is.null(tmp$discarded.variants)) {
+      df <- dplyr::bind_rows(df, tmp$discarded.variants)
+    }
+    if (nrow(df) != 0) {
+      discarded.variants <- c(discarded.variants, list(df))
+      discarded.variants.vcf.name <- 
+        c(discarded.variants.vcf.name, vcf.names[i])
+    }
   }
   
   colnames(catID) <- names(list.of.vcfs)
@@ -983,7 +995,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                 annotated.vcfs = out.list.of.vcfs,
                 discarded.variants = discarded.variants))
   }
-  
 }
 
 #' Calculate the number of space needed to add strand bias statistics to

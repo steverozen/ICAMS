@@ -59,7 +59,8 @@ The discarded variants can belong to the following types:
 \item Variants which have empty REF or ALT allels.
 \item Complex indels.
 \item Variants with mismatches between VCF and reference sequence.
-}
+\item Variants which cannot be categorized according to the canonical
+representation. See catalog.row.order$ID for the canonical representation. }
 }
 }
 

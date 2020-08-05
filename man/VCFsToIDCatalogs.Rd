@@ -21,10 +21,10 @@ the sample ids in the output catalog.}
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
 
-\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
-references in the ID (insertion/deletion) VCF, generate messages showing
-the mismatched rows and continue. Otherwise \code{stop} if there are
-mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
+\item{flag.mismatches}{Deprecated. If there are mismatches to references in
+the ID (insertion/deletion) VCF, the function will automatically discard
+these rows. User can refer to the element discarded.variants in the return
+value for more details. See \code{\link{AnnotateIDVCF}} for more details.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from ID VCFs
@@ -48,7 +48,8 @@ The discarded variants can belong to the following types:
 \item Variants which have empty REF or ALT allels.
 \item Complex indels.
 \item Variants with mismatches between VCF and reference sequence.
-}
+\item Variants which cannot be categorized according to the canonical
+representation. See catalog.row.order$ID for the canonical representation. }
 }
 }
 
