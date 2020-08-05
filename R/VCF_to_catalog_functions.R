@@ -1569,13 +1569,13 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   }
   
   discarded.variants <- vcf[0]
-  # Delete the rows of SBS if the extracted sequence contains "N"
+  # Delete the rows of SBS if the pentanucleotide context contains "N"
   idx <- grep("N", substr(vcf$seq.21bases, 9, 13))
     if (!length(idx) == 0) {
       discarded.variants <- rbind(discarded.variants, vcf[idx, ])
       vcf <- vcf[-idx, ]
       message(
-        'Variants in the SBS vcf where pentanucleotide context contains "N" ',
+        'Variants in the SBS vcf whose pentanucleotide context contains "N" ',
         'have been deleted so as not to conflict with downstream processing. ',
         'See discarded.variants in the return value for more details.')
     }
@@ -1702,19 +1702,6 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
 AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
   DBS.vcf <- AddSeqContext(DBS.vcf, ref.genome = ref.genome)
-  
-  if (FALSE) {
-    # Delete the rows of DBS if the extracted sequence contains "N"
-    idx <- grep("N", substr(DBS.vcf$seq.21bases, 10, 13))
-    if (!length(idx) == 0) {
-      DBS.vcf <- DBS.vcf[-idx, ]
-      message(
-        'Rows in the DBS vcf where surrounding sequence contains "N" ',
-        'have been deleted so as not to conflict with downstream processing')
-    }
-  }
-  
-  
   CheckSeqContextInVCF(DBS.vcf, "seq.21bases")
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
@@ -1909,7 +1896,8 @@ CheckAndReturnDBSMatrix <-
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
 #' @keywords internal
-CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
+CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
+                                  return.annotated.vcf = FALSE) {
   # Error checking:
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude SBSs
@@ -1918,22 +1906,37 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   if (0 == nrow(vcf)) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catDBS78 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS78), ncol = 1)
-    rownames(catDBS78) <- ICAMS::catalog.row.order$DBS78
-    catDBS144 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1)
-    rownames(catDBS144) <- ICAMS::catalog.row.order$DBS144
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS78), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$DBS78, sample.id))
     catDBS136 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS136), ncol = 1)
-    rownames(catDBS136) <- ICAMS::catalog.row.order$DBS136
-
-    return(list(catDBS78 = catDBS78,
-                catDBS136 = catDBS136,
-                catDBS144 = catDBS144))
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS136), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$DBS136, sample.id))
+    catDBS144 <-
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
+    if (return.annotated.vcf == FALSE) {
+      return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+                  catDBS144 = catDBS144))
+    } else {
+      return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+                  catDBS144 = catDBS144, annotated.vcf = vcf))
+    }
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
   stopifnot(nchar(vcf$REF) == 2)
+  
+  discarded.variants <- vcf[0]
+  # Delete the rows of DBS if the tetranucleotide context contains "N"
+  idx <- grep("N", substr(vcf$seq.21bases, 10, 13))
+  if (!length(idx) == 0) {
+    discarded.variants <- rbind(discarded.variants, vcf[idx, ])
+    vcf <- vcf[-idx, ]
+    message(
+      'Variants in the DBS vcf whose tetranucleotide context contains "N" ',
+      'have been deleted so as not to conflict with downstream processing. ',
+      'See discarded.variants in the return value for more details.')
+  }
 
   # One DBS mutation can be represented by more than 1 row in vcf after annotated by
   # AnnotateDBSVCF function if the mutation position falls into the range of
@@ -1977,7 +1980,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   colnames(DBS.mat.136)<- sample.id
   
   if (is.null(vcf$trans.strand)) {
-    return(list(catDBS78 = DBS.mat.78, catDBS136 = DBS.mat.136))
+    CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
+                            return.annotated.vcf, sample.id)
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -1994,9 +1998,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   # values being 0 and the correct row labels
   if (nrow(vcf3) == 0) {
     DBS.mat.144 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1)
-    rownames(DBS.mat.144) <- ICAMS::catalog.row.order$DBS144
-    return(list(catDBS78 = DBS.mat.78, catDBS144 = DBS.mat.144, catDBS136 = DBS.mat.136))
+      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
+             dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
+    CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
+                            DBS.mat.144, return.annotated.vcf, sample.id)
   }
 
   # Create the 144 DBS catalog matrix
@@ -2020,8 +2025,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count") {
   rownames(DBS.mat.144) <- DBS.dt.144.2$rn
   colnames(DBS.mat.144)<- sample.id
 
-  return(list(catDBS78 = DBS.mat.78, catDBS136 = DBS.mat.136,
-              catDBS144 = DBS.mat.144))
+  CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
+                          DBS.mat.144, return.annotated.vcf, sample.id)
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
