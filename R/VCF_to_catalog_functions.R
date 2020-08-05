@@ -1356,12 +1356,12 @@ AddSBSClass <- function(vcf) {
   return(vcf)
 }
 
-#' Check SBS mutation class in VCF with the corresponding mutation matrix
+#' Check SBS mutation class in VCF with the corresponding SBS mutation matrix
 #'
 #' @param vcf An annotated SBS VCF with columns of SBS mutation
 #'   classes added by \code{AddSBSClass}.
 #'   
-#' @param mat The mutation count matrix.
+#' @param mat The SBS mutation count matrix.
 #' 
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
@@ -1744,6 +1744,49 @@ AddDBSClass <- function(vcf) {
   vcf$DBS144.class[idx1] <- RevcDBS144(vcf$DBS144.class[idx1])
   return(vcf)
 }  
+
+#' Check DBS mutation class in VCF with the corresponding DBS mutation matrix
+#'
+#' @param vcf An annotated DBS VCF with columns of DBS mutation
+#'   classes added by \code{AddDBSClass}.
+#'   
+#' @param mat The DBS mutation count matrix.
+#' 
+#' @param sample.id Usually the sample id, but defaults to "count".
+#' 
+#' @keywords internal
+CheckDBSClassInVCF <- function(vcf, mat, sample.id) {
+  if (nrow(mat) %in% c(78, 136)) {
+    # One DBS mutation can be represented by more than 1 row in vcf
+    # after annotation by AddTranscript if the mutation position falls in multiple
+    # transcripts. When creating the DBS78 and DBS136 mutation matrix,
+    # we only need to count these mutations once.
+    df <- dplyr::distinct(vcf, CHROM, ALT, POS, .keep_all = TRUE)
+    
+    if (nrow(df) != colSums(mat)) {
+      stop("In sample ", sample.id, ", the number of DBS", nrow(mat), 
+           " variants in the annotated VCF is not the same as the total ", 
+           "counts in mutation matrix.")
+    }
+  } else {
+    # Only keep those mutations that fall within transcribed region
+    # when generating DBS144 mutation matrix.
+    df1 <- vcf[!is.na(trans.strand), ]
+    
+    # Discard variants that fall on transcripts on both strand.
+    df2 <- df1[bothstrand == FALSE, ]
+    
+    # One DBS mutation can be represented by more than 1 row in df2 if the mutation
+    # position falls into the range of multiple transcripts on the same strand. We
+    # only need to count these mutations once.
+    df3 <- dplyr::distinct(df2, CHROM, ALT, POS, .keep_all = TRUE)
+    if (nrow(df3) != colSums(mat)) {
+      stop("In sample ", sample.id, ", the number of DBS", nrow(mat), 
+           " variants in the annotated VCF is not the same as the total ", 
+           "counts in mutation matrix.")
+    }
+  }
+}
 
 #' Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
 #'
