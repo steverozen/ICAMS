@@ -404,9 +404,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- 
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
-           flag.mismatches = 0) {
+           flag.mismatches = 0, return.annotated.vcfs = FALSE) {
     vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
-    return(VCFsToIDCatalogs(vcfs, ref.genome, region, flag.mismatches))
+    return(VCFsToIDCatalogs(vcfs, ref.genome, region, flag.mismatches,
+                            return.annotated.vcfs))
   }
 
 CombineAndReturnCatalogsForMutectVCFs <-
