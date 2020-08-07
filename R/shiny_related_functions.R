@@ -581,30 +581,31 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'   
 #' @section Value: A list containing the following objects:
 #'
-#'   1. \code{SBS}: List of VCFs with only single base substitutions.
+#'   * \code{SBS}: List of VCFs with only single base substitutions.
 #'
 #'
-#'   2. \code{DBS}: List of VCFs with only doublet base substitutions as called
+#'   * \code{DBS}: List of VCFs with only doublet base substitutions as called
 #'   by Mutect.
 #'
-#'   3. \code{ID}: List of VCFs with only small insertions and deletions.
+#'   * \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'   4. \code{other.subs}: \strong{Only appearing when} there is list of VCF
+#'   * \code{other.subs}: \strong{Only appearing when} there is list of VCF
 #'   like data.frames with rows for coordinate substitutions involving 3 or more
 #'   nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'   5. \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+#'   * \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
 #'   like data.frames with rows for variants with multiple alternative alleles,
-#'   for example ACT mutated to both AGT and ACT at the same position.
+#'   for example ACA mutated to both AGA and ATA at the same position.
 #'
-#'   6. \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
-#'   like data.frames with rows for variants that are excluded in the analysis.
-#'   The variants not analyzed belong to the following categories:
-#'       * Duplicated "CHROM" and "POS" values.
-#'       * Chromosome names that contain "#".
-#'       * Chromosome names that contain "GL".
-#'       * Chromosome names that contain "KI".
-#'       * Chromosome names that contain "random".
+#'   * \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants that were discarded immediately
+#'   after reading in the VCFs. The variants not analyzed can belong to the
+#'   following categories:
+#'       + Duplicated "CHROM" and "POS" values.
+#'       + Chromosome names that contain "#".
+#'       + Chromosome names that contain "GL".
+#'       + Chromosome names that contain "KI".
+#'       + Chromosome names that contain "random".
 #'       * Chromosome names that contain "Hs".
 #'       * Chromosome names that contain "M".
 #' @md
@@ -980,24 +981,25 @@ CheckAndReturnIDCatalog <-
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #' 
+#'   * \code{discarded.variants}: 
+#' \strong{Only appearing when} there are ID variants that were discarded. A
+#' list of data frames which contain the discarded variants from the original
+#' VCF. The discarded variants can belong to the following categories:
+#'       + Variants which have the same number of bases for REF and ALT alleles.
+#'       + Variants which have empty REF or ALT allels.
+#'       + Complex indels.
+#'       + Variants whose \code{REF} do not match the extracted sequence from
+#'         \code{ref.genome}.
+#'       + Variants which cannot be categorized according to the canonical
+#'       representation. See catalog.row.order$ID for the canonical
+#'       representation.
+#' 
 #'   * \code{annotated.vcfs}: 
 #' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
 #' data frames which contain the original VCF's ID mutation rows with three
 #' additional columns \code{seq.context.width}, \code{seq.context} and
 #' \code{ID.class} added. The category assignment of each ID mutation in VCF can
 #' be obtained from \code{ID.class} column.
-#' 
-#'   * \code{discarded.variants}: 
-#' \strong{Only appearing when} there are ID variants that were discarded. A
-#' list of data frames which contain the discarded variants from the original
-#' VCF. The discarded variants can belong to the following types:
-#' \enumerate{
-#' \item Variants which have the same number of bases for REF and ALT alleles.
-#' \item Variants which have empty REF or ALT allels.
-#' \item Complex indels.
-#' \item Variants with mismatches between VCF and reference sequence.
-#' \item Variants which cannot be categorized according to the canonical
-#' representation. See catalog.row.order$ID for the canonical representation. }
 #' @md
 #' 
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
