@@ -61,6 +61,23 @@ from 0 to 5+, but for plotting and end-user documentation deletion repeat
 sizes range from 1 to 6+.
 }
 
+\section{ID classification}{
+
+See
+\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+for additional information on ID (small insertion and deletion) mutation
+classification.
+
+See the documentation for \code{\link{Canonicalize1Del}} which first handles
+deletions in homopolymers, then handles deletions in simple repeats with
+longer repeat units, (e.g. \code{CACACACA}, see
+\code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
+repeat, looks for microhomology (see \code{\link{FindDelMH}}).
+
+See the code for unexported function \code{\link{CanonicalizeID}}
+and the functions it calls for handling of insertions.
+}
+
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.s1.vcf",

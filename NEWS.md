@@ -14,6 +14,7 @@ functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 * Enabled "counts" -> "counts.signature" catalog transformation when the source catalog
 has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
 and `region` attribute as the source catalog, otherwise the function will raise an error.
+* Added an extra section "ID classification" in documentation of functions generating ID catalogs.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return of functions

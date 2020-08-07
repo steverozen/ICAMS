@@ -80,6 +80,23 @@ representation. See catalog.row.order$ID for the canonical representation. }
 }
 }
 
+\section{ID classification}{
+
+See
+\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+for additional information on ID (small insertion and deletion) mutation
+classification.
+
+See the documentation for \code{\link{Canonicalize1Del}} which first handles
+deletions in homopolymers, then handles deletions in simple repeats with
+longer repeat units, (e.g. \code{CACACACA}, see
+\code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
+repeat, looks for microhomology (see \code{\link{FindDelMH}}).
+
+See the code for unexported function \code{\link{CanonicalizeID}}
+and the functions it calls for handling of insertions.
+}
+
 \section{Note}{
 
 In ID (small insertion and deletion) catalogs, deletion repeat sizes range

@@ -126,6 +126,8 @@ StrelkaSBSVCFFilesToZipFile <- function(dir,
 #' 
 #' @inheritSection VCFsToIDCatalogs Value 
 #' 
+#' @inheritSection VCFsToIDCatalogs ID classification
+#' 
 #' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @export
@@ -243,6 +245,8 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' @importFrom zip zipr 
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
+#' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
 #'   
@@ -385,6 +389,8 @@ StrelkaSBSVCFFilesToCatalog <-
 #' 
 #' @inheritSection VCFsToIDCatalogs Value 
 #' 
+#' @inheritSection VCFsToIDCatalogs ID classification
+#' 
 #' @inheritSection VCFsToIDCatalogs Note
 #' 
 #' @export
@@ -452,6 +458,8 @@ CombineAndReturnCatalogsForMutectVCFs <-
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
+#' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
 #'   
@@ -955,6 +963,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' \item Variants which cannot be categorized according to the canonical
 #' representation. See catalog.row.order$ID for the canonical representation. }
 #' @md
+#' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
 #'   
 #' @section Note:
 #'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range

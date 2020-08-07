@@ -2147,6 +2147,8 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'
 #' @inheritSection VCFsToIDCatalogs Value
 #' 
+#' @inheritSection VCFsToIDCatalogs ID classification
+#' 
 #' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @export
@@ -2267,6 +2269,21 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
 #' attributes added. See \code{\link{as.catalog}} for more details.
 #' @md
+#' 
+#' @section ID classification:
+#' See
+#' \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' for additional information on ID (small insertion and deletion) mutation
+#' classification. 
+#' 
+#' See the documentation for \code{\link{Canonicalize1Del}} which first handles
+#' deletions in homopolymers, then handles deletions in simple repeats with
+#' longer repeat units, (e.g. \code{CACACACA}, see
+#' \code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
+#' repeat, looks for microhomology (see \code{\link{FindDelMH}}).
+#' 
+#' See the code for unexported function \code{\link{CanonicalizeID}}
+#' and the functions it calls for handling of insertions.
 #'
 #' @section Note:
 #'  SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
