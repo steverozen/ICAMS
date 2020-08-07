@@ -402,6 +402,42 @@ StrelkaIDVCFFilesToCatalog <-
     return(VCFsToIDCatalogs(vcfs, ref.genome, region, flag.mismatches))
   }
 
+CombineAndReturnCatalogsForMutectVCFs <-
+  function(split.vcfs.list, SBS.list, DBS.list, ID.list) {
+    discarded.variants.list <- 
+      list(SBS = SBS.list$discarded.variants,
+           DBS = DBS.list$discarded.variants,
+           ID = ID.list$discarded.variants,
+           other.subs = split.vcfs.list$other.subs,
+           multiple.alt = split.vcfs.list$multiple.alt,
+           not.analyzed = split.vcfs.list$not.analyzed)
+    annotated.vcfs.list <- list(SBS = SBS.list$annotated.vcfs,
+                                DBS = DBS.list$annotated.vcfs,
+                                ID = ID.list$annotated.vcfs)
+    # Remove NULL elements from the list
+    discarded.variants.list2 <- Filter(Negate(is.null), discarded.variants.list)
+    if (length(discarded.variants.list2) == 0) {
+      discarded.variants.list2 <- NULL
+    }
+    annotated.vcfs.list2 <- Filter(Negate(is.null), annotated.vcfs.list)
+    if (length(annotated.vcfs.list2) == 0) {
+      annotated.vcfs.list2 <- NULL
+    }
+    
+    combined.list <- list(catSBS96 = SBS.list$catSBS96,
+                          catSBS192 = SBS.list$catSBS192,
+                          catSBS1536 = SBS.list$catSBS1536,
+                          catDBS78 = DBS.list$catDBS78,
+                          catDBS136 = DBS.list$catDBS136,
+                          catDBS144 = DBS.list$catDBS144,
+                          catID = ID.list$catalog,
+                          discarded.variants = discarded.variants.list2,
+                          annotated.vcfs = annotated.vcfs.list2)
+    # Remove NULL elements from the list
+    combined.list2 <- Filter(Negate(is.null), combined.list)
+    return(combined.list2)
+  }
+
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
@@ -436,12 +472,14 @@ MutectVCFFilesToCatalog <-
     split.vcfs <- 
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
     
-    return(c(VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
-                               trans.ranges, region),
-             VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
-                               trans.ranges, region),
-             list(catID = VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                           region, flag.mismatches))))
+    SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
+                               trans.ranges, region)
+    DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
+                               trans.ranges, region)
+    ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
+                                region, flag.mismatches)
+    CombineAndReturnCatalogsForMutectVCFs(split.vcfs, SBS.list, 
+                                          DBS.list, ID.list)
   }
 
 #' Read and split Strelka SBS VCF files
