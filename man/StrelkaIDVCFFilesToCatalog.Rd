@@ -9,7 +9,8 @@ StrelkaIDVCFFilesToCatalog(
   ref.genome,
   region = "unknown",
   names.of.VCFs = NULL,
-  flag.mismatches = 0
+  flag.mismatches = 0,
+  return.annotated.vcfs = FALSE
 )
 }
 \arguments{

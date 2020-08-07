@@ -149,7 +149,8 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
                                        region = "unknown", 
                                        names.of.VCFs = NULL, 
                                        base.filename = "",
-                                       flag.mismatches = 0) {
+                                       flag.mismatches = 0,
+                                       return.annotated.vcfs = FALSE) {
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   vcf.names <- basename(files)
@@ -157,7 +158,8 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
   mutation.loads <- GetMutationLoadsFromStrelkaIDVCFs(list.of.vcfs)
   strand.bias.statistics<- NULL
   
-  list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches)
+  list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches,
+                           return.annotated.vcfs)
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),

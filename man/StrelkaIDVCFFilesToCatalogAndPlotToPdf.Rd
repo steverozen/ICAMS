@@ -11,7 +11,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(
   region = "unknown",
   names.of.VCFs = NULL,
   output.file = "",
-  flag.mismatches = 0
+  flag.mismatches = 0,
+  return.annotated.vcfs = FALSE
 )
 }
 \arguments{
