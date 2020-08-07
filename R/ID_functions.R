@@ -209,6 +209,8 @@ AnnotateIDVCF <-
 #' In this case this function will return 1 (a deletion of \code{AGC}
 #' in a 2-element repeat of \code{AGC}).
 #' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' 
 #' @examples 
 #' FindMaxRepeatDel("xyACACzt", "AC", 3) # 1
 #' FindMaxRepeatDel("xyACACzt", "CA", 4) # 0
@@ -357,9 +359,10 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @param warn.cryptic if \code{TRUE} generating a warning
 #'  if there is a cryptic repeat (see the example).
 #' 
-#'
 #' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
+#'   
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
 #'
 #' @export
 #' 
