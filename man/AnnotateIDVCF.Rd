@@ -16,9 +16,10 @@ ACC (insertion of CC).}
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{flag.mismatches}{Deprecated. If there are mismatches to references, the
-function will automatically discard these rows. User can refer to the
-element discarded.variants in the return value for more details.}
+\item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
+do not match the extracted sequence from \code{ref.genome}, the function
+will automatically discard these variants. See element
+\code{discarded.variants} in the return value for more details.}
 
 \item{name.of.VCF}{Name of the VCF file.}
 }
