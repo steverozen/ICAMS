@@ -4,7 +4,12 @@
 \alias{CreateOneColIDMatrix}
 \title{Create one column of the matrix for an indel catalog from *one* in-memory VCF.}
 \usage{
-CreateOneColIDMatrix(ID.vcf, SBS.vcf = NULL, sample.id = "count")
+CreateOneColIDMatrix(
+  ID.vcf,
+  SBS.vcf = NULL,
+  sample.id = "count",
+  return.annotated.vcf = FALSE
+)
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
@@ -27,13 +32,14 @@ SBSs.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
-\value{
-A list of a 1-column matrix containing the mutation catalog
+\description{
+Create one column of the matrix for an indel catalog from *one* in-memory VCF.
+}
+\section{Value}{
+ A list of a 1-column ID matrix containing the mutation catalog
   information and the annotated VCF with ID categories information added. If
   some ID variants were excluded in the analysis, an additional element
   \code{discarded.variants} will appear in the return list.
 }
-\description{
-Create one column of the matrix for an indel catalog from *one* in-memory VCF.
-}
+
 \keyword{internal}

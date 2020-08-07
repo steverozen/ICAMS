@@ -739,6 +739,40 @@ CanonicalizeID <- function(context, ref, alt, pos) {
   return(ret)
 }
 
+#' Check and return the ID mutation matrix
+#'
+#' @param annotated.vcf An annotated ID VCF with additional column
+#'   \code{ID.class} showing ID classification for each variant.
+#'   
+#' @param discarded.variants A \code{data.frame} which contains rows of ID
+#'   variants which are excluded in the analysis.
+#'   
+#' @param ID.mat The ID mutation count matrix.
+#' 
+#' @param return.annotated.vcf Whether to return \code{annotated.vcf}. Default is
+#'   FALSE.
+#'
+#' @inheritSection CreateOneColIDMatrix Value
+#' 
+#' @keywords internal
+CheckAndReturnIDMatrix <- 
+  function(annotated.VCF, discarded.variants, ID.mat, return.annotated.vcf = FALSE) {
+    if (nrow(discarded.variants) == 0) {
+      if (return.annotated.vcf == FALSE) {
+        return(list(catalog = ID.mat))
+      } else {
+        return(list(catalog = ID.mat, annotated.VCF = annotated.VCF))
+      }
+    } else {
+      if (return.annotated.vcf == FALSE) {
+        return(list(catalog = ID.mat, discarded.variants = discarded.variants))
+      } else {
+        return(list(catalog = ID.mat, discarded.variants = discarded.variants,
+                    annotated.VCF = annotated.VCF))
+      }
+    }
+  }
+  
 #' @title Create one column of the matrix for an indel catalog from *one* in-memory VCF.
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
@@ -761,13 +795,14 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
-#' @return A list of a 1-column matrix containing the mutation catalog
+#' @section Value: A list of a 1-column ID matrix containing the mutation catalog
 #'   information and the annotated VCF with ID categories information added. If
 #'   some ID variants were excluded in the analysis, an additional element
 #'   \code{discarded.variants} will appear in the return list.
 #'   
 #' @keywords internal
-CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count") {
+CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
+                                 return.annotated.vcf = FALSE) {
   if (nrow(ID.vcf) == 0) {
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1,
@@ -827,14 +862,9 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count") {
   }
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
+  ID.mat <- ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE]
   rownames(ID.mat) <- ID.dt2$rn
   colnames(ID.mat) <- sample.id
-  if (nrow(discarded.variants) == 0) {
-    return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
-                annotated.VCF = out.ID.vcf))
-  } else {
-    return(list(catalog = ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE],
-                annotated.VCF = out.ID.vcf, 
-                discarded.variants = discarded.variants))
-  }
+  CheckAndReturnIDMatrix(out.ID.vcf, discarded.variants, ID.mat, 
+                         return.annotated.vcf)
 }
