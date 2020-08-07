@@ -2169,11 +2169,12 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
                                                    region = "unknown", 
                                                    names.of.VCFs = NULL, 
                                                    output.file = "",
-                                                   flag.mismatches = 0) {
+                                                   flag.mismatches = 0,
+                                                   return.annotated.vcfs = FALSE) {
     
     list <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
-                                 flag.mismatches)
+                                 flag.mismatches, return.annotated.vcfs)
     
     if (output.file != "") output.file <- paste0(output.file, ".")
     
