@@ -807,7 +807,11 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
     # Create 1-column matrix with all values being 0 and the correct row labels.
     catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1,
                     dimnames = list(ICAMS::catalog.row.order$ID, sample.id))
-    return(list(catalog = catID, annotated.VCF = ID.vcf))
+    if (return.annotated.vcf == FALSE) {
+      return(list(catalog = catID))
+    } else {
+      return(list(catalog = catID, annotated.VCF = ID.vcf))
+    }
   }
   
   # Create an empty data frame for discarded variants
