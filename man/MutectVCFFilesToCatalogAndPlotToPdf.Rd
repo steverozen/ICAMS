@@ -119,8 +119,18 @@ the VCFs:
 }
 \item \code{annotated.vcfs}:
 \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
-A list of data frames which contain the original VCF with additional columns
-showing the mutation class for each variant.
+A list of elements:
+\itemize{
+\item \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+three additional columns \code{SBS96.class}, \code{SBS192.class} and
+\code{SBS1536.class} showing the mutation class for each SBS variant.
+\item \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
+three additional columns \code{DBS78.class}, \code{DBS136.class} and
+\code{DBS144.class} showing the mutation class for each DBS variant.
+\item \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with an
+additional column \code{ID.class} showing the mutation class for each
+ID variant.
+}
 }
 
 If \code{trans.ranges} is not provided by user and cannot be inferred by
