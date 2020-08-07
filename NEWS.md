@@ -17,6 +17,7 @@ and `region` attribute as the source catalog, otherwise the function will raise 
 * Added an extra section "ID classification" in documentation of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`.
 
 ## Changed
+* **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs` to functions generating ID catalogs: `VCFsToIDCatalogs`. The default value for the argument is FALSE.
 * **(Non backward-compatible)** Changed the return of functions
 `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf` and
 `MutectVCFFilesToZipFile`. The object `catID` in the returned list has been
