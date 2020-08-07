@@ -480,16 +480,17 @@ CombineAndReturnCatalogsForMutectVCFs <-
 #'                                       region = "genome")}
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0) {
+           names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0,
+           return.annotated.vcfs = FALSE) {
     split.vcfs <- 
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
     
     SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
-                               trans.ranges, region)
+                               trans.ranges, region, return.annotated.vcfs)
     DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
-                               trans.ranges, region)
+                               trans.ranges, region, return.annotated.vcfs)
     ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                region, flag.mismatches)
+                                region, flag.mismatches, return.annotated.vcfs)
     CombineAndReturnCatalogsForMutectVCFs(split.vcfs, SBS.list, 
                                           DBS.list, ID.list)
   }
