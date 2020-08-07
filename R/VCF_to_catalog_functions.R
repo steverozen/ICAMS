@@ -690,15 +690,15 @@ ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
 #' @keywords internal
 CheckAndReturnSplitOneMutectVCF <- 
   function(SBS.df, DBS.df, ID.df, other.subs.df, multiple.alt.df) {
-    if (nrow(other.subs) == 0) {
-      if (nrow(multiple.alt == 0)) {
+    if (nrow(other.subs.df) == 0) {
+      if (nrow(multiple.alt.df == 0)) {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df))
       } else {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df, 
                     multiple.alt = multiple.alt.df))
       }
     } else {
-      if (nrow(multiple.alt == 0)) {
+      if (nrow(multiple.alt.df == 0)) {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
                     other.subs = other.subs.df))
       } else {
@@ -773,50 +773,70 @@ SplitOneMutectVCF <- function(vcf.df) {
                                   other.df2, multiple.alt.df)
 }
 
+#' @keywords internal
+CheckAndReturnSplitListOfMutectVCFs <-
+  function(SBS.list, DBS.list, ID.list, other.subs.list, multiple.alt.list,
+           not.analyzed.list) {
+    # Remove NULL elements from the list
+    other.subs.list2 <- Filter(Negate(is.null), other.subs.list)
+    multiple.alt.list2 <- Filter(Negate(is.null), multiple.alt.list)
+    not.analyzed.list2 <- Filter(Negate(is.null), not.analyzed.list)
+    
+    if (length(other.subs.list2) == 0) {
+      if (length(multiple.alt.list2) == 0) {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list))
+        } else {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      not.analyzed = not.analyzed.list2))
+        }
+      } else {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      multiple.alt = multiple.alt.list2))
+        } else {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      multiple.alt = multiple.alt.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      }
+    } else {
+      if (length(multiple.alt.list2) == 0) {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      other.subs = other.subs.list2))
+        } else {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      other.subs = other.subs.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      } else {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      other.subs = other.subs.list2,
+                      multiple.alt = multiple.alt.list2))
+        } else {
+          return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list,
+                      other.subs = other.subs.list2,
+                      multiple.alt = multiple.alt.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      }
+    }
+  }
+
 #' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 #' VCF-like data frame with left-over rows).
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
 #'
-#' @section Value: A list containing the following objects:
-#'
-#'   1. \code{SBS}: List of VCFs with only single base substitutions.
-#'
-#'
-#'   2. \code{DBS}: List of VCFs with only doublet base substitutions as called
-#'   by Mutect.
-#'
-#'   3. \code{ID}: List of VCFs with only small insertions and deletions.
-#'
-#'   4. \code{other.subs}: List of VCF like data.frames with rows for coordinate
-#'   substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
-#'   GGTA) and rows for complex indels.
-#'
-#'   5. \code{multiple.alt}: List of VCF like data.frames with rows for variants
-#'   with multiple alternative alleles, for example ACT mutated to both AGT and
-#'   ACT at the same position.
-#'
-#'   6. \code{discarded.variants}: \strong{Only appearing when there are
-#'   variants that were discarded.} List of VCF like data.frames with rows for
-#'   variants that are excluded in the analysis. The discarded variants belong
-#'   to the following categories:
-#'       * Duplicated "CHROM" and "POS" values.
-#'       * Chromosome names that contain "#".
-#'       * Chromosome names that contain "GL".
-#'       * Chromosome names that contain "KI".
-#'       * Chromosome names that contain "random".
-#'       * Chromosome names that contain "Hs".
-#'       * Chromosome names that contain "M".
-#' @md
+#' @inheritSection ReadAndSplitMutectVCFs Value
 #'
 #' @keywords internal
 SplitListOfMutectVCFs <- function(list.of.vcfs) {
   list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
   list.of.discarded.variants <- 
     lapply(list.of.vcfs, function(f2) f2$discarded.variants)
-  # Remove NULL elements from list.of.discarded.variants
-  list.of.discarded.variants2 <- 
-    Filter(Negate(is.null), list.of.discarded.variants)
   
   v1 <- lapply(list.of.vcfs.df, SplitOneMutectVCF)
   SBS <- lapply(v1, function(x) x$SBS)
@@ -825,14 +845,9 @@ SplitListOfMutectVCFs <- function(list.of.vcfs) {
   other.subs <- lapply(v1, function(x) x$other.subs)
   multiple.alt <- lapply(v1, function(x) x$multiple.alt)
   
-  if (length(list.of.discarded.variants2) == 0){
-    return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
-                multiple.alt = multiple.alt))
-  } else {
-    return(list(SBS = SBS, DBS = DBS, ID = ID, other.subs = other.subs,
-                multiple.alt = multiple.alt, 
-                discarded.variants = list.of.discarded.variants2))
-  }
+  CheckAndReturnSplitListOfMutectVCFs(SBS, DBS, ID, other.subs, 
+                                      multiple.alt, 
+                                      list.of.discarded.variants)
 }
 
 #' Add sequence context to a data frame with mutation records

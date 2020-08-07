@@ -21,16 +21,15 @@ VCF-like data frame with left-over rows).
 \item \code{DBS}: List of VCFs with only doublet base substitutions as called
 by Mutect.
 \item \code{ID}: List of VCFs with only small insertions and deletions.
-\item \code{other.subs}: List of VCF like data.frames with rows for coordinate
-substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
-GGTA) and rows for complex indels.
-\item \code{multiple.alt}: List of VCF like data.frames with rows for variants
-with multiple alternative alleles, for example ACT mutated to both AGT and
-ACT at the same position.
-\item \code{discarded.variants}: \strong{Only appearing when there are
-variants that were discarded.} List of VCF like data.frames with rows for
-variants that are excluded in the analysis. The discarded variants belong
-to the following categories:
+\item \code{other.subs}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for coordinate substitutions involving 3 or more
+nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
+\item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants with multiple alternative alleles,
+for example ACT mutated to both AGT and ACT at the same position.
+\item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants that are excluded in the analysis.
+The variants not analyzed belong to the following categories:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
 \item Chromosome names that contain "#".

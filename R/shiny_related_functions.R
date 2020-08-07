@@ -538,18 +538,17 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #'   3. \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'   4. \code{other.subs}: List of VCF like data.frames with rows for coordinate
-#'   substitutions involving 3 or more nucleotides (e.g. ACT > TGA or AACT >
-#'   GGTA) and rows for complex indels.
+#'   4. \code{other.subs}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for coordinate substitutions involving 3 or more
+#'   nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'   5. \code{multiple.alt}: List of VCF like data.frames with rows for variants
-#'   with multiple alternative alleles, for example ACT mutated to both AGT and
-#'   ACT at the same position.
+#'   5. \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants with multiple alternative alleles,
+#'   for example ACT mutated to both AGT and ACT at the same position.
 #'
-#'   6. \code{discarded.variants}: \strong{Only appearing when there are
-#'   variants that were discarded.} List of VCF like data.frames with rows for
-#'   variants that are excluded in the analysis. The discarded variants belong
-#'   to the following categories:
+#'   6. \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants that are excluded in the analysis.
+#'   The variants not analyzed belong to the following categories:
 #'       * Duplicated "CHROM" and "POS" values.
 #'       * Chromosome names that contain "#".
 #'       * Chromosome names that contain "GL".
