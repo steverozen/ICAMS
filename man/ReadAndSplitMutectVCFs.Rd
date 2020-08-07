@@ -28,7 +28,7 @@ Read and split Mutect VCF files
 }
 \section{Value}{
  A list containing the following objects:
-\enumerate{
+\itemize{
 \item \code{SBS}: List of VCFs with only single base substitutions.
 \item \code{DBS}: List of VCFs with only doublet base substitutions as called
 by Mutect.
@@ -38,16 +38,19 @@ like data.frames with rows for coordinate substitutions involving 3 or more
 nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 \item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
 like data.frames with rows for variants with multiple alternative alleles,
-for example ACT mutated to both AGT and ACT at the same position.
+for example ACA mutated to both AGA and ATA at the same position.
 \item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
-like data.frames with rows for variants that are excluded in the analysis.
-The variants not analyzed belong to the following categories:
+like data.frames with rows for variants that were discarded immediately
+after reading in the VCFs. The variants not analyzed can belong to the
+following categories:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
 \item Chromosome names that contain "#".
 \item Chromosome names that contain "GL".
 \item Chromosome names that contain "KI".
 \item Chromosome names that contain "random".
+}
+\itemize{
 \item Chromosome names that contain "Hs".
 \item Chromosome names that contain "M".
 }

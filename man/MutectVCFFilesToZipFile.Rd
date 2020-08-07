@@ -86,25 +86,44 @@ A list containing the following objects:
 3 SBS catalogs (one each for 96, 192, and 1536).
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
-\item \code{catID}: A \strong{list} of elements:
-\itemize{
-\item \code{catalog}: The ID (small insertion and deletion) catalog with
-attributes added. See \code{\link{as.catalog}} for more details.
-\item \code{annotated.vcfs}: A list of data frames which contain the original VCF
-ID mutation rows with three additional columns \code{seq.context.width},
-\code{seq.context} and \code{ID.class} added. The category assignment of each
-ID mutation in VCF can be obtained from \code{ID.class} column.
+\item \code{catID}: Matrix of ID (small insertion and deletion) catalog.
 \item \code{discarded.variants}:
-\strong{Only appearing when there are ID variants that were discarded}.
-A list of data frames which contain the discarded variants from the original VCF.
-The discarded variants can belong to the following types:
-\enumerate{
-\item Variants which have the same number of bases for REF and ALT alleles.
+\strong{Only appearing when} there are variants that were excluded in the
+analysis.
+A list of elements:
+\itemize{
+\item \code{SBS}: SBS variants whose pentanucleotide context contains "N".
+\item \code{DBS}: DBS variants whose tetranucleotide context contains "N".
+\item \code{ID}: ID variants discarded that can belong to the following
+categories:
+\itemize{
 \item Variants which have empty REF or ALT allels.
-\item Complex indels.
-\item Variants with mismatches between VCF and reference sequence.
+\item Variants whose \code{REF} do not match the extracted sequence from
+\code{ref.genome}.
+\item Variants which cannot be categorized according to the canonical
+representation. See catalog.row.order$ID for the canonical
+representation.
+}
+\item \code{other.subs}: Variants involving 3 or more nucleotides (e.g. ACT >
+TGA or AACT > GGTA) and complex indels.
+\item \code{multiple.alt}: Variants with multiple alternative alleles, for
+example ACA mutated to both AGA and ATA at the same position.
+\item \code{not.analyzed}: Variants discarded immediately after reading in
+the VCFs:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
 }
 }
+\item \code{annotated.vcfs}:
+\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+A list of data frames which contain the original VCF with additional columns
+showing the mutation class for each variant.
 }
 
 If \code{trans.ranges} is not provided by user and cannot be inferred by

@@ -35,6 +35,10 @@ information.}
 
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
+
+\item{return.annotated.vcfs}{Whether to return the annotated VCFs with
+additional columns showing mutation class for each variant. Default is
+FALSE.}
 }
 \value{
 A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
