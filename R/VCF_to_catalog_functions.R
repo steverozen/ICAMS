@@ -687,6 +687,28 @@ ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
   return(vcfs)
 }
 
+#' @keywords internal
+CheckAndReturnSplitOneMutectVCF <- 
+  function(SBS.df, DBS.df, ID.df, other.subs.df, multiple.alt.df) {
+    if (nrow(other.subs) == 0) {
+      if (nrow(multiple.alt == 0)) {
+        return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df))
+      } else {
+        return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df, 
+                    multiple.alt = multiple.alt.df))
+      }
+    } else {
+      if (nrow(multiple.alt == 0)) {
+        return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
+                    other.subs = other.subs.df))
+      } else {
+        return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
+                    other.subs = other.subs.df, 
+                    multiple.alt = multiple.alt.df))
+      }
+    }
+  }
+
 #' @title Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
 #'
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
@@ -746,10 +768,9 @@ SplitOneMutectVCF <- function(vcf.df) {
   }
   
   other.df2 <- rbind(other.df, complex.indels)
-
-  return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
-              other.subs = other.df2, multiple.alt = multiple.alt.df))
-
+  
+  CheckAndReturnSplitOneMutectVCF(SBS.df, DBS.df, ID.df, 
+                                  other.df2, multiple.alt.df)
 }
 
 #' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
