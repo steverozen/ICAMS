@@ -232,10 +232,11 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 #'   of catalog.
 #'   
-#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
-#'   references in the ID (insertion/deletion) VCF, generate messages showing
-#'   the mismatched rows and continue. Otherwise \code{stop} if there are
-#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
+#' @param flag.mismatches Deprecated. If there are ID variants whose \code{REF}
+#'   do not match the extracted sequence from \code{ref.genome}, the function
+#'   will automatically discard these variants and an element
+#'   \code{discarded.variants} will appear in the return value. See
+#'   \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @importFrom utils glob2rx 
 #' 
@@ -930,10 +931,7 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #' @param region A character string acting as a region identifier, one of
 #' "genome", "exome".
 #' 
-#' @param flag.mismatches Deprecated. If there are mismatches to references in
-#'   the ID (insertion/deletion) VCF, the function will automatically discard
-#'   these rows. User can refer to the element discarded.variants in the return
-#'   value for more details. See \code{\link{AnnotateIDVCF}} for more details.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
 #' @section Value:
 #' A \strong{list} of elements:

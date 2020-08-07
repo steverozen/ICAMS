@@ -21,10 +21,11 @@ the sample ids in the output catalog.}
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
 
-\item{flag.mismatches}{Deprecated. If there are mismatches to references in
-the ID (insertion/deletion) VCF, the function will automatically discard
-these rows. User can refer to the element discarded.variants in the return
-value for more details. See \code{\link{AnnotateIDVCF}} for more details.}
+\item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
+do not match the extracted sequence from \code{ref.genome}, the function
+will automatically discard these variants and an element
+\code{discarded.variants} will appear in the return value. See
+\code{\link{AnnotateIDVCF}} for more details.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from ID VCFs

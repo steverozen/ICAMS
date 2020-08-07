@@ -2228,10 +2228,11 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 #'   \eqn{x} indicates the type of catalog plotted in the file.
 #'   
-#' @param flag.mismatches Optional. If > 0, then if there are mismatches to
-#'   references in the ID (insertion/deletion) VCF, generate messages showing
-#'   the mismatched rows and continue. Otherwise \code{stop} if there are
-#'   mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.
+#' @param flag.mismatches Deprecated. If there are ID variants whose \code{REF}
+#'   do not match the extracted sequence from \code{ref.genome}, the function
+#'   will automatically discard these variants and an element
+#'   \code{discarded.variants} will appear in the return value. See
+#'   \code{\link{AnnotateIDVCF}} for more details.
 #'
 #' @section Value:  
 #' A list containing the following objects:

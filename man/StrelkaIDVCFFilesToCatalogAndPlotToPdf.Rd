@@ -33,10 +33,11 @@ will be used as the names of the VCF files.}
 \item{output.file}{Optional. The base name of the PDF file to be produced;
 the file is ending in \code{catID.pdf}.}
 
-\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
-references in the ID (insertion/deletion) VCF, generate messages showing
-the mismatched rows and continue. Otherwise \code{stop} if there are
-mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
+\item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
+do not match the extracted sequence from \code{ref.genome}, the function
+will automatically discard these variants and an element
+\code{discarded.variants} will appear in the return value. See
+\code{\link{AnnotateIDVCF}} for more details.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
