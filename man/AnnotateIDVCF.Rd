@@ -3,7 +3,7 @@
 \name{AnnotateIDVCF}
 \alias{AnnotateIDVCF}
 \title{Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-  confirm that they match the given reference genome}
+confirm that they match the given reference genome}
 \usage{
 AnnotateIDVCF(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL)
 }
@@ -24,28 +24,29 @@ will automatically discard these variants. See element
 \item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
-A list whose first element "annotated.vcf" contains the original VCF data
-  frame with 2 new columns added to the input data frame:
-  \enumerate{ 
-  \item \code{seq.context}
-  The sequence embedding the variant.
-
-  \item \code{seq.context.width} The width of \code{seq.context} to the left.
-  }
-  If there are rows that are discarded from the original VCF data frame, the
-  function will generate a warning and a second element "discarded.variants"
-  will be included in the return value. The discarded variants can belong to the 
-  following types:
-  \enumerate{
-  \item Variants which have the same number of bases for REF and ALT alleles.
-  \item Variants which have empty REF or ALT allels.
-  \item Complex indels.
-  \item Variants with mismatches between VCF and reference sequence.
-  }
+A list of elements:
+\itemize{
+\item \code{annotated.vcf}: The original VCF data
+frame with two new columns added to the input data frame:
+\itemize{
+\item \code{seq.context}: The sequence embedding the variant.
+\item \code{seq.context.width}: The width of \code{seq.context} to the left.
+}
+\item \code{discarded.variants}: \strong{Only appearing when} there are variants
+that were excluded from the analysis.The discarded variants can belong to the
+following categories:
+\itemize{
+\item Variants which have the same number of bases for REF and ALT alleles.
+\item Variants which have empty REF or ALT allels.
+\item Complex indels.
+\item Variants whose REF allels do not match the extracted sequence from
+\code{ref.genome}.
+}
+}
 }
 \description{
 Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-  confirm that they match the given reference genome
+confirm that they match the given reference genome
 }
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf/",

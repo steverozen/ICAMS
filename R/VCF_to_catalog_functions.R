@@ -2261,12 +2261,12 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'     + \code{ID}: ID variants discarded that can belong to the following
 #'       categories:
 #'         - Variants which have empty REF or ALT allels.
-#'         - Variants whose \code{REF} do not match the extracted sequence from
+#'         - Variants whose REF allels do not match the extracted sequence from
 #'          \code{ref.genome}.
 #'         - Variants which cannot be categorized according to the canonical
 #'         representation. See catalog.row.order$ID for the canonical
 #'         representation.
-#'     + \code{other.subs}: Variants involving 3 or more nucleotides (e.g. ACT >
+#'     + \code{other.subs}: Variants involving three or more nucleotides (e.g. ACT >
 #'       TGA or AACT > GGTA) and complex indels.
 #'     + \code{multiple.alt}: Variants with multiple alternative alleles, for
 #'       example ACA mutated to both AGA and ATA at the same position.
@@ -2284,13 +2284,13 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
 #' A list of elements:
 #'     + \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
-#'     three additional columns \code{SBS96.class}, \code{SBS192.class} and
+#'     three new columns \code{SBS96.class}, \code{SBS192.class} and
 #'     \code{SBS1536.class} showing the mutation class for each SBS variant.
 #'     + \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
-#'     three additional columns \code{DBS78.class}, \code{DBS136.class} and
+#'     three new columns \code{DBS78.class}, \code{DBS136.class} and
 #'     \code{DBS144.class} showing the mutation class for each DBS variant.
-#'     + \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with an
-#'     additional column \code{ID.class} showing the mutation class for each
+#'     + \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with one
+#'     new column \code{ID.class} showing the mutation class for each
 #'     ID variant. 
 #' 
 #' If \code{trans.ranges} is not provided by user and cannot be inferred by

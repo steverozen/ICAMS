@@ -89,13 +89,13 @@ A list of elements:
 categories:
 \itemize{
 \item Variants which have empty REF or ALT allels.
-\item Variants whose \code{REF} do not match the extracted sequence from
+\item Variants whose REF allels do not match the extracted sequence from
 \code{ref.genome}.
 \item Variants which cannot be categorized according to the canonical
 representation. See catalog.row.order$ID for the canonical
 representation.
 }
-\item \code{other.subs}: Variants involving 3 or more nucleotides (e.g. ACT >
+\item \code{other.subs}: Variants involving three or more nucleotides (e.g. ACT >
 TGA or AACT > GGTA) and complex indels.
 \item \code{multiple.alt}: Variants with multiple alternative alleles, for
 example ACA mutated to both AGA and ATA at the same position.
@@ -116,13 +116,13 @@ the VCFs:
 A list of elements:
 \itemize{
 \item \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
-three additional columns \code{SBS96.class}, \code{SBS192.class} and
+three new columns \code{SBS96.class}, \code{SBS192.class} and
 \code{SBS1536.class} showing the mutation class for each SBS variant.
 \item \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
-three additional columns \code{DBS78.class}, \code{DBS136.class} and
+three new columns \code{DBS78.class}, \code{DBS136.class} and
 \code{DBS144.class} showing the mutation class for each DBS variant.
-\item \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with an
-additional column \code{ID.class} showing the mutation class for each
+\item \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with one
+new column \code{ID.class} showing the mutation class for each
 ID variant.
 }
 }

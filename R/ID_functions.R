@@ -28,24 +28,20 @@
 #' 
 #' @importFrom dplyr bind_rows
 #'
-#' @return A list whose first element "annotated.vcf" contains the original VCF data
-#'   frame with 2 new columns added to the input data frame:
-#'   \enumerate{ 
-#'   \item \code{seq.context}
-#'   The sequence embedding the variant.
-#'
-#'   \item \code{seq.context.width} The width of \code{seq.context} to the left.
-#'   }
-#'   If there are rows that are discarded from the original VCF data frame, the
-#'   function will generate a warning and a second element "discarded.variants"
-#'   will be included in the return value. The discarded variants can belong to the 
-#'   following types:
-#'   \enumerate{
-#'   \item Variants which have the same number of bases for REF and ALT alleles.
-#'   \item Variants which have empty REF or ALT allels.
-#'   \item Complex indels.
-#'   \item Variants with mismatches between VCF and reference sequence.
-#'   }
+#' @return A list of elements:
+#'   * \code{annotated.vcf}: The original VCF data
+#'   frame with two new columns added to the input data frame:
+#'       + \code{seq.context}: The sequence embedding the variant.
+#'       + \code{seq.context.width}: The width of \code{seq.context} to the left.
+#'   * \code{discarded.variants}: \strong{Only appearing when} there are variants
+#'   that were excluded from the analysis.The discarded variants can belong to the 
+#'   following categories:
+#'       + Variants which have the same number of bases for REF and ALT alleles.
+#'       + Variants which have empty REF or ALT allels.
+#'       + Complex indels.
+#'       + Variants whose REF allels do not match the extracted sequence from
+#'          \code{ref.genome}.
+#' @md
 #' 
 #' @export
 #' 
