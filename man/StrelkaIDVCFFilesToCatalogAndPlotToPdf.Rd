@@ -53,14 +53,16 @@ A \strong{list} of elements:
 \itemize{
 \item \code{catalog}: The ID (small insertion and deletion) catalog with
 attributes added. See \code{\link{as.catalog}} for more details.
-\item \code{annotated.vcfs}: A list of data frames which contain the original VCF
-ID mutation rows with three additional columns \code{seq.context.width},
-\code{seq.context} and \code{ID.class} added. The category assignment of each
-ID mutation in VCF can be obtained from \code{ID.class} column.
+\item \code{annotated.vcfs}:
+\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+data frames which contain the original VCF's ID mutation rows with three
+additional columns \code{seq.context.width}, \code{seq.context} and
+\code{ID.class} added. The category assignment of each ID mutation in VCF can
+be obtained from \code{ID.class} column.
 \item \code{discarded.variants}:
-\strong{Only appearing when there are ID variants that were discarded}.
-A list of data frames which contain the discarded variants from the original VCF.
-The discarded variants can belong to the following types:
+\strong{Only appearing when} there are ID variants that were discarded. A
+list of data frames which contain the discarded variants from the original
+VCF. The discarded variants can belong to the following types:
 \enumerate{
 \item Variants which have the same number of bases for REF and ALT alleles.
 \item Variants which have empty REF or ALT allels.

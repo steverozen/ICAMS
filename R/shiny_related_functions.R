@@ -928,6 +928,36 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
                             discarded.variants, annotated.vcfs)
 }
 
+#' Check and return ID catalog 
+#'
+#' @param catID An ID catalog.
+#' 
+#' @param discarded.variants A list of discarded variants.
+#' 
+#' @param annotated.vcfs A list of annotated VCFs.
+#'
+#' @return A list of ID catalog. Also return the discarded variants and
+#'   annotated VCFs if they exit.
+#'   
+#' @keywords internal
+CheckAndReturnIDCatalog <- 
+  function(catID, discarded.variants, annotated.vcfs) {
+    if (length(discarded.variants) == 0) {
+      if (length(annotated.vcfs) == 0) {
+        return(list(catalog = catID))
+      } else {
+        return(list(catalog = catID, annotated.vcfs = annotated.vcfs))
+      }
+    } else {
+      if (length(annotated.vcfs) == 0) {
+        return(list(catalog = catID, discarded.variants = discarded.variants))
+      } else {
+        return(list(catalog = catID, discarded.variants = discarded.variants,
+                    annotated.vcfs = annotated.vcfs))
+      }
+    }
+  }
+
 #' Create ID (small insertion and deletion) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory ID VCFs. The list names will be
@@ -946,15 +976,17 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #' 
-#'   * \code{annotated.vcfs}: A list of data frames which contain the original VCF
-#' ID mutation rows with three additional columns \code{seq.context.width},
-#' \code{seq.context} and \code{ID.class} added. The category assignment of each
-#' ID mutation in VCF can be obtained from \code{ID.class} column.
+#'   * \code{annotated.vcfs}: 
+#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+#' data frames which contain the original VCF's ID mutation rows with three
+#' additional columns \code{seq.context.width}, \code{seq.context} and
+#' \code{ID.class} added. The category assignment of each ID mutation in VCF can
+#' be obtained from \code{ID.class} column.
 #' 
 #'   * \code{discarded.variants}: 
-#' \strong{Only appearing when there are ID variants that were discarded}.
-#' A list of data frames which contain the discarded variants from the original VCF.
-#' The discarded variants can belong to the following types:
+#' \strong{Only appearing when} there are ID variants that were discarded. A
+#' list of data frames which contain the discarded variants from the original
+#' VCF. The discarded variants can belong to the following types:
 #' \enumerate{
 #' \item Variants which have the same number of bases for REF and ALT alleles.
 #' \item Variants which have empty REF or ALT allels.
@@ -983,13 +1015,14 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
-                             flag.mismatches = 0) {
+                             flag.mismatches = 0,
+                             return.annotated.vcfs = FALSE) {
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
   catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
   rownames(catID) <- ICAMS::catalog.row.order$ID
-  out.list.of.vcfs <- discarded.variants <- list()
+  annotated.vcfs <- discarded.variants <- list()
   discarded.variants.vcf.name <- character()
   
   vcf.names <- names(list.of.vcfs)
@@ -1006,14 +1039,16 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
     if (!is.null(list$discarded.variants)) {
       df <- dplyr::bind_rows(df, list$discarded.variants)
     }
-    # Unlike the case for SBS and DBS, we do not
-    # add transcript information.
-    tmp <- CreateOneColIDMatrix(list$annotated.vcf, sample.id = sample.id)
-    one.ID.column <- tmp[[1]]
-    out.list.of.vcfs <- c(out.list.of.vcfs, list(tmp[[2]]))
+    # Unlike the case for SBS and DBS, we do not add transcript information.
+    tmp <- CreateOneColIDMatrix(list$annotated.vcf, sample.id = sample.id, 
+                                return.annotated.vcf = return.annotated.vcfs)
+    one.ID.column <- tmp$catalog
     rm(ID)
     catID <- cbind(catID, one.ID.column)
     
+    if (return.annotated.vcfs == TRUE) {
+      annotated.vcfs <- c(annotated.vcfs, list(tmp$annotated.vcf))
+    }
     if (!is.null(tmp$discarded.variants)) {
       df <- dplyr::bind_rows(df, tmp$discarded.variants)
     }
@@ -1025,21 +1060,13 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   }
   
   colnames(catID) <- names(list.of.vcfs)
-  names(out.list.of.vcfs) <- names(list.of.vcfs)
-  names(discarded.variants) <- discarded.variants.vcf.name
-  
-  if (length(discarded.variants) == 0) {
-    return(list(catalog = 
-                  as.catalog(catID, ref.genome = ref.genome,
-                             region = region, catalog.type = "counts"),
-                annotated.vcfs = out.list.of.vcfs))
-  } else {
-    return(list(catalog = 
-                  as.catalog(catID, ref.genome = ref.genome,
-                             region = region, catalog.type = "counts"),
-                annotated.vcfs = out.list.of.vcfs,
-                discarded.variants = discarded.variants))
+  catID <- as.catalog(catID, ref.genome = ref.genome,
+                      region = region, catalog.type = "counts")
+  if (return.annotated.vcfs == TRUE) {
+    names(annotated.vcfs) <- names(list.of.vcfs)
   }
+  names(discarded.variants) <- discarded.variants.vcf.name
+  CheckAndReturnIDCatalog(catID, discarded.variants, annotated.vcfs)
 }
 
 #' Calculate the number of space needed to add strand bias statistics to
