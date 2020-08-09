@@ -1,7 +1,7 @@
 context("Test functions dealing with discarded variants")
 
 test_that("ReadAndSplitMutectVCFs", {
-  files <- list.files(path = "testdata/Mutect-GRCh37/", full.names = TRUE)
+  files <- list.files(path = "testdata/Mutect-GRCh37", full.names = TRUE)
   files1 <- files[1:2]
   list.of.vcfs1 <- ReadAndSplitMutectVCFs(files1)
   expect_null(list.of.vcfs1$other.subs)
@@ -14,6 +14,25 @@ test_that("ReadAndSplitMutectVCFs", {
     expect_warning(ReadAndSplitMutectVCFs(files2,
                                           suppress.discarded.variants.warnings = FALSE))
     
+  expect_false(is.null(list.of.vcfs2$multiple.alt))
+  expect_false(is.null(list.of.vcfs2$other.subs))
+  expect_false(is.null(list.of.vcfs2$not.analyzed))
+})
+
+test_that("ReadAndSplitStrelkaSBSVCFs", {
+  files <- list.files(path = "testdata/Strelka-SBS-GRCh37", full.names = TRUE)
+  files1 <- files[1:2]
+  list.of.vcfs1 <- ReadAndSplitStrelkaSBSVCFs(files1)
+  expect_null(list.of.vcfs1$other.subs)
+  expect_false(is.null(list.of.vcfs1$multiple.alt))
+  expect_null(list.of.vcfs1$not.analyzed)
+  
+  files2 <- files
+  list.of.vcfs2 <- ReadAndSplitStrelkaSBSVCFs(files2)
+  list.of.vcfs3 <- 
+    expect_warning(ReadAndSplitStrelkaSBSVCFs(files2,
+                                          suppress.discarded.variants.warnings = FALSE))
+  
   expect_false(is.null(list.of.vcfs2$multiple.alt))
   expect_false(is.null(list.of.vcfs2$other.subs))
   expect_false(is.null(list.of.vcfs2$not.analyzed))
