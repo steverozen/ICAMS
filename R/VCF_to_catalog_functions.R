@@ -46,7 +46,7 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
     dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
     warning("In ", file, " ", 2 * length(dups), " row out of ",
             nrow(df), " had duplicate CHROM and POS and were removed. ",
-            "See discarded.variants in the return value for more details")
+            "See the discarded variants in the return value for more details")
     df1 <- df[-c(dups, dups2), ]
     return(list(df = df1, discarded.variants = df[c(dups, dups2), ]))
   } else {
