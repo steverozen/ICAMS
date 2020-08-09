@@ -1250,7 +1250,7 @@ AddRunInformation <-
                       "# of SBS", "  ",
                       "# of DBS", "  ",
                       "# of ID", "  ",
-                      "# of excluded variants*", "  "),
+                      "# of discarded variants*", "  "),
                run.info)
     
     num.of.file <- length(files)
@@ -1268,16 +1268,16 @@ AddRunInformation <-
                                  side = "right"), "  ",
                         stri_pad(mutation.loads$ID[i], width = 7,
                                  side = "right"), "  ",
-                        stri_pad(mutation.loads$excluded.variants[i], 
-                                 width = 22, side = "right")), 
+                        stri_pad(mutation.loads$discarded.variants[i], 
+                                 width = 23, side = "right")), 
                  run.info)
       
     }
-    # Add a disclaimer about excluded variants in the analysis
+    # Add a disclaimer about discarded variants in the analysis
     writeLines("", run.info)
-    writeLines(paste0("* Triplet and above base substitutions, ", 
-                      "complex indels, and variants with multiple alternative ",
-                      "alleles are excluded from the analysis."), run.info)
+    writeLines(paste0("* For details about the various types of discarded  ", 
+                      "variants, please refer to element discarded.variants  ",
+                      "in the return value."), run.info)
     
     # Add strand bias statistics for SBS12 plot
     if (!is.null(strand.bias.statistics)) {
