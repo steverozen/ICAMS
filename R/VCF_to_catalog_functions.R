@@ -2137,14 +2137,52 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
-#' @return  A list of 3 SBS catalogs (one each for 96, 192, and 1536), 3 DBS
-#'   catalogs (one each for 78, 136, and 144) and their graphs plotted to PDF
-#'   with specified file name. If \code{trans.ranges} is not provided by user
-#'   and cannot be inferred by ICAMS, SBS 192 and DBS 144 catalog will not be
-#'   generated and plotted. Each catalog has attributes added. See
-#'   \code{\link{as.catalog}} for more details.
+#' @section Value:  
+#' A list containing the following objects:
+#' 
+#' * \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
+#' 3 SBS catalogs (one each for 96, 192, and 1536).
+#' 
+#' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+#' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' @note SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+#' * \code{discarded.variants}: 
+#' \strong{Only appearing when} there are variants that were excluded in the
+#' analysis. 
+#' A list of elements:
+#'     + \code{SBS}: SBS variants whose pentanucleotide context contains "N".
+#'     + \code{DBS}: DBS variants whose tetranucleotide context contains "N".
+#'     + \code{ThreePlus}: Variants involving three or more nucleotides (e.g. ACT >
+#'       TGA or AACT > GGTA).
+#'     + \code{multiple.alt}: Variants with multiple alternative alleles, for
+#'       example ACA mutated to both AGA and ATA at the same position.
+#'     + \code{not.analyzed}: Variants discarded immediately after reading in
+#'     the VCFs:
+#'         - Duplicated "CHROM" and "POS" values.
+#'         - Chromosome names that contain "#".
+#'         - Chromosome names that contain "GL".
+#'         - Chromosome names that contain "KI".
+#'         - Chromosome names that contain "random".
+#'         - Chromosome names that contain "Hs".
+#'         - Chromosome names that contain "M".
+#'   
+#' * \code{annotated.vcfs}: 
+#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+#' A list of elements:
+#'     + \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+#'     three new columns \code{SBS96.class}, \code{SBS192.class} and
+#'     \code{SBS1536.class} showing the mutation class for each SBS variant.
+#'     + \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
+#'     three new columns \code{DBS78.class}, \code{DBS136.class} and
+#'     \code{DBS144.class} showing the mutation class for each DBS variant.
+#' 
+#' If \code{trans.ranges} is not provided by user and cannot be inferred by
+#' ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#' attributes added. See \code{\link{as.catalog}} for more details.
+#' @md
+#'
+#' @section Note: SBS 192 and DBS 144 catalogs include only mutations in
+#'   transcribed regions.
 #' 
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
 #' 

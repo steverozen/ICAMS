@@ -51,13 +51,6 @@ FALSE.}
 warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
-\value{
-A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS
-  catalogs (one each for 78, 136, and 144). If \code{trans.ranges} is not
-  provided by user and cannot be inferred by ICAMS, SBS 192 and DBS 144
-  catalog will not be generated. Each catalog has attributes added. See
-  \code{\link{as.catalog}} for more details.
-}
 \description{
 Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 the Strelka SBS VCFs specified by \code{files}. The function will find and
@@ -68,9 +61,60 @@ threshold value for VAF is 0.02.
 This function calls \code{\link{VCFsToSBSCatalogs}} and
 \code{\link{VCFsToDBSCatalogs}}.
 }
-\note{
-SBS 192 and DBS 144 catalog only contains mutations in transcribed regions.
+\section{Value}{
+
+A list containing the following objects:
+\itemize{
+\item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of
+3 SBS catalogs (one each for 96, 192, and 1536).
+\item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+3 DBS catalogs (one each for 78, 136, and 144).
+\item \code{discarded.variants}:
+\strong{Only appearing when} there are variants that were excluded in the
+analysis.
+A list of elements:
+\itemize{
+\item \code{SBS}: SBS variants whose pentanucleotide context contains "N".
+\item \code{DBS}: DBS variants whose tetranucleotide context contains "N".
+\item \code{ThreePlus}: Variants involving three or more nucleotides (e.g. ACT >
+TGA or AACT > GGTA).
+\item \code{multiple.alt}: Variants with multiple alternative alleles, for
+example ACA mutated to both AGA and ATA at the same position.
+\item \code{not.analyzed}: Variants discarded immediately after reading in
+the VCFs:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
 }
+}
+\item \code{annotated.vcfs}:
+\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+A list of elements:
+\itemize{
+\item \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+three new columns \code{SBS96.class}, \code{SBS192.class} and
+\code{SBS1536.class} showing the mutation class for each SBS variant.
+\item \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
+three new columns \code{DBS78.class}, \code{DBS136.class} and
+\code{DBS144.class} showing the mutation class for each DBS variant.
+}
+}
+
+If \code{trans.ranges} is not provided by user and cannot be inferred by
+ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+attributes added. See \code{\link{as.catalog}} for more details.
+}
+
+\section{Note}{
+ SBS 192 and DBS 144 catalogs include only mutations in
+transcribed regions.
+}
+
 \section{Comments}{
 
 To add or change attributes of the catalog, you can use function
