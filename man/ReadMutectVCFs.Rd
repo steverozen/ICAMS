@@ -4,7 +4,12 @@
 \alias{ReadMutectVCFs}
 \title{Read Mutect VCF files.}
 \usage{
-ReadMutectVCFs(files, names.of.VCFs = NULL, tumor.col.names = NA)
+ReadMutectVCFs(
+  files,
+  names.of.VCFs = NULL,
+  tumor.col.names = NA,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}

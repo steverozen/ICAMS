@@ -46,6 +46,10 @@ do not match the extracted sequence from \code{ref.genome}, the function
 will automatically discard these variants and an element
 \code{discarded.variants} will appear in the return value. See
 \code{\link{AnnotateIDVCF}} for more details.}
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs

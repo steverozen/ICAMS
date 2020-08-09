@@ -13,7 +13,8 @@ MutectVCFFilesToZipFile(
   names.of.VCFs = NULL,
   tumor.col.names = NA,
   base.filename = "",
-  flag.mismatches = 0
+  flag.mismatches = 0,
+  return.annotated.vcfs = FALSE
 )
 }
 \arguments{
@@ -67,6 +68,10 @@ do not match the extracted sequence from \code{ref.genome}, the function
 will automatically discard these variants and an element
 \code{discarded.variants} will appear in the return value. See
 \code{\link{AnnotateIDVCF}} for more details.}
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and

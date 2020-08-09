@@ -35,8 +35,8 @@ will automatically discard these variants and an element
 \code{discarded.variants} will appear in the return value. See
 \code{\link{AnnotateIDVCF}} for more details.}
 
-\item{return.annotated.vcfs}{Whether to return the annotated VCFs with
-additional columns showing mutation class for each variant. Default is
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
 FALSE.}
 }
 \description{

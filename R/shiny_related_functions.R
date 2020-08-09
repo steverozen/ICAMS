@@ -241,6 +241,10 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'   will automatically discard these variants and an element
 #'   \code{discarded.variants} will appear in the return value. See
 #'   \code{\link{AnnotateIDVCF}} for more details.
+#'   
+#' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
+#'   with additional columns showing mutation class for each variant. Default is
+#'   FALSE.
 #'
 #' @importFrom utils glob2rx 
 #' 
@@ -276,7 +280,8 @@ MutectVCFFilesToZipFile <- function(dir,
                                     names.of.VCFs = NULL, 
                                     tumor.col.names = NA,
                                     base.filename = "",
-                                    flag.mismatches = 0){
+                                    flag.mismatches = 0,
+                                    return.annotated.vcfs = FALSE){
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   vcf.names <- basename(files)
@@ -620,9 +625,12 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitMutectVCFs(file)
 ReadAndSplitMutectVCFs <- 
-  function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
-    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names)
-    split.vcfs <- SplitListOfMutectVCFs(vcfs)
+  function(files, names.of.VCFs = NULL, tumor.col.names = NA,
+           suppress.discarded.variants.warnings = TRUE) {
+    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names,
+                           suppress.discarded.variants.warnings)
+    split.vcfs <- 
+      SplitListOfMutectVCFs(vcfs, suppress.discarded.variants.warnings)
     return(split.vcfs)
   }
 

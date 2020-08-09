@@ -5,7 +5,10 @@
 \title{Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 VCF-like data frame with left-over rows).}
 \usage{
-SplitListOfMutectVCFs(list.of.vcfs)
+SplitListOfMutectVCFs(
+  list.of.vcfs,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames.}

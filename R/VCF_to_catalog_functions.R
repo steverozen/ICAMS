@@ -366,6 +366,10 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
 #'   
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
+#' 
 #' @return A \strong{list} whose first element \code{df} is a data frame storing
 #'   data lines of the VCF file with two additional columns added which contain
 #'   the VAF(variant allele frequency) and read depth information. A second element
@@ -374,8 +378,13 @@ MakeDataFrameFromMutectVCF <- function(file) {
 #'   
 #' @keywords internal
 ReadMutectVCF <- 
-  function(file, name.of.VCF = NULL, tumor.col.name = NA) {
-  retval <- MakeDataFrameFromVCF(file)
+  function(file, name.of.VCF = NULL, tumor.col.name = NA,
+           suppress.discarded.variants.warnings = TRUE) {
+    if (suppress.discarded.variants.warnings == TRUE) {
+      retval <- suppressWarnings(MakeDataFrameFromVCF(file))
+    } else {
+      retval <- MakeDataFrameFromVCF(file)
+    }
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
   } else {
@@ -391,7 +400,11 @@ ReadMutectVCF <-
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
   }
   
-  retval2 <- StandardChromName(df1, file)
+  if (suppress.discarded.variants.warnings == TRUE) {
+    retval2 <- suppressWarnings(StandardChromName(df1, file)) 
+  } else {
+    retval2 <- StandardChromName(df1, file)
+  }
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
@@ -691,14 +704,14 @@ ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
 CheckAndReturnSplitOneMutectVCF <- 
   function(SBS.df, DBS.df, ID.df, other.subs.df, multiple.alt.df) {
     if (nrow(other.subs.df) == 0) {
-      if (nrow(multiple.alt.df == 0)) {
+      if (nrow(multiple.alt.df) == 0) {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df))
       } else {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df, 
                     multiple.alt = multiple.alt.df))
       }
     } else {
-      if (nrow(multiple.alt.df == 0)) {
+      if (nrow(multiple.alt.df) == 0) {
         return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
                     other.subs = other.subs.df))
       } else {
@@ -713,34 +726,31 @@ CheckAndReturnSplitOneMutectVCF <-
 #'
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
+#'  
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @return A list with 3 in-memory VCFs and two left-over
 #' VCF-like data frames with rows that were not incorporated
 #' into the first 3 VCFs, as follows:
 #'
-#' \enumerate{
+#'  * \code{SBS}: VCF with only single base substitutions.
 #'
-#'  \item \code{SBS} VCF with only single base substitutions.
-#'
-#'  \item \code{DBS} VCF with only doublet base substitutions
+#'  * \code{DBS}: VCF with only doublet base substitutions
 #'   as called by Mutect.
 #'
-#'  \item \code{ID} VCF with only small insertions and deletions.
+#'  * \code{ID}: VCF with only small insertions and deletions.
 #'
-#'  \item \code{other.subs} VCF like data.frame with
-#'  rows for coordinate substitutions involving
-#'  3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
-#'  and rows for complex indels.
+#'  * \code{other.subs}: \strong{Only appearing when} there is VCF like
+#'  data.frame with rows for coordinate substitutions involving 3 or more
+#'  nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'  \item \code{multiple.alt} VCF like data.frame with
-#'  rows for variants with multiple alternative alleles, for example
-#'  ACT mutated to both AGT and ACT at the same position.
-#'
-#' }
-#'
+#'  * \code{multiple.alt}: \strong{Only appearing when} there is VCF like
+#'  data.frame with rows for variants with multiple alternative alleles, for
+#'  example ACA mutated to both AGA and ATA at the same position.
+#'  @md
 #'
 #' @keywords internal
-SplitOneMutectVCF <- function(vcf.df) {
+SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL) {
   # Mutect VCFs can represent multiple non-reference alleles at the
   # same site; the alleles are separated by commas in the ALT columm;
   # these are quite rare and often dubious, so we ignore them.
@@ -749,6 +759,10 @@ SplitOneMutectVCF <- function(vcf.df) {
   
   if (length(multiple.alt) != 0) {
     df <- vcf.df[-multiple.alt, ]
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has variants with multiple alternative alleles and were ",
+            "discarded. See element multiple.alt in the return value for more ",
+            "details.")
   } else {
     df <- vcf.df
   }
@@ -758,13 +772,23 @@ SplitOneMutectVCF <- function(vcf.df) {
   DBS.df <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
 
   other.df <- df[nchar(df$REF) > 2 & nchar(df$ALT) == nchar(df$REF), ]
-
+  
+  if (nrow(other.df) > 0) {
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has variants involving three or more nucleotides and were ",
+            "discarded. See element other.subs in the return value for ", 
+            "more details.")
+  }
+    
   ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
   complex.indels.to.remove <- 
     which(substr(ID.df$REF, 1, 1) != substr(ID.df$ALT, 1, 1))
   complex.indels <- ID.df[complex.indels.to.remove, ]
   if (length(complex.indels.to.remove) > 0) {
     ID.df <- ID.df[-complex.indels.to.remove, ]
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has complex indels and were discarded. See element other.subs ",
+            "in the return value for more details.")
   }
   
   other.df2 <- rbind(other.df, complex.indels)
@@ -833,22 +857,38 @@ CheckAndReturnSplitListOfMutectVCFs <-
 #' @inheritSection ReadAndSplitMutectVCFs Value
 #'
 #' @keywords internal
-SplitListOfMutectVCFs <- function(list.of.vcfs) {
-  list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
-  list.of.discarded.variants <- 
-    lapply(list.of.vcfs, function(f2) f2$discarded.variants)
-  
-  v1 <- lapply(list.of.vcfs.df, SplitOneMutectVCF)
-  SBS <- lapply(v1, function(x) x$SBS)
-  DBS <- lapply(v1, function(x) x$DBS)
-  ID  <- lapply(v1, function(x) x$ID)
-  other.subs <- lapply(v1, function(x) x$other.subs)
-  multiple.alt <- lapply(v1, function(x) x$multiple.alt)
-  
-  CheckAndReturnSplitListOfMutectVCFs(SBS, DBS, ID, other.subs, 
-                                      multiple.alt, 
-                                      list.of.discarded.variants)
-}
+SplitListOfMutectVCFs <- 
+  function(list.of.vcfs,
+           suppress.discarded.variants.warnings = TRUE) {
+    names.of.VCFs <- names(list.of.vcfs)
+    list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
+    list.of.discarded.variants <- 
+      lapply(list.of.vcfs, function(f2) f2$discarded.variants)
+    
+    GetSplitMutectVCFs <- function(idx, list.of.vcfs) {
+      split.vcfs <- SplitOneMutectVCF(list.of.vcfs[[idx]], 
+                                      name.of.VCF = names(list.of.vcfs)[idx])
+      return(split.vcfs)
+    }
+    num.of.vcfs <- length(list.of.vcfs.df)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      v1 <- suppressWarnings(lapply(1:num.of.vcfs, GetSplitMutectVCFs,
+                                    list.of.vcfs = list.of.vcfs.df))
+    } else {
+      v1 <- lapply(1:num.of.vcfs, GetSplitMutectVCFs,
+                   list.of.vcfs = list.of.vcfs.df)
+    }
+    names(v1) <- names.of.VCFs
+    SBS <- lapply(v1, function(x) x$SBS)
+    DBS <- lapply(v1, function(x) x$DBS)
+    ID  <- lapply(v1, function(x) x$ID)
+    other.subs <- lapply(v1, function(x) x$other.subs)
+    multiple.alt <- lapply(v1, function(x) x$multiple.alt)
+    
+    CheckAndReturnSplitListOfMutectVCFs(SBS, DBS, ID, other.subs, 
+                                        multiple.alt, 
+                                        list.of.discarded.variants)
+  }
 
 #' Add sequence context to a data frame with mutation records
 #'
@@ -1286,7 +1326,8 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
 #'   
 #' @keywords internal
 ReadMutectVCFs <- 
-  function(files, names.of.VCFs = NULL, tumor.col.names = NA) {
+  function(files, names.of.VCFs = NULL, tumor.col.names = NA,
+           suppress.discarded.variants.warnings = TRUE) {
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
@@ -1300,13 +1341,16 @@ ReadMutectVCFs <-
     tumor.col.names <- rep(NA, num.of.files)
   }
   
-  GetMutectVCFs <- function(idx, files, vector1, vector2) {
-    ReadMutectVCF(file = files[idx], name.of.VCF = vector1[idx],
-                  tumor.col.name = vector2[idx])
+  GetMutectVCFs <- function(idx, files, names.of.VCFs, tumor.col.names,
+                            suppress.discarded.variants.warnings) {
+    ReadMutectVCF(file = files[idx], name.of.VCF = names.of.VCFs[idx],
+                  tumor.col.name = tumor.col.names[idx],
+                  suppress.discarded.variants.warnings)
   }
   
   vcfs <- lapply(1:num.of.files, FUN = GetMutectVCFs, 
-                 files, vcfs.names, tumor.col.names)
+                 files, vcfs.names, tumor.col.names, 
+                 suppress.discarded.variants.warnings)
   names(vcfs) <- vcfs.names
   return(vcfs)
 }
@@ -2237,8 +2281,8 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #'   \code{discarded.variants} will appear in the return value. See
 #'   \code{\link{AnnotateIDVCF}} for more details.
 #'   
-#' @param return.annotated.vcfs Whether to return the annotated VCFs with
-#'   additional columns showing mutation class for each variant. Default is
+#' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
+#'   with additional columns showing mutation class for each variant. Default is
 #'   FALSE.
 #'
 #' @section Value:  

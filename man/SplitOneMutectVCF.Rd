@@ -4,36 +4,34 @@
 \alias{SplitOneMutectVCF}
 \title{Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations}
 \usage{
-SplitOneMutectVCF(vcf.df)
+SplitOneMutectVCF(vcf.df, name.of.VCF = NULL)
 }
 \arguments{
 \item{vcf.df}{An in-memory data.frame representing a Mutect VCF, including
 VAFs, which are added by \code{\link{ReadMutectVCF}}.}
+
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 A list with 3 in-memory VCFs and two left-over
 VCF-like data frames with rows that were not incorporated
 into the first 3 VCFs, as follows:
 
-\enumerate{
+ * \code{SBS}: VCF with only single base substitutions.
 
- \item \code{SBS} VCF with only single base substitutions.
-
- \item \code{DBS} VCF with only doublet base substitutions
+ * \code{DBS}: VCF with only doublet base substitutions
   as called by Mutect.
 
- \item \code{ID} VCF with only small insertions and deletions.
+ * \code{ID}: VCF with only small insertions and deletions.
 
- \item \code{other.subs} VCF like data.frame with
- rows for coordinate substitutions involving
- 3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
- and rows for complex indels.
+ * \code{other.subs}: \strong{Only appearing when} there is VCF like
+ data.frame with rows for coordinate substitutions involving 3 or more
+ nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 
- \item \code{multiple.alt} VCF like data.frame with
- rows for variants with multiple alternative alleles, for example
- ACT mutated to both AGT and ACT at the same position.
-
-}
+ * \code{multiple.alt}: \strong{Only appearing when} there is VCF like
+ data.frame with rows for variants with multiple alternative alleles, for
+ example ACA mutated to both AGA and ATA at the same position.
+ @md
 }
 \description{
 Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations

@@ -4,7 +4,12 @@
 \alias{ReadAndSplitMutectVCFs}
 \title{Read and split Mutect VCF files}
 \usage{
-ReadAndSplitMutectVCFs(files, names.of.VCFs = NULL, tumor.col.names = NA)
+ReadAndSplitMutectVCFs(
+  files,
+  names.of.VCFs = NULL,
+  tumor.col.names = NA,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Mutect VCF files.}

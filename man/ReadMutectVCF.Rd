@@ -5,7 +5,12 @@
 \title{Read in the data lines of a Variant Call Format (VCF) file created by
     Mutect}
 \usage{
-ReadMutectVCF(file, name.of.VCF = NULL, tumor.col.name = NA)
+ReadMutectVCF(
+  file,
+  name.of.VCF = NULL,
+  tumor.col.name = NA,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}
@@ -20,6 +25,10 @@ sample information. It \strong{must} have quotation marks. If
 \code{tumor.col.name} is equal to \code{NA}(default), this function will
 use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
 A \strong{list} whose first element \code{df} is a data frame storing
