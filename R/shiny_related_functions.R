@@ -936,11 +936,25 @@ CheckAndReturnDBSCatalogs <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
-#' @return A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-#'   catDBS144 catDBS136. If \code{trans.ranges} is not provided by user and
-#'   cannot be inferred by ICAMS, DBS 144 catalog will not be generated. Each
-#'   catalog has attributes added. See \code{\link{as.catalog}} for more
-#'   details.
+#' @section Value:  
+#' A list containing the following objects:
+#' 
+#' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+#' 3 DBS catalogs (one each for 78, 136, and 144).
+#'
+#' * \code{discarded.variants}: \strong{Only appearing when} there are DBS
+#' variants whose tetranucleotide context contains "N".
+#'   
+#' * \code{annotated.vcfs}: \strong{Only appearing when}
+#' \code{return.annotated.vcfs} = TRUE. DBS VCF annotated by
+#' \code{\link{AnnotateDBSVCF}} with three new columns \code{DBS78.class},
+#' \code{DBS136.class} and \code{DBS144.class} showing the mutation class for
+#' each DBS variant.
+#' 
+#' If \code{trans.ranges} is not provided by user and cannot be inferred by
+#' ICAMS, DBS 144 catalog will not be generated. Each catalog has
+#' attributes added. See \code{\link{as.catalog}} for more details.
+#' @md
 #'
 #' @note DBS 144 catalog only contains mutations in transcribed regions.
 #'
