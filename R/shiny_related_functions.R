@@ -62,11 +62,9 @@ StrelkaSBSVCFFilesToZipFile <-
   mutation.loads <- GetMutationLoadsFromStrelkaSBSVCFs(catalogs0)
   strand.bias.statistics<- NULL
   
-  SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
-                                    trans.ranges, region)
-  DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
-                                    trans.ranges, region)
-  catalogs <- c(SBS.catalogs, DBS.catalogs)
+  # Retrieve the catalog matrix from catalogs0
+  catalogs <- catalogs0
+  catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
   
   output.file <- ifelse(base.filename == "",
                         paste0(tempdir(), .Platform$file.sep),
@@ -97,7 +95,7 @@ StrelkaSBSVCFFilesToZipFile <-
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
-  invisible(catalogs)
+  invisible(catalogs0)
 }
 
 #' Create a zip file which contains ID (small insertion and deletion) catalog
