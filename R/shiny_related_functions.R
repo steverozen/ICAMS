@@ -287,51 +287,36 @@ MutectVCFFilesToZipFile <-
     files <- list.files(path = dir, pattern = "\\.vcf$", 
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
-    catalogs <- MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                        region, names.of.VCFs, tumor.col.names,
-                                        flag.mismatches, return.annotated.vcfs,
-                                        suppress.discarded.variants.warnings)
-    split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
-    mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
-    strand.bias.statistics<- NULL
+    catalogs0 <- MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                                         region, names.of.VCFs, tumor.col.names,
+                                         flag.mismatches, return.annotated.vcfs,
+                                         suppress.discarded.variants.warnings)
+    mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
+    strand.bias.statistics <- NULL
     
-    SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
-                                      trans.ranges, region)
-    DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
-                                      trans.ranges, region)
-    ID.catalog <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                   region, flag.mismatches)
-    catalogs <- c(SBS.catalogs, DBS.catalogs, list(catID = ID.catalog))
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
     
     output.file <- ifelse(base.filename == "",
                           paste0(tempdir(), .Platform$file.sep),
                           file.path(tempdir(), paste0(base.filename, ".")))
     
     for (name in names(catalogs)) {
-      if (name == "catID") {
-        WriteCatalog(catalogs[[name]]$catalog,
-                     file = paste0(output.file, name, ".csv"))
-      } else {
         WriteCatalog(catalogs[[name]],
                      file = paste0(output.file, name, ".csv"))
-      }
     }
     
     for (name in names(catalogs)) {
-      if (name == "catID") {
-        PlotCatalogToPdf(catalogs[[name]]$catalog,
-                         file = paste0(output.file, name, ".pdf"))
-      } else {
-        PlotCatalogToPdf(catalogs[[name]],
-                         file = paste0(output.file, name, ".pdf"))
-        
-        if (name == "catSBS192") {
-          list <- PlotCatalogToPdf(catalogs[[name]],
-                                   file = paste0(output.file, "SBS12.pdf"),
-                                   plot.SBS12 = TRUE)
-          strand.bias.statistics <- 
-            c(strand.bias.statistics, list$strand.bias.statistics)
-        }
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      
+      if (name == "catSBS192") {
+        list <- PlotCatalogToPdf(catalogs[[name]],
+                                 file = paste0(output.file, "SBS12.pdf"),
+                                 plot.SBS12 = TRUE)
+        strand.bias.statistics <- 
+          c(strand.bias.statistics, list$strand.bias.statistics)
       }
     }
     
@@ -342,7 +327,7 @@ MutectVCFFilesToZipFile <-
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
-    invisible(catalogs)
+    invisible(catalogs0)
   }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files
@@ -1275,8 +1260,8 @@ AddRunInformation <-
     }
     # Add a disclaimer about discarded variants in the analysis
     writeLines("", run.info)
-    writeLines(paste0("* For details about the various types of discarded  ", 
-                      "variants, please refer to element discarded.variants  ",
+    writeLines(paste0("* For details about the various types of discarded ", 
+                      "variants, please refer to element discarded.variants ",
                       "in the return value."), run.info)
     
     # Add strand bias statistics for SBS12 plot

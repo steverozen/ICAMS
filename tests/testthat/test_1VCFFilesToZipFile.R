@@ -6,9 +6,7 @@ test_that("MutectVCFFilesToZipFile function with no base.filename", {
   dir <- "testdata/Mutect-GRCh37"
   out <- MutectVCFFilesToZipFile(dir, 
                                  zipfile = paste0(tempdir(), "/test.zip"), 
-                                 ref.genome = "hg19",
-                                 trans.ranges = trans.ranges.GRCh37,
-                                 region = "genome")
+                                 ref.genome = "hg19", region = "genome")
   expect_type(out, "list")
   name <- grep("\\.zip$", list.files(tempdir()), value = TRUE)
   expect_equal(name, "test.zip")
