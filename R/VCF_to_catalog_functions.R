@@ -161,8 +161,6 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
     vcf.name <- name.of.VCF
   }
   
-  df1 <- GetStrelkaVAF(retval$df, vcf.name)
-  
   # Create an empty data frame for discarded variants
   discarded.variants <- retval$df[0, ]
   
@@ -172,19 +170,21 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
   }
   
   if (suppress.discarded.variants.warnings == TRUE) {
-    retval2 <- suppressWarnings(StandardChromName(df1, file)) 
+    retval2 <- suppressWarnings(StandardChromName(retval$df, file)) 
   } else {
-    retval2 <- StandardChromName(df1, file)
+    retval2 <- StandardChromName(retval$df, file)
   }
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
   }
   
+  df1 <- GetStrelkaVAF(retval2$df, vcf.name)
+  
   if (nrow(discarded.variants) == 0) {
-    return(list(df = retval2$df))
+    return(list(df = df1))
   } else {
-    return(list(df = retval2$df, discarded.variants = discarded.variants))
+    return(list(df = df1, discarded.variants = discarded.variants))
   }
 }
 
