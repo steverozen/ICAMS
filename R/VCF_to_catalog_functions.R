@@ -1074,6 +1074,28 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
                                 "VAF", "read.depth")]))
 }
 
+#' @keywords internal
+CheckAndReturnSplitStrelkaSBSVCF <- 
+  function(SBS.df, DBS.df, ThreePlus.df, multiple.alt.df) {
+    if (nrow(ThreePlus.df) == 0) {
+      if (nrow(multiple.alt.df) == 0) {
+        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df))
+      } else {
+        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df, 
+                    multiple.alt = multiple.alt.df))
+      }
+    } else {
+      if (nrow(multiple.alt.df) == 0) {
+        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df,
+                    ThreePlus = ThreePlus.df))
+      } else {
+        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df,
+                    ThreePlus = ThreePlus.df, 
+                    multiple.alt = multiple.alt.df))
+      }
+    }
+  }
+
 #' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
 #'
@@ -1223,9 +1245,9 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
     warning("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
   }
-
-  return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
-              ThreePlus = other.ranges, multiple.alt = multiple.alt.df))
+  
+  CheckAndReturnSplitStrelkaSBSVCF(out.SBS.df, DBS.vcf.df, 
+                                   other.ranges, multiple.alt.df)
 }
 
 #' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
@@ -1245,8 +1267,10 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' @keywords internal
 SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
   list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
+  list.of.discarded.variants <- 
+    lapply(list.of.vcfs, function(f2) f2$discarded.variants)
   
-  split.vcfs <- lapply(list.of.vcfs, FUN = SplitStrelkaSBSVCF)
+  split.vcfs <- lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF)
   SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
   DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
   ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
