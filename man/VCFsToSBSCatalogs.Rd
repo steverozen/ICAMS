@@ -9,7 +9,8 @@ VCFsToSBSCatalogs(
   ref.genome,
   trans.ranges = NULL,
   region = "unknown",
-  return.annotated.vcfs = FALSE
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{

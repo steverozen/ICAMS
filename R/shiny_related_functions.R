@@ -285,6 +285,9 @@ MutectVCFFilesToZipFile <- function(dir,
   files <- list.files(path = dir, pattern = "\\.vcf$", 
                       full.names = TRUE, ignore.case = TRUE)
   vcf.names <- basename(files)
+  catalogs <- MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                                      region, names.of.VCFs, tumor.col.names,
+                                      flag.mismatches, return.annotated.vcfs)
   split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
   mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
   strand.bias.statistics<- NULL
@@ -731,7 +734,8 @@ CheckAndReturnSBSCatalogs <-
 #'                                     region = "genome")}
 VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown",
-                              return.annotated.vcfs = FALSE) {
+                              return.annotated.vcfs = FALSE,
+                              suppress.discarded.variants.warnings = TRUE) {
   ncol <- length(list.of.SBS.vcfs)
   
   catSBS96 <- empty.cats$catSBS96
@@ -746,8 +750,14 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
     SBS.vcf <- list.of.SBS.vcfs[[i]]
     sample.id <- names(list.of.SBS.vcfs)[i]
     annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
-    SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
-                                     return.annotated.vcfs)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      SBS.cat <- 
+        suppressWarnings(CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
+                                               return.annotated.vcfs))  
+    } else {
+      SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
+                                       return.annotated.vcfs)
+    }
     catSBS96 <- cbind(catSBS96, SBS.cat$catSBS96)
     if (!is.null(trans.ranges)) {
       catSBS192 <- cbind(catSBS192, SBS.cat$catSBS192)

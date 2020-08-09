@@ -16,7 +16,7 @@ has NULL abundance. But the target catalog should have the same `abundance`, `re
 and `region` attribute as the source catalog, otherwise the function will raise an error.
 * Added an extra section "ID classification" in documentation of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`.
 * Added an extra argument `suppress.discarded.variants.warnings` in function
-`ReadAndSplitMutectVCFs`.
+`ReadAndSplitMutectVCFs`, `VCFsToSBSCatalogs`. 
 
 ## Changed
 * **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs` to functions generating ID catalogs: `VCFsToIDCatalogs`. The default value for the argument is FALSE.
