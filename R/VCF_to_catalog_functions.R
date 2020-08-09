@@ -228,9 +228,7 @@ MakeDataFrameFromVCF <- function(file) {
 #'   \strong{only} appears if there are variants that are excluded from the
 #'   analysis.
 #'   
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation
-#'   deletion repeat sizes range from 1 to 6+.
+#' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @keywords internal
 ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,

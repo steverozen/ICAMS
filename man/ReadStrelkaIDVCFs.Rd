@@ -4,29 +4,43 @@
 \alias{ReadStrelkaIDVCFs}
 \title{Read Strelka ID (small insertion and deletion) VCF files}
 \usage{
-ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
+ReadStrelkaIDVCFs(
+  files,
+  names.of.VCFs = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
-\item{files}{Character vector of file paths to the Strelka ID VCF files.}
+\item{files}{Character vector of file paths to the VCF files.}
 
-\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
-The order of names in \code{names.of.VCFs} should match the order of VCF
-file paths in \code{files}. If \code{NULL}(default), this function will
-remove all of the path up to and including the last path separator (if any)
-in \code{files} and file paths without extensions (and the leading dot)
-will be used as the names of the VCF files.}
-}
-\value{
-A list of data frames containing data lines of the VCF files.
+\item{names.of.VCFs}{Character vector of names of the VCF files. The order of
+names in \code{names.of.VCFs} should match the order of VCF file paths in
+\code{files}. If \code{NULL}(default), this function will remove all of the
+path up to and including the last path separator (if any) in \code{files}
+and file paths without extensions (and the leading dot) will be used as the
+names of the VCF files.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Read Strelka ID (small insertion and deletion) VCF files
 }
-\note{
-In ID (small insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
+\section{Value}{
+ A list of \strong{lists}. Each list has a first element
+  \code{df} which is a data frame that stores data lines of a VCF. A second
+  element \code{discarded.variants} \strong{only} appears if there are
+  variants that are excluded from the analysis.
 }
+
+\section{Note}{
+
+In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+from 0 to 5+, but for plotting and end-user documentation deletion repeat
+sizes range from 1 to 6+.
+}
+
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf",
                       "Strelka.ID.GRCh37.s1.vcf",

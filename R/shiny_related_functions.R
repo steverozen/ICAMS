@@ -598,15 +598,14 @@ ReadAndSplitStrelkaSBSVCFs <-
 
 #' Read Strelka ID (small insertion and deletion) VCF files
 #'
-#' @param files Character vector of file paths to the Strelka ID VCF files.
+#' @inheritParams ReadMutectVCFs
 #'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' @section Value: A list of \strong{lists}. Each list has a first element
+#'   \code{df} which is a data frame that stores data lines of a VCF. A second
+#'   element \code{discarded.variants} \strong{only} appears if there are
+#'   variants that are excluded from the analysis.
 #'
-#' @return A list of data frames containing data lines of the VCF files.
-#'
-#' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
-#'   range from 0 to 5+, but for plotting and end-user documentation
-#'   deletion repeat sizes range from 1 to 6+.
+#' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
 #'
@@ -617,9 +616,12 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
-ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
+ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL, 
+                              suppress.discarded.variants.warnings = TRUE) {
   vcfs <- 
-    lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs)
+    lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs,
+           suppress.discarded.variants.warnings = 
+             suppress.discarded.variants.warnings)
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {

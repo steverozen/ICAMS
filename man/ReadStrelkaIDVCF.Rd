@@ -31,9 +31,11 @@ A \strong{list} whose first element \code{df} is a data frame storing
 \description{
 Read in the data lines of an ID VCF created by Strelka version 1
 }
-\note{
-In ID (small insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
+\section{Note}{
+
+In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+from 0 to 5+, but for plotting and end-user documentation deletion repeat
+sizes range from 1 to 6+.
 }
+
 \keyword{internal}
