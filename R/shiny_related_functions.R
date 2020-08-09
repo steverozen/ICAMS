@@ -509,24 +509,24 @@ MutectVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'   
-#' @return A list of 3 in-memory objects as follows:
-#' 
-#' \enumerate{
-#' 
-#'    \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
-#'    or 3+BS mutations.
-#'    
-#'    \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS
-#'    or 3+BS mutations.
+#' @section Value: 
+#' A list of elements as follows:
 #'
-#'    \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
-#'    HIGH.POS which contain rows in the input that did not represent SBSs or
-#'    DBSs.
-#'    
-#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
+#'    * \code{SBS.vcfs}: List of data.frames of pure SBS mutations -- no DBS or
+#'    3+BS mutations.
+#'
+#'    * \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
+#'    3+BS mutations.
+#'
+#'    * \code{ThreePlus}: List of data tables with the key CHROM, LOW.POS,
+#'    HIGH.POS and additional information (reference sequence, alternative
+#'    sequence, context, etc.) which contain rows in the input that did not
+#'    represent SBSs or DBSs. Additional information not fully implemented at
+#'    this point because of limited immediate biological interest.
+#'
+#'    * \code{multiple.alt}: Rows with multiple alternate alleles (removed from
 #'    \code{SBS.vcfs} etc.)
-#'
-#'    }
+#' @md
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
 #'

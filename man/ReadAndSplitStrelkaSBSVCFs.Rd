@@ -16,30 +16,28 @@ remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
 }
-\value{
-A list of 3 in-memory objects as follows:
-
-\enumerate{
-
-   \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
-   or 3+BS mutations.
-   
-   \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS
-   or 3+BS mutations.
-
-   \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
-   HIGH.POS which contain rows in the input that did not represent SBSs or
-   DBSs.
-   
-   \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
-   \code{SBS.vcfs} etc.)
-
-   }
-}
 \description{
 The function will find and merge adjacent SBS pairs into DBS if their VAFs
 are very similar. The default threshold value for VAF is 0.02.
 }
+\section{Value}{
+
+A list of elements as follows:
+\itemize{
+\item \code{SBS.vcfs}: List of data.frames of pure SBS mutations -- no DBS or
+3+BS mutations.
+\item \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
+3+BS mutations.
+\item \code{ThreePlus}: List of data tables with the key CHROM, LOW.POS,
+HIGH.POS and additional information (reference sequence, alternative
+sequence, context, etc.) which contain rows in the input that did not
+represent SBSs or DBSs. Additional information not fully implemented at
+this point because of limited immediate biological interest.
+\item \code{multiple.alt}: Rows with multiple alternate alleles (removed from
+\code{SBS.vcfs} etc.)
+}
+}
+
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
