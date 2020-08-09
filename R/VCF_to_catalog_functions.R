@@ -2012,7 +2012,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   if (!length(idx) == 0) {
     discarded.variants <- rbind(discarded.variants, vcf[idx, ])
     vcf <- vcf[-idx, ]
-    message(
+    warning(
       'Variants in the DBS vcf whose tetranucleotide context contains "N" ',
       'have been deleted so as not to conflict with downstream processing. ',
       'See discarded.variants in the return value for more details.')

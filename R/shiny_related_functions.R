@@ -895,7 +895,8 @@ CheckAndReturnDBSCatalogs <-
 #'                                     region = "genome")}
 VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome, 
                               trans.ranges = NULL, region = "unknown",
-                              return.annotated.vcfs = FALSE) {
+                              return.annotated.vcfs = FALSE,
+                              suppress.discarded.variants.warnings = TRUE) {
   ncol <- length(list.of.DBS.vcfs)
   
   catDBS78 <- empty.cats$catDBS78
@@ -910,8 +911,14 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
     DBS.vcf <- list.of.DBS.vcfs[[i]]
     sample.id <- names(list.of.DBS.vcfs)[i]
     annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges)
-    DBS.cat <- CreateOneColDBSMatrix(annotated.DBS.vcf, sample.id,
-                                     return.annotated.vcfs)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      DBS.cat <- 
+        suppressWarnings(CreateOneColDBSMatrix(annotated.DBS.vcf, sample.id,
+                                               return.annotated.vcfs))
+    } else {
+      DBS.cat <- CreateOneColDBSMatrix(annotated.DBS.vcf, sample.id,
+                                       return.annotated.vcfs)
+    }
     catDBS78 <- cbind(catDBS78, DBS.cat$catDBS78)
     catDBS136 <- cbind(catDBS136, DBS.cat$catDBS136)
     if (!is.null(trans.ranges)) {
