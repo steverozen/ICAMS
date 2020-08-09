@@ -246,6 +246,10 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'   with additional columns showing mutation class for each variant. Default is
 #'   FALSE.
 #'   
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
+#'   
 #' @importFrom utils glob2rx 
 #' 
 #' @importFrom zip zipr 
