@@ -9,7 +9,9 @@ StrelkaSBSVCFFilesToCatalog(
   ref.genome,
   trans.ranges = NULL,
   region = "unknown",
-  names.of.VCFs = NULL
+  names.of.VCFs = NULL,
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -40,6 +42,14 @@ file paths in \code{files}. If \code{NULL}(default), this function will
 remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
 A list of 3 SBS catalogs (one each for 96, 192, and 1536) and 3 DBS

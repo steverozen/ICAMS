@@ -4,7 +4,11 @@
 \alias{ReadAndSplitStrelkaSBSVCFs}
 \title{Read and split Strelka SBS VCF files}
 \usage{
-ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs = NULL)
+ReadAndSplitStrelkaSBSVCFs(
+  files,
+  names.of.VCFs = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka SBS VCF files.}
@@ -15,6 +19,10 @@ file paths in \code{files}. If \code{NULL}(default), this function will
 remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 The function will find and merge adjacent SBS pairs into DBS if their VAFs

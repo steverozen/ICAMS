@@ -27,15 +27,20 @@ should match the order of VCFs specified in \code{files}. If
 \code{tumor.col.names} is equal to \code{NA}(default), this function will
 use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
-\value{
-A list of \strong{lists}. Each list has a first element \code{df}
+\description{
+Read Mutect VCF files.
+}
+\section{Value}{
+ A list of \strong{lists}. Each list has a first element \code{df}
   which is a data frame that stores data lines of a VCF with additional
   columns \code{VAF} (variant allele frequency) and \code{read.depth} added.
   A second element \code{discarded.variants} \strong{only} appears if there
   are variants that are excluded from the analysis.
 }
-\description{
-Read Mutect VCF files.
-}
+
 \keyword{internal}

@@ -370,8 +370,12 @@ MutectVCFFilesToZipFile <-
 #'                                           region = "genome")}
 StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
-           names.of.VCFs = NULL) {
-    split.vcfs <- ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs)
+           names.of.VCFs = NULL, return.annotated.vcfs = FALSE, 
+           suppress.discarded.variants.warnings = TRUE) {
+    split.vcfs <- 
+      ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs, 
+                                 suppress.discarded.variants.warnings)
+    
     return(c(VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome, 
                                trans.ranges, region),
              VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
@@ -548,7 +552,9 @@ MutectVCFFilesToCatalog <-
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-ReadAndSplitStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
+ReadAndSplitStrelkaSBSVCFs <- 
+  function(files, names.of.VCFs = NULL,
+           suppress.discarded.variants.warnings = TRUE) {
   vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs)
   split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
   return(split.vcfs)

@@ -1287,19 +1287,9 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 
 #' Read Strelka SBS (single base substitutions) VCF files.
 #'
-#' @param files Character vector of file paths to the VCF files.
-#'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'   
-#' @return A list of lists which contain information about VCFs from
-#'   \code{files}. Each list has two objects. The first object is a data frame
-#'   storing data lines of a VCF file with VAFs added. The second object
-#'   is a number indicating the number of rows in the first object.
+#' @inheritParams ReadMutectVCFs
+#'    
+#' @inheritSection ReadMutectVCFs Value
 #'
 #' @keywords internal
 ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL,
@@ -1338,7 +1328,11 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL,
 #'   use the 10th column in all the VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'   
-#' @return A list of \strong{lists}. Each list has a first element \code{df}
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
+#'   
+#' @section Value: A list of \strong{lists}. Each list has a first element \code{df}
 #'   which is a data frame that stores data lines of a VCF with additional
 #'   columns \code{VAF} (variant allele frequency) and \code{read.depth} added.
 #'   A second element \code{discarded.variants} \strong{only} appears if there
