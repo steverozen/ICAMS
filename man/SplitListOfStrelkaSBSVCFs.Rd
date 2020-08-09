@@ -5,11 +5,18 @@
 \title{Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
 > 2 consecutive bases}
 \usage{
-SplitListOfStrelkaSBSVCFs(list.of.vcfs)
+SplitListOfStrelkaSBSVCFs(
+  list.of.vcfs,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{list.of.vcfs}{A list of in-memory data frames containing Strelka SBS
 VCF file contents.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 SBSs are single base substitutions,

@@ -811,6 +811,8 @@ CheckAndReturnSplitListOfMutectVCFs <-
 #' VCF-like data frame with left-over rows).
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
+#' 
+#' @inheritParams ReadAndSplitMutectVCFs
 #'
 #' @inheritSection ReadAndSplitMutectVCFs Value
 #'
@@ -1239,15 +1241,26 @@ CheckAndReturnSplitListOfStrelkaSBSVCFs <-
 #' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS
 #'   VCF file contents.
 #'   
+#' @inheritParams ReadAndSplitStrelkaSBSVCFs
+#'   
 #' @inheritSection ReadAndSplitStrelkaSBSVCFs Value
 #'
 #' @keywords internal
-SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
+SplitListOfStrelkaSBSVCFs <- 
+  function(list.of.vcfs, suppress.discarded.variants.warnings = TRUE) {
   list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
   list.of.discarded.variants <- 
     lapply(list.of.vcfs, function(f2) f2$discarded.variants)
   
-  split.vcfs <- lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF)
+  if (suppress.discarded.variants.warnings == TRUE) {
+    split.vcfs <- 
+      suppressWarnings(lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF, 
+                              name.of.VCF = names(list.of.vcfs.df)))
+  } else {
+    split.vcfs <- lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF, 
+                         name.of.VCF = names(list.of.vcfs.df))
+  }
+  
   SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
   DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
   ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
