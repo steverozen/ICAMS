@@ -1250,6 +1250,58 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
                                    other.ranges, multiple.alt.df)
 }
 
+#' @keywords internal
+CheckAndReturnSplitListOfStrelkaSBSVCFs <-
+  function(SBS.list, DBS.list, ThreePlus.list, multiple.alt.list,
+           not.analyzed.list) {
+    # Remove NULL elements from the list
+    ThreePlus.list2 <- Filter(Negate(is.null), ThreePlus.list)
+    multiple.alt.list2 <- Filter(Negate(is.null), multiple.alt.list)
+    not.analyzed.list2 <- Filter(Negate(is.null), not.analyzed.list)
+    
+    if (length(ThreePlus.list2) == 0) {
+      if (length(multiple.alt.list2) == 0) {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list))
+        } else {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      not.analyzed = not.analyzed.list2))
+        }
+      } else {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      multiple.alt = multiple.alt.list2))
+        } else {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      multiple.alt = multiple.alt.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      }
+    } else {
+      if (length(multiple.alt.list2) == 0) {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      ThreePlus = ThreePlus.list2))
+        } else {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      ThreePlus = ThreePlus.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      } else {
+        if (length(not.analyzed.list2) == 0) {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      ThreePlus = ThreePlus.list2,
+                      multiple.alt = multiple.alt.list2))
+        } else {
+          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
+                      ThreePlus = ThreePlus.list2,
+                      multiple.alt = multiple.alt.list2,
+                      not.analyzed = not.analyzed.list2))
+        }
+      }
+    }
+  }
+
 #' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
 #'
@@ -1275,10 +1327,8 @@ SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
   DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
   ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
   mult.alt   <- lapply(split.vcfs, function(x) x$multiple.alt)
-  return(list(SBS.vcfs = SBS.vcfs,
-              DBS.vcfs = DBS.vcfs,
-              ThreePlus = ThreePlus,
-              multiple.alt = mult.alt))
+  CheckAndReturnSplitListOfStrelkaSBSVCFs(SBS.vcfs, DBS.vcfs, ThreePlus,
+                                          mult.alt, list.of.discarded.variants)
 }
 
 #' Check that the sequence context information is consistent with the value of

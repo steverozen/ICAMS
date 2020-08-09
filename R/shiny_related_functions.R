@@ -518,14 +518,25 @@ MutectVCFFilesToCatalog <-
 #'    * \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
 #'    3+BS mutations.
 #'
-#'    * \code{ThreePlus}: List of data tables with the key CHROM, LOW.POS,
-#'    HIGH.POS and additional information (reference sequence, alternative
-#'    sequence, context, etc.) which contain rows in the input that did not
-#'    represent SBSs or DBSs. Additional information not fully implemented at
-#'    this point because of limited immediate biological interest.
+#'    * \code{ThreePlus}: \strong{Only appearing when} there is list of
+#'    data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
+#'    the input that did not represent SBSs or DBSs.
 #'
-#'    * \code{multiple.alt}: Rows with multiple alternate alleles (removed from
-#'    \code{SBS.vcfs} etc.)
+#'   * \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants with multiple alternative alleles,
+#'   for example ACA mutated to both AGA and ATA at the same position.
+#'
+#'   * \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants that were discarded immediately
+#'   after reading in the VCFs. The variants not analyzed can belong to the
+#'   following categories:
+#'       + Duplicated "CHROM" and "POS" values.
+#'       + Chromosome names that contain "#".
+#'       + Chromosome names that contain "GL".
+#'       + Chromosome names that contain "KI".
+#'       + Chromosome names that contain "random".
+#'       * Chromosome names that contain "Hs".
+#'       * Chromosome names that contain "M".
 #' @md
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
