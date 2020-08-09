@@ -218,17 +218,29 @@ MakeDataFrameFromVCF <- function(file) {
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
+#'   
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'
-#' @return A data frame storing data lines of the VCF file.
+#' @return A \strong{list} whose first element \code{df} is a data frame storing
+#'   data lines of the VCF file. A second element \code{discarded.variants}
+#'   \strong{only} appears if there are variants that are excluded from the
+#'   analysis.
 #'   
 #' @note In ID (small insertion and deletion) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation
 #'   deletion repeat sizes range from 1 to 6+.
 #'
 #' @keywords internal
-ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
-  df1 <- MakeDataFrameFromVCF(file)
-  
+ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
+                             suppress.discarded.variants.warnings = TRUE) {
+  if (suppress.discarded.variants.warnings == TRUE) {
+    retval <- suppressWarnings(MakeDataFrameFromVCF(file))
+  } else {
+    retval <- MakeDataFrameFromVCF(file)
+  }
+    
   # Get the name of VCF
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
@@ -236,6 +248,7 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
     vcf.name <- name.of.VCF
   }
   
+  df1 <- retval$df
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
@@ -253,8 +266,29 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
          "the value of column FORMAT is \n", 
          control)
   }
+  
+  # Create an empty data frame for discarded variants
+  discarded.variants <- df1[0, ]
+  if (!is.null(retval$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  }
+  
+  if (suppress.discarded.variants.warnings == TRUE) {
+    retval2 <- suppressWarnings(StandardChromName(df1, file)) 
+  } else {
+    retval2 <- StandardChromName(df1, file)
+  }
+  if (!is.null(retval2$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  }
 
-  return(StandardChromName(df1))
+  if (nrow(discarded.variants) == 0) {
+    return(list(df = retval2$df))
+  } else {
+    return(list(df = retval2$df, discarded.variants = discarded.variants))
+  }
 }
 
 #' @rdname GetVAF

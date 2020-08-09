@@ -4,7 +4,11 @@
 \alias{ReadStrelkaIDVCF}
 \title{Read in the data lines of an ID VCF created by Strelka version 1}
 \usage{
-ReadStrelkaIDVCF(file, name.of.VCF = NULL)
+ReadStrelkaIDVCF(
+  file,
+  name.of.VCF = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}
@@ -13,9 +17,16 @@ ReadStrelkaIDVCF(file, name.of.VCF = NULL)
 function will remove all of the path up to and including the last path
 separator (if any) in \code{file} and file path without extensions (and the
 leading dot) will be used as the name of the VCF file.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
-A data frame storing data lines of the VCF file.
+A \strong{list} whose first element \code{df} is a data frame storing
+  data lines of the VCF file. A second element \code{discarded.variants}
+  \strong{only} appears if there are variants that are excluded from the
+  analysis.
 }
 \description{
 Read in the data lines of an ID VCF created by Strelka version 1
