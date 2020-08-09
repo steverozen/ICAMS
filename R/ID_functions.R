@@ -862,9 +862,10 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   }
 
   ID.mat <- as.matrix(ID.dt2[ , 2])
-  ID.mat <- ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE]
   rownames(ID.mat) <- ID.dt2$rn
   colnames(ID.mat) <- sample.id
+  ID.mat <- ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE]
+
   CheckAndReturnIDMatrix(out.ID.vcf, discarded.variants, ID.mat, 
                          return.annotated.vcf)
 }
