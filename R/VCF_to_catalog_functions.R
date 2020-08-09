@@ -1248,26 +1248,33 @@ CheckAndReturnSplitListOfStrelkaSBSVCFs <-
 #' @keywords internal
 SplitListOfStrelkaSBSVCFs <- 
   function(list.of.vcfs, suppress.discarded.variants.warnings = TRUE) {
-  list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
-  list.of.discarded.variants <- 
-    lapply(list.of.vcfs, function(f2) f2$discarded.variants)
-  
-  if (suppress.discarded.variants.warnings == TRUE) {
-    split.vcfs <- 
-      suppressWarnings(lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF, 
-                              name.of.VCF = names(list.of.vcfs.df)))
-  } else {
-    split.vcfs <- lapply(list.of.vcfs.df, FUN = SplitStrelkaSBSVCF, 
-                         name.of.VCF = names(list.of.vcfs.df))
+    names.of.VCFs <- names(list.of.vcfs)
+    list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
+    list.of.discarded.variants <- 
+      lapply(list.of.vcfs, function(f2) f2$discarded.variants)
+    
+    GetSplitStrelkaSBSVCFs <- function(idx, list.of.vcfs) {
+      split.vcfs <- SplitStrelkaSBSVCF(list.of.vcfs[[idx]], 
+                                       name.of.VCF = names(list.of.vcfs)[idx])
+      return(split.vcfs)
+    }
+    num.of.vcfs <- length(list.of.vcfs.df)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      split.vcfs <- 
+        suppressWarnings(lapply(1:num.of.vcfs, GetSplitStrelkaSBSVCFs,
+                                list.of.vcfs = list.of.vcfs.df))
+    } else {
+      split.vcfs <- lapply(1:num.of.vcfs, GetSplitStrelkaSBSVCFs,
+                           list.of.vcfs = list.of.vcfs.df)
+    }
+    names(split.vcfs) <- names.of.VCFs
+    SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
+    DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
+    ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
+    mult.alt   <- lapply(split.vcfs, function(x) x$multiple.alt)
+    CheckAndReturnSplitListOfStrelkaSBSVCFs(SBS.vcfs, DBS.vcfs, ThreePlus,
+                                            mult.alt, list.of.discarded.variants)
   }
-  
-  SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
-  DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
-  ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
-  mult.alt   <- lapply(split.vcfs, function(x) x$multiple.alt)
-  CheckAndReturnSplitListOfStrelkaSBSVCFs(SBS.vcfs, DBS.vcfs, ThreePlus,
-                                          mult.alt, list.of.discarded.variants)
-}
 
 #' Check that the sequence context information is consistent with the value of
 #' the column REF.
