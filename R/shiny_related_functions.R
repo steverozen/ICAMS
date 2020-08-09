@@ -590,7 +590,9 @@ ReadAndSplitStrelkaSBSVCFs <-
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs, 
                                suppress.discarded.variants.warnings)
-    split.vcfs <- SplitListOfStrelkaSBSVCFs(vcfs)
+    split.vcfs <- 
+      SplitListOfStrelkaSBSVCFs(vcfs, 
+                                suppress.discarded.variants.warnings)
     return(split.vcfs)
   }
 
@@ -759,11 +761,25 @@ CheckAndReturnSBSCatalogs <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @return A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-#'   catSBS192 catSBS1536. If \code{trans.ranges} is not provided by user and
-#'   cannot be inferred by ICAMS, SBS 192 catalog will not be generated. Each
-#'   catalog has attributes added. See \code{\link{as.catalog}} for more
-#'   details.
+#' @section Value:  
+#' A list containing the following objects:
+#' 
+#' * \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
+#' 3 SBS catalogs (one each for 96, 192, and 1536).
+#' 
+#' * \code{discarded.variants}: \strong{Only appearing when} there are SBS
+#' variants whose pentanucleotide context contains "N".
+#' 
+#' * \code{annotated.vcfs}: 
+#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+#'     SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+#'     three new columns \code{SBS96.class}, \code{SBS192.class} and
+#'     \code{SBS1536.class} showing the mutation class for each SBS variant.
+#' 
+#' If \code{trans.ranges} is not provided by user and cannot be inferred by
+#' ICAMS, SBS 192 catalog will not be generated. Each catalog has attributes
+#' added. See \code{\link{as.catalog}} for more details.
+#' @md
 #'
 #' @note SBS 192 catalogs only contain mutations in transcribed regions.
 #'

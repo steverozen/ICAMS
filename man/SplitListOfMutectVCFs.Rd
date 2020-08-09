@@ -12,6 +12,10 @@ SplitListOfMutectVCFs(
 }
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two

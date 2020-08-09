@@ -19,7 +19,7 @@ and `region` attribute as the source catalog, otherwise the function will raise 
 `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, 
 `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
 * Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
-`ReadAndSplitMutectVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
+`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
 
 ## Changed
 * **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs` to functions generating ID catalogs: `VCFsToIDCatalogs`. The default value for the argument is FALSE.

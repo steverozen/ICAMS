@@ -45,13 +45,6 @@ FALSE.}
 warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
-\value{
-A list of 3 SBS catalogs, one each for 96, 192, 1536: catSBS96
-  catSBS192 catSBS1536. If \code{trans.ranges} is not provided by user and
-  cannot be inferred by ICAMS, SBS 192 catalog will not be generated. Each
-  catalog has attributes added. See \code{\link{as.catalog}} for more
-  details.
-}
 \description{
 Create a list of 3 catalogs (one each for 96, 192, 1536)
 out of the contents in list.of.SBS.vcfs. The SBS VCFs must not contain
@@ -60,6 +53,26 @@ DBSs, indels, or other types of mutations.
 \note{
 SBS 192 catalogs only contain mutations in transcribed regions.
 }
+\section{Value}{
+
+A list containing the following objects:
+\itemize{
+\item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of
+3 SBS catalogs (one each for 96, 192, and 1536).
+\item \code{discarded.variants}: \strong{Only appearing when} there are SBS
+variants whose pentanucleotide context contains "N".
+\item \code{annotated.vcfs}:
+\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+three new columns \code{SBS96.class}, \code{SBS192.class} and
+\code{SBS1536.class} showing the mutation class for each SBS variant.
+}
+
+If \code{trans.ranges} is not provided by user and cannot be inferred by
+ICAMS, SBS 192 catalog will not be generated. Each catalog has attributes
+added. See \code{\link{as.catalog}} for more details.
+}
+
 \section{Comments}{
 
 To add or change attributes of the catalog, you can use function
