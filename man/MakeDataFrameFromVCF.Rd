@@ -10,7 +10,12 @@ MakeDataFrameFromVCF(file)
 \item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
-A data frame storing mutation records of a VCF file.
+A list of elements:
+\itemize{
+\item \code{df}: A data frame storing data lines from the original VCF file.
+\item \code{discarded.variants}: \strong{Only appearing when} there are variants
+that are excluded in the analysis.
+}
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file

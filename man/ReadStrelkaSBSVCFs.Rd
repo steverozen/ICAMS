@@ -4,7 +4,11 @@
 \alias{ReadStrelkaSBSVCFs}
 \title{Read Strelka SBS (single base substitutions) VCF files.}
 \usage{
-ReadStrelkaSBSVCFs(files, names.of.VCFs = NULL)
+ReadStrelkaSBSVCFs(
+  files,
+  names.of.VCFs = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}
