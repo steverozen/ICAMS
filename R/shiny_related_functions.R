@@ -245,7 +245,7 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
 #'   with additional columns showing mutation class for each variant. Default is
 #'   FALSE.
-#'
+#'   
 #' @importFrom utils glob2rx 
 #' 
 #' @importFrom zip zipr 
@@ -272,75 +272,78 @@ StrelkaIDVCFFilesToZipFile <- function(dir,
 #'                             region = "genome",
 #'                             base.filename = "Mutect")
 #'   unlink(file.path(tempdir(), "test.zip"))}
-MutectVCFFilesToZipFile <- function(dir,
-                                    zipfile, 
-                                    ref.genome, 
-                                    trans.ranges = NULL, 
-                                    region = "unknown", 
-                                    names.of.VCFs = NULL, 
-                                    tumor.col.names = NA,
-                                    base.filename = "",
-                                    flag.mismatches = 0,
-                                    return.annotated.vcfs = FALSE){
-  files <- list.files(path = dir, pattern = "\\.vcf$", 
-                      full.names = TRUE, ignore.case = TRUE)
-  vcf.names <- basename(files)
-  catalogs <- MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
-                                      region, names.of.VCFs, tumor.col.names,
-                                      flag.mismatches, return.annotated.vcfs)
-  split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
-  mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
-  strand.bias.statistics<- NULL
-  
-  SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
-                                    trans.ranges, region)
-  DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
-                                    trans.ranges, region)
-  ID.catalog <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                 region, flag.mismatches)
-  catalogs <- c(SBS.catalogs, DBS.catalogs, list(catID = ID.catalog))
-  
-  output.file <- ifelse(base.filename == "",
-                        paste0(tempdir(), .Platform$file.sep),
-                        file.path(tempdir(), paste0(base.filename, ".")))
-  
-  for (name in names(catalogs)) {
-    if (name == "catID") {
-      WriteCatalog(catalogs[[name]]$catalog,
-                   file = paste0(output.file, name, ".csv"))
-    } else {
-      WriteCatalog(catalogs[[name]],
-                   file = paste0(output.file, name, ".csv"))
-    }
-  }
-  
-  for (name in names(catalogs)) {
-    if (name == "catID") {
-      PlotCatalogToPdf(catalogs[[name]]$catalog,
-                       file = paste0(output.file, name, ".pdf"))
-    } else {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, name, ".pdf"))
-      
-      if (name == "catSBS192") {
-        list <- PlotCatalogToPdf(catalogs[[name]],
-                                 file = paste0(output.file, "SBS12.pdf"),
-                                 plot.SBS12 = TRUE)
-        strand.bias.statistics <- 
-          c(strand.bias.statistics, list$strand.bias.statistics)
+MutectVCFFilesToZipFile <- 
+  function(dir,
+           zipfile, 
+           ref.genome, 
+           trans.ranges = NULL, 
+           region = "unknown", 
+           names.of.VCFs = NULL, 
+           tumor.col.names = NA,
+           base.filename = "",
+           flag.mismatches = 0,
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
+    files <- list.files(path = dir, pattern = "\\.vcf$", 
+                        full.names = TRUE, ignore.case = TRUE)
+    vcf.names <- basename(files)
+    catalogs <- MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                                        region, names.of.VCFs, tumor.col.names,
+                                        flag.mismatches, return.annotated.vcfs,
+                                        suppress.discarded.variants.warnings)
+    split.vcfs <- ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
+    mutation.loads <- GetMutationLoadsFromMutectVCFs(split.vcfs)
+    strand.bias.statistics<- NULL
+    
+    SBS.catalogs <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
+                                      trans.ranges, region)
+    DBS.catalogs <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
+                                      trans.ranges, region)
+    ID.catalog <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
+                                   region, flag.mismatches)
+    catalogs <- c(SBS.catalogs, DBS.catalogs, list(catID = ID.catalog))
+    
+    output.file <- ifelse(base.filename == "",
+                          paste0(tempdir(), .Platform$file.sep),
+                          file.path(tempdir(), paste0(base.filename, ".")))
+    
+    for (name in names(catalogs)) {
+      if (name == "catID") {
+        WriteCatalog(catalogs[[name]]$catalog,
+                     file = paste0(output.file, name, ".csv"))
+      } else {
+        WriteCatalog(catalogs[[name]],
+                     file = paste0(output.file, name, ".csv"))
       }
     }
+    
+    for (name in names(catalogs)) {
+      if (name == "catID") {
+        PlotCatalogToPdf(catalogs[[name]]$catalog,
+                         file = paste0(output.file, name, ".pdf"))
+      } else {
+        PlotCatalogToPdf(catalogs[[name]],
+                         file = paste0(output.file, name, ".pdf"))
+        
+        if (name == "catSBS192") {
+          list <- PlotCatalogToPdf(catalogs[[name]],
+                                   file = paste0(output.file, "SBS12.pdf"),
+                                   plot.SBS12 = TRUE)
+          strand.bias.statistics <- 
+            c(strand.bias.statistics, list$strand.bias.statistics)
+        }
+      }
+    }
+    
+    zipfile.name <- basename(zipfile)
+    AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
+                      ref.genome, region, mutation.loads, strand.bias.statistics)
+    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
+                             full.names = TRUE)
+    zip::zipr(zipfile = zipfile, files = file.names)
+    unlink(file.names)
+    invisible(catalogs)
   }
-  
-  zipfile.name <- basename(zipfile)
-  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
-                    ref.genome, region, mutation.loads, strand.bias.statistics)
-  file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
-                           full.names = TRUE)
-  zip::zipr(zipfile = zipfile, files = file.names)
-  unlink(file.names)
-  invisible(catalogs)
-}
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files
 #'
@@ -489,16 +492,21 @@ CombineAndReturnCatalogsForMutectVCFs <-
 MutectVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown", 
            names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0,
-           return.annotated.vcfs = FALSE) {
+           return.annotated.vcfs = FALSE, 
+           suppress.discarded.variants.warnings = TRUE) {
     split.vcfs <- 
-      ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names)
+      ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names,
+                             suppress.discarded.variants.warnings)
     
     SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
-                               trans.ranges, region, return.annotated.vcfs)
+                               trans.ranges, region, return.annotated.vcfs,
+                               suppress.discarded.variants.warnings)
     DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
-                               trans.ranges, region, return.annotated.vcfs)
+                               trans.ranges, region, return.annotated.vcfs,
+                               suppress.discarded.variants.warnings)
     ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                region, flag.mismatches, return.annotated.vcfs)
+                                region, flag.mismatches, return.annotated.vcfs,
+                                suppress.discarded.variants.warnings)
     CombineAndReturnCatalogsForMutectVCFs(split.vcfs, SBS.list, 
                                           DBS.list, ID.list)
   }
