@@ -1047,7 +1047,8 @@ CheckAndReturnIDCatalog <-
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                              flag.mismatches = 0,
-                             return.annotated.vcfs = FALSE) {
+                             return.annotated.vcfs = FALSE,
+                             suppress.discarded.variants.warnings = TRUE) {
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
@@ -1060,10 +1061,17 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
     sample.id <- names(list.of.vcfs)[i]
-    list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
-                          flag.mismatches = flag.mismatches,
-                          name.of.VCF = vcf.names[i])
-    
+    if (suppress.discarded.variants.warnings == TRUE) {
+      list <- 
+        suppressWarnings(AnnotateIDVCF(ID, ref.genome = ref.genome,
+                                       flag.mismatches = flag.mismatches,
+                                       name.of.VCF = vcf.names[i]))
+    } else {
+      list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
+                            flag.mismatches = flag.mismatches,
+                            name.of.VCF = vcf.names[i])
+    }
+
     # Create an empty data frame for discarded variants
     df <- ID[0, ]
     
@@ -1071,8 +1079,16 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
       df <- dplyr::bind_rows(df, list$discarded.variants)
     }
     # Unlike the case for SBS and DBS, we do not add transcript information.
-    tmp <- CreateOneColIDMatrix(list$annotated.vcf, sample.id = sample.id, 
-                                return.annotated.vcf = return.annotated.vcfs)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      tmp <- suppressWarnings({
+        CreateOneColIDMatrix(list$annotated.vcf, 
+                             sample.id = sample.id, 
+                             return.annotated.vcf = return.annotated.vcfs)
+      })
+    } else {
+      tmp <- CreateOneColIDMatrix(list$annotated.vcf, sample.id = sample.id, 
+                                  return.annotated.vcf = return.annotated.vcfs)
+    }
     one.ID.column <- tmp$catalog
     rm(ID)
     catID <- cbind(catID, one.ID.column)
