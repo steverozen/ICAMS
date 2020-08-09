@@ -12,7 +12,8 @@ MutectVCFFilesToCatalog(
   names.of.VCFs = NULL,
   tumor.col.names = NA,
   flag.mismatches = 0,
-  return.annotated.vcfs = FALSE
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
