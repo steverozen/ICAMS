@@ -89,47 +89,6 @@ RenameColumnsWithNameVAF <- function(df) {
 #' @importFrom utils read.csv
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
-#'
-#' @return A data frame storing mutation records of a VCF file.
-#'
-#' @keywords internal
-MakeDataFrameFromStrelkaSBSVCF <- function(file) {
-  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1:100), as.is = TRUE)
-  
-  # Delete the columns which are totally empty
-  df <- df[!sapply(df, function(x) all(is.na(x)))]
-  
-  # Delete meta-information lines which start with "##"
-  if (any(grepl("^##", df[, 1]))) {
-    idx <- grep("^##", df[, 1])
-    df1 <- df[-idx, ]
-  } else {
-    df1 <- df
-  }
-  
-  # Extract the names of columns in the VCF file
-  names <- c("CHROM", as.character(df1[1, ])[-1])
-  df1 <- df1[-1, ]
-  colnames(df1) <- names
-  
-  stopifnot(df1$REF != df1$ALT)
-  df1$POS <- as.integer(df1$POS)
-  
-  df1 <- RenameColumnsWithNameStrand(df1)
-  df1 <- RenameColumnsWithNameVAF(df1)
-  
-  df1 <- RemoveRowsWithPoundSign(df1, file)
-  df1 <- RemoveRowsWithDuplicatedCHROMAndPOS(df1, file)
-  
-  return(df1)
-}
-
-#' Read in the data lines of an SBS VCF created by Strelka version 1
-#'
-#' @importFrom utils read.csv
-#'
-#' @param file The name/path of the VCF file, or a complete URL.
 #' 
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
