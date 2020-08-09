@@ -15,17 +15,14 @@ functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
 and `region` attribute as the source catalog, otherwise the function will raise an error.
 * Added an extra section "ID classification" in documentation of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`.
+* Added an extra argument `return.annotated.vcfs` in *exported* functions
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, 
+`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
 * Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
 `ReadAndSplitMutectVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
 
 ## Changed
 * **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs` to functions generating ID catalogs: `VCFsToIDCatalogs`. The default value for the argument is FALSE.
-* **(Non backward-compatible)** Changed the return of functions
-`MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf` and
-`MutectVCFFilesToZipFile`. The object `catID` in the returned list has been
-changed from a matrix catalog to a **list**: 1st element is a matrix of the ID
-(small insertion and deletion) catalog. 2nd element is a list of further
-annotated VCFs (three additional columns `seq.context.width` , `seq.context` and `ID.class` are added to the original VCF).
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
 * Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.

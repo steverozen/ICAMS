@@ -2199,17 +2199,25 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #'                                             region = "genome",
 #'                                             output.file = 
 #'                                             file.path(tempdir(), "StrelkaSBS"))}
-StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- function(files, 
-                                                    ref.genome, 
-                                                    trans.ranges = NULL, 
-                                                    region = "unknown", 
-                                                    names.of.VCFs = NULL, 
-                                                    output.file = "") {
+StrelkaSBSVCFFilesToCatalogAndPlotToPdf <- 
+  function(files, 
+           ref.genome, 
+           trans.ranges = NULL, 
+           region = "unknown", 
+           names.of.VCFs = NULL, 
+           output.file = "",
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
     
-    catalogs <-
-      StrelkaSBSVCFFilesToCatalog(files, ref.genome,
-                                  trans.ranges, region, names.of.VCFs)
+    catalogs0 <- 
+      StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges, 
+                                  region, names.of.VCFs, 
+                                  return.annotated.vcfs, 
+                                  suppress.discarded.variants.warnings)
     
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
     if (output.file != "") output.file <- paste0(output.file, ".")
     
     for (name in names(catalogs)) {

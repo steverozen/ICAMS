@@ -10,7 +10,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf(
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
-  output.file = ""
+  output.file = "",
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -45,6 +47,14 @@ will be used as the names of the VCF files.}
 \item{output.file}{Optional. The base name of the PDF files to be produced;
 multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 \eqn{x} indicates the type of catalog plotted in the file.}
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
