@@ -135,14 +135,24 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
+#'   
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'
 #' @return A data frame storing data lines of the VCF file with two additional
 #'   columns added which contain the VAF(variant allele frequency) and read
 #'   depth information.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
-  df <- MakeDataFrameFromStrelkaSBSVCF(file)
+ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL, 
+                              suppress.discarded.variants.warnings = TRUE) {
+  if (suppress.discarded.variants.warnings == TRUE) {
+    df <- suppressWarnings(MakeDataFrameFromStrelkaSBSVCF(file))
+  } else {
+    df <- MakeDataFrameFromStrelkaSBSVCF(file)
+  }
+  
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
   } else {
@@ -150,7 +160,13 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   }
   
   df1 <- GetStrelkaVAF(df, vcf.name)
-  return(StandardChromName(df1))
+  
+  if (suppress.discarded.variants.warnings == TRUE) {
+    df2 <- suppressWarnings(StandardChromName(df1))
+  } else {
+    df2 <- StandardChromName(df1)
+  }
+  return(df2)
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file
