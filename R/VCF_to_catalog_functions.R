@@ -1026,6 +1026,8 @@ CheckAndReturnSplitStrelkaSBSVCF <-
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
 #'
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
+#' 
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @import data.table
 #'
@@ -1055,7 +1057,8 @@ CheckAndReturnSplitStrelkaSBSVCF <-
 #'    }
 #'
 #' @keywords internal
-SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
+SplitStrelkaSBSVCF <- 
+  function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
   stopifnot("data.frame" %in% class(vcf.df))
   
   # Strelka SBS VCFs can represent multiple non-reference alleles at the
@@ -1066,6 +1069,10 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
   
   if (length(multiple.alt) != 0) {
     vcf.df <- vcf.df[-multiple.alt, ]
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has variants with multiple alternative alleles and were ",
+            "discarded. See element multiple.alt in the return value for more ",
+            "details.")
   }
 
   # Record the total number of input variants for later sanity checking.
