@@ -140,17 +140,19 @@ MakeDataFrameFromStrelkaSBSVCF <- function(file) {
 #'   warning messages showing information about the discarded variants. Default
 #'   is TRUE.
 #'
-#' @return A data frame storing data lines of the VCF file with two additional
-#'   columns added which contain the VAF(variant allele frequency) and read
-#'   depth information.
+#' @return A \strong{list} whose first element \code{df} is a data frame storing
+#'   data lines of the VCF file with two additional columns added which contain
+#'   the VAF(variant allele frequency) and read depth information. A second element
+#'   \code{discarded.variants} \strong{only} appears if there are variants that 
+#'   are excluded from the analysis.
 #'
 #' @keywords internal
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL, 
                               suppress.discarded.variants.warnings = TRUE) {
   if (suppress.discarded.variants.warnings == TRUE) {
-    df <- suppressWarnings(MakeDataFrameFromStrelkaSBSVCF(file))
+    retval <- suppressWarnings(MakeDataFrameFromVCF(file))
   } else {
-    df <- MakeDataFrameFromStrelkaSBSVCF(file)
+    retval <- MakeDataFrameFromVCF(file)
   }
   
   if (is.null(name.of.VCF)) {
@@ -159,14 +161,31 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
     vcf.name <- name.of.VCF
   }
   
-  df1 <- GetStrelkaVAF(df, vcf.name)
+  df1 <- GetStrelkaVAF(retval$df, vcf.name)
+  
+  # Create an empty data frame for discarded variants
+  discarded.variants <- retval$df[0, ]
+  
+  if (!is.null(retval$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  }
   
   if (suppress.discarded.variants.warnings == TRUE) {
-    df2 <- suppressWarnings(StandardChromName(df1))
+    retval2 <- suppressWarnings(StandardChromName(df1, file)) 
   } else {
-    df2 <- StandardChromName(df1)
+    retval2 <- StandardChromName(df1, file)
   }
-  return(df2)
+  if (!is.null(retval2$discarded.variants)) {
+    discarded.variants <- 
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  }
+  
+  if (nrow(discarded.variants) == 0) {
+    return(list(df = retval2$df))
+  } else {
+    return(list(df = retval2$df, discarded.variants = discarded.variants))
+  }
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file
@@ -175,7 +194,11 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
-#' @return A data frame storing mutation records of a VCF file.
+#' @return A list of elements:
+#' * \code{df}: A data frame storing data lines from the original VCF file.
+#' * \code{discarded.variants}: \strong{Only appearing when} there are variants
+#' that are excluded in the analysis.
+#' @md
 #'
 #' @keywords internal
 MakeDataFrameFromVCF <- function(file) {
@@ -406,7 +429,6 @@ ReadMutectVCF <-
   } else {
     vcf.name <- name.of.VCF
   }
-  df1 <- GetMutectVAF(retval$df, vcf.name, tumor.col.name)
   
   # Create an empty data frame for discarded variants
   discarded.variants <- retval$df[0, ]
@@ -417,19 +439,21 @@ ReadMutectVCF <-
   }
   
   if (suppress.discarded.variants.warnings == TRUE) {
-    retval2 <- suppressWarnings(StandardChromName(df1, file)) 
+    retval2 <- suppressWarnings(StandardChromName(retval$df, file)) 
   } else {
-    retval2 <- StandardChromName(df1, file)
+    retval2 <- StandardChromName(retval$df, file)
   }
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
   }
   
+  df1 <- GetMutectVAF(retval2$df, vcf.name, tumor.col.name)
+  
   if (nrow(discarded.variants) == 0) {
-    return(list(df = retval2$df))
+    return(list(df = df1))
   } else {
-    return(list(df = retval2$df, discarded.variants = discarded.variants))
+    return(list(df = df1, discarded.variants = discarded.variants))
   }
 }
 
@@ -1216,27 +1240,12 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02) {
 #' @param list.of.vcfs A list of in-memory data frames containing Strelka SBS
 #'   VCF file contents.
 #'   
-#' @return A list of in-memory objects with the elements: 
-#' \enumerate{
-#' 
-#'    \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no
-#'    DBS or 3+BS mutations.
-#'
-#'    \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no
-#'    SBS or 3+BS mutations.
-#'
-#'    \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS,
-#'    HIGH.POS and additional information (reference sequence, alternative
-#'    sequence, context, etc.) Additional information not fully implemented at
-#'    this point because of limited immediate biological interest.
-#'
-#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed
-#'    from \code{SBS.vcfs} etc.)
-#'    
-#'    }
+#' @inheritSection ReadAndSplitStrelkaSBSVCFs Value
 #'
 #' @keywords internal
 SplitListOfStrelkaSBSVCFs <- function(list.of.vcfs) {
+  list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
+  
   split.vcfs <- lapply(list.of.vcfs, FUN = SplitStrelkaSBSVCF)
   SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
   DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
@@ -1301,9 +1310,12 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #'   is a number indicating the number of rows in the first object.
 #'
 #' @keywords internal
-ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
+ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL,
+                               suppress.discarded.variants.warnings = TRUE) {
   vcfs <- 
-    lapply(files, FUN = ReadStrelkaSBSVCF, name.of.VCF = names.of.VCFs)
+    lapply(files, FUN = ReadStrelkaSBSVCF, name.of.VCF = names.of.VCFs,
+           suppress.discarded.variants.warnings = 
+             suppress.discarded.variants.warnings)
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
