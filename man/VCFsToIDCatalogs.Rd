@@ -32,6 +32,10 @@ will automatically discard these variants and an element
 \item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
 with additional columns showing mutation class for each variant. Default is
 FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from ID VCFs

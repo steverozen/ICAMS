@@ -40,6 +40,10 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 \item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
 with additional columns showing mutation class for each variant. Default is
 FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
 A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78

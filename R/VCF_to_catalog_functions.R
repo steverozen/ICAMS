@@ -2284,6 +2284,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files,
 #' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
 #'   with additional columns showing mutation class for each variant. Default is
 #'   FALSE.
+#'   
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'
 #' @section Value:  
 #' A list containing the following objects:
@@ -2390,31 +2394,31 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
            tumor.col.names = NA,
            output.file = "",
            flag.mismatches = 0,
-           return.annotated.vcfs = FALSE) {
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
     
-    catalogs <-
+    catalogs0 <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges, 
                               region, names.of.VCFs, tumor.col.names,
-                              flag.mismatches, return.annotated.vcfs)
+                              flag.mismatches, return.annotated.vcfs,
+                              suppress.discarded.variants.warnings)
     
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
     if (output.file != "") output.file <- paste0(output.file, ".")
     
     for (name in names(catalogs)) {
-      if (name == "catID") {
-        PlotCatalogToPdf(catalogs[[name]]$catalog,
-                         file = paste0(output.file, name, ".pdf"))
-      } else {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      if (name == "catSBS192") {
         PlotCatalogToPdf(catalogs[[name]],
-                         file = paste0(output.file, name, ".pdf"))
-        if (name == "catSBS192") {
-          PlotCatalogToPdf(catalogs[[name]],
-                           file = paste0(output.file, "SBS12.pdf"),
-                           plot.SBS12 = TRUE)
-        }
+                         file = paste0(output.file, "SBS12.pdf"),
+                         plot.SBS12 = TRUE)
       }
     }
     
-    return(catalogs)
+    return(catalogs0)
 }
 
 #' @keywords internal

@@ -27,6 +27,10 @@ which contain the tumor sample information. The order of names in
 \code{files}. If \code{tumor.col.names} is equal to \code{NA}(default),
 this function will use the 10th column in all the VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Read and split Mutect VCF files
