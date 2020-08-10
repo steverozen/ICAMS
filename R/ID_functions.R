@@ -752,19 +752,19 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #' 
 #' @keywords internal
 CheckAndReturnIDMatrix <- 
-  function(annotated.VCF, discarded.variants, ID.mat, return.annotated.vcf = FALSE) {
+  function(annotated.vcf, discarded.variants, ID.mat, return.annotated.vcf = FALSE) {
     if (nrow(discarded.variants) == 0) {
       if (return.annotated.vcf == FALSE) {
         return(list(catalog = ID.mat))
       } else {
-        return(list(catalog = ID.mat, annotated.VCF = annotated.VCF))
+        return(list(catalog = ID.mat, annotated.vcf = annotated.vcf))
       }
     } else {
       if (return.annotated.vcf == FALSE) {
         return(list(catalog = ID.mat, discarded.variants = discarded.variants))
       } else {
         return(list(catalog = ID.mat, discarded.variants = discarded.variants,
-                    annotated.VCF = annotated.VCF))
+                    annotated.vcf = annotated.vcf))
       }
     }
   }
