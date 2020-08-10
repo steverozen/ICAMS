@@ -425,7 +425,40 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @inheritSection VCFsToIDCatalogs Value 
+#' @section Value:
+#' A \strong{list} of elements:
+#'   * \code{catalog}: The ID (small insertion and deletion) catalog with
+#'   attributes added. See \code{\link{as.catalog}} for more details.
+#' 
+#' * \code{discarded.variants}: 
+#' \strong{Only appearing when} there are variants that were excluded in the
+#' analysis. 
+#' A list of elements:
+#'     + \code{ID}: ID variants discarded that can belong to the following
+#'       categories:
+#'         - Variants which have empty REF or ALT allels.
+#'         - Variants whose REF allels do not match the extracted sequence from
+#'          \code{ref.genome}.
+#'         - Variants which cannot be categorized according to the canonical
+#'         representation. See catalog.row.order$ID for the canonical
+#'         representation.
+#'     + \code{not.analyzed}: Variants discarded immediately after reading in
+#'     the VCFs:
+#'         - Duplicated "CHROM" and "POS" values.
+#'         - Chromosome names that contain "#".
+#'         - Chromosome names that contain "GL".
+#'         - Chromosome names that contain "KI".
+#'         - Chromosome names that contain "random".
+#'         - Chromosome names that contain "Hs".
+#'         - Chromosome names that contain "M".
+#' 
+#'   * \code{annotated.vcfs}: 
+#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+#' data frames which contain the original VCF's ID mutation rows with three
+#' additional columns \code{seq.context.width}, \code{seq.context} and
+#' \code{ID.class} added. The category assignment of each ID mutation in VCF can
+#' be obtained from \code{ID.class} column.
+#' @md
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 
