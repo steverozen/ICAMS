@@ -600,10 +600,22 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'
 #' @inheritParams ReadMutectVCFs
 #'
-#' @section Value: A list of \strong{lists}. Each list has a first element
-#'   \code{df} which is a data frame that stores data lines of a VCF. A second
-#'   element \code{discarded.variants} \strong{only} appears if there are
-#'   variants that are excluded from the analysis.
+#' @section Value: 
+#' A list of elements:
+#'    * \code{ID.vcfs}: List of data.frames containing ID mutations.
+#'
+#'   * \code{discarded.variants}: \strong{Only appearing when} there is list of VCF
+#'   like data.frames with rows for variants that were discarded immediately
+#'   after reading in the VCFs. The variants not analyzed can belong to the
+#'   following categories:
+#'       + Duplicated "CHROM" and "POS" values.
+#'       + Chromosome names that contain "#".
+#'       + Chromosome names that contain "GL".
+#'       + Chromosome names that contain "KI".
+#'       + Chromosome names that contain "random".
+#'       * Chromosome names that contain "Hs".
+#'       * Chromosome names that contain "M".
+#' @md
 #'
 #' @inheritSection VCFsToIDCatalogs Note
 #'
@@ -630,7 +642,19 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
     CheckNamesOfVCFs(files, names.of.VCFs)
     names(vcfs) <- names.of.VCFs
   }
-  return(vcfs)
+  
+  list.of.ID.vcfs <- lapply(vcfs, function(f1) f1$df)
+  list.of.discarded.variants <- 
+    lapply(vcfs, function(f2) f2$discarded.variants)
+  # Remove NULL elements from the list
+  list.of.discarded.variants2 <- Filter(Negate(is.null), list.of.discarded.variants)
+  
+  if (length(list.of.discarded.variants2) == 0) {
+    return(list(ID.vcfs = list.of.ID.vcfs))
+  } else {
+    return(list(ID.vcfs = list.of.ID.vcfs, 
+                discarded.variants = list.of.discarded.variants2))
+  }
 }
 
 #' Read and split Mutect VCF files

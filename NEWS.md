@@ -22,7 +22,14 @@ and `region` attribute as the source catalog, otherwise the function will raise 
 `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
 
 ## Changed
-* **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs` to functions generating ID catalogs: `VCFsToIDCatalogs`. The default value for the argument is FALSE.
+* **(Non backward-compatible)** Changed the return value of *exported* function
+`ReadStrelkaIDVCFs` to a list. The first element `ID.vcfs` is a list of
+data.frames containing ID mutations. The second element `discarded.variants`
+only appears when there are variants that were discarded immediately after
+reading in the VCFs.
+* **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs`
+to *exported* function `VCFsToIDCatalogs`. The default value for the argument is
+FALSE.
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
 * Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.

@@ -28,10 +28,26 @@ is TRUE.}
 Read Strelka ID (small insertion and deletion) VCF files
 }
 \section{Value}{
- A list of \strong{lists}. Each list has a first element
-  \code{df} which is a data frame that stores data lines of a VCF. A second
-  element \code{discarded.variants} \strong{only} appears if there are
-  variants that are excluded from the analysis.
+
+A list of elements:
+\itemize{
+\item \code{ID.vcfs}: List of data.frames containing ID mutations.
+\item \code{discarded.variants}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants that were discarded immediately
+after reading in the VCFs. The variants not analyzed can belong to the
+following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+}
+\itemize{
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
+}
 }
 
 \section{Note}{

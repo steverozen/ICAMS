@@ -17,6 +17,27 @@ test_that("ReadAndSplitMutectVCFs", {
   expect_false(is.null(list.of.vcfs2$multiple.alt))
   expect_false(is.null(list.of.vcfs2$other.subs))
   expect_false(is.null(list.of.vcfs2$not.analyzed))
+  
+  SBS.cats <- 
+    expect_warning(VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19", 
+                                     region = "genome", 
+                                     suppress.discarded.variants.warnings = FALSE))
+  expect_false(is.null(SBS.cats$discarded.variants))
+  SBS.cats1 <- 
+    VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19", 
+                      region = "genome", return.annotated.vcfs = TRUE)
+  expect_false(is.null(SBS.cats1$annotated.vcfs))
+  
+  DBS.cats <- 
+    expect_warning(VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
+                                     region = "genome",
+                                     suppress.discarded.variants.warnings = FALSE))
+  expect_false(is.null(DBS.cats$discarded.variants))
+  DBS.cats1 <- 
+    VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
+                      region = "genome", return.annotated.vcfs = TRUE)
+  expect_false(is.null(DBS.cats1$annotated.vcfs))
+    
 })
 
 test_that("ReadAndSplitStrelkaSBSVCFs", {
@@ -36,6 +57,21 @@ test_that("ReadAndSplitStrelkaSBSVCFs", {
   expect_null(list.of.vcfs2$ThreePlus)
   expect_false(is.null(list.of.vcfs2$multiple.alt))
   expect_false(is.null(list.of.vcfs2$not.analyzed))
+})
+
+test_that("ReadStrelkaIDVCFs", {
+  files <- list.files(path = "testdata/Strelka-ID-GRCh37", full.names = TRUE)
+  files1 <- files[1:2]
+  list.of.vcfs1 <- ReadStrelkaIDVCFs(files1)
+  expect_null(list.of.vcfs1$discarded.variants)
+  
+  files2 <- files
+  list.of.vcfs2 <- ReadStrelkaIDVCFs(files2)
+  list.of.vcfs3 <- 
+    expect_warning(ReadStrelkaIDVCFs(files2,
+                                     suppress.discarded.variants.warnings = FALSE))
+  
+  expect_false(is.null(list.of.vcfs2$discarded.variants))
 })
 
 test_that("MutectVCFFilesToCatalog", {
