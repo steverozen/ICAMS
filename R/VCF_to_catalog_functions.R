@@ -108,11 +108,8 @@ RenameColumnsWithNameVAF <- function(df) {
 #' @keywords internal
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL, 
                               suppress.discarded.variants.warnings = TRUE) {
-  if (suppress.discarded.variants.warnings == TRUE) {
-    retval <- suppressWarnings(MakeDataFrameFromVCF(file))
-  } else {
-    retval <- MakeDataFrameFromVCF(file)
-  }
+  
+  retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
   
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
@@ -152,6 +149,10 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
 #' @importFrom utils read.csv
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
+#' 
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'
 #' @return A list of elements:
 #' * \code{df}: A data frame storing data lines from the original VCF file.
@@ -160,7 +161,8 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
 #' @md
 #'
 #' @keywords internal
-MakeDataFrameFromVCF <- function(file) {
+MakeDataFrameFromVCF <- 
+  function(file, suppress.discarded.variants.warnings = TRUE) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1:100), as.is = TRUE)
   
@@ -189,13 +191,24 @@ MakeDataFrameFromVCF <- function(file) {
   # Create an empty data frame for discarded variants
   discarded.variants <- df1[0, ]
   
-  retval <- RemoveRowsWithPoundSign(df1, file)
+  if (suppress.discarded.variants.warnings == TRUE) {
+    retval <- suppressWarnings(RemoveRowsWithPoundSign(df1, file))
+  } else {
+    retval <- RemoveRowsWithPoundSign(df1, file)
+  }
+  
   if (!is.null(retval$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
   }
   
-  retval2 <- RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file)
+  if (suppress.discarded.variants.warnings == TRUE) {
+    retval2 <- 
+      suppressWarnings(RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file))
+  } else {
+    retval2 <- RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file)
+  }
+  
   if (!is.null(retval2$discarded.variants)) {
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
@@ -233,11 +246,7 @@ MakeDataFrameFromVCF <- function(file) {
 #' @keywords internal
 ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
                              suppress.discarded.variants.warnings = TRUE) {
-  if (suppress.discarded.variants.warnings == TRUE) {
-    retval <- suppressWarnings(MakeDataFrameFromVCF(file))
-  } else {
-    retval <- MakeDataFrameFromVCF(file)
-  }
+  retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
     
   # Get the name of VCF
   if (is.null(name.of.VCF)) {
@@ -369,43 +378,39 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
 ReadMutectVCF <- 
   function(file, name.of.VCF = NULL, tumor.col.name = NA,
            suppress.discarded.variants.warnings = TRUE) {
-    if (suppress.discarded.variants.warnings == TRUE) {
-      retval <- suppressWarnings(MakeDataFrameFromVCF(file))
+    retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
+    if (is.null(name.of.VCF)) {
+      vcf.name <- tools::file_path_sans_ext(basename(file))
     } else {
-      retval <- MakeDataFrameFromVCF(file)
+      vcf.name <- name.of.VCF
     }
-  if (is.null(name.of.VCF)) {
-    vcf.name <- tools::file_path_sans_ext(basename(file))
-  } else {
-    vcf.name <- name.of.VCF
+    
+    # Create an empty data frame for discarded variants
+    discarded.variants <- retval$df[0, ]
+    
+    if (!is.null(retval$discarded.variants)) {
+      discarded.variants <- 
+        dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+    }
+    
+    if (suppress.discarded.variants.warnings == TRUE) {
+      retval2 <- suppressWarnings(StandardChromName(retval$df, file)) 
+    } else {
+      retval2 <- StandardChromName(retval$df, file)
+    }
+    if (!is.null(retval2$discarded.variants)) {
+      discarded.variants <- 
+        dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+    }
+    
+    df1 <- GetMutectVAF(retval2$df, vcf.name, tumor.col.name)
+    
+    if (nrow(discarded.variants) == 0) {
+      return(list(df = df1))
+    } else {
+      return(list(df = df1, discarded.variants = discarded.variants))
+    }
   }
-  
-  # Create an empty data frame for discarded variants
-  discarded.variants <- retval$df[0, ]
-  
-  if (!is.null(retval$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
-  }
-  
-  if (suppress.discarded.variants.warnings == TRUE) {
-    retval2 <- suppressWarnings(StandardChromName(retval$df, file)) 
-  } else {
-    retval2 <- StandardChromName(retval$df, file)
-  }
-  if (!is.null(retval2$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
-  }
-  
-  df1 <- GetMutectVAF(retval2$df, vcf.name, tumor.col.name)
-  
-  if (nrow(discarded.variants) == 0) {
-    return(list(df = df1))
-  } else {
-    return(list(df = df1, discarded.variants = discarded.variants))
-  }
-}
 
 #' @rdname GetVAF
 #'
