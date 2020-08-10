@@ -2308,7 +2308,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @param output.file Optional. The base name of the PDF file to be produced;
 #'   the file is ending in \code{catID.pdf}.
 #'
-#' @inheritSection VCFsToIDCatalogs Value
+#' @inheritSection StrelkaIDVCFFilesToCatalog Value
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 
@@ -2327,17 +2327,20 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'                                            output.file = 
 #'                                            file.path(tempdir(), "StrelkaID"))}
 #'                                                                    
-StrelkaIDVCFFilesToCatalogAndPlotToPdf <- function(files, 
-                                                   ref.genome, 
-                                                   region = "unknown", 
-                                                   names.of.VCFs = NULL, 
-                                                   output.file = "",
-                                                   flag.mismatches = 0,
-                                                   return.annotated.vcfs = FALSE) {
+StrelkaIDVCFFilesToCatalogAndPlotToPdf <- 
+  function(files, 
+           ref.genome, 
+           region = "unknown", 
+           names.of.VCFs = NULL, 
+           output.file = "",
+           flag.mismatches = 0,
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
     
     list <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
-                                 flag.mismatches, return.annotated.vcfs)
+                                 flag.mismatches, return.annotated.vcfs,
+                                 suppress.discarded.variants.warnings)
     
     if (output.file != "") output.file <- paste0(output.file, ".")
     
