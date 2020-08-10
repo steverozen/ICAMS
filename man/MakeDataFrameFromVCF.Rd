@@ -4,10 +4,14 @@
 \alias{MakeDataFrameFromVCF}
 \title{Read in the data lines of a Variant Call Format (VCF) file}
 \usage{
-MakeDataFrameFromVCF(file)
+MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings = TRUE)
 }
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
 A list of elements:

@@ -124,7 +124,7 @@ StrelkaSBSVCFFilesToZipFile <-
 #' 
 #' @importFrom zip zipr 
 #' 
-#' @inheritSection VCFsToIDCatalogs Value 
+#' @inheritSection StrelkaIDVCFFilesToCatalog Value 
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 
@@ -143,43 +143,49 @@ StrelkaSBSVCFFilesToZipFile <-
 #'                                region = "genome",
 #'                                base.filename = "Strelka-ID")
 #'   unlink(file.path(tempdir(), "test.zip"))}
-StrelkaIDVCFFilesToZipFile <- function(dir,
-                                       zipfile, 
-                                       ref.genome, 
-                                       region = "unknown", 
-                                       names.of.VCFs = NULL, 
-                                       base.filename = "",
-                                       flag.mismatches = 0,
-                                       return.annotated.vcfs = FALSE) {
-  files <- list.files(path = dir, pattern = "\\.vcf$", 
-                      full.names = TRUE, ignore.case = TRUE)
-  vcf.names <- basename(files)
-  list.of.vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
-  mutation.loads <- GetMutationLoadsFromStrelkaIDVCFs(list.of.vcfs)
-  strand.bias.statistics<- NULL
-  
-  list <- VCFsToIDCatalogs(list.of.vcfs, ref.genome, region, flag.mismatches,
-                           return.annotated.vcfs)
-  
-  output.file <- ifelse(base.filename == "",
-                        paste0(tempdir(), .Platform$file.sep),
-                        file.path(tempdir(), paste0(base.filename, ".")))
-  
-  WriteCatalog(list$catalog, 
-               file = paste0(output.file, "catID.csv"))
-  
-  PlotCatalogToPdf(list$catalog, 
-                   file = paste0(output.file, "catID.pdf"))
-  
-  zipfile.name <- basename(zipfile)
-  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
-                    ref.genome, region, mutation.loads, strand.bias.statistics)
-  file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
-                           full.names = TRUE)
-  zip::zipr(zipfile = zipfile, files = file.names)
-  unlink(file.names)
-  invisible(list)
-}
+StrelkaIDVCFFilesToZipFile <- 
+  function(dir,
+           zipfile, 
+           ref.genome, 
+           region = "unknown", 
+           names.of.VCFs = NULL, 
+           base.filename = "",
+           flag.mismatches = 0,
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
+    files <- list.files(path = dir, pattern = "\\.vcf$", 
+                        full.names = TRUE, ignore.case = TRUE)
+    vcf.names <- basename(files)
+    catalogs0 <-
+      StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
+                                 flag.mismatches, return.annotated.vcfs,
+                                 suppress.discarded.variants.warnings)
+    mutation.loads <- GetMutationLoadsFromStrelkaIDVCFs(catalogs0)
+    strand.bias.statistics<- NULL
+    
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    
+    output.file <- ifelse(base.filename == "",
+                          paste0(tempdir(), .Platform$file.sep),
+                          file.path(tempdir(), paste0(base.filename, ".")))
+    
+    WriteCatalog(catalogs$catalog, 
+                 file = paste0(output.file, "catID.csv"))
+    
+    PlotCatalogToPdf(catalogs$catalog, 
+                     file = paste0(output.file, "catID.pdf"))
+    
+    zipfile.name <- basename(zipfile)
+    AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
+                      ref.genome, region, mutation.loads, strand.bias.statistics)
+    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
+                             full.names = TRUE)
+    zip::zipr(zipfile = zipfile, files = file.names)
+    unlink(file.names)
+    invisible(catalogs0)
+  }
 
 #' Create a zip file which contains catalogs and plot PDFs from Mutect VCF files
 #'
@@ -1201,7 +1207,7 @@ CheckAndReturnIDCatalog <-
 #' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
+#' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)$ID.vcfs                      
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
@@ -1649,20 +1655,33 @@ GetMutationLoadsFromStrelkaSBSVCFs <- function(catalogs) {
 #' }
 #'   
 #' @keywords internal
-GetMutationLoadsFromStrelkaIDVCFs <- function(list.of.vcfs) {
-  num.of.total.variants <- sapply(list.of.vcfs, FUN = nrow)
-  CheckComplexIndel <- function(ID.df) {
-    complex.indels <- 
-      which(substr(ID.df$REF, 1, 1) != substr(ID.df$ALT, 1, 1))
-    return(length(complex.indels))
-  }
-  num.of.excluded.variants <- sapply(list.of.vcfs, FUN = CheckComplexIndel)
-  num.of.ID <- num.of.total.variants - num.of.excluded.variants
-  num.of.SBS <- rep(0L, length(num.of.ID))
-  names(num.of.SBS) <- names(num.of.ID)
-  num.of.DBS <- num.of.SBS
+GetMutationLoadsFromStrelkaIDVCFs <- function(catalogs) {
+  catID <- catalogs$catalog
+  vcf.names <- colnames(catID)
+  num.of.ID <- colSums(catID)
+  num.of.SBS <- stats::setNames(rep(0, length(vcf.names)), vcf.names)
+  num.of.DBS <- stats::setNames(rep(0, length(vcf.names)), vcf.names)
   
+  if (is.null(catalogs$discarded.variants)) {
+    num.of.total.variants <- num.of.SBS + num.of.DBS + num.of.ID
+    num.of.discarded.variants <- 
+      stats::setNames(rep(0, length(vcf.names)), vcf.names)
+  } else {
+    discarded.variants <- catalogs$discarded.variants
+    mat <- matrix(data = 0, nrow = length(vcf.names),
+                  ncol = length(discarded.variants), 
+                  dimnames = list(vcf.names, names(discarded.variants)))
+    
+    for (type in names(discarded.variants)) {
+      tmp <- discarded.variants[[type]]
+      num.of.variants <- sapply(tmp, FUN = nrow)
+      mat[names(num.of.variants), type] <- num.of.variants
+    }
+    num.of.discarded.variants <- rowSums(mat)
+    num.of.total.variants <- 
+      num.of.SBS + num.of.DBS + num.of.ID + num.of.discarded.variants
+  }
   return(list(total.variants = num.of.total.variants,
               SBS = num.of.SBS, DBS = num.of.DBS, ID = num.of.ID,
-              excluded.variants = num.of.excluded.variants))
+              discarded.variants = num.of.discarded.variants))
 }
