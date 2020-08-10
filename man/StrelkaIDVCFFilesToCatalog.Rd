@@ -10,7 +10,8 @@ StrelkaIDVCFFilesToCatalog(
   region = "unknown",
   names.of.VCFs = NULL,
   flag.mismatches = 0,
-  return.annotated.vcfs = FALSE
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -38,6 +39,10 @@ will automatically discard these variants and an element
 \item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
 with additional columns showing mutation class for each variant. Default is
 FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs

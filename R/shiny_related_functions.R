@@ -442,10 +442,34 @@ StrelkaSBSVCFFilesToCatalog <-
 #'                                       region = "genome")}
 StrelkaIDVCFFilesToCatalog <- 
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
-           flag.mismatches = 0, return.annotated.vcfs = FALSE) {
-    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs)
-    return(VCFsToIDCatalogs(vcfs, ref.genome, region, flag.mismatches,
-                            return.annotated.vcfs))
+           flag.mismatches = 0, return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
+    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs, 
+                              suppress.discarded.variants.warnings)
+    ID.list <- VCFsToIDCatalogs(vcfs$ID.vcfs, ref.genome, region, 
+                                flag.mismatches, return.annotated.vcfs,
+                                suppress.discarded.variants.warnings)
+    
+    discarded.variants.list <- 
+      list(ID = ID.list$discarded.variants,
+           not.analyzed = vcfs$discarded.variants)
+    annotated.vcfs.list <- ID.list$annotated.vcfs
+    # Remove NULL elements from the list
+    discarded.variants.list2 <- Filter(Negate(is.null), discarded.variants.list)
+    if (length(discarded.variants.list2) == 0) {
+      discarded.variants.list2 <- NULL
+    }
+    annotated.vcfs.list2 <- Filter(Negate(is.null), annotated.vcfs.list)
+    if (length(annotated.vcfs.list2) == 0) {
+      annotated.vcfs.list2 <- NULL
+    }
+    
+    combined.list <- list(catalog = ID.list$catalog,
+                          discarded.variants = discarded.variants.list2,
+                          annotated.vcfs = annotated.vcfs.list2)
+    # Remove NULL elements from the list
+    combined.list2 <- Filter(Negate(is.null), combined.list)
+    return(combined.list2)
   }
 
 #' @keywords internal

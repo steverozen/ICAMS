@@ -5,13 +5,16 @@
 \title{Check and return the ID mutation matrix}
 \usage{
 CheckAndReturnIDMatrix(
-  annotated.VCF,
+  annotated.vcf,
   discarded.variants,
   ID.mat,
   return.annotated.vcf = FALSE
 )
 }
 \arguments{
+\item{annotated.vcf}{An annotated ID VCF with additional column
+\code{ID.class} showing ID classification for each variant.}
+
 \item{discarded.variants}{A \code{data.frame} which contains rows of ID
 variants which are excluded in the analysis.}
 
@@ -19,9 +22,6 @@ variants which are excluded in the analysis.}
 
 \item{return.annotated.vcf}{Whether to return \code{annotated.vcf}. Default is
 FALSE.}
-
-\item{annotated.vcf}{An annotated ID VCF with additional column
-\code{ID.class} showing ID classification for each variant.}
 }
 \description{
 Check and return the ID mutation matrix
