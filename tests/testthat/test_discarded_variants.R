@@ -99,3 +99,16 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
                                 region = "genome", return.annotated.vcfs = TRUE)
   expect_false(is.null(catalogs1$annotated.vcfs))
 })
+
+test_that("StrelkaIDVCFFilesToCatalog", {
+  files <- list.files(path = "testdata/Strelka-ID-GRCh37", full.names = TRUE)
+  catalogs <- StrelkaIDVCFFilesToCatalog(files, ref.genome = "hg19", 
+                                         region = "genome")
+  expect_false(is.null(catalogs$discarded.variants))
+  expect_null(catalogs$annotated.vcfs)
+  
+  catalogs1 <- 
+    StrelkaIDVCFFilesToCatalog(files, ref.genome = "hg19", 
+                               region = "genome", return.annotated.vcfs = TRUE)
+  expect_false(is.null(catalogs1$annotated.vcfs))
+})
