@@ -573,7 +573,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' @keywords internal
 ReadVCF <- 
   function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
-    df1 <- df <- MakeDataFrameFromVCF(file)
+    df1 <- df <- MakeDataFrameFromVCF(file)$df
     df1$VAF <- NA
     df1$read.depth <- NA
     
