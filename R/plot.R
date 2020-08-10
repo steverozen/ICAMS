@@ -276,7 +276,7 @@ PlotCatalog.SBS96Catalog <-
       rect(xleft = x.left, ybottom = ymax * 1.28, 
            xright = x.right, ytop = ymax * 1.3,
            col = class.col, border = NA, xpd = NA, adj = 0.5)
-      text((x.left + x.right)/2, ymax * 1.38, 
+      text((x.left + x.right)/2, ymax * 1.38,   
            labels = maj.class.names, xpd = NA, cex = cex * 1.25)
     }
 
@@ -434,6 +434,11 @@ PlotCatalog.SBS192Catalog <-
 
     # Write the name of the sample
     text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
+    
+    # Add legend
+    legend(bp[159], ymax * 1.05, fill = strand.col, border = strand.col,
+           xpd = NA, bty = "n", x.intersp = 0.5, , cex = cex * 0.88,
+           legend = c("Transcribed strand", "Untranscribed strand"))
   } else {
     strand.col <- c('#394398',
                     '#e83020')
@@ -589,8 +594,8 @@ PlotCatalog.SBS192Catalog <-
 
     # Add legend
     legend(bp[6], ymax * 0.95, fill = strand.col, border = "white",
-           xpd = NA, bty = "n",
-           legend = c("Transcribed", "Untranscribed"), cex = cex)
+           xpd = NA, bty = "n", 
+           legend = c("Transcribed strand", "Untranscribed strand"), cex = cex)
 
     # Draw the sample name information on top of graph
     text(bp[5], ymax * 1.02, labels = colnames(catalog), xpd = NA,

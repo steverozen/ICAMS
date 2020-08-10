@@ -20,6 +20,7 @@ and `region` attribute as the source catalog, otherwise the function will raise 
 `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
 * Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
 `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
+* Added legend for SBS192 plot and changed the legend text for SBS12 plot.
 
 ## Changed
 * **(Non backward-compatible)** Changed the return value of *exported* function
