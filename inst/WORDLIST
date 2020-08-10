@@ -76,6 +76,7 @@ GGTA
 gff
 GFF
 github
+GL
 GRCh
 GRCm
 gz
@@ -94,6 +95,7 @@ indels
 IndelCatalog
 intron
 IUPAC
+KI
 Kilobase
 Lieb
 macOS
@@ -192,6 +194,7 @@ VAFs
 vcf
 vcfs
 VCF
+VCF's
 VCFs
 VCFsToDBSCatalogs
 VCFsToIDCatalogs
