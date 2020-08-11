@@ -420,30 +420,28 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   
   # Specify the possible variable names in Mutect VCF that stores count of reads
   # information
+  
+  # From header of Mutect VCF:
+  # F1R2 = "Count of reads in F1R2 pair orientation supporting each allele"
+  # F2R1 = "Count of reads in F2R1 pair orientation supporting each allele"
+  # ALT_F1R2 = "Count of reads in F1R2 pair orientation supporting the alternate allele"
+  # ALT_F2R1 = "Count of reads in F2R1 pair orientation supporting the alternate allele"
+  # REF_F1R2 = "Count of reads in F1R2 pair orientation supporting the reference allele"
+  # REF_F2R1 = "Count of reads in F2R1 pair orientation supporting the reference allele"
   type1 <- c("F1R2", "F2R1")
   type2 <- c("REF_F1R2", "ALT_F1R2", "REF_F2R1", "ALT_F2R1")
   
-  if (!all(sapply(type1, FUN = grepl, x = vcf$FORMAT[1])) &&
-      !all(sapply(type2, FUN = grepl, x = vcf$FORMAT[1]))) {
-    
+  vcf.format <- unlist(stringi::stri_split_fixed(vcf$FORMAT[1], ":"))
+  is.type1 <- all(type1 %in% vcf.format)
+  is.type2 <- all(type2 %in% vcf.format)
+  if (!is.type1 && !is.type2) {
     warning("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
             " does not appear to be a Mutect VCF, please check the data")
-    
     vcf$VAF <- NA
     vcf$read.depth <- NA
     return(vcf)
-    
-    #stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
-    #     " does not appear to be a Mutect VCF, please check the data")
   }
 
-  
-  #if (!any(grepl("/1", unlist(vcf[1, ]), fixed = TRUE)) && 
-  #    !any(grepl("|1", unlist(vcf[1, ]), fixed = TRUE))) {
-  #  stop("\nVCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
-  #       " does not appear to be a Mutect VCF, please check the data")
-  #}
-  
   if (!is.na(tumor.col.name)) {
     if (!tumor.col.name %in% colnames(vcf)) {
       stop("\n", dQuote(tumor.col.name), 
@@ -451,23 +449,42 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
            ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)))
     }
   }
-
-  ExtractInfo <- function(idx, type, vector1, vector2) {
-    pos <- match(type, unlist(strsplit(vector1[idx], ":")))
-    values <- unlist(strsplit(vector2[idx], ":"))[pos]
+  
+  GetTumorColumn <- function(vcf, tumor.col.name) {
+    if (is.na(tumor.col.name)) {
+      return(vcf[[10]])
+    } else {
+      return(vcf[[tumor.col.name]])
+    }
+  }
+  tumor.col <- GetTumorColumn(vcf, tumor.col.name)
+  
+  ExtracVAFAndReadDepth <- function(tumor.col, type) {
+    format.info <- stringi::stri_split_fixed(vcf$FORMAT, ":")
+    read.counts.idx <- lapply(format.info, function(x) match(type, x))
+    tumor.info.list <- stringi::stri_split_fixed(tumor.col, ":")
+    
+    Extract <- function(idx, tumor.info.list, read.counts.idx) {
+      x <- tumor.info.list[[idx]]
+      idx <- read.counts.idx[[idx]]
+      as.integer(unlist(strsplit(x[idx], ",")))
+    }
+    num <- nrow(vcf)
+    read.counts.info <- lapply(1:num, FUN = Extract, 
+                               tumor.info.list = tumor.info.list,
+                               read.counts.idx = read.counts.idx)
+    vafs <- sapply(read.counts.info, function(x) {
+      vaf <- sum(x[c(2, 4)]) / sum(x)
+    })
+    read.depth <- sapply(read.counts.info, function(x) sum(x))
+    return(data.frame(VAF = vafs, read.depth = read.depth))
   }
   
-  CalculateVAF <- function(idx, list) {
-    values <- list[[idx]]
-    x <- as.integer(unlist(strsplit(values, ",")))
-    return(data.frame(VAF = sum(x[2], x[4]) / sum(x), read.depth = sum(x)))
-  }
-  
-  GetVAFs <- function(type, vector1, vector2) {
-    info <- lapply(1:length(vector1), FUN = ExtractInfo, type = type,
-                   vector1 = vector1, vector2 = vector2)
-    vafs <- lapply(1:length(info), FUN = CalculateVAF, list = info)
-    do.call("rbind", vafs)
+  vafs <- NULL
+  if (is.type1) {
+    vafs <- ExtracVAFAndReadDepth(tumor.col, type1)
+  } else if (is.type2) {
+    vafs <- ExtracVAFAndReadDepth(tumor.col, type2)
   }
   
   CheckAndReturnVAFs <- function(vafs) {
@@ -485,25 +502,7 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
       return(cbind(vcf, vafs))
     }
   }
-  
-  GetAndReturnVAFs <- function(type, vector1, vector2) {
-    vafs <- GetVAFs(type, vector1, vector2)
-    CheckAndReturnVAFs(vafs)
-  }
-  
-  if (all(type1 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    if(is.na(tumor.col.name)) {
-      GetAndReturnVAFs(type1, vcf$FORMAT, vcf[[10]])
-    } else {
-      GetAndReturnVAFs(type1, vcf$FORMAT, vcf[[tumor.col.name]])
-    }
-  } else if (all(type2 %in% unlist(strsplit(vcf$FORMAT[1], ":")))) {
-    if(is.na(tumor.col.name)) {
-      GetAndReturnVAFs(type2, vcf$FORMAT, vcf[[10]])
-    } else {
-      GetAndReturnVAFs(type2, vcf$FORMAT, vcf[[tumor.col.name]])
-    }
-  }
+  CheckAndReturnVAFs(vafs)
 }
 
 #' @rdname GetVAF
