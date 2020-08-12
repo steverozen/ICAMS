@@ -24,32 +24,12 @@ names of the VCF files.}
 warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
+\value{
+A list of data frames containing data lines of the VCF files.
+}
 \description{
 Read Strelka ID (small insertion and deletion) VCF files
 }
-\section{Value}{
-
-A list of elements:
-\itemize{
-\item \code{ID.vcfs}: List of data.frames containing ID mutations.
-\item \code{discarded.variants}: \strong{Only appearing when} there is list of VCF
-like data.frames with rows for variants that were discarded immediately
-after reading in the VCFs. The variants not analyzed can belong to the
-following categories:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#".
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-}
-\itemize{
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
-}
-}
-}
-
 \section{Note}{
 
 In ID (small insertion and deletion) catalogs, deletion repeat sizes range

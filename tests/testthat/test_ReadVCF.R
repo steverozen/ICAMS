@@ -8,7 +8,7 @@ test_that("Read Strelka mixed VCF", {
   vcf1 <- ReadStrelkaSBSVCFs(files = file1)
   vcf2 <- ReadStrelkaIDVCFs(files = file2)
   rownames(vcf[[1]]$df) <- 1:nrow(vcf[[1]]$df)
-  expect_equivalent(vcf[[1]]$df, dplyr::bind_rows(vcf1[[1]]$df, vcf2$ID.vcfs[[1]]))
+  expect_equivalent(vcf[[1]]$df, dplyr::bind_rows(vcf1[[1]]$df, vcf2[[1]]))
 })
 
 test_that(
@@ -39,9 +39,9 @@ test_that(
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
     vcf2 <- expect_warning(ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf",
                                              suppress.discarded.variants.warnings = FALSE))
-    expect_equal(dim(vcf$ID.vcfs[[1]]), c(408, 19))
-    expect_equal(dim(vcf1$ID.vcfs[[1]]), c(1574, 11))
-    expect_equal(dim(vcf2$ID.vcfs[[1]]), c(745, 19))
+    expect_equal(dim(vcf[[1]]), c(408, 19))
+    expect_equal(dim(vcf1[[1]]), c(1574, 11))
+    expect_equal(dim(vcf2[[1]]), c(745, 19))
     
     list <- ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf",
                      variant.caller = "strelka")
@@ -50,9 +50,9 @@ test_that(
     list2 <- ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
                       variant.caller = "strelka")
     # Delete the VAF and read.depth columns which are all NA
-    expect_equal(list[[1]]$df[, 1:(ncol(list[[1]]$df) - 2)], vcf$ID.vcfs[[1]])
-    expect_equal(list1[[1]]$df[, 1:(ncol(list1[[1]]$df) - 2)], vcf1$ID.vcfs[[1]])
-    expect_equal(list2[[1]]$df[, 1:(ncol(list2[[1]]$df) - 2)], vcf2$ID.vcfs[[1]])
+    expect_equal(list[[1]]$df[, 1:(ncol(list[[1]]$df) - 2)], vcf[[1]])
+    expect_equal(list1[[1]]$df[, 1:(ncol(list1[[1]]$df) - 2)], vcf1[[1]])
+    expect_equal(list2[[1]]$df[, 1:(ncol(list2[[1]]$df) - 2)], vcf2[[1]])
   } )
 
 test_that(
