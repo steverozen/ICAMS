@@ -43,12 +43,14 @@ IndelCatalog.}
 }
 \value{
 An \strong{invisible} list whose first element is a logic value
-  indicating whether the plot is successful. For \strong{SBS96Catalog}, the
-  list will have a second element, which is a numeric vector giving the
-  coordinates of all the bar midpoints drawn, useful for adding to the graph.
-  For \strong{SBS192Catalog} with "counts" catalog.type and non-NULL
-  abundance and \code{plot.SBS12 = TRUE}, the list will have a second element
-  which is a list containing the strand bias statistics.
+  indicating whether the plot is successful. For \code{SBS96Catalog},
+  \code{SBS192Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog} and
+  \code{IndelCatalog}, the list will have a second element, which is a
+  numeric vector giving the coordinates of all the bar midpoints drawn,
+  useful for adding to the graph. For \strong{SBS192Catalog} with "counts"
+  catalog.type and non-NULL abundance and \code{plot.SBS12 = TRUE}, the list
+  will have an additional element which is a list containing the strand bias
+  statistics.
 }
 \description{
 Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
