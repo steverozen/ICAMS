@@ -1,4 +1,4 @@
-# ICAMS 2.1.2.90xx
+# ICAMS 2.2.0
 ## Added
 * Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.
 * Added documentation to *exported* functions `ReadAndSplitStrelkaSBSVCFs`,

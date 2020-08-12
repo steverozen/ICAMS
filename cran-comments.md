@@ -4,7 +4,7 @@ Please see [NEWS.md](https://github.com/steverozen/ICAMS/blob/master/NEWS.md) fo
 
 ## Test environments
 * Local Windows 10 install: R 3.6.3
-* Local OS X Mojave install: R 3.6.3
+* Local OS X Mojave install: R 4.0.2
 * Travis-CI Ubuntu 16.04.6 LTS: R 3.6.2 and devel
 * Winbuilder R version 4.0.0 RC (2020-04-17 r78247)
 
