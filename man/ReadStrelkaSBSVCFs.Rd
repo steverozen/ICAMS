@@ -4,25 +4,35 @@
 \alias{ReadStrelkaSBSVCFs}
 \title{Read Strelka SBS (single base substitutions) VCF files.}
 \usage{
-ReadStrelkaSBSVCFs(files, names.of.VCFs = NULL)
+ReadStrelkaSBSVCFs(
+  files,
+  names.of.VCFs = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order
-of names in \code{names.of.VCFs} should match the order of VCF file paths
-in \code{files}. If \code{NULL}(default), this function will remove all of
-the path up to and including the last path separator (if any) and file
-paths without extensions (and the leading dot) will be used as the names of
-the VCF files.}
-}
-\value{
-A list of lists which contain information about VCFs from
-  \code{files}. Each list has two objects. The first object is a data frame
-  storing data lines of a VCF file with VAFs added. The second object
-  is a number indicating the number of rows in the first object.
+\item{names.of.VCFs}{Character vector of names of the VCF files. The order of
+names in \code{names.of.VCFs} should match the order of VCF file paths in
+\code{files}. If \code{NULL}(default), this function will remove all of the
+path up to and including the last path separator (if any) in \code{files}
+and file paths without extensions (and the leading dot) will be used as the
+names of the VCF files.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Read Strelka SBS (single base substitutions) VCF files.
 }
+\section{Value}{
+ A list of \strong{lists}. Each list has a first element \code{df}
+  which is a data frame that stores data lines of a VCF with additional
+  columns \code{VAF} (variant allele frequency) and \code{read.depth} added.
+  A second element \code{discarded.variants} \strong{only} appears if there
+  are variants that are excluded from the analysis.
+}
+
 \keyword{internal}

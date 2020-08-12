@@ -4,14 +4,25 @@
 \alias{StandardChromName}
 \title{Standardize the chromosome name annotations for a data frame.}
 \usage{
-StandardChromName(df)
+StandardChromName(df, file)
 }
 \arguments{
 \item{df}{A data frame whose first column contains the Chromosome name}
+
+\item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
-A data frame whose Chromosome names are only in the form of 1:22, "X"
-  and "Y".
+A \strong{list} whose first element is a data frame whose chromosome names are
+only in the form of 1:22, "X" and "Y". The second element
+\code{discarded.variants} \strong{only} appears if there are variants
+whose chromosome names belong to the following groups:
+\enumerate{
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
 }
 \description{
 Standardize the chromosome name annotations for a data frame.

@@ -5,31 +5,18 @@
 \title{Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
 > 2 consecutive bases}
 \usage{
-SplitListOfStrelkaSBSVCFs(list.of.vcfs)
+SplitListOfStrelkaSBSVCFs(
+  list.of.vcfs,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{list.of.vcfs}{A list of in-memory data frames containing Strelka SBS
 VCF file contents.}
-}
-\value{
-A list of in-memory objects with the elements: 
-\enumerate{
 
-   \item \code{SBS.vcfs}:  List of Data frames of pure SBS mutations -- no
-   DBS or 3+BS mutations.
-
-   \item \code{DBS.vcfs}:  List of Data frames of pure DBS mutations -- no
-   SBS or 3+BS mutations.
-
-   \item \code{ThreePlus}: List of Data tables with the key CHROM, LOW.POS,
-   HIGH.POS and additional information (reference sequence, alternative
-   sequence, context, etc.) Additional information not fully implemented at
-   this point because of limited immediate biological interest.
-
-   \item \code{multiple.alt} Rows with multiple alternate alleles (removed
-   from \code{SBS.vcfs} etc.)
-   
-   }
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 SBSs are single base substitutions,
@@ -38,4 +25,36 @@ e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
 bases are rare, so this function just records them. These
 would be variants such ATG>CCT, AGAT>TCTA, ...
 }
+\section{Value}{
+
+A list of elements as follows:
+\itemize{
+\item \code{SBS.vcfs}: List of data.frames of pure SBS mutations -- no DBS or
+3+BS mutations.
+\item \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
+3+BS mutations.
+\item \code{ThreePlus}: \strong{Only appearing when} there is list of
+data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
+the input that did not represent SBSs or DBSs.
+\item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants with multiple alternative alleles,
+for example ACA mutated to both AGA and ATA at the same position.
+\item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants that were discarded immediately
+after reading in the VCFs. The variants not analyzed can belong to the
+following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+}
+\itemize{
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
+}
+}
+
 \keyword{internal}

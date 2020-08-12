@@ -20,7 +20,7 @@ test_that("extended seq.context functions for Mutect GRCh38 vcf", {
 test_that("extended seq.context functions for Mutect GRCh37 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  vcf <- ReadAndSplitMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.vcf")
+  vcf <- ReadAndSplitMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)
@@ -72,7 +72,7 @@ test_that("extended seq.context functions for Strelka GRCh38 vcf", {
 test_that("extended seq.context functions for Strelka GRCh37 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  vcfs <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.vcf")
+  vcfs <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf")
   sbs.vcf <- vcfs$SBS.vcfs[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)

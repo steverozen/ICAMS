@@ -4,7 +4,11 @@
 \alias{ReadAndSplitStrelkaSBSVCFs}
 \title{Read and split Strelka SBS VCF files}
 \usage{
-ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs = NULL)
+ReadAndSplitStrelkaSBSVCFs(
+  files,
+  names.of.VCFs = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector of file paths to the Strelka SBS VCF files.}
@@ -15,31 +19,47 @@ file paths in \code{files}. If \code{NULL}(default), this function will
 remove all of the path up to and including the last path separator (if any)
 in \code{files} and file paths without extensions (and the leading dot)
 will be used as the names of the VCF files.}
-}
-\value{
-A list of 3 in-memory objects as follows:
 
-\enumerate{
-
-   \item \code{SBS.vcfs} List of data.frames of pure SBS mutations -- no DBS
-   or 3+BS mutations.
-   
-   \item \code{DBS.vcfs} List of data.frames of pure DBS mutations -- no SBS
-   or 3+BS mutations.
-
-   \item \code{ThreePlus} List of data.tables with the key CHROM, LOW.POS,
-   HIGH.POS which contain rows in the input that did not represent SBSs or
-   DBSs.
-   
-   \item \code{multiple.alt} Rows with multiple alternate alleles (removed from
-   \code{SBS.vcfs} etc.)
-
-   }
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 The function will find and merge adjacent SBS pairs into DBS if their VAFs
 are very similar. The default threshold value for VAF is 0.02.
 }
+\section{Value}{
+
+A list of elements as follows:
+\itemize{
+\item \code{SBS.vcfs}: List of data.frames of pure SBS mutations -- no DBS or
+3+BS mutations.
+\item \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
+3+BS mutations.
+\item \code{ThreePlus}: \strong{Only appearing when} there is list of
+data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
+the input that did not represent SBSs or DBSs.
+\item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants with multiple alternative alleles,
+for example ACA mutated to both AGA and ATA at the same position.
+\item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants that were discarded immediately
+after reading in the VCFs. The variants not analyzed can belong to the
+following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+}
+\itemize{
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
+}
+}
+
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",

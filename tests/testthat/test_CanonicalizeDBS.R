@@ -52,6 +52,7 @@ test_that("CanonicalizeDBS function", {
       TGGT = "TGGT", TTAA = "TTAA", TTAC = "TTAC", TTAG = "TTAG", TTCA = "TTCA",
       TTCC = "TTCC", TTCG = "TTCG", TTGA = "TTGA", TTGC = "TTGC", TTGG = "TTGG"
     )
+  names(result) <- NULL
   expect_equal(CanonicalizeDBS(substr(to.test, 1, 2),
                                substr(to.test, 3, 4)),
                result)

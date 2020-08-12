@@ -5,38 +5,51 @@
 \title{Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 VCF-like data frame with left-over rows).}
 \usage{
-SplitListOfMutectVCFs(list.of.vcfs)
+SplitListOfMutectVCFs(
+  list.of.vcfs,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
-}
-\value{
-A list with 3 in-memory VCFs and two left-over
-VCF-like data frames with rows that were not incorporated
-into the first 3 VCFs, as follows:
 
-\enumerate{
-
- \item \code{SBS} VCF with only single base substitutions.
-
- \item \code{DBS} VCF with only doublet base substitutions
-  as called by Mutect.
-
- \item \code{ID} VCF with only small insertions and deletions.
-
- \item \code{other.subs} VCF like data.frame with
- rows for coordinate substitutions involving
- 3 or more nucleotides (e.g. ACT > TGA or AACT > GGTA)
- and rows for complex indels.
-
- \item \code{multiple.alt} VCF like data.frame with
- rows for variants with multiple alternative alleles, for example
- ACT mutated to both AGT and ACT at the same position.
-
-}
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
 VCF-like data frame with left-over rows).
 }
+\section{Value}{
+ A list containing the following objects:
+\itemize{
+\item \code{SBS}: List of VCFs with only single base substitutions.
+\item \code{DBS}: List of VCFs with only doublet base substitutions as called
+by Mutect.
+\item \code{ID}: List of VCFs with only small insertions and deletions.
+\item \code{other.subs}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for coordinate substitutions involving 3 or more
+nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
+\item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants with multiple alternative alleles,
+for example ACA mutated to both AGA and ATA at the same position.
+\item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+like data.frames with rows for variants that were discarded immediately
+after reading in the VCFs. The variants not analyzed can belong to the
+following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+}
+\itemize{
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
+}
+}
+
 \keyword{internal}

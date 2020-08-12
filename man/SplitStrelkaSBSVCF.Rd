@@ -5,12 +5,14 @@
 \title{Split an in-memory Strelka VCF into SBS, DBS, and variants involving
 > 2 consecutive bases}
 \usage{
-SplitStrelkaSBSVCF(vcf.df, max.vaf.diff = 0.02)
+SplitStrelkaSBSVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL)
 }
 \arguments{
 \item{vcf.df}{An in-memory data frame containing a Strelka VCF file contents.}
 
 \item{max.vaf.diff}{The maximum difference of VAF, default value is 0.02.}
+
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 A list of in-memory objects with the elements:

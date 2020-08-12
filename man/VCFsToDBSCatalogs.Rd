@@ -8,7 +8,9 @@ VCFsToDBSCatalogs(
   list.of.DBS.vcfs,
   ref.genome,
   trans.ranges = NULL,
-  region = "unknown"
+  region = "unknown",
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -34,13 +36,14 @@ information.}
 
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
-}
-\value{
-A list of 3 DBS catalogs, one each for 78, 144, 136: catDBS78
-  catDBS144 catDBS136. If \code{trans.ranges} is not provided by user and
-  cannot be inferred by ICAMS, DBS 144 catalog will not be generated. Each
-  catalog has attributes added. See \code{\link{as.catalog}} for more
-  details.
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Create a list of 3 catalogs (one each for DBS78, DBS144 and DBS136)
@@ -50,6 +53,26 @@ any type of mutation other then DBSs.
 \note{
 DBS 144 catalog only contains mutations in transcribed regions.
 }
+\section{Value}{
+
+A list containing the following objects:
+\itemize{
+\item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+3 DBS catalogs (one each for 78, 136, and 144).
+\item \code{discarded.variants}: \strong{Only appearing when} there are DBS
+variants whose tetranucleotide context contains "N".
+\item \code{annotated.vcfs}: \strong{Only appearing when}
+\code{return.annotated.vcfs} = TRUE. DBS VCF annotated by
+\code{\link{AnnotateDBSVCF}} with three new columns \code{DBS78.class},
+\code{DBS136.class} and \code{DBS144.class} showing the mutation class for
+each DBS variant.
+}
+
+If \code{trans.ranges} is not provided by user and cannot be inferred by
+ICAMS, DBS 144 catalog will not be generated. Each catalog has
+attributes added. See \code{\link{as.catalog}} for more details.
+}
+
 \section{Comments}{
 
 To add or change attributes of the catalog, you can use function

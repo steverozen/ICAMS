@@ -11,7 +11,9 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf(
   region = "unknown",
   names.of.VCFs = NULL,
   output.file = "",
-  flag.mismatches = 0
+  flag.mismatches = 0,
+  return.annotated.vcfs = FALSE,
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -33,10 +35,19 @@ will be used as the names of the VCF files.}
 \item{output.file}{Optional. The base name of the PDF file to be produced;
 the file is ending in \code{catID.pdf}.}
 
-\item{flag.mismatches}{Optional. If > 0, then if there are mismatches to
-references in the ID (insertion/deletion) VCF, generate messages showing
-the mismatched rows and continue. Otherwise \code{stop} if there are
-mismatched rows. See \code{\link{AnnotateIDVCF}} for more details.}
+\item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
+do not match the extracted sequence from \code{ref.genome}, the function
+will automatically discard these variants and an element
+\code{discarded.variants} will appear in the return value. See
+\code{\link{AnnotateIDVCF}} for more details.}
+
+\item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
+with additional columns showing mutation class for each variant. Default is
+FALSE.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \description{
 Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
@@ -52,21 +63,59 @@ A \strong{list} of elements:
 \itemize{
 \item \code{catalog}: The ID (small insertion and deletion) catalog with
 attributes added. See \code{\link{as.catalog}} for more details.
-\item \code{annotated.vcfs}: A list of data frames which contain the original VCF
-ID mutation rows with three additional columns \code{seq.context.width},
-\code{seq.context} and \code{ID.class} added. The category assignment of each
-ID mutation in VCF can be obtained from \code{ID.class} column.
 \item \code{discarded.variants}:
-\strong{Only appearing when there are ID variants that were discarded}.
-A list of data frames which contain the discarded variants from the original VCF.
-The discarded variants can belong to the following types:
-\enumerate{
-\item Variants which have the same number of bases for REF and ALT alleles.
+\strong{Only appearing when} there are variants that were excluded in the
+analysis.
+A list of elements:
+\itemize{
+\item \code{ID}: ID variants discarded that can belong to the following
+categories:
+\itemize{
 \item Variants which have empty REF or ALT allels.
-\item Complex indels.
-\item Variants with mismatches between VCF and reference sequence.
+\item Variants whose REF allels do not match the extracted sequence from
+\code{ref.genome}.
+\item Variants which cannot be categorized according to the canonical
+representation. See catalog.row.order$ID for the canonical
+representation.
+}
+\item \code{not.analyzed}: Variants discarded immediately after reading in
+the VCFs:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
 }
 }
+\itemize{
+\item \code{annotated.vcfs}:
+\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+data frames which contain the original VCF's ID mutation rows with three
+additional columns \code{seq.context.width}, \code{seq.context} and
+\code{ID.class} added. The category assignment of each ID mutation in VCF can
+be obtained from \code{ID.class} column.
+}
+}
+}
+
+\section{ID classification}{
+
+See
+\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+for additional information on ID (small insertion and deletion) mutation
+classification.
+
+See the documentation for \code{\link{Canonicalize1Del}} which first handles
+deletions in homopolymers, then handles deletions in simple repeats with
+longer repeat units, (e.g. \code{CACACACA}, see
+\code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
+repeat, looks for microhomology (see \code{\link{FindDelMH}}).
+
+See the code for unexported function \code{\link{CanonicalizeID}}
+and the functions it calls for handling of insertions.
 }
 
 \section{Note}{

@@ -14,17 +14,32 @@ functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 * Enabled "counts" -> "counts.signature" catalog transformation when the source catalog
 has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
 and `region` attribute as the source catalog, otherwise the function will raise an error.
+* Added an extra section "ID classification" in documentation of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`.
+* Added an extra argument `return.annotated.vcfs` in *exported* functions
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, 
+`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
+* Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
+`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
+* Added legend for SBS192 plot and changed the legend text for SBS12 plot.
+* Added a second element `plot.object` to the returned list from function
+`PlotCatalog` for SBS192Catalog, DBS78Catalog, DBS144Catalog and IndelCatalog.
+The second element is a numeric vector giving the coordinates of all the bar
+midpoints drawn, useful for adding to the graph.
 
 ## Changed
-* **(Non backward-compatible)** Changed the return of functions
-`MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf` and
-`MutectVCFFilesToZipFile`. The object `catID` in the returned list has been
-changed from a matrix catalog to a **list**: 1st element is a matrix of the ID
-(small insertion and deletion) catalog. 2nd element is a list of further
-annotated VCFs (three additional columns `seq.context.width` , `seq.context` and `ID.class` are added to the original VCF).
+* **(Non backward-compatible)** Changed the return value of *exported* function
+`ReadStrelkaIDVCFs` to a list. The first element `ID.vcfs` is a list of
+data.frames containing ID mutations. The second element `discarded.variants`
+only appears when there are variants that were discarded immediately after
+reading in the VCFs.
+* **(Non backward-compatible)** Added an extra argument `return.annotated.vcfs`
+to *exported* function `VCFsToIDCatalogs`. The default value for the argument is
+FALSE.
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
 * Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
 * Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.
+* Optimized code in *exported* function `GetMutectVAF` and internal function `CanonicalizeDBS`,
+`CanonicalizeQUAD` to make them run faster.
 
 ## Fixed
 * Fixed bugs in `if` statement in internal functions
