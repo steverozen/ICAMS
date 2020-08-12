@@ -71,4 +71,4 @@ install.packages(pkgs = "path-to-binary-file", repos = NULL)
 
 ## Reference manual
 
-https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.1.2.9014.pdf
+https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.0.pdf
