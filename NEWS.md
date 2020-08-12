@@ -19,7 +19,9 @@ and `region` attribute as the source catalog, otherwise the function will raise 
 `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, 
 `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
 * Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
-`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`.
+`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToZipFile`,
+`StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and
+`StrelkaIDVCFFilesToZipFile`.
 * Added legend for SBS192 plot and changed the legend text for SBS12 plot.
 * Added a second element `plot.object` to the returned list from function
 `PlotCatalog` for SBS192Catalog, DBS78Catalog, DBS144Catalog and IndelCatalog.
