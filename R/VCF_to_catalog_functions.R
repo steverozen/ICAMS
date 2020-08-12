@@ -2070,7 +2070,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
              dimnames = list(ICAMS::catalog.row.order$DBS136, sample.id))
     catDBS144 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
+             dimnames = list(ICAMS::catalog.row.order$DBS144, sample.id))
     if (return.annotated.vcf == FALSE) {
       return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
                   catDBS144 = catDBS144))
