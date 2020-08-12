@@ -71,7 +71,7 @@ test_that("ReadStrelkaIDVCFs", {
     expect_warning(ReadStrelkaIDVCFs(files2,
                                      suppress.discarded.variants.warnings = FALSE))
   
-  expect_null(list.of.vcfs2$discarded.variants)
+  expect_false(is.null(list.of.vcfs2$discarded.variants))
 })
 
 test_that("MutectVCFFilesToCatalog", {

@@ -45,7 +45,8 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   if (length(dups) > 0) {
     dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
     warning("In ", file, " ", 2 * length(dups), " row out of ",
-            nrow(df), " had duplicate CHROM and POS and were discarded. ")
+            nrow(df), " had duplicate CHROM and POS and were removed. ",
+            "See the discarded variants in the return value for more details")
     df1 <- df[-c(dups, dups2), ]
     return(list(df = df1, discarded.variants = df[c(dups, dups2), ]))
   } else {
@@ -2311,7 +2312,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @param output.file Optional. The base name of the PDF file to be produced;
 #'   the file is ending in \code{catID.pdf}.
 #'
-#' @inheritSection VCFsToIDCatalogs Value
+#' @inheritSection StrelkaIDVCFFilesToCatalog Value
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 

@@ -25,7 +25,19 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \value{
-A list of data frames containing data lines of the VCF files.
+A list of data frames containing data lines of the VCF files. If
+there are variants that were excluded in the analysis, an additional
+element \code{discarded.variants} will appear in the return list.
+The variants discarded can belong to the following categories:
+\itemize{
+\item Duplicated "CHROM" and "POS" values.
+\item Chromosome names that contain "#".
+\item Chromosome names that contain "GL".
+\item Chromosome names that contain "KI".
+\item Chromosome names that contain "random".
+\item Chromosome names that contain "Hs".
+\item Chromosome names that contain "M".
+}
 }
 \description{
 Read Strelka ID (small insertion and deletion) VCF files

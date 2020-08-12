@@ -124,7 +124,7 @@ StrelkaSBSVCFFilesToZipFile <-
 #' 
 #' @importFrom zip zipr 
 #' 
-#' @inheritSection VCFsToIDCatalogs Value 
+#' @inheritSection StrelkaIDVCFFilesToCatalog Value 
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 
@@ -431,7 +431,42 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #' 
-#' @inheritSection VCFsToIDCatalogs Value
+#' @section Value:
+#' A \strong{list} of elements:
+#'   * \code{catalog}: The ID (small insertion and deletion) catalog with
+#'   attributes added. See \code{\link{as.catalog}} for more details.
+#' 
+#' * \code{discarded.variants}: 
+#' \strong{Only appearing when} there are variants that were excluded in the
+#' analysis. 
+#' A list of elements:
+#'     + \code{ID}: ID variants discarded that can belong to the following
+#'       categories:
+#'         - Variants which have the same number of bases for REF and ALT alleles.
+#'         - Variants which have empty REF or ALT allels.
+#'         - Complex indels.
+#'         - Variants whose \code{REF} do not match the extracted sequence from
+#'            \code{ref.genome}.
+#'         - Variants which cannot be categorized according to the canonical
+#'           representation. See catalog.row.order$ID for the canonical
+#'           representation.
+#'     + \code{not.analyzed}: Variants discarded immediately after reading in
+#'     the VCFs:
+#'         - Duplicated "CHROM" and "POS" values.
+#'         - Chromosome names that contain "#".
+#'         - Chromosome names that contain "GL".
+#'         - Chromosome names that contain "KI".
+#'         - Chromosome names that contain "random".
+#'         - Chromosome names that contain "Hs".
+#'         - Chromosome names that contain "M".
+#' 
+#'   * \code{annotated.vcfs}: 
+#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+#' data frames which contain the original VCF's ID mutation rows with three
+#' additional columns \code{seq.context.width}, \code{seq.context} and
+#' \code{ID.class} added. The category assignment of each ID mutation in VCF can
+#' be obtained from \code{ID.class} column.
+#' @md
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
 #' 
@@ -452,11 +487,17 @@ StrelkaIDVCFFilesToCatalog <-
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs, 
                               suppress.discarded.variants.warnings)
-    ID.list <- VCFsToIDCatalogs(vcfs, ref.genome, region, 
+    # Get the list of ID vcf data frames
+    ID.vcfs <- vcfs
+    ID.vcfs$discarded.variants <- NULL
+    
+    ID.list <- VCFsToIDCatalogs(ID.vcfs, ref.genome, region, 
                                 flag.mismatches, return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
     
-    discarded.variants.list <- ID.list$discarded.variants
+    discarded.variants.list <- 
+      list(ID = ID.list$discarded.variants,
+           not.analyzed = vcfs$discarded.variants)
     annotated.vcfs.list <- ID.list$annotated.vcfs
     # Remove NULL elements from the list
     discarded.variants.list2 <- Filter(Negate(is.null), discarded.variants.list)
@@ -628,8 +669,19 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'
 #' @inheritParams ReadMutectVCFs
 #'
-#' @return A list of data frames containing data lines of the VCF files.
-#'
+#' @return A list of data frames containing data lines of the VCF files. If
+#'   there are variants that were excluded in the analysis, an additional
+#'   element \code{discarded.variants} will appear in the return list.
+#'   The variants discarded can belong to the following categories:
+#'   * Duplicated "CHROM" and "POS" values.
+#'   * Chromosome names that contain "#".
+#'   * Chromosome names that contain "GL".
+#'   * Chromosome names that contain "KI".
+#'   * Chromosome names that contain "random".
+#'   * Chromosome names that contain "Hs".
+#'   * Chromosome names that contain "M".
+#' @md
+#'   
 #' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @seealso \code{\link{StrelkaIDVCFFilesToCatalog}}
@@ -662,7 +714,13 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
   # Remove NULL elements from the list
   list.of.discarded.variants2 <- Filter(Negate(is.null), list.of.discarded.variants)
   
-  return(list.of.ID.vcfs)
+  if (length(list.of.discarded.variants2) == 0) {
+    return(list.of.ID.vcfs)
+  } else {
+    return.list <- c(list.of.ID.vcfs, 
+                     list(discarded.variants = list.of.discarded.variants2))
+    return(return.list)
+  }
 }
 
 #' Read and split Mutect VCF files
@@ -1155,6 +1213,7 @@ CheckAndReturnIDCatalog <-
 #' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
+#'   list.of.ID.vcfs$discarded.variants <- NULL
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
@@ -1613,10 +1672,16 @@ GetMutationLoadsFromStrelkaIDVCFs <- function(catalogs) {
       stats::setNames(rep(0, length(vcf.names)), vcf.names)
   } else {
     discarded.variants <- catalogs$discarded.variants
-    tmp <- sapply(discarded.variants, FUN = nrow)
-    num.of.discarded.variants <- 
-      stats::setNames(rep(0, length(vcf.names)), vcf.names)
-    num.of.discarded.variants[names(tmp)] <- tmp
+    mat <- matrix(data = 0, nrow = length(vcf.names),
+                  ncol = length(discarded.variants), 
+                  dimnames = list(vcf.names, names(discarded.variants)))
+    
+    for (type in names(discarded.variants)) {
+      tmp <- discarded.variants[[type]]
+      num.of.variants <- sapply(tmp, FUN = nrow)
+      mat[names(num.of.variants), type] <- num.of.variants
+    }
+    num.of.discarded.variants <- rowSums(mat)
     num.of.total.variants <- 
       num.of.SBS + num.of.DBS + num.of.ID + num.of.discarded.variants
   }

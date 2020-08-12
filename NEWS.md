@@ -29,6 +29,9 @@ The second element is a numeric vector giving the coordinates of all the bar
 midpoints drawn, useful for adding to the graph.
 
 ## Changed
+* Changed the return value of *exported* function `ReadStrelkaIDVCFs`. An
+additional element `discarded.variants` will appear in the return list when
+there are variants that were discarded immediately after reading in the VCFs.
 * Added an extra argument `return.annotated.vcfs` to *exported* function
 `VCFsToIDCatalogs`. The default value for the argument is **FALSE**.
 * Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
