@@ -2549,20 +2549,16 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 
 #' @keywords internal
 CanonicalizeDBS <- function(ref.vec, alt.vec) {
-
-    Canonicalize1DBS <- function(DBS) {
-    if (DBS %in% ICAMS::catalog.row.order$DBS78) {
-      return(DBS)
-    } else {
-      ref <- substr(DBS, 1, 2)
-      alt <- substr(DBS, 3, 4)
-      out <- paste0(revc(ref), revc(alt))
-    }
-    stopifnot(out %in% ICAMS::catalog.row.order$DBS78)
-    return(out)
+  DBS <- paste0(ref.vec, alt.vec)
+  idx <- which(!(DBS %in% ICAMS::catalog.row.order$DBS78))
+  if (length(idx) == 0) {
+    return(DBS)
+  } else {
+    out <- paste0(revc(ref.vec[idx]), revc(alt.vec[idx]))
+    stopifnot(all(out %in% ICAMS::catalog.row.order$DBS78))
+    DBS[idx] <- out
+    return(DBS)
   }
-  ret <- sapply(paste0(ref.vec, alt.vec), FUN = Canonicalize1DBS)
-  return(ret)
 }
 
 #' @keywords internal
