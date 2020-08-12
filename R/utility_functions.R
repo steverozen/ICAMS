@@ -688,8 +688,7 @@ StandardChromName <- function(df, file) {
   if (sum(grepl("GL", df[[1]])) > 0) {
     warning("In ", file, " ", sum(grepl("GL", df[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'GL' and ", 
-            "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "were discarded. ")
     df1 <- df[-grep("GL", df[[1]]), ]
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df[grep("GL", df[[1]]), ])
@@ -701,8 +700,7 @@ StandardChromName <- function(df, file) {
   if (sum(grepl("KI", df1[[1]])) > 0) {
     warning("In ", file, " ", sum(grepl("KI", df1[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'KI' and ", 
-            "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "were discarded. ")
     df2 <- df1[-grep("KI", df1[[1]]), ]
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df1[grep("KI", df1[[1]]), ])
@@ -714,8 +712,7 @@ StandardChromName <- function(df, file) {
   if (sum(grepl("random", df2[[1]])) > 0) {
     warning("In ", file, " ", sum(grepl("random", df2[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'random' and ", 
-            "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "were discarded. ")
     df3 <- df2[-grep("random", df2[[1]]), ]
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df2[grep("random", df2[[1]]), ])
@@ -727,8 +724,7 @@ StandardChromName <- function(df, file) {
   if (sum(grepl("^Hs", df3[[1]])) > 0) {
     warning("In ", file, " ", sum(grepl("^Hs", df3[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'Hs' and ", 
-            "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "were discarded. ")
     df4 <- df3[-grep("^Hs", df3[[1]]), ]
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df3[-grep("^Hs", df3[[1]]), ])
@@ -740,8 +736,7 @@ StandardChromName <- function(df, file) {
   if (sum(grepl("M", df4[[1]])) > 0) {
     warning("In ", file, " ", sum(grepl("M", df4[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'M' and ", 
-            "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "were discarded. ")
     df5 <- df4[-grep("M", df4[[1]]), ]
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df4[grep("M", df4[[1]]), ])
