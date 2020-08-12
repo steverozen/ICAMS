@@ -123,7 +123,7 @@ AnnotateIDVCF <-
                           df3$seq.context.width) # 10
     )
   
-  df3$seq.context <- getSeq(ref.genome, Ranges, as.character = TRUE)
+  df3$seq.context <- BSgenome::getSeq(ref.genome, Ranges, as.character = TRUE)
   
   seq.to.check <-
     substr(df3$seq.context, df3$seq.context.width + 1,

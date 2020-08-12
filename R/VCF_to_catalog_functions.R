@@ -2563,19 +2563,15 @@ CanonicalizeDBS <- function(ref.vec, alt.vec) {
 
 #' @keywords internal
 CanonicalizeQUAD <- function(quad) {
-
-  Canonicalize1QUAD <- function(quad) {
-    if (quad %in% ICAMS::catalog.row.order$DBS136) {
-      return(quad)
-    } else {
-      out <- revc(quad)
-      stopifnot(out %in% ICAMS::catalog.row.order$DBS136)
-      return(out)
-    }
+  idx <- which(!(quad %in% ICAMS::catalog.row.order$DBS136))
+  if (length(idx) == 0) {
+    return(quad)
+  } else {
+    out <- revc(quad[idx])
+    stopifnot(all(out %in% ICAMS::catalog.row.order$DBS136))
+    quad[idx] <- out
+    return(quad)
   }
-
-  ret <- sapply(quad, FUN = Canonicalize1QUAD)
-  return(ret)
 }
 
 #' @keywords internal
