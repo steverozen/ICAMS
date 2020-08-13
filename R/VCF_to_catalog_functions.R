@@ -21,12 +21,25 @@
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' MakeDataFrameFromVCF <- getFromNamespace("MakeDataFrameFromVCF", "ICAMS")
-#' df <- MakeDataFrameFromVCF(file)$df
+#' df <- MakeDataFrameFromVCF(file)
 #' df1 <- GetStrelkaVAF(df)
 NULL
 
 #' @keywords internal
 RemoveRowsWithPoundSign <- function(df, file) {
+  pound.chrom.idx <- which(df$CHROM == "#CHROM")
+  if (length(pound.chrom.idx) > 0) {
+    warning("Removing ", length(pound.chrom.idx), 
+            " rows with #CHROM from file ", file)
+    df1 <- df[-pound.chrom.idx, ]
+    return(df1)
+  } else {
+    return(df)
+  }
+}
+
+#' @keywords internal
+RemoveRowsWithPoundSignNew <- function(df, file) {
   pound.chrom.idx <- which(df$CHROM == "#CHROM")
   if (length(pound.chrom.idx) > 0) {
     warning("In ", file, " ", length(pound.chrom.idx), " row out of ",
@@ -41,6 +54,21 @@ RemoveRowsWithPoundSign <- function(df, file) {
 
 #' @keywords internal
 RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
+  dups <- which(duplicated(df[, c("CHROM", "POS")]))
+  if (length(dups) > 0) {
+    dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
+    warning("In ", file, " ", 2 * length(dups), " rows out of ",
+            nrow(df), " had duplicate CHROM and POS and were removed: ",
+            dups2, " ", dups)
+    df1 <- df[-c(dups, dups2), ]
+    return(df1)
+  } else {
+    return(df)
+  }
+}
+
+#' @keywords internal
+RemoveRowsWithDuplicatedCHROMAndPOSNew <- function(df, file) {
   dups <- which(duplicated(df[, c("CHROM", "POS")]))
   if (length(dups) > 0) {
     dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
@@ -109,7 +137,7 @@ RenameColumnsWithNameVAF <- function(df) {
 ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL, 
                               suppress.discarded.variants.warnings = TRUE) {
   
-  retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
+  retval <- MakeDataFrameFromVCFNew(file, suppress.discarded.variants.warnings)
   
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
@@ -233,9 +261,9 @@ MakeDataFrameFromVCFNew <-
   discarded.variants <- df1[0, ]
   
   if (suppress.discarded.variants.warnings == TRUE) {
-    retval <- suppressWarnings(RemoveRowsWithPoundSign(df1, file))
+    retval <- suppressWarnings(RemoveRowsWithPoundSignNew(df1, file))
   } else {
-    retval <- RemoveRowsWithPoundSign(df1, file)
+    retval <- RemoveRowsWithPoundSignNew(df1, file)
   }
   
   if (!is.null(retval$discarded.variants)) {
@@ -245,9 +273,9 @@ MakeDataFrameFromVCFNew <-
   
   if (suppress.discarded.variants.warnings == TRUE) {
     retval2 <- 
-      suppressWarnings(RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file))
+      suppressWarnings(RemoveRowsWithDuplicatedCHROMAndPOSNew(retval$df, file))
   } else {
-    retval2 <- RemoveRowsWithDuplicatedCHROMAndPOS(retval$df, file)
+    retval2 <- RemoveRowsWithDuplicatedCHROMAndPOSNew(retval$df, file)
   }
   
   if (!is.null(retval2$discarded.variants)) {
@@ -287,7 +315,7 @@ MakeDataFrameFromVCFNew <-
 #' @keywords internal
 ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
                              suppress.discarded.variants.warnings = TRUE) {
-  retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
+  retval <- MakeDataFrameFromVCFNew(file, suppress.discarded.variants.warnings)
     
   # Get the name of VCF
   if (is.null(name.of.VCF)) {
@@ -419,7 +447,7 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
 ReadMutectVCF <- 
   function(file, name.of.VCF = NULL, tumor.col.name = NA,
            suppress.discarded.variants.warnings = TRUE) {
-    retval <- MakeDataFrameFromVCF(file, suppress.discarded.variants.warnings)
+    retval <- MakeDataFrameFromVCFNew(file, suppress.discarded.variants.warnings)
     if (is.null(name.of.VCF)) {
       vcf.name <- tools::file_path_sans_ext(basename(file))
     } else {
@@ -613,7 +641,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' @keywords internal
 ReadVCF <- 
   function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
-    df1 <- df <- MakeDataFrameFromVCF(file)$df
+    df1 <- df <- MakeDataFrameFromVCF(file)
     df1$VAF <- NA
     df1$read.depth <- NA
     
