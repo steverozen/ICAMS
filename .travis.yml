@@ -13,3 +13,7 @@ before_install:
   - sudo apt-get update
 
 warnings_are_errors: false
+
+# Package 'XML' is not available for R old release version 3.6.3 on CRAN
+r_github_packages:
+  - cran/XML
