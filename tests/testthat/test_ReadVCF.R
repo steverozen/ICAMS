@@ -7,8 +7,8 @@ test_that("Read Strelka mixed VCF", {
   vcf <- ReadVCFs(files = file, variant.caller = "strelka")
   vcf1 <- ReadStrelkaSBSVCFs(files = file1)
   vcf2 <- ReadStrelkaIDVCFs(files = file2)
-  rownames(vcf[[1]]$df) <- 1:nrow(vcf[[1]]$df)
-  expect_equivalent(vcf[[1]]$df, dplyr::bind_rows(vcf1[[1]]$df, vcf2[[1]]))
+  rownames(vcf[[1]]) <- 1:nrow(vcf[[1]])
+  expect_equivalent(vcf[[1]], dplyr::bind_rows(vcf1[[1]]$df, vcf2[[1]]))
 })
 
 test_that(
@@ -27,9 +27,9 @@ test_that(
                       variant.caller = "strelka")
     list2 <- ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
                       variant.caller = "strelka")
-    expect_equal(vcf, list)
-    expect_equal(vcf1, list1)
-    expect_equal(vcf2, list2)
+    expect_equal(vcf[[1]]$df, list[[1]])
+    expect_equal(vcf1[[1]]$df, list1[[1]])
+    expect_equal(vcf2[[1]]$df, list2[[1]])
   } )
 
 test_that(
@@ -47,12 +47,12 @@ test_that(
                      variant.caller = "strelka")
     list1 <- ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
                      variant.caller = "strelka")
-    list2 <- ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
-                      variant.caller = "strelka")
+    list2 <- expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
+                                     variant.caller = "strelka")) 
     # Delete the VAF and read.depth columns which are all NA
-    expect_equal(list[[1]]$df[, 1:(ncol(list[[1]]$df) - 2)], vcf[[1]])
-    expect_equal(list1[[1]]$df[, 1:(ncol(list1[[1]]$df) - 2)], vcf1[[1]])
-    expect_equal(list2[[1]]$df[, 1:(ncol(list2[[1]]$df) - 2)], vcf2[[1]])
+    expect_equal(list[[1]][, 1:(ncol(list[[1]]) - 2)], vcf[[1]])
+    expect_equal(list1[[1]][, 1:(ncol(list1[[1]]) - 2)], vcf1[[1]])
+    expect_equal(list2[[1]][, 1:(ncol(list2[[1]]) - 2)], vcf2[[1]])
   } )
 
 test_that(
@@ -71,9 +71,9 @@ test_that(
                       variant.caller = "mutect")
     list2 <- expect_warning(ReadVCFs("testdata/Mutect.GRCm38.vcf",
                                      variant.caller = "mutect"))
-    expect_equal(list, vcf)
-    expect_equal(list1, vcf1)
-    expect_equal(list2, vcf2)
+    expect_equal(list[[1]], vcf[[1]]$df)
+    expect_equal(list1[[1]], vcf1[[1]]$df)
+    expect_equal(list2[[1]], vcf2[[1]]$df)
   } )
 
 test_that(
