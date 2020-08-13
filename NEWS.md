@@ -1,3 +1,10 @@
+# ICAMS 2.2.1
+## Fixed
+* Fixed a bug in internal function `CreateOneColIDMatrix` when the ID.class
+contains non canonical representation of the ID mutation type.
+
+<br/>
+
 # ICAMS 2.2.0
 ## Added
 * Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.

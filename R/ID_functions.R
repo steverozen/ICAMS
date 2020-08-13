@@ -843,7 +843,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   }
   
   # Create the ID catalog matrix
-  ID.class <- droplevels(out.ID.vcf$ID.class)
+  ID.class <- out.ID.vcf$ID.class
   tab.ID <- table(ID.class)
 
   row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
@@ -853,7 +853,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   # and N (the count)
 
   ID.dt2 <-
-    merge(row.order, ID.dt, by.x = "rn", by.y = "ID.class", all = TRUE)
+    merge(row.order, ID.dt, by.x = "rn", by.y = "ID.class", all.x = TRUE)
   ID.dt2[ is.na(N) , N := 0]
   if (!setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID)) {
     stop("\nThe set of ID categories generated from sample ", sample.id,
