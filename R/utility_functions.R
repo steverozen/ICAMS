@@ -665,6 +665,46 @@ TransformCatalog <-
 #' Standardize the chromosome name annotations for a data frame.
 #'
 #' @param df A data frame whose first column contains the Chromosome name
+#'
+#' @return A data frame whose Chromosome names are only in the form of 1:22, "X"
+#'   and "Y".
+#'
+#' @keywords internal
+StandardChromName <- function(df) {
+  # Is there any row in df whose Chromosome names have "GL"?
+  if (sum(grepl("GL", df[[1]])) > 0) {
+    df <- df[-grep("GL", df[[1]]), ]
+  }
+  
+  # Is there any row in df whose Chromosome names have "KI"?
+  if (sum(grepl("KI", df[[1]])) > 0) {
+    df <- df[-grep("KI", df[[1]]), ]
+  }
+  
+  # Is there any row in df whose Chromosome names have "random"?
+  if (sum(grepl("random", df[[1]])) > 0) {
+    df <- df[-grep("random", df[[1]]), ]
+  }
+  
+  # Is there any row in df whose Chromosome names are "Hs37D5"?
+  if (sum(grepl("^Hs", df[[1]])) > 0) {
+    df <- df[-grep("^Hs", df[[1]]), ]
+  }
+  
+  # Is there any row in df whose Chromosome names contain "M"?
+  if (sum(grepl("M", df[[1]])) > 0) {
+    df <- df[-grep("M", df[[1]]), ]
+  }
+  
+  # Remove the "chr" character in the Chromosome's name
+  df[, 1] <- sub(pattern = "chr", replacement = "", df[[1]])
+  
+  return(df)
+}
+
+#' Standardize the chromosome name annotations for a data frame.
+#'
+#' @param df A data frame whose first column contains the Chromosome name
 #' 
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
@@ -680,7 +720,7 @@ TransformCatalog <-
 #' @md
 #'   
 #' @keywords internal
-StandardChromName <- function(df, file) {
+StandardChromNameNew <- function(df, file) {
   # Create an empty data frame for discarded variants
   discarded.variants <- df[0, ]
   
