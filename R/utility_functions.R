@@ -1187,8 +1187,8 @@ ReadTranscriptRanges <- function(file) {
 #' @keywords internal
 ReadBedRanges <- function(file) {
   dt <- data.table::fread(file)
-  dt1 <- StandardChromName(dt[, 1:3])
-  colnames(dt1) <- c("chrom", "start", "end")
+  dt1 <- StandardChromName(dt)
+  colnames(dt1)[1:3] <- c("chrom", "start", "end")
 
   # Delete duplicate entries in the BED file
   dt2 <- dplyr::distinct(dt1, chrom, start, end, .keep_all = TRUE)
