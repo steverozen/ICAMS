@@ -843,7 +843,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   }
   
   # Create the ID catalog matrix
-  ID.class <- out.ID.vcf$ID.class
+  ID.class <- droplevels(out.ID.vcf$ID.class)
   tab.ID <- table(ID.class)
 
   row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
