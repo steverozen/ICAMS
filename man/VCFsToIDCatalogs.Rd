@@ -100,7 +100,6 @@ file <- c(system.file("extdata/Strelka-ID-vcf/",
 list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
  quietly = TRUE)) {
-  list.of.ID.vcfs$discarded.variants <- NULL
   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
                             region = "genome")}
 }

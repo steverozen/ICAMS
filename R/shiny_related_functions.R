@@ -482,11 +482,8 @@ StrelkaIDVCFFilesToCatalog <-
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs, 
                               suppress.discarded.variants.warnings)
-    # Get the list of ID vcf data frames
-    ID.vcfs <- vcfs
-    ID.vcfs$discarded.variants <- NULL
     
-    ID.list <- VCFsToIDCatalogs(ID.vcfs, ref.genome, region, 
+    ID.list <- VCFsToIDCatalogs(vcfs, ref.genome, region, 
                                 flag.mismatches, return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
     
@@ -1208,13 +1205,14 @@ CheckAndReturnIDCatalog <-
 #' list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
 #'  quietly = TRUE)) {
-#'   list.of.ID.vcfs$discarded.variants <- NULL
 #'   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
 #'                             region = "genome")}
 VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                              flag.mismatches = 0,
                              return.annotated.vcfs = FALSE,
                              suppress.discarded.variants.warnings = TRUE) {
+  # Remove element discarded.variants from list.of.vcfs
+  list.of.vcfs$discarded.variants <- NULL
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
