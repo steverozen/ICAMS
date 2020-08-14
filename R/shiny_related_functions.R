@@ -629,12 +629,7 @@ MutectVCFFilesToCatalog <-
 #'   after reading in the VCFs. The variants not analyzed can belong to the
 #'   following categories:
 #'       + Duplicated "CHROM" and "POS" values.
-#'       + Chromosome names that contain "#".
-#'       + Chromosome names that contain "GL".
-#'       + Chromosome names that contain "KI".
-#'       + Chromosome names that contain "random".
-#'       * Chromosome names that contain "Hs".
-#'       * Chromosome names that contain "M".
+#'       + Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #' @md
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
@@ -666,12 +661,7 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'   element \code{discarded.variants} will appear in the return list.
 #'   The variants discarded can belong to the following categories:
 #'   * Duplicated "CHROM" and "POS" values.
-#'   * Chromosome names that contain "#".
-#'   * Chromosome names that contain "GL".
-#'   * Chromosome names that contain "KI".
-#'   * Chromosome names that contain "random".
-#'   * Chromosome names that contain "Hs".
-#'   * Chromosome names that contain "M".
+#'   * Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #' @md
 #'   
 #' @inheritSection VCFsToIDCatalogs Note
@@ -744,12 +734,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
 #'   after reading in the VCFs. The variants not analyzed can belong to the
 #'   following categories:
 #'       + Duplicated "CHROM" and "POS" values.
-#'       + Chromosome names that contain "#".
-#'       + Chromosome names that contain "GL".
-#'       + Chromosome names that contain "KI".
-#'       + Chromosome names that contain "random".
-#'       * Chromosome names that contain "Hs".
-#'       * Chromosome names that contain "M".
+#'       + Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #' @md
 #' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}

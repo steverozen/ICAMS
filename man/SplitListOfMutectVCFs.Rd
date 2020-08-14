@@ -40,14 +40,7 @@ after reading in the VCFs. The variants not analyzed can belong to the
 following categories:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#".
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-}
-\itemize{
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
+\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 }
 }
 }
