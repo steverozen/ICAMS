@@ -33,13 +33,13 @@
 #'   frame with two new columns added to the input data frame:
 #'       + \code{seq.context}: The sequence embedding the variant.
 #'       + \code{seq.context.width}: The width of \code{seq.context} to the left.
-#'   * \code{discarded.variants}: \strong{Only appearing when} there are variants
-#'   that were excluded from the analysis.The discarded variants can belong to the 
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} variants
+#'   were excluded.The discarded variants can belong to the 
 #'   following categories:
-#'       + Variants which have the same number of bases for REF and ALT alleles.
-#'       + Variants which have empty REF or ALT allels.
+#'       + Variants with the same number of bases for REF and ALT alleles.
+#'       + Variants with empty REF or ALT alleles.
 #'       + Complex indels.
-#'       + Variants whose REF allels do not match the extracted sequence from
+#'       + Variants whose REF alleles do not match the extracted sequence from
 #'          \code{ref.genome}.
 #' @md
 #' 
@@ -73,7 +73,7 @@ AnnotateIDVCF <-
   
   # stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
   
-  # Remove variants which have empty REF or ALT allels
+  # Remove variants which have empty REF or ALT alleles
   idx1 <- which(df1$REF == "" | df1$ALT == "")
   if (length(idx1) > 0) {
     discarded.variants <- dplyr::bind_rows(discarded.variants, df1[idx1, ])

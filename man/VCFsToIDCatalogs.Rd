@@ -45,14 +45,14 @@ Create ID (small insertion and deletion) catalog from ID VCFs
 A \strong{list} of elements:
 \itemize{
 \item \code{catalog}: The ID (small insertion and deletion) catalog with
-attributes added. See \code{\link{as.catalog}} for more details.
+attributes added. See \code{\link{as.catalog}} for details.
 \item \code{discarded.variants}:
-\strong{Only appearing when} there are ID variants that were discarded. A
+\strong{Non-NULL only if} there are ID variants that were discarded. A
 list of data frames which contain the discarded variants from the original
 VCF. The discarded variants can belong to the following categories:
 \itemize{
-\item Variants which have the same number of bases for REF and ALT alleles.
-\item Variants which have empty REF or ALT allels.
+\item Variants with the same number of bases for REF and ALT alleles.
+\item Variants with empty REF or ALT alleles.
 \item Complex indels.
 \item Variants whose \code{REF} do not match the extracted sequence from
 \code{ref.genome}.
@@ -61,7 +61,7 @@ representation. See catalog.row.order$ID for the canonical
 representation.
 }
 \item \code{annotated.vcfs}:
-\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+\strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
 data frames which contain the original VCF's ID mutation rows with three
 additional columns \code{seq.context.width}, \code{seq.context} and
 \code{ID.class} added. The category assignment of each ID mutation in VCF can

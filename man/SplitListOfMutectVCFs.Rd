@@ -28,13 +28,13 @@ VCF-like data frame with left-over rows).
 \item \code{DBS}: List of VCFs with only doublet base substitutions as called
 by Mutect.
 \item \code{ID}: List of VCFs with only small insertions and deletions.
-\item \code{other.subs}: \strong{Only appearing when} there is list of VCF
+\item \code{other.subs}: \strong{Non-NULL only if} there is list of VCF
 like data.frames with rows for coordinate substitutions involving 3 or more
 nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
-\item \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+\item \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
 like data.frames with rows for variants with multiple alternative alleles,
 for example ACA mutated to both AGA and ATA at the same position.
-\item \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+\item \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
 like data.frames with rows for variants that were discarded immediately
 after reading in the VCFs. The variants not analyzed can belong to the
 following categories:

@@ -14,7 +14,6 @@ AGAT
 AGGG
 AGT
 al
-allel
 AnnotateDBSVCF
 AnnotateIDVCF
 AnnotateSBSVCF
@@ -43,11 +42,13 @@ CCDS
 CCT
 cex
 CheckAndFixChrName
+chr
 chrom
 CHROM
 chromEnd
 chromStart
 cisplatin
+colibactin
 Conaway
 cshlp
 csv
@@ -67,8 +68,10 @@ GAGG
 GATK
 gencode
 Gencode
-GetCustomKmerCounts
+GetCustomKmerCount
+GetGenomeKmerCounts
 GetMutectVAF
+GetStrandedKmerCounts
 GetStrelkaVAF
 GC
 GG
@@ -107,6 +110,7 @@ mer
 mers
 microhomology
 Mmusculus
+mucosal
 MultiModalMuSig
 mutect
 Mutect
@@ -141,6 +145,7 @@ ReadStrelkaIDVCF
 ReadStrelkaIDVCFs
 ReadStrelkaSBSVCF
 rowname
+Rtools
 Sancar
 sanger
 SBS
@@ -167,6 +172,7 @@ TCTA
 tetranucleotide
 TG
 TGA
+tgz
 th
 ThreePlus
 ToPdf
@@ -200,6 +206,7 @@ VCFsToDBSCatalogs
 VCFsToIDCatalogs
 VCFsToSBSCatalogs
 wikipedia
+XCode
 xlabels
 ylab
 ylim

@@ -84,7 +84,7 @@ A list containing the following objects:
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
 \item \code{discarded.variants}:
-\strong{Only appearing when} there are variants that were excluded in the
+\strong{Non-NULL only if} there are variants that were excluded in the
 analysis.
 A list of elements:
 \itemize{
@@ -107,7 +107,7 @@ the VCFs:
 }
 }
 \item \code{annotated.vcfs}:
-\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+\strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 A list of elements:
 \itemize{
 \item \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with

@@ -225,8 +225,8 @@ MakeDataFrameFromVCF <- function(file) {
 #'
 #' @return A list of elements:
 #' * \code{df}: A data frame storing data lines from the original VCF file.
-#' * \code{discarded.variants}: \strong{Only appearing when} there are variants
-#' that are excluded in the analysis.
+#' * \code{discarded.variants}: \strong{Non-NULL only if} variants
+#' were excluded.
 #' @md
 #'
 #' @keywords internal
@@ -619,7 +619,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' 
 #' @param variant.caller Name of the variant caller that produces the VCF, can be either
 #' \code{strelka}, \code{mutect} or \code{freebayes}. This information is needed to 
-#' calculate the VAFs(variant allel frequencies). If \code{NULL}(default), then VAF and
+#' calculate the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
 #' read depth information will not be added to the original VCF.
 #' 
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
@@ -712,7 +712,7 @@ ReadVCF <-
 #' @param variant.caller Name of the variant caller that produces \strong{all}
 #'   the VCFs specified by \code{files}, can be either \code{strelka},
 #'   \code{mutect} or \code{freebayes}. This information is needed to calculate
-#'   the VAFs(variant allel frequencies). If \code{NULL}(default), then VAF and
+#'   the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
 #'   read depth information will not be added to the original VCFs.
 #'
 #' @param names.of.VCFs Character vector of names of the VCF files. The order
@@ -803,11 +803,11 @@ CheckAndReturnSplitOneMutectVCF <-
 #'
 #'  * \code{ID}: VCF with only small insertions and deletions.
 #'
-#'  * \code{other.subs}: \strong{Only appearing when} there is VCF like
+#'  * \code{other.subs}: \strong{Non-NULL only if} there is VCF like
 #'  data.frame with rows for coordinate substitutions involving 3 or more
 #'  nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'  * \code{multiple.alt}: \strong{Only appearing when} there is VCF like
+#'  * \code{multiple.alt}: \strong{Non-NULL only if} there is VCF like
 #'  data.frame with rows for variants with multiple alternative alleles, for
 #'  example ACA mutated to both AGA and ATA at the same position.
 #'  @md
@@ -2279,7 +2279,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
 #' * \code{discarded.variants}: 
-#' \strong{Only appearing when} there are variants that were excluded in the
+#' \strong{Non-NULL only if} there are variants that were excluded in the
 #' analysis. 
 #' A list of elements:
 #'     + \code{SBS}: SBS variants whose pentanucleotide context contains "N".
@@ -2299,7 +2299,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #'         - Chromosome names that contain "M".
 #'   
 #' * \code{annotated.vcfs}: 
-#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 #' A list of elements:
 #'     + \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
 #'     three new columns \code{SBS96.class}, \code{SBS192.class} and
@@ -2496,15 +2496,15 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' * \code{catID}: Matrix of ID (small insertion and deletion) catalog.
 #' 
 #' * \code{discarded.variants}: 
-#' \strong{Only appearing when} there are variants that were excluded in the
+#' \strong{Non-NULL only if} there are variants that were excluded in the
 #' analysis. 
 #' A list of elements:
 #'     + \code{SBS}: SBS variants whose pentanucleotide context contains "N".
 #'     + \code{DBS}: DBS variants whose tetranucleotide context contains "N".
 #'     + \code{ID}: ID variants discarded that can belong to the following
 #'       categories:
-#'         - Variants which have empty REF or ALT allels.
-#'         - Variants whose REF allels do not match the extracted sequence from
+#'         - Variants with empty REF or ALT alleles.
+#'         - Variants whose REF alleles do not match the extracted sequence from
 #'          \code{ref.genome}.
 #'         - Variants which cannot be categorized according to the canonical
 #'         representation. See catalog.row.order$ID for the canonical
@@ -2516,15 +2516,10 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'     + \code{not.analyzed}: Variants discarded immediately after reading in
 #'     the VCFs:
 #'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#".
-#'         - Chromosome names that contain "GL".
-#'         - Chromosome names that contain "KI".
-#'         - Chromosome names that contain "random".
-#'         - Chromosome names that contain "Hs".
-#'         - Chromosome names that contain "M".
+#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #'   
 #' * \code{annotated.vcfs}: 
-#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 #' A list of elements:
 #'     + \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
 #'     three new columns \code{SBS96.class}, \code{SBS192.class} and

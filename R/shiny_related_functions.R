@@ -437,13 +437,13 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #' 
 #' * \code{discarded.variants}: 
-#' \strong{Only appearing when} there are variants that were excluded in the
+#' \strong{Non-NULL only if} there are variants that were excluded in the
 #' analysis. 
 #' A list of elements:
 #'     + \code{ID}: ID variants discarded that can belong to the following
 #'       categories:
 #'         - Variants which have the same number of bases for REF and ALT alleles.
-#'         - Variants which have empty REF or ALT allels.
+#'         - Variants which have empty REF or ALT alleles.
 #'         - Complex indels.
 #'         - Variants whose \code{REF} do not match the extracted sequence from
 #'            \code{ref.genome}.
@@ -453,15 +453,10 @@ StrelkaSBSVCFFilesToCatalog <-
 #'     + \code{not.analyzed}: Variants discarded immediately after reading in
 #'     the VCFs:
 #'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#".
-#'         - Chromosome names that contain "GL".
-#'         - Chromosome names that contain "KI".
-#'         - Chromosome names that contain "random".
-#'         - Chromosome names that contain "Hs".
-#'         - Chromosome names that contain "M".
+#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #' 
 #'   * \code{annotated.vcfs}: 
-#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
 #' data frames which contain the original VCF's ID mutation rows with three
 #' additional columns \code{seq.context.width}, \code{seq.context} and
 #' \code{ID.class} added. The category assignment of each ID mutation in VCF can
@@ -624,15 +619,15 @@ MutectVCFFilesToCatalog <-
 #'    * \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
 #'    3+BS mutations.
 #'
-#'    * \code{ThreePlus}: \strong{Only appearing when} there is list of
+#'    * \code{ThreePlus}: \strong{Non-NULL only if} there is list of
 #'    data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
 #'    the input that did not represent SBSs or DBSs.
 #'
-#'   * \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+#'   * \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
 #'   like data.frames with rows for variants with multiple alternative alleles,
 #'   for example ACA mutated to both AGA and ATA at the same position.
 #'
-#'   * \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+#'   * \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
 #'   like data.frames with rows for variants that were discarded immediately
 #'   after reading in the VCFs. The variants not analyzed can belong to the
 #'   following categories:
@@ -739,15 +734,15 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
 #'
 #'   * \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'   * \code{other.subs}: \strong{Only appearing when} there is list of VCF
+#'   * \code{other.subs}: \strong{Non-NULL only if} there is list of VCF
 #'   like data.frames with rows for coordinate substitutions involving 3 or more
 #'   nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'   * \code{multiple.alt}: \strong{Only appearing when} there is list of VCF
+#'   * \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
 #'   like data.frames with rows for variants with multiple alternative alleles,
 #'   for example ACA mutated to both AGA and ATA at the same position.
 #'
-#'   * \code{not.analyzed}: \strong{Only appearing when} there is list of VCF
+#'   * \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
 #'   like data.frames with rows for variants that were discarded immediately
 #'   after reading in the VCFs. The variants not analyzed can belong to the
 #'   following categories:
@@ -859,11 +854,11 @@ CheckAndReturnSBSCatalogs <-
 #' * \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
 #' 3 SBS catalogs (one each for 96, 192, and 1536).
 #' 
-#' * \code{discarded.variants}: \strong{Only appearing when} there are SBS
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are SBS
 #' variants whose pentanucleotide context contains "N".
 #' 
 #' * \code{annotated.vcfs}: 
-#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 #'     SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
 #'     three new columns \code{SBS96.class}, \code{SBS192.class} and
 #'     \code{SBS1536.class} showing the mutation class for each SBS variant.
@@ -1034,10 +1029,10 @@ CheckAndReturnDBSCatalogs <-
 #' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' * \code{discarded.variants}: \strong{Only appearing when} there are DBS
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are DBS
 #' variants whose tetranucleotide context contains "N".
 #'   
-#' * \code{annotated.vcfs}: \strong{Only appearing when}
+#' * \code{annotated.vcfs}: \strong{Non-NULL only if}
 #' \code{return.annotated.vcfs} = TRUE. DBS VCF annotated by
 #' \code{\link{AnnotateDBSVCF}} with three new columns \code{DBS78.class},
 #' \code{DBS136.class} and \code{DBS144.class} showing the mutation class for
@@ -1174,14 +1169,14 @@ CheckAndReturnIDCatalog <-
 #' @section Value:
 #' A \strong{list} of elements:
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
-#'   attributes added. See \code{\link{as.catalog}} for more details.
+#'   attributes added. See \code{\link{as.catalog}} for details.
 #' 
 #'   * \code{discarded.variants}: 
-#' \strong{Only appearing when} there are ID variants that were discarded. A
+#' \strong{Non-NULL only if} there are ID variants that were discarded. A
 #' list of data frames which contain the discarded variants from the original
 #' VCF. The discarded variants can belong to the following categories:
-#'       + Variants which have the same number of bases for REF and ALT alleles.
-#'       + Variants which have empty REF or ALT allels.
+#'       + Variants with the same number of bases for REF and ALT alleles.
+#'       + Variants with empty REF or ALT alleles.
 #'       + Complex indels.
 #'       + Variants whose \code{REF} do not match the extracted sequence from
 #'         \code{ref.genome}.
@@ -1190,7 +1185,7 @@ CheckAndReturnIDCatalog <-
 #'       representation.
 #' 
 #'   * \code{annotated.vcfs}: 
-#' \strong{Only appearing when} \code{return.annotated.vcfs} = TRUE. A list of
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
 #' data frames which contain the original VCF's ID mutation rows with three
 #' additional columns \code{seq.context.width}, \code{seq.context} and
 #' \code{ID.class} added. The category assignment of each ID mutation in VCF can

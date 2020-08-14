@@ -59,10 +59,10 @@ A list containing the following objects:
 \itemize{
 \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of
 3 SBS catalogs (one each for 96, 192, and 1536).
-\item \code{discarded.variants}: \strong{Only appearing when} there are SBS
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are SBS
 variants whose pentanucleotide context contains "N".
 \item \code{annotated.vcfs}:
-\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+\strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
 three new columns \code{SBS96.class}, \code{SBS192.class} and
 \code{SBS1536.class} showing the mutation class for each SBS variant.

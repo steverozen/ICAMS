@@ -12,16 +12,14 @@ StandardChromNameNew(df, file)
 \item{file}{The name/path of the VCF file, or a complete URL.}
 }
 \value{
-A \strong{list} whose first element is a data frame whose chromosome names are
-only in the form of 1:22, "X" and "Y". The second element
-\code{discarded.variants} \strong{only} appears if there are variants
-whose chromosome names belong to the following groups:
-\enumerate{
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
+A \strong{list} with the elements
+\itemize{
+\item \code{df} a data frame with variants that had "legal" chromosome
+names (see below for illegal chromosome names).
+Leading "chr" strings are removed.
+\item \code{discarded.variants}: \strong{Non-NULL only if} there
+variants with illegal chromosome names; these are
+names that contain the strings "GL", "Hs", "KI", "M", "random".
 }
 }
 \description{

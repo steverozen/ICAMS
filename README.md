@@ -22,9 +22,12 @@ Analysis and visualization of experimentally elucidated mutational
 signatures – the kind of analysis and visualization in Boot et al.,
 “In-depth characterization of the cisplatin mutational signature in
 human cell lines and in esophageal and liver tumors”, Genome Research
-2018, <https://doi.org/10.1101/gr.230219.117>. ‘ICAMS’ stands for
-In-depth Characterization and Analysis of Mutational Signatures. ‘ICAMS’
-has functions to read in variant call files (VCFs) and to collate the
+2018, <https://doi.org/10.1101/gr.230219.117> and “Characterization of
+colibactin-associated mutational signature in an Asian oral squamous
+cell carcinoma and in other mucosal tumor types”, Genome Research 2020
+<https://doi.org/10.1101/gr.255620.119>. ‘ICAMS’ stands for In-depth
+Characterization and Analysis of Mutational Signatures. ‘ICAMS’ has
+functions to read in variant call files (VCFs) and to collate the
 corresponding catalogs of mutational spectra and to analyze and plot
 catalogs of mutational spectra and signatures. Handles both
 “counts-based” and “density-based” catalogs of mutational spectra or
@@ -49,21 +52,24 @@ Afterwards, install the stable version of ICAMS from
 install.packages("ICAMS")
 ```
 
-### Development version
+### Get the development version
 
-To use new features, you can install ICAMS from the master branch on
-[GitHub](https://github.com/), which may not be stable:
+To use features in the development version, you can install ICAMS from
+the master branch on [GitHub](https://github.com/), which may not be
+stable:
 
 ``` r
 install.packages("remotes")
 remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
-Alternatively, you can download the latest [Windows
+Binaries of recent development versions are at [Windows
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9014.zip)
 or [macOS
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9014.tgz)
-to your computer and install ICAMS locally:
+These are for users who cannot install from source because they do not
+have Rtools (Windows) or XCode (Mac). To use these binaries, download
+the .zip (Windows) or .tgz (Mac) file for your operating system.
 
 ``` r
 install.packages(pkgs = "path-to-binary-file", repos = NULL)

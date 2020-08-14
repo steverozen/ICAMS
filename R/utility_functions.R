@@ -708,15 +708,13 @@ StandardChromName <- function(df) {
 #' 
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
-#' @return A \strong{list} whose first element is a data frame whose chromosome names are
-#'   only in the form of 1:22, "X" and "Y". The second element
-#'   \code{discarded.variants} \strong{only} appears if there are variants
-#'   whose chromosome names belong to the following groups:
-#'   1. Chromosome names that contain "GL".
-#'   2. Chromosome names that contain "KI".
-#'   3. Chromosome names that contain "random".
-#'   4. Chromosome names that contain "Hs".
-#'   5. Chromosome names that contain "M".
+#' @return A \strong{list} with the elements
+#' * \code{df} a data frame with variants that had "legal" chromosome
+#'   names (see below for illegal chromosome names).
+#'   Leading "chr" strings are removed.
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there 
+#'   variants with illegal chromosome names; these are
+#'   names that contain the strings "GL", "Hs", "KI", "M", "random".
 #' @md
 #'   
 #' @keywords internal

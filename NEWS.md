@@ -6,63 +6,116 @@ contains non canonical representation of the ID mutation type.
 <br/>
 
 # ICAMS 2.2.0
-## Added
-* Uploaded latest Windows and macOS binary package to GitHub so that users can download to their own computer and install ICAMS locally. See [README.md](https://github.com/steverozen/ICAMS/blob/master/README.md) for more details.
+
+## Mostly backward compatible
+
+* The return value of *exported* function `ReadStrelkaIDVCFs` now 
+sometimes contains a new element, `discarded.variants`.
+This appears when there are variants that were discarded
+immediately after reading in the VCFs. At present these
+are variants that have duplicated chromosome/positions and variants
+that have illegal chromosome names. This means that the
+user must check the return to see if `discarded.variants` is present
+and remove it before passing the return to a function that
+expects a list of VCFs. Code in ICAMS that
+takes lists of VCFs already checks for this element
+and removes it if present.
+
+* Added argument `return.annotated.vcfs` to *exported* function
+`VCFsToIDCatalogs`. The default value for the argument is **FALSE**
+to be consistent with other functions.
+
+## New function arguments with backward compatible defaults
+
+* Argument, `return.annotated.vcfs`, in functions
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, 
+`MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
+`MutectVCFFilesToZipFile`, 
+`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
+XXXXXXX Nanhai add few
+
+* Argument `suppress.discarded.variants.warnings` in functions
+`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`,
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,
+`VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
+`MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`, 
+`StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToZipFile`,
+`StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and
+`StrelkaIDVCFFilesToZipFile`.
+
+## Documentation updates
+
 * Added documentation to *exported* functions `ReadAndSplitStrelkaSBSVCFs`,
-`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf` and `StrelkaSBSVCFFilesToZipFile` informing the user that the function will find and merge adjacent SBS pairs into DBS if their VAFs are very similar. The default threshold value for VAF is 0.02.
-* Added new exported data of catalog row order for SBS96, SBS1536 and DBS78 in SigProfiler format to `catalog.row.order.sp`.
-* Created a new internal function `ConvertICAMSCatalogToSigProSBS96`.
-* Added a new *exported* function `GetFreebayesVAF` for calculating variant allel frequencies from Freebayes VCF.
-* Created two internal function `ReadVCF` and `ReadVCFs` with argument `variant.caller` that allows user to specify the variant caller that produced the VCFs. These two functions are able to read mixed VCFs.
-* Added test data for Strelka mixed VCF (GRCh37).
+`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf` 
+and `StrelkaSBSVCFFilesToZipFile`.
+
+* Added information on the "ID classification" in documentation 
+of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`. 
+
+* Minor changes to documentation of functions `PlotCatalog`,  
+`PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, 
+`StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
+
+* Updated documentation for the return value of functions  
+`StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`,
+`StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
+
+## Other backward compatible changes
+
+* Added new exported data of catalog row order for SBS96, SBS1536 and DBS78
+in SigProfiler format to `catalog.row.order.sp`.
+
+* New internal function `ConvertICAMSCatalogToSigProSBS96`, `ReadVCF`, `ReadVCFs`.
+
+* New *exported* function `GetFreebayesVAF` for calculating variant allele
+frequencies from Freebayes VCF.
+
+* New test data for Strelka mixed VCF.
+
 * Added time zone information to file "run-information.txt" when calling
 functions `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile` and
 `StrelkaIDVCFFilesToZipFile`.
-* Enabled "counts" -> "counts.signature" catalog transformation when the source catalog
-has NULL abundance. But the target catalog should have the same `abundance`, `ref.genome`
-and `region` attribute as the source catalog, otherwise the function will raise an error.
-* Added an extra section "ID classification" in documentation of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`.
-* Added an extra argument `return.annotated.vcfs` in *exported* functions
-`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, 
-`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
-* Added an extra argument `suppress.discarded.variants.warnings` in *exported* functions
-`ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`, `MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToZipFile`,
-`StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and
-`StrelkaIDVCFFilesToZipFile`.
+
+* Enabled "counts" -> "counts.signature" catalog transformation when 
+the source catalog has NULL abundance.
+
 * Added legend for SBS192 plot and changed the legend text for SBS12 plot.
-* Added a second element `plot.object` to the returned list from function
-`PlotCatalog` for SBS192Catalog, DBS78Catalog, DBS144Catalog and IndelCatalog.
-The second element is a numeric vector giving the coordinates of all the bar
-midpoints drawn, useful for adding to the graph.
 
-## Changed
-* Changed the return value of *exported* function `ReadStrelkaIDVCFs`. An
-additional element `discarded.variants` will appear in the return list when
-there are variants that were discarded immediately after reading in the VCFs.
-* Added an extra argument `return.annotated.vcfs` to *exported* function
-`VCFsToIDCatalogs`. The default value for the argument is **FALSE**.
-* Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
-* Updated documentation for the return value of functions `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToZipFile` and `VCFsToIDCatalogs` to make it clearer to the user.
-* Changed the return of functions `PlotCatalog` and `PlotCatalogToPdf` to an **invisible** list.
-* Optimized code in *exported* function `GetMutectVAF` and internal function `CanonicalizeDBS`,
-`CanonicalizeQUAD` to make them run faster.
+* Added a second element `plot.object` to the return list from function
+`PlotCatalog` for catalog types
+"SBS192Catalog", "DBS78Catalog", "DBS144Catalog" and "IndelCatalog".
+The second element is a numeric vector giving the coordinates of the bar
+midpoints, useful for adding to the graph.
 
-## Fixed
-* Fixed bugs in `if` statement in internal functions
-`GetCustomKmerCounts`、`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
-* Fixed a bug in internal function `CreateOneColIDMatrix` when there is NA ID category.
-* Fixed a bug in *exported* function `GetMutectVAF` for checking whether the
-VCF is indeed a Mutect VCF.
-* Fixed a bug in internal function `CreateOneColDBSMatrix` when the DBS VCF does not have any variant on the transcribed region.
-* Fixed a bug in internal function `CalculatePValues` when there is only one unique expression value.
+* Made the returns from `PlotCatalog` and `PlotCatalogToPdf` **invisible**.
+
+* Improved time performance of `GetMutectVAF`, `CanonicalizeDBS`, `CanonicalizeQUAD`.
+
+## Fixed bugs in ...
+
+* `if` statements in GetCustomKmerCounts`、
+`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
+
+* `CreateOneColIDMatrix` when there is NA ID category.
+
+* `GetMutectVAF` to check if the VCF is indeed a Mutect VCF.
+
+* `CreateOneColDBSMatrix` when the VCF 
+does not have any variant in the transcribed region.
+
+* `CalculatePValues` when there is only a single expression value.
 
 <br/>
 
 # ICAMS 2.1.2
 ## Added
 * Created an internal function `MakeDataFrameFromVCF` to read in data lines of a VCF.
-* New argument `name.of.VCF` in internal function `CheckAndFixChrNames` to make the error message more informative.
-* New argument `name.of.VCF` in *exported* function `AnnotateIDVCF` to make the error message more informative.
+
+* New argument `name.of.VCF` in internal function `CheckAndFixChrNames` to make 
+the error message more informative.
+
+* New argument `name.of.VCF` in *exported* 
+function `AnnotateIDVCF` to make the error message more informative.
 
 ## Changed
 * Updated internal function `ReadStrelkaIDVCF` to make the error message more informative.
@@ -84,7 +137,7 @@ element `discarded.variants` in the return value for the discarded variants.
 
 # ICAMS 2.1.1
 ## Added
-* **(New)** Added columns of VAF (variant allel frequency) and read depth information
+* **(New)** Added columns of VAF (variant allele frequency) and read depth information
   to the split DBS.vcfs from merged SBSs when calling function
   `ReadAndSplitStrelkaSBSVCFs`.
 * Added a new dependency package "zip" in ICAMS, to be used in three new *exported*  

@@ -98,7 +98,7 @@ A list containing the following objects:
 3 DBS catalogs (one each for 78, 136, and 144).
 \item \code{catID}: Matrix of ID (small insertion and deletion) catalog.
 \item \code{discarded.variants}:
-\strong{Only appearing when} there are variants that were excluded in the
+\strong{Non-NULL only if} there are variants that were excluded in the
 analysis.
 A list of elements:
 \itemize{
@@ -107,8 +107,8 @@ A list of elements:
 \item \code{ID}: ID variants discarded that can belong to the following
 categories:
 \itemize{
-\item Variants which have empty REF or ALT allels.
-\item Variants whose REF allels do not match the extracted sequence from
+\item Variants with empty REF or ALT alleles.
+\item Variants whose REF alleles do not match the extracted sequence from
 \code{ref.genome}.
 \item Variants which cannot be categorized according to the canonical
 representation. See catalog.row.order$ID for the canonical
@@ -122,16 +122,11 @@ example ACA mutated to both AGA and ATA at the same position.
 the VCFs:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#".
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
+\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 }
 }
 \item \code{annotated.vcfs}:
-\strong{Only appearing when} \code{return.annotated.vcfs} = TRUE.
+\strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 A list of elements:
 \itemize{
 \item \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with

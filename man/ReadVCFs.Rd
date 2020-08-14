@@ -17,7 +17,7 @@ ReadVCFs(
 \item{variant.caller}{Name of the variant caller that produces \strong{all}
 the VCFs specified by \code{files}, can be either \code{strelka},
 \code{mutect} or \code{freebayes}. This information is needed to calculate
-the VAFs(variant allel frequencies). If \code{NULL}(default), then VAF and
+the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
 read depth information will not be added to the original VCFs.}
 
 \item{names.of.VCFs}{Character vector of names of the VCF files. The order

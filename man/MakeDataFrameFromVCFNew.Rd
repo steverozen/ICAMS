@@ -17,8 +17,8 @@ is TRUE.}
 A list of elements:
 \itemize{
 \item \code{df}: A data frame storing data lines from the original VCF file.
-\item \code{discarded.variants}: \strong{Only appearing when} there are variants
-that are excluded in the analysis.
+\item \code{discarded.variants}: \strong{Non-NULL only if} variants
+were excluded.
 }
 }
 \description{
