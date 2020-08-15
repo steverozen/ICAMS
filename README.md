@@ -71,8 +71,10 @@ These are for users who cannot install from source because they do not
 have Rtools (Windows) or XCode (Mac). To use these binaries, download
 the .zip (Windows) or .tgz (Mac) file for your operating system.
 
+Then do:
+
 ``` r
-install.packages(pkgs = "path-to-binary-file", repos = NULL)
+install.packages(pkgs = "path-to-binary-file-on-your-computer", repos = NULL)
 ```
 
 ## Reference manual
