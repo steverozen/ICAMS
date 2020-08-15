@@ -66,7 +66,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 Binaries of recent development versions are at [Windows
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.1.2.9014.zip)
 or [macOS
-binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.1.2.9014.tgz)
+binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.2.1.tgz)
 These are for users who cannot install from source because they do not
 have Rtools (Windows) or XCode (Mac). To use these binaries, download
 the .zip (Windows) or .tgz (Mac) file for your operating system.
