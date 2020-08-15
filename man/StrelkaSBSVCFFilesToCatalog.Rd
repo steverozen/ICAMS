@@ -84,12 +84,7 @@ example ACA mutated to both AGA and ATA at the same position.
 the VCFs:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#".
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
+\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 }
 }
 \item \code{annotated.vcfs}:

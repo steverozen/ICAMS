@@ -1,7 +1,7 @@
 # ICAMS 2.2.1
 ## Fixed
-* Fixed a bug in internal function `CreateOneColIDMatrix` when the ID.class
-contains non canonical representation of the ID mutation type.
+* Fixed a bug in `CreateOneColIDMatrix` when the ID.class contains non canonical
+representation of the ID mutation type.
 
 <br/>
 
@@ -9,17 +9,14 @@ contains non canonical representation of the ID mutation type.
 
 ## Mostly backward compatible
 
-* The return value of *exported* function `ReadStrelkaIDVCFs` now 
-sometimes contains a new element, `discarded.variants`.
-This appears when there are variants that were discarded
-immediately after reading in the VCFs. At present these
-are variants that have duplicated chromosome/positions and variants
-that have illegal chromosome names. This means that the
-user must check the return to see if `discarded.variants` is present
-and remove it before passing the return to a function that
-expects a list of VCFs. Code in ICAMS that
-takes lists of VCFs already checks for this element
-and removes it if present.
+* The return value of *exported* function `ReadStrelkaIDVCFs` now sometimes
+contains a new element, `discarded.variants`. This appears when there are
+variants that were discarded immediately after reading in the VCFs. At present
+these are variants that have duplicated chromosome/positions and variants that
+have illegal chromosome names. This means that the user must check the return to
+see if `discarded.variants` is present and remove it before passing the return
+to a function that expects a list of VCFs. Code in ICAMS that takes lists of
+VCFs already checks for this element and removes it if present.
 
 * Added argument `return.annotated.vcfs` to *exported* function
 `VCFsToIDCatalogs`. The default value for the argument is **FALSE**
@@ -27,18 +24,19 @@ to be consistent with other functions.
 
 ## New function arguments with backward compatible defaults
 
-* Argument, `return.annotated.vcfs`, in functions
-`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`, 
+* Argument `return.annotated.vcfs` in functions
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,  `VCFsToIDCatalogs`,
 `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
-`MutectVCFFilesToZipFile`, 
-`StrelkaSBSVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`.
-XXXXXXX Nanhai add few
+`MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`,
+`StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToZipFile`,
+`StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and
+`StrelkaIDVCFFilesToZipFile`.
 
 * Argument `suppress.discarded.variants.warnings` in functions
 `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`,
-`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`,
-`VCFsToIDCatalogs`, `MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
-`MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`, 
+`VCFsToSBSCatalogs`,`VCFsToDBSCatalogs`, `VCFsToIDCatalogs`,
+`MutectVCFFilesToCatalog`, `MutectVCFFilesToCatalogAndPlotToPdf`,
+`MutectVCFFilesToZipFile`, `StrelkaSBSVCFFilesToCatalog`,
 `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToZipFile`,
 `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf` and
 `StrelkaIDVCFFilesToZipFile`.
@@ -52,9 +50,9 @@ and `StrelkaSBSVCFFilesToZipFile`.
 * Added information on the "ID classification" in documentation 
 of functions generating ID catalogs, `FindDelMH` and `FindMaxRepeatDel`. 
 
-* Minor changes to documentation of functions `PlotCatalog`,  
-`PlotCatalogToPdf`, `StrelkaSBSVCFFilesToZipFile`, 
-`StrelkaIDVCFFilesToZipFile` and `MutectVCFFilesToZipFile`.
+* Minor changes to documentation of functions `PlotCatalog`, `PlotCatalogToPdf`,
+`StrelkaSBSVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile` and
+`MutectVCFFilesToZipFile`.
 
 * Updated documentation for the return value of functions  
 `StrelkaIDVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`,
@@ -82,10 +80,9 @@ the source catalog has NULL abundance.
 * Added legend for SBS192 plot and changed the legend text for SBS12 plot.
 
 * Added a second element `plot.object` to the return list from function
-`PlotCatalog` for catalog types
-"SBS192Catalog", "DBS78Catalog", "DBS144Catalog" and "IndelCatalog".
-The second element is a numeric vector giving the coordinates of the bar
-midpoints, useful for adding to the graph.
+`PlotCatalog` for catalog types "SBS192Catalog", "DBS78Catalog", "DBS144Catalog"
+and "IndelCatalog". The second element is a numeric vector giving the
+coordinates of the bar midpoints, useful for adding to the graph.
 
 * Made the returns from `PlotCatalog` and `PlotCatalogToPdf` **invisible**.
 
@@ -93,15 +90,15 @@ midpoints, useful for adding to the graph.
 
 ## Fixed bugs in ...
 
-* `if` statements in GetCustomKmerCounts`、
-`GetStrandedKmerCounts` and `GetGenomeKmerCounts`.
+* `if` statements in `GetCustomKmerCounts`、 `GetStrandedKmerCounts` and
+`GetGenomeKmerCounts`.
 
 * `CreateOneColIDMatrix` when there is NA ID category.
 
 * `GetMutectVAF` to check if the VCF is indeed a Mutect VCF.
 
-* `CreateOneColDBSMatrix` when the VCF 
-does not have any variant in the transcribed region.
+* `CreateOneColDBSMatrix` when the VCF does not have any variant in the
+transcribed region.
 
 * `CalculatePValues` when there is only a single expression value.
 

@@ -31,12 +31,7 @@ element \code{discarded.variants} will appear in the return list.
 The variants discarded can belong to the following categories:
 \itemize{
 \item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#".
-\item Chromosome names that contain "GL".
-\item Chromosome names that contain "KI".
-\item Chromosome names that contain "random".
-\item Chromosome names that contain "Hs".
-\item Chromosome names that contain "M".
+\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 }
 }
 \description{

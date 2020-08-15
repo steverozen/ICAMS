@@ -2291,12 +2291,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #'     + \code{not.analyzed}: Variants discarded immediately after reading in
 #'     the VCFs:
 #'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#".
-#'         - Chromosome names that contain "GL".
-#'         - Chromosome names that contain "KI".
-#'         - Chromosome names that contain "random".
-#'         - Chromosome names that contain "Hs".
-#'         - Chromosome names that contain "M".
+#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
 #'   
 #' * \code{annotated.vcfs}: 
 #' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
