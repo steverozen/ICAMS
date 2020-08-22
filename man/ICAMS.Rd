@@ -9,7 +9,10 @@ Analysis and visualization of experimentally elucidated mutational signatures
 -- the kind of analysis and visualization in Boot et al., "In-depth
 characterization of the cisplatin mutational signature in human cell lines
 and in esophageal and liver tumors", \cr
-\emph{Genome Research} 2018, https://doi.org/10.1101/gr.230219.117.
+\emph{Genome Research} 2018 https://doi.org/10.1101/gr.230219.117 and
+"Characterization of colibactin-associated mutational signature in an 
+Asian oral squamous cell carcinoma and in other mucosal tumor types",
+\emph{Genome Research} 2020, https://doi.org/10.1101/gr.255620.119.
 "ICAMS" stands for In-depth Characterization and
 Analysis of Mutational Signatures. "ICAMS" has functions to read in variant
 call files (VCFs) and to collate the corresponding catalogs of mutational
