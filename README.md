@@ -63,7 +63,7 @@ install.packages("remotes")
 remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
-Binaries of recent development versions are at [Windows
+Binaries of recent stable development versions are at [Windows
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/Windows-binary/ICAMS_2.2.1.zip)
 or [macOS
 binary](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/macOS-binary/ICAMS_2.2.1.tgz)
@@ -80,3 +80,11 @@ install.packages(pkgs = "path-to-binary-file-on-your-computer", repos = NULL)
 ## Reference manual
 
 <https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.1.pdf>
+
+## Frequently asked questions
+
+##### How to perform normalization for “counts-based” catalogs of mutational spectra or signatures to account for differing abundances of the source sequence of the mutations?
+
+You can use *exported* function `TransformCatalog` in ICAMS to normalize
+the data. Please refer to the documentation and example of
+`TransformCatalog` for more details.
