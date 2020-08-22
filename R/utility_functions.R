@@ -581,6 +581,51 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
 #'   \code{target.abundance}, raise an error.
 #'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
+#' 
+#' @section Rationale:  
+#' The \code{\link{TransformCatalog}}
+#' function transforms catalogs of mutational spectra or
+#' signatures to account for differing abundances of the source
+#' sequence of the mutations in the genome.
+#'
+#' For example, mutations from
+#' ACG are much rarer in the human genome than mutations from ACC
+#' simply because CG dinucleotides are rare in the genome.
+#' Consequently, there are two possible representations of
+#' mutational spectra or signatures. One representation is
+#' based on mutation counts as observed in a given genome
+#' or exome,
+#' and this approach is widely used, as, for example, at
+#' https://cancer.sanger.ac.uk/cosmic/signatures, which
+#' presents signatures based on observed mutation counts
+#' in the human genome. We call these "counts-based spectra"
+#' or "counts-based signatures".
+#'
+#' Alternatively,
+#' mutational spectra or signatures can be represented as
+#' mutations per source sequence, for example
+#' the number of ACT > AGT mutations occurring at all
+#' ACT 3-mers in a genome. We call these "density-based
+#' spectra" or "density-based signatures".
+#'
+#' This function can also transform spectra
+#' based on observed genome-wide counts to "density"-based
+#' catalogs. In density-based catalogs
+#' mutations are expressed as mutations per
+#' source sequences. For example,
+#' a density-based catalog represents
+#' the proportion of ACCs mutated to
+#' ATCs, the proportion of ACGs mutated to ATGs, etc.
+#' This is
+#' different from counts-based mutational spectra catalogs, which
+#' contain the number of ACC > ATC mutations, the number of
+#' ACG > ATG mutations, etc.
+#'
+#' This function can also transform observed-count based
+#' spectra or signatures from genome to exome based counts,
+#' or between different species (since the abundances of
+#' source sequences vary between genome and exome and between
+#' species).
 #'
 #' @export
 #' 
