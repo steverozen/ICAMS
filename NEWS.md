@@ -1,3 +1,10 @@
+# ICAMS 2.2.3
+## Changed
+* Changed the format of DOIs in DESCRIPTION according to CRAN policy.
+
+<br/>
+
+
 # ICAMS 2.2.2
 ## Added
 * Added a section "Frequently asked questions" in README.
