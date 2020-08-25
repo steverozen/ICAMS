@@ -171,11 +171,14 @@ CalculateExpressionLevel <- function(dt, num.of.bins, type, damaged.base) {
   
   setorder(dt1, exp.value)
   setorder(dt2, exp.value)
+  setorder(dt, exp.value)
   if (num.of.bins == 1) {
     dt[, exp.level := num.of.bins]
     return(dt)
-  } else {
-    if (nrow(dt1) <= num.of.bins) {
+  } else if (nrow(dt) <= num.of.bins) {
+    dt[, exp.level := cut(exp.value, breaks = num.of.bins, labels = FALSE)]
+    return(dt)
+  } else if (nrow(dt1) <= num.of.bins) {
       dt1$exp.level <- 1:nrow(dt1)
       max.exp.value <- max(dt1$exp.value)
       dt3 <- dt2[exp.value > max.exp.value, ]
@@ -229,7 +232,6 @@ CalculateExpressionLevel <- function(dt, num.of.bins, type, damaged.base) {
       return(dt)
     }
   }
-}
 
 #' @keywords internal
 CalculatePValues <- function(dt) {

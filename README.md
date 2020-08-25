@@ -83,7 +83,7 @@ install.packages(pkgs = "path-to-binary-file-on-your-computer", repos = NULL)
 
 ## Frequently asked questions
 
-##### How to perform normalization for “counts-based” catalogs of mutational spectra or signatures to account for differing abundances of the source sequence of the mutations?
+#### How to perform normalization for “counts-based” catalogs of mutational spectra or signatures to account for differing abundances of the source sequence of the mutations?
 
 You can use *exported* function `TransformCatalog` in ICAMS to normalize
 the data. Please refer to the documentation and example of

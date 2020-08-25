@@ -1,3 +1,12 @@
+# ICAMS 2.2.2
+## Added
+* Added a section "Frequently asked questions" in README.
+
+## Fixed
+* Fixed a bug in `CalculateExpressionLevel` for the edge case.
+
+<br/>
+
 # ICAMS 2.2.1
 ## Fixed
 * Fixed a bug in `CreateOneColIDMatrix` when the ID.class contains non canonical
