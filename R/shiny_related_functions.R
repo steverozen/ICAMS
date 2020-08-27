@@ -1094,8 +1094,9 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
   names(discarded.variants) <- vcf.names
   
   if (is.null(trans.ranges)) {
-    CheckAndReturnDBSCatalogs(catDBS78, catDBS136, discarded.variants,
-                              annotated.vcfs)
+    retval <- CheckAndReturnDBSCatalogs(catDBS78, catDBS136, NULL, 
+                                        discarded.variants, annotated.vcfs)
+    return(retval)
   }
   
   colnames(catDBS144) <- names(list.of.DBS.vcfs)
