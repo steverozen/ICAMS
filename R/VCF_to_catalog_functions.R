@@ -1681,7 +1681,7 @@ CheckAndReturnSBSMatrix <-
           return(list(catSBS96 = mat96, catSBS1536 = mat1536))
         } else {
           vcf.SBS.class <- 
-            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
           return(list(catSBS96 = mat96, catSBS1536 = mat1536,
                       annotated.vcf = vcf.SBS.class))
         }
@@ -1703,7 +1703,7 @@ CheckAndReturnSBSMatrix <-
                       discarded.variants = discarded.variants))
         } else {
           vcf.SBS.class <- 
-            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, sample.id)
+            AddAndCheckSBSClassInVCF(vcf, mat96, mat1536, mat192, sample.id)
           return(list(catSBS96 = mat96, catSBS1536 = mat1536,
                       annotated.vcf = vcf.SBS.class,
                       discarded.variants = discarded.variants))
