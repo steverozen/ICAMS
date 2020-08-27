@@ -4,7 +4,7 @@
 
 ## Fixed
 * Fixed bugs in `CreateOneColSBSMatrix`,`VCFsToSBSCatalogs`, 
-`CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`.
+`CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, `CreateOneColDBSMatrix` .
 
 <br/>
 

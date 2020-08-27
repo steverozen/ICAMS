@@ -2210,8 +2210,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   colnames(DBS.mat.136)<- sample.id
   
   if (is.null(vcf$trans.strand)) {
-    CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
-                            return.annotated.vcf, sample.id)
+    retval <- 
+      CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
+                              NULL, return.annotated.vcf, sample.id)
+    return(retval)
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -2230,8 +2232,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
     DBS.mat.144 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
              dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
-    CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
-                            DBS.mat.144, return.annotated.vcf, sample.id)
+    retval <- 
+      CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
+                              DBS.mat.144, return.annotated.vcf, sample.id)
+    return(retval)
   }
 
   # Create the 144 DBS catalog matrix
