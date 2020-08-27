@@ -917,8 +917,10 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
   names(discarded.variants) <- vcf.names
   
   if (is.null(trans.ranges)) {
-    CheckAndReturnSBSCatalogs(catSBS96, catSBS1536, discarded.variants,
-                              annotated.vcfs)
+    retval <- 
+      CheckAndReturnSBSCatalogs(catSBS96, catSBS1536, NULL, discarded.variants,
+                                annotated.vcfs)
+    return(retval)
   }
   
   colnames(catSBS192) <- names(list.of.SBS.vcfs)

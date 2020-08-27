@@ -3,7 +3,7 @@
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
 ## Fixed
-* Fixed bugs in `CreateOneColSBSMatrix`,
+* Fixed bugs in `CreateOneColSBSMatrix`,`VCFsToSBSCatalogs`.
 
 <br/>
 
