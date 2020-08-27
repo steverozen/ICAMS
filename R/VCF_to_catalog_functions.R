@@ -2060,7 +2060,7 @@ CheckAndReturnDBSMatrix <-
           return(list(catDBS78 = mat78, catDBS136 = mat136))
         } else {
           vcf.DBS.class <- 
-            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, sample.id)
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, mat144, sample.id)
           return(list(catDBS78 = mat78, catDBS136 = mat136,
                       annotated.vcf = vcf.DBS.class))
         }
@@ -2082,7 +2082,7 @@ CheckAndReturnDBSMatrix <-
                       discarded.variants = discarded.variants))
         } else {
           vcf.DBS.class <- 
-            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, sample.id)
+            AddAndCheckDBSClassInVCF(vcf, mat78, mat136, mat144, sample.id)
           return(list(catDBS78 = mat78, catDBS136 = mat136,
                       annotated.vcf = vcf.DBS.class,
                       discarded.variants = discarded.variants))
