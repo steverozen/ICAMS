@@ -1853,8 +1853,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   colnames(mat96) <- sample.id
   
   if (is.null(vcf$trans.strand)) {
-    CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, 
-                            mat1536, return.annotated.vcf, sample.id)
+    retval <- 
+      CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, 
+                              mat1536, NULL, return.annotated.vcf, sample.id)
+    return(retval)
   }
   
   # There may be some mutations in vcf which fall on transcripts on both
@@ -1874,8 +1876,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
     mat192 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
              dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
-    CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
-                            return.annotated.vcf, sample.id)
+    retval <- 
+      CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
+                              return.annotated.vcf, sample.id)
+    return(retval)
   }
 
   # Create the 192 catalog matrix
