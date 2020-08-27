@@ -3,8 +3,9 @@
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
 ## Fixed
-* Fixed bugs in `CreateOneColSBSMatrix`,`VCFsToSBSCatalogs`, 
-`CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, `CreateOneColDBSMatrix`, `VCFsToDBSCatalogs` .
+* Fixed bugs in `CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, 
+`CreateOneColSBSMatrix`,`CreateOneColDBSMatrix`, `VCFsToSBSCatalogs`, 
+`VCFsToDBSCatalogs`.
 
 <br/>
 
