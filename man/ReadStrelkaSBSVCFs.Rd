@@ -19,20 +19,13 @@ names in \code{names.of.VCFs} should match the order of VCF file paths in
 path up to and including the last path separator (if any) in \code{files}
 and file paths without extensions (and the leading dot) will be used as the
 names of the VCF files.}
-
-\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
-warning messages showing information about the discarded variants. Default
-is TRUE.}
 }
 \description{
 Read Strelka SBS (single base substitutions) VCF files.
 }
 \section{Value}{
- A list of \strong{lists}. Each list has a first element \code{df}
-  which is a data frame that stores data lines of a VCF with additional
-  columns \code{VAF} (variant allele frequency) and \code{read.depth} added.
-  A second element \code{discarded.variants} \strong{only} appears if there
-  are variants that are excluded from the analysis.
+ A list of data frames which store data lines of VCF files
+  with VAFs (variant allele frequencies) and read depth information added.
 }
 
 \keyword{internal}

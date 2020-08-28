@@ -4,12 +4,12 @@
 \alias{StandardChromNameNew}
 \title{Standardize the chromosome name annotations for a data frame.}
 \usage{
-StandardChromNameNew(df, file)
+StandardChromNameNew(df, name.of.VCF = NULL)
 }
 \arguments{
 \item{df}{A data frame whose first column contains the Chromosome name}
 
-\item{file}{The name/path of the VCF file, or a complete URL.}
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 A \strong{list} with the elements

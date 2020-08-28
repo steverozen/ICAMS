@@ -751,7 +751,7 @@ StandardChromName <- function(df) {
 #'
 #' @param df A data frame whose first column contains the Chromosome name
 #' 
-#' @param file The name/path of the VCF file, or a complete URL.
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @return A \strong{list} with the elements
 #' * \code{df} a data frame with variants that had "legal" chromosome
@@ -763,77 +763,92 @@ StandardChromName <- function(df) {
 #' @md
 #'   
 #' @keywords internal
-StandardChromNameNew <- function(df, file) {
+StandardChromNameNew <- function(df, name.of.VCF = NULL) {
   # Create an empty data frame for discarded variants
   discarded.variants <- df[0, ]
   
   # Is there any row in df whose Chromosome names have "GL"?
   if (sum(grepl("GL", df[[1]])) > 0) {
-    warning("In ", file, " ", sum(grepl("GL", df[[1]])), " row out of ",
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
+            " ", sum(grepl("GL", df[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'GL' and ", 
             "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "See discarded.variants in the return value for more details")
     df1 <- df[-grep("GL", df[[1]]), ]
+    df1.to.remove <- df[grep("GL", df[[1]]), ]
+    df1.to.remove$discarded.reason <- 'Chromosome name contains "GL"'
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df[grep("GL", df[[1]]), ])
+      dplyr::bind_rows(discarded.variants, df1.to.remove)
   } else {
     df1 <- df
   }
   
   # Is there any row in df whose Chromosome names have "KI"?
   if (sum(grepl("KI", df1[[1]])) > 0) {
-    warning("In ", file, " ", sum(grepl("KI", df1[[1]])), " row out of ",
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
+            " ", sum(grepl("KI", df1[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'KI' and ", 
             "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "See discarded.variants in the return value for more details")
     df2 <- df1[-grep("KI", df1[[1]]), ]
+    df2.to.remove <- df1[grep("KI", df1[[1]]), ]
+    df2.to.remove$discarded.reason <- 'Chromosome name contains "KI"'
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df1[grep("KI", df1[[1]]), ])
+      dplyr::bind_rows(discarded.variants, df2.to.remove)
   } else {
     df2 <- df1
   }
   
   # Is there any row in df whose Chromosome names have "random"?
   if (sum(grepl("random", df2[[1]])) > 0) {
-    warning("In ", file, " ", sum(grepl("random", df2[[1]])), " row out of ",
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
+            " ", sum(grepl("random", df2[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'random' and ", 
             "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "See discarded.variants in the return value for more details")
     df3 <- df2[-grep("random", df2[[1]]), ]
+    df3.to.remove <- df2[grep("random", df2[[1]]), ]
+    df3.to.remove$discarded.reason <- 'Chromosome name contains "random"'
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df2[grep("random", df2[[1]]), ])
+      dplyr::bind_rows(discarded.variants, df3.to.remove)
   } else {
     df3 <- df2
   }
   
   # Is there any row in df whose Chromosome names are "Hs37D5"?
   if (sum(grepl("^Hs", df3[[1]])) > 0) {
-    warning("In ", file, " ", sum(grepl("^Hs", df3[[1]])), " row out of ",
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " ", sum(grepl("^Hs", df3[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'Hs' and ", 
             "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "See discarded.variants in the return value for more details")
     df4 <- df3[-grep("^Hs", df3[[1]]), ]
+    df4.to.remove <- df3[grep("^Hs", df3[[1]]), ]
+    df4.to.remove$discarded.reason <- 'Chromosome name contains "Hs"'
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df3[-grep("^Hs", df3[[1]]), ])
+      dplyr::bind_rows(discarded.variants, df4.to.remove)
   } else {
     df4 <- df3
   }
   
   # Is there any row in df whose Chromosome names contain "M"?
   if (sum(grepl("M", df4[[1]])) > 0) {
-    warning("In ", file, " ", sum(grepl("M", df4[[1]])), " row out of ",
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)), 
+            " ", sum(grepl("M", df4[[1]])), " row out of ",
             nrow(df), " had chromosome names that contain 'M' and ", 
             "were removed. ",
-            "See the discarded variants in the return value for more details")
+            "See discarded.variants in the return value for more details")
     df5 <- df4[-grep("M", df4[[1]]), ]
+    df5.to.remove <- df4[grep("M", df4[[1]]), ]
+    df5.to.remove$discarded.reason <- 'Chromosome name contains "M"'
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df4[grep("M", df4[[1]]), ])
+      dplyr::bind_rows(discarded.variants, df5.to.remove)
   } else {
     df5 <- df4
   }
   
   # Remove the "chr" character in the Chromosome's name
-  df5[, 1] <- sub(pattern = "chr", replacement = "", df5[[1]])
+  # df5[, 1] <- sub(pattern = "chr", replacement = "", df5[[1]])
   
   if (nrow(discarded.variants) == 0) {
     return(list(df = df5))

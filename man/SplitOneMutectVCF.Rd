@@ -24,13 +24,9 @@ into the first 3 VCFs, as follows:
 
  * \code{ID}: VCF with only small insertions and deletions.
 
- * \code{other.subs}: \strong{Non-NULL only if} there is VCF like
- data.frame with rows for coordinate substitutions involving 3 or more
- nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
-
- * \code{multiple.alt}: \strong{Non-NULL only if} there is VCF like
- data.frame with rows for variants with multiple alternative alleles, for
- example ACA mutated to both AGA and ATA at the same position.
+ * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+ that were excluded from the analysis. See the column \code{discarded.reason}
+ for more details.
  @md
 }
 \description{
