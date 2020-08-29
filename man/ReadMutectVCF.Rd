@@ -20,11 +20,13 @@ sample information. It \strong{must} have quotation marks. If
 use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
 }
-\value{
-A data frame storing data lines of a VCF file with VAFs (variant
-  allele frequencies) added.
-}
 \description{
 Read in the data lines of a Variant Call Format (VCF) file created by Mutect
 }
+\section{Value}{
+ A data frame storing data lines of a VCF file with two
+  additional columns added which contain the VAF(variant allele frequency)
+  and read depth information.
+}
+
 \keyword{internal}

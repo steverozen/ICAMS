@@ -33,20 +33,9 @@ A list of elements as follows:
 3+BS mutations.
 \item \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
 3+BS mutations.
-\item \code{ThreePlus}: \strong{Non-NULL only if} there is list of
-data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
-the input that did not represent SBSs or DBSs.
-\item \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
-like data.frames with rows for variants with multiple alternative alleles,
-for example ACA mutated to both AGA and ATA at the same position.
-\item \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
-like data.frames with rows for variants that were discarded immediately
-after reading in the VCFs. The variants not analyzed can belong to the
-following categories:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 }
 }
 

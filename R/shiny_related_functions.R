@@ -628,20 +628,9 @@ MutectVCFFilesToCatalog <-
 #'    * \code{DBS.vcfs}: List of data.frames of pure DBS mutations -- no SBS or
 #'    3+BS mutations.
 #'
-#'    * \code{ThreePlus}: \strong{Non-NULL only if} there is list of
-#'    data.tables with the key CHROM, LOW.POS, HIGH.POS which contain rows in
-#'    the input that did not represent SBSs or DBSs.
-#'
-#'   * \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
-#'   like data.frames with rows for variants with multiple alternative alleles,
-#'   for example ACA mutated to both AGA and ATA at the same position.
-#'
-#'   * \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
-#'   like data.frames with rows for variants that were discarded immediately
-#'   after reading in the VCFs. The variants not analyzed can belong to the
-#'   following categories:
-#'       + Duplicated "CHROM" and "POS" values.
-#'       + Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
+#'    * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'    that were excluded from the analysis. See the added extra column
+#'    \code{discarded.reason} for more details.
 #' @md
 #'
 #' @seealso \code{\link{StrelkaSBSVCFFilesToCatalog}}
@@ -656,11 +645,11 @@ MutectVCFFilesToCatalog <-
 ReadAndSplitStrelkaSBSVCFs <- 
   function(files, names.of.VCFs = NULL,
            suppress.discarded.variants.warnings = TRUE) {
-    vcfs <- ReadStrelkaSBSVCFs(files, names.of.VCFs, 
-                               suppress.discarded.variants.warnings)
+    vcfs <- ReadStrelkaSBSVCFs(files = files, names.of.VCFs = names.of.VCFs)
     split.vcfs <- 
-      SplitListOfStrelkaSBSVCFs(vcfs, 
-                                suppress.discarded.variants.warnings)
+      SplitListOfStrelkaSBSVCFs(list.of.vcfs = vcfs, 
+                                suppress.discarded.variants.warnings = 
+                                  suppress.discarded.variants.warnings)
     return(split.vcfs)
   }
 

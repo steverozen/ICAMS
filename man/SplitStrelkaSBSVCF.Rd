@@ -24,13 +24,9 @@ A list of in-memory objects with the elements:
    \item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
    mutations.
 
-   \item \code{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS
-   and additional information (reference sequence, alternative sequence,
-   context, etc.) Additional information not fully implemented at this point
-   because of limited immediate biological interest.
-
-   \item \code{multiple.alt} Rows with multiple alternate alleles (removed
-   from \code{SBS.vcf} etc.)
+   \item \code{discarded.variants}: \strong{Non-NULL only if} there are
+   variants that were excluded from the analysis. See the added extra column
+   \code{discarded.reason} for more details.
    
    }
 }

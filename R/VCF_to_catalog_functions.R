@@ -133,17 +133,12 @@ RenameColumnsWithNameVAF <- function(df) {
 #'   warning messages showing information about the discarded variants. Default
 #'   is TRUE.
 #'
-#' @return A \strong{list} whose first element \code{df} is a data frame storing
-#'   data lines of the VCF file with two additional columns added which contain
-#'   the VAF(variant allele frequency) and read depth information. A second element
-#'   \code{discarded.variants} \strong{only} appears if there are variants that 
-#'   are excluded from the analysis.
+#' @inheritSection ReadMutectVCF Value
 #'
 #' @keywords internal
-ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL, 
-                              suppress.discarded.variants.warnings = TRUE) {
+ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   
-  retval <- MakeDataFrameFromVCFNew(file, suppress.discarded.variants.warnings)
+  df <- MakeDataFrameFromVCF(file)
   
   if (is.null(name.of.VCF)) {
     vcf.name <- tools::file_path_sans_ext(basename(file))
@@ -151,31 +146,9 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL,
     vcf.name <- name.of.VCF
   }
   
-  # Create an empty data frame for discarded variants
-  discarded.variants <- retval$df[0, ]
+  df1 <- GetStrelkaVAF(vcf = df, name.of.VCF = vcf.name)
   
-  if (!is.null(retval$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
-  }
-  
-  if (suppress.discarded.variants.warnings == TRUE) {
-    retval2 <- suppressWarnings(StandardChromNameNew(retval$df, file)) 
-  } else {
-    retval2 <- StandardChromNameNew(retval$df, file)
-  }
-  if (!is.null(retval2$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
-  }
-  
-  df1 <- GetStrelkaVAF(retval2$df, vcf.name)
-  
-  if (nrow(discarded.variants) == 0) {
-    return(list(df = df1))
-  } else {
-    return(list(df = df1, discarded.variants = discarded.variants))
-  }
+  return(df1)
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file
@@ -327,9 +300,10 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
-#'   
-#' @return A data frame storing data lines of a VCF file with VAFs (variant
-#'   allele frequencies) added.
+#'
+#' @section Value: A data frame storing data lines of a VCF file with two
+#'   additional columns added which contain the VAF(variant allele frequency)
+#'   and read depth information.
 #'   
 #' @keywords internal
 ReadMutectVCF <- 
@@ -947,28 +921,6 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
                                 "VAF", "read.depth")]))
 }
 
-#' @keywords internal
-CheckAndReturnSplitStrelkaSBSVCF <- 
-  function(SBS.df, DBS.df, ThreePlus.df, multiple.alt.df) {
-    if (nrow(ThreePlus.df) == 0) {
-      if (nrow(multiple.alt.df) == 0) {
-        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df))
-      } else {
-        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df, 
-                    multiple.alt = multiple.alt.df))
-      }
-    } else {
-      if (nrow(multiple.alt.df) == 0) {
-        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df,
-                    ThreePlus = ThreePlus.df))
-      } else {
-        return(list(SBS.vcf = SBS.df, DBS.vcf = DBS.df,
-                    ThreePlus = ThreePlus.df, 
-                    multiple.alt = multiple.alt.df))
-      }
-    }
-  }
-
 #' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
 #'
@@ -1001,35 +953,26 @@ CheckAndReturnSplitStrelkaSBSVCF <-
 #'    \item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
 #'    mutations.
 #'
-#'    \item \code{ThreePlus}: Data table with the key CHROM, LOW.POS, HIGH.POS
-#'    and additional information (reference sequence, alternative sequence,
-#'    context, etc.) Additional information not fully implemented at this point
-#'    because of limited immediate biological interest.
-#'
-#'    \item \code{multiple.alt} Rows with multiple alternate alleles (removed
-#'    from \code{SBS.vcf} etc.)
+#'    \item \code{discarded.variants}: \strong{Non-NULL only if} there are
+#'    variants that were excluded from the analysis. See the added extra column
+#'    \code{discarded.reason} for more details.
 #'    
 #'    }
 #'
 #' @keywords internal
-SplitStrelkaSBSVCF <- 
-  function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
+SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
   stopifnot("data.frame" %in% class(vcf.df))
   
-  # Strelka SBS VCFs can represent multiple non-reference alleles at the
-  # same site; the alleles are separated by commas in the ALT columm;
-  # these are quite rare and often dubious, so we ignore them.
-  multiple.alt <- grep(",", vcf.df$ALT, fixed = TRUE)
-  multiple.alt.df <- vcf.df[multiple.alt, ]
+  # Create an empty data frame for discarded variants
+  discarded.variants <- vcf.df[0, ]
   
-  if (length(multiple.alt) != 0) {
-    vcf.df <- vcf.df[-multiple.alt, ]
-    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
-            " has variants with multiple alternative alleles and were ",
-            "discarded. See element multiple.alt in the return value for more ",
-            "details.")
-  }
-
+  # Check and remove discarded variants
+  retval <- 
+    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
+  vcf.df <- retval$df
+  discarded.variants <- 
+    dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  
   # Record the total number of input variants for later sanity checking.
   num.in <- nrow(vcf.df)
 
@@ -1077,12 +1020,13 @@ SplitStrelkaSBSVCF <-
     # There are no non.SBS mutations in the input.
     # Everything in vcf.df is an SBS. We are finished.
     empty <- vcf.df[-(1:nrow(vcf.df)), ]
-    return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
-                ThreePlus =
-                  data.table(CHROM = character(),
-                             LOW.POS = numeric(),
-                             HIGH.POS = numeric()),
-                multiple.alt = empty))
+    if (nrow(discarded.variants) == 0) {
+      return(list(SBS.vcf = vcf.df, DBS.vcf = empty))
+    } else {
+      return(list(SBS.vcf = vcf.df, DBS.vcf = empty, 
+                  discarded.variants = discarded.variants))
+    }
+    
   }
 
   # Remove non SBS rows from the output VCF for the SBSs
@@ -1120,67 +1064,29 @@ SplitStrelkaSBSVCF <-
   num.DBS.out <- nrow(DBS.vcf.df)
 
   other.ranges <- DBS.plus[DBS.plus$width > 2, ]
+  if (nrow(other.ranges) > 0) {
+    colnames(other.ranges)[1:3] <- c("CHROM", "LOW.POS", "HIGH.POS")
+    other.ranges$discarded.reason <- "Variants that do not represent SBS or DBS"
+    if (nrow(discarded.variants) == 0) {
+      discarded.variants <- other.ranges
+    } else {
+      discarded.variants <- dplyr::bind_rows(discarded.variants, other.ranges)
+    }
+  }
+  
   num.other <- sum(other.ranges$width)
 
   if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
     warning("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
   }
   
-  CheckAndReturnSplitStrelkaSBSVCF(out.SBS.df, DBS.vcf.df, 
-                                   other.ranges, multiple.alt.df)
-}
-
-#' @keywords internal
-CheckAndReturnSplitListOfStrelkaSBSVCFs <-
-  function(SBS.list, DBS.list, ThreePlus.list, multiple.alt.list,
-           not.analyzed.list) {
-    # Remove NULL elements from the list
-    ThreePlus.list2 <- Filter(Negate(is.null), ThreePlus.list)
-    multiple.alt.list2 <- Filter(Negate(is.null), multiple.alt.list)
-    not.analyzed.list2 <- Filter(Negate(is.null), not.analyzed.list)
-    
-    if (length(ThreePlus.list2) == 0) {
-      if (length(multiple.alt.list2) == 0) {
-        if (length(not.analyzed.list2) == 0) {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list))
-        } else {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      not.analyzed = not.analyzed.list2))
-        }
-      } else {
-        if (length(not.analyzed.list2) == 0) {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      multiple.alt = multiple.alt.list2))
-        } else {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      multiple.alt = multiple.alt.list2,
-                      not.analyzed = not.analyzed.list2))
-        }
-      }
-    } else {
-      if (length(multiple.alt.list2) == 0) {
-        if (length(not.analyzed.list2) == 0) {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      ThreePlus = ThreePlus.list2))
-        } else {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      ThreePlus = ThreePlus.list2,
-                      not.analyzed = not.analyzed.list2))
-        }
-      } else {
-        if (length(not.analyzed.list2) == 0) {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      ThreePlus = ThreePlus.list2,
-                      multiple.alt = multiple.alt.list2))
-        } else {
-          return(list(SBS.vcfs = SBS.list, DBS.vcfs = DBS.list,
-                      ThreePlus = ThreePlus.list2,
-                      multiple.alt = multiple.alt.list2,
-                      not.analyzed = not.analyzed.list2))
-        }
-      }
-    }
+  if (nrow(discarded.variants) == 0) {
+    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df))
+  } else {
+    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df, 
+                discarded.variants = discarded.variants))
   }
+}
 
 #' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
 #' > 2 consecutive bases
@@ -1202,31 +1108,35 @@ CheckAndReturnSplitListOfStrelkaSBSVCFs <-
 SplitListOfStrelkaSBSVCFs <- 
   function(list.of.vcfs, suppress.discarded.variants.warnings = TRUE) {
     names.of.VCFs <- names(list.of.vcfs)
-    list.of.vcfs.df <- lapply(list.of.vcfs, function(f1) f1$df)
-    list.of.discarded.variants <- 
-      lapply(list.of.vcfs, function(f2) f2$discarded.variants)
     
     GetSplitStrelkaSBSVCFs <- function(idx, list.of.vcfs) {
       split.vcfs <- SplitStrelkaSBSVCF(list.of.vcfs[[idx]], 
                                        name.of.VCF = names(list.of.vcfs)[idx])
       return(split.vcfs)
     }
-    num.of.vcfs <- length(list.of.vcfs.df)
+    num.of.vcfs <- length(list.of.vcfs)
     if (suppress.discarded.variants.warnings == TRUE) {
       split.vcfs <- 
         suppressWarnings(lapply(1:num.of.vcfs, GetSplitStrelkaSBSVCFs,
-                                list.of.vcfs = list.of.vcfs.df))
+                                list.of.vcfs = list.of.vcfs))
     } else {
       split.vcfs <- lapply(1:num.of.vcfs, GetSplitStrelkaSBSVCFs,
-                           list.of.vcfs = list.of.vcfs.df)
+                           list.of.vcfs = list.of.vcfs)
     }
     names(split.vcfs) <- names.of.VCFs
     SBS.vcfs   <- lapply(split.vcfs, function(x) x$SBS.vcf)
     DBS.vcfs   <- lapply(split.vcfs, function(x) x$DBS.vcf)
-    ThreePlus  <- lapply(split.vcfs, function(x) x$ThreePlus)
-    mult.alt   <- lapply(split.vcfs, function(x) x$multiple.alt)
-    CheckAndReturnSplitListOfStrelkaSBSVCFs(SBS.vcfs, DBS.vcfs, ThreePlus,
-                                            mult.alt, list.of.discarded.variants)
+    discarded.variants <- lapply(split.vcfs, function(x) x$discarded.variants)
+    
+    # Remove NULL elements from discarded.variants
+    discarded.variants1 <- Filter(Negate(is.null), discarded.variants)
+    
+    if (length(discarded.variants1) == 0) {
+      return(list(SBS.vcfs = SBS.vcfs, DBS.vcfs = DBS.vcfs))
+    } else {
+      return(list(SBS.vcfs = SBS.vcfs, DBS.vcfs = DBS.vcfs,
+                  discarded.variants = discarded.variants1))
+    }
   }
 
 #' Check that the sequence context information is consistent with the value of
@@ -1272,12 +1182,11 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
 #' @inheritSection ReadMutectVCFs Value
 #'
 #' @keywords internal
-ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL,
-                               suppress.discarded.variants.warnings = TRUE) {
+ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL) {
+
   vcfs <- 
-    lapply(files, FUN = ReadStrelkaSBSVCF, name.of.VCF = names.of.VCFs,
-           suppress.discarded.variants.warnings = 
-             suppress.discarded.variants.warnings)
+    lapply(files, FUN = ReadStrelkaSBSVCF, name.of.VCF = names.of.VCFs)
+  
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
@@ -1309,7 +1218,8 @@ ReadStrelkaSBSVCFs <- function(files, names.of.VCFs = NULL,
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'
 #' @section Value: A list of data frames which store data lines of VCF files
-#'   with VAFs (variant allele frequencies) and read depth information added.
+#'   with two additional columns added which contain the VAF(variant allele
+#'   frequency) and read depth information.
 #'   
 #' @keywords internal
 ReadMutectVCFs <- 

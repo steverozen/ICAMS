@@ -4,11 +4,7 @@
 \alias{ReadStrelkaSBSVCFs}
 \title{Read Strelka SBS (single base substitutions) VCF files.}
 \usage{
-ReadStrelkaSBSVCFs(
-  files,
-  names.of.VCFs = NULL,
-  suppress.discarded.variants.warnings = TRUE
-)
+ReadStrelkaSBSVCFs(files, names.of.VCFs = NULL)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}
@@ -25,7 +21,8 @@ Read Strelka SBS (single base substitutions) VCF files.
 }
 \section{Value}{
  A list of data frames which store data lines of VCF files
-  with VAFs (variant allele frequencies) and read depth information added.
+  with two additional columns added which contain the VAF(variant allele
+  frequency) and read depth information.
 }
 
 \keyword{internal}

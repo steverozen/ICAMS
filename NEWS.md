@@ -6,7 +6,11 @@
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
 * Changed back the return value of `ReadStrelkaIDVCFs`, `ReadStrelkaSBSVCFs`,
-`ReadMutectVCFs` to a list of data frames.
+`ReadMutectVCFs` to a list of data frames with no variants discarded.
+
+* Combined all the discarded variants from `ReadAndSplitMutectVCFs` and
+`ReadAndSplitStrelkaSBSVCFs` under one element `discarded.variants` in the
+return value. An extra column `discarded.reason` were added to show the details.
 
 ## Fixed
 * Fixed bugs in `CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, 
