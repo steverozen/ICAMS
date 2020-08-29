@@ -8,7 +8,7 @@ test_that("Read Strelka mixed VCF", {
   vcf1 <- ReadStrelkaSBSVCFs(files = file1)
   vcf2 <- ReadStrelkaIDVCFs(files = file2)
   rownames(vcf[[1]]) <- 1:nrow(vcf[[1]])
-  expect_equivalent(vcf[[1]], dplyr::bind_rows(vcf1[[1]]$df, vcf2[[1]]))
+  expect_equivalent(vcf[[1]], dplyr::bind_rows(vcf1[[1]], vcf2[[1]]))
 })
 
 test_that(
@@ -17,9 +17,9 @@ test_that(
     vcf <- ReadStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf")
     vcf1 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
     vcf2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
-    expect_equal(dim(vcf[[1]]$df), c(798, 21))
-    expect_equal(dim(vcf1[[1]]$df), c(1574, 13))
-    expect_equal(dim(vcf2[[1]]$df), c(2870, 21))
+    expect_equal(dim(vcf[[1]]), c(798, 21))
+    expect_equal(dim(vcf1[[1]]), c(1574, 13))
+    expect_equal(dim(vcf2[[1]]), c(2870, 21))
     
     list <- ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf",
                      variant.caller = "strelka")
@@ -27,9 +27,9 @@ test_that(
                       variant.caller = "strelka")
     list2 <- ReadVCFs("testdata/Strelka.SBS.GRCm38.vcf",
                       variant.caller = "strelka")
-    expect_equal(vcf[[1]]$df, list[[1]])
-    expect_equal(vcf1[[1]]$df, list1[[1]])
-    expect_equal(vcf2[[1]]$df, list2[[1]])
+    expect_equal(vcf[[1]], list[[1]])
+    expect_equal(vcf1[[1]], list1[[1]])
+    expect_equal(vcf2[[1]], list2[[1]])
   } )
 
 test_that(
@@ -37,18 +37,17 @@ test_that(
   {
     vcf <- ReadStrelkaIDVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf")
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
-    vcf2 <- expect_warning(ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf",
-                                             suppress.discarded.variants.warnings = FALSE))
+    vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
     expect_equal(dim(vcf[[1]]), c(408, 19))
     expect_equal(dim(vcf1[[1]]), c(1574, 11))
-    expect_equal(dim(vcf2[[1]]), c(745, 19))
+    expect_equal(dim(vcf2[[1]]), c(747, 19))
     
     list <- ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf",
                      variant.caller = "strelka")
     list1 <- ReadVCFs("testdata/Strelka.ID.GRCh38.vcf",
                      variant.caller = "strelka")
-    list2 <- expect_warning(ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
-                                     variant.caller = "strelka")) 
+    list2 <- ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
+                      variant.caller = "strelka")
     # Delete the VAF and read.depth columns which are all NA
     expect_equal(list[[1]][, 1:(ncol(list[[1]]) - 2)], vcf[[1]])
     expect_equal(list1[[1]][, 1:(ncol(list1[[1]]) - 2)], vcf1[[1]])
@@ -61,9 +60,9 @@ test_that(
     vcf <- ReadMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf")
     vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
     vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
-    expect_equal(dim(vcf[[1]]$df), c(1851, 13))
-    expect_equal(dim(vcf1[[1]]$df), c(1561, 13))
-    expect_equal(dim(vcf2[[1]]$df), c(1895, 13))
+    expect_equal(dim(vcf[[1]]), c(1851, 13))
+    expect_equal(dim(vcf1[[1]]), c(1561, 13))
+    expect_equal(dim(vcf2[[1]]), c(1895, 13))
     
     list <- ReadVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf",
                      variant.caller = "mutect")
@@ -71,9 +70,9 @@ test_that(
                       variant.caller = "mutect")
     list2 <- expect_warning(ReadVCFs("testdata/Mutect.GRCm38.vcf",
                                      variant.caller = "mutect"))
-    expect_equal(list[[1]], vcf[[1]]$df)
-    expect_equal(list1[[1]], vcf1[[1]]$df)
-    expect_equal(list2[[1]], vcf2[[1]]$df)
+    expect_equal(list[[1]], vcf[[1]])
+    expect_equal(list1[[1]], vcf1[[1]])
+    expect_equal(list2[[1]], vcf2[[1]])
   } )
 
 test_that(

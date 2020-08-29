@@ -456,10 +456,11 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #' 
-#' @param variant.caller Name of the variant caller that produces the VCF, can be either
-#' \code{strelka}, \code{mutect} or \code{freebayes}. This information is needed to 
-#' calculate the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
-#' read depth information will not be added to the original VCF.
+#' @param variant.caller Name of the variant caller that produces the VCF, can
+#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+#'   information is needed to calculate the VAFs (variant allele frequencies).
+#'   If \code{NULL}(default), then VAF and read depth information will not be
+#'   added to the original VCF.
 #' 
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
@@ -485,7 +486,7 @@ ReadVCF <-
     df1$read.depth <- NA
     
     if (is.null(variant.caller)) {
-      return(StandardChromName(df1))
+      return(df1)
     } 
     
     # Check whether the variant caller is supported by ICAMS
@@ -514,32 +515,33 @@ ReadVCF <-
       # Check for any SBS in df and only calcuate VAF for those SBS variants
       SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
       if (length(SBS.idx) == 0) {
-        return(StandardChromName(df1))
+        return(df1)
       } else {
         SBS.df <- df[SBS.idx, ]
-        SBS.df1 <- GetStrelkaVAF(SBS.df, vcf.name)
+        SBS.df1 <- GetStrelkaVAF(vcf = SBS.df, name.of.VCF = vcf.name)
         df1[SBS.idx, ]$VAF <- SBS.df1$VAF
         df1[SBS.idx, ]$read.depth <- SBS.df1$read.depth
-        return(StandardChromName(df1))
+        return(df1)
       }
     }  
     
     if (variant.caller == "mutect") {
-      df2 <- GetMutectVAF(df, vcf.name, tumor.col.name)
-      return(StandardChromName(df2))
+      df2 <- GetMutectVAF(vcf = df, name.of.VCF = vcf.name, 
+                          tumor.col.name = tumor.col.name)
+      return(df2)
     }
     
     if (variant.caller == "freebayes") {
       # Check for any SBS in df and only calcuate VAF for those SBS variants
       SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
       if (length(SBS.idx) == 0) {
-        return(StandardChromName(df1))
+        return(df1)
       } else {
         SBS.df <- df[SBS.idx, ]
-        SBS.df1 <- GetFreebayesVAF(SBS.df, vcf.name)
+        SBS.df1 <- GetFreebayesVAF(vcf = SBS.df, name.of.VCF = vcf.name)
         df1[SBS.idx, ]$VAF <- SBS.df1$VAF
         df1[SBS.idx, ]$read.depth <- SBS.df1$read.depth
-        return(StandardChromName(df1))
+        return(df1)
       }
     }
   }
