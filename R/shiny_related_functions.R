@@ -677,10 +677,6 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 #'
 #'   * \code{ID}: List of VCFs with only small insertions and deletions.
 #'
-#'   * \code{other.subs}: \strong{Non-NULL only if} there is list of VCF
-#'   like data.frames with rows for coordinate substitutions involving 3 or more
-#'   nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
-#'
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 #'   that were excluded from the analysis. See the added extra column
 #'   \code{discarded.reason} for more details.

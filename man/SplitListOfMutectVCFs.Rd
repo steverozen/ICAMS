@@ -28,9 +28,6 @@ VCF-like data frame with left-over rows).
 \item \code{DBS}: List of VCFs with only doublet base substitutions as called
 by Mutect.
 \item \code{ID}: List of VCFs with only small insertions and deletions.
-\item \code{other.subs}: \strong{Non-NULL only if} there is list of VCF
-like data.frames with rows for coordinate substitutions involving 3 or more
-nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 \item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 that were excluded from the analysis. See the added extra column
 \code{discarded.reason} for more details.
