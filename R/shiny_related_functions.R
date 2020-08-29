@@ -512,13 +512,23 @@ StrelkaIDVCFFilesToCatalog <-
 #' @keywords internal
 CombineAndReturnCatalogsForMutectVCFs <-
   function(split.vcfs.list, SBS.list, DBS.list, ID.list) {
-    discarded.variants.list <- 
-      list(SBS = SBS.list$discarded.variants,
-           DBS = DBS.list$discarded.variants,
-           ID = ID.list$discarded.variants,
-           other.subs = split.vcfs.list$other.subs,
-           multiple.alt = split.vcfs.list$multiple.alt,
-           not.analyzed = split.vcfs.list$not.analyzed)
+    # Get the SBS96 catalog
+    catSBS96 <- SBS.list$catSBS96
+    num.of.col <- ncol(catSBS96)
+    vcf.names <- colnames(catSBS96)
+    discarded.variants.list <- vector(mode = "list", length = num.of.col)
+    for (i in 1:num.of.col) {
+      discarded.variants <- 
+        dplyr::bind_rows(split.vcfs.list$discarded.variants[[vcf.names[i]]],
+                         SBS.list$discarded.variants[[vcf.names[i]]], 
+                         DBS.list$discarded.variants[[vcf.names[i]]],
+                         ID.list$discarded.variants[[vcf.names[i]]])
+      if (nrow(discarded.variants) > 0) {
+        discarded.variants.list[[i]] <- discarded.variants
+      }
+    }
+    names(discarded.variants.list) <- vcf.names
+    
     annotated.vcfs.list <- list(SBS = SBS.list$annotated.vcfs,
                                 DBS = DBS.list$annotated.vcfs,
                                 ID = ID.list$annotated.vcfs)
@@ -594,8 +604,10 @@ MutectVCFFilesToCatalog <-
     ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
                                 region, flag.mismatches, return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
-    CombineAndReturnCatalogsForMutectVCFs(split.vcfs, SBS.list, 
-                                          DBS.list, ID.list)
+    CombineAndReturnCatalogsForMutectVCFs(split.vcfs.list = split.vcfs, 
+                                          SBS.list = SBS.list, 
+                                          DBS.list = DBS.list,
+                                          ID.list = ID.list)
   }
 
 #' Read and split Strelka SBS VCF files
@@ -1175,8 +1187,6 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                              flag.mismatches = 0,
                              return.annotated.vcfs = FALSE,
                              suppress.discarded.variants.warnings = TRUE) {
-  # Remove element discarded.variants from list.of.vcfs
-  list.of.vcfs$discarded.variants <- NULL
   ncol <- length(list.of.vcfs)
   
   # Create a 0-column matrix with the correct row labels.
@@ -1190,28 +1200,19 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
     ID <- list.of.vcfs[[i]]
     sample.id <- names(list.of.vcfs)[i]
     
-    # Create an empty data frame for discarded variants
-    df <- ID[0, ]
-    
-    retval <- CheckAndRemoveDiscardedVariants(vcf = ID, name.of.VCF = sample.id)
     if (suppress.discarded.variants.warnings == TRUE) {
-      retval <- 
-        suppressWarnings(CheckAndRemoveDiscardedVariants(vcf = ID, 
-                                                         name.of.VCF = sample.id)) 
-      if (!is.null(retval$discarded.variants)) {
-        df <- dplyr::bind_rows(df, retval$discarded.variants)
-      }
       list <- 
-        suppressWarnings(AnnotateIDVCF(ID, ref.genome = ref.genome,
+        suppressWarnings(AnnotateIDVCF(ID.vcf = ID, ref.genome = ref.genome,
                                        flag.mismatches = flag.mismatches,
                                        name.of.VCF = vcf.names[i]))
     } else {
-      list <- AnnotateIDVCF(ID, ref.genome = ref.genome,
+      list <- AnnotateIDVCF(ID.vcf = ID, ref.genome = ref.genome,
                             flag.mismatches = flag.mismatches,
                             name.of.VCF = vcf.names[i])
     }
 
-
+    # Create an empty data frame for discarded variants
+    df <- ID[0, ]
     
     if (!is.null(list$discarded.variants)) {
       df <- dplyr::bind_rows(df, list$discarded.variants)

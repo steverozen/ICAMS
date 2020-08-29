@@ -32,16 +32,9 @@ frame with two new columns added to the input data frame:
 \item \code{seq.context}: The sequence embedding the variant.
 \item \code{seq.context.width}: The width of \code{seq.context} to the left.
 }
-\item \code{discarded.variants}: \strong{Non-NULL only if} variants
-were excluded.The discarded variants can belong to the
-following categories:
-\itemize{
-\item Variants with the same number of bases for REF and ALT alleles.
-\item Variants with empty REF or ALT alleles.
-\item Complex indels.
-\item Variants whose REF alleles do not match the extracted sequence from
-\code{ref.genome}.
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 }
 }
 \description{

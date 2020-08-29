@@ -83,34 +83,9 @@ A list containing the following objects:
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
 \item \code{catID}: Matrix of ID (small insertion and deletion) catalog.
-\item \code{discarded.variants}:
-\strong{Non-NULL only if} there are variants that were excluded in the
-analysis.
-A list of elements:
-\itemize{
-\item \code{SBS}: SBS variants whose pentanucleotide context contains "N".
-\item \code{DBS}: DBS variants whose tetranucleotide context contains "N".
-\item \code{ID}: ID variants discarded that can belong to the following
-categories:
-\itemize{
-\item Variants with empty REF or ALT alleles.
-\item Variants whose REF alleles do not match the extracted sequence from
-\code{ref.genome}.
-\item Variants which cannot be categorized according to the canonical
-representation. See catalog.row.order$ID for the canonical
-representation.
-}
-\item \code{other.subs}: Variants involving three or more nucleotides (e.g. ACT >
-TGA or AACT > GGTA) and complex indels.
-\item \code{multiple.alt}: Variants with multiple alternative alleles, for
-example ACA mutated to both AGA and ATA at the same position.
-\item \code{not.analyzed}: Variants discarded immediately after reading in
-the VCFs:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}:
 \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 A list of elements:

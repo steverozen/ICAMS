@@ -697,7 +697,7 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
             "in the return value for more details.")
     df6 <- df5[-complex.indels, ]
     df6.to.remove <- df5[complex.indels, ]
-    df6.to.remove$discarded.reason <- "Complex indels"
+    df6.to.remove$discarded.reason <- "Complex indel"
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, df6.to.remove)
   } else {
@@ -2358,28 +2358,9 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' * \code{catID}: Matrix of ID (small insertion and deletion) catalog.
 #' 
-#' * \code{discarded.variants}: 
-#' \strong{Non-NULL only if} there are variants that were excluded in the
-#' analysis. 
-#' A list of elements:
-#'     + \code{SBS}: SBS variants whose pentanucleotide context contains "N".
-#'     + \code{DBS}: DBS variants whose tetranucleotide context contains "N".
-#'     + \code{ID}: ID variants discarded that can belong to the following
-#'       categories:
-#'         - Variants with empty REF or ALT alleles.
-#'         - Variants whose REF alleles do not match the extracted sequence from
-#'          \code{ref.genome}.
-#'         - Variants which cannot be categorized according to the canonical
-#'         representation. See catalog.row.order$ID for the canonical
-#'         representation.
-#'     + \code{other.subs}: Variants involving three or more nucleotides (e.g. ACT >
-#'       TGA or AACT > GGTA) and complex indels.
-#'     + \code{multiple.alt}: Variants with multiple alternative alleles, for
-#'       example ACA mutated to both AGA and ATA at the same position.
-#'     + \code{not.analyzed}: Variants discarded immediately after reading in
-#'     the VCFs:
-#'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that were excluded from the analysis. See the added extra column
+#' \code{discarded.reason} for more details.
 #'   
 #' * \code{annotated.vcfs}: 
 #' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.

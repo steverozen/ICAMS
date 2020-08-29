@@ -33,14 +33,9 @@
 #'   frame with two new columns added to the input data frame:
 #'       + \code{seq.context}: The sequence embedding the variant.
 #'       + \code{seq.context.width}: The width of \code{seq.context} to the left.
-#'   * \code{discarded.variants}: \strong{Non-NULL only if} variants
-#'   were excluded.The discarded variants can belong to the 
-#'   following categories:
-#'       + Variants with the same number of bases for REF and ALT alleles.
-#'       + Variants with empty REF or ALT alleles.
-#'       + Complex indels.
-#'       + Variants whose REF alleles do not match the extracted sequence from
-#'          \code{ref.genome}.
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'   that were excluded from the analysis. See the added extra column
+#'   \code{discarded.reason} for more details.
 #' @md
 #' 
 #' @export
@@ -55,96 +50,115 @@
 #'   annotated.ID.vcf <- list$annotated.vcf}
 AnnotateIDVCF <- 
   function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL) {
-  ref.genome <- NormalizeGenomeArg(ref.genome)
-  df <- ID.vcf
-  
-  # Create an empty data frame for discarded variants
-  discarded.variants <- df[0, ]
-  
-  # Remove variants which have the same number of bases 
-  # for REF and ALT alleles
-  idx <- which(nchar(df$REF) == nchar(df$ALT))
-  if (length(idx) > 0) {
-    discarded.variants <- dplyr::bind_rows(discarded.variants, df[idx, ])
-    df1 <- df[-idx, ]
-  } else {
-    df1 <- df
-  }
-  
-  # stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
-  
-  # Remove variants which have empty REF or ALT alleles
-  idx1 <- which(df1$REF == "" | df1$ALT == "")
-  if (length(idx1) > 0) {
-    discarded.variants <- dplyr::bind_rows(discarded.variants, df1[idx1, ])
-    df2 <- df1[-idx1, ]
-  } else {
-    df2 <- df1
-  }
-  
-  # We expect either eg ref = ACG, alt = A (deletion of CG) or
-  # ref = A, alt = ACC (insertion of CC)
-  complex.indels.to.remove <- 
-    which(substr(df2$REF, 1, 1) != substr(df2$ALT, 1, 1))
-  if (length(complex.indels.to.remove) > 0) {
+    # Create an empty data frame for discarded variants
+    discarded.variants <- ID.vcf[0, ]
+    
+    # Check and remove discarded variants
+    retval <- 
+      CheckAndRemoveDiscardedVariants(vcf = ID.vcf, name.of.VCF = name.of.VCF)
+    df <- retval$df
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df2[complex.indels.to.remove, ])
-    df3 <- df2[-complex.indels.to.remove, ]
-  } else {
-    df3 <- df2
+      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+    
+    ref.genome <- NormalizeGenomeArg(ref.genome)
+    
+    # Remove variants which have the same number of bases 
+    # for REF and ALT alleles
+    idx <- which(nchar(df$REF) == nchar(df$ALT))
+    if (length(idx) > 0) {
+      df1 <- df[-idx, ]
+      df1.to.remove <- df[idx, ]
+      df1.to.remove$discarded.reason <- 
+        "ID variant with same number of bases for REF and ALT alleles"
+      discarded.variants <- dplyr::bind_rows(discarded.variants, df1.to.remove)
+    } else {
+      df1 <- df
+    }
+    
+    # stopifnot(nchar(df$REF) != nchar(df$ALT)) # This has to be an indel, maybe a complex indel
+    
+    # Remove variants which have empty REF or ALT alleles
+    idx1 <- which(df1$REF == "" | df1$ALT == "")
+    if (length(idx1) > 0) {
+      df2 <- df1[-idx1, ]
+      df2.to.remove <- df1[idx1, ]
+      df2.to.remove$discarded.reason <- "Variant has empty REF or ALT alleles"
+      discarded.variants <- dplyr::bind_rows(discarded.variants, df2.to.remove)
+    } else {
+      df2 <- df1
+    }
+    
+    # We expect either eg ref = ACG, alt = A (deletion of CG) or
+    # ref = A, alt = ACC (insertion of CC)
+    complex.indels.to.remove <- 
+      which(substr(df2$REF, 1, 1) != substr(df2$ALT, 1, 1))
+    if (length(complex.indels.to.remove) > 0) {
+      df3 <- df2[-complex.indels.to.remove, ]
+      df3.to.remove <- df2[complex.indels.to.remove, ]
+      df3.to.remove$discarded.reason <- "Complex indel"
+      discarded.variants <- 
+        dplyr::bind_rows(discarded.variants, df3.to.remove)
+    } else {
+      df3 <- df2
+    }
+    stopifnot(substr(df3$REF, 1, 1) == substr(df3$ALT, 1, 1))
+    
+    # First, figure out how much sequence context is needed.
+    var.width <- abs(nchar(df3$ALT) - nchar(df3$REF))
+    
+    is.del <- nchar(df3$ALT) <= nchar(df3$REF)
+    var.width.in.genome <- ifelse(is.del, var.width, 0)
+    
+    df3$seq.context.width <- var.width * 6
+    # 6 because we need to find out if the insertion or deletion is embedded
+    # in up to 5 additional repeats of the inserted or deleted sequence.
+    # Then add 1 to avoid possible future issues.
+    
+    # Extract sequence context from the reference genome
+    
+    # Check if the format of sequence names in df and genome are the same.
+    # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
+    # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
+    # "chr1", "chr2", ....
+    chr.names <- CheckAndFixChrNames(vcf.df = df3, ref.genome = ref.genome,
+                                     name.of.VCF = name.of.VCF)
+    
+    # Create a GRanges object with the needed width.
+    Ranges <-
+      GRanges(chr.names,
+              IRanges(start = df3$POS - df3$seq.context.width, # 10,
+                      end = df3$POS + var.width.in.genome + 
+                        df3$seq.context.width) # 10
+      )
+    
+    df3$seq.context <- BSgenome::getSeq(ref.genome, Ranges, as.character = TRUE)
+    
+    seq.to.check <-
+      substr(df3$seq.context, df3$seq.context.width + 1,
+             df3$seq.context.width + var.width.in.genome + 1)
+    
+    mismatches <- which(seq.to.check != df3$REF)
+    
+    if (length(mismatches) > 0) {
+      df3$seq.to.check <- seq.to.check
+      df4 <- df3[-mismatches, ]
+      df4.to.remove <- df3[mismatches, ]
+      df4.to.remove$discarded.reason <- 
+        "ID variant whose REF alleles do not match the extracted sequence from ref.genome"
+      discarded.variants <- 
+        dplyr::bind_rows(discarded.variants, df4.to.remove)
+    } else {
+      df4 <- df3
+    }
+    
+    if (nrow(discarded.variants) > 0) {
+      warning("\nSome ID variants were discarded, see element discarded.variants", 
+              " in the return value for more details")
+      return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+    } else {
+      return(list(annotated.vcf = df4))
+    }
   }
-  stopifnot(substr(df3$REF, 1, 1) == substr(df3$ALT, 1, 1))
-  
-  # First, figure out how much sequence context is needed.
-  var.width <- abs(nchar(df3$ALT) - nchar(df3$REF))
-  
-  is.del <- nchar(df3$ALT) <= nchar(df3$REF)
-  var.width.in.genome <- ifelse(is.del, var.width, 0)
-  
-  df3$seq.context.width <- var.width * 6
-  # 6 because we need to find out if the insertion or deletion is embedded
-  # in up to 5 additional repeats of the inserted or deleted sequence.
-  # Then add 1 to avoid possible future issues.
-  
-  # Extract sequence context from the reference genome
-  
-  # Check if the format of sequence names in df and genome are the same.
-  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
-  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
-  # "chr1", "chr2", ....
-  chr.names <- CheckAndFixChrNames(vcf.df = df3, ref.genome = ref.genome,
-                                   name.of.VCF = name.of.VCF)
-  
-  # Create a GRanges object with the needed width.
-  Ranges <-
-    GRanges(chr.names,
-            IRanges(start = df3$POS - df3$seq.context.width, # 10,
-                    end = df3$POS + var.width.in.genome + 
-                          df3$seq.context.width) # 10
-    )
-  
-  df3$seq.context <- BSgenome::getSeq(ref.genome, Ranges, as.character = TRUE)
-  
-  seq.to.check <-
-    substr(df3$seq.context, df3$seq.context.width + 1,
-           df3$seq.context.width + var.width.in.genome + 1)
-  
-  mismatches <- which(seq.to.check != df3$REF)
-  
-  if (length(mismatches) > 0) {
-    df3$seq.to.check <- seq.to.check
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, df3[mismatches, ])
-      df3 <- df3[-mismatches, ]
-  }
-  if (nrow(discarded.variants) > 0) {
-    warning("\nSome ID variants were discarded, see element discarded.variants", 
-            " in the return value for more details")
-    return(list(annotated.vcf = df3, discarded.variants = discarded.variants))
-  } else {
-    return(list(annotated.vcf = df3))
-  }
-}
 
 #' @title Return the number of repeat units in which a deletion is embedded
 #'
@@ -827,8 +841,12 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   if (length(idx) > 0) {
     warning("Variants with NA ID.class are discarded, see element ",
             "discarded.variants in the return value for more details")
+    out.ID.vcf.to.remove <- out.ID.vcf[idx, ]
+    out.ID.vcf.to.remove$discarded.reason <- 
+      paste0("ID variant has an un-normalized representation of the deletion ",
+             "of a repeat unit. See ICAMS::Canonicalize1Del for more details")
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, out.ID.vcf[idx, ])
+      dplyr::bind_rows(discarded.variants, out.ID.vcf.to.remove)
     out.ID.vcf <- out.ID.vcf[-idx, ]
   }
   
@@ -837,8 +855,12 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
     warning("ID variants which cannot be categorized according to the ",
             "canonical representation are discarded, see element ",
             "discarded.variants in the return value for more details")
+    out.ID.vcf.to.remove <- out.ID.vcf[idx1, ]
+    out.ID.vcf.to.remove$discarded.reason <- 
+      paste0("ID variant cannot be categorized according to the canonical ", 
+             "representation. See ICAMS::catalog.row.order$ID for more details")
     discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, out.ID.vcf[idx1, ])
+      dplyr::bind_rows(discarded.variants, out.ID.vcf.to.remove)
     out.ID.vcf <- out.ID.vcf[-idx1, ]
   }
   
