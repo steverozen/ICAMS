@@ -1071,6 +1071,10 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) 
     } else {
       discarded.variants <- dplyr::bind_rows(discarded.variants, other.ranges)
     }
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has variants involving three or more nucleotides and were ",
+            "discarded. See discarded.variants in the return value for more ", 
+            "details.")
   }
   
   num.other <- sum(other.ranges$width)

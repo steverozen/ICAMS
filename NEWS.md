@@ -15,7 +15,10 @@ function `AnnotateIDVCF` with default value TRUE.
 `ReadAndSplitStrelkaSBSVCFs` under one element `discarded.variants` in the
 return value. An extra column `discarded.reason` were added to show the details.
 
-* Updated internal functions `ReadVCF` and `ReadVCFs` not to remove any discarded variants.
+* Updated internal functions `ReadVCF` and `ReadVCFs` not to remove any discarded 
+variants.
+
+* No more removal of "chr" in the `CHROM` column when reading in VCFs.
 
 ## Fixed
 * Fixed bugs in `CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, 
