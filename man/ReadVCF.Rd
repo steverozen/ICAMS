@@ -9,10 +9,11 @@ ReadVCF(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA)
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}
 
-\item{variant.caller}{Name of the variant caller that produces the VCF, can be either
-\code{strelka}, \code{mutect} or \code{freebayes}. This information is needed to 
-calculate the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
-read depth information will not be added to the original VCF.}
+\item{variant.caller}{Name of the variant caller that produces the VCF, can
+be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+information is needed to calculate the VAFs (variant allele frequencies).
+If \code{NULL}(default), then VAF and read depth information will not be
+added to the original VCF.}
 
 \item{name.of.VCF}{Name of the VCF file. If \code{NULL}(default), this
 function will remove all of the path up to and including the last path

@@ -4,20 +4,14 @@ test_that("ReadAndSplitMutectVCFs", {
   files <- list.files(path = "testdata/Mutect-GRCh37", full.names = TRUE)
   files1 <- files[1:2]
   list.of.vcfs1 <- ReadAndSplitMutectVCFs(files1)
-  expect_null(list.of.vcfs1$other.subs)
-  expect_false(is.null(list.of.vcfs1$multiple.alt))
-  expect_null(list.of.vcfs1$not.analyzed)
+  expect_equal(length(list.of.vcfs1$discarded.variants), 1)
   
   files2 <- files
-  list.of.vcfs2 <- ReadAndSplitMutectVCFs(files2)
-  list.of.vcfs3 <- 
+  list.of.vcfs2 <- 
     expect_warning(ReadAndSplitMutectVCFs(files2,
                                           suppress.discarded.variants.warnings = FALSE))
+  expect_equal(length(list.of.vcfs2$discarded.variants), 2)
     
-  expect_false(is.null(list.of.vcfs2$multiple.alt))
-  expect_false(is.null(list.of.vcfs2$other.subs))
-  expect_false(is.null(list.of.vcfs2$not.analyzed))
-  
   SBS.cats <- 
     expect_warning(VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19", 
                                      region = "genome", 
@@ -44,19 +38,14 @@ test_that("ReadAndSplitStrelkaSBSVCFs", {
   files <- list.files(path = "testdata/Strelka-SBS-GRCh37", full.names = TRUE)
   files1 <- files[1:2]
   list.of.vcfs1 <- ReadAndSplitStrelkaSBSVCFs(files1)
-  expect_null(list.of.vcfs1$ThreePlus)
-  expect_null(list.of.vcfs1$multiple.alt)
-  expect_null(list.of.vcfs1$not.analyzed)
+  expect_null(list.of.vcfs1$discarded.variants)
   
   files2 <- files
-  list.of.vcfs2 <- ReadAndSplitStrelkaSBSVCFs(files2)
-  list.of.vcfs3 <- 
+  list.of.vcfs2 <- 
     expect_warning(ReadAndSplitStrelkaSBSVCFs(files2,
                                               suppress.discarded.variants.warnings = FALSE))
   
-  expect_null(list.of.vcfs2$ThreePlus)
-  expect_false(is.null(list.of.vcfs2$multiple.alt))
-  expect_false(is.null(list.of.vcfs2$not.analyzed))
+  expect_false(is.null(list.of.vcfs2$discarded.variants))
 })
 
 test_that("ReadStrelkaIDVCFs", {
@@ -67,11 +56,8 @@ test_that("ReadStrelkaIDVCFs", {
   
   files2 <- files
   list.of.vcfs2 <- ReadStrelkaIDVCFs(files2)
-  list.of.vcfs3 <- 
-    expect_warning(ReadStrelkaIDVCFs(files2,
-                                     suppress.discarded.variants.warnings = FALSE))
   
-  expect_false(is.null(list.of.vcfs2$discarded.variants))
+  expect_null(list.of.vcfs2$discarded.variants)
 })
 
 test_that("MutectVCFFilesToCatalog", {

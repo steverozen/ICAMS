@@ -772,7 +772,7 @@ SplitListOfMutectVCFs <-
     discarded.variants1 <- Filter(Negate(is.null), discarded.variants)
     
     if (length(discarded.variants1) == 0) {
-      return(list(SBS = SBS.list, DBS = DBS.list, ID = ID.list))
+      return(list(SBS = SBS, DBS = DBS, ID = ID))
     } else {
       return(list(SBS = SBS, DBS = DBS, ID = ID,
                   discarded.variants = discarded.variants1))
