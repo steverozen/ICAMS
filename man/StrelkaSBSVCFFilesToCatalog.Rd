@@ -69,24 +69,9 @@ A list containing the following objects:
 3 SBS catalogs (one each for 96, 192, and 1536).
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
-\item \code{discarded.variants}:
-\strong{Non-NULL only if} there are variants that were excluded in the
-analysis.
-A list of elements:
-\itemize{
-\item \code{SBS}: SBS variants whose pentanucleotide context contains "N".
-\item \code{DBS}: DBS variants whose tetranucleotide context contains "N".
-\item \code{ThreePlus}: Variants involving three or more nucleotides (e.g. ACT >
-TGA or AACT > GGTA).
-\item \code{multiple.alt}: Variants with multiple alternative alleles, for
-example ACA mutated to both AGA and ATA at the same position.
-\item \code{not.analyzed}: Variants discarded immediately after reading in
-the VCFs:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}:
 \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 A list of elements:

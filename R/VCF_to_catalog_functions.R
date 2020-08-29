@@ -2056,20 +2056,9 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' * \code{discarded.variants}: 
-#' \strong{Non-NULL only if} there are variants that were excluded in the
-#' analysis. 
-#' A list of elements:
-#'     + \code{SBS}: SBS variants whose pentanucleotide context contains "N".
-#'     + \code{DBS}: DBS variants whose tetranucleotide context contains "N".
-#'     + \code{ThreePlus}: Variants involving three or more nucleotides (e.g. ACT >
-#'       TGA or AACT > GGTA).
-#'     + \code{multiple.alt}: Variants with multiple alternative alleles, for
-#'       example ACA mutated to both AGA and ATA at the same position.
-#'     + \code{not.analyzed}: Variants discarded immediately after reading in
-#'     the VCFs:
-#'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that were excluded from the analysis. See the added extra column
+#' \code{discarded.reason} for more details.
 #'   
 #' * \code{annotated.vcfs}: 
 #' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.

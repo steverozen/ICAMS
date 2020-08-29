@@ -343,12 +343,22 @@ MutectVCFFilesToZipFile <-
 #' @keywords internal
 CombineAndReturnCatalogsForStrelkaSBSVCFs <-
   function(split.vcfs.list, SBS.list, DBS.list) {
-    discarded.variants.list <- 
-      list(SBS = SBS.list$discarded.variants,
-           DBS = DBS.list$discarded.variants,
-           ThreePlus = split.vcfs.list$ThreePlus,
-           multiple.alt = split.vcfs.list$multiple.alt,
-           not.analyzed = split.vcfs.list$not.analyzed)
+    # Get the SBS96 catalog
+    catSBS96 <- SBS.list$catSBS96
+    num.of.col <- ncol(catSBS96)
+    vcf.names <- colnames(catSBS96)
+    discarded.variants.list <- vector(mode = "list", length = num.of.col)
+    for (i in 1:num.of.col) {
+      discarded.variants <- 
+        dplyr::bind_rows(split.vcfs.list$discarded.variants[[vcf.names[i]]],
+                         SBS.list$discarded.variants[[vcf.names[i]]], 
+                         DBS.list$discarded.variants[[vcf.names[i]]])
+      if (nrow(discarded.variants) > 0) {
+        discarded.variants.list[[i]] <- discarded.variants
+      }
+    }
+    names(discarded.variants.list) <- vcf.names
+    
     annotated.vcfs.list <- list(SBS = SBS.list$annotated.vcfs,
                                 DBS = DBS.list$annotated.vcfs)
     # Remove NULL elements from the list
@@ -417,7 +427,9 @@ StrelkaSBSVCFFilesToCatalog <-
     DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome, 
                                   trans.ranges, region, return.annotated.vcfs,
                                   suppress.discarded.variants.warnings)
-    CombineAndReturnCatalogsForStrelkaSBSVCFs(split.vcfs, SBS.list, DBS.list)
+    CombineAndReturnCatalogsForStrelkaSBSVCFs(split.vcfs.list = split.vcfs, 
+                                              SBS.list = SBS.list, 
+                                              DBS.list = DBS.list)
   }
 
 #' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
