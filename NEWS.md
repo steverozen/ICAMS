@@ -1,4 +1,7 @@
 # ICAMS 2.2.3
+## Added
+* Added a section "ID classification" in the documentation for exported data `catalog.row.order`.
+
 ## Changed
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
