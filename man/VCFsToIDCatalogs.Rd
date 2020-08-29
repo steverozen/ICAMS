@@ -46,20 +46,9 @@ A \strong{list} of elements:
 \itemize{
 \item \code{catalog}: The ID (small insertion and deletion) catalog with
 attributes added. See \code{\link{as.catalog}} for details.
-\item \code{discarded.variants}:
-\strong{Non-NULL only if} there are ID variants that were discarded. A
-list of data frames which contain the discarded variants from the original
-VCF. The discarded variants can belong to the following categories:
-\itemize{
-\item Variants with the same number of bases for REF and ALT alleles.
-\item Variants with empty REF or ALT alleles.
-\item Complex indels.
-\item Variants whose \code{REF} do not match the extracted sequence from
-\code{ref.genome}.
-\item Variants which cannot be categorized according to the canonical
-representation. See catalog.row.order$ID for the canonical
-representation.
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}:
 \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
 data frames which contain the original VCF's ID mutation rows with three

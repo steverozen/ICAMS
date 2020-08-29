@@ -59,8 +59,9 @@ A list containing the following objects:
 \itemize{
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
-\item \code{discarded.variants}: \strong{Non-NULL only if} there are DBS
-variants whose tetranucleotide context contains "N".
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}: \strong{Non-NULL only if}
 \code{return.annotated.vcfs} = TRUE. DBS VCF annotated by
 \code{\link{AnnotateDBSVCF}} with three new columns \code{DBS78.class},

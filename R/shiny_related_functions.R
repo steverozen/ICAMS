@@ -448,31 +448,16 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #' 
-#' * \code{discarded.variants}: 
-#' \strong{Non-NULL only if} there are variants that were excluded in the
-#' analysis. 
-#' A list of elements:
-#'     + \code{ID}: ID variants discarded that can belong to the following
-#'       categories:
-#'         - Variants which have the same number of bases for REF and ALT alleles.
-#'         - Variants which have empty REF or ALT alleles.
-#'         - Complex indels.
-#'         - Variants whose \code{REF} do not match the extracted sequence from
-#'            \code{ref.genome}.
-#'         - Variants which cannot be categorized according to the canonical
-#'           representation. See catalog.row.order$ID for the canonical
-#'           representation.
-#'     + \code{not.analyzed}: Variants discarded immediately after reading in
-#'     the VCFs:
-#'         - Duplicated "CHROM" and "POS" values.
-#'         - Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'   that were excluded from the analysis. See the added extra column
+#'   \code{discarded.reason} for more details.
 #' 
 #'   * \code{annotated.vcfs}: 
-#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
-#' data frames which contain the original VCF's ID mutation rows with three
-#' additional columns \code{seq.context.width}, \code{seq.context} and
-#' \code{ID.class} added. The category assignment of each ID mutation in VCF can
-#' be obtained from \code{ID.class} column.
+#'   \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
+#'   data frames which contain the original VCF's ID mutation rows with three
+#'   additional columns \code{seq.context.width}, \code{seq.context} and
+#'   \code{ID.class} added. The category assignment of each ID mutation in VCF can
+#'   be obtained from \code{ID.class} column.
 #' @md
 #' 
 #' @inheritSection VCFsToIDCatalogs ID classification
@@ -492,33 +477,12 @@ StrelkaIDVCFFilesToCatalog <-
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
            flag.mismatches = 0, return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
-    vcfs <- ReadStrelkaIDVCFs(files, names.of.VCFs, 
-                              suppress.discarded.variants.warnings)
+    vcfs <- ReadStrelkaIDVCFs(files = files, names.of.VCFs = names.of.VCFs)
     
     ID.list <- VCFsToIDCatalogs(vcfs, ref.genome, region, 
                                 flag.mismatches, return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
-    
-    discarded.variants.list <- 
-      list(ID = ID.list$discarded.variants,
-           not.analyzed = vcfs$discarded.variants)
-    annotated.vcfs.list <- ID.list$annotated.vcfs
-    # Remove NULL elements from the list
-    discarded.variants.list2 <- Filter(Negate(is.null), discarded.variants.list)
-    if (length(discarded.variants.list2) == 0) {
-      discarded.variants.list2 <- NULL
-    }
-    annotated.vcfs.list2 <- Filter(Negate(is.null), annotated.vcfs.list)
-    if (length(annotated.vcfs.list2) == 0) {
-      annotated.vcfs.list2 <- NULL
-    }
-    
-    combined.list <- list(catalog = ID.list$catalog,
-                          discarded.variants = discarded.variants.list2,
-                          annotated.vcfs = annotated.vcfs.list2)
-    # Remove NULL elements from the list
-    combined.list2 <- Filter(Negate(is.null), combined.list)
-    return(combined.list2)
+    return(ID.list)
   }
 
 #' @keywords internal
@@ -823,8 +787,9 @@ CheckAndReturnSBSCatalogs <-
 #' * \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of 
 #' 3 SBS catalogs (one each for 96, 192, and 1536).
 #' 
-#' * \code{discarded.variants}: \strong{Non-NULL only if} there are SBS
-#' variants whose pentanucleotide context contains "N".
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that were excluded from the analysis. See the added extra column
+#' \code{discarded.reason} for more details.
 #' 
 #' * \code{annotated.vcfs}: 
 #' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
@@ -1002,8 +967,9 @@ CheckAndReturnDBSCatalogs <-
 #' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' * \code{discarded.variants}: \strong{Non-NULL only if} there are DBS
-#' variants whose tetranucleotide context contains "N".
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that were excluded from the analysis. See the added extra column
+#' \code{discarded.reason} for more details.
 #'   
 #' * \code{annotated.vcfs}: \strong{Non-NULL only if}
 #' \code{return.annotated.vcfs} = TRUE. DBS VCF annotated by
@@ -1145,18 +1111,9 @@ CheckAndReturnIDCatalog <-
 #'   * \code{catalog}: The ID (small insertion and deletion) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for details.
 #' 
-#'   * \code{discarded.variants}: 
-#' \strong{Non-NULL only if} there are ID variants that were discarded. A
-#' list of data frames which contain the discarded variants from the original
-#' VCF. The discarded variants can belong to the following categories:
-#'       + Variants with the same number of bases for REF and ALT alleles.
-#'       + Variants with empty REF or ALT alleles.
-#'       + Complex indels.
-#'       + Variants whose \code{REF} do not match the extracted sequence from
-#'         \code{ref.genome}.
-#'       + Variants which cannot be categorized according to the canonical
-#'       representation. See catalog.row.order$ID for the canonical
-#'       representation.
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'   that were excluded from the analysis. See the added extra column
+#'   \code{discarded.reason} for more details.
 #' 
 #'   * \code{annotated.vcfs}: 
 #' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
@@ -1407,9 +1364,8 @@ AddRunInformation <-
     }
     # Add a disclaimer about discarded variants in the analysis
     writeLines("", run.info)
-    writeLines(paste0("* For details about the various types of discarded ", 
-                      "variants, please refer to element discarded.variants ",
-                      "in the return value."), run.info)
+    writeLines(paste0("* Please refer to element discarded.variants ",
+                      "in the return value for more details."), run.info)
     
     # Add strand bias statistics for SBS12 plot
     if (!is.null(strand.bias.statistics)) {
@@ -1532,16 +1488,11 @@ GetMutationLoadsFromMutectVCFs <- function(catalogs) {
       stats::setNames(rep(0, length(vcf.names)), vcf.names)
   } else {
     discarded.variants <- catalogs$discarded.variants
-    mat <- matrix(data = 0, nrow = length(vcf.names),
-                  ncol = length(discarded.variants), 
-                  dimnames = list(vcf.names, names(discarded.variants)))
-    
-    for (type in names(discarded.variants)) {
-      tmp <- discarded.variants[[type]]
-      num.of.variants <- sapply(tmp, FUN = nrow)
-      mat[names(num.of.variants), type] <- num.of.variants
+    num.of.discarded.variants <- 
+      stats::setNames(rep(0, length(vcf.names)), vcf.names)
+    for(name in names(discarded.variants)) {
+      num.of.discarded.variants[name] <- nrow(discarded.variants[[name]])
     }
-    num.of.discarded.variants <- rowSums(mat)
     num.of.total.variants <- 
       num.of.SBS + num.of.DBS + num.of.ID + num.of.discarded.variants
   }
@@ -1587,16 +1538,11 @@ GetMutationLoadsFromStrelkaSBSVCFs <- function(catalogs) {
       stats::setNames(rep(0, length(vcf.names)), vcf.names)
   } else {
     discarded.variants <- catalogs$discarded.variants
-    mat <- matrix(data = 0, nrow = length(vcf.names),
-                  ncol = length(discarded.variants), 
-                  dimnames = list(vcf.names, names(discarded.variants)))
-    
-    for (type in names(discarded.variants)) {
-      tmp <- discarded.variants[[type]]
-      num.of.variants <- sapply(tmp, FUN = nrow)
-      mat[names(num.of.variants), type] <- num.of.variants
+    num.of.discarded.variants <- 
+      stats::setNames(rep(0, length(vcf.names)), vcf.names)
+    for(name in names(discarded.variants)) {
+      num.of.discarded.variants[name] <- nrow(discarded.variants[[name]])
     }
-    num.of.discarded.variants <- rowSums(mat)
     num.of.total.variants <- 
       num.of.SBS + num.of.DBS + num.of.ID + num.of.discarded.variants
   }
@@ -1641,16 +1587,11 @@ GetMutationLoadsFromStrelkaIDVCFs <- function(catalogs) {
       stats::setNames(rep(0, length(vcf.names)), vcf.names)
   } else {
     discarded.variants <- catalogs$discarded.variants
-    mat <- matrix(data = 0, nrow = length(vcf.names),
-                  ncol = length(discarded.variants), 
-                  dimnames = list(vcf.names, names(discarded.variants)))
-    
-    for (type in names(discarded.variants)) {
-      tmp <- discarded.variants[[type]]
-      num.of.variants <- sapply(tmp, FUN = nrow)
-      mat[names(num.of.variants), type] <- num.of.variants
+    num.of.discarded.variants <- 
+      stats::setNames(rep(0, length(vcf.names)), vcf.names)
+    for(name in names(discarded.variants)) {
+      num.of.discarded.variants[name] <- nrow(discarded.variants[[name]])
     }
-    num.of.discarded.variants <- rowSums(mat)
     num.of.total.variants <- 
       num.of.SBS + num.of.DBS + num.of.ID + num.of.discarded.variants
   }

@@ -72,38 +72,15 @@ A \strong{list} of elements:
 \itemize{
 \item \code{catalog}: The ID (small insertion and deletion) catalog with
 attributes added. See \code{\link{as.catalog}} for more details.
-\item \code{discarded.variants}:
-\strong{Non-NULL only if} there are variants that were excluded in the
-analysis.
-A list of elements:
-\itemize{
-\item \code{ID}: ID variants discarded that can belong to the following
-categories:
-\itemize{
-\item Variants which have the same number of bases for REF and ALT alleles.
-\item Variants which have empty REF or ALT alleles.
-\item Complex indels.
-\item Variants whose \code{REF} do not match the extracted sequence from
-\code{ref.genome}.
-\item Variants which cannot be categorized according to the canonical
-representation. See catalog.row.order$ID for the canonical
-representation.
-}
-\item \code{not.analyzed}: Variants discarded immediately after reading in
-the VCFs:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
-}
-\itemize{
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}:
 \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE. A list of
 data frames which contain the original VCF's ID mutation rows with three
 additional columns \code{seq.context.width}, \code{seq.context} and
 \code{ID.class} added. The category assignment of each ID mutation in VCF can
 be obtained from \code{ID.class} column.
-}
 }
 }
 

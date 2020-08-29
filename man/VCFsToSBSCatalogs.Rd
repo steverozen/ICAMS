@@ -59,8 +59,9 @@ A list containing the following objects:
 \itemize{
 \item \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of
 3 SBS catalogs (one each for 96, 192, and 1536).
-\item \code{discarded.variants}: \strong{Non-NULL only if} there are SBS
-variants whose pentanucleotide context contains "N".
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 \item \code{annotated.vcfs}:
 \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
 SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with

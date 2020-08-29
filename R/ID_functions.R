@@ -116,10 +116,7 @@ AnnotateIDVCF <-
     
     # Extract sequence context from the reference genome
     
-    # Check if the format of sequence names in df and genome are the same.
-    # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
-    # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
-    # "chr1", "chr2", ....
+    # Check if the format of sequence names in df and genome are the same
     chr.names <- CheckAndFixChrNames(vcf.df = df3, ref.genome = ref.genome,
                                      name.of.VCF = name.of.VCF)
     

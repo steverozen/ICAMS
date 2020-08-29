@@ -803,10 +803,7 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
   if (0 == nrow(df)) return(df)
   ref.genome <- NormalizeGenomeArg(ref.genome)
 
-  # Check if the format of sequence names in df and genome are the same.
-  # Internally ICAMS uses human chromosomes labeled as "1", "2", ... "X"...
-  # However, BSgenome.Hsapiens.UCSC.hg38 has chromosomes labeled
-  # "chr1", "chr2", ....
+  # Check if the format of sequence names in df and genome are the same
   chr.names <- CheckAndFixChrNames(vcf.df = df, ref.genome = ref.genome)
   
   # Create a GRanges object with the needed width.
