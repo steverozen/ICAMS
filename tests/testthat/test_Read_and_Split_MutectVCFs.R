@@ -6,5 +6,6 @@ test_that("Test ReadMutectVCFs and SplitListOfMutectVCFs", {
   expect_equal(dim(vcfs[[1]]), c(1851,13))
   
   split.vcfs <- SplitListOfMutectVCFs(vcfs)
+  expect_null(split.vcfs$discarded.variants$`Mutect.GRCh37.s2`)
   
 })

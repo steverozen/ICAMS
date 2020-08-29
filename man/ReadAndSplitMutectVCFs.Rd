@@ -45,17 +45,9 @@ by Mutect.
 \item \code{other.subs}: \strong{Non-NULL only if} there is list of VCF
 like data.frames with rows for coordinate substitutions involving 3 or more
 nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
-\item \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
-like data.frames with rows for variants with multiple alternative alleles,
-for example ACA mutated to both AGA and ATA at the same position.
-\item \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
-like data.frames with rows for variants that were discarded immediately
-after reading in the VCFs. The variants not analyzed can belong to the
-following categories:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 }
 }
 

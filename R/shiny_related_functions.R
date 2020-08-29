@@ -656,13 +656,7 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'
 #' @inheritParams ReadMutectVCFs
 #'
-#' @return A list of data frames containing data lines of the VCF files. If
-#'   there are variants that were excluded in the analysis, an additional
-#'   element \code{discarded.variants} will appear in the return list.
-#'   The variants discarded can belong to the following categories:
-#'   * Duplicated "CHROM" and "POS" values.
-#'   * Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-#' @md
+#' @return A list of data frames containing data lines of the VCF files. 
 #'   
 #' @inheritSection VCFsToIDCatalogs Note
 #'
@@ -675,12 +669,9 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
-ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL, 
-                              suppress.discarded.variants.warnings = TRUE) {
+ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   vcfs <- 
-    lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs,
-           suppress.discarded.variants.warnings = 
-             suppress.discarded.variants.warnings)
+    lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs)
   if (is.null(names.of.VCFs)) {
     names(vcfs) <- tools::file_path_sans_ext(basename(files))
   } else {
@@ -690,19 +681,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
     names(vcfs) <- names.of.VCFs
   }
   
-  list.of.ID.vcfs <- lapply(vcfs, function(f1) f1$df)
-  list.of.discarded.variants <- 
-    lapply(vcfs, function(f2) f2$discarded.variants)
-  # Remove NULL elements from the list
-  list.of.discarded.variants2 <- Filter(Negate(is.null), list.of.discarded.variants)
-  
-  if (length(list.of.discarded.variants2) == 0) {
-    return(list.of.ID.vcfs)
-  } else {
-    return.list <- c(list.of.ID.vcfs, 
-                     list(discarded.variants = list.of.discarded.variants2))
-    return(return.list)
-  }
+  return(vcfs)
 }
 
 #' Read and split Mutect VCF files
@@ -725,16 +704,9 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
 #'   like data.frames with rows for coordinate substitutions involving 3 or more
 #'   nucleotides (e.g. ACT > TGA or AACT > GGTA) and rows for complex indels.
 #'
-#'   * \code{multiple.alt}: \strong{Non-NULL only if} there is list of VCF
-#'   like data.frames with rows for variants with multiple alternative alleles,
-#'   for example ACA mutated to both AGA and ATA at the same position.
-#'
-#'   * \code{not.analyzed}: \strong{Non-NULL only if} there is list of VCF
-#'   like data.frames with rows for variants that were discarded immediately
-#'   after reading in the VCFs. The variants not analyzed can belong to the
-#'   following categories:
-#'       + Duplicated "CHROM" and "POS" values.
-#'       + Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'   that were excluded from the analysis. See the added extra column
+#'   \code{discarded.reason} for more details.
 #' @md
 #' 
 #' @seealso \code{\link{MutectVCFFilesToCatalog}}
@@ -749,10 +721,12 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL,
 ReadAndSplitMutectVCFs <- 
   function(files, names.of.VCFs = NULL, tumor.col.names = NA,
            suppress.discarded.variants.warnings = TRUE) {
-    vcfs <- ReadMutectVCFs(files, names.of.VCFs, tumor.col.names,
-                           suppress.discarded.variants.warnings)
+    vcfs <- ReadMutectVCFs(files = files, names.of.VCFs = names.of.VCFs, 
+                           tumor.col.names =  tumor.col.names)
     split.vcfs <- 
-      SplitListOfMutectVCFs(vcfs, suppress.discarded.variants.warnings)
+      SplitListOfMutectVCFs(list.of.vcfs = vcfs, 
+                            suppress.discarded.variants.warnings = 
+                              suppress.discarded.variants.warnings)
     return(split.vcfs)
   }
 
@@ -885,8 +859,10 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs, ref.genome,
     annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
     if (suppress.discarded.variants.warnings == TRUE) {
       SBS.cat <- 
-        suppressWarnings(CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
-                                               return.annotated.vcfs))  
+        suppressWarnings(CreateOneColSBSMatrix(vcf = annotated.SBS.vcf, 
+                                               sample.id = sample.id, 
+                                               return.annotated.vcf = 
+                                                 return.annotated.vcfs))  
     } else {
       SBS.cat <- CreateOneColSBSMatrix(annotated.SBS.vcf, sample.id,
                                        return.annotated.vcfs)
@@ -1213,7 +1189,18 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
   for (i in 1:ncol) {
     ID <- list.of.vcfs[[i]]
     sample.id <- names(list.of.vcfs)[i]
+    
+    # Create an empty data frame for discarded variants
+    df <- ID[0, ]
+    
+    retval <- CheckAndRemoveDiscardedVariants(vcf = ID, name.of.VCF = sample.id)
     if (suppress.discarded.variants.warnings == TRUE) {
+      retval <- 
+        suppressWarnings(CheckAndRemoveDiscardedVariants(vcf = ID, 
+                                                         name.of.VCF = sample.id)) 
+      if (!is.null(retval$discarded.variants)) {
+        df <- dplyr::bind_rows(df, retval$discarded.variants)
+      }
       list <- 
         suppressWarnings(AnnotateIDVCF(ID, ref.genome = ref.genome,
                                        flag.mismatches = flag.mismatches,
@@ -1224,8 +1211,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs, ref.genome, region = "unknown",
                             name.of.VCF = vcf.names[i])
     }
 
-    # Create an empty data frame for discarded variants
-    df <- ID[0, ]
+
     
     if (!is.null(list$discarded.variants)) {
       df <- dplyr::bind_rows(df, list$discarded.variants)

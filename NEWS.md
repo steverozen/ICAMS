@@ -2,6 +2,9 @@
 ## Changed
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
+* Changed back the return value of `ReadStrelkaIDVCFs`, `ReadStrelkaSBSVCFs`,
+`ReadMutectVCFs` to a list of data frames.
+
 ## Fixed
 * Fixed bugs in `CheckAndReturnSBSMatrix`, `CheckAndReturnDBSMatrix`, 
 `CreateOneColSBSMatrix`,`CreateOneColDBSMatrix`, `VCFsToSBSCatalogs`, 
@@ -125,7 +128,7 @@ transcribed region.
 
 <br/>
 
-# ICAMS 2.1.2
+# ICAMS 2.1.2 (submitted to CRAN)
 ## Added
 * Created an internal function `MakeDataFrameFromVCF` to read in data lines of a VCF.
 
@@ -219,7 +222,7 @@ element `discarded.variants` in the return value for the discarded variants.
 
 <br/>
 
-# ICAMS 2.0.10
+# ICAMS 2.0.10 (submitted to CRAN)
 ## Added
 * Added *exported* functions `AnnotateSBSVCF`, `AnnotateDBSVCF` and
   `AnnotateIDVCF`.
@@ -292,7 +295,7 @@ element `discarded.variants` in the return value for the discarded variants.
 
 <br/>
 
-# ICAMS 2.0.8
+# ICAMS 2.0.8 (submitted to CRAN)
 ## Added
 * Added ability to calculate VAF from newer version Mutect VCF files.
 
@@ -304,7 +307,7 @@ element `discarded.variants` in the return value for the discarded variants.
 
 <br/>
 
-# ICAMS 2.0.7
+# ICAMS 2.0.7 (submitted to CRAN)
 ## Fixed
 * Additional corrections for submission to CRAN
   (putting on.exit(par(opar)) immediately after

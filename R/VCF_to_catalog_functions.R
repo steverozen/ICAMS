@@ -227,21 +227,13 @@ MakeDataFrameFromVCF <- function(file) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'   
-#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
-#'   warning messages showing information about the discarded variants. Default
-#'   is TRUE.
-#'
-#' @return A \strong{list} whose first element \code{df} is a data frame storing
-#'   data lines of the VCF file. A second element \code{discarded.variants}
-#'   \strong{only} appears if there are variants that are excluded from the
-#'   analysis.
+#' @return A data frame storing data lines of the VCF file.
 #'   
 #' @inheritSection VCFsToIDCatalogs Note
 #'
 #' @keywords internal
-ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
-                             suppress.discarded.variants.warnings = TRUE) {
-  retval <- MakeDataFrameFromVCFNew(file, suppress.discarded.variants.warnings)
+ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
+  df1 <- MakeDataFrameFromVCF(file)
     
   # Get the name of VCF
   if (is.null(name.of.VCF)) {
@@ -250,7 +242,6 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
     vcf.name <- name.of.VCF
   }
   
-  df1 <- retval$df
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
@@ -269,28 +260,7 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL,
          control)
   }
   
-  # Create an empty data frame for discarded variants
-  discarded.variants <- df1[0, ]
-  if (!is.null(retval$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval$discarded.variants)
-  }
-  
-  if (suppress.discarded.variants.warnings == TRUE) {
-    retval2 <- suppressWarnings(StandardChromNameNew(df1, file)) 
-  } else {
-    retval2 <- StandardChromNameNew(df1, file)
-  }
-  if (!is.null(retval2$discarded.variants)) {
-    discarded.variants <- 
-      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
-  }
-
-  if (nrow(discarded.variants) == 0) {
-    return(list(df = retval2$df))
-  } else {
-    return(list(df = retval2$df, discarded.variants = discarded.variants))
-  }
+  return(df1)
 }
 
 #' @rdname GetVAF
@@ -760,8 +730,8 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 #'  * \code{ID}: VCF with only small insertions and deletions.
 #'
 #'  * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
-#'  that were excluded from the analysis. See the column \code{discarded.reason}
-#'  for more details.
+#'  that were excluded from the analysis. See the added extra column
+#'  \code{discarded.reason} for more details.
 #'  @md
 #'
 #' @keywords internal
@@ -1668,9 +1638,12 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   idx <- grep("N", substr(vcf$seq.21bases, 9, 13))
     if (!length(idx) == 0) {
       discarded.variants <- rbind(discarded.variants, vcf[idx, ])
+      discarded.variants$discarded.reason <- 
+        'SBS variant whose pentanucleotide context contains "N"'
       vcf <- vcf[-idx, ]
       warning(
-        'Variants in the SBS vcf whose pentanucleotide context contains "N" ',
+        'Variants in the SBS vcf ', sample.id, 
+        ' whose pentanucleotide context contains "N" ',
         'have been deleted so as not to conflict with downstream processing. ',
         'See discarded.variants in the return value for more details.')
     }
@@ -1723,8 +1696,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   
   if (is.null(vcf$trans.strand)) {
     retval <- 
-      CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, 
-                              mat1536, NULL, return.annotated.vcf, sample.id)
+      CheckAndReturnSBSMatrix(vcf = vcf0, discarded.variants = discarded.variants, 
+                              mat96 = mat96, mat1536 = mat1536, mat192 = NULL, 
+                              return.annotated.vcf = return.annotated.vcf, 
+                              sample.id = sample.id)
     return(retval)
   }
   
@@ -1746,8 +1721,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
       matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
              dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
     retval <- 
-      CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
-                              return.annotated.vcf, sample.id)
+      CheckAndReturnSBSMatrix(vcf = vcf0, discarded.variants = discarded.variants, 
+                              mat96 = mat96, mat1536 = mat1536, mat192 = mat192, 
+                              return.annotated.vcf = return.annotated.vcf, 
+                              sample.id = sample.id)
     return(retval)
   }
 
@@ -1770,8 +1747,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   mat192 <- mat192[ICAMS::catalog.row.order$SBS192, , drop = FALSE]
   colnames(mat192) <- sample.id
   
-  CheckAndReturnSBSMatrix(vcf0, discarded.variants, mat96, mat1536, mat192,
-                          return.annotated.vcf, sample.id)
+  CheckAndReturnSBSMatrix(vcf = vcf0, discarded.variants = discarded.variants, 
+                          mat96 = mat96, mat1536 = mat1536, mat192 = mat192, 
+                          return.annotated.vcf = return.annotated.vcf, 
+                          sample.id = sample.id)
 }
 
 #' Add sequence context and transcript information to an in-memory DBS VCF
@@ -2030,9 +2009,12 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   idx <- grep("N", substr(vcf$seq.21bases, 10, 13))
   if (!length(idx) == 0) {
     discarded.variants <- rbind(discarded.variants, vcf[idx, ])
+    discarded.variants$discarded.reason <- 
+      'DBS variant whose tetranucleotide context contains "N"'
     vcf <- vcf[-idx, ]
     warning(
-      'Variants in the DBS vcf whose tetranucleotide context contains "N" ',
+      'Variants in the DBS vcf ', sample.id,
+      ' whose tetranucleotide context contains "N" ',
       'have been deleted so as not to conflict with downstream processing. ',
       'See discarded.variants in the return value for more details.')
   }
@@ -2080,8 +2062,11 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   
   if (is.null(vcf$trans.strand)) {
     retval <- 
-      CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
-                              NULL, return.annotated.vcf, sample.id)
+      CheckAndReturnDBSMatrix(vcf = vcf, discarded.variants = discarded.variants, 
+                              mat78 = DBS.mat.78, mat136 = DBS.mat.136, 
+                              mat144 = NULL, 
+                              return.annotated.vcf = return.annotated.vcf, 
+                              sample.id = sample.id)
     return(retval)
   }
   
@@ -2102,8 +2087,11 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
       matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
              dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
     retval <- 
-      CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
-                              DBS.mat.144, return.annotated.vcf, sample.id)
+      CheckAndReturnDBSMatrix(vcf = vcf, discarded.variants = discarded.variants, 
+                              mat78 = DBS.mat.78, mat136 = DBS.mat.136, 
+                              mat144 = DBS.mat.144, 
+                              return.annotated.vcf = return.annotated.vcf, 
+                              sample.id = sample.id)
     return(retval)
   }
 
@@ -2128,8 +2116,11 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   rownames(DBS.mat.144) <- DBS.dt.144.2$rn
   colnames(DBS.mat.144)<- sample.id
 
-  CheckAndReturnDBSMatrix(vcf, discarded.variants, DBS.mat.78, DBS.mat.136, 
-                          DBS.mat.144, return.annotated.vcf, sample.id)
+  CheckAndReturnDBSMatrix(vcf = vcf, discarded.variants = discarded.variants, 
+                          mat78 = DBS.mat.78, mat136 = DBS.mat.136, 
+                          mat144 = DBS.mat.144, 
+                          return.annotated.vcf = return.annotated.vcf, 
+                          sample.id = sample.id)
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF

@@ -4,11 +4,7 @@
 \alias{ReadStrelkaIDVCFs}
 \title{Read Strelka ID (small insertion and deletion) VCF files}
 \usage{
-ReadStrelkaIDVCFs(
-  files,
-  names.of.VCFs = NULL,
-  suppress.discarded.variants.warnings = TRUE
-)
+ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
 }
 \arguments{
 \item{files}{Character vector of file paths to the VCF files.}
@@ -21,14 +17,7 @@ and file paths without extensions (and the leading dot) will be used as the
 names of the VCF files.}
 }
 \value{
-A list of data frames containing data lines of the VCF files. If
-there are variants that were excluded in the analysis, an additional
-element \code{discarded.variants} will appear in the return list.
-The variants discarded can belong to the following categories:
-\itemize{
-\item Duplicated "CHROM" and "POS" values.
-\item Chromosome names that contain "#", "GL", "KI", "random", "Hs", "M".
-}
+A list of data frames containing data lines of the VCF files.
 }
 \description{
 Read Strelka ID (small insertion and deletion) VCF files
