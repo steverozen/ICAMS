@@ -15,6 +15,10 @@
 #'   \code{discarded.variants} in the return value for more details.
 #'   
 #' @param name.of.VCF Name of the VCF file.
+#' 
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -49,13 +53,20 @@
 #'   list <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")
 #'   annotated.ID.vcf <- list$annotated.vcf}
 AnnotateIDVCF <- 
-  function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL) {
+  function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL,
+           suppress.discarded.variants.warnings = TRUE) {
     # Create an empty data frame for discarded variants
     discarded.variants <- ID.vcf[0, ]
     
     # Check and remove discarded variants
-    retval <- 
-      CheckAndRemoveDiscardedVariants(vcf = ID.vcf, name.of.VCF = name.of.VCF)
+    if (suppress.discarded.variants.warnings == TRUE){
+      retval <- 
+        suppressWarnings(CheckAndRemoveDiscardedVariants(vcf = ID.vcf, 
+                                                         name.of.VCF = name.of.VCF)) 
+    } else {
+      retval <- 
+        CheckAndRemoveDiscardedVariants(vcf = ID.vcf, name.of.VCF = name.of.VCF)
+    }
     df <- retval$df
     discarded.variants <- 
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
@@ -149,9 +160,13 @@ AnnotateIDVCF <-
     }
     
     if (nrow(discarded.variants) > 0) {
-      warning("\nSome ID variants were discarded, see element discarded.variants", 
-              " in the return value for more details")
-      return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+      if (suppress.discarded.variants.warnings == TRUE) {
+        return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+      } else {
+        warning("\nSome ID variants were discarded, see element discarded.variants", 
+                " in the return value for more details")
+        return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+      }
     } else {
       return(list(annotated.vcf = df4))
     }

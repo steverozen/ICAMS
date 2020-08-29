@@ -847,9 +847,6 @@ StandardChromNameNew <- function(df, name.of.VCF = NULL) {
     df5 <- df4
   }
   
-  # Remove the "chr" character in the Chromosome's name
-  # df5[, 1] <- sub(pattern = "chr", replacement = "", df5[[1]])
-  
   if (nrow(discarded.variants) == 0) {
     return(list(df = df5))
   } else {

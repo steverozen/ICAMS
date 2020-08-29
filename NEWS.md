@@ -2,6 +2,9 @@
 ## Added
 * Added a section "ID classification" in the documentation for exported data `catalog.row.order`.
 
+* New argument `suppress.discarded.variants.warnings` in *exported* 
+function `AnnotateIDVCF` with default value TRUE.
+
 ## Changed
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 

@@ -18,13 +18,13 @@ save(strelka.SBS.vcf.GRCh37, strelka.SBS.vcf.GRCh38, strelka.SBS.vcf.GRCm38,
      file = "tests/testthat/testdata/test_AddSeqContext.Rdata")
 
 id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCh37.vcf")
-strelka.ID.vcf.GRCh37 <- AnnotateIDVCF(id.vcf, ref.genome = "hg19")
+strelka.ID.vcf.GRCh37 <- AnnotateIDVCF(id.vcf, ref.genome = "hg19")[[1]]
 
 id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCh38.vcf")
-strelka.ID.vcf.GRCh38 <- AnnotateIDVCF(id.vcf, ref.genome = "hg38")
+strelka.ID.vcf.GRCh38 <- AnnotateIDVCF(id.vcf, ref.genome = "hg38")[[1]]
 
 id.vcf <- ReadStrelkaIDVCF("data-raw/VCF/Strelka.ID.GRCm38.vcf")
-strelka.ID.vcf.GRCm38 <- AnnotateIDVCF(id.vcf, ref.genome = "mm10")
+strelka.ID.vcf.GRCm38 <- AnnotateIDVCF(id.vcf, ref.genome = "mm10")[[1]]
 
 save(strelka.ID.vcf.GRCh37, strelka.ID.vcf.GRCh38, strelka.ID.vcf.GRCm38,
      file = "tests/testthat/testdata/test_AnnotateIDVCF.Rdata")

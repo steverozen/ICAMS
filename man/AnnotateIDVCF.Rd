@@ -5,7 +5,13 @@
 \title{Add sequence context to an in-memory ID (insertion/deletion) VCF, and
 confirm that they match the given reference genome}
 \usage{
-AnnotateIDVCF(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL)
+AnnotateIDVCF(
+  ID.vcf,
+  ref.genome,
+  flag.mismatches = 0,
+  name.of.VCF = NULL,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{ID.vcf}{An in-memory ID (insertion/deletion) VCF as a
@@ -22,6 +28,10 @@ will automatically discard these variants. See element
 \code{discarded.variants} in the return value for more details.}
 
 \item{name.of.VCF}{Name of the VCF file.}
+
+\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
+warning messages showing information about the discarded variants. Default
+is TRUE.}
 }
 \value{
 A list of elements:
