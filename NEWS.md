@@ -5,6 +5,11 @@
 * New argument `suppress.discarded.variants.warnings` in *exported* 
 function `AnnotateIDVCF` with default value TRUE.
 
+* Added another paper information in `AddRunInformation`. "Characterization of
+colibactin-associated mutational signature in an Asian oral squamous cell
+carcinoma and in other mucosal tumor types", Genome Research 2020
+<https://doi.org/10.1101/gr.255620.119>.
+
 ## Changed
 * Changed the format of DOIs in DESCRIPTION according to CRAN policy.
 
