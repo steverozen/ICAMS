@@ -1,3 +1,10 @@
+# ICAMS 2.2.4 
+## Changed
+* Updated the code in automated tests to use packages in Suggests conditionally
+as required by CRAN.
+
+<br/>
+
 # ICAMS 2.2.3
 ## Added
 * Added a section "ID classification" in the documentation for exported data `catalog.row.order`.

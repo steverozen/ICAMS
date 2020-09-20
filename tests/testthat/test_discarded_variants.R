@@ -1,6 +1,8 @@
 context("Test functions dealing with discarded variants and annotated vcfs")
 
 test_that("ReadAndSplitMutectVCFs", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Mutect-GRCh37", full.names = TRUE)
   files1 <- files[1:2]
   list.of.vcfs1 <- ReadAndSplitMutectVCFs(files1)
@@ -61,6 +63,8 @@ test_that("ReadStrelkaIDVCFs", {
 })
 
 test_that("MutectVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Mutect-GRCh37/", full.names = TRUE)
   catalogs <- MutectVCFFilesToCatalog(files, ref.genome = "hg19", 
                                       region = "genome")
@@ -74,6 +78,8 @@ test_that("MutectVCFFilesToCatalog", {
 })
 
 test_that("StrelkaSBSVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Strelka-SBS-GRCh37", full.names = TRUE)
   catalogs <- StrelkaSBSVCFFilesToCatalog(files, ref.genome = "hg19", 
                                           region = "genome")
@@ -87,6 +93,8 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
 })
 
 test_that("StrelkaIDVCFFilesToCatalog", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Strelka-ID-GRCh37", full.names = TRUE)
   catalogs <- StrelkaIDVCFFilesToCatalog(files, ref.genome = "hg19", 
                                          region = "genome")

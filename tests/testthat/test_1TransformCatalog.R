@@ -301,6 +301,10 @@ test_that("Error test: counts.singature -> counts or density,
 
 test_that("Transform a counts catalog with NULL abundance,
           to counts.signature catalog", {
+            skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+            skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
+            stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+            stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
             catSBS96.counts <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
                                            ref.genome = "hg19",
                                            catalog.type = "counts")
