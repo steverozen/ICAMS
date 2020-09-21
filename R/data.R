@@ -170,5 +170,6 @@ if(getRversion() >= "2.15.1") {
                            "Ensembl.gene.ID", "readthrough", "exp.value", 
                            "trans.end.pos", "trans.start.pos", "DP.x", "DP.y",
                            "TUMOR.x", "TUMOR.y", "read.depth", "VAF", "read.depth.x",
-                           "read.depth.y","exp.level", "trans.Ensembl.gene.ID"))
+                           "read.depth.y","exp.level", "trans.Ensembl.gene.ID",
+                           "..col.names.order", "Remark"))
 }
