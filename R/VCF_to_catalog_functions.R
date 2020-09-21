@@ -898,7 +898,8 @@ AddTranscript <- function(df, trans.ranges = NULL) {
 #'
 #' @keywords internal
 MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
-  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth")]
+  # tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth")]
+  tmpvcf <- SBS.vcf.dt
   DBS.range.dt <- as.data.table(DBS.range.df)
   tmp1 <- merge(DBS.range.dt, tmpvcf,
                 by.x = c("CHROM", "LOW"),
@@ -913,11 +914,38 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 
   tmp2[, VAF := rowMeans(cbind(VAF.x, VAF.y))]
   tmp2[, POS := LOW]
-  tmp2[, ID := "From merged SBSs"]
+  tmp2[, Remark := "From merged SBSs"]
   tmp2[, REF := paste0(REF.x, REF.y)]
   tmp2[, ALT := paste0(ALT.x, ALT.y)]
-  return(as.data.frame(tmp2[, c("CHROM", "POS", "ID", "REF", "ALT",
-                                "VAF", "read.depth")]))
+
+  # Delete some of the columns
+  tmp2[, c("read.depth.x", "read.depth.y", "VAF.x", "VAF.y", "LOW", "HIGH",
+           "REF.x", "REF.y", "ALT.x", "ALT.y", "POS.plus.one.x",
+           "POS.plus.one.y") := NULL]
+
+  old.col.names <- setdiff(colnames(SBS.vcf.dt), "POS.plus.one")
+  col.names.order1 <-
+    c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth", "Remark")
+  col.names.order2 <- setdiff(old.col.names, col.names.order1)
+
+  # Retrieve the column information for DBS from original SBS VCF
+  for (name in col.names.order2) {
+    name1 <- paste0(name, c(".x", ".y"))
+
+    # Get the unique column information for DBS
+    GetUniqueInformation <- function(x) {
+      y <- paste(unique(unlist(x)), collapse = ",")
+    }
+    tmp2[, (name) := apply(X = .SD, MARGIN = 1,
+                           FUN = GetUniqueInformation), .SDcols = name1]
+
+    # Delete the redundant columns
+    tmp2[, (name1) := NULL]
+  }
+
+  # Return the DBS data table according to specific column orders
+  col.names.order <- c(col.names.order1, col.names.order2)
+  return(tmp2[, ..col.names.order])
 }
 
 #' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
