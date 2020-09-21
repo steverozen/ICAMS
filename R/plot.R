@@ -1075,7 +1075,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
   # Add legend
   legend(bp[10], ymax * 0.95, fill = strand.col, border = "white",
          xpd = NA, bty = "n",
-         legend = c("Transcribed", "Untranscribed"), cex = cex)
+         legend = c("Transcribed strand", "Untranscribed strand"), cex = cex)
 
   # Draw the sample name information on top of graph
   text(bp[8], ymax, labels = colnames(catalog), xpd = NA,
