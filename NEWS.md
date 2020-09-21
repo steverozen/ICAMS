@@ -1,6 +1,7 @@
 # ICAMS 2.2.5 
 ## Changed
 * Updated function `CreateOneColSBSMatrix` to throw a message instead of an error when there are SBS variant whose reference base in ref.genome does not match the reference base in the VCF file.
+* Updated function `MakeVCFDBSdf` to use column `read.depth` instead of `TUMOR` from original VCF to calculate the read depth for DBS(From merged SBSs).
 
 <br/>
 

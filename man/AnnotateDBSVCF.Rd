@@ -42,7 +42,7 @@ file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]             
+DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37)}

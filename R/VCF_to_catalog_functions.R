@@ -898,7 +898,7 @@ AddTranscript <- function(df, trans.ranges = NULL) {
 #'
 #' @keywords internal
 MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
-  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "TUMOR", "VAF")]
+  tmpvcf <- SBS.vcf.dt[ , c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth")]
   DBS.range.dt <- as.data.table(DBS.range.df)
   tmp1 <- merge(DBS.range.dt, tmpvcf,
                 by.x = c("CHROM", "LOW"),
@@ -906,10 +906,10 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
   tmp2 <- merge(tmp1, tmpvcf,
                 by.x = c("CHROM", "HIGH"),
                 by.y = c("CHROM", "POS"))
-  # Calculate the read depth for tier1
-  tmp2[, DP.x := as.integer(sapply(strsplit(TUMOR.x, ":"), "[", 1))]
-  tmp2[, DP.y := as.integer(sapply(strsplit(TUMOR.y, ":"), "[", 1))]
-  tmp2[, read.depth := pmin(DP.x, DP.y)]
+  # Calculate the read depth for DBS from merged SBS
+  # tmp2[, DP.x := as.integer(sapply(strsplit(TUMOR.x, ":"), "[", 1))]
+  # tmp2[, DP.y := as.integer(sapply(strsplit(TUMOR.y, ":"), "[", 1))]
+  tmp2[, read.depth := pmin(read.depth.x, read.depth.y)]
 
   tmp2[, VAF := rowMeans(cbind(VAF.x, VAF.y))]
   tmp2[, POS := LOW]

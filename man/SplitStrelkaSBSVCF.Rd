@@ -27,7 +27,7 @@ A list of in-memory objects with the elements:
    \item \code{discarded.variants}: \strong{Non-NULL only if} there are
    variants that were excluded from the analysis. See the added extra column
    \code{discarded.reason} for more details.
-   
+
    }
 }
 \description{

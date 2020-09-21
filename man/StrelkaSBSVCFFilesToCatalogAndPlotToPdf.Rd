@@ -112,10 +112,10 @@ file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- 
+  catalogs <-
     StrelkaSBSVCFFilesToCatalogAndPlotToPdf(file, ref.genome = "hg19",
                                             trans.ranges = trans.ranges.GRCh37,
                                             region = "genome",
-                                            output.file = 
+                                            output.file =
                                             file.path(tempdir(), "StrelkaSBS"))}
 }
