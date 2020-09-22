@@ -914,7 +914,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 
   tmp2[, VAF := rowMeans(cbind(VAF.x, VAF.y))]
   tmp2[, POS := LOW]
-  tmp2[, Remark := "From merged SBSs"]
+  tmp2[, remark.for.DBS := "From merged SBSs"]
   tmp2[, REF := paste0(REF.x, REF.y)]
   tmp2[, ALT := paste0(ALT.x, ALT.y)]
 
@@ -925,7 +925,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 
   old.col.names <- setdiff(colnames(SBS.vcf.dt), "POS.plus.one")
   col.names.order1 <-
-    c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth", "Remark")
+    c("CHROM", "POS", "REF", "ALT", "VAF", "read.depth", "remark.for.DBS")
   col.names.order2 <- setdiff(old.col.names, col.names.order1)
 
   # Retrieve the column information for DBS from original SBS VCF
