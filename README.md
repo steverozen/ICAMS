@@ -56,9 +56,9 @@ install.packages("ICAMS")
 
 ### Get the development version
 
-To use features in the development version, you can install ICAMS from
-the master branch on [GitHub](https://github.com/), which may not be
-stable:
+To use new features in the development version, you can install ICAMS
+from the master branch on [GitHub](https://github.com/), which may not
+be stable:
 
 ``` r
 install.packages("remotes")
