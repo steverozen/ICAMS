@@ -35,15 +35,15 @@ signatures.
 
 ## Installation
 
-To begin with, install the necessary dependency package from
-[Bioconductor](https://www.bioconductor.org/) for ICAMS:
+*IMPORTANT* Install the
+[Bioconductor](https://www.bioconductor.org/) dependencies first:
 
 ``` r
 install.packages("BiocManager")
 BiocManager::install("BSgenome")
 ```
 
-For first time installation, it may take a long time, please be patient.
+This may be slow; please be patient.
 
 Afterwards, install the stable version of ICAMS from
 [CRAN](https://cran.r-project.org/) with the R command line:
