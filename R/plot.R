@@ -1073,7 +1073,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
        labels = xlabel, xpd = NA, cex = cex)
 
   # Add legend
-  legend(bp[10], ymax * 0.95, fill = strand.col, border = "white",
+  legend(bp[7], ymax * 0.95, fill = strand.col, border = "white",
          xpd = NA, bty = "n",
          legend = c("Transcribed strand", "Untranscribed strand"), cex = cex)
 
