@@ -4,11 +4,15 @@ ReadCatalog.COMPOSITECatalog <-
            catalog.type = "counts", strict = TRUE)
     
   {
-  retval <- read.csv(file, header = T, row.names = 1)
-  return(as.catalog(retval,
-                    ref.genome = ref.genome,
-                    region = region,
-                    catalog.type = catalog.type))
+    dt <- data.table::fread(file)
+    names <- dt[[1]]
+    dt1 <- dt[, -1]
+    mat <- as.matrix(dt1)
+    rownames(mat) <- names
+    return(as.catalog(mat,
+                      ref.genome = ref.genome,
+                      region = region,
+                      catalog.type = catalog.type))
 }
 
 

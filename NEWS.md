@@ -3,6 +3,8 @@
 * Updated function `CreateOneColSBSMatrix` to throw a message instead of an error when there are SBS variant whose reference base in ref.genome does not match the reference base in the VCF file.
 * Updated function `MakeVCFDBSdf` to inherit column information from original SBS VCF.
 * Changed the words in legend for DBS144 plot from "Transcribed", "Untranscribed" to "Transcribed strand" and "Untranscribed strand".
+* Updated the documentation for exported data all.abundance.
+* Updated function `ReadCatalog.COMPOSITECatalog` not to convert "::" to ".." in the column names.
 
 <br/>
 
