@@ -24,7 +24,7 @@ is keyed by the number of rows in the catalog class (as a string, e.g.
  and 1536 (\code{SBS1536Catalog}). So, for example to get the exome
  abundances for SBS96 catalogs for \code{BSgenome.Hsapiens.UCSC.hg38} exomes
  one would reference \cr
- \code{all.abundance[["BSgenome.Hsapiens.UCSC.hg38"]][["exome"]]["96"]} \cr
+ \code{all.abundance[["BSgenome.Hsapiens.UCSC.hg38"]][["exome"]][["96"]]} \cr
  or \code{all.abundance$BSgenome.Hsapiens.UCSC.hg38$exome$"96"}.
  The value of the abundance is an integer vector with the K-mers
  as names and each value being the count of that K-mer.
