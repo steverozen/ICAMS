@@ -5,6 +5,8 @@
 * Changed the words in legend for DBS144 plot from "Transcribed", "Untranscribed" to "Transcribed strand" and "Untranscribed strand".
 * Updated the documentation for exported data all.abundance.
 * Updated function `ReadCatalog.COMPOSITECatalog` not to convert "::" to ".." in the column names.
+* Updated various functions in ICAMS to generate catalogs with zero mutation counts
+from empty vcfs.
 
 <br/>
 

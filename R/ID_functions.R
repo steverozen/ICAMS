@@ -55,6 +55,10 @@
 AnnotateIDVCF <- 
   function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL,
            suppress.discarded.variants.warnings = TRUE) {
+    if (nrow(ID.vcf) == 0) {
+      return(list(annotated.vcf = ID.vcf))
+    }
+    
     # Create an empty data frame for discarded variants
     discarded.variants <- ID.vcf[0, ]
     
@@ -832,7 +836,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
     if (return.annotated.vcf == FALSE) {
       return(list(catalog = catID))
     } else {
-      return(list(catalog = catID, annotated.VCF = ID.vcf))
+      return(list(catalog = catID, annotated.vcf = ID.vcf))
     }
   }
   

@@ -145,10 +145,13 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   } else {
     vcf.name <- name.of.VCF
   }
-
-  df1 <- GetStrelkaVAF(vcf = df, name.of.VCF = vcf.name)
-
-  return(df1)
+  
+  if (nrow(df) == 0) {
+    return(df)
+  } else {
+    df1 <- GetStrelkaVAF(vcf = df, name.of.VCF = vcf.name)
+    return(df1)
+  }
 }
 
 #' Read in the data lines of a Variant Call Format (VCF) file
@@ -163,7 +166,11 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 MakeDataFrameFromVCF <- function(file) {
   df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
                  col.names = paste0("c", 1:100), as.is = TRUE)
-
+  
+  if (nrow(df) == 0) {
+    return(df)
+  }
+  
   # Delete the columns which are totally empty
   df <- df[!sapply(df, function(x) all(is.na(x)))]
 
@@ -214,7 +221,11 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
   } else {
     vcf.name <- name.of.VCF
   }
-
+  
+  if (nrow(df1) == 0) {
+    return(df1)
+  }
+  
   # Check whether the input VCF is a Strelka ID VCF
   if (!("TUMOR" %in% names(df1)) ||
       !("FORMAT" %in% names(df1))) {
@@ -314,10 +325,14 @@ ReadMutectVCF <-
     } else {
       vcf.name <- name.of.VCF
     }
-
-    df1 <- GetMutectVAF(vcf = df, name.of.VCF = vcf.name,
-                        tumor.col.name = tumor.col.name)
-    return(df1)
+    
+    if (nrow(df) == 0) {
+      return(df)
+    } else {
+      df1 <- GetMutectVAF(vcf = df, name.of.VCF = vcf.name,
+                          tumor.col.name = tumor.col.name)
+      return(df1)
+    }
   }
 
 #' @rdname GetVAF
@@ -712,6 +727,10 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL) {
+  if (nrow(vcf.df) == 0) {
+    return(list(SBS = vcf.df, DBS = vcf.df, ID = vcf.df))
+  }
+  
   # Create an empty data frame for discarded variants
   discarded.variants <- vcf.df[0, ]
 
@@ -989,6 +1008,10 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #' @keywords internal
 SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
   stopifnot("data.frame" %in% class(vcf.df))
+  
+  if (nrow(vcf.df) == 0) {
+    return(list(SBS.vcf = vcf.df, DBS.vcf = vcf.df))
+  }
 
   # Create an empty data frame for discarded variants
   discarded.variants <- vcf.df[0, ]
