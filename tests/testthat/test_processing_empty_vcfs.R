@@ -100,4 +100,6 @@ test_that("Processing empty Mutect vcfs", {
                             return.annotated.vcfs = TRUE)
   unlink(file.path(tempdir(), "mutect.1.zip"))
   unlink(file.path(tempdir(), "mutect.2.zip"))
+  graphics.off()
+  unlink("Rplots.pdf")
 })
