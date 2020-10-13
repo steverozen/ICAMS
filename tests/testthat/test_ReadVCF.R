@@ -48,10 +48,9 @@ test_that(
                      variant.caller = "strelka")
     list2 <- ReadVCFs("testdata/Strelka.ID.GRCm38.vcf",
                       variant.caller = "strelka")
-    # Delete the VAF and read.depth columns which are all NA
-    expect_equal(list[[1]][, 1:(ncol(list[[1]]) - 2)], vcf[[1]])
-    expect_equal(list1[[1]][, 1:(ncol(list1[[1]]) - 2)], vcf1[[1]])
-    expect_equal(list2[[1]][, 1:(ncol(list2[[1]]) - 2)], vcf2[[1]])
+    expect_equal(list[[1]], vcf[[1]])
+    expect_equal(list1[[1]], vcf1[[1]])
+    expect_equal(list2[[1]], vcf2[[1]])
   } )
 
 test_that(
