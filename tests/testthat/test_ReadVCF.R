@@ -8,7 +8,7 @@ test_that("Read Strelka mixed VCF", {
   vcf1 <- ReadStrelkaSBSVCFs(files = file1)
   vcf2 <- ReadStrelkaIDVCFs(files = file2)
   rownames(vcf[[1]]) <- 1:nrow(vcf[[1]])
-  expect_equivalent(vcf[[1]], dplyr::bind_rows(vcf1[[1]], vcf2[[1]]))
+  expect_equal(vcf[[1]], dplyr::bind_rows(vcf1[[1]], vcf2[[1]]))
 })
 
 test_that(

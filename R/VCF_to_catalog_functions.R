@@ -156,7 +156,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 
 #' Read in the data lines of a Variant Call Format (VCF) file
 #'
-#' @importFrom utils read.csv
+#' @importFrom data.table fread
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
@@ -164,31 +164,21 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 MakeDataFrameFromVCF <- function(file) {
-  df <- read.csv(file, header = FALSE, sep = "\t", quote = "",
-                 col.names = paste0("c", 1:100), as.is = TRUE)
+  # Suppress the warning when the VCF is totally empty
+  df1 <- 
+    suppressWarnings(data.table::fread(file = file, na.strings = "",
+                                       skip = "#CHROM", fill = TRUE)) 
   
-  if (nrow(df) == 0) {
-    return(df)
+  if (nrow(df1) == 0) {
+    return(df1)
   }
   
-  # Delete the columns which are totally empty
-  df <- df[!sapply(df, function(x) all(is.na(x)))]
-
-  # Delete meta-information lines which start with "##"
-  if (any(grepl("^##", df[, 1]))) {
-    idx <- grep("^##", df[, 1])
-    df1 <- df[-idx, ]
-  } else {
-    df1 <- df
-  }
-
   # Extract the names of columns in the VCF file
-  names <- c("CHROM", as.character(df1[1, ])[-1])
-  df1 <- df1[-1, ]
+  names <- c("CHROM", colnames(df1)[-1])
   colnames(df1) <- names
 
   stopifnot(df1$REF != df1$ALT)
-  df1$POS <- as.integer(df1$POS)
+  df1$CHROM <- as.character(df1$CHROM)
 
   df1 <- RenameColumnsWithNameStrand(df1)
   df1 <- RenameColumnsWithNameVAF(df1)
@@ -233,7 +223,7 @@ ReadStrelkaIDVCF <- function(file, name.of.VCF = NULL) {
          " does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(df1), collapse=" "))
   }
-  control <- unique(df1[ , "FORMAT"])
+  control <- unique(df1[["FORMAT"]])
   stopifnot(length(control) == 1)
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   each.base.col <- c("AU", "CU", "GU", "TU")
@@ -260,9 +250,9 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
          paste(colnames(vcf), collapse=" "))
   }
 
-  TUMOR <- vcf[ , "TUMOR"]
-  control <- unique(vcf[ , "FORMAT"])
-  alt     <- vcf[ , "ALT"]
+  TUMOR <- vcf[["TUMOR"]]
+  control <- unique(vcf[["FORMAT"]])
+  alt     <- vcf[["ALT"]]
   stopifnot(length(control) == 1)
   colnames <- unlist(strsplit(control, split=":", fixed=TRUE))
   values <- strsplit(TUMOR, split=":", fixed=TRUE)
@@ -497,8 +487,8 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 ReadVCF <-
   function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
     df1 <- df <- MakeDataFrameFromVCF(file)
-    df1$VAF <- NA
-    df1$read.depth <- NA
+    df1$VAF <- as.numeric(NA)
+    df1$read.depth <- as.numeric(NA)
 
     if (is.null(variant.caller)) {
       return(df1)
@@ -1110,6 +1100,7 @@ SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) 
   }
   DBSx <- DBS.plus[DBS.plus$width == 2, c("seqnames", "start", "end"), ]
   colnames(DBSx) <- c("CHROM", "LOW", "HIGH")
+  DBSx$CHROM <- as.character(DBSx$CHROM)
   DBS.vcf.df <- MakeVCFDBSdf(DBSx, vcf.dt)
   num.DBS.out <- nrow(DBS.vcf.df)
 
