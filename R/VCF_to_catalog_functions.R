@@ -558,8 +558,8 @@ ReadVCF <-
 #' @param variant.caller Name of the variant caller that produces \strong{all}
 #'   the VCFs specified by \code{files}, can be either \code{strelka},
 #'   \code{mutect} or \code{freebayes}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies). If \code{NULL}(default), then VAF and
-#'   read depth information will not be added to the original VCFs.
+#'   the VAFs (variant allele frequencies) and read depth. If
+#'   \code{NULL}(default), then VAF and read depth will be NAs.
 #'
 #' @param names.of.VCFs Character vector of names of the VCF files. The order
 #'   of names in \code{names.of.VCFs} should match the order of VCF file paths
@@ -699,9 +699,8 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @param name.of.VCF Name of the VCF file.
 #'
-#' @return A list with 3 in-memory VCFs and two left-over
-#' VCF-like data frames with rows that were not incorporated
-#' into the first 3 VCFs, as follows:
+#' @return A list with 3 in-memory VCFs and discarded variants that were not
+#'   incorporated into the first 3 VCFs:
 #'
 #'  * \code{SBS}: VCF with only single base substitutions.
 #'
@@ -787,6 +786,64 @@ SplitListOfMutectVCFs <-
                   discarded.variants = discarded.variants1))
     }
   }
+
+#' @title Split a VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
+#'
+#' @param vcf.df An in-memory data.frame representing a VCF, including
+#'  VAFs, which are added by \code{\link{ReadVCF}}.
+#'
+#' @param name.of.VCF Name of the VCF file.
+#'
+#' @return A list with 3 in-memory VCFs and discarded variants that were not
+#'   incorporated into the first 3 VCFs:
+#'
+#'  * \code{SBS}: VCF with only single base substitutions.
+#'
+#'  * \code{DBS}: VCF with only doublet base substitutions
+#'   as called by Mutect.
+#'
+#'  * \code{ID}: VCF with only small insertions and deletions.
+#'
+#'  * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'  that were excluded from the analysis. See the added extra column
+#'  \code{discarded.reason} for more details.
+#'  @md
+#'
+#' @keywords internal
+SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
+  if (nrow(vcf.df) == 0) {
+    return(list(SBS = vcf.df, DBS = vcf.df, ID = vcf.df))
+  }
+  
+  # Create an empty data frame for discarded variants
+  discarded.variants <- vcf.df[0, ]
+  
+  # Check and remove discarded variants
+  retval <-
+    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
+  df <- retval$df
+  discarded.variants <-
+    dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  
+  SBS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
+  
+  # Try to get DBS from adjacent SBSs according to similar VAFs
+  split.dfs <- SplitStrelkaSBSVCF(vcf.df = SBS.df, name.of.VCF = name.of.VCF)
+  DBS.df0 <- split.dfs$DBS.vcf
+  discarded.variants <-
+    dplyr::bind_rows(discarded.variants, split.dfs$discarded.variants)
+  
+  DBS.df1 <- df[nchar(df$REF) == 2 & nchar(df$ALT) == 2, ]
+  DBS.df <- dplyr::bind_rows(DBS.df0, DBS.df1)
+  ID.df <- df[nchar(df$REF) != nchar(df$ALT), ]
+  
+  if (nrow(discarded.variants) == 0) {
+    return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df))
+  } else {
+    return(list(SBS = SBS.df, DBS = DBS.df, ID = ID.df,
+                discarded.variants = discarded.variants))
+  }
+}
 
 #' Add sequence context to a data frame with mutation records
 #'
