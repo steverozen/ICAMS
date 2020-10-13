@@ -1,6 +1,6 @@
 # ICAMS 2.2.5.90xx
 ## Added
-* Added new internal function `SplitOneVCF`.
+* Added new internal function `SplitOneVCF`, `SplitListOfVCFs`.
 
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 

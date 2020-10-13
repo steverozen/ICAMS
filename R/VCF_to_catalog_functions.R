@@ -742,8 +742,8 @@ SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL) {
   }
 }
 
-#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus two
-#' VCF-like data frame with left-over rows).
+#' Split each Mutect VCF into SBS, DBS, and ID VCFs (plus 
+#' VCF-like data frame with left-over rows)
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
 #'
@@ -844,6 +844,51 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
                 discarded.variants = discarded.variants))
   }
 }
+
+#' Split each VCF into SBS, DBS, and ID VCFs (plus 
+#' VCF-like data frame with left-over rows)
+#'
+#' @param list.of.vcfs List of VCFs as in-memory data.frames.
+#'
+#' @inheritParams ReadAndSplitMutectVCFs
+#'
+#' @inheritSection ReadAndSplitMutectVCFs Value
+#'
+#' @keywords internal
+SplitListOfVCFs <-
+  function(list.of.vcfs,
+           suppress.discarded.variants.warnings = TRUE) {
+    names.of.VCFs <- names(list.of.vcfs)
+    
+    GetSplitVCFs <- function(idx, list.of.vcfs) {
+      split.vcfs <- SplitOneVCF(list.of.vcfs[[idx]],
+                                name.of.VCF = names(list.of.vcfs)[idx])
+      return(split.vcfs)
+    }
+    num.of.vcfs <- length(list.of.vcfs)
+    if (suppress.discarded.variants.warnings == TRUE) {
+      v1 <- suppressWarnings(lapply(1:num.of.vcfs, GetSplitVCFs,
+                                    list.of.vcfs = list.of.vcfs))
+    } else {
+      v1 <- lapply(1:num.of.vcfs, GetSplitVCFs,
+                   list.of.vcfs = list.of.vcfs)
+    }
+    names(v1) <- names.of.VCFs
+    SBS <- lapply(v1, function(x) x$SBS)
+    DBS <- lapply(v1, function(x) x$DBS)
+    ID  <- lapply(v1, function(x) x$ID)
+    discarded.variants <- lapply(v1, function(x) x$discarded.variants)
+    
+    # Remove NULL elements from discarded.variants
+    discarded.variants1 <- Filter(Negate(is.null), discarded.variants)
+    
+    if (length(discarded.variants1) == 0) {
+      return(list(SBS = SBS, DBS = DBS, ID = ID))
+    } else {
+      return(list(SBS = SBS, DBS = DBS, ID = ID,
+                  discarded.variants = discarded.variants1))
+    }
+  }
 
 #' Add sequence context to a data frame with mutation records
 #'
