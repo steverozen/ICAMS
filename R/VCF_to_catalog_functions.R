@@ -330,6 +330,12 @@ ReadMutectVCF <-
 #' @export
 GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
   stopifnot("data.frame" %in% class(vcf))
+  
+  if (nrow(vcf) == 0) {
+    #vcf$VAF <- NA
+    #vcf$read.depth <- NA
+    return(vcf)
+  }
 
   # Specify the possible variable names in Mutect VCF that stores count of reads
   # information
@@ -487,6 +493,11 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 ReadVCF <-
   function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
     df1 <- df <- MakeDataFrameFromVCF(file)
+    
+    if (nrow(df) == 0) {
+      return(df)
+    }
+    
     df1$VAF <- as.numeric(NA)
     df1$read.depth <- as.numeric(NA)
 
@@ -518,9 +529,12 @@ ReadVCF <-
       }
 
       # Check for any SBS in df and only calcuate VAF for those SBS variants
-      SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      SBS.multiple.alt <- 
+        which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
+      SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
       if (length(SBS.idx) == 0) {
-        return(df1)
+        return(df)
       } else {
         SBS.df <- df[SBS.idx, ]
         SBS.df1 <- GetStrelkaVAF(vcf = SBS.df, name.of.VCF = vcf.name)
@@ -538,9 +552,12 @@ ReadVCF <-
 
     if (variant.caller == "freebayes") {
       # Check for any SBS in df and only calcuate VAF for those SBS variants
-      SBS.idx <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
+      SBS.multiple.alt <- 
+        which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
+      SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
       if (length(SBS.idx) == 0) {
-        return(df1)
+        return(df)
       } else {
         SBS.df <- df[SBS.idx, ]
         SBS.df1 <- GetFreebayesVAF(vcf = SBS.df, name.of.VCF = vcf.name)
@@ -611,6 +628,10 @@ ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
 
 #' @keywords internal
 CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
+  if (nrow(vcf) == 0) {
+    return(list(df = vcf))
+  }
+  
   # Create an empty data frame for discarded variants
   discarded.variants <- vcf[0, ]
 
@@ -825,10 +846,11 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
   discarded.variants <-
     dplyr::bind_rows(discarded.variants, retval$discarded.variants)
   
-  SBS.df <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
+  SBS.df0 <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
   
   # Try to get DBS from adjacent SBSs according to similar VAFs
-  split.dfs <- SplitStrelkaSBSVCF(vcf.df = SBS.df, name.of.VCF = name.of.VCF)
+  split.dfs <- SplitStrelkaSBSVCF(vcf.df = SBS.df0, name.of.VCF = name.of.VCF)
+  SBS.df <- split.dfs$SBS.vcf
   DBS.df0 <- split.dfs$DBS.vcf
   discarded.variants <-
     dplyr::bind_rows(discarded.variants, split.dfs$discarded.variants)
@@ -1046,6 +1068,8 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
     # Get the unique column information for DBS
     GetUniqueInformation <- function(x) {
       y <- paste(unique(unlist(x)), collapse = ",")
+      class(y) <- class(unique(unlist(x)))
+      return(y)
     }
     tmp2[, (name) := apply(X = .SD, MARGIN = 1,
                            FUN = GetUniqueInformation), .SDcols = name1]

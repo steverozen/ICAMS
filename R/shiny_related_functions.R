@@ -703,6 +703,56 @@ ReadAndSplitMutectVCFs <-
     return(split.vcfs)
   }
 
+#' Read and split VCF files
+#'
+#' @param files Character vector of file paths to the VCF files.
+#' 
+#' @param variant.caller Name of the variant caller that produces \strong{all}
+#'   the VCFs specified by \code{files}, can be either \code{strelka},
+#'   \code{mutect} or \code{freebayes}. This information is needed to calculate
+#'   the VAFs (variant allele frequencies) and read depth. If
+#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#'   
+#' @section Value: A list containing the following objects:
+#'
+#'   * \code{SBS}: List of VCFs with only single base substitutions.
+#'
+#'
+#'   * \code{DBS}: List of VCFs with only doublet base substitutions.
+#'
+#'   * \code{ID}: List of VCFs with only small insertions and deletions.
+#'
+#'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#'   that were excluded from the analysis. See the added extra column
+#'   \code{discarded.reason} for more details.
+#' @md
+#' 
+#' @seealso \code{\link{MutectVCFFilesToCatalog}}
+#'
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
+ReadAndSplitVCFs <- 
+  function(files, variant.caller = NULL, names.of.VCFs = NULL, 
+           tumor.col.names = NA,
+           suppress.discarded.variants.warnings = TRUE) {
+    vcfs <- ReadVCFs(files = files, variant.caller = variant.caller, 
+                     names.of.VCFs = names.of.VCFs, 
+                     tumor.col.names =  tumor.col.names)
+    
+    split.vcfs <- 
+      SplitListOfVCFs(list.of.vcfs = vcfs, 
+                      suppress.discarded.variants.warnings = 
+                        suppress.discarded.variants.warnings)
+    return(split.vcfs)
+  }
+
 #' Check and return SBS catalogs
 #'
 #' @param catSBS96 An SBS96 catalog.
