@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{VCFsToCatalogs}
 \alias{VCFsToCatalogs}
-\title{Create SBS, DBS and Indel catalogs from Mutect VCF files}
+\title{Create SBS, DBS and Indel catalogs from VCFs}
 \usage{
 VCFsToCatalogs(
   files,
@@ -145,6 +145,6 @@ file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- VCFsToCatalog(file, ref.genome = "hg19", 
-                            variant.caller = "mutect", region = "genome")}
+  catalogs <- VCFsToCatalogs(file, ref.genome = "hg19", 
+                             variant.caller = "mutect", region = "genome")}
 }

@@ -2541,7 +2541,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
     return(catalogs0)
 }
 
-#' Create SBS, DBS and Indel catalogs from VCF files and plot them to PDF
+#' Create SBS, DBS and Indel catalogs from VCFs and plot them to PDF
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the VCFs specified by \code{files} and plot them to
@@ -2551,11 +2551,11 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #' \code{\link{PlotCatalogToPdf}}
 #'
 #' @param files Character vector of file paths to the VCF files.
+#' 
+#' @param output.dir The directory where the PDF files will be saved.
 #'
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
-#'   
-#' @param output.dir The directory where the PDF files will be saved.
 #'   
 #' @param variant.caller Name of the variant caller that produces \strong{all}
 #'   the VCFs specified by \code{files}, can be either \code{"strelka"},
@@ -2594,7 +2594,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
 #'
-#' @param base.name Optional. The base name of the PDF files to be produced;
+#' @param base.filename Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 #'   \eqn{x} indicates the type of catalog plotted in the file.
 #'
@@ -2676,17 +2676,18 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'     VCFsToCatalogsAndPlotToPdf(file, ref.genome = "hg19",
 #'                               output.dir = tempdir()
 #'                               variant.caller = "mutect",
-#'                               region = "genome")}
+#'                               region = "genome",
+#'                               base.filename = "Mutect")}
 VCFsToCatalogsAndPlotToPdf <-
   function(files,
-           ref.genome,
            output.dir,
+           ref.genome,
            variant.caller = NULL,
            trans.ranges = NULL,
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
-           base.name = "",
+           base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
     
@@ -2699,16 +2700,16 @@ VCFsToCatalogsAndPlotToPdf <-
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-    if (base.name != "") base.name <- paste0(base.name, ".")
+    if (base.filename != "") base.filename <- paste0(base.filename, ".")
     
     for (name in names(catalogs)) {
       PlotCatalogToPdf(catalogs[[name]],
                        file = file.path(output.dir, 
-                                        paste0(base.name, name, ".pdf")))
+                                        paste0(base.filename, name, ".pdf")))
       if (name == "catSBS192") {
         PlotCatalogToPdf(catalogs[[name]],
                          file = file.path(output.dir, 
-                                          paste0(base.name, "SBS12.pdf")),
+                                          paste0(base.filename, "SBS12.pdf")),
                          plot.SBS12 = TRUE)
       }
     }

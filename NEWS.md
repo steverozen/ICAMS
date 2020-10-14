@@ -2,7 +2,7 @@
 ## Added
 * Added new internal function `SplitOneVCF`, `SplitListOfVCFs`.
 
-* Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf`.
+* Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
