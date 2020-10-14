@@ -23,9 +23,12 @@ test_that("MutectVCFFilesToCatalog", {
                                   region = "genome")
   cat5 <- MutectVCFFilesToCatalog("testdata/Mutect.GRCh38.vcf",
                                   ref.genome = "hg38")
-  expect_equal(cat1$catSBS96, cat2$catSBS96)
-  expect_equal(cat1$catSBS96, cat3$catSBS96)
-  expect_equal(cat1$catSBS96, cat4$catSBS96)
+  cat6 <- VCFsToCatalogs("testdata/Mutect.GRCh38.vcf", ref.genome = "hg38",
+                         variant.caller = "mutect", region = "genome")
+  expect_equal(cat1, cat2)
+  expect_equal(cat1, cat3)
+  expect_equal(cat1, cat4)
+  expect_equal(cat1, cat6)
   expect_equal(attributes(cat5$catSBS96)$region, "unknown")
   expect_null(attributes(cat5$catSBS96)$abundance)
 })

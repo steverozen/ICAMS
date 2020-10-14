@@ -586,6 +586,121 @@ MutectVCFFilesToCatalog <-
                                           ID.list = ID.list)
   }
 
+
+#' @keywords internal
+CombineAndReturnCatalogsForVCFs <-
+  function(split.vcfs.list, SBS.list, DBS.list, ID.list) {
+    # Get the SBS96 catalog
+    catSBS96 <- SBS.list$catSBS96
+    num.of.col <- ncol(catSBS96)
+    vcf.names <- colnames(catSBS96)
+    discarded.variants.list <- vector(mode = "list", length = num.of.col)
+    for (i in 1:num.of.col) {
+      discarded.variants <- 
+        dplyr::bind_rows(split.vcfs.list$discarded.variants[[vcf.names[i]]],
+                         SBS.list$discarded.variants[[vcf.names[i]]], 
+                         DBS.list$discarded.variants[[vcf.names[i]]],
+                         ID.list$discarded.variants[[vcf.names[i]]])
+      if (nrow(discarded.variants) > 0) {
+        discarded.variants.list[[i]] <- discarded.variants
+      }
+    }
+    names(discarded.variants.list) <- vcf.names
+    
+    annotated.vcfs.list <- list(SBS = SBS.list$annotated.vcfs,
+                                DBS = DBS.list$annotated.vcfs,
+                                ID = ID.list$annotated.vcfs)
+    # Remove NULL elements from the list
+    discarded.variants.list2 <- Filter(Negate(is.null), discarded.variants.list)
+    if (length(discarded.variants.list2) == 0) {
+      discarded.variants.list2 <- NULL
+    }
+    annotated.vcfs.list2 <- Filter(Negate(is.null), annotated.vcfs.list)
+    if (length(annotated.vcfs.list2) == 0) {
+      annotated.vcfs.list2 <- NULL
+    }
+    
+    combined.list <- list(catSBS96 = SBS.list$catSBS96,
+                          catSBS192 = SBS.list$catSBS192,
+                          catSBS1536 = SBS.list$catSBS1536,
+                          catDBS78 = DBS.list$catDBS78,
+                          catDBS136 = DBS.list$catDBS136,
+                          catDBS144 = DBS.list$catDBS144,
+                          catID = ID.list$catalog,
+                          discarded.variants = discarded.variants.list2,
+                          annotated.vcfs = annotated.vcfs.list2)
+    # Remove NULL elements from the list
+    combined.list2 <- Filter(Negate(is.null), combined.list)
+    return(combined.list2)
+  }
+
+#' Create SBS, DBS and Indel catalogs from Mutect VCF files
+#'
+#' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
+#' Indel catalog from the Mutect VCFs specified by \code{files}
+#'
+#' This function calls \code{\link{VCFsToSBSCatalogs}},
+#' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
+#'
+#' @param files Character vector of file paths to the VCF files.
+#'
+#' @param variant.caller Name of the variant caller that produces \strong{all}
+#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
+#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
+#'   the VAFs (variant allele frequencies) and read depth. If
+#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#'   
+#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
+#'   Character vector of column names in \strong{Mutect} VCFs which contain the
+#'   tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
+#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
+#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
+#'   See \code{\link{GetMutectVAF}} for more details.
+#'
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
+#' 
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#'
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
+#'   
+#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
+#'
+#' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <- VCFsToCatalog(file, ref.genome = "hg19", 
+#'                             variant.caller = "mutect", region = "genome")}
+VCFsToCatalogs <-
+  function(files, ref.genome, variant.caller = NULL, trans.ranges = NULL, 
+           region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA, 
+           return.annotated.vcfs = FALSE, 
+           suppress.discarded.variants.warnings = TRUE) {
+    split.vcfs <- 
+      ReadAndSplitVCFs(files, variant.caller, names.of.VCFs, tumor.col.names,
+                       suppress.discarded.variants.warnings)
+    
+    SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
+                                  trans.ranges, region, return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings)
+    DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome, 
+                                  trans.ranges, region, return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings)
+    ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
+                                region, flag.mismatches, return.annotated.vcfs,
+                                suppress.discarded.variants.warnings)
+    CombineAndReturnCatalogsForVCFs(split.vcfs.list = split.vcfs, 
+                                    SBS.list = SBS.list, 
+                                    DBS.list = DBS.list,
+                                    ID.list = ID.list)
+  }
+
 #' Read and split Strelka SBS VCF files
 #' 
 #' The function will find and merge adjacent SBS pairs into DBS if their VAFs
@@ -706,14 +821,31 @@ ReadAndSplitMutectVCFs <-
 #' Read and split VCF files
 #'
 #' @param files Character vector of file paths to the VCF files.
-#' 
+#'
 #' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{strelka},
-#'   \code{mutect} or \code{freebayes}. This information is needed to calculate
+#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
+#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
 #'   the VAFs (variant allele frequencies) and read depth. If
 #'   \code{NULL}(default), then VAF and read depth will be NAs.
 #'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' @param names.of.VCFs Character vector of names of the VCF files. The order
+#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
+#'   in \code{files}. If \code{NULL}(default), this function will remove all of
+#'   the path up to and including the last path separator (if any) and file
+#'   paths without extensions (and the leading dot) will be used as the names of
+#'   the VCF files.
+#'
+#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
+#'   Character vector of column names in \strong{Mutect} VCFs which contain the
+#'   tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
+#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
+#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
+#'   See \code{\link{GetMutectVAF}} for more details.
+#'
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
 #'   
 #' @section Value: A list containing the following objects:
 #'

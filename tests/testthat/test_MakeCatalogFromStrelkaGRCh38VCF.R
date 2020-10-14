@@ -21,9 +21,14 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
                                       region = "genome")
   cat5 <- StrelkaSBSVCFFilesToCatalog("testdata/Strelka.SBS.GRCh38.vcf",
                                       ref.genome = "hg38")
-  expect_equal(cat1$catSBS96, cat2$catSBS96)
-  expect_equal(cat1$catSBS96, cat3$catSBS96)
-  expect_equal(cat1$catSBS96, cat4$catSBS96)
+  cat6 <- VCFsToCatalogs("testdata/Strelka.SBS.GRCh38.vcf", ref.genome = "hg38",
+                         variant.caller = "strelka", region = "genome")
+  expect_equal(cat1, cat2)
+  expect_equal(cat1, cat3)
+  expect_equal(cat1, cat4)
+  
+  cat6$catID <- NULL
+  expect_equal(cat1, cat6)
   expect_equal(attributes(cat5$catSBS96)$region, "unknown")
   expect_null(attributes(cat5$catSBS96)$abundance)
 })
@@ -43,8 +48,12 @@ test_that("StrelkaIDVCFFilesToCatalog", {
                                      region = "genome")
   cat8 <- StrelkaIDVCFFilesToCatalog("testdata/Strelka.ID.GRCh38.vcf",
                                      ref.genome = "hg38")
+  cat9 <- VCFsToCatalogs("testdata/Strelka.ID.GRCh38.vcf", ref.genome = "hg38",
+                         variant.caller = "strelka", region = "genome")
+  
   expect_equal(cat5, cat6)
   expect_equal(cat5, cat7)
+  expect_equal(cat5$catalog, cat9$catID)
   expect_equal(attributes(cat8$catalog)$region, "unknown")
   expect_null(attributes(cat8$catalog)$abundance)
 })
