@@ -642,31 +642,15 @@ CombineAndReturnCatalogsForVCFs <-
 #' This function calls \code{\link{VCFsToSBSCatalogs}},
 #' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 #'
-#' @param files Character vector of file paths to the VCF files.
-#'
-#' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
-#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies) and read depth. If
-#'   \code{NULL}(default), then VAF and read depth will be NAs.
-#'   
-#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Character vector of column names in \strong{Mutect} VCFs which contain the
-#'   tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
-#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
-#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
-#'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' @inheritParams VCFsToCatalogsAndPlotToPdf
 #' 
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
+#' @inheritSection VCFsToCatalogsAndPlotToPdf Value
 #' 
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
+#' @inheritSection VCFsToCatalogsAndPlotToPdf Note
 #'   
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Comments
+#' @inheritSection VCFsToCatalogsAndPlotToPdf Comments
 #'
 #' @export
 #' 

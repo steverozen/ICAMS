@@ -2541,6 +2541,181 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
     return(catalogs0)
 }
 
+#' Create SBS, DBS and Indel catalogs from VCF files and plot them to PDF
+#'
+#' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
+#' Indel catalog from the VCFs specified by \code{files} and plot them to
+#' PDF
+#'
+#' This function calls \code{\link{VCFsToCatalogs}} and
+#' \code{\link{PlotCatalogToPdf}}
+#'
+#' @param files Character vector of file paths to the VCF files.
+#'
+#' @param ref.genome  A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'   
+#' @param output.dir The directory where the PDF files will be saved.
+#'   
+#' @param variant.caller Name of the variant caller that produces \strong{all}
+#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
+#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
+#'   the VAFs (variant allele frequencies) and read depth. If
+#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#'
+#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
+#'   \code{\link{BSgenome}} object
+#'   \enumerate{
+#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
+#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'   }
+#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
+#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
+#'   If \code{is.null(trans.ranges)} do not add transcript range
+#'   information.
+#'
+#' @param region A character string designating a genomic region;
+#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
+#'
+#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
+#'   The order of names in \code{names.of.VCFs} should match the order of VCF
+#'   file paths in \code{files}. If \code{NULL}(default), this function will
+#'   remove all of the path up to and including the last path separator (if any)
+#'   in \code{files} and file paths without extensions (and the leading dot)
+#'   will be used as the names of the VCF files.
+#'
+#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
+#'   Character vector of column names in \strong{Mutect} VCFs which contain the
+#'   tumor sample information. The order of names in \code{tumor.col.names}
+#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
+#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
+#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
+#'   See \code{\link{GetMutectVAF}} for more details.
+#'
+#' @param base.name Optional. The base name of the PDF files to be produced;
+#'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
+#'   \eqn{x} indicates the type of catalog plotted in the file.
+#'
+#' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
+#'   with additional columns showing mutation class for each variant. Default is
+#'   FALSE.
+#'
+#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
+#'   warning messages showing information about the discarded variants. Default
+#'   is TRUE.
+#'
+#' @section Value:
+#' A list containing the following objects:
+#'
+#' * \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}: Matrix of
+#' 3 SBS catalogs (one each for 96, 192, and 1536).
+#'
+#' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
+#' 3 DBS catalogs (one each for 78, 136, and 144).
+#'
+#' * \code{catID}: Matrix of ID (small insertion and deletion) catalog.
+#'
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that were excluded from the analysis. See the added extra column
+#' \code{discarded.reason} for more details.
+#'
+#' * \code{annotated.vcfs}:
+#' \strong{Non-NULL only if} \code{return.annotated.vcfs} = TRUE.
+#' A list of elements:
+#'     + \code{SBS}: SBS VCF annotated by \code{\link{AnnotateSBSVCF}} with
+#'     three new columns \code{SBS96.class}, \code{SBS192.class} and
+#'     \code{SBS1536.class} showing the mutation class for each SBS variant.
+#'     + \code{DBS}: DBS VCF annotated by \code{\link{AnnotateDBSVCF}} with
+#'     three new columns \code{DBS78.class}, \code{DBS136.class} and
+#'     \code{DBS144.class} showing the mutation class for each DBS variant.
+#'     + \code{ID}: ID VCF annotated by \code{\link{AnnotateIDVCF}} with one
+#'     new column \code{ID.class} showing the mutation class for each
+#'     ID variant.
+#'
+#' If \code{trans.ranges} is not provided by user and cannot be inferred by
+#' ICAMS, SBS 192 and DBS 144 catalog will not be generated. Each catalog has
+#' attributes added. See \code{\link{as.catalog}} for more details.
+#' @md
+#'
+#' @section ID classification:
+#' See
+#' \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' for additional information on ID (small insertion and deletion) mutation
+#' classification.
+#'
+#' See the documentation for \code{\link{Canonicalize1Del}} which first handles
+#' deletions in homopolymers, then handles deletions in simple repeats with
+#' longer repeat units, (e.g. \code{CACACACA}, see
+#' \code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
+#' repeat, looks for microhomology (see \code{\link{FindDelMH}}).
+#'
+#' See the code for unexported function \code{\link{CanonicalizeID}}
+#' and the functions it calls for handling of insertions.
+#'
+#' @section Note:
+#'  SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
+#'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+#'  from 0 to 5+, but for plotting and end-user documentation deletion repeat
+#'  sizes range from 1 to 6+.
+#'
+#' @section Comments:
+#' To add or change attributes of the catalog, you can use function
+#' \code{\link[base]{attr}}. \cr For example, \code{attr(catalog, "abundance")
+#' <- custom.abundance}.
+#'
+#' @export
+#'
+#' @examples
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
+#'   catalogs <-
+#'     VCFsToCatalogsAndPlotToPdf(file, ref.genome = "hg19",
+#'                               output.dir = tempdir()
+#'                               variant.caller = "mutect",
+#'                               region = "genome")}
+VCFsToCatalogsAndPlotToPdf <-
+  function(files,
+           ref.genome,
+           output.dir,
+           variant.caller = NULL,
+           trans.ranges = NULL,
+           region = "unknown",
+           names.of.VCFs = NULL,
+           tumor.col.names = NA,
+           base.name = "",
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
+    
+    catalogs0 <-
+      VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges,
+                     region, names.of.VCFs, tumor.col.names,
+                     return.annotated.vcfs,
+                     suppress.discarded.variants.warnings)
+    
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    if (base.name != "") base.name <- paste0(base.name, ".")
+    
+    for (name in names(catalogs)) {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = file.path(output.dir, 
+                                        paste0(base.name, name, ".pdf")))
+      if (name == "catSBS192") {
+        PlotCatalogToPdf(catalogs[[name]],
+                         file = file.path(output.dir, 
+                                          paste0(base.name, "SBS12.pdf")),
+                         plot.SBS12 = TRUE)
+      }
+    }
+    
+    return(catalogs0)
+  }
+
 #' @keywords internal
 CanonicalizeDBS <- function(ref.vec, alt.vec) {
   DBS <- paste0(ref.vec, alt.vec)
