@@ -808,6 +808,182 @@ SplitListOfMutectVCFs <-
     }
   }
 
+#' Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving
+#' > 2 consecutive bases
+#'
+#' SBSs are single base substitutions,
+#' e.g. C>T, A>G,....  DBSs are double base substitutions,
+#' e.g. CC>TT, AT>GG, ...  Variants involving > 2 consecutive
+#' bases are rare, so this function just records them. These
+#' would be variants such ATG>CCT, AGAT>TCTA, ...
+#'
+#' @param vcf.df An in-memory data frame containing an SBS VCF file contents.
+#'
+#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
+#'
+#' @param name.of.VCF Name of the VCF file.
+#'
+#' @import data.table
+#'
+#' @importFrom stats start end
+#'
+#' @importFrom GenomicRanges GRanges reduce
+#'
+#' @importFrom IRanges IRanges
+#'
+#' @return A list of in-memory objects with the elements:
+#'
+#' \enumerate{
+#'    \item \code{SBS.vcf}: Data frame of pure SBS mutations -- no DBS or 3+BS
+#'    mutations.
+#'
+#'    \item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
+#'    mutations.
+#'
+#'    \item \code{discarded.variants}: \strong{Non-NULL only if} there are
+#'    variants that were excluded from the analysis. See the added extra column
+#'    \code{discarded.reason} for more details.
+#'
+#'    }
+#'
+#' @keywords internal
+SplitSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
+  stopifnot("data.frame" %in% class(vcf.df))
+  
+  if (nrow(vcf.df) == 0) {
+    return(list(SBS.vcf = vcf.df, DBS.vcf = vcf.df))
+  }
+  
+  # Create an empty data frame for discarded variants
+  discarded.variants <- vcf.df[0, ]
+  
+  # Check and remove discarded variants
+  retval <-
+    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
+  vcf.df <- retval$df
+  discarded.variants <-
+    dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+  
+  # Record the total number of input variants for later sanity checking.
+  num.in <- nrow(vcf.df)
+  
+  # First we look for pairs of rows where the POS of one of the
+  # rows is at POS + 1 of the other row. For example
+  #
+  # 1   200   foo    A    G
+  # 1   201   foo    C    G
+  #
+  # Reprsents AC > GG
+  #
+  # But there could also be situations like this
+  #
+  # X   300  foo   C  T
+  # X   301  foo   C  T
+  # X   302  foo   A  G
+  #
+  # which represents CCA > TTG
+  #
+  # But first we just find pairs, so the
+  # X chromosome example will appear as 2
+  # pairs CC > TT and CA > TG (more below).
+  
+  vcf.dt <- data.table(vcf.df)
+  vcf.dt[, POS.plus.one := POS + 1]
+  dt2 <- merge(vcf.dt, vcf.dt,
+               by.x = c("CHROM", "POS"),
+               by.y = c("CHROM", "POS.plus.one"))
+  
+  # After this merge, each row contains one *pair*.
+  # In each row, POS.y == POS - 1, and the neighboring SBS
+  # are at postions POS and POS.y.
+  dt2[, HIGH := POS]
+  dt2[, LOW := POS.y]
+  
+  # Keep only SBS pairs that have very similar VAFs (variant allele frequencies).
+  # If VAFs are not similar, the adjacent SBSs are likely to be "merely"
+  # asynchronous single base mutations, opposed to a simultaneous doublet mutation.
+  non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
+  # TODO: if (any(is.na(VAF.x)) || any(is.na(VAF.y)))
+  # If VAF.x or VAF.y is NA the row will not go into non.SBS.
+  rm(dt2)
+  
+  if (nrow(non.SBS) == 0) {
+    # There are no non.SBS mutations in the input.
+    # Everything in vcf.df is an SBS. We are finished.
+    empty <- vcf.df[-(1:nrow(vcf.df)), ]
+    if (nrow(discarded.variants) == 0) {
+      return(list(SBS.vcf = vcf.df, DBS.vcf = empty))
+    } else {
+      return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
+                  discarded.variants = discarded.variants))
+    }
+    
+  }
+  
+  # Remove non SBS rows from the output VCF for the SBSs
+  pairs.to.remove <-
+    data.frame(non.SBS[, .(CHROM, POS = HIGH)])
+  pairs.to.remove <-
+    rbind(pairs.to.remove,
+          data.frame(non.SBS[, .(CHROM, POS = LOW)]))
+  dt.rm <- data.table(pairs.to.remove)
+  dt.rm$delete.flag = TRUE
+  out.SBS.dt <- merge(vcf.dt, dt.rm, by = c("CHROM", "POS"), all.x = TRUE)
+  out.SBS.dt2 <- out.SBS.dt[is.na(delete.flag)]
+  out.SBS.df <-
+    as.data.frame(out.SBS.dt2[, c("POS.plus.one", "delete.flag") := NULL])
+  num.SBS.out <- nrow(out.SBS.df)
+  
+  # Now separate doublets (DBSs) from triplet and above base substitutions.
+  # For ease of testing, keep only the genomic range information.
+  non.SBS <- non.SBS[, c("CHROM", "LOW", "HIGH")]
+  ranges <-
+    GenomicRanges::GRanges(non.SBS$CHROM,
+                           IRanges::IRanges(start = non.SBS$LOW, end = non.SBS$HIGH))
+  rranges <- GenomicRanges::reduce(ranges) # Merge overlapping ranges
+  DBS.plus <- as.data.frame(rranges)
+  if ((sum(DBS.plus$width) + num.SBS.out) != num.in) {
+    if ((sum(DBS.plus$width) + num.SBS.out) > num.in) {
+      stop("Possible programming error or input problem: too many SBS")
+    } else {
+      warning("Possible site with multiple variant alleles involved in a DBS\n")
+    }
+  }
+  DBSx <- DBS.plus[DBS.plus$width == 2, c("seqnames", "start", "end"), ]
+  colnames(DBSx) <- c("CHROM", "LOW", "HIGH")
+  DBSx$CHROM <- as.character(DBSx$CHROM)
+  DBS.vcf.df <- MakeVCFDBSdf(DBSx, vcf.dt)
+  num.DBS.out <- nrow(DBS.vcf.df)
+  
+  other.ranges <- DBS.plus[DBS.plus$width > 2, ]
+  if (nrow(other.ranges) > 0) {
+    colnames(other.ranges)[1:3] <- c("CHROM", "LOW.POS", "HIGH.POS")
+    other.ranges$discarded.reason <- "Variants that do not represent SBS or DBS"
+    if (nrow(discarded.variants) == 0) {
+      discarded.variants <- other.ranges
+    } else {
+      discarded.variants <- dplyr::bind_rows(discarded.variants, other.ranges)
+    }
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has variants involving three or more nucleotides and were ",
+            "discarded. See discarded.variants in the return value for more ",
+            "details.")
+  }
+  
+  num.other <- sum(other.ranges$width)
+  
+  if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
+    warning("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
+  }
+  
+  if (nrow(discarded.variants) == 0) {
+    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df))
+  } else {
+    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
+                discarded.variants = discarded.variants))
+  }
+}
+
 #' @title Split a VCF into SBS, DBS, and ID VCFs, plus a list of other mutations
 #'
 #' @param vcf.df An in-memory data.frame representing a VCF, including
@@ -849,7 +1025,7 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
   SBS.df0 <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
   
   # Try to get DBS from adjacent SBSs according to similar VAFs
-  split.dfs <- SplitStrelkaSBSVCF(vcf.df = SBS.df0, name.of.VCF = name.of.VCF)
+  split.dfs <- SplitSBSVCF(vcf.df = SBS.df0, name.of.VCF = name.of.VCF)
   SBS.df <- split.dfs$SBS.vcf
   DBS.df0 <- split.dfs$DBS.vcf
   discarded.variants <-

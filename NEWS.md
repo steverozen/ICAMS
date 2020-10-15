@@ -1,6 +1,6 @@
 # ICAMS 2.2.5.90xx
 ## Added
-* Added new internal function `SplitOneVCF`, `SplitListOfVCFs`.
+* Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs`.
 
 * Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 
