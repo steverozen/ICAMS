@@ -1,6 +1,7 @@
 # ICAMS 2.2.5.90xx
 ## Added
-* Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs` and `VCFsToZipFileXtra`, `WriteSBS96CatalogAsTsv`.
+* Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs` and `VCFsToZipFileXtra`, `WriteSBS96CatalogAsTsv`,
+`ReadSBS96CatalogFromTsv`.
 
 * Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 

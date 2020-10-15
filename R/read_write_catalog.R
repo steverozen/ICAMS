@@ -95,6 +95,31 @@ ReadCatalog.SBS96Catalog <- function(file, ref.genome = NULL, region = "unknown"
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @keywords internal
+ReadSBS96CatalogFromTsv <- function(file, ref.genome = NULL, region = "unknown", 
+                                     catalog.type = "counts", strict = TRUE) {
+  cos <- data.table::fread(file)
+  stopifnot(nrow(cos) == 96)
+  if (strict) {
+    stopifnot(names(cos)[1] == "Bef")
+    stopifnot(names(cos)[2] == "Ref")
+    stopifnot(names(cos)[3] == "After")
+    stopifnot(names(cos)[4] == "Var")
+  }
+  before.ref.after <- 
+    paste0(unlist(cos[, 1]), unlist(cos[, 2]), unlist(cos[, 3]))
+  var <- unlist(cos[, 4])
+  out <- cos[, -(1 : 4), drop = FALSE]
+  out <- as.matrix(out)
+  rownames(out) <- paste0(before.ref.after, var)
+  if (strict) {
+    stopifnot(rownames(out) == ICAMS::catalog.row.order$SBS96)
+  }
+  if (ncol(out) == 1) colnames(out) <- colnames(cos)[5]
+  out <- out[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
+  return(as.catalog(out, ref.genome, region, catalog.type))
+}
+
 #' @export
 ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                       catalog.type = "counts", strict = TRUE) {

@@ -4,7 +4,7 @@
 \alias{WriteCat}
 \title{Write a catalog to a file.}
 \usage{
-WriteCat(catalog, file, num.row, row.order, row.header, strict)
+WriteCat(catalog, file, num.row, row.order, row.header, strict, sep = ",")
 }
 \arguments{
 \item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
