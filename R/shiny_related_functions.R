@@ -831,7 +831,7 @@ VCFsToCatalogs <-
                                   trans.ranges, region, return.annotated.vcfs,
                                   suppress.discarded.variants.warnings)
     ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome, 
-                                region, flag.mismatches, return.annotated.vcfs,
+                                region, flag.mismatches = 0, return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
     CombineAndReturnCatalogsForVCFs(split.vcfs.list = split.vcfs, 
                                     SBS.list = SBS.list, 

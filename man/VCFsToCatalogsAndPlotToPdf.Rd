@@ -156,8 +156,8 @@ file <- c(system.file("extdata/Mutect-vcf",
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs <-
     VCFsToCatalogsAndPlotToPdf(file, ref.genome = "hg19",
-                              output.dir = tempdir()
-                              variant.caller = "mutect",
-                              region = "genome",
-                              base.filename = "Mutect")}
+                               output.dir = tempdir(),
+                               variant.caller = "mutect",
+                               region = "genome",
+                               base.filename = "Mutect")}
 }
