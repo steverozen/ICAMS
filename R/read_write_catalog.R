@@ -303,7 +303,8 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
 #' @param strict If TRUE, then stop if additional checks on the input fail.
 #'
 #' @keywords internal
-WriteCat <- function(catalog, file, num.row, row.order, row.header, strict) {
+WriteCat <- function(catalog, file, num.row, row.order, row.header, strict,
+                     sep = ",") {
   mut.categories <- rownames(catalog)
   stopifnot(num.row == nrow(catalog))
   if (strict) {
@@ -311,13 +312,19 @@ WriteCat <- function(catalog, file, num.row, row.order, row.header, strict) {
   }
   catalog <- catalog[row.order, , drop = FALSE]
   DT <- as.data.table(catalog)
-  fwrite(cbind(row.header, DT), file = file)
+  fwrite(cbind(row.header, DT), file = file, sep = sep)
 }
 
 #' @export
 WriteCatalog.SBS96Catalog <- function(catalog, file, strict = TRUE) {
   WriteCat(catalog, file, 96, ICAMS::catalog.row.order$SBS96,
            catalog.row.headers.SBS.96, strict)
+}
+
+#' @keywords internal
+WriteSBS96CatalogAsTsv <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 96, ICAMS::catalog.row.order$SBS96,
+           catalog.row.headers.SBS.96.v1, strict, sep = "\t")
 }
 
 #' @export
