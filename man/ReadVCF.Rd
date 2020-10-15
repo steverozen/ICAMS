@@ -4,7 +4,14 @@
 \alias{ReadVCF}
 \title{Read in the data lines of a Variant Call Format (VCF) file}
 \usage{
-ReadVCF(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA)
+ReadVCF(
+  file,
+  variant.caller = NULL,
+  name.of.VCF = NULL,
+  tumor.col.name = NA,
+  filter.status = NULL,
+  get.vaf.function = NULL
+)
 }
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}
@@ -12,8 +19,8 @@ ReadVCF(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA)
 \item{variant.caller}{Name of the variant caller that produces the VCF, can
 be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 information is needed to calculate the VAFs (variant allele frequencies).
-If \code{NULL}(default), then VAF and read depth information will not be
-added to the original VCF.}
+If \code{NULL}(default) and \code{get.vaf.function} is also NULL, then VAF
+and read depth will be NAs.}
 
 \item{name.of.VCF}{Name of the VCF file. If \code{NULL}(default), this
 function will remove all of the path up to and including the last path
@@ -26,6 +33,17 @@ information. It \strong{must} have quotation marks. If
 \code{tumor.col.name} is equal to \code{NA}(default), this function will
 use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
+
+\item{filter.status}{The status indicating a variant has passed all filters.
+An example would be \code{"PASS"}. Variants which don't have the specified
+\code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+\code{NULL}(default), no variants will be removed from the original VCF.}
+
+\item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
+\strog{NULL}. Function to calculate VAF(variant allele frequency) and read
+  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+  If \code{NULL}(default) and \code{variant.caller} is NULL, then VAF
+  and read depth will be NAs.}
 }
 \value{
 A data frame storing data lines of the VCF file with two additional

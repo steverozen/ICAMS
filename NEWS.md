@@ -4,6 +4,8 @@
 
 * Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 
+* Added new argument `filter.status` and `get.vaf.function` in internal function `ReadVCF`.
+
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.

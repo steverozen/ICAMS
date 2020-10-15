@@ -470,9 +470,9 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' @param variant.caller Name of the variant caller that produces the VCF, can
 #'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 #'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{NULL}(default), then VAF and read depth information will not be
-#'   added to the original VCF.
-#'
+#'   If \code{NULL}(default) and \code{get.vaf.function} is also NULL, then VAF
+#'   and read depth will be NAs.
+#'   
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
 #'   separator (if any) in \code{file} and file path without extensions (and the
@@ -484,15 +484,38 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #'   \code{tumor.col.name} is equal to \code{NA}(default), this function will
 #'   use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
 #'   more details.
-#'
+#'   
+#' @param filter.status The status indicating a variant has passed all filters.
+#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   
+#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
+#' \strog{NULL}. Function to calculate VAF(variant allele frequency) and read
+#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+#'   If \code{NULL}(default) and \code{variant.caller} is NULL, then VAF
+#'   and read depth will be NAs.
+#'   
 #' @return A data frame storing data lines of the VCF file with two additional
 #'   columns added which contain the VAF(variant allele frequency) and read
 #'   depth information.
 #'
 #' @keywords internal
 ReadVCF <-
-  function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA) {
-    df1 <- df <- MakeDataFrameFromVCF(file)
+  function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA,
+           filter.status = NULL, get.vaf.function = NULL) {
+    df0 <- MakeDataFrameFromVCF(file)
+    
+    if (nrow(df0) == 0) {
+      return(df0)
+    }
+    
+    # Remove rows that don't have the specified filter status
+    if (is.null(filter.status)) {
+      df1 <- df <- df0
+    } else {
+      df1 <- df <- df0[FILTER == filter.status]
+    }
     
     if (nrow(df) == 0) {
       return(df)
@@ -500,9 +523,14 @@ ReadVCF <-
     
     df1$VAF <- as.numeric(NA)
     df1$read.depth <- as.numeric(NA)
-
+    
     if (is.null(variant.caller)) {
-      return(df1)
+      if (is.null(get.vaf.function)) {
+        return(df1)
+      } else {
+        df2 <- get.vaf.function(df)
+        return(df2)
+      }
     }
 
     # Check whether the variant caller is supported by ICAMS
