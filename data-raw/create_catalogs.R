@@ -302,6 +302,46 @@ catalog.row.headers.SBS.96 <-
     # , .internal.selfref = <pointer: 0x0000000002551ef0>
   )
 
+catalog.row.headers.SBS.96.v1 <-
+  structure(
+    list(
+      Bef = c("A", "A", "A", "A", "C", "C", "C", "C", "G", "G", "G", "G", "T", 
+              "T", "T", "T", "A", "A", "A", "A", "C", "C", "C", "C", "G", "G", 
+              "G", "G", "T", "T", "T", "T", "A", "A", "A", "A", "C", "C", "C", 
+              "C", "G", "G", "G", "G", "T", "T", "T", "T", "A", "A", "A", "A", 
+              "C", "C", "C", "C", "G", "G", "G", "G", "T", "T", "T", "T", "A", 
+              "A", "A", "A", "C", "C", "C", "C", "G", "G", "G", "G", "T", "T", 
+              "T", "T", "A", "A", "A", "A", "C", "C", "C", "C", "G", "G", "G", 
+              "G", "T", "T", "T", "T" ), 
+      Ref = c("C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", 
+              "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C",
+              "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", 
+              "C", "C", "C", "C", "C", "C", "C", "C", "C", "T", "T", "T", "T", 
+              "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", 
+              "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", 
+              "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", "T", 
+              "T", "T", "T", "T", "T"), 
+      After = c("A",  "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", 
+                "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", 
+                "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", 
+                "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", 
+                "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", 
+                "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", 
+                "G", "T", "A", "C", "G", "T", "A", "C", "G", "T", "A", "C", "G", 
+                "T", "A", "C", "G", "T"), 
+      Var = c("A", "A", "A", "A",  "A", "A", "A", "A", "A", "A", "A", "A", "A", 
+              "A", "A", "A", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", 
+              "G", "G", "G", "G", "G", "G", "T", "T", "T", "T", "T", "T", "T", 
+              "T", "T", "T", "T", "T", "T", "T", "T", "T", "A", "A", "A", "A", 
+              "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "C",
+              "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", 
+              "C", "C", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", 
+              "G", "G", "G", "G", "G")), 
+    row.names = c(NA, -96L), 
+    class = c("data.table",  "data.frame")
+    #.internal.selfref = <pointer: 0x00000200ca341ef0>
+  )
+
 catalog.row.headers.SBS.192 <-
   structure(
     list(

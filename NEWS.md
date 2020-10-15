@@ -8,6 +8,8 @@
 `ReadVCFs`, `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf`
 and `VCFsToZipFile`.
 
+* Added a new internal data `catalog.row.headers.SBS.96.v1`.
+
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.
