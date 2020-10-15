@@ -169,6 +169,6 @@ if(getRversion() >= "2.15.1") {
                            "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
                            "Ensembl.gene.ID", "readthrough", "exp.value", 
                            "trans.end.pos", "trans.start.pos", "read.depth", "VAF", 
-                           "read.depth.x", "read.depth.y","exp.level", 
+                           "read.depth.x", "read.depth.y","exp.level", "FILTER",
                            "trans.Ensembl.gene.ID", "..col.names.order", "remark.for.DBS"))
 }
