@@ -1,10 +1,12 @@
 # ICAMS 2.2.5.90xx
 ## Added
-* Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs`.
+* Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs` and `VCFsToZipFileXtra`.
 
 * Added new *exported* function `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 
-* Added new argument `filter.status` and `get.vaf.function` in internal function `ReadVCF`.
+* Added new argument `filter.status` and `get.vaf.function` in functions `ReadVCF`, 
+`ReadVCFs`, `ReadAndSplitVCFs`, `VCFsToCatalogs`, `VCFsToCatalogsAndPlotToPdf`
+and `VCFsToZipFile`.
 
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 

@@ -360,11 +360,11 @@ MutectVCFFilesToZipFile <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}. 
 #'   
-#' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
-#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies) and read depth. If
-#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#' @param variant.caller Name of the variant caller that produces the VCF, can
+#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+#'   information is needed to calculate the VAFs (variant allele frequencies).
+#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
+#'   and read depth will be NAs.
 #'   
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
 #'   \code{\link{BSgenome}} object 
@@ -396,6 +396,17 @@ MutectVCFFilesToZipFile <-
 #'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
 #'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
+#'   
+#' @param filter.status The status indicating a variant has passed all filters.
+#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   
+#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
+#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
+#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+#'   and read depth will be NAs.
 #'   
 #' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
@@ -440,11 +451,13 @@ VCFsToZipFile <-
   function(dir,
            zipfile, 
            ref.genome, 
-           variant.caller = NULL,
+           variant.caller = "unknown",
            trans.ranges = NULL, 
            region = "unknown", 
            names.of.VCFs = NULL, 
            tumor.col.names = NA,
+           filter.status = NULL, 
+           get.vaf.function = NULL,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
@@ -453,6 +466,7 @@ VCFsToZipFile <-
     vcf.names <- basename(files)
     catalogs0 <- VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges, 
                                 region, names.of.VCFs, tumor.col.names,
+                                filter.status, get.vaf.function,
                                 return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
@@ -485,13 +499,116 @@ VCFsToZipFile <-
     }
     
     zipfile.name <- basename(zipfile)
-    AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect", 
+    AddRunInformation(files, vcf.names, zipfile.name, vcftype = variant.caller, 
                       ref.genome, region, mutation.loads, strand.bias.statistics)
     file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
     invisible(catalogs0)
+  }
+
+#' Analogous to \code{\link{VCFsToZipFile}}, also generates density CSV and PDF files in the zip
+#' archive.
+#' 
+#' @keywords internal
+VCFsToZipFileXtra <- 
+  function(dir,
+           zipfile, 
+           ref.genome, 
+           variant.caller = "unknown",
+           trans.ranges = NULL, 
+           region = "unknown", 
+           names.of.VCFs = NULL, 
+           tumor.col.names = NA,
+           filter.status = NULL, 
+           get.vaf.function = NULL,
+           base.filename = "",
+           return.annotated.vcfs = FALSE,
+           suppress.discarded.variants.warnings = TRUE) {
+    files <- list.files(path = dir, pattern = "\\.vcf$", 
+                        full.names = TRUE, ignore.case = TRUE)
+    vcf.names <- basename(files)
+    catalogs0 <- VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges, 
+                                region, names.of.VCFs, tumor.col.names,
+                                filter.status, get.vaf.function,
+                                return.annotated.vcfs,
+                                suppress.discarded.variants.warnings)
+    mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
+    strand.bias.statistics <- NULL
+    
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    
+    # Remove the ID counts catalog as it does not have abundance for
+    # it to be transformed to density catalog
+    catalogs$catID <- NULL
+    
+    TransCountsCatalogToDensity <- function(list) {
+      # Create an empty list for storing the density catalogs
+      list1 <- vector(mode = "list")
+      
+      for (name in names(list)) {
+        name1 <- paste0(name, ".density")
+        catalog <- list[[name]]
+        catalog.density <- 
+          TransformCatalog(catalog, target.catalog.type = "density")
+        list1[[name1]] <- catalog.density
+      }
+      return(list1)
+    }
+    
+    # Transform the counts catalogs to density catalogs
+    catalogs.density <- TransCountsCatalogToDensity(catalogs)
+    
+    output.file <- ifelse(base.filename == "",
+                          paste0(tempdir(), .Platform$file.sep),
+                          file.path(tempdir(), paste0(base.filename, ".")))
+    
+    for (name in names(catalogs)) {
+      WriteCatalog(catalogs[[name]],
+                   file = paste0(output.file, name, ".counts.csv"))
+    }
+    
+    # Write the density catalogs to CSV files
+    for (name in names(catalogs.density)) {
+      WriteCatalog(catalogs.density[[name]],
+                   file = paste0(output.file, name, ".csv"))
+    }
+    
+    for (name in names(catalogs)) {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".counts.pdf"))
+      if (name == "catSBS192") {
+        list <- PlotCatalogToPdf(catalogs[[name]],
+                                 file = paste0(output.file, "SBS12.counts.pdf"),
+                                 plot.SBS12 = TRUE)
+        strand.bias.statistics <- 
+          c(strand.bias.statistics, list$strand.bias.statistics)
+      }
+    }
+    
+    # Plotting the density catalogs to PDFs
+    for (name in names(catalogs.density)) {
+      PlotCatalogToPdf(catalogs.density[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      if (name == "catSBS192.density") {
+        list <- PlotCatalogToPdf(catalogs.density[[name]],
+                                 file = paste0(output.file, "SBS12.density.pdf"),
+                                 plot.SBS12 = TRUE)
+        strand.bias.statistics <- 
+          c(strand.bias.statistics, list$strand.bias.statistics)
+      }
+    }
+    zipfile.name <- basename(zipfile)
+    AddRunInformation(files, vcf.names, zipfile.name, vcftype = variant.caller, 
+                      ref.genome, region, mutation.loads, strand.bias.statistics)
+    
+    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$", 
+                             full.names = TRUE)
+    zip::zipr(zipfile = zipfile, files = file.names)
+    unlink(file.names)
   }
 
 #' @keywords internal
@@ -816,12 +933,14 @@ CombineAndReturnCatalogsForVCFs <-
 #'   catalogs <- VCFsToCatalogs(file, ref.genome = "hg19", 
 #'                              variant.caller = "mutect", region = "genome")}
 VCFsToCatalogs <-
-  function(files, ref.genome, variant.caller = NULL, trans.ranges = NULL, 
+  function(files, ref.genome, variant.caller = "unknown", trans.ranges = NULL, 
            region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA, 
+           filter.status = NULL, get.vaf.function = NULL,
            return.annotated.vcfs = FALSE, 
            suppress.discarded.variants.warnings = TRUE) {
     split.vcfs <- 
       ReadAndSplitVCFs(files, variant.caller, names.of.VCFs, tumor.col.names,
+                       filter.status, get.vaf.function,
                        suppress.discarded.variants.warnings)
     
     SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
@@ -960,11 +1079,11 @@ ReadAndSplitMutectVCFs <-
 #'
 #' @param files Character vector of file paths to the VCF files.
 #'
-#' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
-#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies) and read depth. If
-#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#' @param variant.caller Name of the variant caller that produces the VCF, can
+#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+#'   information is needed to calculate the VAFs (variant allele frequencies).
+#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
+#'   and read depth will be NAs.
 #'
 #' @param names.of.VCFs Character vector of names of the VCF files. The order
 #'   of names in \code{names.of.VCFs} should match the order of VCF file paths
@@ -980,6 +1099,17 @@ ReadAndSplitMutectVCFs <-
 #'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
 #'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
+#'   
+#' @param filter.status The status indicating a variant has passed all filters.
+#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   
+#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
+#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
+#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+#'   and read depth will be NAs.
 #'
 #' @param suppress.discarded.variants.warnings Logical. Whether to suppress
 #'   warning messages showing information about the discarded variants. Default
@@ -999,7 +1129,7 @@ ReadAndSplitMutectVCFs <-
 #'   \code{discarded.reason} for more details.
 #' @md
 #' 
-#' @seealso \code{\link{MutectVCFFilesToCatalog}}
+#' @seealso \code{\link{VCFsToCatalogs}}
 #'
 #' @export
 #' 
@@ -1009,12 +1139,14 @@ ReadAndSplitMutectVCFs <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
 ReadAndSplitVCFs <- 
-  function(files, variant.caller = NULL, names.of.VCFs = NULL, 
-           tumor.col.names = NA,
+  function(files, variant.caller = "unknown", names.of.VCFs = NULL, 
+           tumor.col.names = NA, filter.status = NULL, get.vaf.function = NULL,
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadVCFs(files = files, variant.caller = variant.caller, 
                      names.of.VCFs = names.of.VCFs, 
-                     tumor.col.names =  tumor.col.names)
+                     tumor.col.names =  tumor.col.names, 
+                     filter.status = filter.status,
+                     get.vaf.function = get.vaf.function)
     
     split.vcfs <- 
       SplitListOfVCFs(list.of.vcfs = vcfs, 
@@ -1626,12 +1758,14 @@ AddRunInformation <-
     # Add input parameters specified by the user
     writeLines("", run.info)
     writeLines("--- Input parameters ---", run.info)
-    if (vcftype == "strelka.sbs") {
-      vcftype <- "Strelka SBS VCF"
-    } else if (vcftype == "strelka.id") {
-      vcftype <- "Strelka ID VCF"
+    if (is.null(vcftype)) {
+      vcftype <- "Unknown"
+    } else if (vcftype == "strelka") {
+      vcftype <- "Strelka"
+    } else if (vcftype == "freebayes") {
+      vcftype <- "FreeBayes"
     } else if (vcftype == "mutect") {
-      vcftype <- "Mutect VCF"
+      vcftype <- "Mutect"
     }
     
     if (ref.genome == "hg19") {
@@ -1641,7 +1775,7 @@ AddRunInformation <-
     } else if (ref.genome == "mm10") {
       ref.genome <- "Mouse GRCm38/mm10"
     }
-    writeLines(paste0("Type of VCF:      ", vcftype), run.info)
+    writeLines(paste0("Variant caller:   ", vcftype), run.info)
     writeLines(paste0("Reference genome: ", ref.genome), run.info)
     writeLines(paste0("Region:           ", region), run.info)
     

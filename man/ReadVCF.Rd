@@ -6,7 +6,7 @@
 \usage{
 ReadVCF(
   file,
-  variant.caller = NULL,
+  variant.caller = "unknown",
   name.of.VCF = NULL,
   tumor.col.name = NA,
   filter.status = NULL,
@@ -19,7 +19,7 @@ ReadVCF(
 \item{variant.caller}{Name of the variant caller that produces the VCF, can
 be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 information is needed to calculate the VAFs (variant allele frequencies).
-If \code{NULL}(default) and \code{get.vaf.function} is also NULL, then VAF
+If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 and read depth will be NAs.}
 
 \item{name.of.VCF}{Name of the VCF file. If \code{NULL}(default), this
@@ -40,9 +40,9 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 \code{NULL}(default), no variants will be removed from the original VCF.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
-\strog{NULL}. Function to calculate VAF(variant allele frequency) and read
+\strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
-  If \code{NULL}(default) and \code{variant.caller} is NULL, then VAF
+  If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
   and read depth will be NAs.}
 }
 \value{

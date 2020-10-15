@@ -7,11 +7,13 @@
 VCFsToCatalogs(
   files,
   ref.genome,
-  variant.caller = NULL,
+  variant.caller = "unknown",
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
+  filter.status = NULL,
+  get.vaf.function = NULL,
   return.annotated.vcfs = FALSE,
   suppress.discarded.variants.warnings = TRUE
 )
@@ -22,11 +24,11 @@ VCFsToCatalogs(
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{variant.caller}{Name of the variant caller that produces \strong{all}
-the VCFs specified by \code{files}, can be either \code{"strelka"},
-\code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
-the VAFs (variant allele frequencies) and read depth. If
-\code{NULL}(default), then VAF and read depth will be NAs.}
+\item{variant.caller}{Name of the variant caller that produces the VCF, can
+be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+information is needed to calculate the VAFs (variant allele frequencies).
+If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
+and read depth will be NAs.}
 
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link{BSgenome}} object
@@ -58,6 +60,17 @@ should match the order of \strong{Mutect} VCFs specified in \code{files}.
 If \code{tumor.col.names} is equal to \code{NA}(default), this function
 will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
 See \code{\link{GetMutectVAF}} for more details.}
+
+\item{filter.status}{The status indicating a variant has passed all filters.
+An example would be \code{"PASS"}. Variants which don't have the specified
+\code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+\code{NULL}(default), no variants will be removed from the original VCF.}
+
+\item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
+\strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
+depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
+If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+and read depth will be NAs.}
 
 \item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
 with additional columns showing mutation class for each variant. Default is

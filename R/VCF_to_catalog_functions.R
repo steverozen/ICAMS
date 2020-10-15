@@ -470,7 +470,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' @param variant.caller Name of the variant caller that produces the VCF, can
 #'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 #'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{NULL}(default) and \code{get.vaf.function} is also NULL, then VAF
+#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 #'   and read depth will be NAs.
 #'   
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
@@ -491,9 +491,9 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #'   \code{NULL}(default), no variants will be removed from the original VCF.
 #'   
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
-#' \strog{NULL}. Function to calculate VAF(variant allele frequency) and read
+#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
 #'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
-#'   If \code{NULL}(default) and \code{variant.caller} is NULL, then VAF
+#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
 #'   
 #' @return A data frame storing data lines of the VCF file with two additional
@@ -502,7 +502,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 ReadVCF <-
-  function(file, variant.caller = NULL, name.of.VCF = NULL, tumor.col.name = NA,
+  function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
            filter.status = NULL, get.vaf.function = NULL) {
     df0 <- MakeDataFrameFromVCF(file)
     
@@ -524,7 +524,7 @@ ReadVCF <-
     df1$VAF <- as.numeric(NA)
     df1$read.depth <- as.numeric(NA)
     
-    if (is.null(variant.caller)) {
+    if (variant.caller == "unknown") {
       if (is.null(get.vaf.function)) {
         return(df1)
       } else {
@@ -598,36 +598,16 @@ ReadVCF <-
 
 #' Read VCF files
 #'
-#' @param files Character vector of file paths to the VCF files.
-#'
-#' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{strelka},
-#'   \code{mutect} or \code{freebayes}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies) and read depth. If
-#'   \code{NULL}(default), then VAF and read depth will be NAs.
-#'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
-#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Character vector of column names in \strong{Mutect} VCFs which contain the
-#'   tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
-#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
-#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
-#'
+#' @inheritParams ReadAndSplitVCFs
+#' 
 #' @return A list of data frames storing data lines of the VCF files with two
 #'   additional columns added which contain the VAF(variant allele frequency)
 #'   and read depth information.
 #'
 #' @keywords internal
-ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
-                     tumor.col.names = NA) {
+ReadVCFs <- function(files, variant.caller = "unknown", names.of.VCFs = NULL,
+                     tumor.col.names = NA, filter.status = NULL,
+                     get.vaf.function = NULL) {
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
@@ -644,7 +624,8 @@ ReadVCFs <- function(files, variant.caller = NULL, names.of.VCFs = NULL,
 
   ReadVCF1 <- function(idx, files, variant.caller, vector1, vector2) {
     ReadVCF(file = files[idx], variant.caller = variant.caller,
-            name.of.VCF = vector1[idx], tumor.col.name = vector2[idx])
+            name.of.VCF = vector1[idx], tumor.col.name = vector2[idx],
+            filter.status = filter.status, get.vaf.function = get.vaf.function)
   }
 
   vcfs <- lapply(1:num.of.files, FUN = ReadVCF1, files = files,
@@ -2761,11 +2742,11 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #' @param ref.genome  A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'   
-#' @param variant.caller Name of the variant caller that produces \strong{all}
-#'   the VCFs specified by \code{files}, can be either \code{"strelka"},
-#'   \code{"mutect"} or \code{"freebayes"}. This information is needed to calculate
-#'   the VAFs (variant allele frequencies) and read depth. If
-#'   \code{NULL}(default), then VAF and read depth will be NAs.
+#' @param variant.caller Name of the variant caller that produces the VCF, can
+#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
+#'   information is needed to calculate the VAFs (variant allele frequencies).
+#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
+#'   and read depth will be NAs.
 #'
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
 #'   \code{\link{BSgenome}} object
@@ -2797,6 +2778,17 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
 #'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
 #'   See \code{\link{GetMutectVAF}} for more details.
+#'   
+#' @param filter.status The status indicating a variant has passed all filters.
+#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
+#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   
+#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
+#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
+#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+#'   and read depth will be NAs.
 #'
 #' @param base.filename Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
@@ -2886,11 +2878,13 @@ VCFsToCatalogsAndPlotToPdf <-
   function(files,
            output.dir,
            ref.genome,
-           variant.caller = NULL,
+           variant.caller = "unknown",
            trans.ranges = NULL,
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
+           filter.status = NULL, 
+           get.vaf.function = NULL,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
@@ -2898,6 +2892,7 @@ VCFsToCatalogsAndPlotToPdf <-
     catalogs0 <-
       VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges,
                      region, names.of.VCFs, tumor.col.names,
+                     filter.status, get.vaf.function,
                      return.annotated.vcfs,
                      suppress.discarded.variants.warnings)
     
