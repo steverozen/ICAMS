@@ -14,8 +14,15 @@ test_that("VCFsToCatalogs function for Mutect VCFs", {
   catalogs4 <- VCFsToCatalogs(files, ref.genome = "hg19", 
                               variant.caller = "mutect", region = "genome",
                               return.annotated.vcfs = TRUE)
+  catalogs5 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
+                              get.vaf.function = GetMutectVAF)
+  catalogs6 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
+                              get.vaf.function = GetMutectVAF,
+                              return.annotated.vcfs = TRUE)
   expect_equal(catalogs1, catalogs3)
   expect_equal(catalogs2, catalogs4)
+  expect_equal(catalogs1, catalogs5)
+  expect_equal(catalogs2, catalogs6)
 })
 
 test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
@@ -32,10 +39,19 @@ test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
   catalogs4 <- VCFsToCatalogs(files, ref.genome = "hg19", 
                               variant.caller = "strelka", region = "genome",
                               return.annotated.vcfs = TRUE)
+  catalogs5 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
+                              get.vaf.function = GetStrelkaVAF)
+  catalogs6 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
+                              get.vaf.function = GetStrelkaVAF,
+                              return.annotated.vcfs = TRUE)
   catalogs3$catID <- NULL
   expect_equal(catalogs1, catalogs3)
+  catalogs5$catID <- NULL
+  expect_equal(catalogs1, catalogs5)
   catalogs4$catID <- catalogs4$annotated.vcfs$ID <- NULL
   expect_equal(catalogs2, catalogs4)
+  catalogs6$catID <- catalogs6$annotated.vcfs$ID <- NULL
+  expect_equal(catalogs2, catalogs6)
 })
 
 test_that("VCFsToCatalogs function for Strelka ID VCFs", {
