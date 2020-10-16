@@ -461,6 +461,44 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
   return(cbind(vcf, vafs))
 }
 
+#' Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth
+#' from PCAWG7 consensus vcfs
+#'
+#' @keywords internal
+GetConsensusVAF <- function(vcf) {
+  info <- vcf$INFO
+  tmp <- stringi::stri_split_fixed(info, ";")
+  alt.counts <- lapply(tmp, FUN = function(x) {
+    idx <- grep("t_alt_count", x, fixed = TRUE)
+    if (length(idx) == 0) {
+      return(as.integer(NA))
+    } else {
+      alt.info <- x[idx]
+      alt.count <- gsub("t_alt_count=", "", alt.info)
+      return(as.integer(alt.count))
+    }
+  })
+  alt.counts1 <- unlist(alt.counts)
+  
+  ref.counts <- lapply(tmp, FUN = function(x) {
+    idx <- grep("t_ref_count", x, fixed = TRUE)
+    if (length(idx) == 0) {
+      return(as.integer(NA))
+    } else {
+      ref.info <- x[idx]
+      ref.count <- gsub("t_ref_count=", "", ref.info)
+      return(as.integer(ref.count))
+    }
+  })
+  ref.counts1 <- unlist(ref.counts)
+  
+  read.depth <- alt.counts1 + ref.counts1
+  vaf <- alt.counts1/read.depth
+  vcf$VAF <- vaf
+  vcf$read.depth <- read.depth
+  return(vcf)
+}
+
 #' Read in the data lines of a Variant Call Format (VCF) file
 #'
 #' @importFrom utils read.csv
