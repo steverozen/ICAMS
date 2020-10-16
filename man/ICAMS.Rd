@@ -111,6 +111,12 @@ or \code{\link{StrelkaSBSVCFFilesToCatalog}},
 \section{Creating catalogs from variant call files (VCF files)}{
 
 \enumerate{
+\item \code{\link{VCFsToCatalogs}} creates 3 SBS catalogs (96, 192, 1536), 3
+DBS catalogs (78, 136, 144) and ID (small insertion and deletion) catalog
+from the VCFs. It has more general usage with functionalities overlapping
+with the three functions below. For example, it is the same as
+\code{\link{MutectVCFFilesToCatalog}} when \code{variant.caller = "mutect"}.
+
 \item \code{\link{StrelkaSBSVCFFilesToCatalog}} creates 3 SBS catalogs (96,
 192, 1536) and 3 DBS catalogs (78, 136, 144) from the Strelka SBS VCFs.
 
@@ -137,6 +143,12 @@ of mutational signatures to a PDF file.
 \section{Wrapper functions to create catalogs from VCFs and plot the catalogs to PDF files}{
 
 \enumerate{
+\item \code{\link{VCFsToCatalogsAndPlotToPdf}} creates all types of SBS, DBS
+and ID catalogs from VCFs and plots the catalogs. It has more general usage
+with functionalities overlapping with the three functions below. For
+example, it is the same as \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}}
+when \code{variant.caller = "mutect"}.
+
 \item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates all
 type of SBS and DBS catalogs from Strelka SBS VCFs and plots the catalogs.
 
@@ -150,6 +162,12 @@ SBS, DBS and ID catalogs from Mutect VCFs and plots the catalogs. }
 \section{Wrapper functions to create a zip file which contains catalogs and plot PDFs from VCF files}{
 
 \enumerate{
+\item \code{\link{VCFsToZipFile}} creates a zip file which contains SBS, DBS
+and ID catalogs and plot PDFs from VCF files. It has more general usage with
+functionalities overlapping with the three functions below. For example,
+it is the same as \code{\link{MutectVCFFilesToZipFile}} when
+\code{variant.caller = "mutect"}.
+
 \item \code{\link{StrelkaSBSVCFFilesToZipFile}} creates a zip file which
 contains SBS and DBS catalogs and plot PDFs from Strelka SBS VCF files.
 
