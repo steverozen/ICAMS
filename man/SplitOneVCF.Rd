@@ -4,11 +4,17 @@
 \alias{SplitOneVCF}
 \title{Split a VCF into SBS, DBS, and ID VCFs, plus a list of other mutations}
 \usage{
-SplitOneVCF(vcf.df, name.of.VCF = NULL)
+SplitOneVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL)
 }
 \arguments{
 \item{vcf.df}{An in-memory data.frame representing a VCF, including
 VAFs, which are added by \code{\link{ReadVCF}}.}
+
+\item{max.vaf.diff}{The maximum difference of VAF, default value is 0.02. If
+the absolute difference of VAFs for adjacent SBSs is bigger than
+\code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+asynchronous single base mutations, opposed to a simultaneous doublet
+mutation or variants involving more than two consecutive bases.}
 
 \item{name.of.VCF}{Name of the VCF file.}
 }

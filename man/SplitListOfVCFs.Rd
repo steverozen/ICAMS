@@ -5,10 +5,20 @@
 \title{Split each VCF into SBS, DBS, and ID VCFs (plus 
 VCF-like data frame with left-over rows)}
 \usage{
-SplitListOfVCFs(list.of.vcfs, suppress.discarded.variants.warnings = TRUE)
+SplitListOfVCFs(
+  list.of.vcfs,
+  max.vaf.diff = 0.02,
+  suppress.discarded.variants.warnings = TRUE
+)
 }
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
+
+\item{max.vaf.diff}{The maximum difference of VAF, default value is 0.02. If
+the absolute difference of VAFs for adjacent SBSs is bigger than
+\code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+asynchronous single base mutations, opposed to a simultaneous doublet
+mutation or variants involving more than two consecutive bases.}
 
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default

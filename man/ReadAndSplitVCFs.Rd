@@ -11,6 +11,7 @@ ReadAndSplitVCFs(
   tumor.col.names = NA,
   filter.status = NULL,
   get.vaf.function = NULL,
+  max.vaf.diff = 0.02,
   suppress.discarded.variants.warnings = TRUE
 )
 }
@@ -48,6 +49,13 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
 If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 and read depth will be NAs.}
+
+\item{max.vaf.diff}{\strong{Not} applicable if \code{variant.caller =
+  "mutect"}. The maximum difference of VAF, default value is 0.02. If the
+absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
+then these adjacent SBSs are likely to be "merely" asynchronous single base
+mutations, opposed to a simultaneous doublet mutation or variants involving
+more than two consecutive bases.}
 
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default

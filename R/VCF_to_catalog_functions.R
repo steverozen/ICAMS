@@ -866,7 +866,11 @@ SplitListOfMutectVCFs <-
 #'
 #' @param vcf.df An in-memory data frame containing an SBS VCF file contents.
 #'
-#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
+#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
+#'   the absolute difference of VAFs for adjacent SBSs is bigger than
+#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+#'   asynchronous single base mutations, opposed to a simultaneous doublet
+#'   mutation or variants involving more than two consecutive bases.
 #'
 #' @param name.of.VCF Name of the VCF file.
 #'
@@ -1035,6 +1039,12 @@ SplitSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #'
 #' @param vcf.df An in-memory data.frame representing a VCF, including
 #'  VAFs, which are added by \code{\link{ReadVCF}}.
+#'  
+#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
+#'   the absolute difference of VAFs for adjacent SBSs is bigger than
+#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+#'   asynchronous single base mutations, opposed to a simultaneous doublet
+#'   mutation or variants involving more than two consecutive bases.
 #'
 #' @param name.of.VCF Name of the VCF file.
 #'
@@ -1054,7 +1064,7 @@ SplitSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #'  @md
 #'
 #' @keywords internal
-SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
+SplitOneVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
   if (nrow(vcf.df) == 0) {
     return(list(SBS = vcf.df, DBS = vcf.df, ID = vcf.df))
   }
@@ -1072,7 +1082,8 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
   SBS.df0 <- df[nchar(df$REF) == 1 & nchar(df$ALT) == 1, ]
   
   # Try to get DBS from adjacent SBSs according to similar VAFs
-  split.dfs <- SplitSBSVCF(vcf.df = SBS.df0, name.of.VCF = name.of.VCF)
+  split.dfs <- SplitSBSVCF(vcf.df = SBS.df0, max.vaf.diff = max.vaf.diff,
+                           name.of.VCF = name.of.VCF)
   SBS.df <- split.dfs$SBS.vcf
   DBS.df0 <- split.dfs$DBS.vcf
   discarded.variants <-
@@ -1094,6 +1105,12 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
 #' VCF-like data frame with left-over rows)
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
+#' 
+#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
+#'   the absolute difference of VAFs for adjacent SBSs is bigger than
+#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+#'   asynchronous single base mutations, opposed to a simultaneous doublet
+#'   mutation or variants involving more than two consecutive bases.
 #'
 #' @inheritParams ReadAndSplitMutectVCFs
 #'
@@ -1101,12 +1118,13 @@ SplitOneVCF <- function(vcf.df, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 SplitListOfVCFs <-
-  function(list.of.vcfs,
+  function(list.of.vcfs, max.vaf.diff = 0.02,
            suppress.discarded.variants.warnings = TRUE) {
     names.of.VCFs <- names(list.of.vcfs)
     
     GetSplitVCFs <- function(idx, list.of.vcfs) {
-      split.vcfs <- SplitOneVCF(list.of.vcfs[[idx]],
+      split.vcfs <- SplitOneVCF(list.of.vcfs[[idx]], 
+                                max.vaf.diff = max.vaf.diff,
                                 name.of.VCF = names(list.of.vcfs)[idx])
       return(split.vcfs)
     }
@@ -1317,7 +1335,11 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
 #'
-#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02.
+#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
+#'   the absolute difference of VAFs for adjacent SBSs is bigger than
+#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+#'   asynchronous single base mutations, opposed to a simultaneous doublet
+#'   mutation or variants involving more than two consecutive bases.
 #'
 #' @param name.of.VCF Name of the VCF file.
 #'
@@ -2827,6 +2849,13 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
+#'   
+#' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
+#'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
+#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
+#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
+#'   mutations, opposed to a simultaneous doublet mutation or variants involving
+#'   more than two consecutive bases.
 #'
 #' @param base.filename Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
@@ -2923,6 +2952,7 @@ VCFsToCatalogsAndPlotToPdf <-
            tumor.col.names = NA,
            filter.status = NULL, 
            get.vaf.function = NULL,
+           max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
@@ -2930,7 +2960,7 @@ VCFsToCatalogsAndPlotToPdf <-
     catalogs0 <-
       VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges,
                      region, names.of.VCFs, tumor.col.names,
-                     filter.status, get.vaf.function,
+                     filter.status, get.vaf.function, max.vaf.diff,
                      return.annotated.vcfs,
                      suppress.discarded.variants.warnings)
     
