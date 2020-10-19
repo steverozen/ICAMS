@@ -408,6 +408,13 @@ MutectVCFFilesToZipFile <-
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
 #'   
+#' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
+#'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
+#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
+#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
+#'   mutations, opposed to a simultaneous doublet mutation or variants involving
+#'   more than two consecutive bases.
+#'   
 #' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
@@ -458,6 +465,7 @@ VCFsToZipFile <-
            tumor.col.names = NA,
            filter.status = NULL, 
            get.vaf.function = NULL,
+           max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
@@ -466,7 +474,7 @@ VCFsToZipFile <-
     vcf.names <- basename(files)
     catalogs0 <- VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges, 
                                 region, names.of.VCFs, tumor.col.names,
-                                filter.status, get.vaf.function,
+                                filter.status, get.vaf.function, max.vaf.diff,
                                 return.annotated.vcfs,
                                 suppress.discarded.variants.warnings)
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
@@ -935,12 +943,12 @@ CombineAndReturnCatalogsForVCFs <-
 VCFsToCatalogs <-
   function(files, ref.genome, variant.caller = "unknown", trans.ranges = NULL, 
            region = "unknown", names.of.VCFs = NULL, tumor.col.names = NA, 
-           filter.status = NULL, get.vaf.function = NULL,
+           filter.status = NULL, get.vaf.function = NULL, max.vaf.diff = 0.02,
            return.annotated.vcfs = FALSE, 
            suppress.discarded.variants.warnings = TRUE) {
     split.vcfs <- 
       ReadAndSplitVCFs(files, variant.caller, names.of.VCFs, tumor.col.names,
-                       filter.status, get.vaf.function,
+                       filter.status, get.vaf.function, max.vaf.diff,
                        suppress.discarded.variants.warnings)
     
     SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome, 
@@ -1084,7 +1092,7 @@ ReadAndSplitMutectVCFs <-
 #'   information is needed to calculate the VAFs (variant allele frequencies).
 #'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 #'   and read depth will be NAs.
-#'
+#'   
 #' @param names.of.VCFs Character vector of names of the VCF files. The order
 #'   of names in \code{names.of.VCFs} should match the order of VCF file paths
 #'   in \code{files}. If \code{NULL}(default), this function will remove all of
@@ -1110,6 +1118,13 @@ ReadAndSplitMutectVCFs <-
 #'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
+#'   
+#' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
+#'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
+#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
+#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
+#'   mutations, opposed to a simultaneous doublet mutation or variants involving
+#'   more than two consecutive bases.
 #'
 #' @param suppress.discarded.variants.warnings Logical. Whether to suppress
 #'   warning messages showing information about the discarded variants. Default
@@ -1139,8 +1154,9 @@ ReadAndSplitMutectVCFs <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
 ReadAndSplitVCFs <- 
-  function(files, variant.caller = "unknown", names.of.VCFs = NULL, 
-           tumor.col.names = NA, filter.status = NULL, get.vaf.function = NULL,
+  function(files, variant.caller = "unknown", 
+           names.of.VCFs = NULL, tumor.col.names = NA, 
+           filter.status = NULL, get.vaf.function = NULL, max.vaf.diff = 0.02,
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadVCFs(files = files, variant.caller = variant.caller, 
                      names.of.VCFs = names.of.VCFs, 
@@ -1149,7 +1165,7 @@ ReadAndSplitVCFs <-
                      get.vaf.function = get.vaf.function)
     
     split.vcfs <- 
-      SplitListOfVCFs(list.of.vcfs = vcfs, 
+      SplitListOfVCFs(list.of.vcfs = vcfs, max.vaf.diff = max.vaf.diff,
                       suppress.discarded.variants.warnings = 
                         suppress.discarded.variants.warnings)
     return(split.vcfs)

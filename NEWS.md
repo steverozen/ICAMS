@@ -11,6 +11,9 @@ and `VCFsToZipFile`.
 
 * Added a new internal data `catalog.row.headers.SBS.96.v1`.
 
+* Added new argument `max.vaf.diff` in internal functions `SplitOneVCF`, `SplitListOfVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogs`,
+`VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
+
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.
