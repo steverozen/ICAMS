@@ -18,7 +18,7 @@ and `VCFsToZipFile`.
 
 * Added new dependency package `R.utils` for `data.table::fread` to read gz and bz2 files directly.
 
-* Added new argument `num.of.cores` in internal functions `ReadVCFs`, `SplitListOfVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogsAndPlotToPdf`, `VCFsToCatalogs`, `VCFsToZipFile`, `VCFsToIDCatalogs`.
+* Added new argument `num.of.cores` in internal functions `ReadVCFs`, `SplitListOfVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogsAndPlotToPdf`, `VCFsToCatalogs`, `VCFsToZipFile`, `VCFsToIDCatalogs`, `VCFsToSBSCatalogs`.
 
 * Added new argument `...` in internal functions `ReadVCF`, `ReadVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogsAndPlotToPdf`, `VCFsToCatalogs`, `VCFsToZipFile`.
 
