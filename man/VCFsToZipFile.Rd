@@ -44,7 +44,7 @@ and read depth will be NAs.}
 unless \code{num.of.cores = 1}.}
 
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
-\code{\link{BSgenome}} object 
+\code{\link{BSgenome}} object
 \enumerate{
   \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
   \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
@@ -81,7 +81,7 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
   and read depth will be NAs.}
 
@@ -186,10 +186,10 @@ To add or change attributes of the catalog, you can use function
 dir <- c(system.file("extdata/Mutect-vcf",
                      package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- 
-    VCFsToZipFile(dir, 
+  catalogs <-
+    VCFsToZipFile(dir,
                   zipfile = file.path(tempdir(), "test.zip"),
-                  ref.genome = "hg19", 
+                  ref.genome = "hg19",
                   variant.caller = "mutect",
                   region = "genome",
                   base.filename = "Mutect")

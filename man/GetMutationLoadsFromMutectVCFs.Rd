@@ -12,10 +12,10 @@ GetMutationLoadsFromMutectVCFs(catalogs)
 }
 \value{
 A list containing mutation loads information from Mutect VCF files:
-  
+
 \enumerate{
  \item \code{total.variants} Total number of mutations.
- 
+
  \item \code{SBS} Number of single base substitutions.
 
  \item \code{DBS} Number of double base substitutions.

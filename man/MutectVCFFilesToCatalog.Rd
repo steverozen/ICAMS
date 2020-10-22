@@ -144,7 +144,7 @@ file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19", 
+  catalogs <- MutectVCFFilesToCatalog(file, ref.genome = "hg19",
                                       trans.ranges = trans.ranges.GRCh37,
                                       region = "genome")}
 }

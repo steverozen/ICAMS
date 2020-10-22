@@ -7,6 +7,7 @@
 VCFsToIDCatalogs(
   list.of.vcfs,
   ref.genome,
+  num.of.cores = 1,
   region = "unknown",
   flag.mismatches = 0,
   return.annotated.vcfs = FALSE,
@@ -19,6 +20,9 @@ the sample ids in the output catalog.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
+
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
 
 \item{region}{A character string acting as a region identifier, one of
 "genome", "exome".}
@@ -86,7 +90,7 @@ and the functions it calls for handling of insertions.
 file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.s1.vcf",
                       package = "ICAMS"))
-list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)                      
+list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
  quietly = TRUE)) {
   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",
