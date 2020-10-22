@@ -5,7 +5,13 @@
 \title{Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth
 from PCAWG7 consensus vcfs}
 \usage{
-GetConsensusVAF(vcf)
+GetConsensusVAF(vcf, mc.cores = 1)
+}
+\arguments{
+\item{vcf}{An in-memory VCF data frame.}
+
+\item{mc.cores}{The number of cores to use. Not available on Windows
+unless \code{mc.cores = 1}.}
 }
 \description{
 Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth

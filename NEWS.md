@@ -14,6 +14,16 @@ and `VCFsToZipFile`.
 * Added new argument `max.vaf.diff` in internal functions `SplitOneVCF`, `SplitListOfVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogs`,
 `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile`.
 
+* Added new dependency package `parallel`.
+
+* Added new dependency package `R.utils` for `data.table::fread` to read gz and bz2 files directly.
+
+* Added new argument `num.of.cores` in internal functions `ReadVCFs`, `SplitListOfVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogsAndPlotToPdf`, `VCFsToCatalogs`, `VCFsToZipFile`.
+
+* Added new argument `...` in internal functions `ReadVCF`, `ReadVCFs` and exported functions `ReadAndSplitVCFs`, `VCFsToCatalogsAndPlotToPdf`, `VCFsToCatalogs`, `VCFsToZipFile`.
+
+* Added new argument `mc.cores` in internal functions `GetConsensusVAF`.
+
 ## Changed
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.

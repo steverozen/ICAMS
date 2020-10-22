@@ -463,12 +463,19 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 
 #' Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth
 #' from PCAWG7 consensus vcfs
-#'
+#' 
+#' @param vcf An in-memory VCF data frame.
+#' 
+#' @param mc.cores The number of cores to use. Not available on Windows
+#'   unless \code{mc.cores = 1}.
+#' 
+#' @importFrom parallel mclapply
+#' 
 #' @keywords internal
-GetConsensusVAF <- function(vcf) {
+GetConsensusVAF <- function(vcf, mc.cores = 1) {
   info <- vcf$INFO
   tmp <- stringi::stri_split_fixed(info, ";")
-  alt.counts <- lapply(tmp, FUN = function(x) {
+  alt.counts <- parallel::mclapply(tmp, FUN = function(x) {
     idx <- grep("t_alt_count", x, fixed = TRUE)
     if (length(idx) == 0) {
       return(as.integer(NA))
@@ -477,10 +484,10 @@ GetConsensusVAF <- function(vcf) {
       alt.count <- gsub("t_alt_count=", "", alt.info)
       return(as.integer(alt.count))
     }
-  })
+  }, mc.cores = mc.cores)
   alt.counts1 <- unlist(alt.counts)
   
-  ref.counts <- lapply(tmp, FUN = function(x) {
+  ref.counts <- parallel::mclapply(tmp, FUN = function(x) {
     idx <- grep("t_ref_count", x, fixed = TRUE)
     if (length(idx) == 0) {
       return(as.integer(NA))
@@ -489,7 +496,7 @@ GetConsensusVAF <- function(vcf) {
       ref.count <- gsub("t_ref_count=", "", ref.info)
       return(as.integer(ref.count))
     }
-  })
+  }, mc.cores = mc.cores)
   ref.counts1 <- unlist(ref.counts)
   
   read.depth <- alt.counts1 + ref.counts1
@@ -534,6 +541,11 @@ GetConsensusVAF <- function(vcf) {
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
 #'   
+#' @param ... Optional arguments to \code{get.vaf.function}.
+#'   
+#' @param num.of.cores The number of cores to use. Not available on Windows
+#'   unless \code{num.of.cores = 1}.
+#'   
 #' @return A data frame storing data lines of the VCF file with two additional
 #'   columns added which contain the VAF(variant allele frequency) and read
 #'   depth information.
@@ -541,7 +553,7 @@ GetConsensusVAF <- function(vcf) {
 #' @keywords internal
 ReadVCF <-
   function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
-           filter.status = NULL, get.vaf.function = NULL) {
+           filter.status = NULL, get.vaf.function = NULL, ...) {
     df0 <- MakeDataFrameFromVCF(file)
     
     if (nrow(df0) == 0) {
@@ -566,7 +578,7 @@ ReadVCF <-
       if (is.null(get.vaf.function)) {
         return(df1)
       } else {
-        df2 <- get.vaf.function(df)
+        df2 <- get.vaf.function(df, ...)
         return(df2)
       }
     }
@@ -638,14 +650,17 @@ ReadVCF <-
 #'
 #' @inheritParams ReadAndSplitVCFs
 #' 
+#' @importFrom parallel mclapply
+#' 
 #' @return A list of data frames storing data lines of the VCF files with two
 #'   additional columns added which contain the VAF(variant allele frequency)
 #'   and read depth information.
 #'
 #' @keywords internal
-ReadVCFs <- function(files, variant.caller = "unknown", names.of.VCFs = NULL,
+ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1, 
+                     names.of.VCFs = NULL,
                      tumor.col.names = NA, filter.status = NULL,
-                     get.vaf.function = NULL) {
+                     get.vaf.function = NULL, ...) {
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {
@@ -663,12 +678,14 @@ ReadVCFs <- function(files, variant.caller = "unknown", names.of.VCFs = NULL,
   ReadVCF1 <- function(idx, files, variant.caller, vector1, vector2) {
     ReadVCF(file = files[idx], variant.caller = variant.caller,
             name.of.VCF = vector1[idx], tumor.col.name = vector2[idx],
-            filter.status = filter.status, get.vaf.function = get.vaf.function)
+            filter.status = filter.status, get.vaf.function = get.vaf.function,
+            ...)
   }
 
-  vcfs <- lapply(1:num.of.files, FUN = ReadVCF1, files = files,
-                 variant.caller = variant.caller,
-                 vector1 = vcfs.names, vector2 = tumor.col.names)
+  vcfs <- parallel::mclapply(1:num.of.files, FUN = ReadVCF1, files = files,
+                             variant.caller = variant.caller,
+                             vector1 = vcfs.names, vector2 = tumor.col.names, 
+                             mc.cores = num.of.cores)
   names(vcfs) <- vcfs.names
   return(vcfs)
 }
@@ -1111,6 +1128,9 @@ SplitOneVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
 #'   asynchronous single base mutations, opposed to a simultaneous doublet
 #'   mutation or variants involving more than two consecutive bases.
+#'   
+#' @param num.of.cores The number of cores to use. Not available on Windows
+#'   unless \code{num.of.cores = 1}.
 #'
 #' @inheritParams ReadAndSplitMutectVCFs
 #'
@@ -1118,7 +1138,7 @@ SplitOneVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #'
 #' @keywords internal
 SplitListOfVCFs <-
-  function(list.of.vcfs, max.vaf.diff = 0.02,
+  function(list.of.vcfs, max.vaf.diff = 0.02, num.of.cores = 1,
            suppress.discarded.variants.warnings = TRUE) {
     names.of.VCFs <- names(list.of.vcfs)
     
@@ -1130,11 +1150,13 @@ SplitListOfVCFs <-
     }
     num.of.vcfs <- length(list.of.vcfs)
     if (suppress.discarded.variants.warnings == TRUE) {
-      v1 <- suppressWarnings(lapply(1:num.of.vcfs, GetSplitVCFs,
-                                    list.of.vcfs = list.of.vcfs))
+      v1 <- suppressWarnings(parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
+                                                list.of.vcfs = list.of.vcfs, 
+                                                mc.cores = num.of.cores))
     } else {
-      v1 <- lapply(1:num.of.vcfs, GetSplitVCFs,
-                   list.of.vcfs = list.of.vcfs)
+      v1 <- parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
+                               list.of.vcfs = list.of.vcfs, 
+                               mc.cores = num.of.cores)
     }
     names(v1) <- names.of.VCFs
     SBS <- lapply(v1, function(x) x$SBS)
@@ -2807,6 +2829,9 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   information is needed to calculate the VAFs (variant allele frequencies).
 #'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 #'   and read depth will be NAs.
+#'   
+#' @param num.of.cores The number of cores to use. Not available on Windows
+#'   unless \code{num.of.cores = 1}.
 #'
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
 #'   \code{\link{BSgenome}} object
@@ -2850,13 +2875,15 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
 #'   
+#' @param ... Optional arguments to \code{get.vaf.function}.
+#'   
 #' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
 #'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
 #'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
 #'   then these adjacent SBSs are likely to be "merely" asynchronous single base
 #'   mutations, opposed to a simultaneous doublet mutation or variants involving
 #'   more than two consecutive bases.
-#'
+#'   
 #' @param base.filename Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where
 #'   \eqn{x} indicates the type of catalog plotted in the file.
@@ -2946,23 +2973,28 @@ VCFsToCatalogsAndPlotToPdf <-
            output.dir,
            ref.genome,
            variant.caller = "unknown",
+           num.of.cores = 1,
            trans.ranges = NULL,
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
            filter.status = NULL, 
            get.vaf.function = NULL,
+           ...,
            max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
     
     catalogs0 <-
-      VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges,
-                     region, names.of.VCFs, tumor.col.names,
-                     filter.status, get.vaf.function, max.vaf.diff,
-                     return.annotated.vcfs,
-                     suppress.discarded.variants.warnings)
+      VCFsToCatalogs(files = files, ref.genome = ref.genome, 
+                     variant.caller = variant.caller, num.of.cores = num.of.cores, 
+                     trans.ranges = trans.ranges, region = region, 
+                     names.of.VCFs = names.of.VCFs, tumor.col.names = tumor.col.names,
+                     filter.status = filter.status, get.vaf.function = get.vaf.function, 
+                     ... = ..., max.vaf.diff = max.vaf.diff,
+                     return.annotated.vcfs = return.annotated.vcfs,
+                     suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
     
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
