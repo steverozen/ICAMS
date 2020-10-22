@@ -8,7 +8,7 @@ test_that("Test parallel computing for Strelka ID VCFs", {
   if ("windows" == .Platform$OS.type) {
     num.of.cores <- 1
   } else {
-    num.of.cores <- parallel::detectCores() / 2
+    num.of.cores <- 2
   }
 
   list.of.ID.vcfs <-
@@ -43,7 +43,7 @@ test_that("Test parallel computing for Strelka SBS VCFs", {
   if ("windows" == .Platform$OS.type) {
     num.of.cores <- 1
   } else {
-    num.of.cores <- parallel::detectCores() / 2
+    num.of.cores <- 2
   }
 
   list.of.SBS.vcfs <-
@@ -80,7 +80,7 @@ test_that("Test parallel computing for Mutect VCFs", {
   if ("windows" == .Platform$OS.type) {
     num.of.cores <- 1
   } else {
-    num.of.cores <- parallel::detectCores() / 2
+    num.of.cores <- 2
   }
   list.of.vcfs <-
     ReadVCFs(files, variant.caller = "mutect", num.of.cores = num.of.cores)
