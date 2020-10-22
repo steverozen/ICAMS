@@ -974,12 +974,22 @@ VCFsToCatalogs <-
                        max.vaf.diff = max.vaf.diff,
                        suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
 
-    SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome,
-                                  trans.ranges, region, return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings)
-    DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome,
-                                  trans.ranges, region, return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings)
+    SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
+                                  ref.genome = ref.genome,
+                                  num.of.cores = num.of.cores,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
+    DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS,
+                                  ref.genome = ref.genome,
+                                  num.of.cores = num.of.cores,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
     ID.list <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
                                 ref.genome = ref.genome,
                                 num.of.cores = num.of.cores,
@@ -1374,16 +1384,14 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs,
                               mc.cores = num.of.cores)
   catSBS96.1 <- lapply(list0, FUN = "[[", 1)
   catSBS96.2 <- do.call("cbind", catSBS96.1)
-  catSBS96.3 <- cbind(catSBS96, catSBS96.2)
 
   catSBS1536.1 <- lapply(list0, FUN = "[[", 2)
   catSBS1536.2 <- do.call("cbind", catSBS1536.1)
-  catSBS1536.3 <- cbind(catSBS1536, catSBS1536.2)
 
-  catSBS96 <- as.catalog(catSBS96, ref.genome = ref.genome,
-                         region = region, catalog.type = "counts")
-  catSBS1536 <- as.catalog(catSBS1536, ref.genome = ref.genome,
+  catSBS96.3 <- as.catalog(catSBS96.2, ref.genome = ref.genome,
                            region = region, catalog.type = "counts")
+  catSBS1536.3 <- as.catalog(catSBS1536.2, ref.genome = ref.genome,
+                             region = region, catalog.type = "counts")
 
   discarded.variants1 <- lapply(list0, FUN = "[[", 4)
   discarded.variants2 <- do.call("c", discarded.variants1)
@@ -1402,9 +1410,8 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs,
 
   catSBS192.1 <- lapply(list0, FUN = "[[", 3)
   catSBS192.2 <- do.call("cbind", catSBS192.1)
-  catSBS192.3 <- cbind(catSBS192, catSBS192.2)
   in.transcript.region <- ifelse(region == "genome", "transcript", region)
-  catSBS192 <- as.catalog(catSBS192, ref.genome = ref.genome,
+  catSBS192.3 <- as.catalog(catSBS192.2, ref.genome = ref.genome,
                           region = in.transcript.region,
                           catalog.type = "counts")
 
@@ -1486,6 +1493,9 @@ CheckAndReturnDBSCatalogs <-
 #'   -- no SBS or 3+BS mutations. The list names will be the sample ids in the
 #'   output catalog.
 #'
+#' @param num.of.cores The number of cores to use. Not available on Windows
+#'   unless \code{num.of.cores = 1}.
+#'
 #' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @section Value:
@@ -1524,8 +1534,11 @@ CheckAndReturnDBSCatalogs <-
 #'   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
 #'                                     trans.ranges = trans.ranges.GRCh37,
 #'                                     region = "genome")}
-VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
-                              trans.ranges = NULL, region = "unknown",
+VCFsToDBSCatalogs <- function(list.of.DBS.vcfs,
+                              ref.genome,
+                              num.of.cores = 1,
+                              trans.ranges = NULL,
+                              region = "unknown",
                               return.annotated.vcfs = FALSE,
                               suppress.discarded.variants.warnings = TRUE) {
   ncol <- length(list.of.DBS.vcfs)
@@ -1536,9 +1549,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
 
   annotated.vcfs <- discarded.variants <- list()
-  vcf.names <- character()
 
-  for (i in 1 : ncol) {
+  GetDBSCatalogs <- function(i, list.of.DBS.vcfs) {
     DBS.vcf <- list.of.DBS.vcfs[[i]]
     sample.id <- names(list.of.DBS.vcfs)[i]
     annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges)
@@ -1557,37 +1569,59 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs, ref.genome,
     }
     if (return.annotated.vcfs == TRUE) {
       annotated.vcfs <- c(annotated.vcfs, list(DBS.cat$annotated.vcf))
+      names(annotated.vcfs) <- sample.id
     }
     if (!is.null(DBS.cat$discarded.variants)) {
       discarded.variants <-
         c(discarded.variants, list(DBS.cat$discarded.variants))
-      vcf.names <- c(vcf.names, sample.id)
+      names(discarded.variants) <- sample.id
     }
+
+    return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+                catDBS144 = catDBS144, discarded.variants = discarded.variants,
+                annotated.vcfs = annotated.vcfs))
   }
 
-  colnames(catDBS78) <- colnames(catDBS136) <- names(list.of.DBS.vcfs)
-  catDBS78 <- as.catalog(catDBS78, ref.genome = ref.genome,
+  list0 <- parallel::mclapply(1:ncol, FUN = GetDBSCatalogs,
+                              list.of.DBS.vcfs = list.of.DBS.vcfs,
+                              mc.cores = num.of.cores)
+  catDBS78.1 <- lapply(list0, FUN = "[[", 1)
+  catDBS78.2 <- do.call("cbind", catDBS78.1)
+
+  catDBS136.1 <- lapply(list0, FUN = "[[", 2)
+  catDBS136.2 <- do.call("cbind", catDBS136.1)
+
+  catDBS78.3 <- as.catalog(catDBS78.2, ref.genome = ref.genome,
                          region = region, catalog.type = "counts")
-  catDBS136 <- as.catalog(catDBS136, ref.genome = ref.genome,
+  catDBS136.3 <- as.catalog(catDBS136.2, ref.genome = ref.genome,
                           region = region, catalog.type = "counts")
-  if (return.annotated.vcfs == TRUE) {
-    names(annotated.vcfs) <- names(list.of.DBS.vcfs)
-  }
-  names(discarded.variants) <- vcf.names
 
+  discarded.variants1 <- lapply(list0, FUN = "[[", 4)
+  discarded.variants2 <- do.call("c", discarded.variants1)
+
+  annotated.vcfs1 <- lapply(list0, FUN = "[[", 5)
+  annotated.vcfs2 <- do.call("c", annotated.vcfs1)
   if (is.null(trans.ranges)) {
-    retval <- CheckAndReturnDBSCatalogs(catDBS78, catDBS136, NULL,
-                                        discarded.variants, annotated.vcfs)
+    retval <- CheckAndReturnDBSCatalogs(catDBS78 = catDBS78.3,
+                                        catDBS136 = catDBS136.3,
+                                        catDBS144 = NULL,
+                                        discarded.variants = discarded.variants2,
+                                        annotated.vcfs = annotated.vcfs2)
     return(retval)
   }
 
-  colnames(catDBS144) <- names(list.of.DBS.vcfs)
+  catDBS144.1 <- lapply(list0, FUN = "[[", 3)
+  catDBS144.2 <- do.call("cbind", catDBS144.1)
+
   in.transcript.region <- ifelse(region == "genome", "transcript", region)
-  catDBS144 <- as.catalog(catDBS144, ref.genome = ref.genome,
+  catDBS144.3 <- as.catalog(catDBS144.2, ref.genome = ref.genome,
                region = in.transcript.region, catalog.type = "counts")
 
-  CheckAndReturnDBSCatalogs(catDBS78, catDBS136, catDBS144,
-                            discarded.variants, annotated.vcfs)
+  CheckAndReturnDBSCatalogs(catDBS78 = catDBS78.3,
+                            catDBS136 = catDBS136.3,
+                            catDBS144 = catDBS144.3,
+                            discarded.variants = discarded.variants2,
+                            annotated.vcfs = annotated.vcfs2)
 }
 
 #' Check and return ID catalog
@@ -1743,8 +1777,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
 
   ID.cat <- lapply(list0, FUN = "[[", 1)
   ID.cat1 <- do.call("cbind", ID.cat)
-  catID <- cbind(catID, ID.cat1)
-  catID <- as.catalog(catID, ref.genome = ref.genome,
+  catID <- as.catalog(ID.cat1, ref.genome = ref.genome,
                       region = region, catalog.type = "counts")
 
   discarded.variants1 <- lapply(list0, FUN = "[[", 2)
