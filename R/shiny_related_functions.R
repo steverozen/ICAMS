@@ -711,12 +711,20 @@ StrelkaSBSVCFFilesToCatalog <-
     split.vcfs <-
       ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs,
                                  suppress.discarded.variants.warnings)
-    SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS.vcfs, ref.genome,
-                                  trans.ranges, region, return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings)
-    DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS.vcfs, ref.genome,
-                                  trans.ranges, region, return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings)
+    SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS.vcfs,
+                                  ref.genome = ref.genome,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
+    DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS.vcfs,
+                                  ref.genome = ref.genome,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
     CombineAndReturnCatalogsForStrelkaSBSVCFs(split.vcfs.list = split.vcfs,
                                               SBS.list = SBS.list,
                                               DBS.list = DBS.list)
@@ -769,9 +777,13 @@ StrelkaIDVCFFilesToCatalog <-
            suppress.discarded.variants.warnings = TRUE) {
     vcfs <- ReadStrelkaIDVCFs(files = files, names.of.VCFs = names.of.VCFs)
 
-    ID.list <- VCFsToIDCatalogs(vcfs, ref.genome, region,
-                                flag.mismatches, return.annotated.vcfs,
-                                suppress.discarded.variants.warnings)
+    ID.list <- VCFsToIDCatalogs(list.of.vcfs = vcfs,
+                                ref.genome = ref.genome,
+                                region = region,
+                                flag.mismatches = flag.mismatches,
+                                return.annotated.vcfs = return.annotated.vcfs,
+                                suppress.discarded.variants.warnings =
+                                  suppress.discarded.variants.warnings)
     return(ID.list)
   }
 
@@ -861,15 +873,27 @@ MutectVCFFilesToCatalog <-
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names,
                              suppress.discarded.variants.warnings)
 
-    SBS.list <- VCFsToSBSCatalogs(split.vcfs$SBS, ref.genome,
-                               trans.ranges, region, return.annotated.vcfs,
-                               suppress.discarded.variants.warnings)
-    DBS.list <- VCFsToDBSCatalogs(split.vcfs$DBS, ref.genome,
-                               trans.ranges, region, return.annotated.vcfs,
-                               suppress.discarded.variants.warnings)
-    ID.list <- VCFsToIDCatalogs(split.vcfs$ID, ref.genome,
-                                region, flag.mismatches, return.annotated.vcfs,
-                                suppress.discarded.variants.warnings)
+    SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
+                                  ref.genome = ref.genome,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
+    DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS,
+                                  ref.genome = ref.genome,
+                                  trans.ranges = trans.ranges,
+                                  region = region,
+                                  return.annotated.vcfs = return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings =
+                                    suppress.discarded.variants.warnings)
+    ID.list <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+                                ref.genome = ref.genome,
+                                region = region,
+                                flag.mismatches = flag.mismatches,
+                                return.annotated.vcfs = return.annotated.vcfs,
+                                suppress.discarded.variants.warnings =
+                                  suppress.discarded.variants.warnings)
     CombineAndReturnCatalogsForMutectVCFs(split.vcfs.list = split.vcfs,
                                           SBS.list = SBS.list,
                                           DBS.list = DBS.list,
