@@ -617,6 +617,7 @@ VCFsToZipFileXtra <-
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
+    invisible(catalogs0)
   }
 
 #' @keywords internal
