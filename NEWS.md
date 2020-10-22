@@ -1,4 +1,4 @@
-# ICAMS 2.2.5.90xx
+# ICAMS 2.2.6
 ## Added
 * Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs` and `VCFsToZipFileXtra`, `WriteSBS96CatalogAsTsv`,
 `ReadSBS96CatalogFromTsv`, `GetConsensusVAF`.
@@ -18,6 +18,8 @@ and `VCFsToZipFile`.
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.
 
+<br/>
+
 # ICAMS 2.2.5 
 ## Changed
 * Updated function `CreateOneColSBSMatrix` to throw a message instead of an error when there are SBS variant whose reference base in ref.genome does not match the reference base in the VCF file.
@@ -35,14 +37,14 @@ from empty vcfs.
 
 <br/>
 
-# ICAMS 2.2.4 
+# ICAMS 2.2.4 (submitted to CRAN)
 ## Changed
 * Updated the code in automated tests to use packages in Suggests conditionally
 as required by CRAN.
 
 <br/>
 
-# ICAMS 2.2.3
+# ICAMS 2.2.3 (submitted to CRAN)
 ## Added
 * Added a section "ID classification" in the documentation for exported data `catalog.row.order`.
 
