@@ -9,12 +9,14 @@ VCFsToZipFile(
   zipfile,
   ref.genome,
   variant.caller = "unknown",
+  num.of.cores = 1,
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
   filter.status = NULL,
   get.vaf.function = NULL,
+  ...,
   max.vaf.diff = 0.02,
   base.filename = "",
   return.annotated.vcfs = FALSE,
@@ -38,8 +40,11 @@ information is needed to calculate the VAFs (variant allele frequencies).
 If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 and read depth will be NAs.}
 
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
+
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
-\code{\link{BSgenome}} object 
+\code{\link{BSgenome}} object
 \enumerate{
   \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
   \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
@@ -76,9 +81,11 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
   and read depth will be NAs.}
+
+\item{...}{Optional arguments to \code{get.vaf.function}.}
 
 \item{max.vaf.diff}{\strong{Not} applicable if \code{variant.caller =
 "mutect"}. The maximum difference of VAF, default value is 0.02. If the
@@ -179,10 +186,10 @@ To add or change attributes of the catalog, you can use function
 dir <- c(system.file("extdata/Mutect-vcf",
                      package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- 
-    VCFsToZipFile(dir, 
+  catalogs <-
+    VCFsToZipFile(dir,
                   zipfile = file.path(tempdir(), "test.zip"),
-                  ref.genome = "hg19", 
+                  ref.genome = "hg19",
                   variant.caller = "mutect",
                   region = "genome",
                   base.filename = "Mutect")

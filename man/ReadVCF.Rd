@@ -10,7 +10,8 @@ ReadVCF(
   name.of.VCF = NULL,
   tumor.col.name = NA,
   filter.status = NULL,
-  get.vaf.function = NULL
+  get.vaf.function = NULL,
+  ...
 )
 }
 \arguments{
@@ -44,6 +45,11 @@ An example would be \code{"PASS"}. Variants which don't have the specified
   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
   and read depth will be NAs.}
+
+\item{...}{Optional arguments to \code{get.vaf.function}.}
+
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
 }
 \value{
 A data frame storing data lines of the VCF file with two additional

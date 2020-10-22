@@ -98,6 +98,6 @@ file <- c(system.file("extdata/Strelka-ID-vcf",
                       "Strelka.ID.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19", 
+  catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19",
                                       region = "genome")}
 }

@@ -7,10 +7,12 @@
 ReadVCFs(
   files,
   variant.caller = "unknown",
+  num.of.cores = 1,
   names.of.VCFs = NULL,
   tumor.col.names = NA,
   filter.status = NULL,
-  get.vaf.function = NULL
+  get.vaf.function = NULL,
+  ...
 )
 }
 \arguments{
@@ -21,6 +23,9 @@ be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 information is needed to calculate the VAFs (variant allele frequencies).
 If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 and read depth will be NAs.}
+
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
 
 \item{names.of.VCFs}{Character vector of names of the VCF files. The order
 of names in \code{names.of.VCFs} should match the order of VCF file paths
@@ -47,6 +52,8 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
 If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 and read depth will be NAs.}
+
+\item{...}{Optional arguments to \code{get.vaf.function}.}
 }
 \value{
 A list of data frames storing data lines of the VCF files with two

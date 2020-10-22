@@ -8,12 +8,14 @@ VCFsToCatalogs(
   files,
   ref.genome,
   variant.caller = "unknown",
+  num.of.cores = 1,
   trans.ranges = NULL,
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
   filter.status = NULL,
   get.vaf.function = NULL,
+  ...,
   max.vaf.diff = 0.02,
   return.annotated.vcfs = FALSE,
   suppress.discarded.variants.warnings = TRUE
@@ -30,6 +32,9 @@ be either \code{strelka}, \code{mutect} or \code{freebayes}. This
 information is needed to calculate the VAFs (variant allele frequencies).
 If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
 and read depth will be NAs.}
+
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
 
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link{BSgenome}} object
@@ -72,6 +77,8 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
 If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 and read depth will be NAs.}
+
+\item{...}{Optional arguments to \code{get.vaf.function}.}
 
 \item{max.vaf.diff}{\strong{Not} applicable if \code{variant.caller =
   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
@@ -166,6 +173,6 @@ file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-  catalogs <- VCFsToCatalogs(file, ref.genome = "hg19", 
+  catalogs <- VCFsToCatalogs(file, ref.genome = "hg19",
                              variant.caller = "mutect", region = "genome")}
 }

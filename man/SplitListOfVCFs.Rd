@@ -8,6 +8,7 @@ VCF-like data frame with left-over rows)}
 SplitListOfVCFs(
   list.of.vcfs,
   max.vaf.diff = 0.02,
+  num.of.cores = 1,
   suppress.discarded.variants.warnings = TRUE
 )
 }
@@ -19,6 +20,9 @@ the absolute difference of VAFs for adjacent SBSs is bigger than
 \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
 asynchronous single base mutations, opposed to a simultaneous doublet
 mutation or variants involving more than two consecutive bases.}
+
+\item{num.of.cores}{The number of cores to use. Not available on Windows
+unless \code{num.of.cores = 1}.}
 
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
