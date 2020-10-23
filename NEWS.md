@@ -28,6 +28,9 @@ and `VCFsToZipFile`.
 * Updated function `MakeDataFrameFromVCF` to use `data.table::fread` instead of 
 `read.csv`.
 
+## Fixed
+* Fixed bug in `MakeDataFrameFromVCF` when reading in VCF from URL.
+
 <br/>
 
 # ICAMS 2.2.5 

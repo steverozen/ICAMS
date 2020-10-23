@@ -166,7 +166,7 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 MakeDataFrameFromVCF <- function(file) {
   # Suppress the warning when the VCF is totally empty
   df1 <- 
-    suppressWarnings(data.table::fread(file = file, na.strings = "",
+    suppressWarnings(data.table::fread(file, na.strings = "",
                                        skip = "#CHROM", fill = TRUE)) 
   
   if (nrow(df1) == 0) {
