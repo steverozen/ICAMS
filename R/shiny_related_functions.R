@@ -538,26 +538,39 @@ VCFsToZipFileXtra <-
            zipfile,
            ref.genome,
            variant.caller = "unknown",
+           num.of.cores = 1,
            trans.ranges = NULL,
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
            filter.status = NULL,
            get.vaf.function = NULL,
+           ...,
+           max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
     files <- list.files(path = dir, pattern = "\\.vcf$",
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
-    catalogs0 <- VCFsToCatalogs(files, ref.genome, variant.caller, trans.ranges,
-                                region, names.of.VCFs, tumor.col.names,
-                                filter.status, get.vaf.function,
-                                return.annotated.vcfs,
-                                suppress.discarded.variants.warnings)
+    
+    catalogs0 <-
+      VCFsToCatalogs(files = files, ref.genome = ref.genome,
+                     variant.caller = variant.caller, num.of.cores = num.of.cores,
+                     trans.ranges = trans.ranges, region = region,
+                     names.of.VCFs = names.of.VCFs, tumor.col.names = tumor.col.names,
+                     filter.status = filter.status, get.vaf.function = get.vaf.function,
+                     ... = ..., max.vaf.diff = max.vaf.diff,
+                     return.annotated.vcfs = return.annotated.vcfs,
+                     suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
+    
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
     strand.bias.statistics <- NULL
-
+    
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
