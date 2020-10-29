@@ -574,6 +574,7 @@ VCFsToZipFileXtra <-
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    catalogs.counts <- catalogs
 
     # Remove the ID counts catalog as it does not have abundance for
     # it to be transformed to density catalog
@@ -600,8 +601,8 @@ VCFsToZipFileXtra <-
                           paste0(tempdir(), .Platform$file.sep),
                           file.path(tempdir(), paste0(base.filename, ".")))
 
-    for (name in names(catalogs)) {
-      WriteCatalog(catalogs[[name]],
+    for (name in names(catalogs.counts)) {
+      WriteCatalog(catalogs.counts[[name]],
                    file = paste0(output.file, name, ".counts.csv"))
     }
 
@@ -611,11 +612,11 @@ VCFsToZipFileXtra <-
                    file = paste0(output.file, name, ".csv"))
     }
 
-    for (name in names(catalogs)) {
-      PlotCatalogToPdf(catalogs[[name]],
+    for (name in names(catalogs.counts)) {
+      PlotCatalogToPdf(catalogs.counts[[name]],
                        file = paste0(output.file, name, ".counts.pdf"))
       if (name == "catSBS192") {
-        list <- PlotCatalogToPdf(catalogs[[name]],
+        list <- PlotCatalogToPdf(catalogs.counts[[name]],
                                  file = paste0(output.file, "SBS12.counts.pdf"),
                                  plot.SBS12 = TRUE)
         strand.bias.statistics <-
