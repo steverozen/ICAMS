@@ -1655,7 +1655,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #' with rownames taken from the element names of the \code{vector}
 #' and with column name \code{"Unknown"}.
 #' If argument \code{infer.rownames}
-#'  is \code{FALSE} than this argument must have
+#'  is \code{FALSE} then this argument must have
 #'   rownames to denote the mutation types. See \code{\link{CatalogRowOrder}}
 #'   for more details.
 #'

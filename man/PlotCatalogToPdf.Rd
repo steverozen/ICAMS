@@ -16,8 +16,15 @@ PlotCatalogToPdf(
 )
 }
 \arguments{
-\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes added.
-See \code{\link{as.catalog}} for more details.}
+\item{catalog}{A catalog as defined in \code{\link{ICAMS}} with attributes
+added. See \code{\link{as.catalog}} for more details. \code{catalog} can
+also be a numeric \code{matrix}, numeric \code{data.frame}, or a
+\code{vector} denoting the mutation \strong{counts}, but \strong{must} be in the
+correct row order used in \code{\link{ICAMS}}. See
+\code{\link{CatalogRowOrder}} for more details. If \code{catalog} is a
+\code{vector}, it will be converted to a 1-column \code{matrix} with
+rownames taken from the element names of the \code{vector} and with column
+name \code{"Unknown"}.}
 
 \item{file}{The name of the PDF file to be produced.}
 
@@ -53,8 +60,8 @@ An \strong{invisible} list whose first element is a logic value
   bias statistics.
 }
 \description{
-Plot catalog to a PDF file. The type of graph is based on one
-attribute("catalog.type") of the input catalog. You can first use
+Plot catalog to a PDF file. The type of graph is based on 
+\code{attribute("catalog.type")} of the input catalog. You can first use
 \code{\link{TransformCatalog}} to get different types of catalog and then do
 the plotting.
 }

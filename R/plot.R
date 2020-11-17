@@ -1,12 +1,19 @@
 #' Plot \strong{one} spectrum or signature
 #'
 #' Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
-#' type of graph is based on one attribute("catalog.type") of the input catalog.
+#' type of graph is based on \code{attribute("catalog.type")} of the input catalog.
 #' You can first use \code{\link{TransformCatalog}} to get different types of
 #' catalog and then do the plotting.
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{as.catalog}} for more details.
+#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes
+#'   added. See \code{\link{as.catalog}} for more details. \code{catalog} can
+#'   also be a numeric \code{matrix}, numeric \code{data.frame}, or a
+#'   \code{vector} denoting the mutation \strong{counts}, but \strong{must} be in the
+#'   correct row order used in \code{\link{ICAMS}}. See
+#'   \code{\link{CatalogRowOrder}} for more details. If \code{catalog} is a
+#'   \code{vector}, it will be converted to a 1-column \code{matrix} with
+#'   rownames taken from the element names of the \code{vector} and with column
+#'   name \code{"Unknown"}.
 #'
 #' @param plot.SBS12 Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
 #' generate an abbreviated plot of only SBS without context, i.e. 
@@ -71,18 +78,81 @@
 PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL, 
                         grid = NULL , upper = NULL, xlabels = NULL,
                         ylim = NULL) {
-  UseMethod(generic = "PlotCatalog")
+  if (class(catalog)[1] %in% c("SBS96Catalog", "SBS192Catalog", "SBS1536Catalog",
+                          "DBS78Catalog", "DBS136Catalog", "DBS144Catalog",
+                          "IndelCatalog")) {
+    UseMethod(generic = "PlotCatalog")
+  } else {
+    catalog1 <- as.catalog(object = catalog, infer.rownames = TRUE)
+    num.of.row <- nrow(catalog1)
+    if (num.of.row == 96) {
+      PlotCatalog.SBS96Catalog(catalog = catalog1, 
+                               plot.SBS12 = plot.SBS12, 
+                               cex = ifelse(is.null(cex), par("cex"), cex), 
+                               grid = ifelse(is.null(grid), TRUE, grid),
+                               upper = ifelse(is.null(upper), TRUE, upper), 
+                               xlabels = ifelse(is.null(xlabels), TRUE, xlabels), 
+                               ylim = ylim)
+    } else if (num.of.row == 192) {
+      PlotCatalog.SBS192Catalog(catalog = catalog1, 
+                                plot.SBS12 = ifelse(is.null(plot.SBS12), FALSE, plot.SBS12), 
+                                cex = ifelse(is.null(cex), par("cex"), cex), 
+                                grid = grid,
+                                upper = upper, 
+                                xlabels = xlabels, 
+                                ylim = ylim)
+    } else if (num.of.row == 1536) {
+      PlotCatalog.SBS1536Catalog(catalog = catalog1, 
+                                plot.SBS12 = plot.SBS12, 
+                                cex = cex, 
+                                grid = grid,
+                                upper = upper, 
+                                xlabels = xlabels, 
+                                ylim = ylim)
+    } else if (num.of.row == 78) {
+      PlotCatalog.DBS78Catalog(catalog = catalog1, 
+                               plot.SBS12 = plot.SBS12, 
+                               cex = cex, 
+                               grid = grid,
+                               upper = upper, 
+                               xlabels = xlabels, 
+                               ylim = ylim)
+    } else if (num.of.row == 136) {
+      PlotCatalog.DBS136Catalog(catalog = catalog1, 
+                               plot.SBS12 = plot.SBS12, 
+                               cex = cex, 
+                               grid = grid,
+                               upper = upper, 
+                               xlabels = xlabels, 
+                               ylim = ylim)
+    } else if (num.of.row == 144) {
+      PlotCatalog.DBS144Catalog(catalog = catalog1, 
+                                plot.SBS12 = plot.SBS12, 
+                                cex = ifelse(is.null(cex), par("cex"), cex), 
+                                grid = grid,
+                                upper = upper, 
+                                xlabels = xlabels, 
+                                ylim = ylim)
+    } else if (num.of.row == 83) {
+      PlotCatalog.IndelCatalog(catalog = catalog1, 
+                               plot.SBS12 = plot.SBS12, 
+                               cex = cex, 
+                               grid = grid,
+                               upper = upper, 
+                               xlabels = xlabels, 
+                               ylim = ylim)
+    } 
+  }
 }
 
 #' Plot catalog to a PDF file
 #'
-#' Plot catalog to a PDF file. The type of graph is based on one
-#' attribute("catalog.type") of the input catalog. You can first use
+#' Plot catalog to a PDF file. The type of graph is based on 
+#' \code{attribute("catalog.type")} of the input catalog. You can first use
 #' \code{\link{TransformCatalog}} to get different types of catalog and then do
 #' the plotting.
 #'
-#' @param catalog A catalog as defined in \code{\link{ICAMS}} with attributes added.
-#' See \code{\link{as.catalog}} for more details.
+#' @inheritParams PlotCatalog
 #'
 #' @param file The name of the PDF file to be produced.
 #'
@@ -139,7 +209,79 @@ PlotCatalogToPdf <-
            upper = NULL, 
            xlabels = NULL, 
            ylim = NULL) {
-  UseMethod(generic = "PlotCatalogToPdf")
+    
+    if (class(catalog)[1] %in% c("SBS96Catalog", "SBS192Catalog", "SBS1536Catalog",
+                                 "DBS78Catalog", "DBS136Catalog", "DBS144Catalog",
+                                 "IndelCatalog")) {
+      UseMethod(generic = "PlotCatalogToPdf")
+    } else {
+      catalog1 <- as.catalog(object = catalog, infer.rownames = TRUE)
+      num.of.row <- nrow(catalog1)
+      if (num.of.row == 96) {
+        PlotCatalogToPdf.SBS96Catalog(catalog = catalog1, 
+                                      file = file,
+                                      plot.SBS12 = plot.SBS12, 
+                                      cex = ifelse(is.null(cex), 0.8, cex), 
+                                      grid = ifelse(is.null(grid), TRUE, grid),
+                                      upper = ifelse(is.null(upper), TRUE, upper), 
+                                      xlabels = ifelse(is.null(xlabels), TRUE, xlabels), 
+                                      ylim = ylim)
+      } else if (num.of.row == 192) {
+        PlotCatalogToPdf.SBS192Catalog(catalog = catalog1, 
+                                       file = file,
+                                       plot.SBS12 = ifelse(is.null(plot.SBS12), FALSE, plot.SBS12), 
+                                       cex = ifelse(is.null(cex), 0.8, cex), 
+                                       grid = grid,
+                                       upper = upper, 
+                                       xlabels = xlabels, 
+                                       ylim = ylim)
+      } else if (num.of.row == 1536) {
+        PlotCatalogToPdf.SBS1536Catalog(catalog = catalog1, 
+                                        file = file,
+                                        plot.SBS12 = plot.SBS12, 
+                                        cex = cex, 
+                                        grid = grid,
+                                        upper = upper, 
+                                        xlabels = xlabels, 
+                                        ylim = ylim)
+      } else if (num.of.row == 78) {
+        PlotCatalogToPdf.DBS78Catalog(catalog = catalog1, 
+                                      file = file,
+                                      plot.SBS12 = plot.SBS12, 
+                                      cex = cex, 
+                                      grid = grid,
+                                      upper = upper, 
+                                      xlabels = xlabels, 
+                                      ylim = ylim)
+      } else if (num.of.row == 136) {
+        PlotCatalogToPdf.DBS136Catalog(catalog = catalog1, 
+                                       file = file,
+                                       plot.SBS12 = plot.SBS12, 
+                                       cex = cex, 
+                                       grid = grid,
+                                       upper = upper, 
+                                       xlabels = xlabels, 
+                                       ylim = ylim)
+      } else if (num.of.row == 144) {
+        PlotCatalogToPdf.DBS144Catalog(catalog = catalog1, 
+                                       file = file,
+                                       plot.SBS12 = plot.SBS12, 
+                                       cex = ifelse(is.null(cex), 1, cex), 
+                                       grid = grid,
+                                       upper = upper, 
+                                       xlabels = xlabels, 
+                                       ylim = ylim)
+      } else if (num.of.row == 83) {
+        PlotCatalogToPdf.IndelCatalog(catalog = catalog1, 
+                                      file = file,
+                                      plot.SBS12 = plot.SBS12, 
+                                      cex = cex, 
+                                      grid = grid,
+                                      upper = upper, 
+                                      xlabels = xlabels, 
+                                      ylim = ylim)
+      } 
+    }
 }
 
 ###############################################################################

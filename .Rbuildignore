@@ -1,5 +1,6 @@
 ^cran-comments\.md$
 ^\.travis\.yml$
+^\appveyor\.yml$
 ^README\.Rmd$
 ^data-raw$
 ^.*\.Rproj$

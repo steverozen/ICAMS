@@ -1,3 +1,10 @@
+# ICAMS 2.2.7
+## Added
+* Enabled functions `PlotCatalog` and `PlotCatalogToPdf` to plot a numeric
+matrix, numeric data.frame, or a vector denoting the mutation **counts**.
+
+<br/>
+
 # ICAMS 2.2.6
 ## Added
 * Added new internal function `SplitSBSVCF`, `SplitOneVCF`, `SplitListOfVCFs` and `VCFsToZipFileXtra`, `WriteSBS96CatalogAsTsv`,
