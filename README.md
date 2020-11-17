@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.com/steverozen/ICAMS.svg?branch=master)](https://travis-ci.com/steverozen/ICAMS)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/qmt5q4t1m9r55ril/branch/master?svg=true)](https://ci.appveyor.com/project/jnh01/icams/branch/master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -70,7 +72,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.2.6.tar.gz)
+source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.2.7.tar.gz)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 
@@ -83,7 +85,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.6.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.7.pdf>
 
 ## Frequently asked questions
 
