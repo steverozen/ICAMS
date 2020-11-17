@@ -12,10 +12,6 @@ install:
 
 cache:
   - C:\RLibrary
-
-image:
-  - Ubuntu
-  - macOS
   
 environment:
   global:
