@@ -94,3 +94,11 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 You can use *exported* function `TransformCatalog` in ICAMS to normalize
 the data. Please refer to the documentation and example of
 `TransformCatalog` for more details.
+
+## Citing ICAMS
+
+If you use ICAMS in your work, please cite:
+
+> Rozen SG, Jiang NH, Boot A, Liu M (2020). ICAMS:In-depth
+> Characterization and Analysis of Mutational Signatures. R package
+> version 2.2.7, <https://CRAN.R-project.org/package=ICAMS>.

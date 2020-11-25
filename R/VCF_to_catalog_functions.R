@@ -2985,16 +2985,24 @@ VCFsToCatalogsAndPlotToPdf <-
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    num.of.cores <- AdjustNumberOfCores(num.of.cores)
     
     catalogs0 <-
-      VCFsToCatalogs(files = files, ref.genome = ref.genome, 
-                     variant.caller = variant.caller, num.of.cores = num.of.cores, 
-                     trans.ranges = trans.ranges, region = region, 
-                     names.of.VCFs = names.of.VCFs, tumor.col.names = tumor.col.names,
-                     filter.status = filter.status, get.vaf.function = get.vaf.function, 
-                     ... = ..., max.vaf.diff = max.vaf.diff,
+      VCFsToCatalogs(files = files, 
+                     ref.genome = ref.genome, 
+                     variant.caller = variant.caller, 
+                     num.of.cores = num.of.cores, 
+                     trans.ranges = trans.ranges, 
+                     region = region, 
+                     names.of.VCFs = names.of.VCFs, 
+                     tumor.col.names = tumor.col.names,
+                     filter.status = filter.status, 
+                     get.vaf.function = get.vaf.function, 
+                     ... = ..., 
+                     max.vaf.diff = max.vaf.diff,
                      return.annotated.vcfs = return.annotated.vcfs,
-                     suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
+                     suppress.discarded.variants.warnings = 
+                       suppress.discarded.variants.warnings)
 
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0

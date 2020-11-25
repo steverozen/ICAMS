@@ -479,16 +479,23 @@ VCFsToZipFile <-
     files <- list.files(path = dir, pattern = "\\.vcf$",
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
-
+    num.of.cores <- AdjustNumberOfCores(num.of.cores)
+    
     catalogs0 <-
-      VCFsToCatalogs(files = files, ref.genome = ref.genome,
-                     variant.caller = variant.caller, num.of.cores = num.of.cores,
-                     trans.ranges = trans.ranges, region = region,
-                     names.of.VCFs = names.of.VCFs, tumor.col.names = tumor.col.names,
-                     filter.status = filter.status, get.vaf.function = get.vaf.function,
+      VCFsToCatalogs(files = files, 
+                     ref.genome = ref.genome,
+                     variant.caller = variant.caller, 
+                     num.of.cores = num.of.cores,
+                     trans.ranges = trans.ranges, 
+                     region = region,
+                     names.of.VCFs = names.of.VCFs, 
+                     tumor.col.names = tumor.col.names,
+                     filter.status = filter.status, 
+                     get.vaf.function = get.vaf.function,
                      ... = ..., max.vaf.diff = max.vaf.diff,
                      return.annotated.vcfs = return.annotated.vcfs,
-                     suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
+                     suppress.discarded.variants.warnings = 
+                       suppress.discarded.variants.warnings)
 
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
     strand.bias.statistics <- NULL
@@ -553,16 +560,23 @@ VCFsToZipFileXtra <-
     files <- list.files(path = dir, pattern = "\\.vcf$",
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
+    num.of.cores <- AdjustNumberOfCores(num.of.cores)
     
     catalogs0 <-
-      VCFsToCatalogs(files = files, ref.genome = ref.genome,
-                     variant.caller = variant.caller, num.of.cores = num.of.cores,
-                     trans.ranges = trans.ranges, region = region,
-                     names.of.VCFs = names.of.VCFs, tumor.col.names = tumor.col.names,
-                     filter.status = filter.status, get.vaf.function = get.vaf.function,
+      VCFsToCatalogs(files = files, 
+                     ref.genome = ref.genome,
+                     variant.caller = variant.caller, 
+                     num.of.cores = num.of.cores,
+                     trans.ranges = trans.ranges, 
+                     region = region,
+                     names.of.VCFs = names.of.VCFs, 
+                     tumor.col.names = tumor.col.names,
+                     filter.status = filter.status, 
+                     get.vaf.function = get.vaf.function,
                      ... = ..., max.vaf.diff = max.vaf.diff,
                      return.annotated.vcfs = return.annotated.vcfs,
-                     suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
+                     suppress.discarded.variants.warnings = 
+                       suppress.discarded.variants.warnings)
     
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
     strand.bias.statistics <- NULL
@@ -1007,13 +1021,20 @@ VCFsToCatalogs <-
            max.vaf.diff = 0.02,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    num.of.cores <- AdjustNumberOfCores(num.of.cores)
+    
     split.vcfs <-
-      ReadAndSplitVCFs(files = files, variant.caller = variant.caller,
-                       num.of.cores = num.of.cores, names.of.VCFs = names.of.VCFs,
-                       tumor.col.names = tumor.col.names, filter.status = filter.status,
-                       get.vaf.function = get.vaf.function, ... = ...,
+      ReadAndSplitVCFs(files = files, 
+                       variant.caller = variant.caller,
+                       num.of.cores = num.of.cores, 
+                       names.of.VCFs = names.of.VCFs,
+                       tumor.col.names = tumor.col.names, 
+                       filter.status = filter.status,
+                       get.vaf.function = get.vaf.function, 
+                       ... = ...,
                        max.vaf.diff = max.vaf.diff,
-                       suppress.discarded.variants.warnings = suppress.discarded.variants.warnings)
+                       suppress.discarded.variants.warnings = 
+                         suppress.discarded.variants.warnings)
 
     SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
                                   ref.genome = ref.genome,
@@ -1023,6 +1044,7 @@ VCFsToCatalogs <-
                                   return.annotated.vcfs = return.annotated.vcfs,
                                   suppress.discarded.variants.warnings =
                                     suppress.discarded.variants.warnings)
+    
     DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS,
                                   ref.genome = ref.genome,
                                   num.of.cores = num.of.cores,
@@ -1031,14 +1053,15 @@ VCFsToCatalogs <-
                                   return.annotated.vcfs = return.annotated.vcfs,
                                   suppress.discarded.variants.warnings =
                                     suppress.discarded.variants.warnings)
+    
     ID.list <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
                                 ref.genome = ref.genome,
                                 num.of.cores = num.of.cores,
                                 region = region,
                                 return.annotated.vcfs = return.annotated.vcfs,
                                 suppress.discarded.variants.warnings =
-
                                   suppress.discarded.variants.warnings)
+    
     CombineAndReturnCatalogsForVCFs(split.vcfs.list = split.vcfs,
                                     SBS.list = SBS.list,
                                     DBS.list = DBS.list,
@@ -1250,6 +1273,8 @@ ReadAndSplitVCFs <-
            filter.status = NULL, get.vaf.function = NULL, ...,
            max.vaf.diff = 0.02,
            suppress.discarded.variants.warnings = TRUE) {
+    num.of.cores <- AdjustNumberOfCores(num.of.cores)
+    
     vcfs <- ReadVCFs(files = files, variant.caller = variant.caller,
                      num.of.cores = num.of.cores,
                      names.of.VCFs = names.of.VCFs,

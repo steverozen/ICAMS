@@ -3,6 +3,9 @@
 * Enabled functions `PlotCatalog` and `PlotCatalogToPdf` to plot a numeric
 matrix, numeric data.frame, or a vector denoting the mutation **counts**.
 
+* Added new internal function `AdjustNumberOfCores` to change the number of cores
+automatically to 1 if the operating system is Windows.
+
 <br/>
 
 # ICAMS 2.2.6
