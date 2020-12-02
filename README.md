@@ -8,7 +8,7 @@
 [![Travis build
 status](https://travis-ci.com/steverozen/ICAMS.svg?branch=master)](https://travis-ci.com/steverozen/ICAMS)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/qmt5q4t1m9r55ril/branch/master?svg=true)](https://ci.appveyor.com/project/jnh01/icams/branch/master)
+status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)](https://ci.appveyor.com/project/steverozen/ICAMS)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
