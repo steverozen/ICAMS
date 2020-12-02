@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R build
+status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)](https://github.com/steverozen/ICAMS/actions)
 [![Travis build
 status](https://travis-ci.com/steverozen/ICAMS.svg?branch=master)](https://travis-ci.com/steverozen/ICAMS)
 [![AppVeyor build
