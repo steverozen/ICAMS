@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
   [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)](https://ci.appveyor.com/project/steverozen/ICAMS)
   [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
   [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-  
+
 <!-- badges: end -->
 
 In-depth Characterization and Analysis of Mutational Signatures ('ICAMS')
