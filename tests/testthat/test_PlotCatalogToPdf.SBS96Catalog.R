@@ -3,10 +3,9 @@ context("PlotCatalogToPdf.SBS96Catalog")
 test_that("PlotCatalogToPdf.SBS96Catalog function", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  catalog.counts <- ReadCatalog("testdata/regress.cat.sbs.96.csv",
+  catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.sbs.96.csv",
                                 ref.genome = "GRCh37",
                                 region = "genome", catalog.type = "counts")
-  colnames(catalog.counts) <- paste0("HepG2_", 1 : 4)
   out <-
     PlotCatalogToPdf(catalog.counts, 
                      file = file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))

@@ -347,7 +347,9 @@ PlotCatalog.SBS96Catalog <-
              col = 'grey35', lwd = 0.25)
     
     # Print sample name at top left
-    text(bp[1], ymax * 1.08, 
+    y.pos.sample.name <- 
+      ifelse(catalog.type == "counts", ymax * 1.22, ymax * 1.08)
+    text(bp[1], y.pos.sample.name, 
          labels = colnames(catalog)[ncol(catalog)], 
          xpd = NA,
          cex = cex, font = 2, adj = c(0, 0))
@@ -359,7 +361,7 @@ PlotCatalog.SBS96Catalog <-
       for (i in 1:6) {
         j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)
-        text(bp[j], ymax * 1.20, labels = sum(catalog[k:(16 * i), ]),
+        text(bp[j], ymax * 1.15, labels = sum(catalog[k:(16 * i), ]),
              adj = c(1, 1), xpd = NA, cex = count.cex)
       }
     }
@@ -417,10 +419,13 @@ PlotCatalog.SBS96Catalog <-
       # Draw horizontal lines and names of major mutation class on top of graph
       x.left <- bp[seq(1, 81, 16)]
       x.right <- bp[seq(16, 96, 16)]
-      rect(xleft = x.left, ybottom = ymax * 1.28, 
-           xright = x.right, ytop = ymax * 1.3,
+      y.pos.line.top <- ifelse(catalog.type == "counts", ymax * 1.4, ymax * 1.3)
+      y.pos.line.bottom <- ifelse(catalog.type == "counts", ymax * 1.38, ymax * 1.28)
+      rect(xleft = x.left, ybottom = y.pos.line.bottom, 
+           xright = x.right, ytop = y.pos.line.top,
            col = class.col, border = NA, xpd = NA, adj = 0.5)
-      text((x.left + x.right)/2, ymax * 1.38,   
+      y.pos.text <- ifelse(catalog.type == "counts", ymax * 1.48, ymax * 1.38)
+      text((x.left + x.right)/2, y.pos.text,   
            labels = maj.class.names, xpd = NA, cex = cex * 1.25)
     }
 

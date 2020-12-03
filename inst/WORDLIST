@@ -101,6 +101,7 @@ indels
 IndelCatalog
 intron
 IUPAC
+Jiang
 KI
 Kilobase
 Lieb
@@ -148,12 +149,14 @@ ReadStrelkaIDVCF
 ReadStrelkaIDVCFs
 ReadStrelkaSBSVCF
 rowname
+Rozen
 Rtools
 Sancar
 sanger
 SBS
 SBSs
 Selby
+SG
 SignatureAnalyzer
 SignatureProfiler
 SigProExtractor
