@@ -3,7 +3,7 @@
 #' @keywords internal
 TestMakeCatalogFromMutectVCFs <- function() {
   file <-
-    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Mutect.vcf"
+    "https://raw.githubusercontent.com/steverozen/ICAMS/v2.2.4-branch/data-raw/VCF/MCF10A_Carb_Low_cl2_Mutect.vcf"
 
   cats <-
     MutectVCFFilesToCatalog(file, ref.genome = "GRCh37",
@@ -82,7 +82,7 @@ TestMakeCatalogFromMutectVCFs <- function() {
 #' @keywords internal
 TestMakeCatalogFromStrelkaSBSVCFs <- function() {
   file <-
-    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_SBS.vcf"
+    "https://raw.githubusercontent.com/steverozen/ICAMS/v2.2.4-branch/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_SBS.vcf"
 
   cats <-
     StrelkaSBSVCFFilesToCatalog(file, ref.genome = "GRCh37",
@@ -154,7 +154,7 @@ TestMakeCatalogFromStrelkaSBSVCFs <- function() {
 #' @keywords internal
 TestMakeCatalogFromStrelkaIDVCFs <- function() {
   file <-
-    "https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_ID.vcf"
+    "https://raw.githubusercontent.com/steverozen/ICAMS/v2.2.4-branch/data-raw/VCF/MCF10A_Carb_Low_cl2_Strelka_ID.vcf"
 
   cat.ID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "GRCh37",
                                        region = "genome")
