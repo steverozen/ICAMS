@@ -1,8 +1,8 @@
 context("Test processing VCF with unknown variant caller")
 
 test_that("Test processing VCF with unknown variant caller", {
-  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
-  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+  #skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  #stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   file <- "testdata/SBS.GRCh37.variantcaller.unknown.vcf"
   
   # Do not merge adjacent SBSs into DBS
