@@ -1,10 +1,12 @@
-# ICAMS 2.2.7
+# ICAMS 2.2.7.90xx
 ## Added
 * Enabled functions `PlotCatalog` and `PlotCatalogToPdf` to plot a numeric
 matrix, numeric data.frame, or a vector denoting the mutation **counts**.
 
 * Added new internal function `AdjustNumberOfCores` to change the number of cores
 automatically to 1 if the operating system is Windows.
+
+* Added test processing VCF with unknown variant caller.
 
 ## Changed
 * Updated plotting function for SBS96Catalog to adjust the sample name position
