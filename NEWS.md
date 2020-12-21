@@ -1,10 +1,25 @@
 # ICAMS 2.2.8.90xx
+## Added
+* Added new internal function `CheckAndFixChrNamesForTransRanges`. The
+chromosome names in exported data `TranscriptRanges` don't have "chr". ICAMS now
+will check for the chromosome names format in input vcf and update the
+trans.ranges chromosome names in function `AddTranscript` if needed.
 
-* Started to change return from ReadCatalog to include possible
-  attribute "error"
-* Some file reorganization
+* Added new argument `name.of.VCF` in function `AnnotateSBSVCF` and
+`AnnotateDBSVCF` for better error reporting.
 
-# ICAMS 2.2.7.90xx
+* Started to change return from `ReadCatalog` to include possible
+  attribute "error.
+  
+## Updated
+* Updated function `AddTranscript` to check whether the format of VCF chromosome
+names is consistent with that in `trans.ranges` used.
+  
+* Some file reorganization.
+
+<br/>
+
+# ICAMS 2.2.7
 ## Added
 * Enabled functions `PlotCatalog` and `PlotCatalogToPdf` to plot a numeric
 matrix, numeric data.frame, or a vector denoting the mutation **counts**.

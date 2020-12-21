@@ -87,7 +87,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.7.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.2.8.9002.pdf>
 
 ## Frequently asked questions
 
