@@ -4,7 +4,7 @@
 \alias{AnnotateSBSVCF}
 \title{Add sequence context and transcript information to an in-memory SBS VCF}
 \usage{
-AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges = NULL)
+AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges = NULL, name.of.VCF = NULL)
 }
 \arguments{
 \item{SBS.vcf}{An in-memory SBS VCF as a \code{data.frame}.}
@@ -24,6 +24,8 @@ user will need to provide the necessary \code{trans.ranges}. Please refer to
 \code{\link{TranscriptRanges}} for more details.
 If \code{is.null(trans.ranges)} do not add transcript range
 information.}
+
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 An in-memory SBS VCF as a \code{data.table}. This has been annotated

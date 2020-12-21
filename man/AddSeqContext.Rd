@@ -4,7 +4,7 @@
 \alias{AddSeqContext}
 \title{Add sequence context to a data frame with mutation records}
 \usage{
-AddSeqContext(df, ref.genome, seq.context.width = 10)
+AddSeqContext(df, ref.genome, seq.context.width = 10, name.of.VCF = NULL)
 }
 \arguments{
 \item{df}{An input data frame storing mutation records of a VCF file.}

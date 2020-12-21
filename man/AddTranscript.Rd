@@ -4,7 +4,7 @@
 \alias{AddTranscript}
 \title{Add transcript information to a data frame with mutation records}
 \usage{
-AddTranscript(df, trans.ranges = NULL)
+AddTranscript(df, trans.ranges = NULL, ref.genome, name.of.VCF = NULL)
 }
 \arguments{
 \item{df}{A data frame storing mutation records of a VCF file.}

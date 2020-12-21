@@ -1419,10 +1419,15 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs,
 
   annotated.vcfs <- discarded.variants <- list()
 
-  GetSBSCatalogs <- function(i, list.of.SBS.vcfs) {
+  GetSBSCatalogs <- 
+    function(i, list.of.SBS.vcfs) {
     SBS.vcf <- list.of.SBS.vcfs[[i]]
     sample.id <- names(list.of.SBS.vcfs)[i]
-    annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges)
+    annotated.SBS.vcf <- 
+      AnnotateSBSVCF(SBS.vcf = SBS.vcf, 
+                     ref.genome = ref.genome, 
+                     trans.ranges = trans.ranges, 
+                     name.of.VCF = sample.id)
     if (suppress.discarded.variants.warnings == TRUE) {
       SBS.cat <-
         suppressWarnings(CreateOneColSBSMatrix(vcf = annotated.SBS.vcf,
@@ -1453,7 +1458,8 @@ VCFsToSBSCatalogs <- function(list.of.SBS.vcfs,
                 annotated.vcfs = annotated.vcfs))
   }
 
-  list0 <- parallel::mclapply(1:ncol, FUN = GetSBSCatalogs,
+  list0 <- parallel::mclapply(1:ncol, 
+                              FUN = GetSBSCatalogs,
                               list.of.SBS.vcfs = list.of.SBS.vcfs,
                               mc.cores = num.of.cores)
   catSBS96.1 <- lapply(list0, FUN = "[[", 1)
@@ -1627,7 +1633,11 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs,
   GetDBSCatalogs <- function(i, list.of.DBS.vcfs) {
     DBS.vcf <- list.of.DBS.vcfs[[i]]
     sample.id <- names(list.of.DBS.vcfs)[i]
-    annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges)
+    annotated.DBS.vcf <- 
+      AnnotateDBSVCF(DBS.vcf = DBS.vcf, 
+                     ref.genome = ref.genome, 
+                     trans.ranges = trans.ranges, 
+                     name.of.VCF = sample.id)
     if (suppress.discarded.variants.warnings == TRUE) {
       DBS.cat <-
         suppressWarnings(CreateOneColDBSMatrix(annotated.DBS.vcf, sample.id,
