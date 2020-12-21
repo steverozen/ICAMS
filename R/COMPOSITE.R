@@ -1,7 +1,8 @@
 #' @export
 ReadCatalog.COMPOSITECatalog <-
   function(file, ref.genome = NULL, region = "unknown", 
-           catalog.type = "counts", strict = TRUE)
+           catalog.type = "counts", strict = TRUE,
+           stop.on.error = TRUE)
     
   {
     dt <- data.table::fread(file)

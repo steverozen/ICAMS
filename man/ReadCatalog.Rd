@@ -9,7 +9,8 @@ ReadCatalog(
   ref.genome = NULL,
   region = "unknown",
   catalog.type = "counts",
-  strict = TRUE
+  strict = TRUE,
+  stop.on.error = TRUE
 )
 }
 \arguments{
@@ -26,6 +27,10 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{strict}{If TRUE, do additional checks on the input, and stop if the
 checks fail.}
+
+\item{stop.on.error}{If TRUE, call \code{stop} on error; otherwise
+return a single column matrix of NA's with the attribute "error"
+containing error information.}
 }
 \value{
 A catalog as an S3 object; see \code{\link{as.catalog}}.

@@ -17,6 +17,10 @@
 #'
 #' @param strict If TRUE, do additional checks on the input, and stop if the
 #'   checks fail.
+#'   
+#' @param stop.on.error If TRUE, call \code{stop} on error; otherwise
+#'   return a single column matrix of NA's with the attribute "error"
+#'   containing error information.
 #'
 #' @return A catalog as an S3 object; see \code{\link{as.catalog}}.
 #'
@@ -34,7 +38,8 @@
 #'                     package = "ICAMS")
 #' catSBS96 <- ReadCatalog(file)
 ReadCatalog <- function(file, ref.genome = NULL, region = "unknown", 
-                        catalog.type = "counts", strict = TRUE) {
+                        catalog.type = "counts", strict = TRUE,
+                        stop.on.error = TRUE) {
   StopIfRegionIllegal(region)
   StopIfCatalogTypeIllegal(catalog.type)
   class.of.catalog <- InferClassOfCatalogForRead(file) #
@@ -73,7 +78,8 @@ WriteCatalog <- function(catalog, file, strict = TRUE) {
 
 #' @export
 ReadCatalog.SBS96Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                     catalog.type = "counts", strict = TRUE) {
+                                     catalog.type = "counts", strict = TRUE,
+                                     stop.on.error = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 96)
   if (strict) {
@@ -122,7 +128,8 @@ ReadSBS96CatalogFromTsv <- function(file, ref.genome = NULL, region = "unknown",
 
 #' @export
 ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                      catalog.type = "counts", strict = TRUE) {
+                                      catalog.type = "counts", strict = TRUE,
+                                      stop.on.error = TRUE) {
   
   StopIfTranscribedRegionIllegal(region)
   
@@ -160,7 +167,8 @@ ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown
 
 #' @export
 ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                       catalog.type = "counts", strict = TRUE) {
+                                       catalog.type = "counts", strict = TRUE,
+                                       stop.on.error = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 1536)
   if (strict) {
@@ -185,7 +193,8 @@ ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknow
 #' @export
 ReadCatalog.DBS78Catalog <- 
   function(file, ref.genome = NULL, region = "unknown", 
-           catalog.type = "counts", strict = TRUE) {
+           catalog.type = "counts", strict = TRUE,
+           stop.on.error = TRUE) {
     cos <- data.table::fread(file)
     stopifnot(nrow(cos) == 78)
   if (strict) {
@@ -232,7 +241,8 @@ ReadCatalog.DBS78Catalog <-
 
 #' @export
 ReadCatalog.DBS144Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                      catalog.type = "counts", strict = TRUE) {
+                                      catalog.type = "counts", strict = TRUE,
+                                      stop.on.error = TRUE) {
   
   StopIfTranscribedRegionIllegal(region)
   
@@ -255,7 +265,8 @@ ReadCatalog.DBS144Catalog <- function(file, ref.genome = NULL, region = "unknown
 
 #' @export
 ReadCatalog.DBS136Catalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                      catalog.type = "counts", strict = TRUE) {
+                                      catalog.type = "counts", strict = TRUE,
+                                      stop.on.error = TRUE) {
   cos <- data.table::fread(file)
   stopifnot(nrow(cos) == 136)
   if (strict) {
@@ -272,11 +283,20 @@ ReadCatalog.DBS136Catalog <- function(file, ref.genome = NULL, region = "unknown
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+
 #' @export
 ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown", 
-                                     catalog.type = "counts", strict = TRUE) {
+                                     catalog.type = "counts", strict = TRUE,
+                                     stop.on.error = TRUE) {
+  
+  tryCatch({
+    null.out <- matrix(NA, ncol = 1, nrow = length(ICAMS::catalog.row.order$ID))
   cos <- data.table::fread(file)
-  stopifnot(nrow(cos) == 83)
+  
+
+  if (nrow(cos) != 83) {
+    stop("Expected 83 rows in catalog file, got ", nrow(cos))
+  }
   
   if (any(grepl("Del:M:1", cos[ , 1]))) {
     if (strict) {
@@ -297,17 +317,35 @@ ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown"
     rn <- apply(cos[ , 1:4], MARGIN = 1, paste, collapse = ":")
     out <- as.matrix(cos[ , -(1:4), drop = FALSE])
   }
-
-  stopifnot(setdiff(rn, ICAMS::catalog.row.order$ID) == c())
-  stopifnot(setdiff(ICAMS::catalog.row.order$ID, rn) == c())
+  
+  null.out <- matrix(NA, ncol = ncol(out), nrow = nrow(out))
+  if ((length(setdiff(rn, ICAMS::catalog.row.order$ID)) > 0) ||
+      (length(setdiff(ICAMS::catalog.row.order$ID, rn)) > 0)) {
+    msg <- 
+      paste("The row names are not correct:\n",
+            "got", paste(rn, collapse = ", "),
+            "\nexpected", paste(ICAMS::catalog.row.order$ID,
+                                collapse = ", "))
+    stop(msg)
+  }
   if (strict) {
     stopifnot(rn == ICAMS::catalog.row.order$ID)
   }
   rownames(out) <- rn
-#   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3] 
+  #   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3] 
   out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
   return(as.catalog(out, ref.genome, region, catalog.type))
+  },
+  error = function(e) { 
+    if (!is.null(e$message)) e <- e$message
+    attr(null.out, "error") <- e
+    message(e)
+    if (stop.on.error) {
+      stop(e) } else {
+        return(null.out) }}
+  ) # tryCatch
 }
+
 
 #' @title Write a catalog to a file.
 #'

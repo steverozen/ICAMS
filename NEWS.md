@@ -1,3 +1,9 @@
+# ICAMS 2.2.8.90xx
+
+* Started to change return from ReadCatalog to include possible
+  attribute "error"
+* Some file reorganization
+
 # ICAMS 2.2.7.90xx
 ## Added
 * Enabled functions `PlotCatalog` and `PlotCatalogToPdf` to plot a numeric
