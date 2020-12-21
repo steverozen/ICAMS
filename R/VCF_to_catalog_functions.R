@@ -1197,12 +1197,15 @@ SplitListOfVCFs <-
 #'     that contains sequence context information.
 #'
 #' @keywords internal
-AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
+AddSeqContext <- 
+  function(df, ref.genome, seq.context.width = 10, name.of.VCF = NULL) {
   if (0 == nrow(df)) return(df)
   ref.genome <- NormalizeGenomeArg(ref.genome)
 
   # Check if the format of sequence names in df and genome are the same
-  chr.names <- CheckAndFixChrNames(vcf.df = df, ref.genome = ref.genome)
+  chr.names <- CheckAndFixChrNames(vcf.df = df, 
+                                   ref.genome = ref.genome, 
+                                   name.of.VCF = name.of.VCF)
 
   # Create a GRanges object with the needed width.
   Ranges <-
@@ -1233,7 +1236,8 @@ AddSeqContext <- function(df, ref.genome, seq.context.width = 10) {
 #'     which contain the mutated gene's name, range and strand information.
 #'
 #' @keywords internal
-AddTranscript <- function(df, trans.ranges = NULL) {
+AddTranscript <- 
+  function(df, trans.ranges = NULL, ref.genome, name.of.VCF = NULL) {
   if (nrow(df) == 0) {
     return(df)
   }
@@ -1241,13 +1245,29 @@ AddTranscript <- function(df, trans.ranges = NULL) {
   if (is.null(trans.ranges)) {
     return(data.table(df))
   }
-
+  
+  ref.genome <- NormalizeGenomeArg(ref.genome = ref.genome)
+  
+  # Check whether the chromosome name format of trans.ranges matches with that
+  # in df. If not, change chromosome name format in trans.ranges
+  new.chr.names <- 
+    CheckAndFixChrNamesForTransRanges(trans.ranges = trans.ranges,
+                                      vcf.df = df, 
+                                      ref.genome = ref.genome, 
+                                      name.of.VCF = name.of.VCF)
+  trans.ranges$chrom <- new.chr.names
+  
+  # We need to set key for trans.ranges for using data.table::foverlaps
+  if (!data.table::haskey(trans.ranges)) {
+    data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
+  }
+  
   # Find range overlaps between the df and trans.ranges
   df1 <- data.table(df)
   df1[, POS2 := POS]
-  dt <- foverlaps(df1, trans.ranges,
-                  by.x = c("CHROM", "POS", "POS2"),
-                  type = "within", mult = "all")
+  dt <- data.table::foverlaps(df1, trans.ranges,
+                              by.x = c("CHROM", "POS", "POS2"),
+                              type = "within", mult = "all")
 
   # Find out mutations that fall on transcripts on both strands
   dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
@@ -1707,6 +1727,8 @@ ReadMutectVCFs <-
 #'   \code{\link{TranscriptRanges}} for more details.
 #'   If \code{is.null(trans.ranges)} do not add transcript range
 #'   information.
+#'   
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @return An in-memory SBS VCF as a \code{data.table}. This has been annotated
 #'   with the sequence context (column name \code{seq.21bases}) and with
@@ -1727,12 +1749,16 @@ ReadMutectVCFs <-
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
-AnnotateSBSVCF <- function(SBS.vcf, ref.genome, trans.ranges = NULL) {
-  SBS.vcf <- AddSeqContext(SBS.vcf, ref.genome = ref.genome)
+AnnotateSBSVCF <- function(SBS.vcf, ref.genome, 
+                           trans.ranges = NULL, name.of.VCF = NULL) {
+  SBS.vcf <- AddSeqContext(df = SBS.vcf, ref.genome = ref.genome, 
+                           name.of.VCF = name.of.VCF)
   CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
-    SBS.vcf <- AddTranscript(SBS.vcf, trans.ranges)
+    SBS.vcf <- AddTranscript(df = SBS.vcf, trans.ranges = trans.ranges, 
+                             ref.genome = ref.genome,
+                             name.of.VCF = name.of.VCF)
   }
   return(as.data.table(SBS.vcf))
 }
@@ -2121,7 +2147,7 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
 #'
 #' @param DBS.vcf An in-memory DBS VCF as a \code{data.frame}.
 #'
-#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
+#' @inheritParams AnnotateSBSVCF
 #'
 #' @return An in-memory DBS VCF as a \code{data.table}. This has been annotated
 #'   with the sequence context (column name \code{seq.21bases}) and with
@@ -2142,12 +2168,16 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
-AnnotateDBSVCF <- function(DBS.vcf, ref.genome, trans.ranges = NULL) {
-  DBS.vcf <- AddSeqContext(DBS.vcf, ref.genome = ref.genome)
+AnnotateDBSVCF <- function(DBS.vcf, ref.genome, 
+                           trans.ranges = NULL, name.of.VCF = NULL) {
+  DBS.vcf <- AddSeqContext(df = DBS.vcf, ref.genome = ref.genome, 
+                           name.of.VCF = name.of.VCF)
   CheckSeqContextInVCF(DBS.vcf, "seq.21bases")
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
-    DBS.vcf <- AddTranscript(DBS.vcf, trans.ranges)
+    DBS.vcf <- AddTranscript(df = DBS.vcf, trans.ranges = trans.ranges, 
+                             ref.genome = ref.genome,
+                             name.of.VCF = name.of.VCF)
   }
   return(as.data.table(DBS.vcf))
 }
