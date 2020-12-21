@@ -266,3 +266,134 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome, name.of.VCF = NULL) {
        # We report the _original_ list of not matched names
        paste(not.matched, collapse = " "))
 }
+
+#' Check and, if possible, correct the chromosome names in a trans.ranges \code{data.table}
+#' 
+#' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
+#'   transcript range and strand information. Please refer to
+#'   \code{\link{TranscriptRanges}} for more details.
+#' 
+#' @param vcf.df A VCF as a \code{data.frame}. Check the names in column
+#' \code{CHROM}.
+#' 
+#' @param name.of.VCF Name of the VCF file.
+#' 
+#' @param ref.genome The reference genome with the chromosome names to check
+#' \code{vcf.df$CHROM} against; must be a Bioconductor 
+#' \code{\link[BSgenome]{BSgenome}}, e.g.
+#' \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}.
+#' 
+#' @return If the \code{vcf.df$CHROM} values are correct or can be corrected,
+#'   then a vector of chromosome names that can be used as a replacement for
+#'   \code{trans.ranges$chrom}. If the names in \code{vcf.df$CHROM} cannot be
+#'   made to be consistent with the chromosome names in
+#'   \code{trans.ranges$chrom}, then \code{stop}.
+#' 
+#' @keywords internal
+CheckAndFixChrNamesForTransRanges <- 
+  function(trans.ranges, vcf.df, ref.genome, name.of.VCF = NULL) {
+    names.to.check <- as.character(unique(trans.ranges$chrom))
+    
+    vcf.chr.names <- as.character(unique(vcf.df$CHROM))
+    # Check whether the naming of chromosomes in vcf.df is consistent
+    if(!sum(grepl("^chr", vcf.chr.names)) %in% c(0, length(vcf.chr.names))) {
+      stop("\nNaming of chromosomes in VCF ", dQuote(name.of.VCF), 
+           " is not consistent: ",
+           paste(vcf.chr.names, collapse = " "))
+    }
+    
+    not.matched <- setdiff(vcf.chr.names, names.to.check)
+    
+    # The names match -- we leave well-enough alone
+    if (length(not.matched) == 0) return(trans.ranges$chrom)
+    
+    vcf.has.chr.prefix <- any(grepl(pattern = "^chr", vcf.chr.names))
+    trans.has.chr.prefix <- any(grepl(pattern = "^chr", names.to.check))
+    
+    new.chr.names <- as.character(trans.ranges$chrom)
+    if (trans.has.chr.prefix && !vcf.has.chr.prefix) {
+      names.to.check <- gsub("chr", "", names.to.check)
+      new.chr.names <- gsub("chr", "", names.to.check)
+      
+      names.to.check <- paste0("chr", names.to.check)
+      new.chr.names <- paste0("chr", new.chr.names)
+      not.matched1 <- setdiff(vcf.chr.names, names.to.check)
+      if (length(not.matched1) == 0) return(new.chr.names)
+    }
+    
+    if (!trans.has.chr.prefix && vcf.has.chr.prefix) {
+      names.to.check <- paste0("chr", names.to.check)
+      new.chr.names <- paste0("chr", new.chr.names)
+      not.matched2 <- setdiff(vcf.chr.names, names.to.check)
+      if (length(not.matched2) == 0) return(new.chr.names)
+    }
+    
+    organism <- BSgenome::organism(ref.genome)
+    
+    CheckForPossibleMatchedChrName <- function(chr1, chr2) {
+      if (chr2 %in% vcf.chr.names) {
+        # If chr1 is already in vcf.chr.names, then stop
+        if (chr1 %in% vcf.chr.names) {
+          stopmessage <- function() {
+            stop("\n", chr2, " and ", chr1, " both are chromosome names in VCF ",
+                 dQuote(name.of.VCF),
+                 ", which should not be the case for ", organism, ". Please check ",
+                 "your data or specify the correct ref.genome argument")
+          }
+          if (vcf.has.chr.prefix) {
+            if (grepl(pattern = "^chr", chr2)) {
+              stopmessage()
+            } else {
+              chr1 <- paste0("chr", chr1)
+              chr2 <- paste0("chr", chr2)
+              stopmessage()
+            }
+          } else {
+            if (!grepl(pattern = "^chr", chr1)) {
+              stopmessage()
+            } else {
+              chr1 <- gsub("chr", "", chr1)
+              chr2 <- gsub("chr", "", chr2)
+              stopmessage()
+            }
+          }
+        }
+        
+        # Update the trans.ranges chromosome names to be consistent with
+        # those in vcf.df
+        new.chr.names[new.chr.names == chr1] <<- chr2
+        names.to.check <- setdiff(names.to.check, chr1)
+        names.to.check <<- unique(c(names.to.check, chr2))
+      }
+    }
+    
+    if (organism == "Homo sapiens") {
+      
+      # Maybe the problem is that X and Y are encoded as chr23 and chr24
+      CheckForPossibleMatchedChrName("chrX", "chr23")
+      CheckForPossibleMatchedChrName("chrY", "chr24")
+      
+      # Maybe the problem is that X and Y are encoded as 23 and 24
+      CheckForPossibleMatchedChrName("X", "23")
+      CheckForPossibleMatchedChrName("Y", "24")
+    }
+    
+    if (organism == "Mus musculus") {
+      
+      # Maybe the problem is that X and Y are encoded as chr20 and chr21
+      CheckForPossibleMatchedChrName("chrX", "chr20")
+      CheckForPossibleMatchedChrName("chrY", "chr21")
+      
+      # Maybe the problem is that X and Y are encoded as 20 and 21
+      CheckForPossibleMatchedChrName("X", "20")
+      CheckForPossibleMatchedChrName("Y", "21")
+    }
+    
+    not.matched3 <- setdiff(vcf.chr.names, names.to.check)
+    if (length(not.matched3) == 0) return(new.chr.names)
+    
+    stop("\nChromosome names in VCF ", dQuote(name.of.VCF), 
+         " not in trans ranges for ", organism, ": ", 
+         # We report the _original_ list of not matched names
+         paste(not.matched, collapse = " "))
+  }
