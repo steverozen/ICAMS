@@ -2006,23 +2006,13 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
     discarded.variants$discarded.reason <-
       paste0('SBS variant whose reference base in ref.genome does not match the',
              ' reference base in the VCF file.')
-    vcf <- vcf[-mismatches, ]
     message("In sample ", sample.id, " ", length(mismatches), " row out of ",
             nrow(vcf), " had reference base in ref.genome that does not match the ",
             "reference base in the VCF file.\n",
             "Please check the ref.genome argument.\n",
             "See discarded.variants in the return value for more details")
-
-    if (FALSE) {
-      stop("\nSample ", sample.id,
-           ":\nThe reference base in ref.genome does not match the ",
-           "reference base in ", length(mismatches),
-           " rows in the VCF file.\n",
-           "Please check the ref.genome argument.")
-    }
-
+    vcf <- vcf[-mismatches, ]
   }
-
 
   # Delete the rows of SBS if the pentanucleotide context contains "N"
   idx <- grep("N", substr(vcf$seq.21bases, 9, 13))

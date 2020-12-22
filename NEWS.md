@@ -17,6 +17,11 @@ names is consistent with that in `trans.ranges` used.
   
 * Some file reorganization.
 
+## Fixed
+* Fixed a bug in `CreateOneColSBSMatrix` for showing message that SBS variant
+whose reference base in ref.genome does not match the reference base in the VCF
+file.
+
 <br/>
 
 # ICAMS 2.2.7

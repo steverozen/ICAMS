@@ -27,12 +27,11 @@ transcript range and strand information. Please refer to
 \item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
-If the \code{vcf.df$CHROM} values are correct or
-can be corrected, then a vector of chromosome names
-that can be used as a replacement for \code{vcf.df$CHROM}.
-If the names in \code{vcf.df$CHROM} cannot be made to
-be consistent with the chromosome names in \code{ref.genome},
-then \code{stop}.
+If the \code{vcf.df$CHROM} values are correct or can be corrected,
+  then a vector of chromosome names that can be used as a replacement for
+  \code{trans.ranges$chrom}. If the names in \code{vcf.df$CHROM} cannot be
+  made to be consistent with the chromosome names in
+  \code{trans.ranges$chrom}, then \code{stop}.
 }
 \description{
 Check and, if possible, correct the chromosome names in a trans.ranges \code{data.table}
