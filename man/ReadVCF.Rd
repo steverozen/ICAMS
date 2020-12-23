@@ -42,7 +42,7 @@ An example would be \code{"PASS"}. Variants which don't have the specified
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example. 
+  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
   and read depth will be NAs.}
 

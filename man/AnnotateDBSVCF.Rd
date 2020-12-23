@@ -15,9 +15,9 @@ AnnotateDBSVCF(DBS.vcf, ref.genome, trans.ranges = NULL, name.of.VCF = NULL)
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link{BSgenome}} object
 \enumerate{
-  \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-  \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-  \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+  \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+  \item \code{BSgenome.Hsapiens.UCSC.hg38}
+  \item \code{BSgenome.Mmusculus.UCSC.mm10}
 }
 then the function will infer \code{trans.ranges} automatically. Otherwise,
 user will need to provide the necessary \code{trans.ranges}. Please refer to

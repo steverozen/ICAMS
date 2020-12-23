@@ -5,7 +5,7 @@
 #' characterization of the cisplatin mutational signature in human cell lines
 #' and in esophageal and liver tumors", \cr
 #' \emph{Genome Research} 2018 https://doi.org/10.1101/gr.230219.117 and
-#' "Characterization of colibactin-associated mutational signature in an 
+#' "Characterization of colibactin-associated mutational signature in an
 #' Asian oral squamous cell carcinoma and in other mucosal tumor types",
 #' \emph{Genome Research} 2020, https://doi.org/10.1101/gr.255620.119.
 #' "ICAMS" stands for In-depth Characterization and
@@ -43,7 +43,7 @@
 #' \code{\link{as.catalog}}
 #' is the main constructor.
 #'
-#' Conceptually, a catalog also has one of the following types, 
+#' Conceptually, a catalog also has one of the following types,
 #' indicated by the attribute \code{catalog.type}:
 #'
 #' \enumerate{
@@ -77,21 +77,21 @@
 #' of each trinucleotide in the human genome, exome, or in the transcribed
 #' region of the genome. See \code{\link{TransformCatalog}}
 #' for more information. Abundances logically depend on the species in
-#' question and on the part of the genome being analyzed. 
-#' 
-#' In "ICAMS" 
-#' abundances can sometimes be inferred from the 
+#' question and on the part of the genome being analyzed.
+#'
+#' In "ICAMS"
+#' abundances can sometimes be inferred from the
 #' \code{catalog} class attribute and the
-#' function arguments \code{region}, \code{ref.genome}, 
+#' function arguments \code{region}, \code{ref.genome},
 #' and \code{catalog.type}.
 #' Otherwise abundances can be provided as an \code{abundance} argument.
 #' See \code{\link{all.abundance}} for examples.
-#' 
-#' 
+#'
+#'
 #' Possible values for
-#' \code{region} are the strings \code{genome}, \code{transcript}, 
+#' \code{region} are the strings \code{genome}, \code{transcript},
 #' \code{exome}, and \code{unknown}; \code{transcript} includes entire
-#' transcribed regions, i.e. the introns as well as the exons. 
+#' transcribed regions, i.e. the introns as well as the exons.
 #'
 #' If you need to create a catalog from a source other than
 #' this package (i.e. other than with
@@ -107,11 +107,11 @@
 #' from the VCFs. It has more general usage with functionalities overlapping
 #' with the three functions below. For example, it is the same as
 #' \code{\link{MutectVCFFilesToCatalog}} when \code{variant.caller = "mutect"}.
-#' 
+#'
 #' \item \code{\link{StrelkaSBSVCFFilesToCatalog}} creates 3 SBS catalogs (96,
 #' 192, 1536) and 3 DBS catalogs (78, 136, 144) from the Strelka SBS VCFs.
 #'
-#' \item \code{\link{StrelkaIDVCFFilesToCatalog}} creates an ID 
+#' \item \code{\link{StrelkaIDVCFFilesToCatalog}} creates an ID
 #' (small insertion and deletion) catalog
 #' from the Strelka ID VCFs.
 #'
@@ -135,7 +135,7 @@
 #' with functionalities overlapping with the three functions below. For
 #' example, it is the same as \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}}
 #' when \code{variant.caller = "mutect"}.
-#' 
+#'
 #' \item \code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}} creates all
 #' type of SBS and DBS catalogs from Strelka SBS VCFs and plots the catalogs.
 #'
@@ -144,7 +144,7 @@
 #'
 #' \item \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}} creates all types of
 #' SBS, DBS and ID catalogs from Mutect VCFs and plots the catalogs. }
-#' 
+#'
 #' @section Wrapper functions to create a zip file which contains catalogs and plot PDFs from VCF files:
 #' \enumerate{
 #' \item \code{\link{VCFsToZipFile}} creates a zip file which contains SBS, DBS
@@ -152,19 +152,19 @@
 #' functionalities overlapping with the three functions below. For example,
 #' it is the same as \code{\link{MutectVCFFilesToZipFile}} when
 #' \code{variant.caller = "mutect"}.
-#' 
+#'
 #' \item \code{\link{StrelkaSBSVCFFilesToZipFile}} creates a zip file which
 #' contains SBS and DBS catalogs and plot PDFs from Strelka SBS VCF files.
-#' 
+#'
 #' \item \code{\link{StrelkaIDVCFFilesToZipFile}} creates a zip file which
 #' contains ID (small insertion and deletion) catalog and plot PDF from
 #' Strelka ID VCF files.
-#' 
+#'
 #' \item \code{\link{MutectVCFFilesToZipFile}} creates a zip file which contains
 #' SBS, DBS and ID catalogs and plot PDFs from Mutect VCF files. }
 #'
 #' @section The \code{ref.genome} (reference genome) argument:
-#' 
+#'
 #' Many functions take the argument \code{ref.genome}.
 #'
 #' To create a mutational
@@ -176,28 +176,28 @@
 #' \enumerate{
 #'   \item A variable from the Bioconductor \code{\link{BSgenome}} package
 #'   that contains a particular reference genome, for example
-#'   \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}.
+#'   \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
 #'
 #'  \item The strings \code{"hg38"} or \code{"GRCh38"}, which specify
-#'  \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}.
-#'  \item The strings \code{"hg19"} or \code{"GRCh37"}, 
+#'  \code{BSgenome.Hsapiens.UCSC.hg38}.
+#'  \item The strings \code{"hg19"} or \code{"GRCh37"},
 #'  which specify
-#'  \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}.
+#'  \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
 #'  \item The strings \code{"mm10"} or \code{"GRCm38"},
 #'  which specify
-#'  \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}.
+#'  \code{BSgenome.Mmusculus.UCSC.mm10}.
 #'  }
 #'
 #' All needed reference genomes must be installed separately by the user.
 #' Further instructions are at \cr
 #' https://bioconductor.org/packages/release/bioc/html/BSgenome.html. \cr
-#' 
+#'
 #' Use of ICAMS with reference genomes other than the 2 human genomes
 #' and 1 mouse genome specified above is restricted to
 #' \code{catalog.type} of \code{counts} or \code{counts.signature}
 #' unless the user also creates the necessary abundance vectors.
 #' See \code{\link{all.abundance}}.
-#' 
+#'
 #' Use \code{\link[BSgenome]{available.genomes}()}
 #'  to get the list of available genomes.
 #'

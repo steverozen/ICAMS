@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitListOfVCFs}
 \alias{SplitListOfVCFs}
-\title{Split each VCF into SBS, DBS, and ID VCFs (plus 
+\title{Split each VCF into SBS, DBS, and ID VCFs (plus
 VCF-like data frame with left-over rows)}
 \usage{
 SplitListOfVCFs(
@@ -29,7 +29,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
-Split each VCF into SBS, DBS, and ID VCFs (plus 
+Split each VCF into SBS, DBS, and ID VCFs (plus
 VCF-like data frame with left-over rows)
 }
 \section{Value}{
