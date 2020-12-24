@@ -14,6 +14,8 @@ trans.ranges chromosome names in function `AddTranscript` if needed.
 ## Updated
 * Updated function `AddTranscript` to check whether the format of VCF chromosome
 names is consistent with that in `trans.ranges` used.
+
+* Removed documenation warnings related to \link{BSgenome...}
   
 * Some file reorganization.
 

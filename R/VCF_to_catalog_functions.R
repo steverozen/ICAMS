@@ -2857,7 +2857,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   \code{\link{BSgenome}} object
 #'   \enumerate{
 #'     \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-#'     \item \code{BSgenome.Hsapiens.UCSC.hg38}}
+#'     \item \code{BSgenome.Hsapiens.UCSC.hg38}
 #'     \item \code{BSgenome.Mmusculus.UCSC.mm10}
 #'   }
 #'   then the function will infer \code{trans.ranges} automatically. Otherwise,

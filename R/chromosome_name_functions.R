@@ -154,7 +154,7 @@ StandardChromNameNew <- function(df, name.of.VCF = NULL) {
 #'
 #' @param ref.genome The reference genome with the chromosome names to check
 #' \code{vcf.df$CHROM} against; must be a Bioconductor
-#' \code{\link[BSgenome]{BSgenome}}, e.g.
+#' \code{BSgenome}, e.g.
 #' \code{BSgenome.Hsapiens.UCSC.hg38}.
 #'
 #' @return If the \code{vcf.df$CHROM} values are correct or
@@ -280,7 +280,7 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome, name.of.VCF = NULL) {
 #'
 #' @param ref.genome The reference genome with the chromosome names to check
 #' \code{vcf.df$CHROM} against; must be a Bioconductor
-#' \code{\link[BSgenome]{BSgenome}}, e.g.
+#' \code{BSgenome}, e.g.
 #' \code{BSgenome.Hsapiens.UCSC.hg38}.
 #'
 #' @return If the \code{vcf.df$CHROM} values are correct or can be corrected,

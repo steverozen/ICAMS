@@ -40,6 +40,19 @@ and read depth will be NAs.}
 \item{num.of.cores}{The number of cores to use. Not available on Windows
 unless \code{num.of.cores = 1}.}
 
+\item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
+\code{\link{BSgenome}} object
+\enumerate{
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{BSgenome.Mmusculus.UCSC.mm10}
+}
+then the function will infer \code{trans.ranges} automatically. Otherwise,
+user will need to provide the necessary \code{trans.ranges}. Please refer to
+\code{\link{TranscriptRanges}} for more details.
+If \code{is.null(trans.ranges)} do not add transcript range
+information.}
+
 \item{region}{A character string designating a genomic region;
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 

@@ -12,7 +12,7 @@ CheckAndFixChrNames(vcf.df, ref.genome, name.of.VCF = NULL)
 
 \item{ref.genome}{The reference genome with the chromosome names to check
 \code{vcf.df$CHROM} against; must be a Bioconductor
-\code{\link[BSgenome]{BSgenome}}, e.g.
+\code{BSgenome}, e.g.
 \code{BSgenome.Hsapiens.UCSC.hg38}.}
 
 \item{name.of.VCF}{Name of the VCF file.}

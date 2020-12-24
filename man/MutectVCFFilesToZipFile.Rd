@@ -32,9 +32,9 @@ insensitive) and share the \strong{same} \code{ref.genome} and
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link{BSgenome}} object
 \enumerate{
-  \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-  \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-  \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+  \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+  \item \code{BSgenome.Hsapiens.UCSC.hg38}
+  \item \code{BSgenome.Mmusculus.UCSC.mm10}
 }
 then the function will infer \code{trans.ranges} automatically. Otherwise,
 user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -86,7 +86,7 @@ as CSV files, plot them to PDF and generate a zip archive of all the output file
 \details{
 This function calls \code{\link{MutectVCFFilesToCatalog}},
 \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-\code{\link[zip]{zipr}}.
+\code{zip::zipr}.
 }
 \section{Value}{
 

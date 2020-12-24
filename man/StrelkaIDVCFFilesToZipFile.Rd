@@ -64,7 +64,7 @@ generate a zip archive of all the output files.
 \details{
 This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
 \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-\code{\link[zip]{zipr}}.
+\code{zip::zipr}.
 }
 \section{Value}{
 

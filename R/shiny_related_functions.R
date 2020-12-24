@@ -8,7 +8,7 @@
 #'
 #' This function calls \code{\link{StrelkaSBSVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[zip]{zipr}}.
+#' \code{zip::zipr}.
 #'
 #' @param dir Pathname of the directory which contains \strong{only} the Strelka
 #'   SBS VCF files. Each Strelka SBS VCF \strong{must} have a file extension
@@ -107,7 +107,7 @@ StrelkaSBSVCFFilesToZipFile <-
 #'
 #' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[zip]{zipr}}.
+#' \code{zip::zipr}.
 #'
 #' @inheritParams MutectVCFFilesToZipFile
 #'
@@ -195,7 +195,7 @@ StrelkaIDVCFFilesToZipFile <-
 #'
 #' This function calls \code{\link{MutectVCFFilesToCatalog}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[zip]{zipr}}.
+#' \code{zip::zipr}.
 #'
 #' @param dir Pathname of the directory which contains \strong{only} the Mutect
 #'   VCF files. Each Mutect VCF \strong{must} have a file extension ".vcf" (case
@@ -210,9 +210,9 @@ StrelkaIDVCFFilesToZipFile <-
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
 #'   \code{\link{BSgenome}} object
 #'   \enumerate{
-#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'     \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+#'     \item \code{BSgenome.Hsapiens.UCSC.hg38}
+#'     \item \code{BSgenome.Mmusculus.UCSC.mm10}
 #'   }
 #'   then the function will infer \code{trans.ranges} automatically. Otherwise,
 #'   user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -348,7 +348,7 @@ MutectVCFFilesToZipFile <-
 #'
 #' This function calls \code{\link{VCFsToCatalogs}},
 #' \code{\link{PlotCatalogToPdf}}, \code{\link{WriteCatalog}} and
-#' \code{\link[zip]{zipr}}.
+#' \code{zip::zipr}.
 #'
 #' @param dir Pathname of the directory which contains VCFs that come from the
 #'   \strong{same} variant caller. Each VCF \strong{must} have a file extension
@@ -372,9 +372,9 @@ MutectVCFFilesToZipFile <-
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
 #'   \code{\link{BSgenome}} object
 #'   \enumerate{
-#'     \item \code{\link[BSgenome.Hsapiens.1000genomes.hs37d5]{BSgenome.Hsapiens.1000genomes.hs37d5}}
-#'     \item \code{\link[BSgenome.Hsapiens.UCSC.hg38]{BSgenome.Hsapiens.UCSC.hg38}}
-#'     \item \code{\link[BSgenome.Mmusculus.UCSC.mm10]{BSgenome.Mmusculus.UCSC.mm10}}
+#'     \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+#'     \item \code{BSgenome.Hsapiens.UCSC.hg38}
+#'     \item \code{BSgenome.Mmusculus.UCSC.mm10}
 #'   }
 #'   then the function will infer \code{trans.ranges} automatically. Otherwise,
 #'   user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -434,8 +434,6 @@ MutectVCFFilesToZipFile <-
 #'   is TRUE.
 #'
 #' @importFrom utils glob2rx
-#'
-#' @importFrom zip zipr
 #'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf Value
 #'
