@@ -165,13 +165,20 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #' @keywords internal
 MakeDataFrameFromVCF <- function(file) {
   # Suppress the warning when the VCF is totally empty
+  tryCatch({
   df1 <-
     suppressWarnings(data.table::fread(file, na.strings = "",
                                        skip = "#CHROM", fill = TRUE))
 
   if (nrow(df1) == 0) {
     return(df1)
-  }
+  }},
+  error = function(err.info) {
+    if (!is.null(err.info$message)) err.info <- err.info$message
+    stop(basename(file), 
+         " does not appear to be a VCF file\ndetails: ",
+         err.info)
+  })
 
   # Extract the names of columns in the VCF file
   names <- c("CHROM", colnames(df1)[-1])

@@ -1,5 +1,9 @@
 # ICAMS 2.2.8.90xx
+
 ## Added
+* Added arg stop.on.error to VCFsToCatalogs; if false, return
+  list with single element named error.
+
 * Added new internal function `CheckAndFixChrNamesForTransRanges`. The
 chromosome names in exported data `TranscriptRanges` don't have "chr". ICAMS now
 will check for the chromosome names format in input vcf and update the

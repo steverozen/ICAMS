@@ -977,6 +977,9 @@ CombineAndReturnCatalogsForVCFs <-
     return(combined.list2)
   }
 
+
+
+
 #' Create SBS, DBS and Indel catalogs from VCFs
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
@@ -986,6 +989,9 @@ CombineAndReturnCatalogsForVCFs <-
 #' \code{\link{VCFsToDBSCatalogs}} and \code{\link{VCFsToIDCatalogs}}
 #'
 #' @inheritParams VCFsToCatalogsAndPlotToPdf
+#' 
+#' @param stop.on.error If \code{TRUE} call \code{stop} on error,
+#'  otherwise return a list with the single element \code{error}.
 #'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf Value
 #'
@@ -1004,7 +1010,52 @@ CombineAndReturnCatalogsForVCFs <-
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   catalogs <- VCFsToCatalogs(file, ref.genome = "hg19",
 #'                              variant.caller = "mutect", region = "genome")}
-VCFsToCatalogs <-
+VCFsToCatalogs <- function(files,
+                           ref.genome,
+                           variant.caller = "unknown",
+                           num.of.cores = 1,
+                           trans.ranges = NULL,
+                           region = "unknown",
+                           names.of.VCFs = NULL,
+                           tumor.col.names = NA,
+                           filter.status = NULL,
+                           get.vaf.function = NULL,
+                           ...,
+                           max.vaf.diff = 0.02,
+                           return.annotated.vcfs = FALSE,
+                           suppress.discarded.variants.warnings = TRUE,
+                           stop.on.error = TRUE) {
+  tryCatch(
+    VCFsToCatalogsX(
+      files = files,
+      ref.genome = ref.genome,
+      variant.caller = variant.caller,
+      num.of.cores = num.of.cores,
+      trans.ranges = trans.ranges,
+      region = region,
+      names.of.VCFs = names.of.VCFs,
+      tumor.col.names = tumor.col.names,
+      filter.status = filter.status,
+      get.vaf.function = get.vaf.function,
+      ... = ...,
+      max.vaf.diff = max.vaf.diff,
+      return.annotated.vcfs = return.annotated.vcfs,
+      suppress.discarded.variants.warnings = suppress.discarded.variants.warnings
+    ),
+    error = function(err.info) {
+      if (!is.null(err.info$message)) err.info <- err.info$message
+      message(err.info)
+      if (stop.on.error) {
+        stop(err.info)
+      } else { 
+        return(list(error = err.info))
+      }
+    }
+  )
+}
+
+
+VCFsToCatalogsX <-
   function(files,
            ref.genome,
            variant.caller = "unknown",
