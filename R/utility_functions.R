@@ -1346,7 +1346,9 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
 #'
 #' @param region A character string designating a region, one of
 #' \code{genome}, \code{transcript}, \code{exome}, \code{unknown};
-#' see \code{\link{ICAMS}}.
+#' see \code{\link{ICAMS}}. If the catalog type is a stranded
+#' catalog type (SBS192 or DBS144), region = "genome" will
+#' be silently converted to "transcript".
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
@@ -1430,6 +1432,7 @@ as.catalog <- function(object,
   # TODO(Steve): check that his has been moved 
   # to the VCF -> catalog functions
   if (attributes(object)$class[1] %in% c("SBS192Catalog", "DBS144Catalog")) {
+    if (region == "genome") region <- "transcript"
     StopIfTranscribedRegionIllegal(region)
   }
   attr(object, "region") <- region

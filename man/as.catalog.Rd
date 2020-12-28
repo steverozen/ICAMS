@@ -29,7 +29,9 @@ If argument \code{infer.rownames}
 
 \item{region}{A character string designating a region, one of
 \code{genome}, \code{transcript}, \code{exome}, \code{unknown};
-see \code{\link{ICAMS}}.}
+see \code{\link{ICAMS}}. If the catalog type is a stranded
+catalog type (SBS192 or DBS144), region = "genome" will
+be silently converted to "transcript".}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}

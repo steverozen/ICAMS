@@ -16,11 +16,14 @@ trans.ranges chromosome names in function `AddTranscript` if needed.
   attribute "error" and allow for not calling stop() on
   error.
   
+* For a stranded catalog as.catalog will silently convert
+  region = "genome" to "transcript"
+  
 ## Updated
 * Updated function `AddTranscript` to check whether the format of VCF chromosome
 names is consistent with that in `trans.ranges` used.
 
-* Removed documenation warnings related to \link{BSgenome...}
+* Removed documentation warnings related to \link{BSgenome...}
   
 * Some file reorganization.
 
