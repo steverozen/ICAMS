@@ -7,8 +7,6 @@
 
 [![R build
 status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)](https://github.com/steverozen/ICAMS/actions)
-[![Travis build
-status](https://travis-ci.com/steverozen/ICAMS.svg?branch=master)](https://travis-ci.com/steverozen/ICAMS)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)](https://ci.appveyor.com/project/steverozen/ICAMS)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
