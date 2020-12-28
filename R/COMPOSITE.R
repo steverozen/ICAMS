@@ -1,3 +1,4 @@
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.COMPOSITECatalog <-
   function(file, ref.genome = NULL, region = "unknown", 

@@ -12,8 +12,9 @@ trans.ranges chromosome names in function `AddTranscript` if needed.
 * Added new argument `name.of.VCF` in function `AnnotateSBSVCF` and
 `AnnotateDBSVCF` for better error reporting.
 
-* Started to change return from `ReadCatalog` to include possible
-  attribute "error.
+* Changed return from `ReadCatalog` to include possible
+  attribute "error" and allow for not calling stop() on
+  error.
   
 ## Updated
 * Updated function `AddTranscript` to check whether the format of VCF chromosome

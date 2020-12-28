@@ -1,3 +1,15 @@
+#' Read catalog methods
+#'
+#' See the generic function \code{\link{ReadCatalog}}
+#'
+#' @inheritParams ReadCatalog
+#' 
+#' @title ReadCatalog.Methods
+#' @name ReadCatalog.Methods
+#' 
+NULL
+
+
 #' Read catalog
 #'
 #' Read a catalog in standardized format from path.
@@ -19,8 +31,9 @@
 #'   checks fail.
 #'   
 #' @param stop.on.error If TRUE, call \code{stop} on error; otherwise
-#'   return a single column matrix of NA's with the attribute "error"
-#'   containing error information.
+#'   return a 1-column matrix of NA's with the attribute "error"
+#'   containing error information. The number of rows may not
+#'   be the correct number for the expected catalog type.
 #'
 #' @return A catalog as an S3 object; see \code{\link{as.catalog}}.
 #'
@@ -37,13 +50,60 @@
 #'                     "strelka.regress.cat.sbs.96.csv",
 #'                     package = "ICAMS")
 #' catSBS96 <- ReadCatalog(file)
+#' 
+
 ReadCatalog <- function(file, ref.genome = NULL, region = "unknown", 
                         catalog.type = "counts", strict = TRUE,
                         stop.on.error = TRUE) {
+  tryCatch(
+    return(ReadCatalogInternal(
+      file = file,
+      ref.genome = ref.genome,
+      region = region,
+      catalog.type = catalog.type,
+      strict = strict,
+      stop.on.error = TRUE)),
+    error = function(err) {
+      return(
+        ReadCatalogErrReturn(
+          err.info      = err,
+          nrow          = 1, # We do not know what type of catalog
+          stop.on.error = stop.on.error))})
+}
+
+#' Internal read catalog function to be wrapped in a tryCatch
+#' @inheritParams ReadCatalog
+#' @keywords internal
+ReadCatalogInternal <- function(file, ref.genome = NULL, region = "unknown", 
+                                catalog.type = "counts", strict = TRUE,
+                                stop.on.error = TRUE) {
   StopIfRegionIllegal(region)
   StopIfCatalogTypeIllegal(catalog.type)
-  class.of.catalog <- InferClassOfCatalogForRead(file) #
+  class.of.catalog <- InferClassOfCatalogForRead(file)
   UseMethod(generic = "ReadCatalog", object = class.of.catalog)
+}
+
+#' Get error message and either stop or create a null error output for read catalog
+#' 
+#' @param err.info The information passed to the \code{tryCatch} \code{error}
+#'   function argument.
+#'   
+#' @param nrow The number of rows to put in the 1-column NA return matrix.
+#' 
+#' @param stop.on.error If \code{TRUE} then call \code{stop()}.
+#' 
+#' @param do.message  If \code{TRUE} then \code{message} the error information.
+#' 
+#' @keywords internal
+
+ReadCatalogErrReturn <- 
+  function(err.info, nrow, stop.on.error, do.message = TRUE) {
+  if (!is.null(err.info$message)) err.info <- err.info$message
+  if (stop.on.error) stop(err.info)
+  if (do.message) message(err.info)
+  null.out <- matrix(NA, ncol = 1, nrow = nrow)
+  attr(null.out, "error") <- err.info
+  return(null.out)
 }
 
 #' Write a catalog
@@ -76,6 +136,8 @@ WriteCatalog <- function(catalog, file, strict = TRUE) {
   UseMethod(generic = "WriteCatalog")
 }
 
+
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.SBS96Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                      catalog.type = "counts", strict = TRUE,
@@ -126,6 +188,7 @@ ReadSBS96CatalogFromTsv <- function(file, ref.genome = NULL, region = "unknown",
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                       catalog.type = "counts", strict = TRUE,
@@ -165,6 +228,7 @@ ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                        catalog.type = "counts", strict = TRUE,
@@ -190,6 +254,8 @@ ReadCatalog.SBS1536Catalog <- function(file, ref.genome = NULL, region = "unknow
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.DBS78Catalog <- 
   function(file, ref.genome = NULL, region = "unknown", 
@@ -239,6 +305,8 @@ ReadCatalog.DBS78Catalog <-
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.DBS144Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                       catalog.type = "counts", strict = TRUE,
@@ -263,6 +331,8 @@ ReadCatalog.DBS144Catalog <- function(file, ref.genome = NULL, region = "unknown
   return(as.catalog(out, ref.genome, region, catalog.type))
 }
 
+
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.DBS136Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                       catalog.type = "counts", strict = TRUE,
@@ -284,65 +354,64 @@ ReadCatalog.DBS136Catalog <- function(file, ref.genome = NULL, region = "unknown
 }
 
 
+#' @rdname ReadCatalog.Methods
 #' @export
 ReadCatalog.IndelCatalog <- function(file, ref.genome = NULL, region = "unknown", 
                                      catalog.type = "counts", strict = TRUE,
                                      stop.on.error = TRUE) {
   
   tryCatch({
-    null.out <- matrix(NA, ncol = 1, nrow = length(ICAMS::catalog.row.order$ID))
-  cos <- data.table::fread(file)
-  
-
-  if (nrow(cos) != 83) {
-    stop("Expected 83 rows in catalog file, got ", nrow(cos))
-  }
-  
-  if (any(grepl("Del:M:1", cos[ , 1]))) {
+    # null.out <- matrix(NA, ncol = 1, nrow = length(ICAMS::catalog.row.order$ID))
+    cos <- data.table::fread(file)
+    
+    
+    if (nrow(cos) != 83) {
+      stop("Expected 83 rows in catalog file, got ", nrow(cos))
+    }
+    
+    if (any(grepl("Del:M:1", cos[ , 1]))) {
+      if (strict) {
+        stop("Cannot interpret ", file, 
+             " as a SigProfiler ID catalog when strict = TRUE")
+      } 
+      warning("Interpreting ", file, 
+              " as a SigProfiler insertion/deletion catalog")
+      rn <- TransRownames.ID.SigPro.PCAWG(unlist(cos[ , 1]))
+      out <- as.matrix(cos[ , -1, drop = FALSE])
+    } else {
+      cn <- names(cos)
+      ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
+      # Repeat_MH_size is the size of repeat OR microhomology (MH)
+      # if (strict) { for (i in 1:4) { stopifnot(cn[i] == ex.cn[i]) } }
+      if (strict) stopifnot(cn[1:4] == ex.cn)
+      names(cos)[1:4] <- ex.cn
+      rn <- apply(cos[ , 1:4], MARGIN = 1, paste, collapse = ":")
+      out <- as.matrix(cos[ , -(1:4), drop = FALSE])
+    }
+    
+    # null.out <- matrix(NA, ncol = ncol(out), nrow = nrow(out))
+    if ((length(setdiff(rn, ICAMS::catalog.row.order$ID)) > 0) ||
+        (length(setdiff(ICAMS::catalog.row.order$ID, rn)) > 0)) {
+      msg <- 
+        paste("The row names are not correct:\n",
+              "got", paste(rn, collapse = ", "),
+              "\nexpected", paste(ICAMS::catalog.row.order$ID,
+                                  collapse = ", "))
+      stop(msg)
+    }
     if (strict) {
-      stop("Cannot interpret ", file, 
-           " as a SigProfiler ID catalog when strict = TRUE")
-    } 
-    warning("Interpreting ", file, 
-            " as a SigProfiler insertion/deletion catalog")
-    rn <- TransRownames.ID.SigPro.PCAWG(unlist(cos[ , 1]))
-    out <- as.matrix(cos[ , -1, drop = FALSE])
-  } else {
-    cn <- names(cos)
-    ex.cn <- c("Type", "Subtype", "Indel_size", "Repeat_MH_size")
-    # Repeat_MH_size is the size of repeat OR microhomology (MH)
-    # if (strict) { for (i in 1:4) { stopifnot(cn[i] == ex.cn[i]) } }
-    if (strict) stopifnot(cn[1:4] == ex.cn)
-    names(cos)[1:4] <- ex.cn
-    rn <- apply(cos[ , 1:4], MARGIN = 1, paste, collapse = ":")
-    out <- as.matrix(cos[ , -(1:4), drop = FALSE])
-  }
-  
-  null.out <- matrix(NA, ncol = ncol(out), nrow = nrow(out))
-  if ((length(setdiff(rn, ICAMS::catalog.row.order$ID)) > 0) ||
-      (length(setdiff(ICAMS::catalog.row.order$ID, rn)) > 0)) {
-    msg <- 
-      paste("The row names are not correct:\n",
-            "got", paste(rn, collapse = ", "),
-            "\nexpected", paste(ICAMS::catalog.row.order$ID,
-                                collapse = ", "))
-    stop(msg)
-  }
-  if (strict) {
-    stopifnot(rn == ICAMS::catalog.row.order$ID)
-  }
-  rownames(out) <- rn
-  #   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3] 
-  out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
-  return(as.catalog(out, ref.genome, region, catalog.type))
+      stopifnot(rn == ICAMS::catalog.row.order$ID)
+    }
+    rownames(out) <- rn
+    #   if (ncol(out) == 1) colnames(out) <- colnames(cos)[3] 
+    out <- out[ICAMS::catalog.row.order$ID, , drop = FALSE]
+    return(as.catalog(out, ref.genome, region, catalog.type))
   },
   error = function(e) { 
-    if (!is.null(e$message)) e <- e$message
-    attr(null.out, "error") <- e
-    message(e)
-    if (stop.on.error) {
-      stop(e) } else {
-        return(null.out) }}
+    return(
+      ReadCatalogErrReturn(e, 
+                           nrow = length(ICAMS::catalog.row.order$ID),
+                           stop.on.error = stop.on.error))}
   ) # tryCatch
 }
 
