@@ -193,7 +193,9 @@ ReadSBS96CatalogFromTsv <- function(file, ref.genome = NULL, region = "unknown",
 ReadCatalog.SBS192Catalog <- function(file, ref.genome = NULL, region = "unknown", 
                                       catalog.type = "counts", strict = TRUE,
                                       stop.on.error = TRUE) {
-  
+  if (region == "genome") {
+    region <- "transcript"
+  }
   StopIfTranscribedRegionIllegal(region)
   
   cos <- data.table::fread(file)

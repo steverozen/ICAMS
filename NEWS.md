@@ -16,8 +16,8 @@ trans.ranges chromosome names in function `AddTranscript` if needed.
   attribute "error" and allow for not calling stop() on
   error.
   
-* For a stranded catalog as.catalog will silently convert
-  region = "genome" to "transcript"
+* For a stranded catalog, `as.catalog` and `ReadCatalog` will silently convert
+  region = "genome" to "transcript".
   
 ## Updated
 * Updated function `AddTranscript` to check whether the format of VCF chromosome
