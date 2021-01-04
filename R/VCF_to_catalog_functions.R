@@ -176,14 +176,24 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
       suppressWarnings(data.table::fread(file, na.strings = "",
                                          skip = "#CHROM", fill = TRUE))
     
+    required.col.names <- c("CHROM", "POS", "REF", "ALT")
+    col.names.exist <- required.col.names %in% colnames(df1)
+    col.names.not.available <- required.col.names[!col.names.exist]
+    
+    if (!all(col.names.exist)) {
+      stop("some column names required in VCF are not available ", 
+           paste(col.names.not.available, collapse = " "))
+    }
+    
     if (nrow(df1) == 0) {
       return(df1)
-    }},
+    }
+    },
     error = function(err.info) {
-      if (!is.null(err.info$message)) err.info <- err.info$message
-      stop(vcf.name, 
-           " does not appear to be a VCF file.\nDetails: ",
-           err.info)
+      if (!is.null(err.info$message)) {
+      stop(vcf.name, " does not appear to be a VCF file.\nDetails: ",
+           err.info$message)
+      }
     })
   
   # Extract the names of columns in the VCF file

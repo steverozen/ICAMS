@@ -2,7 +2,11 @@
 ## Added
 * Added an additional argument `name.of.VCF` in function `MakeDataFrameFromVCF`
 for better error reporting.
-  
+
+## Updated
+* Updated function `MakeDataFrameFromVCF` for better error reporting when reading
+in files that are actually not VCFs.
+
 <br/>
 
 # ICAMS 2.2.8
