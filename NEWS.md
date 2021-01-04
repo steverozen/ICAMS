@@ -1,4 +1,11 @@
-# ICAMS 2.2.8.90xx
+# ICAMS 2.3.0.90xx
+## Added
+* Added an additional argument `name.of.VCF` in function `MakeDataFrameFromVCF`
+for better error reporting.
+  
+<br/>
+
+# ICAMS 2.2.8
 
 ## Added
 * Added arg stop.on.error to VCFsToCatalogs; if false, return

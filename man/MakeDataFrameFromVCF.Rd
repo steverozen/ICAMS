@@ -4,7 +4,7 @@
 \alias{MakeDataFrameFromVCF}
 \title{Read in the data lines of a Variant Call Format (VCF) file}
 \usage{
-MakeDataFrameFromVCF(file)
+MakeDataFrameFromVCF(file, name.of.VCF = NULL)
 }
 \arguments{
 \item{file}{The name/path of the VCF file, or a complete URL.}

@@ -163,7 +163,13 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
 #' @return A data frame storing mutation records of a VCF file.
 #'
 #' @keywords internal
-MakeDataFrameFromVCF <- function(file) {
+MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
+  if (is.null(name.of.VCF)) {
+    vcf.name <- basename(file)
+  } else {
+    vcf.name <- name.of.VCF
+  }
+  
   # Suppress the warning when the VCF is totally empty
   tryCatch({
     df1 <-
@@ -175,7 +181,7 @@ MakeDataFrameFromVCF <- function(file) {
     }},
     error = function(err.info) {
       if (!is.null(err.info$message)) err.info <- err.info$message
-      stop(basename(file), 
+      stop(vcf.name, 
            " does not appear to be a VCF file.\nDetails: ",
            err.info)
     })
@@ -561,7 +567,7 @@ GetConsensusVAF <- function(vcf, mc.cores = 1) {
 ReadVCF <-
   function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
            filter.status = NULL, get.vaf.function = NULL, ...) {
-    df0 <- MakeDataFrameFromVCF(file)
+    df0 <- MakeDataFrameFromVCF(file, name.of.VCF = name.of.VCF)
 
     if (nrow(df0) == 0) {
       return(df0)
