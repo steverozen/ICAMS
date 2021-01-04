@@ -176,18 +176,19 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
       suppressWarnings(data.table::fread(file, na.strings = "",
                                          skip = "#CHROM", fill = TRUE))
     
-    required.col.names <- c("CHROM", "POS", "REF", "ALT")
+    if (nrow(df1) == 0) {
+      return(df1)
+    }
+    
+    required.col.names <- c("#CHROM", "POS", "REF", "ALT")
     col.names.exist <- required.col.names %in% colnames(df1)
     col.names.not.available <- required.col.names[!col.names.exist]
     
     if (!all(col.names.exist)) {
-      stop("some column names required in VCF are not available ", 
+      stop("some columns required in VCF are not available ", 
            paste(col.names.not.available, collapse = " "))
     }
     
-    if (nrow(df1) == 0) {
-      return(df1)
-    }
     },
     error = function(err.info) {
       if (!is.null(err.info$message)) {
@@ -684,6 +685,8 @@ ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
                      names.of.VCFs = NULL,
                      tumor.col.names = NA, filter.status = NULL,
                      get.vaf.function = NULL, ...) {
+  num.of.cores <- AdjustNumberOfCores(num.of.cores)
+  
   if (is.null(names.of.VCFs)) {
     vcfs.names <- tools::file_path_sans_ext(basename(files))
   } else {

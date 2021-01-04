@@ -7,6 +7,9 @@ for better error reporting.
 * Updated function `MakeDataFrameFromVCF` for better error reporting when reading
 in files that are actually not VCFs.
 
+* Updated function `ReadVCFs` to automatically change the number of cores to 1 on 
+Windows instead of throwing an error.
+
 <br/>
 
 # ICAMS 2.2.8
