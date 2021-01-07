@@ -1039,7 +1039,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
     for (i in 1 : 10) {
       j <- c(9, 15, 24, 30, 39, 45, 51, 60, 69, 78)
       name <- substr(rownames(catalog), 1, 2)
-      text(bp[j[i] + 0.5], ymax * 0.92, xpd = NA, cex = 0.8,
+      text(bp[j[i] + 0.5], ymax * 0.84, xpd = NA, cex = 0.8,
            adj = c(1, 1), labels = sum(catalog[name == maj.class.names[i], ]))
     }
   } else if (attributes(catalog)$catalog.type %in%
@@ -1074,7 +1074,12 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
        labels = paste(maj.class.names, "NN", sep = ">"), cex = 0.7, xpd = NA)
 
   # Draw the sample name information on top of graph
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog), adj = 0, cex = 0.8, font = 2)
+  if (attributes(catalog)$catalog.type == "counts") {
+    sample.name.y.pos <- ymax * 7.4 / 8
+  } else {
+    sample.name.y.pos <- ymax * 7 / 8
+  }
+  text(1.5, sample.name.y.pos, labels = colnames(catalog), adj = 0, cex = 0.8, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)

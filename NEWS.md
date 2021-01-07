@@ -3,6 +3,10 @@
 * Added an additional argument `name.of.VCF` in function `MakeDataFrameFromVCF`
 for better error reporting.
 
+## Changed
+* Changed plotting function for DBS78Catalog to adjust the sample name position
+when the catalog type is counts.
+
 ## Updated
 * Updated function `MakeDataFrameFromVCF` for better error reporting when reading
 in files that are actually not VCFs.
