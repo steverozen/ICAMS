@@ -1,4 +1,10 @@
-# ICAMS 2.3.0.90xx
+# ICAMS 2.3.1.90xx
+## Fixed
+* Fixed a bug in `ReadAndSplitVCFs` for merging adjacent SBSs into DBS when `variant.caller` is `mutect`.
+
+<br/>
+
+# ICAMS 2.3.0
 ## Added
 * Added an additional argument `name.of.VCF` in function `MakeDataFrameFromVCF`
 for better error reporting.

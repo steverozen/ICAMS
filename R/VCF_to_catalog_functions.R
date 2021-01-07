@@ -537,10 +537,10 @@ GetConsensusVAF <- function(vcf, mc.cores = 1) {
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
 #' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
-#'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
-#'   and read depth will be NAs.
+#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
+#'   allele frequencies). If \code{"unknown"}(default) and
+#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs.
 #'
 #' @param name.of.VCF Name of the VCF file. If \code{NULL}(default), this
 #'   function will remove all of the path up to and including the last path
@@ -1148,6 +1148,11 @@ SplitOneVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #' VCF-like data frame with left-over rows)
 #'
 #' @param list.of.vcfs List of VCFs as in-memory data.frames.
+#' 
+#' @param variant.caller Name of the variant caller that produces the VCF, can
+#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+#'   \code{"unknown"}. If variant caller is \code{"mutect"}, do \strong{not} merge
+#'   SBSs into DBS.
 #'
 #' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
 #'   the absolute difference of VAFs for adjacent SBSs is bigger than
@@ -1163,43 +1168,53 @@ SplitOneVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
 #' @inheritSection ReadAndSplitMutectVCFs Value
 #'
 #' @keywords internal
-SplitListOfVCFs <-
-  function(list.of.vcfs, max.vaf.diff = 0.02, num.of.cores = 1,
-           suppress.discarded.variants.warnings = TRUE) {
-    names.of.VCFs <- names(list.of.vcfs)
-
-    GetSplitVCFs <- function(idx, list.of.vcfs) {
+SplitListOfVCFs <-function(list.of.vcfs, 
+                           variant.caller, 
+                           max.vaf.diff = 0.02, 
+                           num.of.cores = 1,
+                           suppress.discarded.variants.warnings = TRUE) {
+  names.of.VCFs <- names(list.of.vcfs)
+  
+  GetSplitVCFs <- function(idx, list.of.vcfs, variant.caller) {
+    if (variant.caller == "mutect") {
+      split.vcfs <- SplitOneMutectVCF(vcf.df = list.of.vcfs[[idx]],
+                                      name.of.VCF = names(list.of.vcfs)[idx])
+    } else {
       split.vcfs <- SplitOneVCF(list.of.vcfs[[idx]],
                                 max.vaf.diff = max.vaf.diff,
                                 name.of.VCF = names(list.of.vcfs)[idx])
-      return(split.vcfs)
     }
-    num.of.vcfs <- length(list.of.vcfs)
-    if (suppress.discarded.variants.warnings == TRUE) {
-      v1 <- suppressWarnings(parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
-                                                list.of.vcfs = list.of.vcfs,
-                                                mc.cores = num.of.cores))
-    } else {
-      v1 <- parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
-                               list.of.vcfs = list.of.vcfs,
-                               mc.cores = num.of.cores)
-    }
-    names(v1) <- names.of.VCFs
-    SBS <- lapply(v1, function(x) x$SBS)
-    DBS <- lapply(v1, function(x) x$DBS)
-    ID  <- lapply(v1, function(x) x$ID)
-    discarded.variants <- lapply(v1, function(x) x$discarded.variants)
-
-    # Remove NULL elements from discarded.variants
-    discarded.variants1 <- Filter(Negate(is.null), discarded.variants)
-
-    if (length(discarded.variants1) == 0) {
-      return(list(SBS = SBS, DBS = DBS, ID = ID))
-    } else {
-      return(list(SBS = SBS, DBS = DBS, ID = ID,
-                  discarded.variants = discarded.variants1))
-    }
+   
+    return(split.vcfs)
   }
+  num.of.vcfs <- length(list.of.vcfs)
+  if (suppress.discarded.variants.warnings == TRUE) {
+    v1 <- suppressWarnings(parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
+                                              list.of.vcfs = list.of.vcfs,
+                                              variant.caller = variant.caller,
+                                              mc.cores = num.of.cores))
+  } else {
+    v1 <- parallel::mclapply(1:num.of.vcfs, GetSplitVCFs,
+                             list.of.vcfs = list.of.vcfs,
+                             variant.caller = variant.caller,
+                             mc.cores = num.of.cores)
+  }
+  names(v1) <- names.of.VCFs
+  SBS <- lapply(v1, function(x) x$SBS)
+  DBS <- lapply(v1, function(x) x$DBS)
+  ID  <- lapply(v1, function(x) x$ID)
+  discarded.variants <- lapply(v1, function(x) x$discarded.variants)
+  
+  # Remove NULL elements from discarded.variants
+  discarded.variants1 <- Filter(Negate(is.null), discarded.variants)
+  
+  if (length(discarded.variants1) == 0) {
+    return(list(SBS = SBS, DBS = DBS, ID = ID))
+  } else {
+    return(list(SBS = SBS, DBS = DBS, ID = ID,
+                discarded.variants = discarded.variants1))
+  }
+}
 
 #' Add sequence context to a data frame with mutation records
 #'
@@ -2871,10 +2886,11 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   \code{\link{ICAMS}}.
 #'
 #' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
-#'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
-#'   and read depth will be NAs.
+#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
+#'   allele frequencies). If variant caller is \code{"unknown"}(default) and
+#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
+#'   variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.
 #'
 #' @param num.of.cores The number of cores to use. Not available on Windows
 #'   unless \code{num.of.cores = 1}.

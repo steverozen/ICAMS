@@ -361,10 +361,11 @@ MutectVCFFilesToZipFile <-
 #'   \code{\link{ICAMS}}.
 #'
 #' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
-#'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
-#'   and read depth will be NAs.
+#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
+#'   allele frequencies). If variant caller is \code{"unknown"}(default) and
+#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
+#'   variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.
 #'
 #' @param num.of.cores The number of cores to use. Not available on Windows
 #'   unless \code{num.of.cores = 1}.
@@ -1190,10 +1191,11 @@ ReadAndSplitMutectVCFs <-
 #' @param files Character vector of file paths to the VCF files.
 #'
 #' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{strelka}, \code{mutect} or \code{freebayes}. This
-#'   information is needed to calculate the VAFs (variant allele frequencies).
-#'   If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
-#'   and read depth will be NAs.
+#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
+#'   allele frequencies). If variant caller is \code{"unknown"}(default) and
+#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
+#'   variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.
 #'
 #' @param num.of.cores The number of cores to use. Not available on Windows
 #'   unless \code{num.of.cores = 1}.
@@ -1275,7 +1277,8 @@ ReadAndSplitVCFs <-
            suppress.discarded.variants.warnings = TRUE) {
     num.of.cores <- AdjustNumberOfCores(num.of.cores)
     
-    vcfs <- ReadVCFs(files = files, variant.caller = variant.caller,
+    vcfs <- ReadVCFs(files = files, 
+                     variant.caller = variant.caller,
                      num.of.cores = num.of.cores,
                      names.of.VCFs = names.of.VCFs,
                      tumor.col.names =  tumor.col.names,
@@ -1283,7 +1286,9 @@ ReadAndSplitVCFs <-
                      get.vaf.function = get.vaf.function, ...)
 
     split.vcfs <-
-      SplitListOfVCFs(list.of.vcfs = vcfs, max.vaf.diff = max.vaf.diff,
+      SplitListOfVCFs(list.of.vcfs = vcfs,
+                      variant.caller = variant.caller,
+                      max.vaf.diff = max.vaf.diff,
                       num.of.cores = num.of.cores,
                       suppress.discarded.variants.warnings =
                         suppress.discarded.variants.warnings)

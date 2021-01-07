@@ -21,10 +21,11 @@ ReadAndSplitVCFs(
 \item{files}{Character vector of file paths to the VCF files.}
 
 \item{variant.caller}{Name of the variant caller that produces the VCF, can
-be either \code{strelka}, \code{mutect} or \code{freebayes}. This
-information is needed to calculate the VAFs (variant allele frequencies).
-If \code{"unknown"}(default) and \code{get.vaf.function} is NULL, then VAF
-and read depth will be NAs.}
+be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+\code{"unknown"}. This information is needed to calculate the VAFs (variant
+allele frequencies). If variant caller is \code{"unknown"}(default) and
+\code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
+variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.}
 
 \item{num.of.cores}{The number of cores to use. Not available on Windows
 unless \code{num.of.cores = 1}.}

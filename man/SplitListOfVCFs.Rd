@@ -7,6 +7,7 @@ VCF-like data frame with left-over rows)}
 \usage{
 SplitListOfVCFs(
   list.of.vcfs,
+  variant.caller,
   max.vaf.diff = 0.02,
   num.of.cores = 1,
   suppress.discarded.variants.warnings = TRUE
@@ -14,6 +15,11 @@ SplitListOfVCFs(
 }
 \arguments{
 \item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
+
+\item{variant.caller}{Name of the variant caller that produces the VCF, can
+be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
+\code{"unknown"}. If variant caller is \code{"mutect"}, do \strong{not} merge
+SBSs into DBS.}
 
 \item{max.vaf.diff}{The maximum difference of VAF, default value is 0.02. If
 the absolute difference of VAFs for adjacent SBSs is bigger than
