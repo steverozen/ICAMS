@@ -2,6 +2,9 @@
 ## Fixed
 * Fixed a bug in `ReadAndSplitVCFs` for merging adjacent SBSs into DBS when `variant.caller` is `mutect`.
 
+## Updated
+* Updated function `CheckAndRemoveDiscardedVariants` to remove wrong DBS variants that have same base in the same position in REF and ALT (e.g. TA > TT or GT > CT).
+
 <br/>
 
 # ICAMS 2.3.0

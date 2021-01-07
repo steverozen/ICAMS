@@ -761,7 +761,7 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
   } else {
     df4 <- df3
   }
-
+  
   # Remove variants involving three or more nucleotides
   # (e.g. ACT > TGA or AACT > GGTA)
   other.df <- which(nchar(df4$REF) > 2 & nchar(df4$ALT) == nchar(df4$REF))
@@ -795,11 +795,30 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
   } else {
     df6 <- df5
   }
+  
+  # Remove wrong DBS variants that have same base in the same position in REF and ALT
+  # (e.g. TA > TT or GT > CT)
+  wrong.DBS.type1 <- dplyr::filter(df6, nchar(REF) == 2, nchar(ALT) == 2, 
+                                   substr(REF, 1, 1) == substr(ALT, 1, 1))
+  wrong.DBS.type2 <- dplyr::filter(df6, nchar(REF) == 2, nchar(ALT) == 2, 
+                                   substr(REF, 2, 2) == substr(ALT, 2, 2))
+  wrong.DBS <- dplyr::bind_rows(wrong.DBS.type1, wrong.DBS.type2)
+  wrong.DBS.pos <- wrong.DBS$POS
+  wrong.DBS$discarded.reason <- "Wrong DBS variant"
+  df7 <- dplyr::filter(df6, !POS %in% wrong.DBS.pos)
+  
+  if (nrow(wrong.DBS) > 0) {
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has wrong DBS variants and were discarded. See discarded.variants ",
+            "in the return value for more details.")
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, wrong.DBS)
+  }
 
   if (nrow(discarded.variants) == 0) {
-    return(list(df = df6))
+    return(list(df = df7))
   } else {
-    return(list(df = df6, discarded.variants = discarded.variants))
+    return(list(df = df7, discarded.variants = discarded.variants))
   }
 }
 
