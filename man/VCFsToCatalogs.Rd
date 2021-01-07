@@ -18,8 +18,7 @@ VCFsToCatalogs(
   ...,
   max.vaf.diff = 0.02,
   return.annotated.vcfs = FALSE,
-  suppress.discarded.variants.warnings = TRUE,
-  stop.on.error = TRUE
+  suppress.discarded.variants.warnings = TRUE
 )
 }
 \arguments{
@@ -95,9 +94,6 @@ FALSE.}
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
 is TRUE.}
-
-\item{stop.on.error}{If \code{TRUE} call \code{stop} on error,
-otherwise return a list with the single element \code{error}.}
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and

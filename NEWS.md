@@ -17,6 +17,10 @@ Windows instead of throwing an error.
 ## Fixed
 * Fixed a bug in `CheckAndFixChrNames` for returning the correct number of chromosome names.
 
+## Removed
+* Removed argument `stop.on.error` and code `tryCatch` in function
+`VCFsToCatalogs` for better tracing if the function stops on error.
+
 <br/>
 
 # ICAMS 2.2.8

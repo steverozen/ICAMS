@@ -990,9 +990,6 @@ CombineAndReturnCatalogsForVCFs <-
 #'
 #' @inheritParams VCFsToCatalogsAndPlotToPdf
 #' 
-#' @param stop.on.error If \code{TRUE} call \code{stop} on error,
-#'  otherwise return a list with the single element \code{error}.
-#'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf Value
 #'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
@@ -1023,99 +1020,53 @@ VCFsToCatalogs <- function(files,
                            ...,
                            max.vaf.diff = 0.02,
                            return.annotated.vcfs = FALSE,
-                           suppress.discarded.variants.warnings = TRUE,
-                           stop.on.error = TRUE) {
-  tryCatch(
-    VCFsToCatalogsX(
-      files = files,
-      ref.genome = ref.genome,
-      variant.caller = variant.caller,
-      num.of.cores = num.of.cores,
-      trans.ranges = trans.ranges,
-      region = region,
-      names.of.VCFs = names.of.VCFs,
-      tumor.col.names = tumor.col.names,
-      filter.status = filter.status,
-      get.vaf.function = get.vaf.function,
-      ... = ...,
-      max.vaf.diff = max.vaf.diff,
-      return.annotated.vcfs = return.annotated.vcfs,
-      suppress.discarded.variants.warnings = suppress.discarded.variants.warnings
-    ),
-    error = function(err.info) {
-      if (!is.null(err.info$message)) err.info <- err.info$message
-      message(err.info)
-      if (stop.on.error) {
-        stop(err.info)
-      } else { 
-        return(list(error = err.info))
-      }
-    }
-  )
-}
-
-
-VCFsToCatalogsX <-
-  function(files,
-           ref.genome,
-           variant.caller = "unknown",
-           num.of.cores = 1,
-           trans.ranges = NULL,
-           region = "unknown",
-           names.of.VCFs = NULL,
-           tumor.col.names = NA,
-           filter.status = NULL,
-           get.vaf.function = NULL,
-           ...,
-           max.vaf.diff = 0.02,
-           return.annotated.vcfs = FALSE,
-           suppress.discarded.variants.warnings = TRUE) {
-    num.of.cores <- AdjustNumberOfCores(num.of.cores)
-    
-    split.vcfs <-
-      ReadAndSplitVCFs(files = files, 
-                       variant.caller = variant.caller,
-                       num.of.cores = num.of.cores, 
-                       names.of.VCFs = names.of.VCFs,
-                       tumor.col.names = tumor.col.names, 
-                       filter.status = filter.status,
-                       get.vaf.function = get.vaf.function, 
-                       ... = ...,
-                       max.vaf.diff = max.vaf.diff,
-                       suppress.discarded.variants.warnings = 
-                         suppress.discarded.variants.warnings)
-
-    SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
-                                  ref.genome = ref.genome,
-                                  num.of.cores = num.of.cores,
-                                  trans.ranges = trans.ranges,
-                                  region = region,
-                                  return.annotated.vcfs = return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings =
-                                    suppress.discarded.variants.warnings)
-    
-    DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS,
-                                  ref.genome = ref.genome,
-                                  num.of.cores = num.of.cores,
-                                  trans.ranges = trans.ranges,
-                                  region = region,
-                                  return.annotated.vcfs = return.annotated.vcfs,
-                                  suppress.discarded.variants.warnings =
-                                    suppress.discarded.variants.warnings)
-    
-    ID.list <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+                           suppress.discarded.variants.warnings = TRUE) {
+  num.of.cores <- AdjustNumberOfCores(num.of.cores)
+  
+  split.vcfs <-
+    ReadAndSplitVCFs(files = files, 
+                     variant.caller = variant.caller,
+                     num.of.cores = num.of.cores, 
+                     names.of.VCFs = names.of.VCFs,
+                     tumor.col.names = tumor.col.names, 
+                     filter.status = filter.status,
+                     get.vaf.function = get.vaf.function, 
+                     ... = ...,
+                     max.vaf.diff = max.vaf.diff,
+                     suppress.discarded.variants.warnings = 
+                       suppress.discarded.variants.warnings)
+  
+  SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
                                 ref.genome = ref.genome,
                                 num.of.cores = num.of.cores,
+                                trans.ranges = trans.ranges,
                                 region = region,
                                 return.annotated.vcfs = return.annotated.vcfs,
                                 suppress.discarded.variants.warnings =
                                   suppress.discarded.variants.warnings)
-    
-    CombineAndReturnCatalogsForVCFs(split.vcfs.list = split.vcfs,
-                                    SBS.list = SBS.list,
-                                    DBS.list = DBS.list,
-                                    ID.list = ID.list)
-  }
+  
+  DBS.list <- VCFsToDBSCatalogs(list.of.DBS.vcfs = split.vcfs$DBS,
+                                ref.genome = ref.genome,
+                                num.of.cores = num.of.cores,
+                                trans.ranges = trans.ranges,
+                                region = region,
+                                return.annotated.vcfs = return.annotated.vcfs,
+                                suppress.discarded.variants.warnings =
+                                  suppress.discarded.variants.warnings)
+  
+  ID.list <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+                              ref.genome = ref.genome,
+                              num.of.cores = num.of.cores,
+                              region = region,
+                              return.annotated.vcfs = return.annotated.vcfs,
+                              suppress.discarded.variants.warnings =
+                                suppress.discarded.variants.warnings)
+  
+  CombineAndReturnCatalogsForVCFs(split.vcfs.list = split.vcfs,
+                                  SBS.list = SBS.list,
+                                  DBS.list = DBS.list,
+                                  ID.list = ID.list)
+}
 
 #' Read and split Strelka SBS VCF files
 #'
