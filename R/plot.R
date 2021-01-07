@@ -562,7 +562,7 @@ PlotCatalog.SBS192Catalog <-
       for (i in 1 : 6) {
         j <- 32 + 32 * (i - 1)
         k <- 1 + 32 * (i - 1)
-        text(bp[j], ymax * 0.92, labels = sum(cat[k : (32 * i), 1]),
+        text(bp[j], ymax * 0.84, labels = sum(cat[k : (32 * i), 1]),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
     }
@@ -582,7 +582,12 @@ PlotCatalog.SBS192Catalog <-
          cex = cex.xlabel, srt = 90, adj = 1, xpd = NA)
 
     # Write the name of the sample
-    text(1.5, ymax * 7 / 8, labels = colnames(cat), adj = 0, cex = cex, font = 2)
+    if (attributes(catalog)$catalog.type == "counts") {
+      sample.name.y.pos <- ymax * 7.4 / 8
+    } else {
+      sample.name.y.pos <- ymax * 7 / 8
+    }
+    text(1.5, sample.name.y.pos, labels = colnames(cat), adj = 0, cex = cex, font = 2)
     
     # Add legend
     legend(bp[159], ymax * 1.05, fill = strand.col, border = strand.col,
