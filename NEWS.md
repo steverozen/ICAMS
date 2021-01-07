@@ -14,6 +14,9 @@ in files that are actually not VCFs.
 * Updated function `ReadVCFs` to automatically change the number of cores to 1 on 
 Windows instead of throwing an error.
 
+## Fixed
+* Fixed a bug in `CheckAndFixChrNames` for returning the correct number of chromosome names.
+
 <br/>
 
 # ICAMS 2.2.8

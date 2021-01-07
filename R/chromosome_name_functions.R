@@ -194,7 +194,7 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome, name.of.VCF = NULL) {
 
   if (!ref.has.chr.prefix && vcf.has.chr.prefix) {
     names.to.check <- gsub("chr", "", names.to.check)
-    new.chr.names <- gsub("chr", "", names.to.check)
+    new.chr.names <- gsub("chr", "", new.chr.names)
     not.matched2 <- setdiff(names.to.check, ref.genome.names)
     if (length(not.matched2) == 0) return(new.chr.names)
   }
