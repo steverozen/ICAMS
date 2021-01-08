@@ -50,6 +50,7 @@ test_that("Test parallel computing for Strelka SBS VCFs", {
     ReadVCFs(files, variant.caller = "strelka", num.of.cores = num.of.cores)
 
   split.vcfs <- SplitListOfVCFs(list.of.vcfs = list.of.SBS.vcfs,
+                                variant.caller = "strelka",
                                 num.of.cores = num.of.cores)
 
   catalogs1 <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
@@ -85,7 +86,9 @@ test_that("Test parallel computing for Mutect VCFs", {
   list.of.vcfs <-
     ReadVCFs(files, variant.caller = "mutect", num.of.cores = num.of.cores)
   split.vcfs <-
-    SplitListOfVCFs(list.of.vcfs = list.of.vcfs, num.of.cores = num.of.cores)
+    SplitListOfVCFs(list.of.vcfs = list.of.vcfs, 
+                    variant.caller = "mutect",
+                    num.of.cores = num.of.cores)
   SBS.catalogs <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
                                     ref.genome = "hg19",
                                     num.of.cores = num.of.cores,
