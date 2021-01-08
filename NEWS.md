@@ -5,6 +5,10 @@
 ## Updated
 * Updated function `CheckAndRemoveDiscardedVariants` to remove wrong DBS variants that have same base in the same position in REF and ALT (e.g. TA > TT or GT > CT).
 
+## Changed
+* Changed plotting function for IndelCatalog to adjust the sample
+name position when the catalog type is counts.
+
 <br/>
 
 # ICAMS 2.3.0

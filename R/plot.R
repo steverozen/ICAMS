@@ -1646,7 +1646,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
       } else {
         counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
       }
-      text(idx2[i], ymax * 0.6, labels = counts[i],
+      text(idx2[i], ymax * 0.8, labels = counts[i],
            cex = 0.68, adj = 1, xpd = NA)
     }
   } 
@@ -1681,8 +1681,13 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
 
   # Draw the sample name information of the sample
-  text(1.5, ymax * 7 / 8, labels = colnames(catalog),
-       adj = 0, cex = 0.8, font = 2)
+  if (attributes(catalog)$catalog.type == "counts") {
+    sample.name.y.pos <- ymax * 7.4 / 8
+  } else {
+    sample.name.y.pos <- ymax * 7 / 8
+  }
+  text(1.5, sample.name.y.pos, labels = colnames(catalog),
+       adj = 0, cex = 0.7, font = 2)
 
   # Draw y axis
   y.axis.values <- seq(0, ymax, ymax / 4)
@@ -1725,7 +1730,7 @@ PlotCatalogToPdf.IndelCatalog <-
   grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
   n <- ncol(catalog)
-  opar <- par(mfrow = c(8, 1), mar = c(3, 4, 2.5, 2), oma = c(3, 3, 2, 2))
+  opar <- par(mfrow = c(8, 1), mar = c(2.5, 4, 2.5, 2), oma = c(2, 2, 2, 2))
   on.exit(par(opar))
   
   for (i in 1 : n) {

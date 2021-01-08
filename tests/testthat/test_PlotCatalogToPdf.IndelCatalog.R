@@ -6,7 +6,6 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
   catalog.counts <- ReadCatalog("testdata/BTSG_WGS_PCAWG.indels.csv",
                        ref.genome = "GRCh37",
                        region = "genome", catalog.type = "counts")
-  colnames(catalog.counts) <- paste0("Biliary-AdenoCA", 1 : 35)
   out <- PlotCatalogToPdf(catalog.counts, 
                           file = file.path(tempdir(), "PlotCatID.counts.test.pdf"))
   expect_equal(out$plot.success, TRUE)
