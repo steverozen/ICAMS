@@ -1289,6 +1289,11 @@ AddSeqContext <-
 #' @param trans.ranges A \code{\link[data.table]{data.table}} which contains
 #'   transcript range and strand information. Please refer to
 #'   \code{\link{TranscriptRanges}} for more details.
+#'   
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'   
+#' @param name.of.VCF Name of the VCF file.
 #'
 #' @import data.table
 #'

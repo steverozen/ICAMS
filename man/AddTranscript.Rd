@@ -12,6 +12,11 @@ AddTranscript(df, trans.ranges = NULL, ref.genome, name.of.VCF = NULL)
 \item{trans.ranges}{A \code{\link[data.table]{data.table}} which contains
 transcript range and strand information. Please refer to
 \code{\link{TranscriptRanges}} for more details.}
+
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}.}
+
+\item{name.of.VCF}{Name of the VCF file.}
 }
 \value{
 A data frame with new columns added to the input data frame,
