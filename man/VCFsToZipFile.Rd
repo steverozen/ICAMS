@@ -6,6 +6,7 @@
 \usage{
 VCFsToZipFile(
   dir,
+  files,
   zipfile,
   ref.genome,
   variant.caller = "unknown",
@@ -28,6 +29,9 @@ VCFsToZipFile(
 \strong{same} variant caller. Each VCF \strong{must} have a file extension
 ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
+
+\item{files}{Character vector of file paths to the VCF files. Only \strong{one} of 
+argument \code{dir} or \code{files} need to be specified.}
 
 \item{zipfile}{Pathname of the zip file to be created.}
 

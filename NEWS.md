@@ -1,4 +1,7 @@
 # ICAMS 2.3.1.90xx
+## Added
+* Added an optional argument `files` in function `VCFsToZipFile`.
+
 ## Fixed
 * Fixed a bug in `ReadAndSplitVCFs` for merging adjacent SBSs into DBS when `variant.caller` is `mutect`.
 

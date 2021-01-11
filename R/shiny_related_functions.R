@@ -354,6 +354,9 @@ MutectVCFFilesToZipFile <-
 #'   \strong{same} variant caller. Each VCF \strong{must} have a file extension
 #'   ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
+#'   
+#' @param files Character vector of file paths to the VCF files. Only \strong{one} of 
+#' argument \code{dir} or \code{files} need to be specified.
 #'
 #' @param zipfile Pathname of the zip file to be created.
 #'
@@ -460,6 +463,7 @@ MutectVCFFilesToZipFile <-
 #'   unlink(file.path(tempdir(), "test.zip"))}
 VCFsToZipFile <-
   function(dir,
+           files,
            zipfile,
            ref.genome,
            variant.caller = "unknown",
@@ -475,8 +479,19 @@ VCFsToZipFile <-
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
-    files <- list.files(path = dir, pattern = "\\.vcf$",
-                        full.names = TRUE, ignore.case = TRUE)
+    if (missing(dir) && missing(files)) {
+      stop("One of argument dir or files need to be specified")
+    }
+    
+    if (!missing(dir) && !missing(files)) {
+      stop("Only one of argument dir or files can be specified")
+    }
+    
+    if (missing(files) && !missing(dir)) {
+      files <- list.files(path = dir, pattern = "\\.vcf$",
+                          full.names = TRUE, ignore.case = TRUE)
+    }
+    
     vcf.names <- basename(files)
     num.of.cores <- AdjustNumberOfCores(num.of.cores)
     
