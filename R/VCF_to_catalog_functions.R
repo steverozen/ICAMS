@@ -803,16 +803,18 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
   wrong.DBS.type2 <- dplyr::filter(df6, nchar(REF) == 2, nchar(ALT) == 2, 
                                    substr(REF, 2, 2) == substr(ALT, 2, 2))
   wrong.DBS <- dplyr::bind_rows(wrong.DBS.type1, wrong.DBS.type2)
-  wrong.DBS.pos <- wrong.DBS$POS
-  wrong.DBS$discarded.reason <- "Wrong DBS variant"
-  df7 <- dplyr::filter(df6, !POS %in% wrong.DBS.pos)
   
   if (nrow(wrong.DBS) > 0) {
     warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
             " has wrong DBS variants and were discarded. See discarded.variants ",
             "in the return value for more details.")
+    wrong.DBS.pos <- wrong.DBS$POS
+    wrong.DBS$discarded.reason <- "Wrong DBS variant"
     discarded.variants <-
       dplyr::bind_rows(discarded.variants, wrong.DBS)
+    df7 <- dplyr::filter(df6, !POS %in% wrong.DBS.pos)
+  } else {
+    df7 <- df6
   }
 
   if (nrow(discarded.variants) == 0) {
