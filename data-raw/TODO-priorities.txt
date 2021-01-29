@@ -1,6 +1,6 @@
-# ICAMS to do list, 2020 05 08
+# ICAMS to do list, 2021 02 29
 
-## Wait until after quarantine
+##(Completed) Wait until after quarantine
 User testing of ICAMS shiny app --- can the users manage the interface?
 * Exploratory interface
 * Mutographs in PCAW7 paper 
@@ -13,12 +13,12 @@ User testing of ICAMS shiny app --- can the users manage the interface?
 
 ## High priority
 
-... Add a new function ReadSBSVCF(with optional argument variant.caller? getvaf = TRUE/FALSE). 
+... (Completed) Add a new function ReadSBSVCF(with optional argument variant.caller? getvaf = TRUE/FALSE). 
     default will be a function that returns NA (downstream change to handle NAs)
-... Add Freebayes VCFs as an option in ICAMS (should be same Mutect except for VAF calculation) 
-... default sample input in shiny (UI)
+... (Completed) Add Freebayes VCFs as an option in ICAMS (should be same Mutect except for VAF calculation) 
+... (Completed) default sample input in shiny (UI)
 ... LOW For 1536, Put a legend to indicate the type of plotting? (counts, density, counts proportion, density proportion?)
-... LOW Update function TransformCatalog() to make it possible to transform from a "counts" catalog to a "counts.signature" catalog and assume that the target abundance is the same as the source abundance?
+... (Completed) LOW Update function TransformCatalog() to make it possible to transform from a "counts" catalog to a "counts.signature" catalog and assume that the target abundance is the same as the source abundance?
 
 ## Medium priority
 ... MED Stack bar chart in AA　paper - click one of the bar to the mutograph(drill down),
