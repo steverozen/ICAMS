@@ -7,10 +7,10 @@ citEntry(
                     person("Nanhai", "Jiang"),
                     person("Arnoud", "Boot"),
                     person("Mo", "Liu")),
-  year     = "2020",
-  note     = "R package version 2.2.7 --- For new features, install the development version from GitHub(https://github.com/steverozen/ICAMS)",
+  year     = "2021",
+  note     = "R package version 2.3.1 --- For new features, install the development version from GitHub(https://github.com/steverozen/ICAMS)",
   url      = "https://CRAN.R-project.org/package=ICAMS",
-  textVersion = paste0("Rozen SG, Jiang NH, Boot A, Liu M (2020). ",
-  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 2.2.7, https://CRAN.R-project.org/package=ICAMS."
+  textVersion = paste0("Rozen SG, Jiang NH, Boot A, Liu M (2021). ",
+  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 2.3.1, https://CRAN.R-project.org/package=ICAMS."
   )
 )
