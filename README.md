@@ -72,7 +72,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.2.7.tar.gz)
+source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.3.1.tar.gz)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 
