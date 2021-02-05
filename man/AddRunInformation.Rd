@@ -13,7 +13,8 @@ AddRunInformation(
   ref.genome,
   region,
   mutation.loads,
-  strand.bias.statistics
+  strand.bias.statistics,
+  tmpdir
 )
 }
 \description{

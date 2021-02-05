@@ -1,3 +1,13 @@
+# ICAMS 2.3.2.90xx
+## Added
+* Added an additional argument `tmpdir` in function `AddRunInformation`.
+
+## Fixed 
+* Create new temp directory when generating zip archive from VCFs to
+avoid zipping unnecessary files in the output.
+
+<br/>
+
 # ICAMS 2.3.1
 ## Added
 * Added an optional argument `files` in function `VCFsToZipFile`.

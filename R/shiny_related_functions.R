@@ -65,10 +65,14 @@ StrelkaSBSVCFFilesToZipFile <-
   # Retrieve the catalog matrix from catalogs0
   catalogs <- catalogs0
   catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-
+  
+  # Create a new tmp dir
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  
   output.file <- ifelse(base.filename == "",
-                        paste0(tempdir(), .Platform$file.sep),
-                        file.path(tempdir(), paste0(base.filename, ".")))
+                        paste0(tmpdir, .Platform$file.sep),
+                        file.path(tmpdir, paste0(base.filename, ".")))
 
   for (name in names(catalogs)) {
     WriteCatalog(catalogs[[name]],
@@ -90,8 +94,9 @@ StrelkaSBSVCFFilesToZipFile <-
 
   zipfile.name <- basename(zipfile)
   AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
-                    ref.genome, region, mutation.loads, strand.bias.statistics)
-  file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$",
+                    ref.genome, region, mutation.loads, strand.bias.statistics,
+                    tmpdir)
+  file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
                            full.names = TRUE)
   zip::zipr(zipfile = zipfile, files = file.names)
   unlink(file.names)
@@ -166,10 +171,14 @@ StrelkaIDVCFFilesToZipFile <-
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-
+    
+    # Create a new tmp dir
+    tmpdir <- tempfile()
+    dir.create(tmpdir)
+    
     output.file <- ifelse(base.filename == "",
-                          paste0(tempdir(), .Platform$file.sep),
-                          file.path(tempdir(), paste0(base.filename, ".")))
+                          paste0(tmpdir, .Platform$file.sep),
+                          file.path(tmpdir, paste0(base.filename, ".")))
 
     WriteCatalog(catalogs$catalog,
                  file = paste0(output.file, "catID.csv"))
@@ -179,8 +188,9 @@ StrelkaIDVCFFilesToZipFile <-
 
     zipfile.name <- basename(zipfile)
     AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.id",
-                      ref.genome, region, mutation.loads, strand.bias.statistics)
-    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$",
+                      ref.genome, region, mutation.loads, strand.bias.statistics,
+                      tmpdir)
+    file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
@@ -307,10 +317,14 @@ MutectVCFFilesToZipFile <-
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-
+    
+    # Create a new tmp dir
+    tmpdir <- tempfile()
+    dir.create(tmpdir)
+    
     output.file <- ifelse(base.filename == "",
-                          paste0(tempdir(), .Platform$file.sep),
-                          file.path(tempdir(), paste0(base.filename, ".")))
+                          paste0(tmpdir, .Platform$file.sep),
+                          file.path(tmpdir, paste0(base.filename, ".")))
 
     for (name in names(catalogs)) {
         WriteCatalog(catalogs[[name]],
@@ -332,8 +346,9 @@ MutectVCFFilesToZipFile <-
 
     zipfile.name <- basename(zipfile)
     AddRunInformation(files, vcf.names, zipfile.name, vcftype = "mutect",
-                      ref.genome, region, mutation.loads, strand.bias.statistics)
-    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$",
+                      ref.genome, region, mutation.loads, strand.bias.statistics,
+                      tmpdir)
+    file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
@@ -517,10 +532,14 @@ VCFsToZipFile <-
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0
     catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-
+    
+    # Create a new tmp dir
+    tmpdir <- tempfile()
+    dir.create(tmpdir)
+    
     output.file <- ifelse(base.filename == "",
-                          paste0(tempdir(), .Platform$file.sep),
-                          file.path(tempdir(), paste0(base.filename, ".")))
+                          paste0(tmpdir, .Platform$file.sep),
+                          file.path(tmpdir, paste0(base.filename, ".")))
 
     for (name in names(catalogs)) {
       WriteCatalog(catalogs[[name]],
@@ -542,8 +561,9 @@ VCFsToZipFile <-
 
     zipfile.name <- basename(zipfile)
     AddRunInformation(files, vcf.names, zipfile.name, vcftype = variant.caller,
-                      ref.genome, region, mutation.loads, strand.bias.statistics)
-    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$",
+                      ref.genome, region, mutation.loads, strand.bias.statistics,
+                      tmpdir)
+    file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
@@ -624,10 +644,14 @@ VCFsToZipFileXtra <-
 
     # Transform the counts catalogs to density catalogs
     catalogs.density <- TransCountsCatalogToDensity(catalogs)
-
+    
+    # Create a new tmp dir
+    tmpdir <- tempfile()
+    dir.create(tmpdir)
+    
     output.file <- ifelse(base.filename == "",
-                          paste0(tempdir(), .Platform$file.sep),
-                          file.path(tempdir(), paste0(base.filename, ".")))
+                          paste0(tmpdir, .Platform$file.sep),
+                          file.path(tmpdir, paste0(base.filename, ".")))
 
     for (name in names(catalogs.counts)) {
       WriteCatalog(catalogs.counts[[name]],
@@ -666,9 +690,10 @@ VCFsToZipFileXtra <-
     }
     zipfile.name <- basename(zipfile)
     AddRunInformation(files, vcf.names, zipfile.name, vcftype = variant.caller,
-                      ref.genome, region, mutation.loads, strand.bias.statistics)
+                      ref.genome, region, mutation.loads, strand.bias.statistics,
+                      tmpdir)
 
-    file.names <- list.files(path = tempdir(), pattern = "\\.(pdf|csv|txt)$",
+    file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
                              full.names = TRUE)
     zip::zipr(zipfile = zipfile, files = file.names)
     unlink(file.names)
@@ -1944,10 +1969,10 @@ CalculateNumberOfSpace <- function(list) {
 #' @keywords internal
 AddRunInformation <-
   function(files, vcf.names, zipfile.name, vcftype, ref.genome,
-           region, mutation.loads, strand.bias.statistics) {
+           region, mutation.loads, strand.bias.statistics, tmpdir) {
 
     run.info <-
-      file(description = file.path(tempdir(), "run-information.txt"), open = "w")
+      file(description = file.path(tmpdir, "run-information.txt"), open = "w")
 
     # Add the header information
     time.info <- strftime(Sys.time(), usetz = TRUE) # Get time zone information
