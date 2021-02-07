@@ -2025,12 +2025,14 @@ AddRunInformation <-
     } else if (vcftype == "mutect") {
       vcftype <- "Mutect"
     }
-
-    if (ref.genome == "hg19") {
+    
+    ref.genome <- NormalizeGenomeArg(ref.genome)
+    
+    if (ref.genome@pkgname == "BSgenome.Hsapiens.1000genomes.hs37d5") {
       ref.genome <- "Human GRCh37/hg19"
-    } else if (ref.genome == "hg38") {
+    } else if (ref.genome@pkgname == "BSgenome.Hsapiens.UCSC.hg38") {
       ref.genome <- "Human GRCh38/hg38"
-    } else if (ref.genome == "mm10") {
+    } else if (ref.genome@pkgname == "BSgenome.Mmusculus.UCSC.mm10") {
       ref.genome <- "Mouse GRCm38/mm10"
     }
     writeLines(paste0("Variant caller:   ", vcftype), run.info)

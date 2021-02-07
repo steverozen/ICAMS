@@ -6,6 +6,9 @@
 * Create new temp directory when generating zip archive from VCFs to
 avoid zipping unnecessary files in the output.
 
+* Fixed a bug in function `AddRunInformation` for allowing `ref.genome` to be a
+Bioconductor package.
+
 ## Changed
 * Updated function `CheckAndFixChrNames` to give a warning instead of an error
 when "23" and "X" or "24" and "Y" appear on the chromosome names on the VCF at
