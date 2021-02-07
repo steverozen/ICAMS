@@ -6,6 +6,12 @@
 * Create new temp directory when generating zip archive from VCFs to
 avoid zipping unnecessary files in the output.
 
+## Changed
+* Updated function `CheckAndFixChrNames` to give a warning instead of an error
+when "23" and "X" or "24" and "Y" appear on the chromosome names on the VCF at
+the same time. `CheckAndFixChrNames` will change "23" to "X" or "24" to "Y"
+internally for downstream processing.
+
 <br/>
 
 # ICAMS 2.3.1

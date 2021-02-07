@@ -203,29 +203,29 @@ CheckAndFixChrNames <- function(vcf.df, ref.genome, name.of.VCF = NULL) {
 
   CheckForPossibleMatchedChrName <- function(chr1, chr2) {
     if (chr1 %in% names.to.check) {
-      # If chr2 is already in names.to.check, then stop
+      # If chr2 is already in names.to.check, then give a warning
       if (chr2 %in% names.to.check) {
-        stopmessage <- function() {
-          stop("\n", chr1, " and ", chr2, " both are chromosome names in VCF ",
-               dQuote(name.of.VCF),
-               ", which should not be the case for ", organism, ". Please check ",
-               "your data or specify the correct ref.genome argument")
+        warningmessage <- function(x, y) {
+          warning("\n", x, " and ", y, " both are chromosome names in VCF ",
+                  dQuote(name.of.VCF),
+                  "for ", organism, ". ", x, " has been changed to ", y, 
+                  " internally for downstream processing")
         }
         if (vcf.has.chr.prefix) {
           if (grepl(pattern = "^chr", chr1)) {
-            stopmessage()
+            warningmessage(chr1, chr2)
           } else {
-            chr1 <- paste0("chr", chr1)
-            chr2 <- paste0("chr", chr2)
-            stopmessage()
+            x <- paste0("chr", chr1)
+            y <- paste0("chr", chr2)
+            warningmessage(x, y)
           }
         } else {
           if (!grepl(pattern = "^chr", chr1)) {
-            stopmessage()
+            warningmessage(chr1, chr2)
           } else {
-            chr1 <- gsub("chr", "", chr1)
-            chr2 <- gsub("chr", "", chr2)
-            stopmessage()
+            x <- gsub("chr", "", chr1)
+            y <- gsub("chr", "", chr2)
+            warningmessage(x, y)
           }
         }
       }
