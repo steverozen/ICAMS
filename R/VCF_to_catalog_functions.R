@@ -2039,27 +2039,37 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude DBSs
   # before calling the function. This function does not detect DBSs.
-
-  if (0 == nrow(vcf)) {
-    # Create 1-column matrix with all values being 0 and the correct row and
-    # column labels.
-    catSBS96 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS96), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$SBS96, sample.id))
-    catSBS192 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
-    catSBS1536 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$SBS1536), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$SBS1536, sample.id))
-
-    if (return.annotated.vcf == FALSE) {
-      return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
-                  catSBS1536 = catSBS1536))
+   
+  CheckForEmptySBSVCF <- function(vcf, return.annotated.vcf) {
+    if (0 == nrow(vcf)) {
+      # Create 1-column matrix with all values being 0 and the correct row and
+      # column labels.
+      catSBS96 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$SBS96), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$SBS96, sample.id))
+      catSBS192 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$SBS192), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$SBS192, sample.id))
+      catSBS1536 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$SBS1536), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$SBS1536, sample.id))
+      
+      if (return.annotated.vcf == FALSE) {
+        return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                    catSBS1536 = catSBS1536))
+      } else {
+        return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+                    catSBS1536 = catSBS1536, annotated.vcf = vcf))
+      }
     } else {
-      return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
-                  catSBS1536 = catSBS1536, annotated.vcf = vcf))
+      return(FALSE)
     }
+  }
+  
+  ret1 <- CheckForEmptySBSVCF(vcf = vcf, 
+                              return.annotated.vcf = return.annotated.vcf)
+  if (!is.logical(ret1)) {
+    return(ret1)
   }
 
   stopifnot(nchar(vcf$ALT) == 1)
@@ -2094,7 +2104,13 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
         'have been deleted so as not to conflict with downstream processing. ',
         'See discarded.variants in the return value for more details.')
     }
-
+  
+  ret2 <- CheckForEmptySBSVCF(vcf = vcf, 
+                              return.annotated.vcf = return.annotated.vcf)
+  if (!is.logical(ret2)) {
+    return(ret2)
+  }
+  
   # Keep a copy of the original vcf
   vcf0 <- vcf
 
@@ -2431,25 +2447,35 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   # This function cannot handle insertion, deletions, or complex indels,
   # Therefore we check for this problem; but we need to exclude SBSs
   # before calling the function. This function does not detect SBSs.
-
-  if (0 == nrow(vcf)) {
-    # Create 1-column matrix with all values being 0 and the correct row labels.
-    catDBS78 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS78), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$DBS78, sample.id))
-    catDBS136 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS136), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$DBS136, sample.id))
-    catDBS144 <-
-      matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$DBS144, sample.id))
-    if (return.annotated.vcf == FALSE) {
-      return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
-                  catDBS144 = catDBS144))
+   
+  CheckForEmptyDBSVCF <- function(vcf, return.annotated.vcf) {
+    if (0 == nrow(vcf)) {
+      # Create 1-column matrix with all values being 0 and the correct row labels.
+      catDBS78 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$DBS78), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$DBS78, sample.id))
+      catDBS136 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$DBS136), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$DBS136, sample.id))
+      catDBS144 <-
+        matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$DBS144, sample.id))
+      if (return.annotated.vcf == FALSE) {
+        return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+                    catDBS144 = catDBS144))
+      } else {
+        return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+                    catDBS144 = catDBS144, annotated.vcf = vcf))
+      }
     } else {
-      return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
-                  catDBS144 = catDBS144, annotated.vcf = vcf))
+      return(FALSE)
     }
+  }
+  
+  ret1 <- CheckForEmptyDBSVCF(vcf = vcf, 
+                              return.annotated.vcf = return.annotated.vcf)
+  if (!is.logical(ret1)) {
+    return(ret1)
   }
 
   stopifnot(nchar(vcf$ALT) == 2)
@@ -2468,6 +2494,12 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
       ' whose tetranucleotide context contains "N" ',
       'have been deleted so as not to conflict with downstream processing. ',
       'See discarded.variants in the return value for more details.')
+  }
+  
+  ret2 <- CheckForEmptyDBSVCF(vcf = vcf, 
+                              return.annotated.vcf = return.annotated.vcf)
+  if (!is.logical(ret2)) {
+    return(ret2)
   }
 
   # One DBS mutation can be represented by more than 1 row in vcf after annotated by

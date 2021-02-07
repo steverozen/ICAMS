@@ -9,6 +9,9 @@ avoid zipping unnecessary files in the output.
 * Fixed a bug in function `AddRunInformation` for allowing `ref.genome` to be a
 Bioconductor package.
 
+* Fixed bugs in function `CreateOneColSBSMatrix` and `CreateOneColDBSMatrix` when
+the variants in the input vcfs should all be discarded.
+
 ## Changed
 * Updated function `CheckAndFixChrNames` to give a warning instead of an error
 when "23" and "X" or "24" and "Y" appear on the chromosome names on the VCF at
