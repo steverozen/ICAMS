@@ -200,8 +200,11 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
   # Extract the names of columns in the VCF file
   names <- c("CHROM", colnames(df1)[-1])
   colnames(df1) <- names
-
-  stopifnot(df1$REF != df1$ALT)
+  
+  if (any(df1$REF == df1$ALT)) {
+    stop(vcf.name, " has variants which have the same REF and ALT")
+  }
+  # stopifnot(df1$REF != df1$ALT)
   df1$CHROM <- as.character(df1$CHROM)
 
   df1 <- RenameColumnsWithNameStrand(df1)
