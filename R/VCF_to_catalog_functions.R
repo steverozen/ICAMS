@@ -1307,6 +1307,8 @@ AddSeqContext <-
 #' @param name.of.VCF Name of the VCF file.
 #'
 #' @import data.table
+#' 
+#' @importFrom dplyr %>% group_by mutate
 #'
 #' @return A data frame with new columns added to the input data frame,
 #'     which contain the mutated gene's name, range and strand information.
@@ -1346,14 +1348,20 @@ AddTranscript <-
                               type = "within", mult = "all")
 
   # Find out mutations that fall on transcripts on both strands
-  dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
-            by = .(CHROM, ALT, POS)] # Note that is important to have
+  #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
+  #          by = .(CHROM, ALT, POS)] # Note that is important to have
   # ALT in the by list because in a few cases
   # there are multiple ALT alleles at one POS.
+  
+  dt1 <- dt %>% dplyr::group_by(CHROM, ALT, POS) %>% 
+    dplyr::mutate(bothstrand = "+" %in% strand && "-" %in% strand)
+  data.table::setDT(dt1)
 
   # Count the number of transcript ranges where a particular mutation
   # falls into
-  dt2 <- dt1[, count := .N, by = .(CHROM, ALT, POS)]
+  dt2 <- dt1 %>% dplyr::group_by(CHROM, ALT, POS) %>% dplyr::mutate(count = dplyr::n())
+  #dt2 <- dt1[, count := .N, by = .(CHROM, ALT, POS)]
+  data.table::setDT(dt2)
 
   # Swap gene location according to strand information
   dt3 <- dt2[strand == "-", c("end", "start") := .(start, end)]
@@ -1361,13 +1369,13 @@ AddTranscript <-
   # Reorder the columns of dt3
   df.colnames <- colnames(df)
   trans.ranges.colnames <- colnames(trans.ranges)[-1]
-  setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
-
+  data.table::setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
+  
   # Rename some of the columns in dt3
-  setnames(dt3,
-           old = c("start", "end", "strand", "Ensembl.gene.ID", "gene.symbol"),
-           new = c("trans.start.pos", "trans.end.pos", "trans.strand",
-                   "trans.Ensembl.gene.ID", "trans.gene.symbol"))
+  data.table::setnames(dt3,
+                       old = c("start", "end", "strand", "Ensembl.gene.ID", "gene.symbol"),
+                       new = c("trans.start.pos", "trans.end.pos", "trans.strand",
+                               "trans.Ensembl.gene.ID", "trans.gene.symbol"))
 
   # Delete redundant column in dt3
   dt4 <- dt3[, POS2 := NULL]
@@ -2028,6 +2036,8 @@ CheckAndReturnSBSMatrix <-
 #'   FALSE.
 #'
 #' @import data.table
+#' 
+#' @importFrom dplyr %>% group_by summarize
 #'
 #' @section Value: A list of three 1-column matrices with the names
 #'   \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}. If transcript
@@ -2135,8 +2145,10 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # after annotation by AddTranscript if the mutation position falls
   # in multiple transcripts. When creating the 1536 and 96 catalog,
   # we only need to count these mutations once.
-  vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
-              by = .(CHROM, ALT, POS)]
+  #vcf1 <- vcf[, .(REF = REF[1], pyr.mut = pyr.mut[1]),
+  #            by = .(CHROM, ALT, POS)]
+  vcf1 <- vcf %>% dplyr::group_by(CHROM, ALT, POS) %>% 
+    dplyr::summarise(REF = REF[1], pyr.mut = pyr.mut[1])
 
   # Create part of the 1536 catalog matrix but missing mutation
   # types have NA in the count column.
@@ -2182,9 +2194,11 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # One SBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 192 catalog, we only need to count these mutations once.
-  vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1],
-                   trans.strand = trans.strand[1]),
-               by = .(CHROM, ALT, POS)]
+  # vcf3 <- vcf2[, .(REF = REF[1], mutation = mutation[1],
+  #                 trans.strand = trans.strand[1]),
+  #             by = .(CHROM, ALT, POS)]
+  vcf3 <- vcf2 %>% dplyr::group_by(CHROM, ALT, POS) %>% 
+    dplyr::summarise(REF = REF[1], mutation = mutation[1], trans.strand = trans.strand[1])
 
   # If vcf3 has empty rows, we will return 1-column SBS192 matrix with all
   # values being 0 and the correct row labels
@@ -2437,6 +2451,8 @@ CheckAndReturnDBSMatrix <-
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @import data.table
+#' 
+#' @importFrom dplyr %>% group_by summarize
 #'
 #' @section Value: A list of three 1-column matrices with the names \code{catDBS78},
 #'   \code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
@@ -2515,8 +2531,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   # AnnotateDBSVCF function if the mutation position falls into the range of
   # multiple transcripts. When creating the 78 and 136 catalog, we only need to
   # count these mutations once.
-  vcf1 <- vcf[, .(REF = REF[1], seq.21bases = seq.21bases[1]),
-              by = .(CHROM, ALT, POS)]
+  # vcf1 <- vcf[, .(REF = REF[1], seq.21bases = seq.21bases[1]),
+  #            by = .(CHROM, ALT, POS)]
+  vcf1 <- vcf %>% dplyr::group_by(CHROM, ALT, POS) %>% 
+    dplyr::summarise(REF = REF[1], seq.21bases = seq.21bases[1])
 
   # Create the 78 DBS catalog matrix
   canon.DBS.78 <- CanonicalizeDBS(vcf1$REF, vcf1$ALT)
@@ -2569,8 +2587,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   # One DBS mutation can be represented by more than 1 row in vcf2 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # 144 catalog, we only need to count these mutations once.
-  vcf3 <- vcf2[, .(REF = REF[1], trans.strand = trans.strand[1]),
-               by = .(CHROM, ALT, POS)]
+  # vcf3 <- vcf2[, .(REF = REF[1], trans.strand = trans.strand[1]),
+  #              by = .(CHROM, ALT, POS)]
+  vcf3 <- vcf2 %>% dplyr::group_by(CHROM, ALT, POS) %>% 
+    dplyr::summarise(REF = REF[1], trans.strand = trans.strand[1])
 
   # If vcf3 has empty rows, we will return 1-column DBS144 matrix with all
   # values being 0 and the correct row labels

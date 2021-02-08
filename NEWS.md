@@ -22,6 +22,10 @@ when "23" and "X" or "24" and "Y" appear on the chromosome names on the VCF at
 the same time. `CheckAndFixChrNames` will change "23" to "X" or "24" to "Y"
 internally for downstream processing.
 
+* Changed some code in function `AddTranscript`, `CreateOneColSBSMatrix`,
+`CreateOneColDBSMatrix` to use functions from package `dplyr` instead of
+`data.table` due to segfault error.
+
 <br/>
 
 # ICAMS 2.3.1
