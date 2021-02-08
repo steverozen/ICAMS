@@ -2,6 +2,9 @@
 ## Added
 * Added an additional argument `tmpdir` in function `AddRunInformation`.
 
+* Updated function `CheckAndRemoveDiscardedVariants` and `MakeDataFrameFromVCF` to check
+for variants that have same REF and ALT.
+
 ## Fixed 
 * Create new temp directory when generating zip archive from VCFs to
 avoid zipping unnecessary files in the output.

@@ -201,10 +201,6 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
   names <- c("CHROM", colnames(df1)[-1])
   colnames(df1) <- names
   
-  if (any(df1$REF == df1$ALT)) {
-    stop(vcf.name, " has variants which have the same REF and ALT")
-  }
-  # stopifnot(df1$REF != df1$ALT)
   df1$CHROM <- as.character(df1$CHROM)
 
   df1 <- RenameColumnsWithNameStrand(df1)
@@ -727,6 +723,16 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 
   # Create an empty data frame for discarded variants
   discarded.variants <- vcf[0, ]
+  
+  # Remove rows with same REF and ALT
+  idx <- which(vcf$REF == vcf$ALT)
+  if (length(idx) > 0) {
+    df.to.remove <- vcf[idx, ]
+    df.to.remove$discarded.reason <- "Variant with same REF and ALT"
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df.to.remove)
+    vcf <- vcf[-idx, ]
+  }
 
   # Remove rows with pound sign
   retval <- RemoveRowsWithPoundSignNew(df = vcf, name.of.VCF = name.of.VCF)
