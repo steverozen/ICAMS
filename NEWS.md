@@ -27,7 +27,8 @@ internally for downstream processing.
 `data.table` due to segfault error.
 
 ## Updated
-* Updated function `RemoveRowsWithDuplicatedCHROMAndPOSNew` to remove variants that have same CHROM, POS, REF.
+* Updated function `RemoveRowsWithDuplicatedCHROMAndPOSNew` to remove variants
+that have same CHROM, POS, REF.
 
 <br/>
 
