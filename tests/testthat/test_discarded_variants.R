@@ -33,7 +33,11 @@ test_that("ReadAndSplitMutectVCFs", {
     VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
                       region = "genome", return.annotated.vcfs = TRUE)
   expect_false(is.null(DBS.cats1$annotated.vcfs))
-    
+  
+  # Test for removing duplicate variants
+  file3 <- files[3]
+  list.of.vcfs <- ReadAndSplitMutectVCFs(file3)
+  expect_equal(nrow(list.of.vcfs$discarded.variants[[1]]), 7)
 })
 
 test_that("ReadAndSplitStrelkaSBSVCFs", {

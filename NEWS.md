@@ -26,6 +26,9 @@ internally for downstream processing.
 `CreateOneColDBSMatrix` to use functions from package `dplyr` instead of
 `data.table` due to segfault error.
 
+## Updated
+* Updated function `RemoveRowsWithDuplicatedCHROMAndPOSNew` to remove variants that have same CHROM, POS, REF.
+
 <br/>
 
 # ICAMS 2.3.1

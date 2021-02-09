@@ -70,21 +70,51 @@ RemoveRowsWithDuplicatedCHROMAndPOS <- function(df, file) {
   }
 }
 
+#' @importFrom dplyr %>% bind_rows group_by mutate
 #' @keywords internal
 RemoveRowsWithDuplicatedCHROMAndPOSNew <- function(df, name.of.VCF = NULL) {
-  dups <- which(duplicated(df[, c("CHROM", "POS")]))
+  discarded.variants <- df[0, ]
+  # Find out variants which have the same "CHROM", "POS", "REF", "ALT"
+  dups <- which(duplicated(df[, c("CHROM", "POS", "REF", "ALT")]))
+  
   if (length(dups) > 0) {
-    dups2 <- which(duplicated(df[ , c("CHROM", "POS")], fromLast = TRUE))
     warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
             " ", 2 * length(dups), " row out of ",
-            nrow(df), " had duplicate CHROM and POS and were removed. ",
+            nrow(df), " had same CHROM, POS, REF and ALT and only one copy is kept. ",
             "See discarded.variants in the return value for more details")
-    df1 <- df[-c(dups, dups2), ]
-	df1.to.remove <- df[c(dups, dups2), ]
-	df1.to.remove$discarded.reason <- 'Duplicated "CHROM" and "POS" values'
-    return(list(df = df1, discarded.variants = df1.to.remove))
+    df.to.remove <- df[dups, ]
+    df.to.remove$discarded.reason <- "Variant with same CHROM, POS, REF and ALT as another variant"
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df.to.remove)
+    df1 <- df[-dups, ]
   } else {
-    return(list(df = df))
+    df1 <- df
+  }
+  
+  # Find out variants which have the same "CHROM", "POS", "REF" but different "ALT"
+  df2 <- df1 %>% dplyr::group_by(CHROM, POS, REF) %>% dplyr::mutate(dup = n() > 1)
+  dups2 <- which(df2$dup == TRUE)
+  df2$dup <- NULL
+  
+  if (length(dups2) > 0) {
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " ", 2 * length(dups2), " row out of ",
+            nrow(df), " had same CHROM, POS, REF but different ALT and were removed. ",
+            "See discarded.variants in the return value for more details")
+    df2.to.remove <- df2[dups2, ]
+    df2.to.remove$discarded.reason <- "Variant with same CHROM, POS, REF but different ALT"
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df2.to.remove)
+    df3 <- df2[-dups2, ]
+  } else {
+    df3 <- df2
+  }
+  
+  data.table::setDT(df3)
+  if (nrow(discarded.variants) > 0) {
+    return(list(df = df3, discarded.variants = discarded.variants))
+  } else {
+    return(list(df = df3))
   }
 }
 
