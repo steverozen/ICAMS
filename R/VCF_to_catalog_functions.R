@@ -2624,7 +2624,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   if (nrow(vcf3) == 0) {
     DBS.mat.144 <-
       matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
-             dimnames = list(ICAMS::catalog.row.order$DBS144), sample.id)
+             dimnames = list(ICAMS::catalog.row.order$DBS144, sample.id))
     retval <-
       CheckAndReturnDBSMatrix(vcf = vcf, discarded.variants = discarded.variants,
                               mat78 = DBS.mat.78, mat136 = DBS.mat.136,

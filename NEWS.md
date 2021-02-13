@@ -1,4 +1,11 @@
-# ICAMS 2.3.2.90xx
+# ICAMS 2.3.3.90xx
+## Fixed 
+* Fixed a bug in function `CreateOneColDBSMatrix` when returning 1-column
+DBS144 matrix with all values being 0 and the correct row labels.
+
+<br/>
+
+# ICAMS 2.3.2
 ## Added
 * Added an additional argument `tmpdir` in function `AddRunInformation`.
 
