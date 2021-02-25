@@ -33,10 +33,6 @@ NULL
 #' @rdname CatalogRowOrder
 "catalog.row.order"
 
-#' @rdname CatalogRowOrder
-"catalog.row.order.sp"
-
-
 #' Transcript ranges data
 #'
 #' Transcript ranges and strand information for a particular reference genome.

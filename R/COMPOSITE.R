@@ -1,23 +1,3 @@
-#' @rdname ReadCatalog.Methods
-#' @export
-ReadCatalog.COMPOSITECatalog <-
-  function(file, ref.genome = NULL, region = "unknown", 
-           catalog.type = "counts", strict = TRUE,
-           stop.on.error = TRUE)
-    
-  {
-    dt <- data.table::fread(file)
-    names <- dt[[1]]
-    dt1 <- dt[, -1]
-    mat <- as.matrix(dt1)
-    rownames(mat) <- names
-    return(as.catalog(mat,
-                      ref.genome = ref.genome,
-                      region = region,
-                      catalog.type = catalog.type))
-}
-
-
 #' @export
 WriteCatalog.COMPOSITECatalog <-
   function(catalog, file, strict = TRUE) {
@@ -25,7 +5,7 @@ WriteCatalog.COMPOSITECatalog <-
              1697,
              ICAMS::catalog.row.order[["COMPOSITE"]],
              # rownames(catalog), 
-             catalog.row.headers.COMPOSITE,
+             catalog.row.headers$COMPOSITE,
              strict = strict)
   }
 

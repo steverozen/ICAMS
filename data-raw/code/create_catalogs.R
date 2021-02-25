@@ -27,7 +27,7 @@ make.row.order1536 <- function() {
   return(list(standard = retval1, mini = retval2))
 }
 
-make.row.order.sp1536 <- function() {
+make.row.headers.sp1536 <- function() {
   # Make the row order of 1536 pentanucleotide mutation types in SigProfiler
   # format
   all4 <- c("A", "C", "G", "T")
@@ -53,7 +53,7 @@ make.row.order.sp1536 <- function() {
 }
 
 catalog.row.order.SBS.1536 <- make.row.order1536()$standard
-catalog.row.order.sp.SBS.1536 <- make.row.order.sp1536()
+catalog.row.headers.sp.SBS.1536 <- make.row.headers.sp1536()
 
 catalog.row.order.SBS.192 <-
   c("AAAC","AACC","AAGC","AATC","CAAC","CACC","CAGC","CATC","GAAC",
@@ -121,7 +121,7 @@ catalog.row.order.SBS.96 <-
     "GTAG", "GTCG", "GTGG", "GTTG", "TTAG", "TTCG", "TTGG", "TTTG"
   )
 
-catalog.row.order.sp.SBS.96 <- 
+catalog.row.headers.sp.SBS.96 <- 
   c("A[C>A]A","A[C>A]C","A[C>A]G","A[C>A]T","A[C>G]A","A[C>G]C","A[C>G]G",
     "A[C>G]T","A[C>T]A","A[C>T]C","A[C>T]G","A[C>T]T","A[T>A]A","A[T>A]C",
     "A[T>A]G","A[T>A]T","A[T>C]A","A[T>C]C","A[T>C]G","A[T>C]T","A[T>G]A",
@@ -150,9 +150,6 @@ catalog.row.order.DBS.78 <-
     "TCCT", "TCGA", "TCGG", "TCGT", "TGAA", "TGAC", "TGAT", "TGCA",
     "TGCC", "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC", "TTAG",
     "TTCA", "TTCC", "TTCG", "TTGA", "TTGC", "TTGG")
-
-catalog.row.order.sp.DBS.78 <-
-  paste0(catalog.row.headers.DBS.78$Ref, ">", catalog.row.headers.DBS.78$Var)
 
 # There are 144 stranded DBSs: 4 X 4 sources and 3 X 3 alternates;
 # 4 x 4 x 3 x 3 = 144.
@@ -244,7 +241,7 @@ catalog.row.order.ID <-
     "DEL:MH:4:3", "DEL:MH:5+:1", "DEL:MH:5+:2", "DEL:MH:5+:3", "DEL:MH:5+:4",
     "DEL:MH:5+:5+")
 
-catalog.row.order.sp.ID.83 <-
+catalog.row.headers.sp.ID.83 <-
   c("1:Del:C:0", "1:Del:C:1", "1:Del:C:2", "1:Del:C:3", "1:Del:C:4", 
     "1:Del:C:5", "1:Del:T:0", "1:Del:T:1", "1:Del:T:2", "1:Del:T:3", 
     "1:Del:T:4", "1:Del:T:5", "1:Ins:C:0", "1:Ins:C:1", "1:Ins:C:2", 
@@ -842,6 +839,9 @@ catalog.row.headers.DBS.78 <-
     # ,  .internal.selfref = <pointer: 0x0000000006221ef0>
   )
 
+catalog.row.headers.sp.DBS.78 <-
+  paste0(catalog.row.headers.DBS.78$Ref, ">", catalog.row.headers.DBS.78$Var)
+
 catalog.row.headers.DBS.144 <-
   structure(
     list(
@@ -953,6 +953,11 @@ catalog.row.headers.ID <-
       c("data.table", "data.frame"), row.names = c(NA, -83L)
     #, .internal.selfref = <pointer: 0x0000000008dc1ef0>
   )
+
+catalog.row.headers.COMPOSITE <-
+  data.frame("Mutation type" = catalog.row.order[["COMPOSITE"]])
+colnames(catalog.row.headers.COMPOSITE) <- "Mutation type"
+
 # Create a list of empty matrices
 emptySBS96 <- matrix(0, nrow = 96, ncol = 0)
 rownames(emptySBS96) <- catalog.row.order.SBS.96
@@ -991,14 +996,20 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
                                         catalog.row.order.DBS.78,
                                         catalog.row.order.ID))
 
-catalog.row.order.sp <- list(SBS96 = catalog.row.order.sp.SBS.96,
-                             SBS1536 = catalog.row.order.sp.SBS.1536,
-                             DBS78 = catalog.row.order.sp.DBS.78,
-                             ID83 = catalog.row.order.sp.ID.83)
+catalog.row.headers <- list(SBS96 = catalog.row.headers.SBS.96,
+                            SBS192 = catalog.row.headers.SBS.192,
+                            SBS1536 = catalog.row.headers.SBS.1536,
+                            DBS78 = catalog.row.headers.DBS.78,
+                            DBS136 = catalog.row.headers.DBS.136,
+                            DBS144 = catalog.row.headers.DBS.144,
+                            ID = catalog.row.headers.ID,
+                            # NOT TESTED
+                            COMPOSITE = catalog.row.headers.COMPOSITE)
 
-catalog.row.headers.COMPOSITE <-
-  data.frame("Mutation type" = catalog.row.order[["COMPOSITE"]])
-colnames(catalog.row.headers.COMPOSITE) <- "Mutation type"
+catalog.row.headers.sp <- list(SBS96 = catalog.row.headers.sp.SBS.96,
+                             SBS1536 = catalog.row.headers.sp.SBS.1536,
+                             DBS78 = catalog.row.headers.sp.DBS.78,
+                             ID83 = catalog.row.headers.sp.ID.83)
 
 #Create regex pattern for FilterWithHomopolymerMS
 homopolymer.ms.regex.pattern <-
