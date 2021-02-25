@@ -2,15 +2,15 @@
 
 cat(getwd(), "\n")
 
-source("data-raw/load_abundance_from_files.R")
-source("data-raw/create_catalogs.R")
-source("data-raw/create_order_for_DBS136_plotting.R")
-source("data-raw/create_ranges.R")
-source("data-raw/create_gene_expression_data.R")
-source("data-raw/create_ICAMS_SigPro_ID.R")
+source("data-raw/code/load_abundance_from_files.R")
+source("data-raw/code/create_catalogs.R")
+source("data-raw/code/create_order_for_DBS136_plotting.R")
+source("data-raw/code/create_ranges.R")
+source("data-raw/code/create_gene_expression_data.R")
+source("data-raw/code/create_ICAMS_SigPro_ID.R")
+source("data-raw/code/create_catalogs_COSMIC.R")
 
 usethis::use_data(catalog.row.order,
-                  catalog.row.order.sp,
                   trans.ranges.GRCh37,
                   trans.ranges.GRCh38,
                   trans.ranges.GRCm38,
@@ -23,15 +23,10 @@ usethis::use_data(to.reorder.SBS.192.for.plotting,
                   to.reorder.DBS.144.for.plotting,
                   order.for.DBS.136.plotting,
                   empty.cats,
-                  catalog.row.headers.SBS.96,
+                  catalog.row.headers,
+                  catalog.row.headers.sp,
+                  catalog.row.headers.cosmic,
                   catalog.row.headers.SBS.96.v1,
-                  catalog.row.headers.SBS.192,
-                  catalog.row.headers.SBS.1536,
-                  catalog.row.headers.DBS.78,
-                  catalog.row.headers.DBS.144,
-                  catalog.row.headers.DBS.136,
-                  catalog.row.headers.ID,
-                  catalog.row.headers.COMPOSITE,
                   abundance.2bp.genome.unstranded.GRCh37,
                   abundance.3bp.genome.unstranded.GRCh37,
                   abundance.4bp.genome.unstranded.GRCh37,
