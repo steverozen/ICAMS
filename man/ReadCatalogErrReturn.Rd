@@ -4,7 +4,7 @@
 \alias{ReadCatalogErrReturn}
 \title{Get error message and either stop or create a null error output for read catalog}
 \usage{
-ReadCatalogErrReturn(err.info, nrow, stop.on.error, do.message = TRUE)
+ReadCatalogErrReturn(err.info, nrow, stop.on.error = TRUE, do.message = TRUE)
 }
 \arguments{
 \item{err.info}{The information passed to the \code{tryCatch} \code{error}
