@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+      - master.merged.with.wuyang
   pull_request:
     branches:
       - main
       - master
+      - master.merged.with.wuyang
 
 name: R-CMD-check
 
