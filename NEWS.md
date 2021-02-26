@@ -3,6 +3,9 @@
 * Fixed a bug in function `CreateOneColDBSMatrix` when returning 1-column
 DBS144 matrix with all values being 0 and the correct row labels.
 
+## Changed
+* Increased sample name y axis position for plotting ID counts signature.
+
 <br/>
 
 # ICAMS 2.3.2

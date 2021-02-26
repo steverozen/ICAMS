@@ -1684,7 +1684,7 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   if (attributes(catalog)$catalog.type == "counts") {
     sample.name.y.pos <- ymax * 7.4 / 8
   } else {
-    sample.name.y.pos <- ymax * 7 / 8
+    sample.name.y.pos <- ymax * 7.4 / 8
   }
   text(1.5, sample.name.y.pos, labels = colnames(catalog),
        adj = 0, cex = 0.7, font = 2)
