@@ -72,7 +72,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.3.1.tar.gz)
+source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.3.5.tar.gz)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 
@@ -85,7 +85,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.3.1.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.3.5.pdf>
 
 ## Frequently asked questions
 
@@ -99,6 +99,6 @@ the data. Please refer to the documentation and example of
 
 If you use ICAMS in your work, please cite:
 
-> Rozen SG, Jiang NH, Boot A, Liu M (2021). ICAMS:In-depth
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y (2021). ICAMS:In-depth
 > Characterization and Analysis of Mutational Signatures. R package
-> version 2.3.1, <https://CRAN.R-project.org/package=ICAMS>.
+> version 2.3.5, <https://CRAN.R-project.org/package=ICAMS>.
