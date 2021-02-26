@@ -34,7 +34,7 @@ ReadDukeNUSCat192 <- function(file,
   list(cat96 = cat96, cat192 = cat192)
 }
 
-#' Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}
+#' Convert SBS96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}
 #'
 #' @param c1 A vector of character strings with the mutation indicated by
 #' e.g. \code{[C>A]} in the middle.
@@ -48,6 +48,39 @@ Unstaple96 <- function(c1) {
            substr(c1, 5, 5))
   return(retval)
 }
+
+#' Convert SBS1536-channel mutations-type identifiers like this \code{"AC[C>A]GT" -> "ACCGTA"}
+#'
+#' @inheritParams Unstaple96
+#'
+#' @keywords internal
+Unstaple1536 <- function(c1) {
+  retval <-
+    paste0(substr(c1, 1, 1),
+           substr(c1, 2, 2),
+           substr(c1, 4, 4),
+           substr(c1, 8, 8),
+           substr(c1, 9, 9),
+           substr(c1, 6, 6))
+  return(retval)
+}
+
+
+#' Convert DBS78-channel mutations-type identifiers like this \code{"AC>GA" -> "ACGA"}
+#'
+#' @param c1 A vector of character strings with a \code{>} sign separating
+#' reference and variant context e.g. \code{AC>GA}.
+#'
+#' @keywords internal
+Unstaple78 <- function(c1) {
+  retval <-
+    paste0(substr(c1, 1, 1),
+           substr(c1, 2, 2),
+           substr(c1, 4, 4),
+           substr(c1, 5, 5))
+  return(retval)
+}
+
 
 #' Convert 96-channel mutation-type identifiers like this \code{"ACTA" -> "A[C>A]T"}
 #'
@@ -72,6 +105,33 @@ Restaple96 <- function(c1) {
            substr(c1, 3, 3))
   return(retval)
 }
+
+#' Convert 1536-channel mutation-type identifiers like this \code{"ACCGTA" -> "AC[C>A]GT"}
+#'
+#' This is an internal function needed for generating
+#' "non-canonical" row number formats for catalogs.
+#'
+#' @param c1 A vector of character strings with the first 5 characters
+#' being the source trinucleotide and the last character being the
+#' mutated (center) nucleotide. E.g. \code{ACCGTA} means a mutation from
+#' \code{ACCGT > ACAGT}.
+#'
+#' @keywords internal
+
+Restaple1536 <- function(c1) {
+  retval <-
+    paste0(substr(c1, 1, 1),
+           substr(c1, 2, 2),
+           "[",
+           substr(c1, 3, 3),
+           ">",
+           substr(c1, 6, 6),
+           "]",
+           substr(c1, 4, 4),
+           substr(c1, 5, 5))
+  return(retval)
+}
+
 
 
 #' Read a 96-channel spectra (or signature) catalog where rownames are e.g. "A[C>A]T"
@@ -288,7 +348,7 @@ WriteCatalogIndelSigPro <- function(catalog, file, strict = TRUE, sep = "\t"){
 #' @keywords internal
 ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
   if (inherits(input.catalog, "character")) {
-    input.catalog <- ICAMS::ReadCatalog(input.catalog, strict = FALSE)
+    input.catalog <- ICAMS::ReadCatalog(input.catalog)
   } 
   new.list <- lapply(row.names(input.catalog), function(x){
     new <- paste(substring(x, 1, 1), "[",
@@ -300,9 +360,9 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
   
   row.names(input.catalog) <- unlist(new.list)
   input.catalog <- 
-    input.catalog[ICAMS::catalog.row.order.sp$SBS96, , drop = FALSE]
+    input.catalog[catalog.row.headers.sp$SBS96, , drop = FALSE]
   DT <- as.data.table(input.catalog)
-  input.sigpro <- cbind("MutationType" = ICAMS::catalog.row.order.sp$SBS96, DT)
+  input.sigpro <- cbind("MutationType" = catalog.row.headers.sp$SBS96, DT)
   write.table(input.sigpro, file, sep = sep, col.names = TRUE,
               row.names = FALSE, quote = FALSE)
 }

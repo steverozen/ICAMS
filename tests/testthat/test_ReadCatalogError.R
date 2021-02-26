@@ -7,10 +7,8 @@ test_that("No file", {
 })
 
 test_that("Not a catalog file", {
-  retval0 <- 
-    expect_warning(expect_error(ReadCatalog("test_ReadCatalogError.R")))
-  retval <- 
-    expect_warning(ReadCatalog("test_ReadCatalogError.R", stop.on.error = FALSE))
+  
+  retval <- expect_warning(ReadCatalog("test_ReadCatalogError.R", stop.on.error = FALSE))
   expect_equal(
     retval,
     matrix(NA, nrow = 1, ncol = 1),

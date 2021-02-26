@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_catalog_formats.R
 \name{Unstaple96}
 \alias{Unstaple96}
-\title{Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}}
+\title{Convert SBS96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}}
 \usage{
 Unstaple96(c1)
 }
@@ -11,6 +11,6 @@ Unstaple96(c1)
 e.g. \code{[C>A]} in the middle.}
 }
 \description{
-Convert 96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}
+Convert SBS96-channel mutations-type identifiers like this \code{"A[C>A]T" -> "ACTA"}
 }
 \keyword{internal}

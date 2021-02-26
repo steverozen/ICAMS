@@ -9,7 +9,6 @@ ReadCatalog(
   ref.genome = NULL,
   region = "unknown",
   catalog.type = "counts",
-  strict = TRUE,
   stop.on.error = TRUE
 )
 }
@@ -24,9 +23,6 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
-
-\item{strict}{If TRUE, do additional checks on the input, and stop if the
-checks fail.}
 
 \item{stop.on.error}{If TRUE, call \code{stop} on error; otherwise
 return a 1-column matrix of NA's with the attribute "error"

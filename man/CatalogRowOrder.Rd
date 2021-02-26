@@ -4,20 +4,15 @@
 \name{CatalogRowOrder}
 \alias{CatalogRowOrder}
 \alias{catalog.row.order}
-\alias{catalog.row.order.sp}
 \title{Standard order of row names in a catalog}
 \format{
 A list of character vectors indicating the standard
   orders of row names in catalogs.
 
 An object of class \code{list} of length 8.
-
-An object of class \code{list} of length 4.
 }
 \usage{
 catalog.row.order
-
-catalog.row.order.sp
 }
 \description{
 This data is designed for those
@@ -54,10 +49,5 @@ catalog.row.order$SBS96
 # "ACAA" "ACCA" "ACGA" "ACTA" "CCAA" "CCCA" "CCGA" "CCTA" ...
 # There are altogether 96 row names to denote the mutation types
 # in SBS96 catalog.
-
-catalog.row.order.sp$ID83
-# "DEL:C:1:0" "DEL:C:1:1" "DEL:C:1:2" "DEL:C:1:3" ...
-# There are altogether 83 row names to denote the mutation types
-# in ID83 catalog.
 }
 \keyword{datasets}
