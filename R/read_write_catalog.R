@@ -55,7 +55,11 @@ ReadCatalog <- function(file, ref.genome = NULL, region = "unknown",
 }
 
 #' Internal read catalog function to be wrapped in a tryCatch
+#' 
 #' @inheritParams ReadCatalog
+#' 
+#' @importFrom stats na.omit
+#' 
 #' @keywords internal
 ReadCatalogInternal <- function(file, ref.genome = NULL, region = "unknown", 
                                 catalog.type = "counts") {
@@ -65,6 +69,10 @@ ReadCatalogInternal <- function(file, ref.genome = NULL, region = "unknown",
   ## as a matrix object
   ## and a catalog object in this step.
   dt <- data.table::fread(file)
+  
+  # In some rare cases, there may be NA in dt, then the number of rows will not
+  # be accurate to infer catalog type. So we remove the rows which have NA in dt
+  dt <- stats::na.omit(dt)
   catalog <- InferCatalogInfo(dt)
   attr(catalog, "ref.genome") <- ref.genome
   cat2 <- as.catalog(catalog, ref.genome = ref.genome,

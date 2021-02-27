@@ -52,6 +52,7 @@ NA's
 PCAWG
 POS
 README
+Robustified
 Rozen
 SBS
 SBSs
@@ -115,6 +116,7 @@ pentanucleotide
 rowname
 sanger
 steverozen
+testdata
 tetranucleotide
 th
 transcriptional

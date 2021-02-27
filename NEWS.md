@@ -16,7 +16,20 @@ catalog files into ICAMS catalog objects. Now these functions are in
 `data-raw/obsolete-files/ConvCatalogToICAMS.R`, and their functionalities are 
 integrated into `ReadCatalog`.
 
-# ICAMS 2.3.3.90xx
+# ICAMS 2.3.4
+## Fixed 
+* Robustified function `ReadCatalog` to remove rows which have NA in the data table read in. Otherwise
+the number of rows will not be accurate to infer the correct catalog type.
+
+## Added
+* Added new COSMIC catalog in testdata.
+
+## Removed
+* Removed internal function `InferClassOfCatalogForRead` to `data-raw/obsolete-files/InferClassOfCatalogForRead.R`.
+
+<br/>
+
+# ICAMS 2.3.3
 ## Fixed 
 * Fixed a bug in function `CreateOneColDBSMatrix` when returning 1-column
 DBS144 matrix with all values being 0 and the correct row labels.
