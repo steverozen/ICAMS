@@ -1,3 +1,21 @@
+# ICAMS 2.3.5
+## Added
+* Enabled function `ReadCatalog` to import files with:  
+  * SigProfiler-formatted SBS96, DBS78, ID83 and ID96 catalogs.
+  * COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192), DBS78, ID83 and 
+  ID96 catalogs.
+  * ID96 catalog files in SigProfiler/COSMIC format will be pruned to
+  ID83 catalogs by removing mutation types not in ID83 catalogs. 
+
+## Deprecated
+* Deprecated internal methods of `ReadCatalog` function, e.g. 
+`ReadCatalog.SBS96Catalog`. Now they are in 
+`data-raw/obsolete-files/ReadCatalogMethods.R`.
+* Deprecated function `ConvCatalogToICAMS` to convert SigProfiler/COSMIC-formatted
+catalog files into ICAMS catalog objects. Now these functions are in 
+`data-raw/obsolete-files/ConvCatalogToICAMS.R`, and their functionalities are 
+integrated into `ReadCatalog`.
+
 # ICAMS 2.3.3.90xx
 ## Fixed 
 * Fixed a bug in function `CreateOneColDBSMatrix` when returning 1-column
