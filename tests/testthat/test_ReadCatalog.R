@@ -4,6 +4,7 @@ test_that("Functions for converting COSMIC and SigProfiler-formatted catalogs to
 
   my.file <-
     c("testdata/COSMIC-Cat/COSMIC_SBS1_SBS96.csv",
+      "testdata/COSMIC-Cat/COSMIC_SBS85_SBS96.csv",
       "testdata/COSMIC-Cat/COSMIC_SBS1_TSB192.csv",
       "testdata/COSMIC-Cat/COSMIC_DBS1_DBS78.csv",
       "testdata/COSMIC-Cat/COSMIC_ID1_ID96.csv",
@@ -15,6 +16,7 @@ test_that("Functions for converting COSMIC and SigProfiler-formatted catalogs to
   
   my.region <-
     c("genome",
+      "genome",
       "transcript",
       "genome",
       "genome",
