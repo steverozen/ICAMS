@@ -161,5 +161,6 @@ if(getRversion() >= "2.15.1") {
                            "Ensembl.gene.ID", "readthrough", "exp.value", 
                            "trans.end.pos", "trans.start.pos", "read.depth", "VAF", 
                            "read.depth.x", "read.depth.y","exp.level", "FILTER",
-                           "trans.Ensembl.gene.ID", "..col.names.order", "remark.for.DBS"))
+                           "trans.Ensembl.gene.ID", "..col.names.order", "remark.for.DBS",
+                           "..column.to.use"))
 }
