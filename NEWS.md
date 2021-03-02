@@ -1,7 +1,9 @@
-# ICAMS 2.3.5.9000
+# ICAMS 2.3.5.90xx
 ## Fixed 
 * Robustified function `StandardChromNameNew` to select the column which
 contains chromosome names by name instead of column index.
+
+* Fixed a bug in function `CheckSeqContextInVCF`.
 
 # ICAMS 2.3.5
 ## Added

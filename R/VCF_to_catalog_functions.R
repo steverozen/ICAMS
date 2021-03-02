@@ -1731,9 +1731,13 @@ CheckSeqContextInVCF <- function(vcf, column.to.use) {
   stopifnot(nchar(vcf$REF) == nchar(vcf$ALT))
   stopifnot(!any(vcf$REF == '-'))
   stopifnot(!any(vcf$ALT == '-'))
-  cut.pos <- 1 + (nchar(vcf$column.to.use) - 1) / 2
+  
+  vcf <- data.table::as.data.table(vcf)
+  # use .. notation to find column.to.use as a vector of column positions, 
+  # like it would work in data.frame
+  cut.pos <- 1 + (nchar(unlist(vcf[, ..column.to.use])) - 1) / 2
   stopifnot(cut.pos == round(cut.pos))
-  cut.from.ref <- substr(vcf$column.to.use, cut.pos,
+  cut.from.ref <- substr(unlist(vcf[, ..column.to.use]), cut.pos,
                          (cut.pos + nchar(vcf$REF)) - 1)
   error.rows <- which(vcf$REF != cut.from.ref)
   if (any(error.rows > 0)) {
