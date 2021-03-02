@@ -1,3 +1,8 @@
+# ICAMS 2.3.5.9000
+## Fixed 
+* Robustified function `StandardChromNameNew` to select the column which
+contains chromosome names by name instead of column index.
+
 # ICAMS 2.3.5
 ## Added
 * Enabled function `ReadCatalog` to import files with:  
