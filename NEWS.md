@@ -5,6 +5,11 @@ contains chromosome names by name instead of column index.
 
 * Fixed a bug in function `CheckSeqContextInVCF`.
 
+## Changed
+* Changed `PlotCatalog` to round the mutation counts for each main type for
+SBS96, SBS192, DBS78 and ID counts catalog in case the input is reconstructed
+counts catalog.
+
 # ICAMS 2.3.5
 ## Added
 * Enabled function `ReadCatalog` to import files with:  
