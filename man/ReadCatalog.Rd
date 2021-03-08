@@ -9,11 +9,24 @@ ReadCatalog(
   ref.genome = NULL,
   region = "unknown",
   catalog.type = "counts",
+  strict = NULL,
   stop.on.error = TRUE
 )
 }
 \arguments{
-\item{file}{Path to a catalog on disk in the standardized format.}
+\item{file}{Path to a catalog on disk in a standardized format.
+The recognized formats are:
+\itemize{
+\item ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID
+(see \code{\link{CatalogRowOrder}}).
+\item SigProfiler-formatted SBS96, DBS78, ID83 and ID96 catalogs;
+see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
+\item COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192),
+DBS78, ID83 and ID96 catalogs;
+see \url{https://cancer.sanger.ac.uk/cosmic/signatures}.
+\item Note that ID96 catalog files in SigProfiler/COSMIC format will be pruned to
+ID83 catalogs by removing mutation types not in ID83 catalogs.
+}}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
@@ -23,6 +36,8 @@ see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{catalog.type}{One of "counts", "density", "counts.signature",
 "density.signature".}
+
+\item{strict}{Ignored and deprecated.}
 
 \item{stop.on.error}{If TRUE, call \code{stop} on error; otherwise
 return a 1-column matrix of NA's with the attribute "error"
@@ -40,8 +55,8 @@ See also \code{\link{WriteCatalog}}
 }
 \note{
 In ID (small insertion and deletion) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
+range from 0 to 5+, but for plotting and end-user documentation
+deletion repeat sizes range from 1 to 6+.
 }
 \section{Comments}{
 

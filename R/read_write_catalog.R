@@ -4,7 +4,21 @@
 #'
 #' See also \code{\link{WriteCatalog}}
 #'
-#' @param file Path to a catalog on disk in the standardized format.
+#' @param file Path to a catalog on disk in a standardized format.
+#' The recognized formats are:
+#' 
+#' * ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID 
+#'   (see \code{\link{CatalogRowOrder}}).
+#'   
+#' * SigProfiler-formatted SBS96, DBS78, ID83 and ID96 catalogs;
+#' see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
+#' 
+#' * COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192), 
+#'   DBS78, ID83 and ID96 catalogs; 
+#'   see \url{https://cancer.sanger.ac.uk/cosmic/signatures}.
+#'   
+#' * Note that ID96 catalog files in SigProfiler/COSMIC format will be pruned to
+#'  ID83 catalogs by removing mutation types not in ID83 catalogs. 
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
@@ -14,6 +28,8 @@
 #'
 #' @param catalog.type One of "counts", "density", "counts.signature",
 #'   "density.signature".
+#'   
+#' @param strict Ignored and deprecated.
 #'   
 #' @param stop.on.error If TRUE, call \code{stop} on error; otherwise
 #'   return a 1-column matrix of NA's with the attribute "error"
@@ -30,6 +46,8 @@
 #' 
 #' @export
 #' 
+#' @md
+#' 
 #' @examples 
 #' file <- system.file("extdata",
 #'                     "strelka.regress.cat.sbs.96.csv",
@@ -37,8 +55,12 @@
 #' catSBS96 <- ReadCatalog(file)
 #' 
 
-ReadCatalog <- function(file, ref.genome = NULL, region = "unknown", 
-                        catalog.type = "counts", stop.on.error = TRUE) {
+ReadCatalog <- function(file, 
+                        ref.genome    = NULL, 
+                        region        = "unknown", 
+                        catalog.type  = "counts", 
+                        strict        = NULL,
+                        stop.on.error = TRUE) {
   tryCatch(
     return(ReadCatalogInternal(
       file = file,

@@ -1,5 +1,8 @@
 # ICAMS 2.3.5.90xx
 ## Fixed 
+* Added the argument "strict" back to ReadCatalog() for backward compatibility;
+"strict" is now ignored and deprecated.
+
 * Robustified function `StandardChromNameNew` to select the column which
 contains chromosome names by name instead of column index.
 
