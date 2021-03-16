@@ -413,6 +413,8 @@ PlotCatalog.SBS96Catalog <-
            pos = 2, xpd = NA, cex = cex.xlabel)
     } else {
       every.fourth <- seq(from = 1, to = length(bp), by = 4)
+      # Add another position for tick marks to cover the whole barplot
+      every.fourth <- c(every.fourth, 96)
       Axis(at = bp[every.fourth], side = 1, labels = FALSE, col = "grey35")
     }
 

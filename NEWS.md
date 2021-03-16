@@ -8,6 +8,9 @@ contains chromosome names by name instead of column index.
 
 * Fixed a bug in function `CheckSeqContextInVCF`.
 
+* Fixed a bug in function `PlotCatalog.SBS96Catalog` when plotting the X axis
+after setting `par(tck) = 0`.
+
 ## Changed
 * Changed `PlotCatalog` to round the mutation counts for each main type for
 SBS96, SBS192, DBS78 and ID counts catalog in case the input is reconstructed
