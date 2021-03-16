@@ -37,6 +37,9 @@
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
+#'   
+#' @param ylabels A logical value indicating whether to draw y axis labels. Only
+#'   implemented for \code{SBS96Catalog}.
 #'
 #' @import graphics
 #' 
@@ -77,6 +80,7 @@
 #' PlotCatalog(catSBS96)
 PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL, 
                         grid = NULL , upper = NULL, xlabels = NULL,
+                        ylabels = NULL,
                         ylim = NULL) {
   if (class(catalog)[1] %in% c("SBS96Catalog", "SBS192Catalog", "SBS1536Catalog",
                           "DBS78Catalog", "DBS136Catalog", "DBS144Catalog",
@@ -92,6 +96,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                                grid = ifelse(is.null(grid), TRUE, grid),
                                upper = ifelse(is.null(upper), TRUE, upper), 
                                xlabels = ifelse(is.null(xlabels), TRUE, xlabels), 
+                               ylabels = ifelse(is.null(ylabels), TRUE, ylabels), 
                                ylim = ylim)
     } else if (num.of.row == 192) {
       PlotCatalog.SBS192Catalog(catalog = catalog1, 
@@ -176,6 +181,9 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
 #'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 #'   set \code{par(tck = 0)} to suppress.
+#'   
+#' @param ylabels A logical value indicating whether to draw y axis labels. Only
+#'   implemented for \code{SBS96Catalog}.
 #'
 #' @param ylim Has the usual meaning. Only implemented for SBS96Catalog and
 #'   IndelCatalog.
@@ -208,6 +216,7 @@ PlotCatalogToPdf <-
            cex = NULL, grid = NULL, 
            upper = NULL, 
            xlabels = NULL, 
+           ylabels = NULL,
            ylim = NULL) {
     
     if (class(catalog)[1] %in% c("SBS96Catalog", "SBS192Catalog", "SBS1536Catalog",
@@ -225,6 +234,7 @@ PlotCatalogToPdf <-
                                       grid = ifelse(is.null(grid), TRUE, grid),
                                       upper = ifelse(is.null(upper), TRUE, upper), 
                                       xlabels = ifelse(is.null(xlabels), TRUE, xlabels), 
+                                      ylabels = TRUE,
                                       ylim = ylim)
       } else if (num.of.row == 192) {
         PlotCatalogToPdf.SBS192Catalog(catalog = catalog1, 
@@ -291,7 +301,7 @@ PlotCatalogToPdf <-
 #' @export
 PlotCatalog.SBS96Catalog <-
   function(catalog, plot.SBS12, cex = par("cex"), grid = TRUE,
-           upper = TRUE, xlabels = TRUE, ylim = NULL) {
+           upper = TRUE, xlabels = TRUE, ylabels = TRUE, ylim = NULL) {
     # stopifnot(dim(catalog) == c(96, 1))
     stopifnot(rownames(catalog) == ICAMS::catalog.row.order$SBS96)
 
@@ -336,11 +346,18 @@ PlotCatalog.SBS96Catalog <-
     } else {
       ymax <- ylim[2]
     }
-      
-    bp <- barplot(to.plot, xaxt = "n", yaxt = "n", xaxs = "i",
-                  xlim = c(-1, 230),
-                  ylim = ylim, lwd = 3, space = 1.35, border = NA,
-                  col = cols, ylab = ylab, cex.lab = cex * par("cex.lab"))
+    
+    if (ylabels == FALSE) {
+      bp <- barplot(to.plot, xaxt = "n", yaxt = "n", xaxs = "i",
+                    xlim = c(-1, 230),
+                    ylim = ylim, lwd = 3, space = 1.35, border = NA,
+                    col = cols, cex.lab = cex * par("cex.lab"))
+    } else {
+      bp <- barplot(to.plot, xaxt = "n", yaxt = "n", xaxs = "i",
+                    xlim = c(-1, 230),
+                    ylim = ylim, lwd = 3, space = 1.35, border = NA,
+                    col = cols, ylab = ylab, cex.lab = cex * par("cex.lab"))
+    }
 
     # Draw the x axis
     segments(bp[1] - 0.5, 0, bp[num.classes] + 0.5, 0, 
@@ -378,12 +395,16 @@ PlotCatalog.SBS96Catalog <-
     if (grid) {
       segments(bp[1] - 0.5, seq(ymax/4, ymax, ymax/4), bp[num.classes] + 0.5,
                seq(ymax/4, ymax, ymax/4), col = 'grey35', lwd = 0.25)
-      text(-0.5, y.axis.values, labels = y.axis.labels,
-           las = 1, adj = 1, xpd = NA, cex = cex)
+      if (ylabels == TRUE) {
+        text(-0.5, y.axis.values, labels = y.axis.labels,
+             las = 1, adj = 1, xpd = NA, cex = cex)
+      }
     }  else {
-      Axis(side = 2, at = y.axis.values, las = 1, cex.axis = cex, labels = FALSE)
-      text(-3.5, y.axis.values, labels = y.axis.labels, cex = cex,
-           las = 1, adj = 1, xpd = NA)
+      if (ylabels == TRUE) {
+        Axis(side = 2, at = y.axis.values, las = 1, cex.axis = cex, labels = FALSE)
+        text(-3.5, y.axis.values, labels = y.axis.labels, cex = cex,
+             las = 1, adj = 1, xpd = NA)
+      }
     }
     
     if (xlabels) {
@@ -438,7 +459,7 @@ PlotCatalog.SBS96Catalog <-
 #' @export
 PlotCatalogToPdf.SBS96Catalog <-
   function(catalog, file, plot.SBS12, cex = 0.8,
-           grid = TRUE, upper = TRUE, xlabels = TRUE,
+           grid = TRUE, upper = TRUE, xlabels = TRUE, ylabels = TRUE,
            ylim = NULL) {
     old.par.tck.value <- par("tck")
     # Setting the width and length for A4 size plotting
@@ -454,7 +475,7 @@ PlotCatalogToPdf.SBS96Catalog <-
     for (i in 1 : n) {
       cat <- catalog[, i, drop = FALSE]
       PlotCatalog(cat, cex = cex, grid = grid, upper = upper, 
-                  xlabels = xlabels, ylim = ylim)
+                  xlabels = xlabels, ylabels = ylabels, ylim = ylim)
     }
     
     grDevices::dev.off()

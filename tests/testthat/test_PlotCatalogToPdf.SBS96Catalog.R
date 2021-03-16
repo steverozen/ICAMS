@@ -18,6 +18,14 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
                      file = file.path(tempdir(), "PlotCatSBS96.counts.test.tck.zero.pdf"),
                      xlabels = FALSE, grid = FALSE)
   expect_equal(out$plot.success, TRUE)
+  
+  out <- PlotCatalogToPdf(catalog.counts, 
+                          file = file.path(tempdir(), "PlotCatSBS96.counts.test.no.ylabels.pdf"),
+                          xlabels = FALSE, ylabels = FALSE)
+  
+  out <- PlotCatalogToPdf(catalog.counts, 
+                          file = file.path(tempdir(), "PlotCatSBS96.counts.test.no.ylabels.no.grid.pdf"),
+                          xlabels = FALSE, ylabels = FALSE, grid = FALSE) 
 
   catalog.density <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
@@ -65,6 +73,8 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
   } else {
     unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.pdf"))
     unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.tck.zero.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.no.ylabels.pdf"))
+    unlink(file.path(tempdir(), "PlotCatSBS96.counts.test.no.ylabels.no.grid.pdf"))
     unlink(file.path(tempdir(), "PlotCatSBS96.density.test.pdf"))
     unlink(file.path(tempdir(), "PlotCatSBS96.counts.signature.test.pdf"))
     unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))

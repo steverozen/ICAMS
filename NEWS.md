@@ -16,6 +16,10 @@ after setting `par(tck) = 0`.
 SBS96, SBS192, DBS78 and ID counts catalog in case the input is reconstructed
 counts catalog.
 
+## Added
+* Added an additional argument `ylabels` to `PlotCatalog` and `PlotCatalogToPdf`. 
+When `ylabels = FALSE`, don't plot the y axis labels. Implemented for SBS96Catalog.
+
 # ICAMS 2.3.5
 ## Added
 * Enabled function `ReadCatalog` to import files with:  

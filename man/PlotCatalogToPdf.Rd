@@ -12,6 +12,7 @@ PlotCatalogToPdf(
   grid = NULL,
   upper = NULL,
   xlabels = NULL,
+  ylabels = NULL,
   ylim = NULL
 )
 }
