@@ -105,6 +105,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                                 grid = grid,
                                 upper = upper, 
                                 xlabels = xlabels, 
+                                ylabels = ylabels,
                                 ylim = ylim)
     } else if (num.of.row == 1536) {
       PlotCatalog.SBS1536Catalog(catalog = catalog1, 
@@ -113,6 +114,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                                 grid = grid,
                                 upper = upper, 
                                 xlabels = xlabels, 
+                                ylabels = ylabels,
                                 ylim = ylim)
     } else if (num.of.row == 78) {
       PlotCatalog.DBS78Catalog(catalog = catalog1, 
@@ -130,6 +132,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                                grid = grid,
                                upper = upper, 
                                xlabels = xlabels, 
+                               ylabels = ylabels,
                                ylim = ylim)
     } else if (num.of.row == 144) {
       PlotCatalog.DBS144Catalog(catalog = catalog1, 
@@ -138,6 +141,7 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                                 grid = grid,
                                 upper = upper, 
                                 xlabels = xlabels, 
+                                ylabels = ylabels,
                                 ylim = ylim)
     } else if (num.of.row == 83) {
       PlotCatalog.IndelCatalog(catalog = catalog1, 
@@ -226,6 +230,7 @@ PlotCatalogToPdf <-
                                        grid = grid,
                                        upper = upper, 
                                        xlabels = xlabels, 
+                                       ylabels = ylabels,
                                        ylim = ylim)
       } else if (num.of.row == 1536) {
         PlotCatalogToPdf.SBS1536Catalog(catalog = catalog1, 
@@ -235,6 +240,7 @@ PlotCatalogToPdf <-
                                         grid = grid,
                                         upper = upper, 
                                         xlabels = xlabels, 
+                                        ylabels = ylabels,
                                         ylim = ylim)
       } else if (num.of.row == 78) {
         PlotCatalogToPdf.DBS78Catalog(catalog = catalog1, 
@@ -254,6 +260,7 @@ PlotCatalogToPdf <-
                                        grid = grid,
                                        upper = upper, 
                                        xlabels = xlabels, 
+                                       ylabels = ylabels,
                                        ylim = ylim)
       } else if (num.of.row == 144) {
         PlotCatalogToPdf.DBS144Catalog(catalog = catalog1, 
@@ -263,6 +270,7 @@ PlotCatalogToPdf <-
                                        grid = grid,
                                        upper = upper, 
                                        xlabels = xlabels, 
+                                       ylabels = ylabels,
                                        ylim = ylim)
       } else if (num.of.row == 83) {
         PlotCatalogToPdf.IndelCatalog(catalog = catalog1, 
@@ -469,7 +477,7 @@ PlotCatalogToPdf.SBS96Catalog <-
 #' @export
 PlotCatalog.SBS192Catalog <- 
   function(catalog, plot.SBS12 = FALSE, cex = par("cex"),
-           grid, upper, xlabels, ylim) {
+           grid, upper, xlabels, ylabels, ylim) {
   stopifnot(dim(catalog) == c(192, 1))
 
   if (plot.SBS12 == FALSE) {
@@ -777,7 +785,7 @@ PlotCatalog.SBS192Catalog <-
 #' @export
 PlotCatalogToPdf.SBS192Catalog <-
   function(catalog, file, plot.SBS12 = FALSE, cex = 0.8, 
-           grid, upper, xlabels, ylim) {
+           grid, upper, xlabels, ylabels, ylim) {
   # Setting the width and length for A4 size plotting
   grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
@@ -807,7 +815,7 @@ PlotCatalogToPdf.SBS192Catalog <-
 
 #' @export
 PlotCatalog.SBS1536Catalog <-
-  function(catalog, plot.SBS12, cex, grid, upper, xlabels, ylim) {
+  function(catalog, plot.SBS12, cex, grid, upper, xlabels, ylabels, ylim) {
   stopifnot(dim(catalog) == c(1536, 1))
 
   # Define the bases and their colors in plot
@@ -999,7 +1007,7 @@ PlotCatalog.SBS1536Catalog <-
 
 #' @export
 PlotCatalogToPdf.SBS1536Catalog <-
-  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim) {
+  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylabels, ylim) {
   grDevices::pdf(file, width = 11.6929, height = 9.2677, onefile = TRUE)
 
   n <- ncol(catalog)
@@ -1159,7 +1167,7 @@ PlotCatalogToPdf.DBS78Catalog <-
 
 #' @export
 PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
-                                      grid, upper, xlabels, ylim) {
+                                      grid, upper, xlabels, ylabels, ylim) {
   stopifnot(dim(catalog) == c(144, 1))
   strand.col <- c('#394398',
                   '#e83020')
@@ -1275,7 +1283,7 @@ PlotCatalog.DBS144Catalog <- function(catalog, plot.SBS12, cex = par("cex"),
 
 #' @export
 PlotCatalogToPdf.DBS144Catalog <-
-  function(catalog, file, plot.SBS12, cex = 1, grid, upper, xlabels, ylim) {
+  function(catalog, file, plot.SBS12, cex = 1, grid, upper, xlabels, ylabels, ylim) {
     # Setting the width and length for A4 size plotting
     grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
     
@@ -1295,7 +1303,7 @@ PlotCatalogToPdf.DBS144Catalog <-
 
 #' @export
 PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
-                                      grid, upper, xlabels, ylim) {
+                                      grid, upper, xlabels, ylabels, ylim) {
   stopifnot(dim(catalog) == c(136, 1))
 
   # Specify the layout of the plotting
@@ -1442,7 +1450,7 @@ PlotCatalog.DBS136Catalog <- function(catalog, plot.SBS12, cex,
 
 #' @export
 PlotCatalogToPdf.DBS136Catalog <-
-  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim) {
+  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylabels, ylim) {
   stopifnot(nrow(catalog) == 136)
   n <- ncol(catalog)
 
