@@ -9,7 +9,12 @@ test_that("PlotCatalogToPdf.DBS78Catalog function", {
   out <-
     PlotCatalogToPdf(catalog.counts, 
                      file = file.path(tempdir(), "PlotCatDBS78.counts.test.pdf"))
+  out1 <-
+    PlotCatalogToPdf(catalog.counts, 
+                     file = file.path(tempdir(), "PlotCatDBS78.counts.test2.pdf"),
+                     grid = FALSE, upper = FALSE, xlabels = FALSE, ylabels = FALSE)
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
 
   catalog.density <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
@@ -27,7 +32,13 @@ test_that("PlotCatalogToPdf.DBS78Catalog function", {
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
                      file = file.path(tempdir(), "PlotCatDBS78.counts.signature.test.pdf"))
+  colnames(catalog.counts.signature) <- rep("", ncol(catalog.counts.signature))
+  out1 <-
+    PlotCatalogToPdf(catalog.counts.signature,
+                     file = file.path(tempdir(), "PlotCatDBS78.counts.signature.test2.pdf"),
+                     grid = FALSE, upper = FALSE, xlabels = FALSE, ylabels = FALSE)
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
 
   catalog.density.signature <-
     TransformCatalog(catalog.counts, target.ref.genome = "GRCh37",
@@ -39,8 +50,10 @@ test_that("PlotCatalogToPdf.DBS78Catalog function", {
   expect_equal(out$plot.success, TRUE)
 
   unlink(file.path(tempdir(), "PlotCatDBS78.counts.test.pdf"))
+  unlink(file.path(tempdir(), "PlotCatDBS78.counts.test2.pdf"))
   unlink(file.path(tempdir(), "PlotCatDBS78.density.test.pdf"))
   unlink(file.path(tempdir(), "PlotCatDBS78.counts.signature.test.pdf"))
+  unlink(file.path(tempdir(), "PlotCatDBS78.counts.signature.test2.pdf"))
   unlink(file.path(tempdir(), "PlotCatDBS78.density.signature.test.pdf"))
   graphics.off()
 })
