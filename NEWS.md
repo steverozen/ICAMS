@@ -1,4 +1,4 @@
-# ICAMS 2.3.5.90xx
+# ICAMS 2.3.6
 ## Fixed 
 * Added the argument "strict" back to ReadCatalog() for backward compatibility;
 "strict" is now ignored and deprecated.
