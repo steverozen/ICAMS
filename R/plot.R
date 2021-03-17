@@ -25,21 +25,21 @@
 #'   Only implemented for SBS96Catalog, SBS192Catalog and DBS144Catalog.
 #'
 #' @param grid A logical value indicating whether to draw grid lines. Only
-#'   implemented for SBS96Catalog.
+#'   implemented for SBS96Catalog, IndelCatalog.
 #'
 #' @param upper A logical value indicating whether to draw horizontal lines and
 #'   the names of major mutation class on top of graph. Only implemented for
-#'   SBS96Catalog.
+#'   SBS96Catalog, IndelCatalog.
 #'
 #' @param ylim Has the usual meaning. Only implemented for SBS96Catalog and
 #'   IndelCatalog.
 #'   
 #' @param xlabels A logical value indicating whether to draw x axis labels. Only
-#'   implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
-#'   set \code{par(tck = 0)} to suppress.
+#'   implemented for SBS96Catalog, IndelCatalog. If \code{FALSE} then plot x
+#'   axis tick marks; set \code{par(tck = 0)} to suppress.
 #'   
 #' @param ylabels A logical value indicating whether to draw y axis labels. Only
-#'   implemented for \code{SBS96Catalog}.
+#'   implemented for SBS96Catalog, IndelCatalog.
 #'
 #' @import graphics
 #' 
@@ -1611,7 +1611,9 @@ PlotCatalogToPdf.DBS136Catalog <-
 
 #' @export
 PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
-                                     grid, upper, xlabels, ylim = NULL){
+                                     grid = TRUE, upper = TRUE, 
+                                     xlabels = TRUE, ylabels = TRUE,
+                                     ylim = NULL){
   stopifnot(dim(catalog) == c(83, 1))
 
   indel.class.col <- c("#fdbe6f",
@@ -1677,13 +1679,15 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
            cex = 0.68, adj = 1, xpd = NA)
     }
   } 
-
-  # Draw box and grid lines
-  rect(xleft = bp[1] - 1.5, 0, xright = bp[num.classes] + 1, ymax, col = NA,
-       border = "grey60", lwd = 0.5, xpd = NA)
-  segments(bp[1] - 1.5, seq(0, ymax, ymax / 4), bp[num.classes] + 1,
-           seq(0, ymax, ymax / 4), col = "grey60", lwd = 0.5, xpd = NA)
-
+ 
+  if (grid == TRUE) {
+    # Draw box and grid lines
+    rect(xleft = bp[1] - 1.5, 0, xright = bp[num.classes] + 1, ymax, col = NA,
+         border = "grey60", lwd = 0.5, xpd = NA)
+    segments(bp[1] - 1.5, seq(0, ymax, ymax / 4), bp[num.classes] + 1,
+             seq(0, ymax, ymax / 4), col = "grey60", lwd = 0.5, xpd = NA)
+  }
+  
   # Draw mutation class labels and lines above each class
   maj.class.names <- c("1bp deletion", "1bp insertion",
                        ">1bp deletions at repeats\n(Deletion length)",
@@ -1697,16 +1701,17 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   category.lab <- c(rep(c("C", "T"), 2), rep(c("2", "3", "4", "5+"), 3))
   category.col <- c(rep(c("black", "white"), 2),
                     rep(c("black", "black", "black", "white"), 3))
-
-  # Draw lines above each class
-  rect(xleft = x.left, ymax * 1.02, xright = x.right, ymax * 1.11,
-       col = indel.class.col, border = NA, xpd = NA)
-  text((x.left + x.right) / 2, ymax * 1.06, labels = category.lab,
-       cex = 0.65, col = category.col, xpd = NA)
-
-  # Draw mutation class labels at the top of the figure
-  text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
-
+  
+  if (upper == TRUE) {
+    # Draw lines above each class
+    rect(xleft = x.left, ymax * 1.02, xright = x.right, ymax * 1.11,
+         col = indel.class.col, border = NA, xpd = NA)
+    text((x.left + x.right) / 2, ymax * 1.06, labels = category.lab,
+         cex = 0.65, col = category.col, xpd = NA)
+    # Draw mutation class labels at the top of the figure
+    text(class.pos, ymax * 1.27, labels = maj.class.names, cex = 0.75, xpd = NA)
+  }
+  
   # Draw the sample name information of the sample
   if (attributes(catalog)$catalog.type == "counts") {
     sample.name.y.pos <- ymax * 7.4 / 8
@@ -1717,20 +1722,21 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
        adj = 0, cex = 0.7, font = 2)
 
   # Draw y axis
-  y.axis.values <- seq(0, ymax, ymax / 4)
-  if (attributes(catalog)$catalog.type != "counts") {
-    y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
-    text(-9, ymax / 2, labels = "counts proportion",
-         srt = 90, xpd = NA, cex = 0.8)
-  } else {
-    y.axis.labels <- y.axis.values
-    text(-9, ymax / 2, labels = "counts",
-         srt = 90, xpd = NA, cex = 0.8)
+  if (ylabels == TRUE) {
+    y.axis.values <- seq(0, ymax, ymax / 4)
+    if (attributes(catalog)$catalog.type != "counts") {
+      y.axis.labels <- format(round(y.axis.values, 2), nsmall = 2)
+      text(-9, ymax / 2, labels = "counts proportion",
+           srt = 90, xpd = NA, cex = 0.8)
+    } else {
+      y.axis.labels <- y.axis.values
+      text(-9, ymax / 2, labels = "counts",
+           srt = 90, xpd = NA, cex = 0.8)
+    }
+    text(0, y.axis.values, labels = y.axis.labels,
+         las = 1, adj = 1, xpd = NA, cex = 0.75)
   }
-  text(0, y.axis.values, labels = y.axis.labels,
-       las = 1, adj = 1, xpd = NA, cex = 0.75)
-
-
+  
   # Draw x axis labels
   mut.type <- c(rep(c("1", "2", "3", "4", "5", "6+"), 2),
                 rep(c("0", "1", "2", "3", "4", "5+"), 2),
@@ -1742,17 +1748,23 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
   bottom.lab <- c("Homopolymer length", "Homopolymer length",
                   "Number of repeat units", "Number of repeat units",
                   "Microhomology length")
-  rect(xleft = x.left, -ymax * 0.09, xright = x.right, -ymax * 0.01,
-       col = indel.class.col, border = NA, xpd = NA)
-  text(bp, -ymax * 0.15, labels = mut.type, cex = 0.65, xpd = NA)
-  text(bottom.pos, -ymax * 0.27, labels = bottom.lab, cex = 0.75, xpd = NA)
-
+  if (xlabels == TRUE) {
+    rect(xleft = x.left, -ymax * 0.09, xright = x.right, -ymax * 0.01,
+         col = indel.class.col, border = NA, xpd = NA)
+    text(bp, -ymax * 0.15, labels = mut.type, cex = 0.65, xpd = NA)
+    text(bottom.pos, -ymax * 0.27, labels = bottom.lab, cex = 0.75, xpd = NA)
+  } else {
+    segments(bp[1] - 1.5, 0, bp[num.classes] + 1, 0, 
+             col = "grey35", lwd = 0.5, xpd = NA)
+  }
+  
   invisible(list(plot.success = TRUE, plot.object = bp))
 }
 
 #' @export
 PlotCatalogToPdf.IndelCatalog <-
-  function(catalog, file, plot.SBS12, cex, grid, upper, xlabels, ylim = NULL) {
+  function(catalog, file, plot.SBS12, cex, grid = TRUE, 
+           upper = TRUE, xlabels = TRUE, ylabels = TRUE, ylim = NULL) {
   # Setting the width and length for A4 size plotting
   grDevices::pdf(file, width = 8.2677, height = 11.6929, onefile = TRUE)
   
@@ -1762,7 +1774,8 @@ PlotCatalogToPdf.IndelCatalog <-
   
   for (i in 1 : n) {
     cat <- catalog[, i, drop = FALSE]
-    PlotCatalog(cat, ylim = ylim)
+    PlotCatalog(cat, grid= grid, upper = upper, xlabels = xlabels, 
+                ylabels = ylabels, ylim = ylim)
   }
   grDevices::dev.off()
   invisible(list(plot.success = TRUE))

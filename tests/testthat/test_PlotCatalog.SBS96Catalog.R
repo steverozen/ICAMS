@@ -21,6 +21,7 @@ test_that("PlotCatalog.SBS96Catalog for one column catalog", {
   # Testing removing y labels
   out5 <- PlotCatalog(cat.counts, ylabels = FALSE)
   out6 <- PlotCatalog(cat.counts, ylabels = FALSE, grid = FALSE)
+  
   expect_equal(out$plot.success, TRUE)
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2$plot.success, TRUE)
@@ -65,11 +66,18 @@ test_that("PlotCatalog.SBS96Catalog for one column catalog", {
   par(tck = 0)
   out4 <- PlotCatalog(cat.counts.signature, ylim = c(0, 0.2), cex = 0.8,
                       xlabels = FALSE)
+  # Testing removing upper bar and mutation classes
+  colnames(cat.counts.signature) <- ""
+  out5 <- PlotCatalog(cat.counts.signature, ylim = c(0, 0.2), cex = 0.8,
+                      xlabels = FALSE, grid = FALSE, upper = FALSE, 
+                      ylabels = FALSE)
+  
   expect_equal(out$plot.success, TRUE)
   expect_equal(out1$plot.success, TRUE)
   expect_equal(out2$plot.success, TRUE)
   expect_equal(out3$plot.success, TRUE)
   expect_equal(out4$plot.success, TRUE)
+  expect_equal(out5$plot.success, TRUE)
   graphics.off()
   
   opar <- par(mar = c(5.5, 6, 5, 1))

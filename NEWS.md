@@ -18,7 +18,10 @@ counts catalog.
 
 ## Added
 * Added an additional argument `ylabels` to `PlotCatalog` and `PlotCatalogToPdf`. 
-When `ylabels = FALSE`, don't plot the y axis labels. Implemented for SBS96Catalog.
+When `ylabels = FALSE`, don't plot the y axis labels. Implemented for SBS96Catalog, IndelCatalog.
+
+* Enabled argument `grid`, `uppder`, `xlabels` in `PlotCatalog` and `PlotCatalogToPdf`
+for IndelCatalog.
 
 # ICAMS 2.3.5
 ## Added

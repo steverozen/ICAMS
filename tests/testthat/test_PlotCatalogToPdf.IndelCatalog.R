@@ -8,7 +8,11 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
                        region = "genome", catalog.type = "counts")
   out <- PlotCatalogToPdf(catalog.counts, 
                           file = file.path(tempdir(), "PlotCatID.counts.test.pdf"))
+  out1 <- PlotCatalogToPdf(catalog.counts, 
+                           file = file.path(tempdir(), "PlotCatID.counts.test2.pdf"),
+                           upper = FALSE, grid = FALSE, xlabels = FALSE, ylabels = FALSE)
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
 
   catalog.counts.signature <-
     apply(catalog.counts, MARGIN = 2, function(x) x / sum(x))
@@ -18,7 +22,13 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
   out <-
     PlotCatalogToPdf(catalog.counts.signature,
                      file = file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
+  colnames(catalog.counts.signature) <- rep("", ncol(catalog.counts.signature))
+  out1 <-
+    PlotCatalogToPdf(catalog.counts.signature,
+                     file = file.path(tempdir(), "PlotCatID.counts.signature.test2.pdf"),
+                     grid = FALSE, upper = FALSE, xlabels = FALSE, ylabels = FALSE)
   expect_equal(out$plot.success, TRUE)
+  expect_equal(out1$plot.success, TRUE)
   
   if (Sys.getenv("ICAMS.SAVE.TEST.PDF") != "") {
     file.rename(from = file.path(tempdir(), 
@@ -31,7 +41,9 @@ test_that("PlotCatalogToPdf.IndelCatalog function", {
                                  "PlotCatID.counts.signature.test.pdf"))
   } else {
     unlink(file.path(tempdir(), "PlotCatID.counts.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatID.counts.test2.pdf"))
     unlink(file.path(tempdir(), "PlotCatID.counts.signature.test.pdf"))
+    unlink(file.path(tempdir(), "PlotCatID.counts.signature.test2.pdf"))
   }
   graphics.off()
 })

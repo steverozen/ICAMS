@@ -20,7 +20,11 @@ test_that("PlotCatalog.IndelCatalog function", {
                region = "genome", catalog.type = "counts.signature")
   out <- PlotCatalog(cat.counts.signature)
   out1 <- PlotCatalog(cat.counts.signature, ylim = c(0, 0.5))
+  colnames(cat.counts.signature) <- ""
+  out2 <- PlotCatalog(cat.counts.signature, grid = FALSE, upper = FALSE, 
+                      xlabels = FALSE, ylabels = FALSE)
   expect_equal(out$plot.success, TRUE)
   expect_equal(out1$plot.success, TRUE)
+  expect_equal(out2$plot.success, TRUE)
   graphics.off()
 })
