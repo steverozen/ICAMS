@@ -50,6 +50,9 @@ SBS96Catalog.}
 implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
 set \code{par(tck = 0)} to suppress.}
 
+\item{ylabels}{A logical value indicating whether to draw y axis labels. Only
+implemented for \code{SBS96Catalog}.}
+
 \item{ylim}{Has the usual meaning. Only implemented for SBS96Catalog and
 IndelCatalog.}
 }
