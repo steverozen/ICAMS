@@ -2125,7 +2125,7 @@ AssignNumberOfAsterisks <- function(value) {
 #' @keywords internal
 AdjustNumberOfCores <- function(num.of.cores) {
   if (.Platform$OS.type == "windows" && num.of.cores > 1) {
-    message("On Windows, changing num.of.cores from ", num.of.cores, " to 1")
+    #message("On Windows, changing num.of.cores from ", num.of.cores, " to 1")
     return(1)
   }
   return(num.of.cores)
