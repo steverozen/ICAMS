@@ -1,6 +1,6 @@
 # ICAMS 2.3.6
 ## Fixed 
-* Added the argument `strict` back to ReadCatalog() for backward compatibility;
+* Added the argument `strict` back to `ReadCatalog` for backward compatibility;
 `strict` is now ignored and deprecated.
 
 * Robustified function `StandardChromNameNew` to select the column which
