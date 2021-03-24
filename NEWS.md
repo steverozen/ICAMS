@@ -1,5 +1,7 @@
 # ICAMS 2.3.6
 ## Fixed 
+* Updated some tests for `TransformCatalog` in case R was configured and built in a way that did not support long double.
+
 * Added the argument `strict` back to `ReadCatalog` for backward compatibility;
 `strict` is now ignored and deprecated.
 
@@ -25,6 +27,8 @@ When `ylabels = FALSE`, don't plot the y axis labels. Implemented for SBS96Catal
 * Enabled argument `grid`, `uppder`, `xlabels` in `PlotCatalog` and `PlotCatalogToPdf`
 for DBS78Catalog, IndelCatalog.
 
+<br/>
+
 # ICAMS 2.3.5
 ## Added
 * Enabled function `ReadCatalog` to import files with:  
@@ -42,6 +46,8 @@ for DBS78Catalog, IndelCatalog.
 catalog files into ICAMS catalog objects. Now these functions are in 
 `data-raw/obsolete-files/ConvCatalogToICAMS.R`, and their functionalities are 
 integrated into `ReadCatalog`.
+
+<br/>
 
 # ICAMS 2.3.4
 ## Fixed 
