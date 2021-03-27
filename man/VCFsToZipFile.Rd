@@ -157,11 +157,6 @@ attributes added. See \code{\link{as.catalog}} for more details.
 
 \section{ID classification}{
 
-See
-\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-for additional information on ID (small insertion and deletion) mutation
-classification.
-
 See the documentation for \code{\link{Canonicalize1Del}} which first handles
 deletions in homopolymers, then handles deletions in simple repeats with
 longer repeat units, (e.g. \code{CACACACA}, see

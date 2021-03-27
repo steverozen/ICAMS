@@ -1,3 +1,10 @@
+# ICAMS 2.3.7
+## Fixed 
+* Removed some URLs in README.md and some function documentations as they
+were identified as (possibly) invalid URLs by CRAN.
+
+<br/>
+
 # ICAMS 2.3.6
 ## Fixed 
 * Updated some tests for `TransformCatalog` in case R was configured and built in a way that did not support long double.

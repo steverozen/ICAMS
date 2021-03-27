@@ -1,6 +1,8 @@
 ## Resubmission  
-This is a new version with many updates; all are backward compatible.
-Please see [NEWS.md](https://github.com/steverozen/ICAMS/blob/master/NEWS.md) for more details.
+This is a resubmission. In this version I have:
+
+* Removed some URLs in README.md and some function documentations as they
+were identified as (possibly) invalid URLs by CRAN.
 
 ## Test environments
 * Local Windows 10 install: R 4.0.4
