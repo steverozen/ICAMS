@@ -1,3 +1,13 @@
+# ICAMS 2.3.8
+## Fixed 
+* Removed some URLs in README.md and some function documentations as they
+were identified as (possibly) invalid URLs by CRAN.
+
+## Changed
+* Updated documentation of  `ReadCatalog` and `ReadCatalogInternal` as there are no ID96 catalogs in COSMIC v3.2.
+
+<br/>
+
 # ICAMS 2.3.7
 ## Fixed 
 * Removed some URLs in README.md and some function documentations as they
