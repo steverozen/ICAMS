@@ -5,12 +5,10 @@ on:
     branches:
       - main
       - master
-      - master.merged.with.wuyang
   pull_request:
     branches:
       - main
       - master
-      - master.merged.with.wuyang
 
 name: R-CMD-check
 
@@ -25,7 +23,10 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release'}
+          - {os: windows-latest, r: 'oldrel'}
           - {os: macOS-latest, r: 'release'}
+          - {os: macOS-latest, r: 'devel'}
+          - {os: macOS-latest, r: 'oldrel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -69,11 +70,13 @@ jobs:
           install.packages("BiocManager")
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
+          remotes::install_cran("RCurl")
         shell: Rscript {0}
 
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
+          _R_CHECK_FORCE_SUGGESTS_: false
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 

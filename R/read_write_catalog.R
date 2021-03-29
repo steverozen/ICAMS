@@ -10,16 +10,12 @@
 #' * ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID 
 #'   (see \code{\link{CatalogRowOrder}}).
 #'   
-#' * SigProfiler-formatted SBS96, DBS78, ID83 and ID96 catalogs;
-#' see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
+#' * SigProfiler-formatted SBS96, DBS78 and ID83 catalogs;
 #' 
 #' * COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192), 
-#'   DBS78, ID83 and ID96 catalogs; 
-#'   see \url{https://cancer.sanger.ac.uk/cosmic/signatures}.
+#'   DBS78, ID83 catalogs; 
+#'   see \url{https://cancer.sanger.ac.uk/signatures/}.
 #'   
-#' * Note that ID96 catalog files in SigProfiler/COSMIC format will be pruned to
-#'  ID83 catalogs by removing mutation types not in ID83 catalogs. 
-#'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'

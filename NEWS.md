@@ -1,17 +1,52 @@
-# ICAMS 2.3.5.90xx
+# ICAMS 2.3.8
 ## Fixed 
-* Added the argument "strict" back to ReadCatalog() for backward compatibility;
-"strict" is now ignored and deprecated.
+* Removed some URLs in README.md and some function documentations as they
+were identified as (possibly) invalid URLs by CRAN.
+
+## Changed
+* Updated documentation of  `ReadCatalog` and `ReadCatalogInternal` as there are no ID96 catalogs in COSMIC v3.2.
+
+* Changed the URL of COSMIC mutational signatures page to the redirected URL.
+
+<br/>
+
+# ICAMS 2.3.7
+## Fixed 
+* Removed some URLs in README.md and some function documentations as they
+were identified as (possibly) invalid URLs by CRAN.
+
+<br/>
+
+# ICAMS 2.3.6
+## Fixed 
+* Updated some tests for `TransformCatalog` in case R was configured and built in a way that did not support long double.
+
+* Added the argument `strict` back to `ReadCatalog` for backward compatibility;
+`strict` is now ignored and deprecated.
 
 * Robustified function `StandardChromNameNew` to select the column which
 contains chromosome names by name instead of column index.
 
 * Fixed a bug in function `CheckSeqContextInVCF`.
 
+* Fixed a bug in function `PlotCatalog.SBS96Catalog` when plotting the X axis
+after setting `par(tck) = 0`.
+
 ## Changed
 * Changed `PlotCatalog` to round the mutation counts for each main type for
 SBS96, SBS192, DBS78 and ID counts catalog in case the input is reconstructed
 counts catalog.
+
+* Updated function `AdjustNumberOfCores` not to throw a message on MS Windows machine.
+
+## Added
+* Added an additional argument `ylabels` to `PlotCatalog` and `PlotCatalogToPdf`. 
+When `ylabels = FALSE`, don't plot the y axis labels. Implemented for SBS96Catalog, DBS78Catalog, IndelCatalog.
+
+* Enabled argument `grid`, `uppder`, `xlabels` in `PlotCatalog` and `PlotCatalogToPdf`
+for DBS78Catalog, IndelCatalog.
+
+<br/>
 
 # ICAMS 2.3.5
 ## Added
@@ -30,6 +65,8 @@ counts catalog.
 catalog files into ICAMS catalog objects. Now these functions are in 
 `data-raw/obsolete-files/ConvCatalogToICAMS.R`, and their functionalities are 
 integrated into `ReadCatalog`.
+
+<br/>
 
 # ICAMS 2.3.4
 ## Fixed 
@@ -134,7 +171,7 @@ Windows instead of throwing an error.
 # ICAMS 2.2.8
 
 ## Added
-* Added arg stop.on.error to VCFsToCatalogs; if false, return
+* Added argument `stop.on.error` to `VCFsToCatalogs`; if false, return
   list with single element named error.
 
 * Added new internal function `CheckAndFixChrNamesForTransRanges`. The
