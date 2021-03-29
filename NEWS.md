@@ -6,6 +6,8 @@ were identified as (possibly) invalid URLs by CRAN.
 ## Changed
 * Updated documentation of  `ReadCatalog` and `ReadCatalogInternal` as there are no ID96 catalogs in COSMIC v3.2.
 
+* Changed the URL of COSMIC mutational signatures page to the redirected URL.
+
 <br/>
 
 # ICAMS 2.3.7

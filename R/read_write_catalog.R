@@ -14,7 +14,7 @@
 #' 
 #' * COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192), 
 #'   DBS78, ID83 catalogs; 
-#'   see \url{https://cancer.sanger.ac.uk/cosmic/signatures}.
+#'   see \url{https://cancer.sanger.ac.uk/signatures/}.
 #'   
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.

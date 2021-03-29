@@ -596,7 +596,7 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
 #' based on mutation counts as observed in a given genome
 #' or exome,
 #' and this approach is widely used, as, for example, at
-#' https://cancer.sanger.ac.uk/cosmic/signatures, which
+#' https://cancer.sanger.ac.uk/signatures/, which
 #' presents signatures based on observed mutation counts
 #' in the human genome. We call these "counts-based spectra"
 #' or "counts-based signatures".
