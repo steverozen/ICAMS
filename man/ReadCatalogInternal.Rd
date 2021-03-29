@@ -17,13 +17,10 @@ The recognized formats are:
 \itemize{
 \item ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID
 (see \code{\link{CatalogRowOrder}}).
-\item SigProfiler-formatted SBS96, DBS78, ID83 and ID96 catalogs;
-see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
+\item SigProfiler-formatted SBS96, DBS78 and ID83 catalogs;
 \item COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192),
-DBS78, ID83 and ID96 catalogs;
+DBS78, ID83 catalogs;
 see \url{https://cancer.sanger.ac.uk/cosmic/signatures}.
-\item Note that ID96 catalog files in SigProfiler/COSMIC format will be pruned to
-ID83 catalogs by removing mutation types not in ID83 catalogs.
 }}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
