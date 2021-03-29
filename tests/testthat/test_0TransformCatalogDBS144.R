@@ -37,8 +37,10 @@ test_that("Transformation of a DBS 144 catalog", {
     TransformCatalog(cat.t, target.ref.genome = "GRCh37",
                      target.region = "transcript",
                      target.catalog.type = "counts.signature")
-  out <- rep(1, 4)
-  expect_equal(sum(colSums(genome.counts.signature) == out), 4)
+  
+  expect_equal(colSums(genome.counts.signature), 
+               rep(1, 4), 
+               check.attributes = FALSE)
 
   expect_error(TransformCatalog(genome.counts.signature,
                                 target.ref.genome = "GRCh37",
