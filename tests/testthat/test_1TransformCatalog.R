@@ -311,7 +311,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catSBS96.counts.sig <- 
               TransformCatalog(catSBS96.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catSBS96.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catSBS96.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             
             expect_error(
               TransformCatalog(catSBS96.counts, target.ref.genome = "hg38",
@@ -324,7 +326,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catSBS192.counts.sig <- 
               TransformCatalog(catSBS192.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catSBS192.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catSBS192.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catSBS192.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
@@ -336,7 +340,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catSBS1536.counts.sig <- 
               TransformCatalog(catSBS1536.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catSBS1536.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catSBS1536.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catSBS1536.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
@@ -348,7 +354,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catDBS78.counts.sig <- 
               TransformCatalog(catDBS78.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catDBS78.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catDBS78.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catDBS78.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
@@ -359,7 +367,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catDBS144.counts.sig <- 
               TransformCatalog(catDBS144.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catDBS144.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catDBS144.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catDBS144.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
@@ -371,7 +381,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catDBS136.counts.sig <- 
               TransformCatalog(catDBS136.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catDBS136.counts.sig) == rep(1, 4)), 4)
+            lapply(colSums(catDBS136.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catDBS136.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
@@ -383,7 +395,9 @@ test_that("Transform a counts catalog with NULL abundance,
             catID.counts.sig <- 
               TransformCatalog(catID.counts,
                                target.catalog.type = "counts.signature")
-            expect_equal(sum(colSums(catID.counts.sig) == rep(1, 35)), 35)
+            lapply(colSums(catID.counts.sig), FUN = function(x) {
+              expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
+            })
             expect_error(
               TransformCatalog(catID.counts, target.ref.genome = "hg38",
                                target.catalog.type = "counts.signature")
