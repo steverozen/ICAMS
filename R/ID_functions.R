@@ -569,6 +569,9 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.
 #' 
+#' See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' for additional information on deletion mutation classification.
+#' 
 #' This function first handles deletions in homopolymers, then
 #' handles deletions in simple repeats with
 #' longer repeat units, (e.g. \code{CACACACA}, see

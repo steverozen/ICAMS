@@ -69,8 +69,7 @@ in a 2-element repeat of \code{AGC}).
 }
 \section{ID classification}{
 
-See
-\url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
 for additional information on ID (small insertion and deletion) mutation
 classification.
 

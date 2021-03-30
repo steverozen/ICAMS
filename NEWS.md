@@ -1,3 +1,8 @@
+# ICAMS 2.3.9
+## Added
+* Added back URLs for information regarding ID classification and SigProfiler catalog format.
+<br/>
+
 # ICAMS 2.3.8
 ## Fixed 
 * Removed some URLs in README.md and some function documentations as they

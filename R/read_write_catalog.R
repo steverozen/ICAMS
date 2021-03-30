@@ -11,6 +11,7 @@
 #'   (see \code{\link{CatalogRowOrder}}).
 #'   
 #' * SigProfiler-formatted SBS96, DBS78 and ID83 catalogs;
+#'   see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
 #' 
 #' * COSMIC-formatted SBS96, SBS192 (a.k.a. TSB192), 
 #'   DBS78, ID83 catalogs; 
