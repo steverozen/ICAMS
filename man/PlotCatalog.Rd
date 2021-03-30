@@ -11,6 +11,7 @@ PlotCatalog(
   grid = NULL,
   upper = NULL,
   xlabels = NULL,
+  ylabels = NULL,
   ylim = NULL
 )
 }
@@ -29,21 +30,24 @@ name \code{"Unknown"}.}
 generate an abbreviated plot of only SBS without context, i.e. 
 C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
-ACA > AAA, ACA > AGA, ..., TCT > TAT, ...}
+ACA > AAA, ACA > AGA, ..., TCT > TAT, ... There are 12 bars in the graph.}
 
 \item{cex}{Has the usual meaning. Taken from \code{par("cex")} by default.
 Only implemented for SBS96Catalog, SBS192Catalog and DBS144Catalog.}
 
 \item{grid}{A logical value indicating whether to draw grid lines. Only
-implemented for SBS96Catalog.}
+implemented for SBS96Catalog, DBS78Catalog, IndelCatalog.}
 
 \item{upper}{A logical value indicating whether to draw horizontal lines and
 the names of major mutation class on top of graph. Only implemented for
-SBS96Catalog.}
+SBS96Catalog, DBS78Catalog, IndelCatalog.}
 
 \item{xlabels}{A logical value indicating whether to draw x axis labels. Only
-implemented for \code{SBS96Catalog}. If \code{FALSE} then plot x axis tick marks;
-set \code{par(tck = 0)} to suppress.}
+implemented for SBS96Catalog, DBS78Catalog, IndelCatalog. If \code{FALSE} then plot x
+axis tick marks for SBS96Catalog; set \code{par(tck = 0)} to suppress.}
+
+\item{ylabels}{A logical value indicating whether to draw y axis labels. Only
+implemented for SBS96Catalog, DBS78Catalog, IndelCatalog.}
 
 \item{ylim}{Has the usual meaning. Only implemented for SBS96Catalog and
 IndelCatalog.}

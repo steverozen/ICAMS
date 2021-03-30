@@ -1,8 +1,7 @@
 ## Resubmission  
 This is a resubmission. In this version I have:
 
-* Removed some URLs in README.md and some function documentations as they
-were identified as (possibly) invalid URLs by CRAN.
+* Updated testing code to fix the no long double error.
 
 ## Test environments
 * Local Windows 10 install: R 4.0.4

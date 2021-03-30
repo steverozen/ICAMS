@@ -1,4 +1,7 @@
 # ICAMS 2.3.9
+## Fixed 
+* Updated some tests for `TransformCatalog` in case R was configured and built in a way that did not support long double.
+
 ## Added
 * Added back URLs for information regarding ID classification and SigProfiler catalog format.
 <br/>
