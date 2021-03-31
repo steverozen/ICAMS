@@ -1,3 +1,9 @@
+# ICAMS 2.3.10
+## Added
+* Added tolerance when using `expect_equal` for comparing numerical values
+
+<br/>
+
 # ICAMS 2.3.9
 ## Fixed 
 * Updated some tests for `TransformCatalog` in case R was configured and built in a way that did not support long double.
