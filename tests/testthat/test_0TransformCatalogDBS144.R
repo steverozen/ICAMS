@@ -38,9 +38,10 @@ test_that("Transformation of a DBS 144 catalog", {
                      target.region = "transcript",
                      target.catalog.type = "counts.signature")
   
-  lapply(colSums(genome.counts.signature), FUN = function(x) {
-    expect_equal(x, 1, tolerance = .Machine$double.eps^0.25)
-  })
+  expect_equal(colSums(genome.counts.signature), 
+               rep(1, 4), 
+               check.attributes = FALSE,
+               tolerance = .Machine$double.eps^0.5)
 
   expect_error(TransformCatalog(genome.counts.signature,
                                 target.ref.genome = "GRCh37",
