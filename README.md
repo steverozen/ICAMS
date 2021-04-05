@@ -31,9 +31,9 @@ cell carcinoma and in other mucosal tumor types”, Genome Research 2020
 Characterization and Analysis of Mutational Signatures. ‘ICAMS’ has
 functions to read in variant call files (VCFs) and to collate the
 corresponding catalogs of mutational spectra and to analyze and plot
-catalogs of mutational spectra and signatures. Handles both
-“counts-based” and “density-based” catalogs of mutational spectra or
-signatures.
+catalogs of mutational spectra and signatures. Handles both 
+"counts-based" and "density-based" (i.e. representation as mutuations
+per megabase) mutational spectra or signatures.
 
 ## Installation
 
