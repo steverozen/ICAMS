@@ -31,7 +31,7 @@ Characterization and Analysis of Mutational Signatures. ‘ICAMS’ has
 functions to read in variant call files (VCFs) and to collate the
 corresponding catalogs of mutational spectra and to analyze and plot
 catalogs of mutational spectra and signatures. Handles both 
-"counts-based" and "density-based" density-based" (i.e. representation
+"counts-based" and "density-based" (i.e. representation
 as mutuations per megabase) mutational spectra or signatures.
 
 ## Installation
