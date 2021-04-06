@@ -1,4 +1,11 @@
-# ICAMS 2.3.10
+# ICAMS 2.3.10.90xx
+## Updated
+* Updated function `StandardChromName` and `StandardChromNameNew` to remove variants
+whose chromosome names contain "JH".
+
+<br/>
+
+# ICAMS 2.3.10 (submitted to CRAN)
 ## Added
 * Added tolerance when using `expect_equal` for comparing numerical values
 

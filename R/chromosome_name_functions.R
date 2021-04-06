@@ -31,6 +31,11 @@ StandardChromName <- function(df) {
   if (sum(grepl("M", df[[1]])) > 0) {
     df <- df[-grep("M", df[[1]]), ]
   }
+  
+  # Is there any row in df whose Chromosome names contain "JH"?
+  if (sum(grepl("JH", df[[1]])) > 0) {
+    df <- df[-grep("JH", df[[1]]), ]
+  }
 
   # Remove the "chr" character in the Chromosome's name
   df[, 1] <- sub(pattern = "chr", replacement = "", df[[1]])
@@ -50,7 +55,7 @@ StandardChromName <- function(df) {
 #'   Leading "chr" strings are removed.
 #' * \code{discarded.variants}: \strong{Non-NULL only if} there
 #'   variants with illegal chromosome names; these are
-#'   names that contain the strings "GL", "Hs", "KI", "M", "random".
+#'   names that contain the strings "GL", "Hs", "KI", "JH", "M", "random".
 #' @md
 #'
 #' @keywords internal
@@ -137,11 +142,27 @@ StandardChromNameNew <- function(df, name.of.VCF = NULL) {
   } else {
     df5 <- df4
   }
+  
+  # Is there any row in df whose Chromosome names contain "JH"?
+  if (sum(grepl("JH", df5$CHROM)) > 0) {
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " ", sum(grepl("JH", df5$CHROM)), " row out of ",
+            nrow(df), " had chromosome names that contain 'JH' and ",
+            "were removed. ",
+            "See discarded.variants in the return value for more details")
+    df6 <- df5[-grep("JH", df5$CHROM), ]
+    df6.to.remove <- df5[grep("JH", df5$CHROM), ]
+    df6.to.remove$discarded.reason <- 'Chromosome name contains "JH"'
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df6.to.remove)
+  } else {
+    df6 <- df5
+  }
 
   if (nrow(discarded.variants) == 0) {
-    return(list(df = df5))
+    return(list(df = df6))
   } else {
-    return(list(df = df5, discarded.variants = discarded.variants))
+    return(list(df = df6, discarded.variants = discarded.variants))
   }
 }
 
