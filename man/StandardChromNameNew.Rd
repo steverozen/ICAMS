@@ -19,7 +19,7 @@ names (see below for illegal chromosome names).
 Leading "chr" strings are removed.
 \item \code{discarded.variants}: \strong{Non-NULL only if} there
 variants with illegal chromosome names; these are
-names that contain the strings "GL", "Hs", "KI", "M", "random".
+names that contain the strings "GL", "Hs", "KI", "JH", "M", "random".
 }
 }
 \description{

@@ -42,6 +42,7 @@ ICAMS’
 IUPAC
 Indel
 IndelCatalog
+JH
 Jiang
 KI
 Liu
@@ -75,9 +76,7 @@ VAFs
 VCF
 VCF's
 VCFs
-VCFsToCatalogs
 al
-arg
 bioc
 bioconductor
 bz
@@ -105,11 +104,13 @@ indel
 indels
 introns
 md
+megabase
 mer
 mers
 microhomology
 mucosal
 mutect
+mutuations
 nd
 opar
 pentanucleotide
