@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 ![R build
-status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)
+status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg?branch=v2.3.10-branch)
 ![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
@@ -30,9 +30,9 @@ cell carcinoma and in other mucosal tumor types”, Genome Research 2020
 Characterization and Analysis of Mutational Signatures. ‘ICAMS’ has
 functions to read in variant call files (VCFs) and to collate the
 corresponding catalogs of mutational spectra and to analyze and plot
-catalogs of mutational spectra and signatures. Handles both 
-"counts-based" and "density-based" (i.e. representation
-as mutuations per megabase) mutational spectra or signatures.
+catalogs of mutational spectra and signatures. Handles both
+“counts-based” and “density-based” (i.e. representation as mutations per
+megabase) mutational spectra or signatures.
 
 ## Installation
 
@@ -71,7 +71,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_2.3.10.tar.gz)
+source](https://github.com/steverozen/ICAMS/blob/v2.3.10-branch/data-raw/source-file/ICAMS_2.3.10.tar.gz?raw=true)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 
@@ -84,7 +84,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_2.3.10.pdf>
+<https://github.com/steverozen/ICAMS/blob/v2.3.10-branch/data-raw/ICAMS_2.3.10.pdf>
 
 ## Frequently asked questions
 

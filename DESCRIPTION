@@ -17,7 +17,7 @@ Description: Analysis and visualization of experimentally elucidated mutational
     variant call files (VCFs) and to collate the corresponding catalogs of 
     mutational spectra and to analyze and plot catalogs of mutational spectra
     and signatures. Handles both "counts-based" and "density-based" (i.e.
-    representation as mutuations per megabase) mutational spectra or signatures.
+    representation as mutations per megabase) mutational spectra or signatures.
 License: GPL-3 | file LICENSE
 URL: https://github.com/steverozen/ICAMS
 BugReports: https://github.com/steverozen/ICAMS/issues
