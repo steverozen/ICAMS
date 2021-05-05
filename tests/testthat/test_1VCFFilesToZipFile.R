@@ -240,7 +240,7 @@ test_that("VCFsToZipFile function for Strelka SBS VCFs with no base.filename", {
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
   expect_equal(length(name1), 7)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 7)
   
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
@@ -274,7 +274,7 @@ test_that("VCFsToZipFile function for Strelka SBS VCFs with base.filename", {
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
   expect_equal(length(name1), 7)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 7)
   
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
@@ -307,7 +307,7 @@ test_that("VCFsToZipFile function for Strelka ID VCFs with no base.filename", {
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
   expect_equal(length(name1), 7)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 1)
   
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
@@ -342,7 +342,7 @@ test_that("VCFsToZipFile function for Strelka ID VCFs with base.filename", {
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
   expect_equal(length(name1), 7)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 1)
   
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))

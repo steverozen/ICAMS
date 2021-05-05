@@ -547,15 +547,19 @@ VCFsToZipFile <-
     }
 
     for (name in names(catalogs)) {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = paste0(output.file, name, ".pdf"))
-
-      if (name == "catSBS192") {
-        list <- PlotCatalogToPdf(catalogs[[name]],
-                                 file = paste0(output.file, "SBS12.pdf"),
-                                 plot.SBS12 = TRUE)
-        strand.bias.statistics <-
-          c(strand.bias.statistics, list$strand.bias.statistics)
+      non.empty.samples <- RetrieveNonEmptySamples(catalogs[[name]])
+      # Only plot samples which have mutations for a specific mutation class
+      if (!is.null(non.empty.samples)) {
+        PlotCatalogToPdf(non.empty.samples,
+                         file = paste0(output.file, name, ".pdf"))
+        
+        if (name == "catSBS192") {
+          list <- PlotCatalogToPdf(non.empty.samples,
+                                   file = paste0(output.file, "SBS12.pdf"),
+                                   plot.SBS12 = TRUE)
+          strand.bias.statistics <-
+            c(strand.bias.statistics, list$strand.bias.statistics)
+        }
       }
     }
 

@@ -1,7 +1,13 @@
 # ICAMS 2.3.10.90xx
+## Added
+* Added new internal function `RetrieveNonEmptySamples` to retrieve non empty samples from a catalog.
+
 ## Updated
 * Updated function `StandardChromName` and `StandardChromNameNew` to remove variants
 whose chromosome names contain "JH".
+
+* Updated functions `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile` to only plot samples
+that have mutations for a specific mutation class.
 
 <br/>
 

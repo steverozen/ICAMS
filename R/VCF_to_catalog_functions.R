@@ -728,10 +728,13 @@ ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
   }
 
   ReadVCF1 <- function(idx, files, variant.caller, vector1, vector2) {
-    ReadVCF(file = files[idx], variant.caller = variant.caller,
-            name.of.VCF = vector1[idx], tumor.col.name = vector2[idx],
-            filter.status = filter.status, get.vaf.function = get.vaf.function,
-            ...)
+    ReadVCF(file = files[idx], 
+            variant.caller = variant.caller,
+            name.of.VCF = vector1[idx], 
+            tumor.col.name = vector2[idx],
+            filter.status = filter.status, 
+            get.vaf.function = get.vaf.function,
+            ... = ...)
   }
 
   vcfs <- parallel::mclapply(1:num.of.files, FUN = ReadVCF1, files = files,
@@ -3188,19 +3191,34 @@ VCFsToCatalogsAndPlotToPdf <-
     if (base.filename != "") base.filename <- paste0(base.filename, ".")
 
     for (name in names(catalogs)) {
-      PlotCatalogToPdf(catalogs[[name]],
-                       file = file.path(output.dir,
-                                        paste0(base.filename, name, ".pdf")))
-      if (name == "catSBS192") {
-        PlotCatalogToPdf(catalogs[[name]],
+      non.empty.samples <- RetrieveNonEmptySamples(catalogs[[name]])
+      # Only plot samples which have mutations for a specific mutation class
+      if (!is.null(non.empty.samples)) {
+        PlotCatalogToPdf(non.empty.samples,
                          file = file.path(output.dir,
-                                          paste0(base.filename, "SBS12.pdf")),
-                         plot.SBS12 = TRUE)
+                                          paste0(base.filename, name, ".pdf")))
+        if (name == "catSBS192") {
+          PlotCatalogToPdf(non.empty.samples,
+                           file = file.path(output.dir,
+                                            paste0(base.filename, "SBS12.pdf")),
+                           plot.SBS12 = TRUE)
+        }
       }
     }
-
+    
     return(catalogs0)
   }
+
+#' @keywords internal
+RetrieveNonEmptySamples <- function(catalog) {
+  tmp <- colSums(catalog)
+  indices <- which(tmp > 0)
+  if (length(indices) > 0) {
+    return(catalog[, indices, drop = FALSE])
+  } else {
+    return(NULL)
+  }
+}
 
 #' @keywords internal
 CanonicalizeDBS <- function(ref.vec, alt.vec) {
