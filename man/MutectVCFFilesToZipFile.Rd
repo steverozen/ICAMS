@@ -52,12 +52,12 @@ all of the path up to and including the last path separator (if any) in
 \code{dir} and file paths without extensions (and the leading dot) will be
 used as the names of the VCF files.}
 
-\item{tumor.col.names}{Optional. Character vector of column names in VCFs which contain
-the tumor sample information. The order of names in \code{tumor.col.names}
-should match the order of VCFs listed in \code{dir}. If
-\code{tumor.col.names} is equal to \code{NA}(default), this function will
-use the 10th column in all the VCFs to calculate VAFs.
-See \code{\link{GetMutectVAF}} for more details.}
+\item{tumor.col.names}{Optional. Vector of column names or column indices in
+VCFs which contain the tumor sample information. The order of elements in
+\code{tumor.col.names} should match the order of VCFs listed in \code{dir}.
+If \code{tumor.col.names} is equal to \code{NA}(default), this function
+will use the 10th column in all the VCFs to calculate VAFs. See
+\code{\link{GetMutectVAF}} for more details.}
 
 \item{base.filename}{Optional. The base name of the CSV and PDF files to be
 produced; multiple files will be generated, each ending in

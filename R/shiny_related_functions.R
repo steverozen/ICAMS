@@ -240,12 +240,12 @@ StrelkaIDVCFFilesToZipFile <-
 #'   \code{dir} and file paths without extensions (and the leading dot) will be
 #'   used as the names of the VCF files.
 #'
-#' @param tumor.col.names Optional. Character vector of column names in VCFs which contain
-#'   the tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of VCFs listed in \code{dir}. If
-#'   \code{tumor.col.names} is equal to \code{NA}(default), this function will
-#'   use the 10th column in all the VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
+#' @param tumor.col.names Optional. Vector of column names or column indices in
+#'   VCFs which contain the tumor sample information. The order of elements in
+#'   \code{tumor.col.names} should match the order of VCFs listed in \code{dir}.
+#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
+#'   will use the 10th column in all the VCFs to calculate VAFs. See
+#'   \code{\link{GetMutectVAF}} for more details.
 #'
 #' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
@@ -412,12 +412,13 @@ MutectVCFFilesToZipFile <-
 #'   used as the names of the VCF files.
 #'
 #' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Character vector of column names in \strong{Mutect} VCFs which contain the
-#'   tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
-#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
-#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
+#'   Vector of column names or column indices in \strong{Mutect} VCFs which
+#'   contain the tumor sample information. The order of elements in
+#'   \code{tumor.col.names} should match the order of \strong{Mutect} VCFs
+#'   specified in \code{files}. If \code{tumor.col.names} is equal to
+#'   \code{NA}(default), this function will use the 10th column in all the
+#'   \strong{Mutect} VCFs to calculate VAFs. See \code{\link{GetMutectVAF}} for
+#'   more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
 #'   An example would be \code{"PASS"}. Variants which don't have the specified
@@ -1252,12 +1253,13 @@ ReadAndSplitMutectVCFs <-
 #'   the VCF files.
 #'
 #' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Character vector of column names in \strong{Mutect} VCFs which contain the
-#'   tumor sample information. The order of names in \code{tumor.col.names}
-#'   should match the order of \strong{Mutect} VCFs specified in \code{files}.
-#'   If \code{tumor.col.names} is equal to \code{NA}(default), this function
-#'   will use the 10th column in all the \strong{Mutect} VCFs to calculate VAFs.
-#'   See \code{\link{GetMutectVAF}} for more details.
+#'   Vector of column names or column indices in \strong{Mutect} VCFs which
+#'   contain the tumor sample information. The order of elements in
+#'   \code{tumor.col.names} should match the order of \strong{Mutect} VCFs
+#'   specified in \code{files}. If \code{tumor.col.names} is equal to
+#'   \code{NA}(default), this function will use the 10th column in all the
+#'   \strong{Mutect} VCFs to calculate VAFs. See \code{\link{GetMutectVAF}} for
+#'   more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
 #'   An example would be \code{"PASS"}. Variants which don't have the specified

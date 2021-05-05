@@ -20,10 +20,10 @@ GetFreebayesVAF(vcf, name.of.VCF = NULL)
 \item{name.of.VCF}{Name of the VCF file.}
 
 \item{tumor.col.name}{Optional. Only applicable to \strong{Mutect} VCF. Name
-of the column in \strong{Mutect} VCF which contains the tumor sample
-information. It \strong{must} have quotation marks. If
-\code{tumor.col.name} is equal to \code{NA}(default), this function will
-use the 10th column to calculate VAFs.}
+or index of the column in \strong{Mutect} VCF which contains the tumor
+sample information. It \strong{must} have quotation marks if specifying the
+column name. If \code{tumor.col.name} is equal to \code{NA}(default), this
+function will use the 10th column to calculate VAFs.}
 }
 \value{
 The original \code{vcf} with two additional columns added which

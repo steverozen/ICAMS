@@ -29,11 +29,11 @@ separator (if any) in \code{file} and file path without extensions (and the
 leading dot) will be used as the name of the VCF file.}
 
 \item{tumor.col.name}{Optional. Only applicable to \strong{Mutect} VCF. Name
-of the column in \strong{Mutect} VCF which contains the tumor sample
-information. It \strong{must} have quotation marks. If
-\code{tumor.col.name} is equal to \code{NA}(default), this function will
-use the 10th column to calculate VAFs. See \code{\link{GetMutectVAF}} for
-more details.}
+or index of the column in \strong{Mutect} VCF which contains the tumor
+sample information. It \strong{must} have quotation marks if specifying the
+column name. If \code{tumor.col.name} is equal to \code{NA}(default), this
+function will use the 10th column to calculate VAFs. See
+\code{\link{GetMutectVAF}} for more details.}
 
 \item{filter.status}{The status indicating a variant has passed all filters.
 An example would be \code{"PASS"}. Variants which don't have the specified

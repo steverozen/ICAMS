@@ -9,6 +9,9 @@ whose chromosome names contain "JH".
 * Updated functions `VCFsToCatalogsAndPlotToPdf` and `VCFsToZipFile` to only plot samples
 that have mutations for a specific mutation class.
 
+* Enabled argument `tumor.col.name` and `tumor.col.names` in various functions to also take
+in numbers as column indices.
+
 <br/>
 
 # ICAMS 2.3.10 (submitted to CRAN)
