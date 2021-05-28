@@ -219,7 +219,7 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
     },
     error = function(err.info) {
       if (!is.null(err.info$message)) {
-      stop(vcf.name, " does not appear to be a VCF file.\nDetails: ",
+      stop(file, " does not appear to be a VCF file.\nDetails: ",
            err.info$message)
       }
     })

@@ -12,6 +12,8 @@ that have mutations for a specific mutation class.
 * Enabled argument `tumor.col.name` and `tumor.col.names` in various functions to also take
 in numbers as column indices.
 
+* Updated internal function `MakeDataFrameFromVCF` to use argument `file` instead of `name.of.VCF` to report error when the input file is not a VCF file.
+
 <br/>
 
 # ICAMS 2.3.10 (submitted to CRAN)
