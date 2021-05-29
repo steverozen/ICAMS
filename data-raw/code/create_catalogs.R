@@ -242,23 +242,23 @@ catalog.row.order.ID <-
     "DEL:MH:5+:5+")
 
 catalog.row.headers.sp.ID.83 <-
-  c("1:Del:C:0", "1:Del:C:1", "1:Del:C:2", "1:Del:C:3", "1:Del:C:4", 
-    "1:Del:C:5", "1:Del:T:0", "1:Del:T:1", "1:Del:T:2", "1:Del:T:3", 
-    "1:Del:T:4", "1:Del:T:5", "1:Ins:C:0", "1:Ins:C:1", "1:Ins:C:2", 
-    "1:Ins:C:3", "1:Ins:C:4", "1:Ins:C:5", "1:Ins:T:0", "1:Ins:T:1", 
-    "1:Ins:T:2", "1:Ins:T:3", "1:Ins:T:4", "1:Ins:T:5", "2:Del:M:1", 
-    "2:Del:R:0", "2:Del:R:1", "2:Del:R:2", "2:Del:R:3", "2:Del:R:4", 
-    "2:Del:R:5", "2:Ins:R:0", "2:Ins:R:1", "2:Ins:R:2", "2:Ins:R:3", 
-    "2:Ins:R:4", "2:Ins:R:5", "3:Del:M:1", "3:Del:M:2", "3:Del:R:0", 
-    "3:Del:R:1", "3:Del:R:2", "3:Del:R:3", "3:Del:R:4", "3:Del:R:5", 
-    "3:Ins:R:0", "3:Ins:R:1", "3:Ins:R:2", "3:Ins:R:3", "3:Ins:R:4", 
-    "3:Ins:R:5", "4:Del:M:1", "4:Del:M:2", "4:Del:M:3", "4:Del:R:0", 
-    "4:Del:R:1", "4:Del:R:2", "4:Del:R:3", "4:Del:R:4", "4:Del:R:5", 
-    "4:Ins:R:0", "4:Ins:R:1", "4:Ins:R:2", "4:Ins:R:3", "4:Ins:R:4", 
-    "4:Ins:R:5", "5:Del:M:1", "5:Del:M:2", "5:Del:M:3", "5:Del:M:4", 
-    "5:Del:M:5", "5:Del:R:0", "5:Del:R:1", "5:Del:R:2", "5:Del:R:3", 
-    "5:Del:R:4", "5:Del:R:5", "5:Ins:R:0", "5:Ins:R:1", "5:Ins:R:2", 
-    "5:Ins:R:3", "5:Ins:R:4", "5:Ins:R:5")
+  c("1:Del:C:0", "1:Del:C:1", "1:Del:C:2", "1:Del:C:3", "1:Del:C:4",  
+    "1:Del:C:5", "1:Del:T:0", "1:Del:T:1", "1:Del:T:2", "1:Del:T:3",  
+    "1:Del:T:4", "1:Del:T:5", "1:Ins:C:0", "1:Ins:C:1", "1:Ins:C:2",  
+    "1:Ins:C:3", "1:Ins:C:4", "1:Ins:C:5", "1:Ins:T:0", "1:Ins:T:1",  
+    "1:Ins:T:2", "1:Ins:T:3", "1:Ins:T:4", "1:Ins:T:5", "2:Del:R:0",  
+    "2:Del:R:1", "2:Del:R:2", "2:Del:R:3", "2:Del:R:4", "2:Del:R:5",  
+    "3:Del:R:0", "3:Del:R:1", "3:Del:R:2", "3:Del:R:3", "3:Del:R:4",  
+    "3:Del:R:5", "4:Del:R:0", "4:Del:R:1", "4:Del:R:2", "4:Del:R:3",  
+    "4:Del:R:4", "4:Del:R:5", "5:Del:R:0", "5:Del:R:1", "5:Del:R:2",  
+    "5:Del:R:3", "5:Del:R:4", "5:Del:R:5", "2:Ins:R:0", "2:Ins:R:1",  
+    "2:Ins:R:2", "2:Ins:R:3", "2:Ins:R:4", "2:Ins:R:5", "3:Ins:R:0",  
+    "3:Ins:R:1", "3:Ins:R:2", "3:Ins:R:3", "3:Ins:R:4", "3:Ins:R:5",  
+    "4:Ins:R:0", "4:Ins:R:1", "4:Ins:R:2", "4:Ins:R:3", "4:Ins:R:4",  
+    "4:Ins:R:5", "5:Ins:R:0", "5:Ins:R:1", "5:Ins:R:2", "5:Ins:R:3",  
+    "5:Ins:R:4", "5:Ins:R:5", "2:Del:M:1", "3:Del:M:1", "3:Del:M:2",  
+    "4:Del:M:1", "4:Del:M:2", "4:Del:M:3", "5:Del:M:1", "5:Del:M:2",  
+    "5:Del:M:3", "5:Del:M:4", "5:Del:M:5")
 
 ##############################################################
 # Next are "empty row headers", data frames with the columns

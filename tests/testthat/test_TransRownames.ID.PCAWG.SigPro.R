@@ -1,9 +1,9 @@
 unlink("Rplots.pdf")
 test_that("Check sigprofiler-formatted indel catalog rownames",
           { 
-            spIDCat <- read.csv("testdata/sigProfiler_ID_signatures.csv",
-                            row.names = 1, 
-                            stringsAsFactors = FALSE)
+            spIDCat <- 
+              read.table("testdata/SigPro-Cat/Strelka.ID.GRCh37.s1.ID83.tsv",
+                         header = TRUE, row.names = 1)
             expect_equal(catalog.row.headers.sp$ID83,rownames(spIDCat))
             unlink("Rplots.pdf")
           })

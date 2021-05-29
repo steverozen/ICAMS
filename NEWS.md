@@ -14,6 +14,8 @@ in numbers as column indices.
 
 * Updated internal function `MakeDataFrameFromVCF` to use argument `file` instead of `name.of.VCF` to report error when the input file is not a VCF file.
 
+* Updated internal data `catalog.row.headers.sp$ID83`.
+
 <br/>
 
 # ICAMS 2.3.10 (submitted to CRAN)

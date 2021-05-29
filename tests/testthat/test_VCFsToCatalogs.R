@@ -74,4 +74,5 @@ test_that("VCFsToCatalogs function for Strelka ID VCFs", {
   expect_equal(catalogs2$catalog, catalogs4$catID)
   expect_equal(catalogs2$discarded.variants, catalogs4$discarded.variants)
   expect_equal(catalogs2$annotated.vcfs, catalogs4$annotated.vcfs$ID)
+  unlink("Rplots.pdf")
 })

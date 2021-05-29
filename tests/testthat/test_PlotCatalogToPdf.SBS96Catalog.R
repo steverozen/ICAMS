@@ -61,4 +61,5 @@ test_that("PlotCatalogToPdf.SBS96Catalog function", {
     unlink(file.path(tempdir(), "PlotCatSBS96.density.signature.test.pdf"))
   }
   graphics.off()
+  dev.off()
 })
