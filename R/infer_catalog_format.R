@@ -120,7 +120,7 @@ MakeSBS96CatalogFromSigPro <- function(cos) {
     stop("The mutation types in this SBS96 catalog is not in correct ICAMS format",
       " check ICAMS::catalog.row.order$SBS96 for more details.")
   }
-  out <- out[ICAMS::catalog.row.order$SBS96, ]
+  out <- out[ICAMS::catalog.row.order$SBS96, , drop = FALSE]
   class(out) <- c("SBS96Catalog", class(out))
   return(out)
 }
@@ -279,7 +279,7 @@ MakeDBS78CatalogFromSigPro <- function(cos) {
     stop("The mutation types in this DBS78 catalog is not in correct ICAMS format",
       " check ICAMS::catalog.row.order$DBS78 for more details.")
   }
-  out <- out[ICAMS::catalog.row.order$DBS78, ]
+  out <- out[ICAMS::catalog.row.order$DBS78, , drop = FALSE]
   class(out) <- c("DBS78Catalog", class(out))
   return(out)
 }

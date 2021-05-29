@@ -14,9 +14,12 @@ in numbers as column indices.
 
 * Updated internal function `MakeDataFrameFromVCF` to use argument `file` instead of `name.of.VCF` to report error when the input file is not a VCF file.
 
-* Updated internal data `catalog.row.headers.sp$ID83`.
+* Updated internal data `catalog.row.headers.sp$ID83` and `ICAMS.to.SigPro.ID`.
 
-* Updated internal data `ICAMS.to.SigPro.ID`.
+## Fixed
+* Fixed bugs in internal functions `MakeSBS96CatalogFromSigPro` and
+`MakeDBS78CatalogFromSigPro` for missing argument `drop = FALSE` when reordering
+a one-column catalog.
 
 <br/>
 

@@ -9,7 +9,9 @@ test_that("Functions for converting COSMIC and SigProfiler-formatted catalogs to
       "testdata/COSMIC-Cat/COSMIC_DBS1_DBS78.csv",
       "testdata/COSMIC-Cat/COSMIC_ID1_ID96.csv",
       "testdata/SigPro-Cat/21BRCA.SBS96.tsv",
+      "testdata/SigPro-Cat/21BRCA.s1.SBS96.tsv",
       "testdata/SigPro-Cat/21BRCA.DBS78.tsv",
+      "testdata/SigPro-Cat/21BRCA.s1.DBS78.tsv",
       "testdata/SigPro-Cat/Strelka.ID.GRCh37.s1.ID83.tsv",
       "testdata/SigPro-Cat/Strelka.ID.GRCh37.s1.ID96.tsv"
     )
@@ -18,6 +20,8 @@ test_that("Functions for converting COSMIC and SigProfiler-formatted catalogs to
     c("genome",
       "genome",
       "transcript",
+      "genome",
+      "genome",
       "genome",
       "genome",
       "genome",
