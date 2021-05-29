@@ -366,3 +366,63 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
   write.table(input.sigpro, file, sep = sep, col.names = TRUE,
               row.names = FALSE, quote = FALSE)
 }
+
+#' Covert an ICAMS Catalog to SigProfiler format
+#' 
+#' @param input.catalog Either a character string, in which case this is the
+#'   path to a file containing a catalog in \code{\link[ICAMS]{ICAMS}}
+#'   format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.
+#'   
+#' @param file The path of the file to be written.
+#' 
+#' @param sep Separator to use in the output file. 
+#'
+#' @importFrom data.table as.data.table
+#' 
+#' @importFrom utils write.table 
+#' 
+#' @note This function can only transform SBS96, DBS78 and ID ICAMS catalog
+#' to SigPro format.
+#' 
+#' @keywords internal
+ConvertICAMSCatalogToSigPro <- function(input.catalog, file, sep = "\t") {
+  if (inherits(input.catalog, "character")) {
+    input.catalog <- ICAMS::ReadCatalog(input.catalog)
+  } 
+  if (nrow(input.catalog) == 96) {
+    mutation.type <- "SBS96"
+  } else if (nrow(input.catalog) == 78) {
+    mutation.type <- "DBS78"
+  } else if (nrow(input.catalog) == 83) {
+    mutation.type <- "ID83"
+  } else {
+    stop("Can only convert SBS96, DBS78 and ID ICAMS catalog to SigPro format")
+  }
+  
+  if (mutation.type == "SBS96") {
+    new.list <- lapply(row.names(input.catalog), function(x){
+      new <- paste(substring(x, 1, 1), "[",
+                   substring(x, 2, 2), ">",
+                   substring(x, 4, 4), "]",
+                   substring(x, 3, 3), sep = "")
+    })
+    row.names(input.catalog) <- unlist(new.list)
+  } else if (mutation.type == "DBS78") {
+    new.list <- lapply(row.names(input.catalog), function(x){
+      new <- paste(substring(x, 1, 2), ">",
+                   substring(x, 3, 4), sep = "")
+    })
+    row.names(input.catalog) <- unlist(new.list)
+  } else if (mutation.type == "ID83") {
+    row.names(input.catalog) <- 
+      TransRownames.ID.PCAWG.SigPro(row.names(input.catalog))
+  }
+  
+  input.catalog <- 
+    input.catalog[catalog.row.headers.sp[[mutation.type]], , drop = FALSE]
+  DT <- as.data.table(input.catalog)
+  input.sigpro <- 
+    cbind("MutationType" = catalog.row.headers.sp[[mutation.type]], DT)
+  write.table(input.sigpro, file, sep = sep, col.names = TRUE,
+              row.names = FALSE, quote = FALSE)
+}

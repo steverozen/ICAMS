@@ -16,6 +16,8 @@ in numbers as column indices.
 
 * Updated internal data `catalog.row.headers.sp$ID83`.
 
+* Updated internal data `ICAMS.to.SigPro.ID`.
+
 <br/>
 
 # ICAMS 2.3.10 (submitted to CRAN)
