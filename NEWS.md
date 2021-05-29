@@ -2,6 +2,8 @@
 ## Added
 * Added new internal function `RetrieveNonEmptySamples` to retrieve non empty samples from a catalog.
 
+* Added new internal function `ConvertCatalogToSigProfilerFormat` to convert ICAMS SBS96, DBS78 and ID catalog to SigProfiler format.
+
 ## Updated
 * Updated function `StandardChromName` and `StandardChromNameNew` to remove variants
 whose chromosome names contain "JH".
