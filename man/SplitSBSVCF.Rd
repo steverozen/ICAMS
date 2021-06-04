@@ -5,7 +5,7 @@
 \title{Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving
 > 2 consecutive bases}
 \usage{
-SplitSBSVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL)
+SplitSBSVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL, always.merge.SBS)
 }
 \arguments{
 \item{vcf.df}{An in-memory data frame containing an SBS VCF file contents.}
@@ -17,6 +17,9 @@ asynchronous single base mutations, opposed to a simultaneous doublet
 mutation or variants involving more than two consecutive bases.}
 
 \item{name.of.VCF}{Name of the VCF file.}
+
+\item{always.merge.SBS}{If \code{TRUE} merge adjacent SBSs as DBSs
+regardless of VAFs and regardless of the value of \code{max.vaf.diff}.}
 }
 \value{
 A list of in-memory objects with the elements:

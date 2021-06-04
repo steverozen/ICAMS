@@ -10,7 +10,8 @@ SplitListOfVCFs(
   variant.caller,
   max.vaf.diff = 0.02,
   num.of.cores = 1,
-  suppress.discarded.variants.warnings = TRUE
+  suppress.discarded.variants.warnings = TRUE,
+  always.merge.SBS = FALSE
 )
 }
 \arguments{
@@ -33,6 +34,11 @@ unless \code{num.of.cores = 1}.}
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
 is TRUE.}
+
+\item{always.merge.SBS}{If \code{TRUE} merge adjacent SBSs as DBSs
+regardless of VAFs and regardless of the value of \code{max.vaf.diff}
+and regardless of the value of \code{get.vaf.function}. It is an
+error to set this to \code{TRUE} when \code{variant.caller = "mutect"}.}
 }
 \description{
 Split each VCF into SBS, DBS, and ID VCFs (plus

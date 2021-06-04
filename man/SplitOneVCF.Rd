@@ -4,7 +4,12 @@
 \alias{SplitOneVCF}
 \title{Split a VCF into SBS, DBS, and ID VCFs, plus a list of other mutations}
 \usage{
-SplitOneVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL)
+SplitOneVCF(
+  vcf.df,
+  max.vaf.diff = 0.02,
+  name.of.VCF = NULL,
+  always.merge.SBS = FALSE
+)
 }
 \arguments{
 \item{vcf.df}{An in-memory data.frame representing a VCF, including
@@ -17,6 +22,9 @@ asynchronous single base mutations, opposed to a simultaneous doublet
 mutation or variants involving more than two consecutive bases.}
 
 \item{name.of.VCF}{Name of the VCF file.}
+
+\item{always.merge.SBS}{If \code{TRUE} merge adjacent SBSs as DBSs
+regardless of VAFs and regardless of the value of \code{max.vaf.diff}.}
 }
 \value{
 A list with 3 in-memory VCFs and discarded variants that were not
