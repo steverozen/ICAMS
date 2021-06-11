@@ -1,7 +1,10 @@
+# 2.3.12
+* Added exported function SimpleReadVCF; some code simplification.
+
 # 2.3.11
 * Added backward compatible new argument always.merge.SBS to several functions.
 
-# ICAMS 2.3.10.90xx
+# 2.3.10.90xx
 ## Added
 * Added new internal function `RetrieveNonEmptySamples` to retrieve non empty samples from a catalog.
 

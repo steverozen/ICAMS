@@ -5,7 +5,12 @@
 \title{Split an in-memory Strelka VCF into SBS, DBS, and variants involving
 > 2 consecutive bases}
 \usage{
-SplitStrelkaSBSVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL)
+SplitStrelkaSBSVCF(
+  vcf.df,
+  max.vaf.diff = 0.02,
+  name.of.VCF = NULL,
+  always.merge.SBS = FALSE
+)
 }
 \arguments{
 \item{vcf.df}{An in-memory data frame containing a Strelka VCF file contents.}

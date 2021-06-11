@@ -123,9 +123,9 @@ RemoveRowsWithDuplicatedCHROMAndPOSNew <- function(df, name.of.VCF = NULL) {
 RenameColumnsWithNameStrand <- function(df) {
   if ("strand" %in% colnames(df)) {
     colnames(df)[which(colnames(df) == "strand")] <- "strand_old"
-    warning('There is column in VCF which has name "strand", ',
-            'it has been renamed to "strand_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
+    warning('A column named "strand" in the VCF ',
+            'was renamed to "strand_old" ',
+            'avoid conflict with a newly added column named "strand".')
   }
   return(df)
 }
@@ -138,9 +138,9 @@ RenameColumnsWithNameStrand <- function(df) {
 RenameColumnsWithNameVAF <- function(df) {
   if ("VAF" %in% colnames(df)) {
     colnames(df)[which(colnames(df) == "VAF")] <- "VAF_old"
-    warning('There is column in VCF which has name "VAF", ',
-            'it has been renamed to "VAF_old" so as ',
-            'not to conflict with code in other parts of ICAMS package.')
+    warning('A column named "VAF" in the VCF ',
+            'was renamed to "VAF_old" ',
+            'avoid conflict with a newly added column named "VAF".')
   }
   return(df)
 }
@@ -181,21 +181,36 @@ ReadStrelkaSBSVCF <- function(file, name.of.VCF = NULL) {
   }
 }
 
-#' Read in the data lines of a Variant Call Format (VCF) file
+#' Read a VCF file into a data frame with minimal processing.
 #'
-#' @importFrom data.table fread
+#' @details Header lines beginning "##" are removed, and column
+#'   "#CHROM" is renamed to "CHROM". Other column names are
+#'   unchanged. Columns "#CHROM", "POS", "REF", and "ALT" must
+#'   be in the input.
+#'
+#' @param file The name/path of the VCF file, or a complete URL.
+#'
+#' @export
+#'
+#' @return A data frame storing mutation records of a VCF file.
+#'
+#' @examples
+#' file <- c(system.file("extdata/Strelka-SBS-vcf",
+#'                       "Strelka.SBS.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' df <- SimpleReadVCF(file)
+SimpleReadVCF <- function(file) {
+  return(MakeDataFrameFromVCF(file = file))
+}
+
+#' Read in the data lines of a Variant Call Format (VCF) file
 #'
 #' @param file The name/path of the VCF file, or a complete URL.
 #'
 #' @return A data frame storing mutation records of a VCF file.
 #'
 #' @keywords internal
-MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
-  if (is.null(name.of.VCF)) {
-    vcf.name <- basename(file)
-  } else {
-    vcf.name <- name.of.VCF
-  }
+MakeDataFrameFromVCF <- function(file) { # name.of.VCF = NULL) {
 
   # Suppress the warning when the VCF is totally empty
   tryCatch({
@@ -229,9 +244,6 @@ MakeDataFrameFromVCF <- function(file, name.of.VCF = NULL) {
   colnames(df1) <- names
 
   df1$CHROM <- as.character(df1$CHROM)
-
-  df1 <- RenameColumnsWithNameStrand(df1)
-  df1 <- RenameColumnsWithNameVAF(df1)
 
   return(df1)
 }
@@ -299,6 +311,8 @@ GetStrelkaVAF <-function(vcf, name.of.VCF = NULL) {
          "does not appear to be a Strelka VCF, column names are \n",
          paste(colnames(vcf), collapse=" "))
   }
+
+  vcf <- RenameColumnsWithNameVAF(vcf)
 
   TUMOR <- vcf[["TUMOR"]]
   control <- unique(vcf[["FORMAT"]])
@@ -386,6 +400,8 @@ GetMutectVAF <- function(vcf, name.of.VCF = NULL, tumor.col.name = NA) {
     #vcf$read.depth <- NA
     return(vcf)
   }
+
+  vcf <- RenameColumnsWithNameVAF(vcf)
 
   # Specify the possible variable names in Mutect VCF that stores count of reads
   # information
@@ -503,6 +519,8 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
          " does not appear to be a freebayes VCF, please check the data")
   }
 
+  vcf <- RenameColumnsWithNameVAF(vcf)
+
   info.list <- strsplit(vcf$INFO, split = ";")
   CalculateVAF <- function(vector, key.words) {
     # Get the index of those items in vector that contain key.words
@@ -533,8 +551,13 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @importFrom parallel mclapply
 #'
-#' @keywords internal
-GetConsensusVAF <- function(vcf, mc.cores = 1) {
+#' @export
+#' @rdname GetVAF
+#'
+GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
+
+  vcf <- RenameColumnsWithNameVAF(vcf)
+
   info <- vcf$INFO
   tmp <- stringi::stri_split_fixed(info, ";")
   alt.counts <- parallel::mclapply(tmp, FUN = function(x) {
@@ -616,7 +639,7 @@ GetConsensusVAF <- function(vcf, mc.cores = 1) {
 ReadVCF <-
   function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
            filter.status = NULL, get.vaf.function = NULL, ...) {
-    df0 <- MakeDataFrameFromVCF(file, name.of.VCF = name.of.VCF)
+    df0 <- MakeDataFrameFromVCF(file) # , name.of.VCF = name.of.VCF)
 
     if (nrow(df0) == 0) {
       return(df0)
@@ -668,7 +691,7 @@ ReadVCF <-
              paste(colnames(df), collapse=" "))
       }
 
-      # Check for any SBS in df and only calcuate VAF for those SBS variants
+      # Check for any SBS in df and only calculate VAF for those SBS variants
       SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
       SBS.multiple.alt <-
         which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
@@ -691,7 +714,7 @@ ReadVCF <-
     }
 
     if (variant.caller == "freebayes") {
-      # Check for any SBS in df and only calcuate VAF for those SBS variants
+      # Check for any SBS in df and only calculate VAF for SBS variants
       SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
       SBS.multiple.alt <-
         which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
@@ -1386,72 +1409,74 @@ AddSeqContext <-
 #' @keywords internal
 AddTranscript <-
   function(df, trans.ranges = NULL, ref.genome, name.of.VCF = NULL) {
-  if (nrow(df) == 0) {
-    return(df)
+    if (nrow(df) == 0) {
+      return(df)
+    }
+
+    if (is.null(trans.ranges)) {
+      return(data.table(df))
+    }
+
+    df <- RenameColumnsWithNameStrand(df)
+
+    ref.genome <- NormalizeGenomeArg(ref.genome = ref.genome)
+
+    # Check whether the chromosome name format of trans.ranges matches with that
+    # in df. If not, change chromosome name format in trans.ranges
+    new.chr.names <-
+      CheckAndFixChrNamesForTransRanges(trans.ranges = trans.ranges,
+                                        vcf.df = df,
+                                        ref.genome = ref.genome,
+                                        name.of.VCF = name.of.VCF)
+    trans.ranges$chrom <- new.chr.names
+
+    # We need to set key for trans.ranges for using data.table::foverlaps
+    if (!data.table::haskey(trans.ranges)) {
+      data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
+    }
+
+    # Find range overlaps between the df and trans.ranges
+    df1 <- data.table(df)
+    df1[, POS2 := POS]
+    dt <- data.table::foverlaps(df1, trans.ranges,
+                                by.x = c("CHROM", "POS", "POS2"),
+                                type = "within", mult = "all")
+
+    # Find out mutations that fall on transcripts on both strands
+    #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
+    #          by = .(CHROM, ALT, POS)] # Note that is important to have
+    # ALT in the by list because in a few cases
+    # there are multiple ALT alleles at one POS.
+
+    dt1 <- dt %>% dplyr::group_by(CHROM, ALT, POS) %>%
+      dplyr::mutate(bothstrand = "+" %in% strand && "-" %in% strand)
+    data.table::setDT(dt1)
+
+    # Count the number of transcript ranges where a particular mutation
+    # falls into
+    dt2 <- dt1 %>% dplyr::group_by(CHROM, ALT, POS) %>% dplyr::mutate(count = dplyr::n())
+    #dt2 <- dt1[, count := .N, by = .(CHROM, ALT, POS)]
+    data.table::setDT(dt2)
+
+    # Swap gene location according to strand information
+    dt3 <- dt2[strand == "-", c("end", "start") := .(start, end)]
+
+    # Reorder the columns of dt3
+    df.colnames <- colnames(df)
+    trans.ranges.colnames <- colnames(trans.ranges)[-1]
+    data.table::setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
+
+    # Rename some of the columns in dt3
+    data.table::setnames(dt3,
+                         old = c("start", "end", "strand", "Ensembl.gene.ID", "gene.symbol"),
+                         new = c("trans.start.pos", "trans.end.pos", "trans.strand",
+                                 "trans.Ensembl.gene.ID", "trans.gene.symbol"))
+
+    # Delete redundant column in dt3
+    dt4 <- dt3[, POS2 := NULL]
+
+    return(dt4)
   }
-
-  if (is.null(trans.ranges)) {
-    return(data.table(df))
-  }
-
-  ref.genome <- NormalizeGenomeArg(ref.genome = ref.genome)
-
-  # Check whether the chromosome name format of trans.ranges matches with that
-  # in df. If not, change chromosome name format in trans.ranges
-  new.chr.names <-
-    CheckAndFixChrNamesForTransRanges(trans.ranges = trans.ranges,
-                                      vcf.df = df,
-                                      ref.genome = ref.genome,
-                                      name.of.VCF = name.of.VCF)
-  trans.ranges$chrom <- new.chr.names
-
-  # We need to set key for trans.ranges for using data.table::foverlaps
-  if (!data.table::haskey(trans.ranges)) {
-    data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
-  }
-
-  # Find range overlaps between the df and trans.ranges
-  df1 <- data.table(df)
-  df1[, POS2 := POS]
-  dt <- data.table::foverlaps(df1, trans.ranges,
-                              by.x = c("CHROM", "POS", "POS2"),
-                              type = "within", mult = "all")
-
-  # Find out mutations that fall on transcripts on both strands
-  #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
-  #          by = .(CHROM, ALT, POS)] # Note that is important to have
-  # ALT in the by list because in a few cases
-  # there are multiple ALT alleles at one POS.
-
-  dt1 <- dt %>% dplyr::group_by(CHROM, ALT, POS) %>%
-    dplyr::mutate(bothstrand = "+" %in% strand && "-" %in% strand)
-  data.table::setDT(dt1)
-
-  # Count the number of transcript ranges where a particular mutation
-  # falls into
-  dt2 <- dt1 %>% dplyr::group_by(CHROM, ALT, POS) %>% dplyr::mutate(count = dplyr::n())
-  #dt2 <- dt1[, count := .N, by = .(CHROM, ALT, POS)]
-  data.table::setDT(dt2)
-
-  # Swap gene location according to strand information
-  dt3 <- dt2[strand == "-", c("end", "start") := .(start, end)]
-
-  # Reorder the columns of dt3
-  df.colnames <- colnames(df)
-  trans.ranges.colnames <- colnames(trans.ranges)[-1]
-  data.table::setcolorder(dt3, neworder = c(df.colnames, trans.ranges.colnames))
-
-  # Rename some of the columns in dt3
-  data.table::setnames(dt3,
-                       old = c("start", "end", "strand", "Ensembl.gene.ID", "gene.symbol"),
-                       new = c("trans.start.pos", "trans.end.pos", "trans.strand",
-                               "trans.Ensembl.gene.ID", "trans.gene.symbol"))
-
-  # Delete redundant column in dt3
-  dt4 <- dt3[, POS2 := NULL]
-
-  return(dt4)
-}
 
 #' MakeVCFDBSdf Take DBS ranges and the original VCF and generate a VCF with
 #' dinucleotide REF and ALT alleles.
@@ -1563,141 +1588,14 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'    }
 #'
 #' @keywords internal
-SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL) {
+SplitStrelkaSBSVCF <- function(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL, always.merge.SBS = FALSE) {
   stopifnot("data.frame" %in% class(vcf.df))
 
-  if (nrow(vcf.df) == 0) {
-    return(list(SBS.vcf = vcf.df, DBS.vcf = vcf.df))
-  }
-
-  # Create an empty data frame for discarded variants
-  discarded.variants <- vcf.df[0, ]
-
-  # Check and remove discarded variants
-  retval <-
-    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
-  vcf.df <- retval$df
-  discarded.variants <-
-    dplyr::bind_rows(discarded.variants, retval$discarded.variants)
-
-  # Record the total number of input variants for later sanity checking.
-  num.in <- nrow(vcf.df)
-
-  # First we look for pairs of rows where the POS of one of the
-  # rows is at POS + 1 of the other row. For example
-  #
-  # 1   200   foo    A    G
-  # 1   201   foo    C    G
-  #
-  # Reprsents AC > GG
-  #
-  # But there could also be situations like this
-  #
-  # X   300  foo   C  T
-  # X   301  foo   C  T
-  # X   302  foo   A  G
-  #
-  # which represents CCA > TTG
-  #
-  # But first we just find pairs, so the
-  # X chromosome example will appear as 2
-  # pairs CC > TT and CA > TG (more below).
-
-  vcf.dt <- data.table(vcf.df)
-  vcf.dt[, POS.plus.one := POS + 1]
-  dt2 <- merge(vcf.dt, vcf.dt,
-               by.x = c("CHROM", "POS"),
-               by.y = c("CHROM", "POS.plus.one"))
-
-  # After this merge, each row contains one *pair*.
-  # In each row, POS.y == POS - 1, and the neighboring SBS
-  # are at postions POS and POS.y.
-  dt2[, HIGH := POS]
-  dt2[, LOW := POS.y]
-
-  # Keep only SBS pairs that have very similar VAFs (variant allele frequencies).
-  # If VAFs are not similar, the adjacent SBSs are likely to be "merely"
-  # asynchronous single base mutations, opposed to a simultaneous doublet mutation.
-  non.SBS <- dt2[abs(VAF.x - VAF.y) <= max.vaf.diff]
-  # TODO: if (any(is.na(VAF.x)) || any(is.na(VAF.y)))
-  # If VAF.x or VAF.y is NA the row will not go into non.SBS.
-  rm(dt2)
-
-  if (nrow(non.SBS) == 0) {
-    # There are no non.SBS mutations in the input.
-    # Everything in vcf.df is an SBS. We are finished.
-    empty <- vcf.df[-(1:nrow(vcf.df)), ]
-    if (nrow(discarded.variants) == 0) {
-      return(list(SBS.vcf = vcf.df, DBS.vcf = empty))
-    } else {
-      return(list(SBS.vcf = vcf.df, DBS.vcf = empty,
-                  discarded.variants = discarded.variants))
-    }
-
-  }
-
-  # Remove non SBS rows from the output VCF for the SBSs
-  pairs.to.remove <-
-    data.frame(non.SBS[, .(CHROM, POS = HIGH)])
-  pairs.to.remove <-
-    rbind(pairs.to.remove,
-          data.frame(non.SBS[, .(CHROM, POS = LOW)]))
-  dt.rm <- data.table(pairs.to.remove)
-  dt.rm$delete.flag = TRUE
-  out.SBS.dt <- merge(vcf.dt, dt.rm, by = c("CHROM", "POS"), all.x = TRUE)
-  out.SBS.dt2 <- out.SBS.dt[is.na(delete.flag)]
-  out.SBS.df <-
-    as.data.frame(out.SBS.dt2[, c("POS.plus.one", "delete.flag") := NULL])
-  num.SBS.out <- nrow(out.SBS.df)
-
-  # Now separate doublets (DBSs) from triplet and above base substitutions.
-  # For ease of testing, keep only the genomic range information.
-  non.SBS <- non.SBS[, c("CHROM", "LOW", "HIGH")]
-  ranges <-
-    GenomicRanges::GRanges(non.SBS$CHROM,
-                           IRanges::IRanges(start = non.SBS$LOW, end = non.SBS$HIGH))
-  rranges <- GenomicRanges::reduce(ranges) # Merge overlapping ranges
-  DBS.plus <- as.data.frame(rranges)
-  if ((sum(DBS.plus$width) + num.SBS.out) != num.in) {
-    if ((sum(DBS.plus$width) + num.SBS.out) > num.in) {
-      stop("Possible programming error or input problem: too many SBS")
-    } else {
-      warning("Possible site with multiple variant alleles involved in a DBS\n")
-    }
-  }
-  DBSx <- DBS.plus[DBS.plus$width == 2, c("seqnames", "start", "end"), ]
-  colnames(DBSx) <- c("CHROM", "LOW", "HIGH")
-  DBSx$CHROM <- as.character(DBSx$CHROM)
-  DBS.vcf.df <- MakeVCFDBSdf(DBSx, vcf.dt)
-  num.DBS.out <- nrow(DBS.vcf.df)
-
-  other.ranges <- DBS.plus[DBS.plus$width > 2, ]
-  if (nrow(other.ranges) > 0) {
-    colnames(other.ranges)[1:3] <- c("CHROM", "LOW.POS", "HIGH.POS")
-    other.ranges$discarded.reason <- "Variants that do not represent SBS or DBS"
-    if (nrow(discarded.variants) == 0) {
-      discarded.variants <- other.ranges
-    } else {
-      discarded.variants <- dplyr::bind_rows(discarded.variants, other.ranges)
-    }
-    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
-            " has variants involving three or more nucleotides and were ",
-            "discarded. See discarded.variants in the return value for more ",
-            "details.")
-  }
-
-  num.other <- sum(other.ranges$width)
-
-  if ((num.SBS.out + 2 * num.DBS.out + num.other) != num.in) {
-    warning("Counts are off:", num.SBS.out, 2*num.DBS.out, num.other, "vs", num.in, "\n")
-  }
-
-  if (nrow(discarded.variants) == 0) {
-    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df))
-  } else {
-    return(list(SBS.vcf = out.SBS.df, DBS.vcf = DBS.vcf.df,
-                discarded.variants = discarded.variants))
-  }
+  retval <- SplitSBSVCF(vcf.df = vcf.df,
+                        max.vaf.diff = max.vaf.diff,
+                        name.of.VCF = name.of.VCF,
+                        always.merge.SBS = always.merge.SBS)
+  return(retval)
 }
 
 #' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
