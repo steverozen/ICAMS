@@ -987,6 +987,8 @@ ReadTranscriptRanges <- function(file) {
 #' @return A data.table keyed by chrom, start, and end. It uses one-based
 #'   coordinates.
 #'   
+#' @note Only chromosomes 1-22 and X and Y will be kept.
+#'   
 #' @keywords internal
 ReadBedRanges <- function(file) {
   dt <- data.table::fread(file)
@@ -1002,6 +1004,10 @@ ReadBedRanges <- function(file) {
   dt2$start <- dt2$start + 1L
 
   chrOrder <- c((1:22), "X", "Y")
+  
+  # Only keep chromosomes 1-22 and X and Y 
+  dt2 <- dt2[dt2$chrom %in% chrOrder, ]
+  
   dt2$chrom <- factor(dt2$chrom, chrOrder, ordered = TRUE)
   return(data.table::setkeyv(dt2, c("chrom", "start", "end")))
 }

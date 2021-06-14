@@ -16,4 +16,7 @@ A data.table keyed by chrom, start, and end. It uses one-based
 \description{
 Read chromosome and position information from a bed format file.
 }
+\note{
+Only chromosomes 1-22 and X and Y will be kept.
+}
 \keyword{internal}

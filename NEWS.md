@@ -4,6 +4,9 @@ transforming catalog. If the `target.abundance` can be inferred and is different
 from a supplied non-NULL value of `target.abundance`, **no longer** raise an
 error. Use the supplied non-NULL value of `target.abundance` instead.
 
+* Updated internal function `ReadBedRanges` to only keep entries that are from
+chromosomes 1-22 and X and Y.
+
 # 2.3.12
 * Added exported function `SimpleReadVCF`; some code simplification.
 
