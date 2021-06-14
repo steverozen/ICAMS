@@ -203,17 +203,35 @@ CheckAndNormalizeTranCatArgs <-
                        target.ref.genome,
                        target.region,
                        target.catalog.type)
-                   
-    if (!is.null(target.abundance) &&
-        !is.null(inferred.abundance)) {
-      if (!all.equal(target.abundance,
-                     inferred.abundance)) {
-        stop("Caller supplied abundance is different from inferred abundance")
+    
+    # The following code surrounded by # has possible problems, better to discuss
+    # with Steve before completely removing it. See NEWS.md for version 2.3.13
+    #########################################################################
+    # If the target.abundance can be inferred and is different from a supplied
+    # non- NULL value of target.abundance, raise an error.
+    if (FALSE) {
+      if (!is.null(target.abundance) &&
+          !is.null(inferred.abundance)) {
+        if (!all.equal(target.abundance,
+                       inferred.abundance)) {
+          stop("Caller supplied abundance is different from inferred abundance")
+        }
+        stopifnot(names(inferred.abundance) == names(target.abundance))
       }
-      stopifnot(names(inferred.abundance) == names(target.abundance))
+    }  
+    ##############################################################################
+    
+    if (is.null(target.abundance)) {
+      target.abundance <- inferred.abundance
+    } else {
+      target.abundance <- target.abundance
     }
-    if (is.null(target.abundance)) target.abundance <- inferred.abundance
-    stopifnot(names(s[["abundance"]]) == names(target.abundance))
+    
+    if (!all(names(s[["abundance"]]) == names(target.abundance))) {
+      stop("The names of target.abundance should be the same as the abundance ",
+           "in the input catalog")
+    }
+    # stopifnot(names(s[["abundance"]]) == names(target.abundance))
 
     if (s$catalog.type == target.catalog.type) {
       if (all(s[["abundance"]] == target.abundance)) { 
@@ -576,9 +594,7 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
 #'   \code{\link{all.abundance}}. If \code{NULL}, the function tries to infer
 #'   \code{target.abundace} from the class of \code{catalog} and the value of
 #'   the \code{target.ref.genome}, \code{target.region}, and
-#'   \code{target.catalog.type}. If the \code{target.abundance} can be inferred
-#'   and is different from a supplied non-\code{NULL} value of
-#'   \code{target.abundance}, raise an error.
+#'   \code{target.catalog.type}. 
 #'   
 #' @return A catalog as defined in \code{\link{ICAMS}}.
 #' 

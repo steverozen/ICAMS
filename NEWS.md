@@ -1,8 +1,14 @@
+# 2.3.13
+* Fixed a bug in internal function `CheckAndNormalizeTranCatArgs` for
+transforming catalog. If the `target.abundance` can be inferred and is different
+from a supplied non-NULL value of `target.abundance`, **no longer** raise an
+error. Use the supplied non-NULL value of `target.abundance` instead.
+
 # 2.3.12
-* Added exported function SimpleReadVCF; some code simplification.
+* Added exported function `SimpleReadVCF`; some code simplification.
 
 # 2.3.11
-* Added backward compatible new argument always.merge.SBS to several functions.
+* Added backward compatible new argument `always.merge.SBS` to several functions.
 
 # 2.3.10.90xx
 ## Added
