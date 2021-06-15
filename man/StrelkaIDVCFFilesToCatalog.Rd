@@ -2,7 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaIDVCFFilesToCatalog}
 \alias{StrelkaIDVCFFilesToCatalog}
-\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files}
+\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+(deprecated, use VCFsToCatalogs instead)}
 \usage{
 StrelkaIDVCFFilesToCatalog(
   files,

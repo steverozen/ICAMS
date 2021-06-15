@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{ReadAndSplitMutectVCFs}
 \alias{ReadAndSplitMutectVCFs}
-\title{Read and split Mutect VCF files}
+\title{Read and split Mutect VCF files (deprecated, use ReadAndSplitVCFs instead)}
 \usage{
 ReadAndSplitMutectVCFs(
   files,
@@ -33,7 +33,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
-Read and split Mutect VCF files
+Read and split Mutect VCF files (deprecated, use ReadAndSplitVCFs instead)
 }
 \section{Value}{
  A list containing the following objects:

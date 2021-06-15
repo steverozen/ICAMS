@@ -3,7 +3,7 @@
 \name{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files
-and plot them to PDF}
+and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(
   files,

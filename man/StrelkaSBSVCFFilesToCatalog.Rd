@@ -2,7 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaSBSVCFFilesToCatalog}
 \alias{StrelkaSBSVCFFilesToCatalog}
-\title{Create SBS and DBS catalogs from Strelka SBS VCF files}
+\title{Create SBS and DBS catalogs from Strelka SBS VCF files (deprecated, use
+VCFsToCatalogs instead)}
 \usage{
 StrelkaSBSVCFFilesToCatalog(
   files,

@@ -1,4 +1,5 @@
 #' Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files
+#' (deprecated, use VCFsToZipFile instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
 #' Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
@@ -104,7 +105,7 @@ StrelkaSBSVCFFilesToZipFile <-
 }
 
 #' Create a zip file which contains ID (small insertion and deletion) catalog
-#' and plot PDF from Strelka ID VCF files
+#' and plot PDF from Strelka ID VCF files (deprecated, use VCFsToZipFile instead)
 #'
 #' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
 #' specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
@@ -198,6 +199,7 @@ StrelkaIDVCFFilesToZipFile <-
   }
 
 #' Create a zip file which contains catalogs and plot PDFs from Mutect VCF files
+#' (deprecated, use VCFsToZipFile instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{dir}, save the catalogs
@@ -749,7 +751,8 @@ CombineAndReturnCatalogsForStrelkaSBSVCFs <-
     return(combined.list2)
   }
 
-#' Create SBS and DBS catalogs from Strelka SBS VCF files
+#' Create SBS and DBS catalogs from Strelka SBS VCF files (deprecated, use
+#' VCFsToCatalogs instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 #' the Strelka SBS VCFs specified by \code{files}. The function will find and
@@ -806,7 +809,8 @@ StrelkaSBSVCFFilesToCatalog <-
   }
 
 #' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
-#'
+#' (deprecated, use VCFsToCatalogs instead)
+#' 
 #' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
 #' specified by \code{files}
 #'
@@ -909,7 +913,7 @@ CombineAndReturnCatalogsForMutectVCFs <-
     return(combined.list2)
   }
 
-#' Create SBS, DBS and Indel catalogs from Mutect VCF files
+#' Create SBS, DBS and Indel catalogs from Mutect VCF files (deprecated, use VCFsToCatalogs instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{files}
@@ -1114,7 +1118,7 @@ VCFsToCatalogs <- function(files,
                                   ID.list = ID.list)
 }
 
-#' Read and split Strelka SBS VCF files
+#' Read and split Strelka SBS VCF files (deprecated, use ReadAndSplitVCFs instead)
 #'
 #' The function will find and merge adjacent SBS pairs into DBS if their VAFs
 #' are very similar. The default threshold value for VAF is 0.02.
@@ -1157,7 +1161,8 @@ ReadAndSplitStrelkaSBSVCFs <-
     return(split.vcfs)
   }
 
-#' Read Strelka ID (small insertion and deletion) VCF files
+#' Read Strelka ID (small insertion and deletion) VCF files (deprecated, use
+#' ReadAndSplitVCFs instead)
 #'
 #' @inheritParams ReadMutectVCFs
 #'
@@ -1189,7 +1194,7 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   return(vcfs)
 }
 
-#' Read and split Mutect VCF files
+#' Read and split Mutect VCF files (deprecated, use ReadAndSplitVCFs instead)
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'

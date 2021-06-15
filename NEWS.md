@@ -1,3 +1,6 @@
+# 2.3.14
+* Added deprecated information to the titles of several exported functions.
+
 # 2.3.13
 * Fixed a bug in internal function `CheckAndNormalizeTranCatArgs` for
 transforming catalog. If the `target.abundance` can be inferred and is different

@@ -3,7 +3,7 @@
 \name{StrelkaIDVCFFilesToZipFile}
 \alias{StrelkaIDVCFFilesToZipFile}
 \title{Create a zip file which contains ID (small insertion and deletion) catalog
-and plot PDF from Strelka ID VCF files}
+and plot PDF from Strelka ID VCF files (deprecated, use VCFsToZipFile instead)}
 \usage{
 StrelkaIDVCFFilesToZipFile(
   dir,

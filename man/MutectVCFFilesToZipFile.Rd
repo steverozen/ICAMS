@@ -2,7 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{MutectVCFFilesToZipFile}
 \alias{MutectVCFFilesToZipFile}
-\title{Create a zip file which contains catalogs and plot PDFs from Mutect VCF files}
+\title{Create a zip file which contains catalogs and plot PDFs from Mutect VCF files
+(deprecated, use VCFsToZipFile instead)}
 \usage{
 MutectVCFFilesToZipFile(
   dir,

@@ -2,7 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaSBSVCFFilesToZipFile}
 \alias{StrelkaSBSVCFFilesToZipFile}
-\title{Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files}
+\title{Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files
+(deprecated, use VCFsToZipFile instead)}
 \usage{
 StrelkaSBSVCFFilesToZipFile(
   dir,

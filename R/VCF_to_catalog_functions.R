@@ -2608,6 +2608,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 }
 
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
+#' (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 #' the Strelka SBS VCFs specified by \code{files} and plot them to PDF. The
@@ -2702,7 +2703,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   }
 
 #' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
-#' and plot them to PDF
+#' and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
 #'
 #' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
 #' specified by \code{files} and plot them to PDF
@@ -2759,6 +2760,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   }
 
 #' Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
+#' (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
 #'
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{files} and plot them to

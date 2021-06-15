@@ -2,7 +2,8 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}
-\title{Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF}
+\title{Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
+(deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
 \usage{
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf(
   files,

@@ -2,7 +2,8 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MutectVCFFilesToCatalogAndPlotToPdf}
 \alias{MutectVCFFilesToCatalogAndPlotToPdf}
-\title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF}
+\title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
+(deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
 \usage{
 MutectVCFFilesToCatalogAndPlotToPdf(
   files,
