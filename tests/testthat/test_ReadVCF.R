@@ -68,7 +68,8 @@ test_that(
     list1 <- ReadVCFs("testdata/Mutect.GRCh38.vcf",
                       variant.caller = "mutect")
     list2 <- expect_warning(ReadVCFs("testdata/Mutect.GRCm38.vcf",
-                                     variant.caller = "mutect"))
+                                     variant.caller = "mutect",
+                                     filter.status = NULL))
     expect_equal(list[[1]], vcf[[1]])
     expect_equal(list1[[1]], vcf1[[1]])
     expect_equal(list2[[1]], vcf2[[1]])

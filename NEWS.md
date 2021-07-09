@@ -1,3 +1,6 @@
+# 2.3.15
+* Added default value `PASS` to argument `filter.status` in several exported and internal functions.
+
 # 2.3.14
 * Added deprecated information to the titles of several exported functions.
 

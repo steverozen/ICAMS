@@ -35,15 +35,19 @@ test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
                                            region = "genome",
                                            return.annotated.vcfs = TRUE)
   catalogs3 <- VCFsToCatalogs(files, ref.genome = "hg19", 
-                              variant.caller = "strelka", region = "genome")
+                              variant.caller = "strelka", region = "genome",
+                              filter.status = NULL)
   catalogs4 <- VCFsToCatalogs(files, ref.genome = "hg19", 
                               variant.caller = "strelka", region = "genome",
-                              return.annotated.vcfs = TRUE)
+                              return.annotated.vcfs = TRUE,
+                              filter.status = NULL)
   catalogs5 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
-                              get.vaf.function = GetStrelkaVAF)
+                              get.vaf.function = GetStrelkaVAF,
+                              filter.status = NULL)
   catalogs6 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
                               get.vaf.function = GetStrelkaVAF,
-                              return.annotated.vcfs = TRUE)
+                              return.annotated.vcfs = TRUE,
+                              filter.status = NULL)
   catalogs3$catID <- NULL
   expect_equal(catalogs1, catalogs3)
   catalogs5$catID <- NULL

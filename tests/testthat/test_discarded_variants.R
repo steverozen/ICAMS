@@ -90,7 +90,8 @@ test_that("MutectVCFFilesToCatalog and VCFsToCatalog", {
 test_that("StrelkaSBSVCFFilesToCatalog", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  files <- list.files(path = "testdata/Strelka-SBS-GRCh37", full.names = TRUE)
+  files <- 
+    list.files(path = "testdata/Strelka-SBS-GRCh37", full.names = TRUE)
   catalogs <- StrelkaSBSVCFFilesToCatalog(files, ref.genome = "hg19",
                                           region = "genome")
   expect_false(is.null(catalogs$discarded.variants))
@@ -102,12 +103,14 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
   expect_false(is.null(catalogs1$annotated.vcfs))
 
   catalogs2 <- VCFsToCatalogs(files, ref.genome = "hg19",
-                              variant.caller = "strelka", region = "genome")
+                              variant.caller = "strelka", region = "genome",
+                              filter.status = NULL)
   catalogs2$catID <- NULL
   expect_equal(catalogs, catalogs2)
 
   catalogs3 <- VCFsToCatalogs(files, ref.genome = "hg19", variant.caller = "strelka",
-                              region = "genome", return.annotated.vcfs = TRUE)
+                              region = "genome", return.annotated.vcfs = TRUE,
+                              filter.status = NULL)
   catalogs3$catID <- catalogs3$annotated.vcfs$ID <- NULL
   expect_equal(catalogs1, catalogs3)
 })

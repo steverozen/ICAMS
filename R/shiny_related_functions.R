@@ -423,9 +423,9 @@ MutectVCFFilesToZipFile <-
 #'   more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
-#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   The default value is \code{"PASS"}. Variants which don't have the specified
 #'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
-#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   \code{NULL}, no variants will be removed from the original VCF.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -490,7 +490,7 @@ VCFsToZipFile <-
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
-           filter.status = NULL,
+           filter.status = "PASS",
            get.vaf.function = NULL,
            ...,
            max.vaf.diff = 0.02,
@@ -1065,7 +1065,7 @@ VCFsToCatalogs <- function(files,
                            region = "unknown",
                            names.of.VCFs = NULL,
                            tumor.col.names = NA,
-                           filter.status = NULL,
+                           filter.status = "PASS",
                            get.vaf.function = NULL,
                            ...,
                            max.vaf.diff = 0.02,
@@ -1267,9 +1267,9 @@ ReadAndSplitMutectVCFs <-
 #'   more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
-#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   The default value is \code{"PASS"}. Variants which don't have the specified
 #'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
-#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   \code{NULL}, no variants will be removed from the original VCF.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -1323,7 +1323,7 @@ ReadAndSplitVCFs <-
            num.of.cores = 1,
            names.of.VCFs = NULL,
            tumor.col.names = NA,
-           filter.status = NULL,
+           filter.status = "PASS",
            get.vaf.function = NULL,
            ...,
            max.vaf.diff = 0.02,

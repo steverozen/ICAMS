@@ -616,9 +616,9 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
 #'   \code{\link{GetMutectVAF}} for more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
-#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   The default value is \code{"PASS"}. Variants which don't have the specified
 #'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
-#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   \code{NULL}, no variants will be removed from the original VCF.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -638,7 +638,7 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
 #' @keywords internal
 ReadVCF <-
   function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
-           filter.status = NULL, get.vaf.function = NULL, ...) {
+           filter.status = "PASS", get.vaf.function = NULL, ...) {
     df0 <- MakeDataFrameFromVCF(file) # , name.of.VCF = name.of.VCF)
 
     if (nrow(df0) == 0) {
@@ -744,7 +744,7 @@ ReadVCF <-
 #' @keywords internal
 ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
                      names.of.VCFs = NULL,
-                     tumor.col.names = NA, filter.status = NULL,
+                     tumor.col.names = NA, filter.status = "PASS",
                      get.vaf.function = NULL, ...) {
   num.of.cores <- AdjustNumberOfCores(num.of.cores)
 
@@ -2988,9 +2988,9 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   more details.
 #'
 #' @param filter.status The status indicating a variant has passed all filters.
-#'   An example would be \code{"PASS"}. Variants which don't have the specified
+#'   The default value is \code{"PASS"}. Variants which don't have the specified
 #'   \code{filter.status} in the \code{FILTER} column in VCF will be removed. If
-#'   \code{NULL}(default), no variants will be removed from the original VCF.
+#'   \code{NULL}, no variants will be removed from the original VCF.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -3100,7 +3100,7 @@ VCFsToCatalogsAndPlotToPdf <-
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
-           filter.status = NULL,
+           filter.status = "PASS",
            get.vaf.function = NULL,
            ...,
            max.vaf.diff = 0.02,
