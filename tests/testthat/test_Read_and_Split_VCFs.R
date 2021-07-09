@@ -72,7 +72,8 @@ test_that("Test ReadAndSplitVCFs for Strelka SBS VCFs", {
 
   file5 <- list.files(path = "testdata/Strelka-SBS-GRCh37/", full.names = TRUE)
   split.vcfs5.1 <- ReadAndSplitStrelkaSBSVCFs(file5)
-  split.vcfs5.2 <- ReadAndSplitVCFs(file5, variant.caller = "strelka")
+  split.vcfs5.2 <- ReadAndSplitVCFs(file5, variant.caller = "strelka",
+                                    filter.status = NULL)
   split.vcfs5.2$ID <- NULL
   expect_equivalent(split.vcfs5.1, split.vcfs5.2)
 })
@@ -131,4 +132,51 @@ test_that("Test ReadAndSplitVCFs always.merge.SBS", {
                           variant.caller = "unknown",
                           always.merge.SBS = FALSE)
   expect_equal(nrow(xx2$DBS[[1]]), 0)
+})
+
+test_that("Test ReadAndSplitVCFs filter.status argument", {
+  file1 <- "testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s6.vcf"
+  vcf1 <- ReadVCF(file = file1)
+  expect_equal(nrow(vcf1), 3)
+  
+  vcf2 <- ReadVCFs(file = file1, filter.status = NULL)
+  expect_equal(nrow(vcf2[[1]]), 5)
+  
+  vcf3 <- ReadVCFs(file = file1, filter.status = ".")
+  expect_equal(nrow(vcf3[[1]]), 0)
+  
+  split.vcfs1.1 <- ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka")
+  expect_equal(nrow(split.vcfs1.1$SBS[[1]]), 3)
+                                    
+  split.vcfs1.2 <- ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka",
+                                    filter.status = NULL)
+  expect_equal(nrow(split.vcfs1.2$SBS[[1]]), 5)
+  
+  split.vcfs1.3 <- ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka",
+                                    filter.status = ".")
+  expect_equal(nrow(split.vcfs1.3$SBS[[1]]), 0)
+  
+  catalogs1.1 <- VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome")
+  expect_equivalent(colSums(catalogs1.1$catSBS96), 3)
+  
+  catalogs1.2 <- VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome",
+                                filter.status = NULL)
+  expect_equivalent(colSums(catalogs1.2$catSBS96), 5)
+  
+  catalogs1.3 <- VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome",
+                                filter.status = ".")
+  expect_equivalent(colSums(catalogs1.3$catSBS96), 0)
+  
 })
