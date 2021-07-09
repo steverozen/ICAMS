@@ -73,10 +73,12 @@ specified in \code{files}. If \code{tumor.col.names} is equal to
 \strong{Mutect} VCFs to calculate VAFs. See \code{\link{GetMutectVAF}} for
 more details.}
 
-\item{filter.status}{The status indicating a variant has passed all filters.
-The default value is \code{"PASS"}. Variants which don't have the specified
-\code{filter.status} in the \code{FILTER} column in VCF will be removed. If
-\code{NULL}, no variants will be removed from the original VCF.}
+\item{filter.status}{The character string in column \code{FILTER} of the VCF
+that indicates that a variant has passed all the variant caller's filters.
+Variants (lines in the VCF) for which the value in column \code{FILTER}
+does not equal \code{filter.status} are silently excluded from the output.
+If \code{NULL}, all variants are retained. In almost all cases, the default
+value of \code{"PASS"} is what the user would want.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
