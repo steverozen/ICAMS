@@ -651,7 +651,7 @@ ReadVCF <-
     if (is.null(filter.status)) {
       df1 <- df <- df0
     } else {
-      df1 <- df <- df0[FILTER == filter.status]
+      df1 <- df <- dplyr::filter(df0, FILTER == filter.status)
     }
 
     if (nrow(df) == 0) {
