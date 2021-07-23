@@ -743,7 +743,13 @@ ReadVCF <-
 #'   additional columns added which contain the VAF(variant allele frequency)
 #'   and read depth information.
 #'
-#' @keywords internal
+#' @export
+#'
+#' @examples
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadVCFs(file, variant.caller = "mutect")
 ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
                      names.of.VCFs = NULL,
                      tumor.col.names = NA, filter.status = "PASS",
@@ -1262,7 +1268,9 @@ SplitOneVCF <- function(vcf.df,
 #' Split each VCF into SBS, DBS, and ID VCFs (plus
 #' VCF-like data frame with left-over rows)
 #'
-#' @param list.of.vcfs List of VCFs as in-memory data.frames.
+#' @param list.of.vcfs List of VCFs as in-memory data frames. The VCFs should
+#'   have \code{VAF} and \code{read.depth} information added. See
+#'   \code{ReadVCFs} for more details.
 #'
 #' @param variant.caller Name of the variant caller that produces the VCF, can
 #'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
@@ -1287,7 +1295,14 @@ SplitOneVCF <- function(vcf.df,
 #'
 #' @inheritSection ReadAndSplitMutectVCFs Value
 #'
-#' @keywords internal
+#' @export
+#'
+#' @examples
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' list.of.vcfs <- ReadVCFs(file, variant.caller = "mutect")
+#' split.vcfs <- SplitListOfVCFs(list.of.vcfs, variant.caller = "mutect")
 SplitListOfVCFs <-function(list.of.vcfs,
                            variant.caller,
                            max.vaf.diff = 0.02,

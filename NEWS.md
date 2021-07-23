@@ -1,4 +1,6 @@
-# 2.3.15.9000
+# 2.3.16
+* Exported two functions `ReadVCFs` and `SplitListOfVCFs` and added examples.
+
 * Updated code in function `ReadVCF` for filtering out variants that do not have the value of `filter.status` to avoid segfaults error.
 
 # 2.3.15

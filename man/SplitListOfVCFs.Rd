@@ -15,7 +15,9 @@ SplitListOfVCFs(
 )
 }
 \arguments{
-\item{list.of.vcfs}{List of VCFs as in-memory data.frames.}
+\item{list.of.vcfs}{List of VCFs as in-memory data frames. The VCFs should
+have \code{VAF} and \code{read.depth} information added. See
+\code{ReadVCFs} for more details.}
 
 \item{variant.caller}{Name of the variant caller that produces the VCF, can
 be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
@@ -57,4 +59,10 @@ that were excluded from the analysis. See the added extra column
 }
 }
 
-\keyword{internal}
+\examples{
+file <- c(system.file("extdata/Mutect-vcf",
+                      "Mutect.GRCh37.s1.vcf",
+                      package = "ICAMS"))
+list.of.vcfs <- ReadVCFs(file, variant.caller = "mutect")
+split.vcfs <- SplitListOfVCFs(list.of.vcfs, variant.caller = "mutect")
+}

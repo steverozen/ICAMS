@@ -67,4 +67,9 @@ A list of data frames storing data lines of the VCF files with two
 \description{
 Read VCF files
 }
-\keyword{internal}
+\examples{
+file <- c(system.file("extdata/Mutect-vcf",
+                      "Mutect.GRCh37.s1.vcf",
+                      package = "ICAMS"))
+list.of.vcfs <- ReadVCFs(file, variant.caller = "mutect")
+}
