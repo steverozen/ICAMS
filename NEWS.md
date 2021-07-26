@@ -1,3 +1,7 @@
+# 2.3.16.90xx
+* Added internal function `GenerateVCFsFromIndelSimpleFiles` to generate reconstructed VCFs from
+indel simple files.
+
 # 2.3.16
 * Exported two functions `ReadVCFs` and `SplitListOfVCFs` and added examples.
 
