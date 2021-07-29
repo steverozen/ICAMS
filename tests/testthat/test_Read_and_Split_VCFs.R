@@ -180,3 +180,50 @@ test_that("Test ReadAndSplitVCFs filter.status argument", {
   expect_equivalent(colSums(catalogs1.3$catSBS96), 0)
   
 })
+
+test_that("Test ReadAndSplitVCFs dealing with VCF with no 'FILTER' column", {
+  file1 <- "testdata/Strelka.SBS.GRCh38.no.FILTER.column.vcf"
+  vcf1 <- expect_warning(ReadVCF(file = file1))
+  expect_equal(nrow(vcf1), 7)
+  
+  vcf2 <- expect_warning(ReadVCFs(file = file1, filter.status = NULL))
+  expect_equal(nrow(vcf2[[1]]), 7)
+  
+  vcf3 <- expect_warning(ReadVCFs(file = file1, filter.status = "."))
+  expect_equal(nrow(vcf3[[1]]), 7)
+  
+  split.vcfs1.1 <- expect_warning(ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka"))
+  expect_equal(nrow(split.vcfs1.1$SBS[[1]]), 7)
+  
+  split.vcfs1.2 <- expect_warning(ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka",
+                                    filter.status = NULL))
+  expect_equal(nrow(split.vcfs1.2$SBS[[1]]), 7)
+  
+  split.vcfs1.3 <- expect_warning(ReadAndSplitVCFs(file1,
+                                    variant.caller = "strelka",
+                                    filter.status = "."))
+  expect_equal(nrow(split.vcfs1.3$SBS[[1]]), 7)
+  
+  catalogs1.1 <- expect_warning(VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome"))
+  expect_equivalent(colSums(catalogs1.1$catSBS96), 7)
+  
+  catalogs1.2 <- expect_warning(VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome",
+                                filter.status = NULL))
+  expect_equivalent(colSums(catalogs1.2$catSBS96), 7)
+  
+  catalogs1.3 <- expect_warning(VCFsToCatalogs(files = file1,
+                                ref.genome = "hg19",
+                                variant.caller = "strelka",
+                                region = "genome",
+                                filter.status = "."))
+  expect_equivalent(colSums(catalogs1.3$catSBS96), 7)
+  
+})

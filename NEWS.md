@@ -2,6 +2,9 @@
 * Added internal function `GenerateVCFsFromIndelSimpleFiles` to generate reconstructed VCFs from
 indel simple files.
 
+* Updated internal function `ReadVCF` to check whether VCF has column `FILTER`. If VCF
+does not have `FILTER` column, raise a warning and all variants will be retained.
+
 # 2.3.16
 * Exported two functions `ReadVCFs` and `SplitListOfVCFs` and added examples.
 
