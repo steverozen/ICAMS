@@ -40,7 +40,9 @@ that indicates that a variant has passed all the variant caller's filters.
 Variants (lines in the VCF) for which the value in column \code{FILTER}
 does not equal \code{filter.status} are silently excluded from the output.
 If \code{NULL}, all variants are retained. In almost all cases, the default
-value of \code{"PASS"} is what the user would want.}
+value of \code{"PASS"} is what the user would want. If \code{filter.status}
+is not \code{NULL} but the input file does not contain the column \code{FILTER}
+\code{filter.status} is ignored with a warning.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read

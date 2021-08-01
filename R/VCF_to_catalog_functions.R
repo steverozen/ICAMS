@@ -620,7 +620,9 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
 #'   Variants (lines in the VCF) for which the value in column \code{FILTER}
 #'   does not equal \code{filter.status} are silently excluded from the output.
 #'   If \code{NULL}, all variants are retained. In almost all cases, the default
-#'   value of \code{"PASS"} is what the user would want.
+#'   value of \code{"PASS"} is what the user would want. If \code{filter.status}
+#'   is not \code{NULL} but the input file does not contain the column \code{FILTER}
+#'   \code{filter.status} is ignored with a warning.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -646,18 +648,17 @@ ReadVCF <-
     if (nrow(df0) == 0) {
       return(df0)
     }
-    
-    # Check whether df0 has column name "FILTER"
-    if (!"FILTER" %in% colnames(df0)) {
-      warning("\nThere is no column FILTER in the file ", file,
-              "\nAll variants will be retained")
-      filter.status <- NULL
-    }
-    
+
     # Remove rows that don't have the specified filter status
     if (is.null(filter.status)) {
       df1 <- df <- df0
     } else {
+      # Check whether df0 has column name "FILTER"
+      if (!"FILTER" %in% colnames(df0)) {
+        warning("\nThere is no column FILTER in the file ", file,
+                "\nargument filter.status is ignored and all variants will be retained")
+        filter.status <- NULL
+      }
       df1 <- df <- dplyr::filter(df0, FILTER == filter.status)
     }
 
