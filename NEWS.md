@@ -3,6 +3,8 @@
 
 * Updated documentation for `ID` that refers to small insertions and deletions.
 
+* Updated documentation for ICAMS.R that is no longer referring to some deprecated functions.
+
 # 2.3.17
 * Added internal function `GenerateVCFsFromIndelSimpleFiles` to generate reconstructed VCFs from
 indel simple files.
