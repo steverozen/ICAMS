@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - master
-      - test-deprecating-funnction
+      - test-deprecated-functions
   pull_request:
     branches:
       - main
       - master
-      - test-deprecating-funnction
+      - test-deprecated-functions
 
 name: R-CMD-check
 
