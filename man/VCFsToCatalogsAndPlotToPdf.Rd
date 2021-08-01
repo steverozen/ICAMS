@@ -124,7 +124,7 @@ A list containing the following objects:
 3 SBS catalogs (one each for 96, 192, and 1536).
 \item \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 3 DBS catalogs (one each for 78, 136, and 144).
-\item \code{catID}: Matrix of ID (small insertion and deletion) catalog.
+\item \code{catID}: Matrix of ID (small insertions and deletions) catalog.
 \item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 that were excluded from the analysis. See the added extra column
 \code{discarded.reason} for more details.
@@ -152,7 +152,7 @@ attributes added. See \code{\link{as.catalog}} for more details.
 \section{ID classification}{
 
 See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-for additional information on ID (small insertion and deletion) mutation
+for additional information on ID (small insertions and deletions) mutation
 classification.
 
 See the documentation for \code{\link{Canonicalize1Del}} which first handles
@@ -168,7 +168,7 @@ and the functions it calls for handling of insertions.
 \section{Note}{
 
 SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
-In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 from 0 to 5+, but for plotting and end-user documentation deletion repeat
 sizes range from 1 to 6+.
 }

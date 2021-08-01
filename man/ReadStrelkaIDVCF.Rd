@@ -22,7 +22,7 @@ Read in the data lines of an ID VCF created by Strelka version 1
 }
 \section{Note}{
 
-In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 from 0 to 5+, but for plotting and end-user documentation deletion repeat
 sizes range from 1 to 6+.
 }

@@ -22,7 +22,7 @@ types.  For example, for SBS96 catalogs, the rowname
  AGAT represents a mutation from AGA > ATA.
 }
 \note{
-In ID (small insertion and deletion) catalogs, deletion repeat sizes
+In ID (small insertions and deletions) catalogs, deletion repeat sizes
   range from 0 to 5+, but for plotting and end-user documentation deletion
   repeat sizes range from 1 to 6+. In ID83 catalogs, deletion repeat sizes
   range from 0 to 5.
@@ -30,7 +30,7 @@ In ID (small insertion and deletion) catalogs, deletion repeat sizes
 \section{ID classification}{
 
 See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-for additional information on ID (small insertion and deletion) mutation
+for additional information on ID (small insertions and deletions) mutation
 classification.
 
 See the documentation for \code{\link{Canonicalize1Del}} which first handles

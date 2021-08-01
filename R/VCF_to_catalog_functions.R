@@ -2728,10 +2728,10 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
     return(catalogs)
   }
 
-#' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+#' Create ID (small insertions and deletions) catalog from Strelka ID VCF files
 #' and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
 #'
-#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{files} and plot them to PDF
 #'
 #' This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
@@ -2857,7 +2857,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' * \code{catID}: Matrix of ID (small insertion and deletion) catalog.
+#' * \code{catID}: Matrix of ID (small insertions and deletions) catalog.
 #'
 #' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 #' that were excluded from the analysis. See the added extra column
@@ -2883,7 +2883,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @section ID classification:
 #' See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-#' for additional information on ID (small insertion and deletion) mutation
+#' for additional information on ID (small insertions and deletions) mutation
 #' classification.
 #'
 #' See the documentation for \code{\link{Canonicalize1Del}} which first handles
@@ -2897,7 +2897,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @section Note:
 #'  SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
-#'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+#'  In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 #'  from 0 to 5+, but for plotting and end-user documentation deletion repeat
 #'  sizes range from 1 to 6+.
 #'
@@ -3056,7 +3056,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #' * \code{catDBS78}, \code{catDBS136}, \code{catDBS144}: Matrix of
 #' 3 DBS catalogs (one each for 78, 136, and 144).
 #'
-#' * \code{catID}: Matrix of ID (small insertion and deletion) catalog.
+#' * \code{catID}: Matrix of ID (small insertions and deletions) catalog.
 #'
 #' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 #' that were excluded from the analysis. See the added extra column
@@ -3082,7 +3082,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @section ID classification:
 #' See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-#' for additional information on ID (small insertion and deletion) mutation
+#' for additional information on ID (small insertions and deletions) mutation
 #' classification.
 #'
 #' See the documentation for \code{\link{Canonicalize1Del}} which first handles
@@ -3096,7 +3096,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @section Note:
 #'  SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
-#'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+#'  In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 #'  from 0 to 5+, but for plotting and end-user documentation deletion repeat
 #'  sizes range from 1 to 6+.
 #'

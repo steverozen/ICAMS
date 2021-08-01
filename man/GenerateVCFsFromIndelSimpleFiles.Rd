@@ -2,7 +2,7 @@
 % Please edit documentation in R/simple_file_functions.R
 \name{GenerateVCFsFromIndelSimpleFiles}
 \alias{GenerateVCFsFromIndelSimpleFiles}
-\title{Generate reconstructed VCFs from indel (small insertion and deletion) simple files}
+\title{Generate reconstructed VCFs from indel (small insertions and deletions) simple files}
 \usage{
 GenerateVCFsFromIndelSimpleFiles(
   files,
@@ -25,6 +25,6 @@ file in turn can require multiple cores, as governed by
 file. On Microsoft Windows machines it is silently changed to 1.}
 }
 \description{
-Generate reconstructed VCFs from indel (small insertion and deletion) simple files
+Generate reconstructed VCFs from indel (small insertions and deletions) simple files
 }
 \keyword{internal}

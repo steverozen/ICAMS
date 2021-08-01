@@ -2,7 +2,7 @@
 % Please edit documentation in R/simple_file_functions.R
 \name{GenerateVCFsFromIndelSimpleFile1}
 \alias{GenerateVCFsFromIndelSimpleFile1}
-\title{Generate reconstructed VCFs from indel (small insertion and deletion) simple file}
+\title{Generate reconstructed VCFs from indel (small insertions and deletions) simple file}
 \usage{
 GenerateVCFsFromIndelSimpleFile1(file, output.dir, max.mc.cores = 1)
 }
@@ -15,6 +15,6 @@ GenerateVCFsFromIndelSimpleFile1(file, output.dir, max.mc.cores = 1)
 machines it is silently changed to 1.}
 }
 \description{
-Generate reconstructed VCFs from indel (small insertion and deletion) simple file
+Generate reconstructed VCFs from indel (small insertions and deletions) simple file
 }
 \keyword{internal}

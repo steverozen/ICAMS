@@ -23,7 +23,7 @@ reads tab-separated files.}
 Write Indel Catalogs in SigProExtractor format to a file.
 }
 \note{
-In ID (small insertion and deletion) catalogs in SigProExtractor format, 
+In ID (small insertions and deletions) catalogs in SigProExtractor format, 
 deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{VCFsToIDCatalogs}
 \alias{VCFsToIDCatalogs}
-\title{Create ID (small insertion and deletion) catalog from ID VCFs}
+\title{Create ID (small insertions and deletions) catalog from ID VCFs}
 \usage{
 VCFsToIDCatalogs(
   list.of.vcfs,
@@ -42,13 +42,13 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
-Create ID (small insertion and deletion) catalog from ID VCFs
+Create ID (small insertions and deletions) catalog from ID VCFs
 }
 \section{Value}{
 
 A \strong{list} of elements:
 \itemize{
-\item \code{catalog}: The ID (small insertion and deletion) catalog with
+\item \code{catalog}: The ID (small insertions and deletions) catalog with
 attributes added. See \code{\link{as.catalog}} for details.
 \item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 that were excluded from the analysis. See the added extra column
@@ -64,7 +64,7 @@ be obtained from \code{ID.class} column.
 
 \section{Note}{
 
-In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 from 0 to 5+, but for plotting and end-user documentation deletion repeat
 sizes range from 1 to 6+.
 }
@@ -72,7 +72,7 @@ sizes range from 1 to 6+.
 \section{ID classification}{
 
 See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-for additional information on ID (small insertion and deletion) mutation
+for additional information on ID (small insertions and deletions) mutation
 classification.
 
 See the documentation for \code{\link{Canonicalize1Del}} which first handles

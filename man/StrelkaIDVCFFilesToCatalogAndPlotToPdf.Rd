@@ -2,7 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
-\title{Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+\title{Create ID (small insertions and deletions) catalog from Strelka ID VCF files
 and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(
@@ -50,7 +50,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
-Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 specified by \code{files} and plot them to PDF
 }
 \details{
@@ -61,7 +61,7 @@ This function calls \code{\link{StrelkaIDVCFFilesToCatalog}} and
 
 A \strong{list} of elements:
 \itemize{
-\item \code{catalog}: The ID (small insertion and deletion) catalog with
+\item \code{catalog}: The ID (small insertions and deletions) catalog with
 attributes added. See \code{\link{as.catalog}} for more details.
 \item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 that were excluded from the analysis. See the added extra column
@@ -78,7 +78,7 @@ be obtained from \code{ID.class} column.
 \section{ID classification}{
 
 See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
-for additional information on ID (small insertion and deletion) mutation
+for additional information on ID (small insertions and deletions) mutation
 classification.
 
 See the documentation for \code{\link{Canonicalize1Del}} which first handles
@@ -93,7 +93,7 @@ and the functions it calls for handling of insertions.
 
 \section{Note}{
 
-In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 from 0 to 5+, but for plotting and end-user documentation deletion repeat
 sizes range from 1 to 6+.
 }

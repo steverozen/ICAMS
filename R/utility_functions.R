@@ -572,7 +572,7 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
 #'
 #'
 #' @param catalog An SBS or DBS catalog as described in \code{\link{ICAMS}};
-#'  must \strong{not} be an ID (small insertion and deletion) catalog.
+#'  must \strong{not} be an ID (small insertions and deletions) catalog.
 #'
 #' @param target.ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}. If \code{NULL}, then defaults to the

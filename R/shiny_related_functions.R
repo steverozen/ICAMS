@@ -104,10 +104,10 @@ StrelkaSBSVCFFilesToZipFile <-
   invisible(catalogs0)
 }
 
-#' Create a zip file which contains ID (small insertion and deletion) catalog
+#' Create a zip file which contains ID (small insertions and deletions) catalog
 #' and plot PDF from Strelka ID VCF files (deprecated, use VCFsToZipFile instead)
 #'
-#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
 #' generate a zip archive of all the output files.
 #'
@@ -810,10 +810,10 @@ StrelkaSBSVCFFilesToCatalog <-
                                               DBS.list = DBS.list)
   }
 
-#' Create ID (small insertion and deletion) catalog from Strelka ID VCF files
+#' Create ID (small insertions and deletions) catalog from Strelka ID VCF files
 #' (deprecated, use VCFsToCatalogs instead)
 #' 
-#' Create ID (small insertion and deletion) catalog from the Strelka ID VCFs
+#' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{files}
 #'
 #' This function calls \code{\link{VCFsToIDCatalogs}}
@@ -824,7 +824,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #'
 #' @section Value:
 #' A \strong{list} of elements:
-#'   * \code{catalog}: The ID (small insertion and deletion) catalog with
+#'   * \code{catalog}: The ID (small insertions and deletions) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for more details.
 #'
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
@@ -1163,7 +1163,7 @@ ReadAndSplitStrelkaSBSVCFs <-
     return(split.vcfs)
   }
 
-#' Read Strelka ID (small insertion and deletion) VCF files (deprecated, use
+#' Read Strelka ID (small insertions and deletions) VCF files (deprecated, use
 #' ReadAndSplitVCFs instead)
 #'
 #' @inheritParams ReadMutectVCFs
@@ -1804,7 +1804,7 @@ CheckAndReturnIDCatalog <-
     }
   }
 
-#' Create ID (small insertion and deletion) catalog from ID VCFs
+#' Create ID (small insertions and deletions) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory ID VCFs. The list names will be
 #' the sample ids in the output catalog.
@@ -1822,7 +1822,7 @@ CheckAndReturnIDCatalog <-
 #'
 #' @section Value:
 #' A \strong{list} of elements:
-#'   * \code{catalog}: The ID (small insertion and deletion) catalog with
+#'   * \code{catalog}: The ID (small insertions and deletions) catalog with
 #'   attributes added. See \code{\link{as.catalog}} for details.
 #'
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
@@ -1840,7 +1840,7 @@ CheckAndReturnIDCatalog <-
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
 #'
 #' @section Note:
-#'  In ID (small insertion and deletion) catalogs, deletion repeat sizes range
+#'  In ID (small insertions and deletions) catalogs, deletion repeat sizes range
 #'  from 0 to 5+, but for plotting and end-user documentation deletion repeat
 #'  sizes range from 1 to 6+.
 #'

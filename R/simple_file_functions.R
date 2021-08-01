@@ -1,4 +1,4 @@
-#' Generate reconstructed VCFs from indel (small insertion and deletion) simple files
+#' Generate reconstructed VCFs from indel (small insertions and deletions) simple files
 #'
 #' @param files Character vector of file paths to the indel simple files.
 #' 
@@ -26,7 +26,7 @@ GenerateVCFsFromIndelSimpleFiles <-
     return(time.used)
   }
 
-#' Generate reconstructed VCFs from indel (small insertion and deletion) simple file
+#' Generate reconstructed VCFs from indel (small insertions and deletions) simple file
 #'
 #' @param file The name/path of the simple indel file, or a complete URL.
 #' 

@@ -266,7 +266,7 @@ TransRownames.ID.PCAWG.SigPro <- function(vector.of.rownames) {
 #'  SigProfiler read comma-separated files; as of May 2020 it
 #'  reads tab-separated files.
 #'
-#' @note In ID (small insertion and deletion) catalogs in SigProExtractor format, 
+#' @note In ID (small insertions and deletions) catalogs in SigProExtractor format, 
 #' deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
 #'
 #' @keywords internal
