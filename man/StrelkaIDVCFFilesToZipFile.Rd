@@ -2,8 +2,9 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaIDVCFFilesToZipFile}
 \alias{StrelkaIDVCFFilesToZipFile}
-\title{Create a zip file which contains ID (small insertions and deletions) catalog
-and plot PDF from Strelka ID VCF files (deprecated, use VCFsToZipFile instead)}
+\title{\strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
+Create a zip file which contains ID (small insertions and deletions) catalog
+and plot PDF from Strelka ID VCF files}
 \usage{
 StrelkaIDVCFFilesToZipFile(
   dir,
@@ -57,6 +58,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
 generate a zip archive of all the output files.

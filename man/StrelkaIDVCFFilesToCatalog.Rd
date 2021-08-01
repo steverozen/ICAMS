@@ -2,8 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaIDVCFFilesToCatalog}
 \alias{StrelkaIDVCFFilesToCatalog}
-\title{Create ID (small insertions and deletions) catalog from Strelka ID VCF files
-(deprecated, use VCFsToCatalogs instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
+Create ID (small insertions and deletions) catalog from Strelka ID VCF files}
 \usage{
 StrelkaIDVCFFilesToCatalog(
   files,
@@ -46,6 +46,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
 Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 specified by \code{files}
 }

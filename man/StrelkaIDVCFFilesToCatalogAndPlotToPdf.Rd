@@ -2,8 +2,9 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaIDVCFFilesToCatalogAndPlotToPdf}
-\title{Create ID (small insertions and deletions) catalog from Strelka ID VCF files
-and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
+Create ID (small insertions and deletions) catalog from Strelka ID VCF files
+and plot them to PDF}
 \usage{
 StrelkaIDVCFFilesToCatalogAndPlotToPdf(
   files,
@@ -50,6 +51,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
 Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 specified by \code{files} and plot them to PDF
 }

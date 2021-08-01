@@ -19,18 +19,20 @@ test_that("Test ReadStrelkaSBSVCFs and SplitListOfStrelkaSBSVCFs", {
 })
 
 test_that("Test ReadAndSplitVCFs for Mutect VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
+    
   file1 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf"
-  split.vcfs1.1 <- ReadAndSplitMutectVCFs(file1)
+  split.vcfs1.1 <- suppressWarnings(ReadAndSplitMutectVCFs(file1))
   split.vcfs1.2 <- ReadAndSplitVCFs(file1, variant.caller = "mutect")
   expect_equal(split.vcfs1.1, split.vcfs1.2)
 
   file2 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s3.vcf"
-  split.vcfs2.1 <- ReadAndSplitMutectVCFs(file2)
+  split.vcfs2.1 <- suppressWarnings(ReadAndSplitMutectVCFs(file2))
   split.vcfs2.2 <- ReadAndSplitVCFs(file2, variant.caller = "mutect")
   expect_equal(split.vcfs2.1, split.vcfs2.2)
 
   file3 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s4.vcf"
-  split.vcfs3.1 <- ReadAndSplitMutectVCFs(file3)
+  split.vcfs3.1 <- suppressWarnings(ReadAndSplitMutectVCFs(file3))
   split.vcfs3.2 <- ReadAndSplitVCFs(file3, variant.caller = "mutect")
   expect_equal(split.vcfs3.1, split.vcfs3.2)
 
@@ -43,9 +45,11 @@ test_that("Test ReadAndSplitVCFs for Mutect VCFs", {
   split.vcfs5.1 <- ReadAndSplitMutectVCFs(file5)
   split.vcfs5.2 <- ReadAndSplitVCFs(file5, variant.caller = "mutect")
   expect_equal(split.vcfs5.1, split.vcfs5.2)
+  })
 })
 
 test_that("Test ReadAndSplitVCFs for Strelka SBS VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   file1 <- "testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf"
   split.vcfs1.1 <- ReadAndSplitStrelkaSBSVCFs(file1)
   split.vcfs1.2 <- ReadAndSplitVCFs(file1, variant.caller = "strelka")
@@ -76,9 +80,11 @@ test_that("Test ReadAndSplitVCFs for Strelka SBS VCFs", {
                                     filter.status = NULL)
   split.vcfs5.2$ID <- NULL
   expect_equivalent(split.vcfs5.1, split.vcfs5.2)
+  })
 })
 
 test_that("Test ReadAndSplitVCFs for Strelka ID VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   file1 <- "testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf"
   vcfs1.1 <- ReadStrelkaIDVCFs(file1)
   vcfs1.2 <- ReadAndSplitVCFs(file1, variant.caller = "strelka")
@@ -111,6 +117,7 @@ test_that("Test ReadAndSplitVCFs for Strelka ID VCFs", {
                             FUN = CheckAndRemoveDiscardedVariants))
   vcfs5.4 <- lapply(vcfs5.3, FUN = "[[", 1)
   expect_equal(vcfs5.4, vcfs5.2$ID)
+  })
 })
 
 test_that("Test ReadAndSplitVCFs always.merge.SBS", {

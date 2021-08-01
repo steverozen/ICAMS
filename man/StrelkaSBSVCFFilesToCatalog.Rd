@@ -2,8 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaSBSVCFFilesToCatalog}
 \alias{StrelkaSBSVCFFilesToCatalog}
-\title{Create SBS and DBS catalogs from Strelka SBS VCF files (deprecated, use
-VCFsToCatalogs instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
+Create SBS and DBS catalogs from Strelka SBS VCF files}
 \usage{
 StrelkaSBSVCFFilesToCatalog(
   files,
@@ -53,6 +53,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
 Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 the Strelka SBS VCFs specified by \code{files}. The function will find and
 merge adjacent SBS pairs into DBS if their VAFs are very similar. The default

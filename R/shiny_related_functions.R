@@ -1,6 +1,7 @@
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 #' Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files
-#' (deprecated, use VCFsToZipFile instead)
 #'
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
 #' Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
 #' plot them to PDF and generate a zip archive of all the output files. The
@@ -52,61 +53,67 @@ StrelkaSBSVCFFilesToZipFile <-
            base.filename = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
-  files <- list.files(path = dir, pattern = "\\.vcf$",
-                      full.names = TRUE, ignore.case = TRUE)
-  vcf.names <- basename(files)
-  catalogs0 <-
-    StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges,
-                                region, names.of.VCFs,
-                                return.annotated.vcfs,
-                                suppress.discarded.variants.warnings)
-  mutation.loads <- GetMutationLoadsFromStrelkaSBSVCFs(catalogs0)
-  strand.bias.statistics<- NULL
-
-  # Retrieve the catalog matrix from catalogs0
-  catalogs <- catalogs0
-  catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
-
-  # Create a new tmp dir
-  tmpdir <- tempfile()
-  dir.create(tmpdir)
-
-  output.file <- ifelse(base.filename == "",
-                        paste0(tmpdir, .Platform$file.sep),
-                        file.path(tmpdir, paste0(base.filename, ".")))
-
-  for (name in names(catalogs)) {
-    WriteCatalog(catalogs[[name]],
-                 file = paste0(output.file, name, ".csv"))
-  }
-
-  for (name in names(catalogs)) {
-    PlotCatalogToPdf(catalogs[[name]],
-                     file = paste0(output.file, name, ".pdf"))
-
-    if (name == "catSBS192") {
-      list <- PlotCatalogToPdf(catalogs[[name]],
-                               file = paste0(output.file, "SBS12.pdf"),
-                               plot.SBS12 = TRUE)
-      strand.bias.statistics<- c(strand.bias.statistics,
-                                 list$strand.bias.statistics)
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaSBSVCFFilesToZipFile()",
+                              details = 'Please use `VCFsToZipFile(variant.caller = "strelka")` instead')
+    
+    files <- list.files(path = dir, pattern = "\\.vcf$",
+                        full.names = TRUE, ignore.case = TRUE)
+    vcf.names <- basename(files)
+    catalogs0 <-
+      StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges,
+                                  region, names.of.VCFs,
+                                  return.annotated.vcfs,
+                                  suppress.discarded.variants.warnings)
+    mutation.loads <- GetMutationLoadsFromStrelkaSBSVCFs(catalogs0)
+    strand.bias.statistics<- NULL
+    
+    # Retrieve the catalog matrix from catalogs0
+    catalogs <- catalogs0
+    catalogs$discarded.variants <- catalogs$annotated.vcfs <- NULL
+    
+    # Create a new tmp dir
+    tmpdir <- tempfile()
+    dir.create(tmpdir)
+    
+    output.file <- ifelse(base.filename == "",
+                          paste0(tmpdir, .Platform$file.sep),
+                          file.path(tmpdir, paste0(base.filename, ".")))
+    
+    for (name in names(catalogs)) {
+      WriteCatalog(catalogs[[name]],
+                   file = paste0(output.file, name, ".csv"))
     }
+    
+    for (name in names(catalogs)) {
+      PlotCatalogToPdf(catalogs[[name]],
+                       file = paste0(output.file, name, ".pdf"))
+      
+      if (name == "catSBS192") {
+        list <- PlotCatalogToPdf(catalogs[[name]],
+                                 file = paste0(output.file, "SBS12.pdf"),
+                                 plot.SBS12 = TRUE)
+        strand.bias.statistics<- c(strand.bias.statistics,
+                                   list$strand.bias.statistics)
+      }
+    }
+    
+    zipfile.name <- basename(zipfile)
+    AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
+                      ref.genome, region, mutation.loads, strand.bias.statistics,
+                      tmpdir)
+    file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
+                             full.names = TRUE)
+    zip::zipr(zipfile = zipfile, files = file.names)
+    unlink(file.names)
+    invisible(catalogs0)
   }
 
-  zipfile.name <- basename(zipfile)
-  AddRunInformation(files, vcf.names, zipfile.name, vcftype = "strelka.sbs",
-                    ref.genome, region, mutation.loads, strand.bias.statistics,
-                    tmpdir)
-  file.names <- list.files(path = tmpdir, pattern = "\\.(pdf|csv|txt)$",
-                           full.names = TRUE)
-  zip::zipr(zipfile = zipfile, files = file.names)
-  unlink(file.names)
-  invisible(catalogs0)
-}
-
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 #' Create a zip file which contains ID (small insertions and deletions) catalog
-#' and plot PDF from Strelka ID VCF files (deprecated, use VCFsToZipFile instead)
+#' and plot PDF from Strelka ID VCF files 
 #'
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 #' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{dir}, save the catalog as CSV file, plot it to PDF and
 #' generate a zip archive of all the output files.
@@ -159,6 +166,10 @@ StrelkaIDVCFFilesToZipFile <-
            flag.mismatches = 0,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaIDVCFFilesToZipFile()",
+                              details = 'Please use `VCFsToZipFile(variant.caller = "strelka")` instead')
+    
     files <- list.files(path = dir, pattern = "\\.vcf$",
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
@@ -198,9 +209,10 @@ StrelkaIDVCFFilesToZipFile <-
     invisible(catalogs0)
   }
 
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "mutect") instead]}
 #' Create a zip file which contains catalogs and plot PDFs from Mutect VCF files
-#' (deprecated, use VCFsToZipFile instead)
 #'
+#' \strong{[Deprecated, use VCFsToZipFile(variant.caller = "mutect") instead]}
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{dir}, save the catalogs
 #' as CSV files, plot them to PDF and generate a zip archive of all the output files.
@@ -306,6 +318,10 @@ MutectVCFFilesToZipFile <-
            flag.mismatches = 0,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "MutectVCFFilesToZipFile()",
+                              details = 'Please use `VCFsToZipFile(variant.caller = "mutect")` instead')
+    
     files <- list.files(path = dir, pattern = "\\.vcf$",
                         full.names = TRUE, ignore.case = TRUE)
     vcf.names <- basename(files)
@@ -753,9 +769,10 @@ CombineAndReturnCatalogsForStrelkaSBSVCFs <-
     return(combined.list2)
   }
 
-#' Create SBS and DBS catalogs from Strelka SBS VCF files (deprecated, use
-#' VCFsToCatalogs instead)
+#' \strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
+#' Create SBS and DBS catalogs from Strelka SBS VCF files
 #'
+#' \strong{[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead]}
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 #' the Strelka SBS VCFs specified by \code{files}. The function will find and
 #' merge adjacent SBS pairs into DBS if their VAFs are very similar. The default
@@ -788,6 +805,9 @@ StrelkaSBSVCFFilesToCatalog <-
   function(files, ref.genome, trans.ranges = NULL, region = "unknown",
            names.of.VCFs = NULL, return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaSBSVCFFilesToCatalog()",
+                              details = 'Please use `VCFsToCatalogs(variant.caller = "strelka")` instead')
     split.vcfs <-
       ReadAndSplitStrelkaSBSVCFs(files, names.of.VCFs,
                                  suppress.discarded.variants.warnings)
@@ -810,9 +830,10 @@ StrelkaSBSVCFFilesToCatalog <-
                                               DBS.list = DBS.list)
   }
 
+#' \strong{\[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead\]}
 #' Create ID (small insertions and deletions) catalog from Strelka ID VCF files
-#' (deprecated, use VCFsToCatalogs instead)
 #' 
+#' \strong{\[Deprecated, use VCFsToCatalogs(variant.caller = "strelka") instead\]}
 #' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{files}
 #'
@@ -856,6 +877,10 @@ StrelkaIDVCFFilesToCatalog <-
   function(files, ref.genome, region = "unknown", names.of.VCFs = NULL,
            flag.mismatches = 0, return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaIDVCFFilesToCatalog()",
+                              details = 'Please use `VCFsToCatalogs(variant.caller = "strelka")` instead')
+    
     vcfs <- ReadStrelkaIDVCFs(files = files, names.of.VCFs = names.of.VCFs)
 
     ID.list <- VCFsToIDCatalogs(list.of.vcfs = vcfs,
@@ -915,8 +940,10 @@ CombineAndReturnCatalogsForMutectVCFs <-
     return(combined.list2)
   }
 
-#' Create SBS, DBS and Indel catalogs from Mutect VCF files (deprecated, use VCFsToCatalogs instead)
-#'
+#' \strong{[Deprecated, use VCFsToCatalogs(variant.caller = "mutect") instead]}
+#' Create SBS, DBS and Indel catalogs from Mutect VCF files
+#' 
+#' \strong{[Deprecated, use VCFsToCatalogs(variant.caller = "mutect") instead]}
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{files}
 #'
@@ -950,6 +977,9 @@ MutectVCFFilesToCatalog <-
            names.of.VCFs = NULL, tumor.col.names = NA, flag.mismatches = 0,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "MutectVCFFilesToCatalog()",
+                              details = 'Please use `VCFsToCatalogs(variant.caller = "mutect")` instead')
     split.vcfs <-
       ReadAndSplitMutectVCFs(files, names.of.VCFs, tumor.col.names,
                              suppress.discarded.variants.warnings)
@@ -1120,8 +1150,10 @@ VCFsToCatalogs <- function(files,
                                   ID.list = ID.list)
 }
 
-#' Read and split Strelka SBS VCF files (deprecated, use ReadAndSplitVCFs instead)
+#' \strong{\[Deprecated, use ReadAndSplitVCFs(variant.caller = "strelka") instead\]}
+#' Read and split Strelka SBS VCF files 
 #'
+#' \strong{\[Deprecated, use ReadAndSplitVCFs(variant.caller = "strelka") instead\]}
 #' The function will find and merge adjacent SBS pairs into DBS if their VAFs
 #' are very similar. The default threshold value for VAF is 0.02.
 #'
@@ -1155,6 +1187,10 @@ VCFsToCatalogs <- function(files,
 ReadAndSplitStrelkaSBSVCFs <-
   function(files, names.of.VCFs = NULL,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "ReadAndSplitStrelkaSBSVCFs()",
+                              details = 'Please use `ReadAndSplitVCFs(variant.caller = "strelka")` instead')
+    
     vcfs <- ReadStrelkaSBSVCFs(files = files, names.of.VCFs = names.of.VCFs)
     split.vcfs <-
       SplitListOfStrelkaSBSVCFs(list.of.vcfs = vcfs,
@@ -1163,9 +1199,9 @@ ReadAndSplitStrelkaSBSVCFs <-
     return(split.vcfs)
   }
 
-#' Read Strelka ID (small insertions and deletions) VCF files (deprecated, use
-#' ReadAndSplitVCFs instead)
-#'
+#' \strong{[Deprecated, use ReadAndSplitVCFs(variant.caller = "strelka") instead]}
+#' Read Strelka ID (small insertions and deletions) VCF files 
+#' 
 #' @inheritParams ReadMutectVCFs
 #'
 #' @return A list of data frames containing data lines of the VCF files.
@@ -1182,6 +1218,10 @@ ReadAndSplitStrelkaSBSVCFs <-
 #'                       package = "ICAMS"))
 #' list.of.vcfs <- ReadStrelkaIDVCFs(file)
 ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
+  lifecycle::deprecate_soft(when = "3.0.0", 
+                            what = "ReadStrelkaIDVCFs()",
+                            details = 'Please use `ReadAndSplitVCFs(variant.caller = "strelka")` instead')
+  
   vcfs <-
     lapply(files, FUN = ReadStrelkaIDVCF, name.of.VCF = names.of.VCFs)
   if (is.null(names.of.VCFs)) {
@@ -1196,7 +1236,8 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
   return(vcfs)
 }
 
-#' Read and split Mutect VCF files (deprecated, use ReadAndSplitVCFs instead)
+#' \strong{\[Deprecated, use ReadAndSplitVCFs(variant.caller = "mutect") instead\]}
+#' Read and split Mutect VCF files 
 #'
 #' @param files Character vector of file paths to the Mutect VCF files.
 #'
@@ -1229,6 +1270,10 @@ ReadStrelkaIDVCFs <- function(files, names.of.VCFs = NULL) {
 ReadAndSplitMutectVCFs <-
   function(files, names.of.VCFs = NULL, tumor.col.names = NA,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "ReadAndSplitMutectVCFs()",
+                              details = 'Please use `ReadAndSplitVCFs(variant.caller = "mutect")` instead')
+    
     vcfs <- ReadMutectVCFs(files = files, names.of.VCFs = names.of.VCFs,
                            tumor.col.names =  tumor.col.names)
     split.vcfs <-

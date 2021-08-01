@@ -1,3 +1,12 @@
+# 3.0.0
+* Added two new dependency packages lifecycle and rlang.
+
+* Soft deprecated several exported functions  
+   * `MutectVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalog` 
+   * `MutectVCFFilesToCatalogAndPlotToPdf`, `StrelkaIDVCFFilesToCatalogAndPlotToPdf`, `StrelkaSBSVCFFilesToCatalogAndPlotToPdf`
+   * `MutectVCFFilesToZipFile`, `StrelkaIDVCFFilesToZipFile`, `StrelkaSBSVCFFilesToZipFile`
+   * `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `ReadStrelkaIDVCFs`
+         
 # 2.3.18
 * Fixed a bug in internal function `ReadVCF` when the VCF does not have column `FILTER`.
 
