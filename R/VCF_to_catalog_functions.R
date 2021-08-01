@@ -648,17 +648,18 @@ ReadVCF <-
     if (nrow(df0) == 0) {
       return(df0)
     }
-
+    
+    # Check whether df0 has column name "FILTER"
+    if (!"FILTER" %in% colnames(df0)) {
+      warning("\nThere is no column FILTER in the file ", file,
+              "\nargument filter.status is ignored and all variants will be retained")
+      filter.status <- NULL
+    }
+      
     # Remove rows that don't have the specified filter status
     if (is.null(filter.status)) {
       df1 <- df <- df0
     } else {
-      # Check whether df0 has column name "FILTER"
-      if (!"FILTER" %in% colnames(df0)) {
-        warning("\nThere is no column FILTER in the file ", file,
-                "\nargument filter.status is ignored and all variants will be retained")
-        filter.status <- NULL
-      }
       df1 <- df <- dplyr::filter(df0, FILTER == filter.status)
     }
 

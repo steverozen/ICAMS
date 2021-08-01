@@ -1,4 +1,7 @@
-# 2.3.16.90xx
+# 2.3.18
+* Fixed a bug in internal function `ReadVCF` when the VCF does not have column `FILTER`.
+
+# 2.3.17
 * Added internal function `GenerateVCFsFromIndelSimpleFiles` to generate reconstructed VCFs from
 indel simple files.
 
