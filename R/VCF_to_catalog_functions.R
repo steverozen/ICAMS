@@ -648,25 +648,26 @@ ReadVCF <-
     if (nrow(df0) == 0) {
       return(df0)
     }
-    
-    # Check whether df0 has column name "FILTER"
-    if (!"FILTER" %in% colnames(df0)) {
-      warning("\nThere is no column FILTER in the file ", file,
-              "\nargument filter.status is ignored and all variants will be retained")
-      filter.status <- NULL
-    }
-      
+
     # Remove rows that don't have the specified filter status
     if (is.null(filter.status)) {
-      df1 <- df <- df0
+      df <- df0
     } else {
-      df1 <- df <- dplyr::filter(df0, FILTER == filter.status)
+      # Check whether df0 has column name "FILTER"
+      if (!"FILTER" %in% colnames(df0)) {
+        warning("\nThere is no column FILTER in the file ", file,
+                "\nargument filter.status is ignored and all variants will be retained")
+      } else {
+        df <- dplyr::filter(df0, FILTER == filter.status)
+      }
     }
+    rm(filter.status)
 
     if (nrow(df) == 0) {
       return(df)
     }
 
+    df1 <- df0
     df1$VAF <- as.numeric(NA)
     df1$read.depth <- as.numeric(NA)
 
@@ -1438,6 +1439,9 @@ AddTranscript <-
     if (nrow(df) == 0) {
       return(df)
     }
+
+    # Sometimes CHROM is numeric, but this breaks foverlaps, below.
+    df$CHROM <- as.character(df$CHROM)
 
     if (is.null(trans.ranges)) {
       return(data.table(df))
