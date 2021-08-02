@@ -107,6 +107,7 @@ https
 indel
 indels
 introns
+lifecycle
 md
 megabase
 mer
@@ -118,9 +119,11 @@ mutuations
 nd
 opar
 pentanucleotide
+rlang
 rowname
 sanger
 steverozen
+strelka
 testdata
 tetranucleotide
 th
