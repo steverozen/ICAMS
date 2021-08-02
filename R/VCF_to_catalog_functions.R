@@ -657,6 +657,7 @@ ReadVCF <-
       if (!"FILTER" %in% colnames(df0)) {
         warning("\nThere is no column FILTER in the file ", file,
                 "\nargument filter.status is ignored and all variants will be retained")
+        df <- df0
       } else {
         df <- dplyr::filter(df0, FILTER == filter.status)
       }
@@ -667,7 +668,7 @@ ReadVCF <-
       return(df)
     }
 
-    df1 <- df0
+    df1 <- df
     df1$VAF <- as.numeric(NA)
     df1$read.depth <- as.numeric(NA)
 
