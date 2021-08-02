@@ -2,8 +2,8 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}
 \alias{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}
-\title{Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
-(deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
+Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF}
 \usage{
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf(
   files,
@@ -58,6 +58,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
 Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 the Strelka SBS VCFs specified by \code{files} and plot them to PDF. The
 function will find and merge adjacent SBS pairs into DBS if their VAFs are

@@ -1,5 +1,4 @@
-#' Extract the VAFs (variant allele frequencies) and read depth information from
-#' a VCF file
+#' Extract the VAFs (variant allele frequencies) and read depth information from a VCF file
 #'
 #' @param vcf Said VCF as a data.frame.
 #'
@@ -541,9 +540,7 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
   return(cbind(vcf, vafs))
 }
 
-#' Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth
-#' from PCAWG7 consensus vcfs
-#'
+
 #' @param vcf An in-memory VCF data frame.
 #'
 #' @param mc.cores The number of cores to use. Not available on Windows
@@ -552,6 +549,11 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 #' @importFrom parallel mclapply
 #'
 #' @export
+#' 
+#' @note 
+#' \code{\link{GetPCAWGConsensusVAF}} is analogous to \code{\link{GetMutectVAF}},
+#' calculating VAF and read depth from PCAWG7 consensus vcfs
+#' 
 #' @rdname GetVAF
 #'
 GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
@@ -2638,9 +2640,10 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
                           sample.id = sample.id)
 }
 
+#' \strong{\[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead\]}
 #' Create SBS and DBS catalogs from Strelka SBS VCF files and plot them to PDF
-#' (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
 #'
+#' \strong{\[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead\]}
 #' Create 3 SBS catalogs (96, 192, 1536) and 3 DBS catalogs (78, 136, 144) from
 #' the Strelka SBS VCFs specified by \code{files} and plot them to PDF. The
 #' function will find and merge adjacent SBS pairs into DBS if their VAFs are
@@ -2708,7 +2711,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
            output.file = "",
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
-
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaSBSVCFFilesToCatalogAndPlotToPdf()",
+                              details = 'Please use `VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka")` instead')
     catalogs0 <-
       StrelkaSBSVCFFilesToCatalog(files, ref.genome, trans.ranges,
                                   region, names.of.VCFs,
@@ -2733,9 +2738,11 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
     return(catalogs)
   }
 
+#' \strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
 #' Create ID (small insertions and deletions) catalog from Strelka ID VCF files
-#' and plot them to PDF (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
+#' and plot them to PDF 
 #'
+#' \strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
 #' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{files} and plot them to PDF
 #'
@@ -2777,6 +2784,9 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
            flag.mismatches = 0,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "StrelkaIDVCFFilesToCatalogAndPlotToPdf()",
+                              details = 'Please use `VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka")` instead')
 
     list <-
       StrelkaIDVCFFilesToCatalog(files, ref.genome, region, names.of.VCFs,
@@ -2790,9 +2800,11 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
     return(list)
   }
 
-#' Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
-#' (deprecated, use VCFsToCatalogsAndPlotToPdf instead)
+#' \strong{\[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "mutect") instead\]} 
+#' Create SBS, DBS and Indel catalogs from Mutect VCF files
+#' and plot them to PDF
 #'
+#' \strong{\[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "mutect") instead\]}
 #' Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 #' Indel catalog from the Mutect VCFs specified by \code{files} and plot them to
 #' PDF
@@ -2935,7 +2947,10 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
            flag.mismatches = 0,
            return.annotated.vcfs = FALSE,
            suppress.discarded.variants.warnings = TRUE) {
-
+    lifecycle::deprecate_soft(when = "3.0.0", 
+                              what = "MutectVCFFilesToCatalogAndPlotToPdf()",
+                              details = 'Please use `VCFsToCatalogsAndPlotToPdf(variant.caller = "mutect")` instead')
+    
     catalogs0 <-
       MutectVCFFilesToCatalog(files, ref.genome, trans.ranges,
                               region, names.of.VCFs, tumor.col.names,

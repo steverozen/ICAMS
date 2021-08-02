@@ -6,8 +6,7 @@
 \alias{GetMutectVAF}
 \alias{GetFreebayesVAF}
 \alias{GetPCAWGConsensusVAF}
-\title{Extract the VAFs (variant allele frequencies) and read depth information from
-a VCF file}
+\title{Extract the VAFs (variant allele frequencies) and read depth information from a VCF file}
 \usage{
 GetStrelkaVAF(vcf, name.of.VCF = NULL)
 
@@ -36,11 +35,11 @@ The original \code{vcf} with two additional columns added which
   contain the VAF(variant allele frequency) and read depth information.
 }
 \description{
-Extract the VAFs (variant allele frequencies) and read depth information from
-a VCF file
-
-Analogous to \code{\link{GetMutectVAF}}, calculating VAF and read depth
-from PCAWG7 consensus vcfs
+Extract the VAFs (variant allele frequencies) and read depth information from a VCF file
+}
+\note{
+\code{\link{GetPCAWGConsensusVAF}} is analogous to \code{\link{GetMutectVAF}},
+calculating VAF and read depth from PCAWG7 consensus vcfs
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",

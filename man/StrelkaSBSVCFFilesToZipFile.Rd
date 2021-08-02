@@ -2,8 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{StrelkaSBSVCFFilesToZipFile}
 \alias{StrelkaSBSVCFFilesToZipFile}
-\title{Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files
-(deprecated, use VCFsToZipFile instead)}
+\title{\strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
+Create a zip file which contains catalogs and plot PDFs from Strelka SBS VCF files}
 \usage{
 StrelkaSBSVCFFilesToZipFile(
   dir,
@@ -65,6 +65,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToZipFile(variant.caller = "strelka") instead]}
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) from the
 Strelka SBS VCFs specified by \code{dir}, save the catalogs as CSV files,
 plot them to PDF and generate a zip archive of all the output files. The

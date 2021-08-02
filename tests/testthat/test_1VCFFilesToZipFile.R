@@ -1,6 +1,7 @@
 context("VCFFilestoZipfile functions")
 
 test_that("MutectVCFFilesToZipFile function with no base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   dir <- "testdata/Mutect-GRCh37"
@@ -21,9 +22,11 @@ test_that("MutectVCFFilesToZipFile function with no base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Mutect-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("MutectVCFFilesToZipFile function with base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   skip_if(Sys.getenv("LONGTEST") == "")
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -48,9 +51,11 @@ test_that("MutectVCFFilesToZipFile function with base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Mutect-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("StrelkaSBSVCFFilesToZipFile function with no base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   skip_if(Sys.getenv("LONGTEST") == "")
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -74,9 +79,11 @@ test_that("StrelkaSBSVCFFilesToZipFile function with no base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Strelka-SBS-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("StrelkaSBSVCFFilesToZipFile function with base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   skip_if(Sys.getenv("LONGTEST") == "")
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -101,9 +108,11 @@ test_that("StrelkaSBSVCFFilesToZipFile function with base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Strelka-SBS-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("StrelkaIDVCFFilesToZipFile function with no base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   skip_if(Sys.getenv("LONGTEST") == "")
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -127,9 +136,11 @@ test_that("StrelkaIDVCFFilesToZipFile function with no base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Strelka-ID-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("StrelkaIDVCFFilesToZipFile function with base.filename", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   skip_if(Sys.getenv("LONGTEST") == "")
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -154,6 +165,7 @@ test_that("StrelkaIDVCFFilesToZipFile function with base.filename", {
   unlink(file.path(tempdir(), name2))
   graphics.off()
   unlink("testdata/Strelka-ID-GRCh37/Rplots.pdf")
+  })
 })
 
 test_that("VCFsToZipFile function for Mutect VCFs with no base.filename", {

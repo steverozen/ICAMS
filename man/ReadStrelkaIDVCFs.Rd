@@ -2,8 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{ReadStrelkaIDVCFs}
 \alias{ReadStrelkaIDVCFs}
-\title{Read Strelka ID (small insertions and deletions) VCF files (deprecated, use
-ReadAndSplitVCFs instead)}
+\title{\strong{[Deprecated, use ReadAndSplitVCFs(variant.caller = "strelka") instead]}
+Read Strelka ID (small insertions and deletions) VCF files}
 \usage{
 ReadStrelkaIDVCFs(files, names.of.VCFs = NULL)
 }
@@ -21,8 +21,8 @@ names of the VCF files.}
 A list of data frames containing data lines of the VCF files.
 }
 \description{
-Read Strelka ID (small insertions and deletions) VCF files (deprecated, use
-ReadAndSplitVCFs instead)
+\strong{[Deprecated, use ReadAndSplitVCFs(variant.caller = "strelka") instead]}
+Read Strelka ID (small insertions and deletions) VCF files
 }
 \section{Note}{
 

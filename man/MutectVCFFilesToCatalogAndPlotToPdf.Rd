@@ -2,8 +2,9 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{MutectVCFFilesToCatalogAndPlotToPdf}
 \alias{MutectVCFFilesToCatalogAndPlotToPdf}
-\title{Create SBS, DBS and Indel catalogs from Mutect VCF files and plot them to PDF
-(deprecated, use VCFsToCatalogsAndPlotToPdf instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "mutect") instead]}
+Create SBS, DBS and Indel catalogs from Mutect VCF files
+and plot them to PDF}
 \usage{
 MutectVCFFilesToCatalogAndPlotToPdf(
   files,
@@ -73,6 +74,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "mutect") instead]}
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 Indel catalog from the Mutect VCFs specified by \code{files} and plot them to
 PDF

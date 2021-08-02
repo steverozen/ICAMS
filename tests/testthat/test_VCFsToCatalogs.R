@@ -1,6 +1,7 @@
 context("VCFsToCatalogs function")
 
 test_that("VCFsToCatalogs function for Mutect VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Mutect-GRCh37", full.names = TRUE)
@@ -23,9 +24,11 @@ test_that("VCFsToCatalogs function for Mutect VCFs", {
   expect_equal(catalogs2, catalogs4)
   expect_equal(catalogs1, catalogs5)
   expect_equal(catalogs2, catalogs6)
+  })
 })
 
 test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Strelka-SBS-GRCh37/", full.names = TRUE)
@@ -56,9 +59,12 @@ test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
   expect_equal(catalogs2, catalogs4)
   catalogs6$catID <- catalogs6$annotated.vcfs$ID <- NULL
   expect_equal(catalogs2, catalogs6)
+  })
 })
 
+#' @import rlang with_options
 test_that("VCFsToCatalogs function for Strelka ID VCFs", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   files <- list.files(path = "testdata/Strelka-ID-GRCh37/", full.names = TRUE)
@@ -79,4 +85,5 @@ test_that("VCFsToCatalogs function for Strelka ID VCFs", {
   expect_equal(catalogs2$discarded.variants, catalogs4$discarded.variants)
   expect_equal(catalogs2$annotated.vcfs, catalogs4$annotated.vcfs$ID)
   unlink("Rplots.pdf")
+  })
 })

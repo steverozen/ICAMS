@@ -1,7 +1,7 @@
 Package: ICAMS
 Type: Package
 Title: In-Depth Characterization and Analysis of Mutational Signatures ('ICAMS')
-Version: 2.3.18
+Version: 3.0.0
 Author: Steve Rozen, Nanhai Jiang, Arnoud Boot, Mo Liu, Yang Wu
 Maintainer: Steve Rozen <steverozen@gmail.com>
 Description: Analysis and visualization of experimentally elucidated mutational
@@ -34,6 +34,7 @@ Imports: Biostrings,
     graphics,
     grDevices,
     IRanges,
+    lifecycle,
     RColorBrewer,
     stats,
     stringi,
@@ -45,4 +46,6 @@ Suggests:
     BSgenome.Hsapiens.1000genomes.hs37d5,
     BSgenome.Hsapiens.UCSC.hg38,
     BSgenome.Mmusculus.UCSC.mm10,
-    testthat
+    testthat,
+    rlang
+

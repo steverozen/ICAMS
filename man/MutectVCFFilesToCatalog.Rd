@@ -2,7 +2,8 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{MutectVCFFilesToCatalog}
 \alias{MutectVCFFilesToCatalog}
-\title{Create SBS, DBS and Indel catalogs from Mutect VCF files (deprecated, use VCFsToCatalogs instead)}
+\title{\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "mutect") instead]}
+Create SBS, DBS and Indel catalogs from Mutect VCF files}
 \usage{
 MutectVCFFilesToCatalog(
   files,
@@ -67,6 +68,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
+\strong{[Deprecated, use VCFsToCatalogs(variant.caller = "mutect") instead]}
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 Indel catalog from the Mutect VCFs specified by \code{files}
 }
