@@ -1,3 +1,7 @@
+# 3.0.0.90xx
+* Updated two internal functions `GeneratePCAWGAliquotID` and
+`GeneratePCAWGAliquotID2`.
+
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.
 

@@ -193,17 +193,33 @@ GenerateVCFsFromIndelSimpleFile1 <- function(file, output.dir, max.mc.cores = 1)
 }
 
 #' @keywords internal
-GeneratePCAWGAliquotID <- function(file) {
+GeneratePCAWGAliquotID <- function (file){ 
   dt <- data.table::fread(file)
-  aliquot.id <- dt$tumor_wgs_aliquot_id
-  names(aliquot.id) <- dt$tumor_wgs_icgc_specimen_id
-  return(aliquot.id)
+  aliquot.ids.info <- dt$tumor_wgs_aliquot_id
+  SP.ids.info <- dt$tumor_wgs_icgc_specimen_id
+  
+  aliquot.ids.list <- stringi::stri_split_fixed(aliquot.ids.info, ",")
+  SP.ids.list <- stringi::stri_split_fixed(SP.ids.info, ",")
+  
+  aliquot.ids <- unlist(aliquot.ids.list)
+  SP.ids <- unlist(SP.ids.list)
+  
+  names(aliquot.ids) <- SP.ids
+  return(aliquot.ids)
 }
 
 #' @keywords internal
 GeneratePCAWGAliquotID2 <- function(file) {
   dt <- data.table::fread(file)
-  aliquot.id <- dt$aliquot_id
-  names(aliquot.id) <- dt$icgc_specimen_id
-  return(aliquot.id)
+  aliquot.ids.info <- dt$aliquot_id
+  SP.ids.info <- dt$icgc_specimen_id
+  
+  aliquot.ids.list <- stringi::stri_split_fixed(aliquot.ids.info, ",")
+  SP.ids.list <- stringi::stri_split_fixed(SP.ids.info, ",")
+  
+  aliquot.ids <- unlist(aliquot.ids.list)
+  SP.ids <- unlist(SP.ids.list)
+  
+  names(aliquot.ids) <- SP.ids
+  return(aliquot.ids)
 }
