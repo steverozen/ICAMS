@@ -33,6 +33,10 @@ will automatically discard these variants. See element
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
 is TRUE.}
+
+\item{seq.context.width}{The width of sequence context to the left of the
+"context base". If \code{NULL}, the function will use 6 * inserted/deleted
+bases length.}
 }
 \value{
 A list of elements:
