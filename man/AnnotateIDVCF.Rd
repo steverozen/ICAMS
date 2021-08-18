@@ -10,7 +10,8 @@ AnnotateIDVCF(
   ref.genome,
   flag.mismatches = 0,
   name.of.VCF = NULL,
-  suppress.discarded.variants.warnings = TRUE
+  suppress.discarded.variants.warnings = TRUE,
+  seq.context.width = NULL
 )
 }
 \arguments{
