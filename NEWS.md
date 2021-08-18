@@ -2,6 +2,8 @@
 * Updated two internal functions `GeneratePCAWGAliquotID` and
 `GeneratePCAWGAliquotID2`.
 
+* Added new argument `seq.context.width` (default = NULL) to exported function `AnnotateIDVCF`.
+
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.
 

@@ -54,7 +54,7 @@
 #'   annotated.ID.vcf <- list$annotated.vcf}
 AnnotateIDVCF <- 
   function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL,
-           suppress.discarded.variants.warnings = TRUE) {
+           suppress.discarded.variants.warnings = TRUE, seq.context.width = NULL) {
     if (nrow(ID.vcf) == 0) {
       return(list(annotated.vcf = ID.vcf))
     }
@@ -124,7 +124,12 @@ AnnotateIDVCF <-
     is.del <- nchar(df3$ALT) <= nchar(df3$REF)
     var.width.in.genome <- ifelse(is.del, var.width, 0)
     
-    df3$seq.context.width <- var.width * 6
+    if (is.null(seq.context.width)) {
+      df3$seq.context.width <- var.width * 6
+    } else {
+      df3$seq.context.width <- seq.context.width
+    }
+    
     # 6 because we need to find out if the insertion or deletion is embedded
     # in up to 5 additional repeats of the inserted or deleted sequence.
     # Then add 1 to avoid possible future issues.
