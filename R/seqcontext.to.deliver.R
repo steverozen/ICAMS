@@ -1,4 +1,4 @@
-#' Get all the sequence contexts of the indels in a given 1 base-pair indel class.
+#' Get all the sequence contexts of the indels in a given 1 base-pair indel class from a VCF.
 #'
 #' @param annotated.vcf An in-memory \code{data.frame} or similar table
 #'  containing "VCF" (variant call format) data as created by
@@ -7,14 +7,17 @@
 #'
 #' @param indel.class A single character string that denotes a 1 base pair
 #' insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.
-#' Insertions or deletions into / from 5+ base-pair homopolymers are
+#' Insertions or deletions into or from 5+ base-pair homopolymers are
 #' not supported.
+#'
+#' @param flank.length The length of flanking bases around the position
+#' or homopolymer targeted by the indel.
 #'
 #' @return A list of all sequence contexts for the specified
 #' \code{indel.class}.
 #'
 #' @export
-ExtendSeqContextForOnebpINDEL <- function(annotated.vcf, indel.class){
+SymmetricalContextsFor1BPIndel <- function(annotated.vcf, indel.class, flank.length = 5){
 
   if(!indel.class %in% ICAMS::catalog.row.order$ID[c(1:5,7:11,13:17,19:23)]){
     stop("Argument indel.class value ", indel.class, " not supported")
@@ -39,10 +42,11 @@ ExtendSeqContextForOnebpINDEL <- function(annotated.vcf, indel.class){
   extended_sequence_context <-
     apply(annotated.vcf.this.class,1,
           function(x){
-            Get1BPIndelFlanks(sequence = x["seq.context"],
-                              ref = x["REF"],
-                              alt = x["ALT"],
-                              indel.class = indel.class)})
+            Get1BPIndelFlanks(sequence     = x["seq.context"],
+                              ref          = x["REF"],
+                              alt          = x["ALT"],
+                              indel.class  = indel.class,
+                              flank.length = flank.length)})
 
   return(extended_sequence_context)
 }
@@ -67,31 +71,34 @@ ExtendSeqContextForOnebpINDEL <- function(annotated.vcf, indel.class){
 #' Insertions or deletions into / from 5+ base-pair homopolymers are
 #' not supported.
 #'
-#' @param flank.length The length of flanking bases from the region targeted by
-#' insertion or deletion
+#' @param flank.length The length of flanking bases around the position
+#' or homopolymer targeted by the indel.
 #'
 #' @return A string for the specified \code{sequence} and \code{indel.class}.
 #'
 
-Get1BPIndelFlanks <- function(sequence, ref,alt,indel.class, flank.length = 5){
+Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5){
 
-  #cat(
+  # Un-comment the following to generate test function calls.
+  # cat(
   #  paste0('Get1BPIndelFlanks("', sequence, '", "', ref, "\",  \"", alt, "\",  \"",indel.class, "\")\n")
-  #)
+  # )
+
+  # sanity check; assume the input VCF provides one base of context to the left of the indel,
+  # e.g. insertion A -> AT, deletion CT -> C
+  stopifnot(nchar(ref) + nchar(alt) == 3)
 
   # indel.class is string such as "DEL:T:1:3"
   split_indel.class <- unlist(strsplit(indel.class,":"))
 
   indel.base <- split_indel.class[2] # The base inserted or deleted (T or C)
 
-  homopolymer.length <-  as.numeric(split_indel.class[4]) # a digit, 0:4
-
-  #stopifnot(nchar(sequence) %% 2 == 1) # Must be an odd number. we don't need this one
+  homopolymer.length <-  as.numeric(split_indel.class[4])
+  stopifnot(homopolymer.length %in% 0:4)
 
   mid.base <- (nchar(sequence)+1)/2
 
   ins.or.del <- split_indel.class[1]
-
 
   if (ins.or.del == "INS" & homopolymer.length == 0) {
     if (nchar(alt) == 2) {
@@ -110,17 +117,15 @@ Get1BPIndelFlanks <- function(sequence, ref,alt,indel.class, flank.length = 5){
       homopolymer.length <- homopolymer.length + 1
     }
 
-    ##except for de nove insertion, we need to check if the ref is at the center
+    ##except for de novo insertion, we need to check if the ref is at the center
 
-
+    # I don't think this is the only check we need
     if(nchar(alt) == 2 & substring(sequence,mid.base,mid.base)!= ref){ #means we are looking at an insertion
       stop("REF not at the center")
     }
     if(nchar(alt) == 1 & substring(sequence,mid.base,mid.base+1)!= ref){ #means we are looking at a deletion
       stop("REF not at the center")
     }
-
-
 
     homopolymer.starts <- mid.base+1
 
@@ -134,6 +139,16 @@ Get1BPIndelFlanks <- function(sequence, ref,alt,indel.class, flank.length = 5){
       seq.context <-  ICAMS::revc(substring(sequence,homopolymer.starts-flank.length,homopolymer.ends+flank.length))
 
     }
+
+    homopolymer.seq <- paste(rep(indel.base, homopolymer.length), collapse = "")
+    re <- paste0("[ACGT]{", flank.length - 1, "}[^", indel.base, "]", homopolymer.seq,
+                 "[^", indel.base, "][ACGT]{", flank.length - 1, "}")
+    if (!grepl(re, seq.context, perl = TRUE)) {
+      stop("Extracted sequence ", seq.context, " does not have the expected form ",
+      "(does not match the RE '", re, "')\n",
+      "Possibly the variant caller is not standardizing the position of the indel in the homopolymer")
+    }
+
   }
   return(seq.context)
 

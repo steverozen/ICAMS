@@ -24,8 +24,8 @@ insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.
 Insertions or deletions into / from 5+ base-pair homopolymers are
 not supported.}
 
-\item{flank.length}{The length of flanking bases from the region targeted by
-insertion or deletion}
+\item{flank.length}{The length of flanking bases around the position
+or homopolymer targeted by the indel.}
 }
 \value{
 A string for the specified \code{sequence} and \code{indel.class}.
