@@ -145,8 +145,8 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
                  "[^", indel.base, "][ACGT]{", flank.length - 1, "}")
     if (!grepl(re, seq.context, perl = TRUE)) {
       stop("Extracted sequence ", seq.context, " does not have the expected form ",
-      "(does not match the RE '", re, "')\n",
-      "Possibly the variant caller is not standardizing the position of the indel in the homopolymer")
+           "(does not match the RE '", re, "')\n",
+           "Possibly the variant caller is not standardizing the position of the indel in the homopolymer")
     }
 
   }
@@ -154,6 +154,116 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 
 }
 
+#' Generate PFMmatrix from a given list of sequences.
+#'
+#' @param sequences A list of strings returned from \code{\link{SymmetricalContextsFor1BPIndel}}.
+#'
+#' @param indel.class A single character string that denotes a 1 base pair
+#' insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.
+#' Insertions or deletions into or from 5+ base-pair homopolymers are
+#' not supported.
+#'
+#' @param flank.length The length of flanking bases around the position
+#' or homopolymer targeted by the indel.+
+#'
+#' @param plot.dir If provided, make a dot-line plot for PFMmatrix.
+#'
+#' @param plot.title The title of the dot-line plot
+#'
+#' @return A list of all sequence contexts for the specified
+#' \code{indel.class}.
+#'
+#' @export
+GeneratePlotPFMmatrix <- function(sequences,flank.length = 5,indel.class,plot.dir=NULL,plot.title=NULL){
+
+  if(length(unique(nchar(sequences)))>1){
+    stop("All sequences must have the same length")
+  }
+
+  indel.base <- unlist(strsplit(indel.class,":"))[2]
+
+  indel.context <- as.numeric(unlist(strsplit(indel.class,":"))[4])
+
+  target.seq <- NULL
+
+  if(indel.context>0){target.seq <- paste0(indel.base,1:indel.context)}
+
+  positions <- c(paste0("-",(flank.length:1)),
+                 paste0("+",1:flank.length))
+
+  if(!is.null(target.seq)){
+    positions <- c(paste0("-",(flank.length:1)),
+                   target.seq,
+                   paste0("+",1:flank.length))
+  }
+
+  classes<-c("A","C","G","T")
+  PFMmatrix<-matrix(data=NA,nrow=length(positions),ncol=length(classes),
+                    dimnames = list(positions,classes))
+
+  for(row in 1:nrow(PFMmatrix)){
+    tmp<-substr(sequences,row,row)
+    PFMmatrix[row,"A"]<-sum(tmp == "A")
+    PFMmatrix[row,"C"]<-sum(tmp == "C")
+    PFMmatrix[row,"G"]<-sum(tmp == "G")
+    PFMmatrix[row,"T"]<-sum(tmp == "T")
+  }
+
+  if(!is.null(plot.dir)){
+
+    plot.title <- "Dot-line plot for PFMmatrix"
+
+    grDevices::pdf(plot.dir)
+
+    if(!is.null(plot.title)){
+      dot.line.plot <- PlotPFMmatrix(PFMmatrix = PFMmatrix,
+                                     title = plot.title)
+    }
+
+    grDevices::dev.off()
+  }
+  return(PFMmatrix)
+
+
+
+}
+#' Generate dot-line plot for sequence contest of 1bp indel.
+#'
+#' @param PFMmatrix An object return from \code{\link{GeneratePlotPFMmatrix}}.
+#'
+#' @param title A string provides the title of the plot
+#'
+#' @return An \strong{invisible} list.
+#'
+PlotPFMmatrix<-function(PFMmatrix,title){
+
+  number.of.rows <- nrow(PFMmatrix)
+
+  #set x-axis positions for the plot
+  x <- c((1-number.of.rows/2):(number.of.rows/2))
+
+  if((number.of.rows %% 2) != 0){
+    x <- c(-((number.of.rows-1)/2):((number.of.rows-1)/2))
+
+  }
+
+  plot(x,PFMmatrix[,"A"]/sum(PFMmatrix[1,]),
+       main=title,
+       xlab="",
+       ylab="frequency",xaxt="n",
+       col="darkgreen",ylim=c(0,1),type="b",pch=20,lwd=2,cex.main=1)
+  axis(1, at=x,labels=rownames(PFMmatrix),
+       tick=F,outer=F,las=2,font=1,par(cex.axis=1))
+
+  lines(x,PFMmatrix[,"C"]/sum(PFMmatrix[1,]),col="blue",type="b",pch=20,lwd=2)
+  lines(x,PFMmatrix[,"G"]/sum(PFMmatrix[1,]),col="black",type="b",pch=20,lwd=2)
+  lines(x,PFMmatrix[,"T"]/sum(PFMmatrix[1,]),col="red",type="b",pch=20,lwd=2)
+  abline(h=0.25,col="grey50")
+  legend("topright",pch=16,cex=1,ncol=4,bty="n",
+         legend=c("A","C","G","T"),col=c("darkgreen","blue","black","red"))
+
+
+}
 
 
 
