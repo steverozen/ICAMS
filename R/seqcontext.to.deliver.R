@@ -171,7 +171,6 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 #' @param plot.title The title of the dot-line plot
 #'
 #' @return A matrix recording the frequency of each base (A, C, G, T) on each position of the sequence.
-#'
 #' @export
 GeneratePlotPFMmatrix <- function(sequences,flank.length = 5,indel.class,plot.dir=NULL,plot.title=NULL){
 
