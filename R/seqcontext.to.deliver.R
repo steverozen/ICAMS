@@ -13,11 +13,14 @@
 #' @param flank.length The length of flanking bases around the position
 #' or homopolymer targeted by the indel.
 #'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}
+#'
 #' @return A list of all sequence contexts for the specified
 #' \code{indel.class}.
 #'
 #' @export
-SymmetricalContextsFor1BPIndel <- function(annotated.vcf, indel.class, flank.length = 5){
+SymmetricalContextsFor1BPIndel <- function(annotated.vcf, indel.class, flank.length = 5,ref.genome="hg19"){
 
   if(!indel.class %in% ICAMS::catalog.row.order$ID[c(1:5,7:11,13:17,19:23)]){
     stop("Argument indel.class value ", indel.class, " not supported")
@@ -34,7 +37,7 @@ SymmetricalContextsFor1BPIndel <- function(annotated.vcf, indel.class, flank.len
   ##extend the ref seq context from 13 to 21.
   annotated.vcf.this.class <-
     ICAMS::AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
-                         ref.genome="hg19",
+                         ref.genome=ref.genome,
                          seq.context.width = 21)
 
   annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
@@ -96,7 +99,7 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
   homopolymer.length <-  as.numeric(split_indel.class[4])
   stopifnot(homopolymer.length %in% 0:4)
 
-  mid.base <- (nchar(sequence)+1)/2 
+  mid.base <- (nchar(sequence)+1)/2
   # For deletions this is a fraction; the substring call below still works.
 
   ins.or.del <- split_indel.class[1]
@@ -232,9 +235,16 @@ GeneratePlotPFMmatrix <- function(sequences,flank.length = 5,indel.class,plot.di
 #'
 #' @param title A string provides the title of the plot
 #'
+#' @param cex.main Passed to R plot function. Title size
+#' @param cex.lab Passed to R plot function. Axis label size
+#' @param cex.axis Passed to R plot function. Axis text size
+#'
 #' @return An \strong{invisible} list.
 #'
-PlotPFMmatrix<-function(PFMmatrix,title){
+PlotPFMmatrix<-function(PFMmatrix,title,
+                        cex.main=1.5,
+                        cex.lab=1.25,
+                        cex.axis = 1){
 
   number.of.rows <- nrow(PFMmatrix)
 
@@ -250,7 +260,7 @@ PlotPFMmatrix<-function(PFMmatrix,title){
        main=title,
        xlab="",
        ylab="frequency",xaxt="n",
-       col="darkgreen",ylim=c(0,1),type="b",pch=20,lwd=2,cex.main=1)
+       col="darkgreen",ylim=c(0,1),type="b",pch=20,lwd=2,cex.main=cex.main, cex.lab=cex.lab, cex.axis=cex.axis)
   axis(1, at=x,labels=rownames(PFMmatrix),
        tick=F,outer=F,las=2,font=1,par(cex.axis=1))
 

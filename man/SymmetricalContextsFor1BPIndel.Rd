@@ -4,7 +4,12 @@
 \alias{SymmetricalContextsFor1BPIndel}
 \title{Get all the sequence contexts of the indels in a given 1 base-pair indel class from a VCF.}
 \usage{
-SymmetricalContextsFor1BPIndel(annotated.vcf, indel.class, flank.length = 5)
+SymmetricalContextsFor1BPIndel(
+  annotated.vcf,
+  indel.class,
+  flank.length = 5,
+  ref.genome = "hg19"
+)
 }
 \arguments{
 \item{annotated.vcf}{An in-memory \code{data.frame} or similar table
@@ -19,6 +24,9 @@ not supported.}
 
 \item{flank.length}{The length of flanking bases around the position
 or homopolymer targeted by the indel.}
+
+\item{ref.genome}{A \code{ref.genome} argument as described in
+\code{\link{ICAMS}}}
 }
 \value{
 A list of all sequence contexts for the specified

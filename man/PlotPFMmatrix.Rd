@@ -4,12 +4,18 @@
 \alias{PlotPFMmatrix}
 \title{Generate dot-line plot for sequence contest of 1bp indel.}
 \usage{
-PlotPFMmatrix(PFMmatrix, title)
+PlotPFMmatrix(PFMmatrix, title, cex.main = 1.5, cex.lab = 1.25, cex.axis = 1)
 }
 \arguments{
 \item{PFMmatrix}{An object return from \code{\link{GeneratePlotPFMmatrix}}.}
 
 \item{title}{A string provides the title of the plot}
+
+\item{cex.main}{Passed to R plot function. Title size}
+
+\item{cex.lab}{Passed to R plot function. Axis label size}
+
+\item{cex.axis}{Passed to R plot function. Axis text size}
 }
 \value{
 An \strong{invisible} list.
