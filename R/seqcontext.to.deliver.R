@@ -96,7 +96,8 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
   homopolymer.length <-  as.numeric(split_indel.class[4])
   stopifnot(homopolymer.length %in% 0:4)
 
-  mid.base <- (nchar(sequence)+1)/2
+  mid.base <- (nchar(sequence)+1)/2 
+  # For deletions this is a fraction; the substring call below still works.
 
   ins.or.del <- split_indel.class[1]
 
