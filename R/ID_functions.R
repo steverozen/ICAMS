@@ -244,7 +244,7 @@ AnnotateIDVCF <-
 #' In this case this function will return 1 (a deletion of \code{AGC}
 #' in a 2-element repeat of \code{AGC}).
 #' 
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #' 
 #' @examples 
 #' FindMaxRepeatDel("xyACACzt", "AC", 3) # 1
@@ -397,7 +397,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
 #'   
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @export
 #' 

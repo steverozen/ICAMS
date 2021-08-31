@@ -4,6 +4,9 @@
 
 * Added new argument `seq.context.width` (default = NULL) to exported function `AnnotateIDVCF`.
 
+* Corrected error in the original Excel file showing PCAWG7 indel classification. Updated
+the links to the correct Excel file.
+
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.
 

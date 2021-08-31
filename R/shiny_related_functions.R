@@ -139,7 +139,7 @@ StrelkaSBSVCFFilesToZipFile <-
 #'
 #' @inheritSection StrelkaIDVCFFilesToCatalog Value
 #'
-#' @inheritSection VCFsToIDCatalogs ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @inheritSection VCFsToIDCatalogs Note
 #'
@@ -286,7 +286,7 @@ StrelkaIDVCFFilesToZipFile <-
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
 #'
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
 #'
@@ -860,7 +860,7 @@ StrelkaSBSVCFFilesToCatalog <-
 #'   be obtained from \code{ID.class} column.
 #' @md
 #'
-#' @inheritSection VCFsToIDCatalogs ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @inheritSection VCFsToIDCatalogs Note
 #'
@@ -956,7 +956,7 @@ CombineAndReturnCatalogsForMutectVCFs <-
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Value
 #'
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf Note
 #'
@@ -1882,7 +1882,7 @@ CheckAndReturnIDCatalog <-
 #' be obtained from \code{ID.class} column.
 #' @md
 #'
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @section Note:
 #'  In ID (small insertions and deletions) catalogs, deletion repeat sizes range

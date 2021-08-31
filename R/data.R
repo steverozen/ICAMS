@@ -9,7 +9,7 @@
 #' @format A list of character vectors indicating the standard
 #'   orders of row names in catalogs.
 #'
-#' @inheritSection MutectVCFFilesToCatalogAndPlotToPdf ID classification
+#' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @note In ID (small insertions and deletions) catalogs, deletion repeat sizes
 #'   range from 0 to 5+, but for plotting and end-user documentation deletion
