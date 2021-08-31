@@ -2,9 +2,21 @@ test_that("GeneratePlotPFMmatrix", {
 
   load("testdata/test_GeneratePlotPFMmatrix.Rdata")
 
-  test.INS.T.1.4.retval <- GeneratePlotPFMmatrix(sequences = INS.T.1.4.sequences,indel.class = "INS:T:1:4",plot.dir="test.INS.T.1.4.pdf",plot.title = "test.INS.T.1.4")
+  p1 <- tempfile(fileext = "pdf")
+  
+  test.INS.T.1.4.retval <- 
+    GeneratePlotPFMmatrix(sequences = INS.T.1.4.sequences,
+                          indel.class = "INS:T:1:4",
+                          plot.dir=p1,
+                          plot.title = "test.INS.T.1.4")
 
-  test.INS.T.1.0.retval <- GeneratePlotPFMmatrix(sequences = INS.T.1.0.sequences,indel.class = "INS:T:1:0",plot.dir="test.INS.T.1.0.pdf",plot.title = "test.INS.T.1.0")
+  p2 <- tempfile(fileext = "pdf")
+  
+  test.INS.T.1.0.retval <- 
+    GeneratePlotPFMmatrix(sequences = INS.T.1.0.sequences,
+                          indel.class = "INS:T:1:0",
+                          plot.dir=p2,
+                          plot.title = "test.INS.T.1.0")
 
 
   expect_equal(test.INS.T.1.4.retval, INS.T.1.4.retval)
