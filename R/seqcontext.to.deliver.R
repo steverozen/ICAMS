@@ -36,10 +36,9 @@ SymmetricalContextsFor1BPIndel <-
     annotated.vcf[annotated.vcf$ID.class %in% indel.class, ]
 
   ##extend the ref seq context from 6 to 21.
-  annotated.vcf.this.class <-
-    ICAMS::AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
-                         ref.genome = ref.genome,
-                         seq.context.width = 21)
+  annotated.vcf.this.class <- AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
+                                            ref.genome = ref.genome,
+                                            seq.context.width = 21)
 
   annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
 
@@ -88,8 +87,8 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
   #  paste0('Get1BPIndelFlanks("', sequence, '", "', ref, "\",  \"", alt, "\",  \"",indel.class, "\")\n")
   # )
 
-  # sanity check; assume the input VCF provides one base of context to the left of the indel,
-  # e.g. insertion A -> AT, deletion CT -> C
+  # sanity check; assume the input VCF provides one base of context to the left
+  # of the indel, e.g. insertion A -> AT, deletion CT -> C
   stopifnot(nchar(ref) + nchar(alt) == 3)
 
   # indel.class is string such as "DEL:T:1:3"
@@ -115,11 +114,11 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 
     # alt could be A, C, G, T, need to "normalize" to C or T
     if(alt != indel.base) {
-      seq.context <-  ICAMS::revc(seq.context)
+      seq.context <- revc(seq.context)
     }
   } else {
 
-    if(ins.or.del == "DEL"){
+    if (ins.or.del == "DEL"){
       homopolymer.length <- homopolymer.length + 1
     }
 
@@ -139,12 +138,11 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 
     ## normalize the insertion context to the middle
 
-    seq.context <-  
-      substring(sequence, homopolymer.starts - flank.length, homopolymer.ends + flank.length)
+    seq.context <- substring(sequence, homopolymer.starts - flank.length, 
+                             homopolymer.ends + flank.length)
 
     if(substring(sequence, homopolymer.starts, homopolymer.starts)!= indel.base){
-      seq.context <-  
-        ICAMS::revc(substring(sequence, homopolymer.starts - flank.length, homopolymer.ends + flank.length))
+      seq.context <- revc(seq.context)
 
     }
 
@@ -153,7 +151,7 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
                  "[^", indel.base, "][ACGT]{", flank.length - 1, "}")
     if (!grepl(re, seq.context, perl = TRUE)) {
       stop("Extracted sequence ", seq.context, " does not have the expected form ",
-           "(does not match the RE '", re, "')\n",
+           "(does not match the regular expression '", re, "')\n",
            "Possibly the variant caller is not standardizing the position of the indel in the homopolymer")
     }
 
