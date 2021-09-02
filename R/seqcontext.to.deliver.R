@@ -186,7 +186,7 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 GeneratePlotPFMmatrix <- 
   function(sequences, flank.length = 5, indel.class, plot.dir = NULL, plot.title = NULL){
     
-    if(length(unique(nchar(sequences)))>1){
+    if(length(unique(nchar(sequences))) > 1){
       stop("All sequences must have the same length")
     }
     
@@ -196,7 +196,7 @@ GeneratePlotPFMmatrix <-
     
     target.seq <- NULL
     
-    if(indel.context>0){target.seq <- paste0(indel.base, 1:indel.context)}
+    if(indel.context > 0){target.seq <- paste0(indel.base, 1:indel.context)}
     
     positions <- c(paste0("-", (flank.length:1)),
                    paste0("+", 1:flank.length))
@@ -222,19 +222,16 @@ GeneratePlotPFMmatrix <-
     
     if(!is.null(plot.dir)){
       
-      plot.title <- "Dot-line plot for PFMmatrix"
-      
-      grDevices::pdf(plot.dir)
-      
-      if(!is.null(plot.title)){
-        dot.line.plot <- PlotPFMmatrix(PFMmatrix = PFMmatrix,
-                                       title = plot.title)
+      if (is.null(plot.title)) {
+        plot.title <- "Dot-line plot for PFMmatrix"
       }
       
+      grDevices::pdf(plot.dir)
+      dot.line.plot <- PlotPFMmatrix(PFMmatrix = PFMmatrix,
+                                     title = plot.title)
       grDevices::dev.off()
     }
     return(PFMmatrix)
-    
   }
 
 #' Generate dot-line plot for sequence contest of 1bp indel
