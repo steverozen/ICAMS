@@ -2,7 +2,7 @@
 % Please edit documentation in R/seqcontext.to.deliver.R
 \name{PlotPFMmatrix}
 \alias{PlotPFMmatrix}
-\title{Generate dot-line plot for sequence contest of 1bp indel.}
+\title{Generate dot-line plot for sequence contest of 1bp indel}
 \usage{
 PlotPFMmatrix(PFMmatrix, title, cex.main = 1.5, cex.lab = 1.25, cex.axis = 1)
 }
@@ -21,5 +21,6 @@ PlotPFMmatrix(PFMmatrix, title, cex.main = 1.5, cex.lab = 1.25, cex.axis = 1)
 An \strong{invisible} list.
 }
 \description{
-Generate dot-line plot for sequence contest of 1bp indel.
+Generate dot-line plot for sequence contest of 1bp indel
 }
+\keyword{internal}

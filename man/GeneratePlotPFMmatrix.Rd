@@ -2,7 +2,7 @@
 % Please edit documentation in R/seqcontext.to.deliver.R
 \name{GeneratePlotPFMmatrix}
 \alias{GeneratePlotPFMmatrix}
-\title{Generate PFMmatrix from a given list of sequences.}
+\title{Generate PFMmatrix (Position Frequency Matrix) from a given list of sequences}
 \usage{
 GeneratePlotPFMmatrix(
   sequences,
@@ -13,23 +13,25 @@ GeneratePlotPFMmatrix(
 )
 }
 \arguments{
-\item{sequences}{A list of strings returned from \code{\link{SymmetricalContextsFor1BPIndel}}.}
+\item{sequences}{A list of strings returned from
+\code{\link{SymmetricalContextsFor1BPIndel}}.}
 
-\item{flank.length}{The length of flanking bases around the position
-or homopolymer targeted by the indel.+}
+\item{flank.length}{The length of flanking bases around the position or
+homopolymer targeted by the indel.}
 
 \item{indel.class}{A single character string that denotes a 1 base pair
 insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.
-Insertions or deletions into or from 5+ base-pair homopolymers are
-not supported.}
+Insertions or deletions into or from 5+ base-pair homopolymers are not
+supported.}
 
 \item{plot.dir}{If provided, make a dot-line plot for PFMmatrix.}
 
 \item{plot.title}{The title of the dot-line plot}
 }
 \value{
-A matrix recording the frequency of each base (A, C, G, T) on each position of the sequence.
+A matrix recording the frequency of each base (A, C, G, T) on each
+  position of the sequence.
 }
 \description{
-Generate PFMmatrix from a given list of sequences.
+Generate PFMmatrix (Position Frequency Matrix) from a given list of sequences
 }

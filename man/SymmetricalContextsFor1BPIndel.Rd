@@ -2,7 +2,8 @@
 % Please edit documentation in R/seqcontext.to.deliver.R
 \name{SymmetricalContextsFor1BPIndel}
 \alias{SymmetricalContextsFor1BPIndel}
-\title{Get all the sequence contexts of the indels in a given 1 base-pair indel class from a VCF.}
+\title{Get all the sequence contexts of the indels in a given 1 base-pair indel
+class from a VCF}
 \usage{
 SymmetricalContextsFor1BPIndel(
   annotated.vcf,
@@ -19,19 +20,19 @@ containing "VCF" (variant call format) data as created by
 
 \item{indel.class}{A single character string that denotes a 1 base pair
 insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.
-Insertions or deletions into or from 5+ base-pair homopolymers are
-not supported.}
+Insertions or deletions into or from 5+ base-pair homopolymers are not
+supported.}
 
-\item{flank.length}{The length of flanking bases around the position
-or homopolymer targeted by the indel.}
+\item{flank.length}{The length of flanking bases around the position or
+homopolymer targeted by the indel.}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}}
 }
 \value{
-A list of all sequence contexts for the specified
-\code{indel.class}.
+A list of all sequence contexts for the specified \code{indel.class}.
 }
 \description{
-Get all the sequence contexts of the indels in a given 1 base-pair indel class from a VCF.
+Get all the sequence contexts of the indels in a given 1 base-pair indel
+class from a VCF
 }

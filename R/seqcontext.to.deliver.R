@@ -162,7 +162,7 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 
 }
 
-#' Generate PFMmatrix (Position Freqency Matrix) from a given list of sequences
+#' Generate PFMmatrix (Position Frequency Matrix) from a given list of sequences
 #'
 #' @param sequences A list of strings returned from
 #'   \code{\link{SymmetricalContextsFor1BPIndel}}.

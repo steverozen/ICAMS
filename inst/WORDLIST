@@ -51,6 +51,7 @@ Mmusculus
 Mutect
 NA's
 PCAWG
+PFMmatrix
 POS
 README
 ReadAndSplitVCFs
@@ -83,6 +84,7 @@ VCFsToZipFile
 al
 bioc
 bioconductor
+bp
 bz
 catSBS
 cex
@@ -101,6 +103,7 @@ gff
 github
 gz
 hg
+homopolymer
 homopolymers
 hs
 https
