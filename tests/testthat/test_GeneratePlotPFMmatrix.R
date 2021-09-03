@@ -10,26 +10,26 @@ test_that("GeneratePlotPFMmatrix", {
     GeneratePlotPFMmatrix(sequences = INS.T.1.0.sequences,
                           indel.class = "INS:T:1:0",
                           plot.dir = files[1],
-                          plot.title = "test.INS.T.1.0")
+                          plot.title = "Denovo insertion of 1T")
   
   test.INS.T.1.4.retval <- 
     GeneratePlotPFMmatrix(sequences = INS.T.1.4.sequences,
                           indel.class = "INS:T:1:4",
                           plot.dir = files[2],
-                          plot.title = "test.INS.T.1.4")
+                          plot.title = "Insertion of 1T to 4Ts")
 
   test.DEL.C.1.0.retval <- 
     GeneratePlotPFMmatrix(sequences = DEL.C.1.0.sequences,
                           indel.class = "DEL:C:1:0",
                           plot.dir = files[3],
-                          plot.title = "test.DEL.C.1.0")
+                          plot.title = "Deletion of 1C from 1C")
 
   
   test.DEL.C.1.4.retval <- 
     GeneratePlotPFMmatrix(sequences = DEL.C.1.4.sequences,
                           indel.class = "DEL:C:1:4",
                           plot.dir = files[4],
-                          plot.title = "test.DEL.C.1.4")
+                          plot.title = "Deletion of 1C from 5Cs")
   
   expect_equal(test.INS.T.1.0.retval, INS.T.1.0.retval)
   expect_equal(test.INS.T.1.4.retval, INS.T.1.4.retval)
