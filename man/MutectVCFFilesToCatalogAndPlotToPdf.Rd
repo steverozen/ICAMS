@@ -133,7 +133,7 @@ To add or change attributes of the catalog, you can use function
 
 \section{ID classification}{
 
-See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2021_08_31.xlsx}
+See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 for additional information on ID (small insertions and deletions) mutation
 classification.
 
