@@ -9,18 +9,21 @@ test_that("GeneratePlotPFMmatrix", {
   test.INS.T.1.0.retval <- 
     GeneratePlotPFMmatrix(sequences = INS.T.1.0.sequences,
                           indel.class = "INS:T:1:0",
+                          flank.length = 10,
                           plot.dir = files[1],
                           plot.title = "Denovo insertion of 1T")
   
   test.INS.T.1.4.retval <- 
     GeneratePlotPFMmatrix(sequences = INS.T.1.4.sequences,
                           indel.class = "INS:T:1:4",
+                          flank.length = 6,
                           plot.dir = files[2],
                           plot.title = "Insertion of 1T to 4Ts")
 
   test.DEL.C.1.0.retval <- 
     GeneratePlotPFMmatrix(sequences = DEL.C.1.0.sequences,
                           indel.class = "DEL:C:1:0",
+                          flank.length = 10,
                           plot.dir = files[3],
                           plot.title = "Deletion of 1C from 1C")
 
@@ -28,6 +31,7 @@ test_that("GeneratePlotPFMmatrix", {
   test.DEL.C.1.4.retval <- 
     GeneratePlotPFMmatrix(sequences = DEL.C.1.4.sequences,
                           indel.class = "DEL:C:1:4",
+                          flank.length = 6,
                           plot.dir = files[4],
                           plot.title = "Deletion of 1C from 5Cs")
   

@@ -10,7 +10,6 @@ test_that("AnnotateIDVCF function with hg19", {
                   ref.genome = 
                     BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5)
   list1 <- AnnotateIDVCF(id.vcf, ref.genome = "GRCh37")
-  list3 <- AnnotateIDVCF(id.vcf, ref.genome = "GRCh37", seq.context.width = 10)
   list2 <- AnnotateIDVCF(id.vcf, ref.genome = "hg19")
   expect_equal(list$annotated.vcf, strelka.ID.vcf.GRCh37)
   expect_equal(list$annotated.vcf, list1$annotated.vcf)

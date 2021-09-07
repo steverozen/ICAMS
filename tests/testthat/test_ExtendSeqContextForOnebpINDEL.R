@@ -6,13 +6,17 @@ test_that("ExtendSeqContextForOnebpINDEL", {
   load("testdata/test_ExtendSeqContextForOnebpINDEL.Rdata")
 
   test.INS.T.1.0.sequences <- 
-    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:0")
+    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:0",
+                                   flank.length = 10)
   test.INS.T.1.4.sequences <- 
-    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:4")
+    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:4",
+                                   flank.length = 6)
   test.DEL.C.1.0.sequences <- 
-    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:0")
+    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:0",
+                                   flank.length = 10)
   test.DEL.C.1.4.sequences <- 
-    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:4")
+    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:4",
+                                   flank.length = 6)
 
   expect_equal(test.INS.T.1.0.sequences, INS.T.1.0.sequences)
   expect_equal(test.INS.T.1.4.sequences, INS.T.1.4.sequences)

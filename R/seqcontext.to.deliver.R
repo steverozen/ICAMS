@@ -140,19 +140,31 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
     homopolymer.starts <- mid.base + 1
 
     homopolymer.ends <- mid.base + homopolymer.length
+    
+    if (ins.or.del == "DEL"){
+      # For deletions, the deleted base will be at position 0
+      var.length <- homopolymer.length - 1
+    } else {
+      var.length <- homopolymer.length 
+    }
 
     ## normalize the insertion context to the middle
-
-    seq.context <- substring(sequence, homopolymer.starts - flank.length, 
-                             homopolymer.ends + flank.length)
-
     if(substring(sequence, homopolymer.starts, homopolymer.starts)!= indel.base){
+      seq.context <- substring(sequence, 
+                               homopolymer.starts - flank.length , 
+                               homopolymer.ends + flank.length + var.length)
       seq.context <- revc(seq.context)
 
+    } else {
+      seq.context <- substring(sequence, 
+                               homopolymer.starts - flank.length - var.length, 
+                               homopolymer.ends + flank.length)
     }
 
     homopolymer.seq <- paste(rep(indel.base, homopolymer.length), collapse = "")
-    re <- paste0("[ACGT]{", flank.length - 1, "}[^", indel.base, "]", homopolymer.seq,
+    
+    re <- paste0("[ACGT]{", flank.length - 1 + var.length, "}[^", indel.base, "]", 
+                 homopolymer.seq,
                  "[^", indel.base, "][ACGT]{", flank.length - 1, "}")
     if (!grepl(re, seq.context, perl = TRUE)) {
       stop("Extracted sequence ", seq.context, " does not have the expected form ",
@@ -216,17 +228,16 @@ GeneratePlotPFMmatrix <-
     
     indel.context <- as.numeric(unlist(strsplit(indel.class, ":"))[4])
     
-    target.seq <- NULL
+    ins.or.del <- unlist(strsplit(indel.class, ":"))[1]
     
-    if(indel.context > 0){target.seq <- paste0(indel.base, 1:indel.context)}
+    positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                   paste0("+", 1:(flank.length + indel.context)))
     
-    positions <- c(paste0("-", (flank.length:1)),
-                   paste0("+", 1:flank.length))
-    
-    if(!is.null(target.seq)){
-      positions <- c(paste0("-", (flank.length:1)),
-                     target.seq,
-                     paste0("+", 1:flank.length))
+    # When it is deletion, the deleted base will have position 0
+    if(ins.or.del == "DEL"){
+      positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                     0,
+                     paste0("+", 1:(flank.length + indel.context)))
     }
     
     classes <- c("A","C","G","T")
@@ -286,7 +297,7 @@ PlotPFMmatrix<-function(PFMmatrix, title,
     
   }
   
-  plot(x, PFMmatrix[, "A"]/sum(PFMmatrix[1, ]), main = title, xlab = "",
+  plot(x, PFMmatrix[, "A"]/sum(PFMmatrix[1, ]), main = title, xlab = "position",
        ylab = "Proportion of bases", xaxt = "n", col = "darkgreen", ylim = c(0, 1),
        type = "b", pch = 20, lwd = 2, cex.main = cex.main, cex.lab = cex.lab,
        cex.axis = cex.axis)
