@@ -287,7 +287,7 @@ PlotPFMmatrix<-function(PFMmatrix, title,
   }
   
   plot(x, PFMmatrix[, "A"]/sum(PFMmatrix[1, ]), main = title, xlab = "",
-       ylab = "frequency", xaxt = "n", col = "darkgreen", ylim = c(0, 1),
+       ylab = "Proportion of bases", xaxt = "n", col = "darkgreen", ylim = c(0, 1),
        type = "b", pch = 20, lwd = 2, cex.main = cex.main, cex.lab = cex.lab,
        cex.axis = cex.axis)
   
