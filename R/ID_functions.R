@@ -19,10 +19,6 @@
 #' @param suppress.discarded.variants.warnings Logical. Whether to suppress
 #'   warning messages showing information about the discarded variants. Default
 #'   is TRUE.
-#'   
-#' @param seq.context.width The width of sequence context to the left of the
-#'   "context base". If \code{NULL}, the function will use 6 * inserted/deleted
-#'   bases length.
 #'
 #' @importFrom GenomicRanges GRanges
 #'
@@ -58,7 +54,7 @@
 #'   annotated.ID.vcf <- list$annotated.vcf}
 AnnotateIDVCF <- 
   function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL,
-           suppress.discarded.variants.warnings = TRUE, seq.context.width = NULL) {
+           suppress.discarded.variants.warnings = TRUE) {
     if (nrow(ID.vcf) == 0) {
       return(list(annotated.vcf = ID.vcf))
     }
@@ -128,13 +124,9 @@ AnnotateIDVCF <-
     is.del <- nchar(df3$ALT) <= nchar(df3$REF)
     var.width.in.genome <- ifelse(is.del, var.width, 0)
     
-    if (is.null(seq.context.width)) {
-      # Set the minimum seq.context.width to be 21, this is to facilitate
-      # extended sequence context analysis
-      df3$seq.context.width <- ifelse(var.width * 6 < 21, 21, var.width * 6)
-    } else {
-      df3$seq.context.width <- seq.context.width
-    }
+    # Set the minimum seq.context.width to be 21, this is to facilitate
+    # extended sequence context analysis
+    df3$seq.context.width <- ifelse(var.width * 6 < 21, 21, var.width * 6)
     
     # 6 because we need to find out if the insertion or deletion is embedded
     # in up to 5 additional repeats of the inserted or deleted sequence.

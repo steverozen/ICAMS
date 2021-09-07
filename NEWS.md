@@ -2,8 +2,6 @@
 * Updated two internal functions `GeneratePCAWGAliquotID` and
 `GeneratePCAWGAliquotID2`.
 
-* Added new argument `seq.context.width` (default = NULL) to exported function `AnnotateIDVCF`.
-
 * Corrected error in the original Excel file showing PCAWG7 indel classification. Updated
 the links in documentation pointing to the correct Excel file. Added a new column showing
 the ICAMS ID catalog row name.
