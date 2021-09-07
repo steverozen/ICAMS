@@ -129,7 +129,9 @@ AnnotateIDVCF <-
     var.width.in.genome <- ifelse(is.del, var.width, 0)
     
     if (is.null(seq.context.width)) {
-      df3$seq.context.width <- var.width * 6
+      # Set the minimum seq.context.width to be 21, this is to facilitate
+      # extended sequence context analysis
+      df3$seq.context.width <- ifelse(var.width * 6 < 21, 21, var.width * 6)
     } else {
       df3$seq.context.width <- seq.context.width
     }
