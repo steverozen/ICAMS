@@ -42,12 +42,12 @@ file <- c(system.file("extdata/Mutect-vcf",
                       package = "ICAMS"))
 split.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
 ID.catalog <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
-                               ref.genome = "hg19", 
+                               ref.genome = "hg19",
                                region = "genome",
                                return.annotated.vcfs = TRUE)
 annotated.vcf <- ID.catalog$annotated.vcfs$Mutect.GRCh37.s1
-extended.seq.contexts <- 
-  SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf, 
+extended.seq.contexts <-
+  SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf,
                                  indel.class = "DEL:T:1:0")
 
 }
