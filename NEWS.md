@@ -8,6 +8,12 @@
 the links in documentation pointing to the correct Excel file. Added a new column showing
 the ICAMS ID catalog row name.
 
+* Set a minimum value of 21 for `seq.context.width` in function `AnnotateIDVCF` to facilitate
+extended sequence context analysis.
+
+* Added examples to two new exported functions `SymmetricalContextsFor1BPIndel` 
+and `GeneratePlotPFMmatrix`.
+
 
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.

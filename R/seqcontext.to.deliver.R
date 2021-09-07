@@ -20,6 +20,21 @@
 #' @return A list of all sequence contexts for the specified \code{indel.class}.
 #'   
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' split.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
+#' ID.catalog <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+#'                                ref.genome = "hg19", 
+#'                                region = "genome",
+#'                                return.annotated.vcfs = TRUE)
+#' annotated.vcf <- ID.catalog$annotated.vcfs$Mutect.GRCh37.s1
+#' extended.seq.contexts <- 
+#'   SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf, 
+#'                                  indel.class = "DEL:T:1:0")
+#' 
 SymmetricalContextsFor1BPIndel <- 
   function(annotated.vcf, indel.class, flank.length = 5, ref.genome = "hg19"){
 
@@ -181,10 +196,29 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 #'
 #' @return A matrix recording the frequency of each base (A, C, G, T) on each
 #'   position of the sequence.
-#'   
+#' 
 #' @export
+#' 
+#' @examples 
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' split.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
+#' ID.catalog <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+#'                                ref.genome = "hg19", 
+#'                                region = "genome",
+#'                                return.annotated.vcfs = TRUE)
+#' annotated.vcf <- ID.catalog$annotated.vcfs$Mutect.GRCh37.s1
+#' extended.seq.contexts <- 
+#'   SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf, 
+#'                                  indel.class = "DEL:T:1:0")
+#' GeneratePlotPFMmatrix(sequences = extended.seq.contexts, 
+#'                       indel.class = "DEL:T:1:0", 
+#'                       plot.dir = file.path(tempdir(), "test.pdf"), 
+#'                       plot.title = "Deletion of 1T from 1T")
 GeneratePlotPFMmatrix <- 
-  function(sequences, flank.length = 5, indel.class, plot.dir = NULL, plot.title = NULL){
+  function(sequences, indel.class, flank.length = 5, plot.dir = NULL, 
+           plot.title = NULL){
     
     if(length(unique(nchar(sequences))) > 1){
       stop("All sequences must have the same length")
