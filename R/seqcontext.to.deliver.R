@@ -34,13 +34,15 @@ SymmetricalContextsFor1BPIndel <-
 
   annotated.vcf.this.class <-
     annotated.vcf[annotated.vcf$ID.class %in% indel.class, ]
-
-  ##extend the ref seq context from 6 to 21.
-  annotated.vcf.this.class <- AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
-                                            ref.genome = ref.genome,
-                                            seq.context.width = 21)
-
-  annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
+   
+  if (FALSE) {
+    ##extend the ref seq context from 6 to 21.
+    annotated.vcf.this.class <- AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
+                                              ref.genome = ref.genome,
+                                              seq.context.width = 21)
+    
+    annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
+  }
 
   extended_sequence_context <-
     apply(annotated.vcf.this.class, 1,
