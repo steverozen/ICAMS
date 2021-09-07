@@ -14,9 +14,6 @@
 #' @param flank.length The length of flanking bases around the position or
 #'   homopolymer targeted by the indel.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}
-#'
 #' @return A list of all sequence contexts for the specified \code{indel.class}.
 #'   
 #' @export
@@ -36,7 +33,7 @@
 #'                                  indel.class = "DEL:T:1:0")
 #' 
 SymmetricalContextsFor1BPIndel <- 
-  function(annotated.vcf, indel.class, flank.length = 5, ref.genome = "hg19"){
+  function(annotated.vcf, indel.class, flank.length = 5){
 
   if(!indel.class %in% ICAMS::catalog.row.order$ID[c(1:5, 7:11, 13:17, 19:23)]){
     stop("Argument indel.class value ", indel.class, " not supported")
@@ -50,15 +47,6 @@ SymmetricalContextsFor1BPIndel <-
   annotated.vcf.this.class <-
     annotated.vcf[annotated.vcf$ID.class %in% indel.class, ]
    
-  if (FALSE) {
-    ##extend the ref seq context from 6 to 21.
-    annotated.vcf.this.class <- AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
-                                              ref.genome = ref.genome,
-                                              seq.context.width = 21)
-    
-    annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
-  }
-
   extended_sequence_context <-
     apply(annotated.vcf.this.class, 1,
           function(x){
