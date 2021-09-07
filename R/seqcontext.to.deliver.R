@@ -302,8 +302,8 @@ PlotPFMmatrix<-function(PFMmatrix, title,
        type = "b", pch = 20, lwd = 2, cex.main = cex.main, cex.lab = cex.lab,
        cex.axis = cex.axis)
   
-  axis(1, at = x, labels = rownames(PFMmatrix), tick = F, outer = F, las = 2,
-       font = 1, par(cex.axis = 1))
+  axis(1, at = x, labels = rownames(PFMmatrix), tick = F, outer = F, las = 1,
+       font = 1, par(cex.axis = 0.7))
   
   lines(x, PFMmatrix[, "C"]/sum(PFMmatrix[1, ]), col = "blue", type = "b",
         pch = 20, lwd = 2)
