@@ -14,9 +14,6 @@
 #' @param flank.length The length of flanking bases around the position or
 #'   homopolymer targeted by the indel.
 #'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}
-#'
 #' @return A list of all sequence contexts for the specified \code{indel.class}.
 #'
 #' @export
@@ -34,9 +31,10 @@
 #' extended.seq.contexts <-
 #'   SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf,
 #'                                  indel.class = "DEL:T:1:0")
+
 #'
 SymmetricalContextsFor1BPIndel <-
-  function(annotated.vcf, indel.class, flank.length = 5, ref.genome = "hg19"){
+  function(annotated.vcf, indel.class, flank.length = 5){
 
     if(!indel.class %in% ICAMS::catalog.row.order$ID[c(1:5, 7:11, 13:17, 19:23)]){
       stop("Argument indel.class value ", indel.class, " not supported")
@@ -47,17 +45,9 @@ SymmetricalContextsFor1BPIndel <-
            "use ICAMS::VCFsToIDCatalogs with argument return.annotated.vcfs = TRUE")
     }
 
+
     annotated.vcf.this.class <-
       annotated.vcf[annotated.vcf$ID.class %in% indel.class, ]
-
-    if (FALSE) {
-      ##extend the ref seq context from 6 to 21.
-      annotated.vcf.this.class <- AnnotateIDVCF(ID.vcf = annotated.vcf.this.class,
-                                                ref.genome = ref.genome,
-                                                seq.context.width = 21)
-
-      annotated.vcf.this.class <- annotated.vcf.this.class$annotated.vcf
-    }
 
     extended_sequence_context <-
       apply(annotated.vcf.this.class, 1,
@@ -153,18 +143,31 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
 
     homopolymer.ends <- mid.base + homopolymer.length
 
+    if (ins.or.del == "DEL"){
+      # For deletions, the deleted base will be at position 0
+      var.length <- homopolymer.length - 1
+    } else {
+      var.length <- homopolymer.length
+    }
+
     ## normalize the insertion context to the middle
 
-    seq.context <- substring(sequence, homopolymer.starts - flank.length,
-                             homopolymer.ends + flank.length)
-
     if(substring(sequence, homopolymer.starts, homopolymer.starts)!= indel.base){
+      seq.context <- substring(sequence,
+                               homopolymer.starts - flank.length ,
+                               homopolymer.ends + flank.length + var.length)
       seq.context <- revc(seq.context)
 
+    } else {
+      seq.context <- substring(sequence,
+                               homopolymer.starts - flank.length - var.length,
+                               homopolymer.ends + flank.length)
     }
 
     homopolymer.seq <- paste(rep(indel.base, homopolymer.length), collapse = "")
-    re <- paste0("[ACGT]{", flank.length - 1, "}[^", indel.base, "]", homopolymer.seq,
+
+    re <- paste0("[ACGT]{", flank.length - 1 + var.length, "}[^", indel.base, "]",
+                 homopolymer.seq,
                  "[^", indel.base, "][ACGT]{", flank.length - 1, "}")
     if (!grepl(re, seq.context, perl = TRUE)) {
       stop("Extracted sequence ", seq.context, " does not have the expected form ",
@@ -230,14 +233,15 @@ GeneratePlotPFMmatrix <-
 
     ins.or.del <- unlist(strsplit(indel.class, ":"))[1]
 
-    positions <- c(paste0("-", (flank.length:1)),
-                   "0",
-                   paste0("+", 1:(unique(nchar(sequences))-flank.length-1)))
+    positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                   paste0("+", 1:(flank.length + indel.context)))
 
-
-    if(indel.context == 0 && ins.or.del=="INS"){positions <- c(paste0("-", (flank.length:1)),
-                                                               paste0("+", 1:flank.length))}
-
+    # When it is deletion, the deleted base will have position 0
+    if(ins.or.del == "DEL"){
+      positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                     0,
+                     paste0("+", 1:(flank.length + indel.context)))
+    }
 
     classes <- c("A","C","G","T")
 
@@ -296,13 +300,13 @@ PlotPFMmatrix<-function(PFMmatrix, title,
 
   }
 
-  plot(x, PFMmatrix[, "A"]/sum(PFMmatrix[1, ]), main = title, xlab = "",
-       ylab = "frequency", xaxt = "n", col = "darkgreen", ylim = c(0, 1),
+  plot(x, PFMmatrix[, "A"]/sum(PFMmatrix[1, ]), main = title, xlab = "position",
+       ylab = "Proportion of bases", xaxt = "n", col = "darkgreen", ylim = c(0, 1),
        type = "b", pch = 20, lwd = 2, cex.main = cex.main, cex.lab = cex.lab,
        cex.axis = cex.axis)
 
-  axis(1, at = x, labels = rownames(PFMmatrix), tick = F, outer = F, las = 2,
-       font = 1, par(cex.axis = 1))
+  axis(1, at = x, labels = rownames(PFMmatrix), tick = F, outer = F, las = 1,
+       font = 1, par(cex.axis = 0.7))
 
   lines(x, PFMmatrix[, "C"]/sum(PFMmatrix[1, ]), col = "blue", type = "b",
         pch = 20, lwd = 2)
@@ -339,8 +343,8 @@ PlotPFMmatrix<-function(PFMmatrix, title,
 
 
 HaplotypePlot <- function(sequences,
-                           indel.class, flank.length = 5,
-                           title="Haplotype Plot"){
+                          indel.class, flank.length = 5,
+                          title="Haplotype Plot"){
   if(length(unique(nchar(sequences))) > 1){
     stop("All sequences must have the same length")
   }

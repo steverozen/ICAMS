@@ -45,5 +45,6 @@ test_that("errors", {
   expect_error(
     test.INS.T.1.4.retval <-
       HaplotypePlot(sequences = c(INS.T.1.4.sequences, INS.T.1.0.sequences),
-                            indel.class = "INS:T:1:4"))
+                    indel.class = "INS:T:1:4")
+    )
 })

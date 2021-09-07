@@ -16,29 +16,37 @@ test.indel.vcf <-
 test.indel.vcf <- test.indel.vcf$annotated.vcfs[[1]]
 
 INS.T.1.0.sequences <- 
-  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:0")
+  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:0",
+                                 flank.length = 10)
 INS.T.1.4.sequences <- 
-  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:4")
+  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "INS:T:1:4",
+                                 flank.length = 6)
 DEL.C.1.0.sequences <- 
-  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:0")
+  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:0",
+                                 flank.length = 10)
 DEL.C.1.4.sequences <- 
-  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:4")
+  SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:4",
+                                 flank.length = 6)
 
 INS.T.1.0.retval <- 
   GeneratePlotPFMmatrix(sequences = INS.T.1.0.sequences,
-                        indel.class = "INS:T:1:0")
+                        indel.class = "INS:T:1:0",
+                        flank.length = 10)
 
 INS.T.1.4.retval <- 
   GeneratePlotPFMmatrix(sequences = INS.T.1.4.sequences,
-                        indel.class = "INS:T:1:4")
+                        indel.class = "INS:T:1:4",
+                        flank.length = 6)
 
 DEL.C.1.0.retval <-
   GeneratePlotPFMmatrix(sequences = DEL.C.1.0.sequences,
-                        indel.class = "DEL:C:1:0")
+                        indel.class = "DEL:C:1:0",
+                        flank.length = 10)
 
 DEL.C.1.4.retval <-
   GeneratePlotPFMmatrix(sequences = DEL.C.1.4.sequences,
-                        indel.class = "DEL:C:1:4")
+                        indel.class = "DEL:C:1:4",
+                        flank.length = 6)
 
 save(test.indel.vcf, INS.T.1.0.sequences, INS.T.1.4.sequences, 
      DEL.C.1.0.sequences, DEL.C.1.4.sequences, 
