@@ -408,9 +408,10 @@ HaplotypePlot <- function(sequences,
     melt.seq.tmp[,i] <- as.numeric(melt.seq.tmp[,i])
 
   }
-  dist.matrix <- dist(data.matrix(melt.seq.tmp[,2:(ncol(melt.seq.tmp))]),method = "euclidean")
+  dist.matrix <- stats::dist(data.matrix(melt.seq.tmp[,2:(ncol(melt.seq.tmp))]),
+                             method = "euclidean")
 
-  ordered.rank <- hclust(dist.matrix)
+  ordered.rank <- stats::hclust(dist.matrix)
 
   melt.seq.tmp <- melt.seq.tmp[ordered.rank$order,]
 
