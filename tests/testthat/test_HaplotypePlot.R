@@ -4,12 +4,9 @@ test_that("HaplotypePlot", {
 
   load("testdata/test_HaplotypePlot.Rdata")
 
-  files <- file.path(tempdir(), paste0("test", 1:4, ".pdf"))
-
   test.INS.T.1.0.retval <-
     HaplotypePlot(sequences = INS.T.1.0.sequences,
                   indel.class = "INS:T:1:0",
-
                   title = "De novo insertion of 1T")
 
   test.INS.T.1.4.retval <-
@@ -37,8 +34,6 @@ test_that("HaplotypePlot", {
   plot(test.INS.T.1.4.retval)
   plot(test.DEL.C.1.0.retval)
   plot(test.DEL.C.1.4.retval)
-
-  sapply(files, FUN = unlink, recursive = TRUE)
 })
 
 test_that("errors", {

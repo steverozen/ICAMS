@@ -320,9 +320,6 @@ PlotPFMmatrix<-function(PFMmatrix, title,
          legend = c("A", "C", "G", "T"), col = c("darkgreen", "blue", "black", "red"))
 }
 
-
-
-
 #' Generate Haplotype plot from a given list of sequences
 #'
 #' @param sequences A list of strings returned from
@@ -336,19 +333,44 @@ PlotPFMmatrix<-function(PFMmatrix, title,
 #' @param flank.length The length of flanking bases around the position or
 #'   homopolymer targeted by the indel.
 #'
-#'
 #' @param title The title of the haplotype plot
 #'
 #' @return A ggplot2 object
-
-
+#' 
+#' @export
+#' 
+#' @examples
+#' file <- c(system.file("extdata/Mutect-vcf",
+#'                       "Mutect.GRCh37.s1.vcf",
+#'                       package = "ICAMS"))
+#' split.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
+#' ID.catalog <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
+#'                                ref.genome = "hg19",
+#'                                region = "genome",
+#'                                return.annotated.vcfs = TRUE)
+#' annotated.vcf <- ID.catalog$annotated.vcfs$Mutect.GRCh37.s1
+#' extended.seq.contexts <-
+#'   SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf,
+#'                                  indel.class = "INS:T:1:4")
+#' ggplot.object <- HaplotypePlot(sequences = extended.seq.contexts,
+#'                                indel.class = "INS:T:1:4",
+#'                                title = "Deletion of 1T from 4Ts")
+#' plot(ggplot.object)                              
 HaplotypePlot <- function(sequences,
                           indel.class, flank.length = 5,
                           title="Haplotype Plot"){
+  if ("" == system.file(package = "ggplot2")) {
+    stop("\nPlease install ggplot2: install.packages(\"ggplot2\")")
+  }
+  
+  if ("" == system.file(package = "reshape2")) {
+    stop("\nPlease install reshape2: install.packages(\"reshape2\")")
+  }
+  
   if(length(unique(nchar(sequences))) > 1){
     stop("All sequences must have the same length")
   }
-
+  
   indel.base <- unlist(strsplit(indel.class, ":"))[2]
 
   indel.context <- as.numeric(unlist(strsplit(indel.class, ":"))[4])
@@ -359,24 +381,21 @@ HaplotypePlot <- function(sequences,
                  "0",
                  paste0("+", 1:(unique(nchar(sequences))-flank.length-1)))
 
-
-
-  if(indel.context == 0 && ins.or.del=="INS"){positions <- c(paste0("-", (flank.length:1)),
-                                                             paste0("+", 1:flank.length))}
-
+  if(indel.context == 0 && ins.or.del=="INS"){
+    positions <- c(paste0("-", (flank.length:1)),
+                   paste0("+", 1:flank.length))
+  }
+  
   tmp<-as.data.frame((sequences))
-
+  
   tmp <- lapply(sequences,function(x){
     return(c(x,unlist(strsplit(x,""))))
   })
 
   seq.tmp <- do.call(rbind,tmp)
 
-
   seq.tmp <- data.frame(seq.tmp)
   colnames(seq.tmp) <- c("seq",positions)
-
-
 
   melt.seq.tmp <- seq.tmp
 
@@ -399,7 +418,7 @@ HaplotypePlot <- function(sequences,
 
   melt.seq.tmp[,ncol(melt.seq.tmp)] <- as.character(melt.seq.tmp[,ncol(melt.seq.tmp)])
 
-  melt.seq.tmp <- reshape2::melt(melt.seq.tmp)
+  melt.seq.tmp <- suppressMessages(reshape2::melt(melt.seq.tmp)) 
   group.colors <- c(A="springgreen4", `T`="firebrick1",C="dodgerblue3",G="black")
   melt.seq.tmp$value[melt.seq.tmp$value==1] <- "A"
   melt.seq.tmp$value[melt.seq.tmp$value==2] <- "C"

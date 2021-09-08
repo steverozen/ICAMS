@@ -15,7 +15,7 @@ test_that("ExtendSeqContextForOnebpINDEL", {
     SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:0",
                                    flank.length = 10)
   test.DEL.C.1.4.sequences <-
-    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:3",
+    SymmetricalContextsFor1BPIndel(test.indel.vcf, indel.class = "DEL:C:1:4",
                                    flank.length = 6)
 
   expect_equal(test.INS.T.1.0.sequences, INS.T.1.0.sequences)

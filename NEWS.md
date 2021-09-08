@@ -12,6 +12,7 @@ extended sequence context analysis.
 * Added examples to two new exported functions `SymmetricalContextsFor1BPIndel` 
 and `GeneratePlotPFMmatrix`.
 
+* Added new exported function `HaplotypePlot`.
 
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.
