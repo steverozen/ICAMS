@@ -123,13 +123,13 @@ RenameColumnsWithNameStrand <- function(df) {
   if ("strand" %in% colnames(df)) {
     colnames(df)[which(colnames(df) == "strand")] <- "strand_old"
     warning('A column named "strand" in the VCF ',
-            'was renamed to "strand_old" ',
+            'was renamed to "strand_old" to ',
             'avoid conflict with a newly added column named "strand".')
   }
   return(df)
 }
 
-#' Is there any column in df1 with name "VAF"?
+#' Is there any column in \code{df} with name "VAF"?
 #' If there is, change its name to "VAF_old" so that it will
 #' conflict with code in other parts of ICAMS package.
 #'
@@ -138,8 +138,38 @@ RenameColumnsWithNameVAF <- function(df) {
   if ("VAF" %in% colnames(df)) {
     colnames(df)[which(colnames(df) == "VAF")] <- "VAF_old"
     warning('A column named "VAF" in the VCF ',
-            'was renamed to "VAF_old" ',
+            'was renamed to "VAF_old" to ',
             'avoid conflict with a newly added column named "VAF".')
+  }
+  return(df)
+}
+
+#' Is there any column in \code{df} with name "start"?
+#' If there is, change its name to "start_old" so that it will
+#' conflict with code in other parts of ICAMS package.
+#'
+#' @keywords internal
+RenameColumnsWithNameStart <- function(df) {
+  if ("start" %in% colnames(df)) {
+    colnames(df)[which(colnames(df) == "start")] <- "start_old"
+    warning('A column named "start" in the VCF ',
+            'was renamed to "start_old" to ',
+            'avoid conflict with a newly added column named "start".')
+  }
+  return(df)
+}
+
+#' Is there any column in \code{df} with name "end"?
+#' If there is, change its name to "end_old" so that it will
+#' conflict with code in other parts of ICAMS package.
+#'
+#' @keywords internal
+RenameColumnsWithNameEnd <- function(df) {
+  if ("end" %in% colnames(df)) {
+    colnames(df)[which(colnames(df) == "end")] <- "end_old"
+    warning('A column named "end" in the VCF ',
+            'was renamed to "end_old" to ',
+            'avoid conflict with a newly added column named "end".')
   }
   return(df)
 }
@@ -1451,6 +1481,8 @@ AddTranscript <-
     }
 
     df <- RenameColumnsWithNameStrand(df)
+    df <- RenameColumnsWithNameStart(df)
+    df <- RenameColumnsWithNameEnd(df)
 
     ref.genome <- NormalizeGenomeArg(ref.genome = ref.genome)
 

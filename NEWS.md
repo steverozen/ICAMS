@@ -14,6 +14,11 @@ and `GeneratePlotPFMmatrix`.
 
 * Added new exported function `HaplotypePlot`.
 
+* Added two new internal functions `RenameColumnsWithNameStart` and
+`RenameColumnsWithNameEnd` to check whether there are column names `start` and
+`end` in the original VCF. This is to avoid breaking the code in function
+`AddTranscript`.
+
 # 3.0.0
 * Added two new dependency packages lifecycle and rlang.
 
