@@ -376,15 +376,17 @@ HaplotypePlot <- function(sequences,
   indel.context <- as.numeric(unlist(strsplit(indel.class, ":"))[4])
 
   ins.or.del <- unlist(strsplit(indel.class, ":"))[1]
-
-  positions <- c(paste0("-", (flank.length:1)),
-                 "0",
-                 paste0("+", 1:(unique(nchar(sequences))-flank.length-1)))
-
-  if(indel.context == 0 && ins.or.del=="INS"){
-    positions <- c(paste0("-", (flank.length:1)),
-                   paste0("+", 1:flank.length))
+   
+  positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                 paste0("+", 1:(flank.length + indel.context)))
+  
+  # When it is deletion, the deleted base will have position 0
+  if(ins.or.del == "DEL"){
+    positions <- c(paste0("-", ((flank.length + indel.context):1)),
+                   0,
+                   paste0("+", 1:(flank.length + indel.context)))
   }
+  
   
   tmp<-as.data.frame((sequences))
   
