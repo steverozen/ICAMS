@@ -60,21 +60,25 @@ save(INS.T.1.0.sequences, INS.T.1.4.sequences, DEL.C.1.0.sequences,
 INS.T.1.0.retval <-
   HaplotypePlot(sequences = INS.T.1.0.sequences,
                 indel.class = "INS:T:1:0",
+                flank.length = 10,
                 title = "De novo insertion of 1T")
 
 INS.T.1.4.retval <-
   HaplotypePlot(sequences = INS.T.1.4.sequences,
                 indel.class = "INS:T:1:4",
+                flank.length = 6,
                 title = "Insertion of 1T to 4Ts")
 
 DEL.C.1.0.retval <-
   HaplotypePlot(sequences = DEL.C.1.0.sequences,
                 indel.class = "DEL:C:1:0",
+                flank.length = 10,
                 title = "Deletion of 1C from 1C")
 
 DEL.C.1.4.retval <-
   HaplotypePlot(sequences = DEL.C.1.4.sequences,
                 indel.class = "DEL:C:1:4",
+                flank.length = 6,
                 title = "Deletion of 1C from 5Cs")
 
 save(INS.T.1.0.sequences, INS.T.1.4.sequences, DEL.C.1.0.sequences, 
