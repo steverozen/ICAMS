@@ -1,5 +1,14 @@
 # 3.0.1.90xx
+## Updated
 * Updated exported functions' examples not to use deprecated functions.
+
+## Added
+* Added a new dependency package `fuzzyjoin`.
+
+## Fixed
+* Fixed a bug in internal function `AddTranscript` caused by `data.table::foverlaps`
+producing memory errors when the input VCF has many variants (e.g. >70000 lines).
+Used `fuzzyjoin::genome_left_join` instead.
 
 # 3.0.1
 * Updated two internal functions `GeneratePCAWGAliquotID` and
