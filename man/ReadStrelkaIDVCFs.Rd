@@ -32,10 +32,12 @@ sizes range from 1 to 6+.
 }
 
 \examples{
+\dontrun{
 file <- c(system.file("extdata/Strelka-ID-vcf",
                       "Strelka.ID.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadStrelkaIDVCFs(file)
+}
 }
 \seealso{
 \code{\link{StrelkaIDVCFFilesToCatalog}}

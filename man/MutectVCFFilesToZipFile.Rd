@@ -155,6 +155,7 @@ To add or change attributes of the catalog, you can use function
 }
 
 \examples{
+\dontrun{
 dir <- c(system.file("extdata/Mutect-vcf",
                      package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -166,4 +167,5 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                             region = "genome",
                             base.filename = "Mutect")
   unlink(file.path(tempdir(), "test.zip"))}
+}
 }

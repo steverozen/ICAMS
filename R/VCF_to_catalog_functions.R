@@ -1494,18 +1494,30 @@ AddTranscript <-
                                         ref.genome = ref.genome,
                                         name.of.VCF = name.of.VCF)
     trans.ranges$chrom <- new.chr.names
-
+    
+    
     # We need to set key for trans.ranges for using data.table::foverlaps
-    if (!data.table::haskey(trans.ranges)) {
-      data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
-    }
+    #if (!data.table::haskey(trans.ranges)) {
+    #  data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
+    #}
 
     # Find range overlaps between the df and trans.ranges
-    df1 <- data.table(df)
-    df1[, POS2 := POS]
-    dt <- data.table::foverlaps(df1, trans.ranges,
-                                by.x = c("CHROM", "POS", "POS2"),
-                                type = "within", mult = "all")
+    #df1 <- data.table(df)
+    #df1[, POS2 := POS]
+    #dt <- data.table::foverlaps(df1, trans.ranges,
+    #                            by.x = c("CHROM", "POS", "POS2"),
+    #                            type = "within", mult = "all")
+    
+    # No longer using data.table::foverlaps as it will cause memory usage error
+    # when df has many rows (e.g. >70000)
+    df2 <- df
+    df2$POS2 <- df2$POS
+    data.table::setnames(df2, old = c("CHROM", "POS", "POS2"), 
+                         new = c("chrom", "start", "end"))
+    dt <- fuzzyjoin::genome_left_join(x = df2, y = trans.ranges,
+                                      by = c("chrom", "start", "end"))
+    data.table::setnames(dt, old = c("chrom.x", "start.x", "start.y", "end.y"), 
+                         new = c("CHROM", "POS", "start", "end"))
 
     # Find out mutations that fall on transcripts on both strands
     #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
@@ -1538,8 +1550,9 @@ AddTranscript <-
                                  "trans.Ensembl.gene.ID", "trans.gene.symbol"))
 
     # Delete redundant column in dt3
-    dt4 <- dt3[, POS2 := NULL]
-
+    dt4 <- dt3[, c("end.x","chrom.y") := NULL]
+    
+    rm(df)
     return(dt4)
   }
 
@@ -1865,8 +1878,8 @@ ReadMutectVCFs <-
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' SBS.vcf <- list.of.vcfs$SBS.vcfs[[1]]
+#' list.of.vcfs <- ReadAndSplitVCFs(file, variant.caller = "strelka")
+#' SBS.vcf <- list.of.vcfs$SBS[[1]]
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.SBS.vcf <- AnnotateSBSVCF(SBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
@@ -2296,8 +2309,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
-#' DBS.vcf <- list.of.vcfs$DBS.vcfs[[1]]
+#' ID.vcf <- ReadAndSplitVCFs(file, variant.caller = "strelka")$ID[[1]]
+#' DBS.vcf <- list.of.vcfs$DBS[[1]]
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   annotated.DBS.vcf <- AnnotateDBSVCF(DBS.vcf, ref.genome = "hg19",
 #'                                       trans.ranges = trans.ranges.GRCh37)}
@@ -2724,6 +2737,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- c(system.file("extdata/Strelka-SBS-vcf",
 #'                       "Strelka.SBS.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
@@ -2734,6 +2748,7 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
 #'                                             region = "genome",
 #'                                             output.file =
 #'                                             file.path(tempdir(), "StrelkaSBS"))}
+#'}                                           
 StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
   function(files,
            ref.genome,
@@ -2797,6 +2812,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- c(system.file("extdata/Strelka-ID-vcf",
 #'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
@@ -2806,7 +2822,7 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #'                                            region = "genome",
 #'                                            output.file =
 #'                                            file.path(tempdir(), "StrelkaID"))}
-#'
+#'} 
 StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
   function(files,
            ref.genome,
@@ -2946,6 +2962,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- c(system.file("extdata/Mutect-vcf",
 #'                       "Mutect.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
@@ -2956,6 +2973,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #'                                         region = "genome",
 #'                                         output.file =
 #'                                         file.path(tempdir(), "Mutect"))}
+#'}                                        
 MutectVCFFilesToCatalogAndPlotToPdf <-
   function(files,
            ref.genome,

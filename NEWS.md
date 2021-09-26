@@ -1,4 +1,7 @@
-# 3.0.0.90xx
+# 3.0.1.90xx
+* Updated exported functions' examples not to use deprecated functions.
+
+# 3.0.1
 * Updated two internal functions `GeneratePCAWGAliquotID` and
 `GeneratePCAWGAliquotID2`.
 

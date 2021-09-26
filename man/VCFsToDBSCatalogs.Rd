@@ -89,7 +89,7 @@ To add or change attributes of the catalog, you can use function
 file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
-list.of.DBS.vcfs <- ReadAndSplitMutectVCFs(file)$DBS
+list.of.DBS.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")$DBS
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catalogs.DBS <- VCFsToDBSCatalogs(list.of.DBS.vcfs, ref.genome = "hg19",
                                     trans.ranges = trans.ranges.GRCh37,

@@ -51,10 +51,12 @@ that were excluded from the analysis. See the added extra column
 }
 
 \examples{
+\dontrun{
 file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitMutectVCFs(file)
+}  
 }
 \seealso{
 \code{\link{MutectVCFFilesToCatalog}}

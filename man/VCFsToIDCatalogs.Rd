@@ -89,7 +89,7 @@ and the functions it calls for handling of insertions.
 file <- c(system.file("extdata/Strelka-ID-vcf/",
                       "Strelka.ID.GRCh37.s1.vcf",
                       package = "ICAMS"))
-list.of.ID.vcfs <- ReadStrelkaIDVCFs(file)
+list.of.ID.vcfs <- ReadAndSplitVCFs(file, variant.caller = "strelka")$ID
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5",
  quietly = TRUE)) {
   catID <- VCFsToIDCatalogs(list.of.ID.vcfs, ref.genome = "hg19",

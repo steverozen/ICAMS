@@ -48,7 +48,7 @@
 #' file <- c(system.file("extdata/Strelka-ID-vcf/",
 #'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' ID.vcf <- ReadStrelkaIDVCFs(file)[[1]]
+#' ID.vcf <- ReadAndSplitVCFs(file, variant.caller = "strelka")$ID[[1]]
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
 #'   list <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")
 #'   annotated.ID.vcf <- list$annotated.vcf}

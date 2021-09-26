@@ -110,6 +110,7 @@ sizes range from 1 to 6+.
 }
 
 \examples{
+\dontrun{
 dir <- c(system.file("extdata/Strelka-ID-vcf",
                      package = "ICAMS"))
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
@@ -120,4 +121,5 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                region = "genome",
                                base.filename = "Strelka-ID")
   unlink(file.path(tempdir(), "test.zip"))}
+} 
 }

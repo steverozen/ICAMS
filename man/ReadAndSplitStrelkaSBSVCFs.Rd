@@ -45,10 +45,12 @@ that were excluded from the analysis. See the added extra column
 }
 
 \examples{
+\dontrun{
 file <- c(system.file("extdata/Strelka-SBS-vcf",
                       "Strelka.SBS.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitStrelkaSBSVCFs(file)
+}
 }
 \seealso{
 \code{\link{StrelkaSBSVCFFilesToCatalog}}
