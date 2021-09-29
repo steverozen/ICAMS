@@ -1064,16 +1064,12 @@ SplitListOfMutectVCFs <-
 #'
 #' @param vcf.df An in-memory data frame containing an SBS VCF file contents.
 #'
-#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
-#'   the absolute difference of VAFs for adjacent SBSs is bigger than
-#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
-#'   asynchronous single base mutations, opposed to a simultaneous doublet
-#'   mutation or variants involving more than two consecutive bases.
-#'
 #' @param name.of.VCF Name of the VCF file.
 #'
 #' @param always.merge.SBS If \code{TRUE} merge adjacent SBSs as DBSs
 #'   regardless of VAFs and regardless of the value of \code{max.vaf.diff}.
+#'   
+#' @inheritParams SplitOneVCF
 #'
 #' @import data.table
 #'
@@ -1251,7 +1247,8 @@ SplitSBSVCF <- function(vcf.df,
 #'   the absolute difference of VAFs for adjacent SBSs is bigger than
 #'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
 #'   asynchronous single base mutations, opposed to a simultaneous doublet
-#'   mutation or variants involving more than two consecutive bases.
+#'   mutation or variants involving more than two consecutive bases. Use negative
+#'   value (e.g. -1) to suppress merging adjacent SBSs to DBS.
 #'
 #' @param name.of.VCF Name of the VCF file.
 #'
@@ -1329,12 +1326,6 @@ SplitOneVCF <- function(vcf.df,
 #'   \code{"unknown"}. If variant caller is \code{"mutect"}, do \strong{not} merge
 #'   SBSs into DBS.
 #'
-#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
-#'   the absolute difference of VAFs for adjacent SBSs is bigger than
-#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
-#'   asynchronous single base mutations, opposed to a simultaneous doublet
-#'   mutation or variants involving more than two consecutive bases.
-#'
 #' @param num.of.cores The number of cores to use. Not available on Windows
 #'   unless \code{num.of.cores = 1}.
 #'
@@ -1344,6 +1335,8 @@ SplitOneVCF <- function(vcf.df,
 #'   error to set this to \code{TRUE} when \code{variant.caller = "mutect"}.
 #'
 #' @inheritParams ReadAndSplitMutectVCFs
+#' 
+#' @inheritParams SplitOneVCF
 #'
 #' @inheritSection ReadAndSplitMutectVCFs Value
 #'
@@ -1643,13 +1636,9 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
 #'
 #' @param vcf.df An in-memory data frame containing a Strelka VCF file contents.
 #'
-#' @param max.vaf.diff The maximum difference of VAF, default value is 0.02. If
-#'   the absolute difference of VAFs for adjacent SBSs is bigger than
-#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
-#'   asynchronous single base mutations, opposed to a simultaneous doublet
-#'   mutation or variants involving more than two consecutive bases.
-#'
 #' @param name.of.VCF Name of the VCF file.
+#' 
+#' @inheritParams SplitOneVCF
 #'
 #' @import data.table
 #'
@@ -3097,10 +3086,11 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'
 #' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
 #'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
-#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
-#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
-#'   mutations, opposed to a simultaneous doublet mutation or variants involving
-#'   more than two consecutive bases.
+#'   absolute difference of VAFs for adjacent SBSs is bigger than
+#'   \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+#'   asynchronous single base mutations, opposed to a simultaneous doublet
+#'   mutation or variants involving more than two consecutive bases. Use
+#'   negative value (e.g. -1) to suppress merging adjacent SBSs to DBS.
 #'
 #' @param base.filename Optional. The base name of the PDF files to be produced;
 #'   multiple files will be generated, each ending in \eqn{x}\code{.pdf}, where

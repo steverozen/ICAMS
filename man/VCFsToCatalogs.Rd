@@ -86,10 +86,11 @@ and read depth will be NAs.}
 
 \item{max.vaf.diff}{\strong{Not} applicable if \code{variant.caller =
   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
-absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
-then these adjacent SBSs are likely to be "merely" asynchronous single base
-mutations, opposed to a simultaneous doublet mutation or variants involving
-more than two consecutive bases.}
+absolute difference of VAFs for adjacent SBSs is bigger than
+\code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
+asynchronous single base mutations, opposed to a simultaneous doublet
+mutation or variants involving more than two consecutive bases. Use
+negative value (e.g. -1) to suppress merging adjacent SBSs to DBS.}
 
 \item{return.annotated.vcfs}{Logical. Whether to return the annotated VCFs
 with additional columns showing mutation class for each variant. Default is

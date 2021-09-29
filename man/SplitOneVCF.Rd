@@ -19,7 +19,8 @@ VAFs, which are added by \code{\link{ReadVCF}}.}
 the absolute difference of VAFs for adjacent SBSs is bigger than
 \code{max.vaf.diff}, then these adjacent SBSs are likely to be "merely"
 asynchronous single base mutations, opposed to a simultaneous doublet
-mutation or variants involving more than two consecutive bases.}
+mutation or variants involving more than two consecutive bases. Use negative
+value (e.g. -1) to suppress merging adjacent SBSs to DBS.}
 
 \item{name.of.VCF}{Name of the VCF file.}
 

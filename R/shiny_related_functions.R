@@ -459,13 +459,6 @@ MutectVCFFilesToZipFile <-
 #'
 #' @param ... Optional arguments to \code{get.vaf.function}.
 #'
-#' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
-#'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
-#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
-#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
-#'   mutations, opposed to a simultaneous doublet mutation or variants involving
-#'   more than two consecutive bases.
-#'
 #' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
@@ -478,6 +471,8 @@ MutectVCFFilesToZipFile <-
 #' @param suppress.discarded.variants.warnings Logical. Whether to suppress
 #'   warning messages showing information about the discarded variants. Default
 #'   is TRUE.
+#'   
+#' @inheritParams VCFsToCatalogsAndPlotToPdf
 #'
 #' @importFrom utils glob2rx
 #'
@@ -1344,13 +1339,6 @@ ReadAndSplitMutectVCFs <-
 #'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
 #'   and read depth will be NAs.
 #'
-#' @param max.vaf.diff \strong{Not} applicable if \code{variant.caller =
-#'   "mutect"}. The maximum difference of VAF, default value is 0.02. If the
-#'   absolute difference of VAFs for adjacent SBSs is bigger than \code{max.vaf.diff},
-#'   then these adjacent SBSs are likely to be "merely" asynchronous single base
-#'   mutations, opposed to a simultaneous doublet mutation or variants involving
-#'   more than two consecutive bases.
-#'
 #' @param ... Optional arguments to \code{get.vaf.function}.
 #'
 #' @param suppress.discarded.variants.warnings Logical. Whether to suppress
@@ -1361,6 +1349,8 @@ ReadAndSplitMutectVCFs <-
 #'   regardless of VAFs and regardless of the value of \code{max.vaf.diff}
 #'   and regardless of the value of \code{get.vaf.function}. It is an
 #'   error to set this to \code{TRUE} when \code{variant.caller = "mutect"}.
+#'   
+#' @inheritParams VCFsToCatalogsAndPlotToPdf
 #'
 #' @section Value: A list containing the following objects:
 #'

@@ -12,6 +12,10 @@ alternative variants in freebayes VCF to avoid warning messages.
 performance dramatically (about 5 times faster) by using regular expressions for
 pattern matching and retrieving.
 
+* Updated documentation of argument `max.vaf.diff` in various functions
+informing users that they can specify a negative value (e.g. -1) to suppress
+merging adjacent SBSs to DBS.
+
 ## Added
 * Added a new dependency package `fuzzyjoin`.
 
