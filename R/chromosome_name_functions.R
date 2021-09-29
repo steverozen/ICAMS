@@ -158,11 +158,43 @@ StandardChromNameNew <- function(df, name.of.VCF = NULL) {
   } else {
     df6 <- df5
   }
+  
+  # Is there any row in df whose Chromosome names contain "fix"?
+  if (sum(grepl("fix", df6$CHROM)) > 0) {
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " ", sum(grepl("fix", df6$CHROM)), " row out of ",
+            nrow(df), " had chromosome names that contain 'fix' and ",
+            "were removed. ",
+            "See discarded.variants in the return value for more details")
+    df7 <- df6[-grep("fix", df6$CHROM), ]
+    df7.to.remove <- df6[grep("fix", df6$CHROM), ]
+    df7.to.remove$discarded.reason <- 'Chromosome name contains "fix"'
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df7.to.remove)
+  } else {
+    df7 <- df6
+  }
+  
+  # Is there any row in df whose Chromosome names contain "alt"?
+  if (sum(grepl("alt", df7$CHROM)) > 0) {
+    warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " ", sum(grepl("alt", df7$CHROM)), " row out of ",
+            nrow(df), " had chromosome names that contain 'alt' and ",
+            "were removed. ",
+            "See discarded.variants in the return value for more details")
+    df8 <- df7[-grep("alt", df7$CHROM), ]
+    df8.to.remove <- df7[grep("alt", df7$CHROM), ]
+    df8.to.remove$discarded.reason <- 'Chromosome name contains "alt"'
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df8.to.remove)
+  } else {
+    df8 <- df7
+  }
 
   if (nrow(discarded.variants) == 0) {
-    return(list(df = df6))
+    return(list(df = df8))
   } else {
-    return(list(df = df6, discarded.variants = discarded.variants))
+    return(list(df = df8, discarded.variants = discarded.variants))
   }
 }
 

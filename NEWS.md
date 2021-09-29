@@ -2,6 +2,9 @@
 ## Updated
 * Updated exported functions' examples not to use deprecated functions.
 
+* Updated internal function `StandardChromNameNew` to also discard variants
+whose chromosome names contain "fix" or "alt".
+
 ## Added
 * Added a new dependency package `fuzzyjoin`.
 
