@@ -6,8 +6,11 @@
 whose chromosome names contain "fix" or "alt".
 
 * Updated internal function `ReadVCF` not to calculate VAF for multiple
-alternative variants in strelka or freebayes VCF to avoid possible warning
-messages.
+alternative variants in freebayes VCF to avoid warning messages.
+
+* Updated code in exported function `GetFreebayesVAF` to improve time
+performance dramatically (about 5 times faster) by using regular expressions for
+pattern matching and retrieving.
 
 ## Added
 * Added a new dependency package `fuzzyjoin`.

@@ -550,24 +550,26 @@ GetFreebayesVAF <- function(vcf, name.of.VCF = NULL) {
 
   vcf <- RenameColumnsWithNameVAF(vcf)
 
-  info.list <- strsplit(vcf$INFO, split = ";")
-  CalculateVAF <- function(vector, key.words) {
-    # Get the index of those items in vector that contain key.words
-    idx <- sapply(key.words, FUN = grep, x = vector)
-
-    # Get the necessary information for calculating VAF
-    info <- vector[idx]
-    info1 <- unlist(strsplit(info, split = "="))
-    info2 <- as.integer(info1[c(2, 4, 6, 8)])
-    names(info2) <- key.words
-
-    return(data.frame(VAF = sum(info2[3:4]) / sum(info2),
-                      read.depth = sum(info2)))
-  }
-
-  list1 <- lapply(info.list, FUN = CalculateVAF, key.words = key.words)
-  vafs <- do.call("rbind", list1)
-  return(cbind(vcf, vafs))
+  info.list <- stringi::stri_split_fixed(vcf$INFO, ";")
+  read.counts.info <- lapply(info.list, FUN = function(info) {
+    # Use sort to make sure the read count number are in this alphabetical order
+    # SAF, SAR, SRF, SRR
+    sort(grep(pattern = paste(key.words, collapse = "|"), x = info, value = TRUE))
+  })
+  
+  read.counts.info2 <- lapply(read.counts.info, FUN = function(read.counts) {
+    as.numeric(gsub(pattern = ".*=([0-9]+).*", replacement = "\\1", x = read.counts))
+  })
+  
+  read.depths <- sapply(read.counts.info2, FUN = sum)
+  alt.read.counts <- sapply(read.counts.info2, FUN = function(x) {
+    sum(x[1:2])
+  })
+  vafs <- alt.read.counts / read.depths
+  
+  vcf$VAF <- vafs
+  vcf$read.depth <- read.depths
+  return(vcf)
 }
 
 
@@ -738,13 +740,9 @@ ReadVCF <-
 
       # Check for any SBS in df and only calculate VAF for those SBS variants
       SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
-      
-      # Do not calculate VAF for multiple alternative variants to avoid
-      # possible warning messages when calculating VAF
-      
-      #SBS.multiple.alt <-
-      #  which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
-      SBS.idx <- SBS.idx0
+      SBS.multiple.alt <-
+        which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
+      SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
       if (length(SBS.idx) == 0) {
         return(df)
       } else {
