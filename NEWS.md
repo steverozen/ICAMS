@@ -5,6 +5,10 @@
 * Updated internal function `StandardChromNameNew` to also discard variants
 whose chromosome names contain "fix" or "alt".
 
+* Updated internal function `ReadVCF` not to calculate VAF for multiple
+alternative variants in strelka or freebayes VCF to avoid possible warning
+messages.
+
 ## Added
 * Added a new dependency package `fuzzyjoin`.
 

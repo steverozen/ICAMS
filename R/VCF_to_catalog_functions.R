@@ -738,9 +738,13 @@ ReadVCF <-
 
       # Check for any SBS in df and only calculate VAF for those SBS variants
       SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
-      SBS.multiple.alt <-
-        which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
-      SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
+      
+      # Do not calculate VAF for multiple alternative variants to avoid
+      # possible warning messages when calculating VAF
+      
+      #SBS.multiple.alt <-
+      #  which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
+      SBS.idx <- SBS.idx0
       if (length(SBS.idx) == 0) {
         return(df)
       } else {
@@ -761,9 +765,16 @@ ReadVCF <-
     if (variant.caller == "freebayes") {
       # Check for any SBS in df and only calculate VAF for SBS variants
       SBS.idx0 <- which(nchar(df$REF) == 1 & nchar(df$ALT) == 1)
-      SBS.multiple.alt <-
-        which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
-      SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
+      
+      # Do not calculate VAF for multiple alternative variants as the 
+      # SAF (Number of alternate observations on the forward strand) 
+      # and SAR (Number of alternate observations on the reverse strand) 
+      # will have two numbers (e.g. 2,3)
+      
+      #SBS.multiple.alt <-
+      #  which(nchar(df$REF) == 1 & grepl(",", df$ALT, fixed = TRUE))
+      #SBS.idx <- c(SBS.idx0, SBS.multiple.alt)
+      SBS.idx <- SBS.idx0
       if (length(SBS.idx) == 0) {
         return(df)
       } else {
