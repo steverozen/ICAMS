@@ -207,3 +207,9 @@ test_that(
                    fixed = TRUE) 
   }
 )
+
+test_that("Read in VCF like table", {
+  test.vcf <- expect_warning(ReadVCFs("testdata/vcf.like.table.txt"))
+  test.vcf2 <- expect_warning(ReadVCFs("testdata/vcf.like.table2.txt"))
+  expect_equal(test.vcf[[1]], test.vcf2[[1]])
+})

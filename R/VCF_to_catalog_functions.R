@@ -268,9 +268,8 @@ MakeDataFrameFromVCF <- function(file) { # name.of.VCF = NULL) {
       }
     })
 
-  # Extract the names of columns in the VCF file
-  names <- c("CHROM", colnames(df1)[-1])
-  colnames(df1) <- names
+  # Rename column name #CHROM in df1 to CHROM 
+  data.table::setnames(df1, old = "#CHROM", new = "CHROM")
 
   df1$CHROM <- as.character(df1$CHROM)
 
