@@ -13,20 +13,20 @@ test_that("ReadAndSplitMutectVCFs", {
   expect_equal(length(list.of.vcfs2$discarded.variants), 2)
 
   SBS.cats <-
-    expect_warning(VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19",
-                                     region = "genome",
-                                     suppress.discarded.variants.warnings = FALSE))
-  expect_false(is.null(SBS.cats$discarded.variants))
+    VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19",
+                      region = "genome",
+                      suppress.discarded.variants.warnings = FALSE)
+  expect_true(is.null(SBS.cats$discarded.variants))
   SBS.cats1 <-
     VCFsToSBSCatalogs(list.of.vcfs2$SBS, ref.genome = "hg19",
                       region = "genome", return.annotated.vcfs = TRUE)
   expect_false(is.null(SBS.cats1$annotated.vcfs))
 
   DBS.cats <-
-    expect_warning(VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
-                                     region = "genome",
-                                     suppress.discarded.variants.warnings = FALSE))
-  expect_false(is.null(DBS.cats$discarded.variants))
+    VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
+                      region = "genome",
+                      suppress.discarded.variants.warnings = FALSE)
+  expect_true(is.null(DBS.cats$discarded.variants))
   DBS.cats1 <-
     VCFsToDBSCatalogs(list.of.vcfs2$DBS, ref.genome = "hg19",
                       region = "genome", return.annotated.vcfs = TRUE)
@@ -35,7 +35,7 @@ test_that("ReadAndSplitMutectVCFs", {
   # Test for removing duplicate variants
   file3 <- files[3]
   list.of.vcfs <- ReadAndSplitMutectVCFs(file3)
-  expect_equal(nrow(list.of.vcfs$discarded.variants[[1]]), 7)
+  expect_equal(nrow(list.of.vcfs$discarded.variants[[1]]), 9)
 })
 
 test_that("ReadAndSplitStrelkaSBSVCFs", {
@@ -141,3 +141,4 @@ test_that("StrelkaIDVCFFilesToCatalog", {
   expect_equal(catalogs1$annotated.vcfs, catalogs3$annotated.vcfs$ID)
 
 })
+

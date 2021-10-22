@@ -27,6 +27,9 @@ Used `fuzzyjoin::genome_left_join` instead.
 * Fixed a bug in internal function `MakeDataFrameFromVCF` when renaming column
 `#CHROM` to `CHROM`.
 
+* Fixed a bug in internal function `CheckAndRemoveDiscardedVariants` to remove
+variants with ambiguous REF bases (not A, C, G, T).
+
 # 3.0.1
 * Updated two internal functions `GeneratePCAWGAliquotID` and
 `GeneratePCAWGAliquotID2`.

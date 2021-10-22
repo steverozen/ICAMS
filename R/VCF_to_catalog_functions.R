@@ -949,11 +949,26 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
   } else {
     df7 <- df6
   }
+  
+  # Remove variants which have ambiguous REF bases (not A, C, G, T)
+  ambiguous.refs <- which(!substr(df7$REF, 1, 1) %in% c("A", "C", "G", "T"))
+  if (length(ambiguous.refs) > 0) {
+    warning("VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+            " has ambiguous REF bases and were discarded. See discarded.variants ",
+            "in the return value for more details.")
+    df8 <- df7[-ambiguous.refs, ]
+    df8.to.remove <- df7[ambiguous.refs, ]
+    df8.to.remove$discarded.reason <- "Variant has ambiguous REF base"
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, df8.to.remove)
+  } else {
+    df8 <- df7
+  }
 
   if (nrow(discarded.variants) == 0) {
-    return(list(df = df7))
+    return(list(df = df8))
   } else {
-    return(list(df = df7, discarded.variants = discarded.variants))
+    return(list(df = df8, discarded.variants = discarded.variants))
   }
 }
 
