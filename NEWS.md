@@ -19,6 +19,9 @@ merging adjacent SBSs to DBS.
 ## Added
 * Added a new dependency package `fuzzyjoin`.
 
+* Added new internal function `DefaultFilterStatus` to automatically infer
+`filter.status` according to `variant.caller`.
+
 ## Fixed
 * Fixed a bug in internal function `AddTranscript` caused by `data.table::foverlaps`
 producing memory errors when the input VCF has many variants (e.g. >70000 lines).

@@ -10,7 +10,7 @@ ReadAndSplitVCFs(
   num.of.cores = 1,
   names.of.VCFs = NULL,
   tumor.col.names = NA,
-  filter.status = "PASS",
+  filter.status = DefaultFilterStatus(variant.caller),
   get.vaf.function = NULL,
   ...,
   max.vaf.diff = 0.02,
@@ -51,8 +51,12 @@ more details.}
 that indicates that a variant has passed all the variant caller's filters.
 Variants (lines in the VCF) for which the value in column \code{FILTER}
 does not equal \code{filter.status} are silently excluded from the output.
-If \code{NULL}, all variants are retained. In almost all cases, the default
-value of \code{"PASS"} is what the user would want.}
+The internal function \code{DefaultFilterStatus} tries to infer
+\code{filter.status} based on \code{variant.caller}. If
+\code{variant.caller} is "unknown", user must specify \code{filter.status}
+explicitly. If \code{filter.status = NULL}, all variants are retained. If
+there is no \code{FILTER} column in the VCF, all variants are retained with
+a warning.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read

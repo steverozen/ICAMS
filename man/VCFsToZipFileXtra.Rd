@@ -15,7 +15,7 @@ VCFsToZipFileXtra(
   region = "unknown",
   names.of.VCFs = NULL,
   tumor.col.names = NA,
-  filter.status = NULL,
+  filter.status = DefaultFilterStatus(variant.caller),
   get.vaf.function = NULL,
   ...,
   max.vaf.diff = 0.02,

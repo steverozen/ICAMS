@@ -624,6 +624,20 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
   return(vcf)
 }
 
+#' @keywords internal
+DefaultFilterStatus <- function(variant.caller) {
+  
+  if (variant.caller %in% c("strelka", "mutect")) {
+    return("PASS")
+  } else if (variant.caller == "freebayes") {
+    return(".")
+  } else if (variant.caller == "unknown") {
+    stop ('\nUser must specify the value of filter.status explicitly when variant.caller is "unknown"')
+  } else {
+    stop("\nValue of variant.caller not recognized: ", variant.caller, "; do you want to use \"unknown\"?")
+  }
+}
+
 #' Read in the data lines of a Variant Call Format (VCF) file
 #'
 #' @importFrom utils read.csv
@@ -652,10 +666,12 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
 #'   that indicates that a variant has passed all the variant caller's filters.
 #'   Variants (lines in the VCF) for which the value in column \code{FILTER}
 #'   does not equal \code{filter.status} are silently excluded from the output.
-#'   If \code{NULL}, all variants are retained. In almost all cases, the default
-#'   value of \code{"PASS"} is what the user would want. If \code{filter.status}
-#'   is not \code{NULL} but the input file does not contain the column \code{FILTER}
-#'   \code{filter.status} is ignored with a warning.
+#'   The internal function \code{DefaultFilterStatus} tries to infer
+#'   \code{filter.status} based on \code{variant.caller}. If
+#'   \code{variant.caller} is "unknown", user must specify \code{filter.status}
+#'   explicitly. If \code{filter.status = NULL}, all variants are retained. If
+#'   there is no \code{FILTER} column in the VCF, all variants are retained with
+#'   a warning.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -675,8 +691,9 @@ GetPCAWGConsensusVAF <- function(vcf, mc.cores = 1) {
 #' @keywords internal
 ReadVCF <-
   function(file, variant.caller = "unknown", name.of.VCF = NULL, tumor.col.name = NA,
-           filter.status = "PASS", get.vaf.function = NULL, ...) {
-    df0 <- MakeDataFrameFromVCF(file) # , name.of.VCF = name.of.VCF)
+           filter.status = DefaultFilterStatus(variant.caller), 
+           get.vaf.function = NULL, ...) {
+    df0 <- MakeDataFrameFromVCF(file) 
 
     if (nrow(df0) == 0) {
       return(df0)
@@ -716,7 +733,7 @@ ReadVCF <-
 
     # Check whether the variant caller is supported by ICAMS
     if (!variant.caller %in% c("strelka", "mutect", "freebayes")) {
-      stop(paste0("\nVariant caller", variant.caller, "is not supported by",
+      stop(paste0("\nVariant caller ", variant.caller, " is not supported by",
                   " ICAMS, please specify either ", dQuote("strelka"), ", ",
                   dQuote("mutect"), " or ", dQuote("freebayes")))
     }
@@ -803,7 +820,8 @@ ReadVCF <-
 #' list.of.vcfs <- ReadVCFs(file, variant.caller = "mutect")
 ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
                      names.of.VCFs = NULL,
-                     tumor.col.names = NA, filter.status = "PASS",
+                     tumor.col.names = NA, 
+                     filter.status = DefaultFilterStatus(variant.caller),
                      get.vaf.function = NULL, ...) {
   num.of.cores <- AdjustNumberOfCores(num.of.cores)
 
@@ -3087,8 +3105,12 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   that indicates that a variant has passed all the variant caller's filters.
 #'   Variants (lines in the VCF) for which the value in column \code{FILTER}
 #'   does not equal \code{filter.status} are silently excluded from the output.
-#'   If \code{NULL}, all variants are retained. In almost all cases, the default
-#'   value of \code{"PASS"} is what the user would want.
+#'   The internal function \code{DefaultFilterStatus} tries to infer
+#'   \code{filter.status} based on \code{variant.caller}. If
+#'   \code{variant.caller} is "unknown", user must specify \code{filter.status}
+#'   explicitly. If \code{filter.status = NULL}, all variants are retained. If
+#'   there is no \code{FILTER} column in the VCF, all variants are retained with
+#'   a warning.
 #'
 #' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
 #' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
@@ -3199,7 +3221,7 @@ VCFsToCatalogsAndPlotToPdf <-
            region = "unknown",
            names.of.VCFs = NULL,
            tumor.col.names = NA,
-           filter.status = "PASS",
+           filter.status = DefaultFilterStatus(variant.caller),
            get.vaf.function = NULL,
            ...,
            max.vaf.diff = 0.02,

@@ -16,10 +16,12 @@ test_that("VCFsToCatalogs function for Mutect VCFs", {
                               variant.caller = "mutect", region = "genome",
                               return.annotated.vcfs = TRUE)
   catalogs5 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
-                              get.vaf.function = GetMutectVAF)
+                              get.vaf.function = GetMutectVAF,
+                              filter.status = "PASS")
   catalogs6 <- VCFsToCatalogs(files, ref.genome = "hg19", region = "genome",
                               get.vaf.function = GetMutectVAF,
-                              return.annotated.vcfs = TRUE)
+                              return.annotated.vcfs = TRUE,
+                              filter.status = "PASS")
   expect_equal(catalogs1, catalogs3)
   expect_equal(catalogs2, catalogs4)
   expect_equal(catalogs1, catalogs5)

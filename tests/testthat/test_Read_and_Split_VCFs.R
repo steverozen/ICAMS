@@ -127,7 +127,8 @@ test_that("Test ReadAndSplitVCFs always.merge.SBS", {
                                     always.merge.SBS = TRUE)
   split.vcfs1.2 <- ReadAndSplitVCFs(file1,
                                     variant.caller = "unknown",
-                                    always.merge.SBS = TRUE)
+                                    always.merge.SBS = TRUE,
+                                    filter.status = "PASS")
   expect_equal(split.vcfs1.1$DBS$REF, split.vcfs1.2$DBS$REF)
   expect_equal(split.vcfs1.1$DBS$ALT, split.vcfs1.2$DBS$ALT)
   xx1 <- ReadAndSplitVCFs(file1,
@@ -137,13 +138,14 @@ test_that("Test ReadAndSplitVCFs always.merge.SBS", {
 
   xx2 <- ReadAndSplitVCFs(file1,
                           variant.caller = "unknown",
-                          always.merge.SBS = FALSE)
+                          always.merge.SBS = FALSE,
+                          filter.status = "PASS")
   expect_equal(nrow(xx2$DBS[[1]]), 0)
 })
 
 test_that("Test ReadAndSplitVCFs filter.status argument", {
   file1 <- "testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s6.vcf"
-  vcf1 <- ReadVCF(file = file1)
+  vcf1 <- ReadVCF(file = file1, filter.status = "PASS")
   expect_equal(nrow(vcf1), 3)
   
   vcf2 <- ReadVCFs(file = file1, filter.status = NULL)
@@ -190,7 +192,7 @@ test_that("Test ReadAndSplitVCFs filter.status argument", {
 
 test_that("Test ReadAndSplitVCFs dealing with VCF with no 'FILTER' column", {
   file1 <- "testdata/Strelka.SBS.GRCh38.no.FILTER.column.vcf"
-  vcf1 <- expect_warning(ReadVCF(file = file1))
+  vcf1 <- expect_warning(ReadVCF(file = file1, filter.status = "PASS"))
   expect_equal(nrow(vcf1), 7)
   
   vcf2 <- ReadVCFs(file = file1, filter.status = NULL)
