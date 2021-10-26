@@ -33,6 +33,15 @@ Used `fuzzyjoin::genome_left_join` instead.
 * Fixed a bug in internal function `CheckAndRemoveDiscardedVariants` to remove
 variants with ambiguous REF bases (not A, C, G, T).
 
+* Fixed a bug in exported function `TransformCatalog` when user specifies
+`ref.genome` as a character string. No longer raise an error when user did not
+install the BSgenome package.
+    + Created new internal function `InferRefGenomeName` to infer reference genome
+      name from a character string.
+    + Created new internal function `IsRefGenomeInstalled` to check whether the
+      BSgenome package is installed. If not, the returned catalog will have 
+      NULL ref.genome attribute.
+
 # 3.0.1
 * Updated two internal functions `GeneratePCAWGAliquotID` and
 `GeneratePCAWGAliquotID2`.

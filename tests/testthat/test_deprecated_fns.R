@@ -2,6 +2,9 @@ context("Test deprecated function")
 
 test_that("VCFs to catalogs functions", {
   rlang::with_options(lifecycle_verbosity = "warning", {
+    skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+    
     file1 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf"
     catalogs1 <- expect_warning(
       MutectVCFFilesToCatalog(file1, ref.genome = "hg19", 
@@ -27,6 +30,8 @@ test_that("VCFs to catalogs functions", {
 
 test_that("VCFs to catalogs and plot to Pdf functions", {
   rlang::with_options(lifecycle_verbosity = "warning", {
+    skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
     
     output.files <- file.path(tempdir(), c("mutect", "strelka.sbs", "strelka.id"))
     file1 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf"
@@ -59,6 +64,9 @@ test_that("VCFs to catalogs and plot to Pdf functions", {
 
 test_that("VCFs to zip file functions", {
   rlang::with_options(lifecycle_verbosity = "warning", {
+    skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+    stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+    
     zipfile.names <- file.path(tempdir(), paste0("test", 1:3, ".zip"))
     dir1 <- "testdata/Mutect-GRCh37/"
     catalogs1 <- expect_warning(

@@ -529,6 +529,46 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
   return(check.result)
 }
 
+#' Check whether the BSgenome package is installed
+#'
+#' @param ref.genome A \code{ref.genome} argument as described in
+#'   \code{\link{ICAMS}}.
+#'
+#' @return A logical value indicating whether the BSgenome package is installed.
+#' 
+#' @keywords internal
+IsRefGenomeInstalled <- function(ref.genome) {
+  if (is.null(ref.genome)) stop("Need a non-NULL ref.genome")
+  if (class(ref.genome) == "BSgenome") return(TRUE)
+  
+  stopifnot(class(ref.genome) == "character")
+  
+  if (ref.genome %in%
+      c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38")) {
+      return(FALSE)
+    } else {
+      return(TRUE)
+    }
+  } else if (ref.genome %in%
+             c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+      return(FALSE)
+    } else {
+      return(TRUE)
+    }
+  } else if (ref.genome %in%
+             c("GRCm38", "mm10", "BSgenome.Mmusculus.UCSC.mm10")) {
+    if("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10")) {
+      return(FALSE)
+    } else {
+      return(TRUE)
+    }
+  } else {
+    return(TRUE)
+  }
+}
+
 #' Transform between counts and density spectrum catalogs
 #' and counts and density signature catalogs
 #'
@@ -718,7 +758,16 @@ TransformCatalog <-
     } else {
       out2 <- out.catalog
     }
-    return(as.catalog(out2, t[["ref.genome"]], t[["region"]],
+    
+    # Check whether user has the necessary BSgenome package installed
+    # If not, the returned catalog will have NULL ref.genome attribute
+    if (IsRefGenomeInstalled(t[["ref.genome"]])) {
+      ref.genome <- t[["ref.genome"]]
+    } else {
+      ref.genome <- NULL
+    }
+    
+    return(as.catalog(out2, ref.genome, t[["region"]],
                       t[["catalog.type"]], t[["abundance"]]))
 
   }
@@ -1302,6 +1351,34 @@ IsGRCm38 <- function(x) {
            "BSgenome.Mmusculus.UCSC.mm10")
 }
 
+#' Infer reference genome name from a character string
+#'
+#' @param ref.genome A character string indicating the reference genome.
+#'
+#' @return The inferred reference genome name.
+#' 
+#' @keywords internal
+InferRefGenomeName <- function(ref.genome) {
+  if (is.null(ref.genome)) stop("Need a non-NULL ref.genome")
+  stopifnot(class(ref.genome) == "character")
+  
+  if (ref.genome %in%
+      c("GRCh38", "hg38", "BSgenome.Hsapiens.UCSC.hg38")) {
+    ref.genome.name <- "BSgenome.Hsapiens.UCSC.hg38"
+  } else if (ref.genome %in%
+             c("GRCh37", "hg19", "BSgenome.Hsapiens.1000genomes.hs37d5")) {
+    ref.genome.name <- "BSgenome.Hsapiens.1000genomes.hs37d5"
+  } else if (ref.genome %in%
+             c("GRCm38", "mm10", "BSgenome.Mmusculus.UCSC.mm10")) {
+    ref.genome.name <- "BSgenome.Mmusculus.UCSC.mm10"
+  } else {
+    stop("Unrecoginzed ref.genome:\n", ref.genome,
+         "\nNeed one of the character strings GRCh38, hg38, GRCh37, hg19, ",
+         "GRCm38, mm10")
+  }
+  
+  return(ref.genome.name)
+}
 
 #' Infer \code{abundance} given a matrix-like \code{object} and additional information.
 #'
@@ -1338,8 +1415,14 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     }
     
     if (is.null(ref.genome)) return(NULL)
-    ref.genome <- NormalizeGenomeArg(ref.genome)
-    ab <- ICAMS::all.abundance[[ref.genome@pkgname]]
+    
+    if (class(ref.genome) == "BSgenome") {
+      ref.genome.name <- ref.genome@pkgname
+    } else {
+      ref.genome.name <- InferRefGenomeName(ref.genome)
+    }
+    
+    ab <- ICAMS::all.abundance[[ref.genome.name]]
     if (is.null(ab)) return(NULL)
 
     ab2 <- ab[[region]]
