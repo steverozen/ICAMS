@@ -1550,8 +1550,8 @@ AddTranscript <-
                          new = c("chrom", "start", "end"))
     dt <- fuzzyjoin::genome_left_join(x = df2, y = trans.ranges,
                                       by = c("chrom", "start", "end"))
-    data.table::setnames(dt, old = c("chrom.x", "start.x", "start.y", "end.y"), 
-                         new = c("CHROM", "POS", "start", "end"))
+    data.table::setnames(dt, old = c("chrom.x", "start.x", "end.x", "start.y", "end.y"), 
+                         new = c("CHROM", "POS", "POS2", "start", "end"))
 
     # Find out mutations that fall on transcripts on both strands
     #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
@@ -1584,7 +1584,7 @@ AddTranscript <-
                                  "trans.Ensembl.gene.ID", "trans.gene.symbol"))
 
     # Delete redundant column in dt3
-    dt4 <- dt3[, c("end.x","chrom.y") := NULL]
+    dt4 <- dt3[, chrom.y := NULL]
     
     rm(df)
     return(dt4)

@@ -41,6 +41,9 @@ install the BSgenome package.
     + Created new internal function `IsRefGenomeInstalled` to check whether the
       BSgenome package is installed. If not, the returned catalog will have 
       NULL ref.genome attribute.
+      
+* Fixed a bug in internal function `AddTranscript` when setting the data table
+new names.
 
 # 3.0.1
 * Updated two internal functions `GeneratePCAWGAliquotID` and
