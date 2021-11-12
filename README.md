@@ -9,7 +9,7 @@
 status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)
 ![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 <!-- badges: end -->
@@ -84,7 +84,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.1.9008.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.2.pdf>
 
 ## Frequently asked questions
 
@@ -98,6 +98,6 @@ the data. Please refer to the documentation and example of
 
 If you use ICAMS in your work, please cite:
 
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y (2021). ICAMS:In-depth
-> Characterization and Analysis of Mutational Signatures. R package
-> version 2.3.10, <https://CRAN.R-project.org/package=ICAMS>.
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN (2021).
+> ICAMS:In-depth Characterization and Analysis of Mutational Signatures.
+> R package version 3.0.2, <https://CRAN.R-project.org/package=ICAMS>.

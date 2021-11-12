@@ -1,4 +1,4 @@
-# 3.0.1.90xx
+# 3.0.2
 ## Updated
 * Updated exported functions' examples not to use deprecated functions.
 

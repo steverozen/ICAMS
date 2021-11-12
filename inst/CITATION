@@ -7,11 +7,12 @@ citEntry(
                     person("Nanhai", "Jiang"),
                     person("Arnoud", "Boot"),
                     person("Mo", "Liu"),
-                    person("Yang", "Wu")),
+                    person("Yang", "Wu"),
+                    person("Mi Ni", "Huang")),
   year     = "2021",
-  note     = "R package version 2.3.10",
+  note     = "R package version 3.0.2",
   url      = "https://CRAN.R-project.org/package=ICAMS",
-  textVersion = paste0("Rozen SG, Jiang NH, Boot A, Liu M, Wu Y (2021). ",
-  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 2.3.10, https://CRAN.R-project.org/package=ICAMS."
+  textVersion = paste0("Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN (2021). ",
+  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 3.0.2, https://CRAN.R-project.org/package=ICAMS."
   )
 )
