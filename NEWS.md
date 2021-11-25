@@ -1,3 +1,8 @@
+# 3.0.2.90xx
+## Updated
+* Updated function `PlotCatalog` to change `options("digits")` temporarily to
+prevent weird y axis labels.
+
 # 3.0.2
 ## Updated
 * Updated exported functions' examples not to use deprecated functions.

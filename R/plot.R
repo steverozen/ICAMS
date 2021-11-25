@@ -82,6 +82,14 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                         grid = NULL , upper = NULL, xlabels = NULL,
                         ylabels = NULL,
                         ylim = NULL) {
+  
+  # Check options("digits") to prevent weird y axis labels
+  old.digits <- options("digits")[[1]]
+  if (old.digits > 16) {
+    options("digits" = 7) # The default value is 7
+  }
+  on.exit(options("digits" = old.digits))
+  
   if (class(catalog)[1] %in% c("SBS96Catalog", "SBS192Catalog", "SBS1536Catalog",
                           "DBS78Catalog", "DBS136Catalog", "DBS144Catalog",
                           "IndelCatalog")) {
