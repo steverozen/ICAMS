@@ -3,6 +3,9 @@
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to
 prevent weird y axis labels.
 
+* Updated function `AnnotateSBSVCF` not to call `CheckSeqContextInVCF` as this
+check will done later at function `CreateOneColSBSMatrix`.
+
 # 3.0.2
 ## Updated
 * Updated exported functions' examples not to use deprecated functions.

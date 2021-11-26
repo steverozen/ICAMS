@@ -1917,7 +1917,16 @@ AnnotateSBSVCF <- function(SBS.vcf, ref.genome,
                            trans.ranges = NULL, name.of.VCF = NULL) {
   SBS.vcf <- AddSeqContext(df = SBS.vcf, ref.genome = ref.genome,
                            name.of.VCF = name.of.VCF)
-  CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
+  
+  # CheckSeqContextInVCF() will just stop if there are variants whose reference
+  # base in ref.genome does not match the reference base in the VCF file. This
+  # is very annoying when processing many VCFs at one time.
+  # We disable this check as later when creating SBS catalogs in function
+  # CreateOneColSBSMatrix(), there is check for this and variants which do not
+  # pass the check will be moved to "discarded.variants" in the return value
+  
+  #CheckSeqContextInVCF(SBS.vcf, "seq.21bases")
+  
   trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
   if (!is.null(trans.ranges)) {
     SBS.vcf <- AddTranscript(df = SBS.vcf, trans.ranges = trans.ranges,
@@ -2139,7 +2148,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
   # Therefore we check for this problem; but we need to exclude DBSs
   # before calling the function. This function does not detect DBSs.
 
-  CheckForEmptySBSVCF <- function(vcf, return.annotated.vcf) {
+  CheckForEmptySBSVCF <- function(vcf, return.annotated.vcf, 
+                                  discarded.variants = NULL) {
     if (0 == nrow(vcf)) {
       # Create 1-column matrix with all values being 0 and the correct row and
       # column labels.
@@ -2154,12 +2164,18 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
                dimnames = list(ICAMS::catalog.row.order$SBS1536, sample.id))
 
       if (return.annotated.vcf == FALSE) {
-        return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
-                    catSBS1536 = catSBS1536))
+        list.to.return <- 
+          list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+               catSBS1536 = catSBS1536, discarded.variants = discarded.variants)
       } else {
-        return(list(catSBS96 = catSBS96, catSBS192 = catSBS192,
-                    catSBS1536 = catSBS1536, annotated.vcf = vcf))
+        list.to.return <- 
+          list(catSBS96 = catSBS96, catSBS192 = catSBS192,
+               catSBS1536 = catSBS1536, annotated.vcf = vcf,
+               discarded.variants = discarded.variants)
       }
+      # If discarded.variants is NULL, then remove this element
+      list.to.return <- Filter(Negate(is.null), list.to.return)
+      return(list.to.return)
     } else {
       return(FALSE)
     }
@@ -2205,7 +2221,8 @@ CreateOneColSBSMatrix <- function(vcf, sample.id = "count",
     }
 
   ret2 <- CheckForEmptySBSVCF(vcf = vcf,
-                              return.annotated.vcf = return.annotated.vcf)
+                              return.annotated.vcf = return.annotated.vcf,
+                              discarded.variants = discarded.variants)
   if (!is.logical(ret2)) {
     return(ret2)
   }
@@ -2553,7 +2570,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   # Therefore we check for this problem; but we need to exclude SBSs
   # before calling the function. This function does not detect SBSs.
 
-  CheckForEmptyDBSVCF <- function(vcf, return.annotated.vcf) {
+  CheckForEmptyDBSVCF <- function(vcf, return.annotated.vcf, 
+                                  discarded.variants = NULL) {
     if (0 == nrow(vcf)) {
       # Create 1-column matrix with all values being 0 and the correct row labels.
       catDBS78 <-
@@ -2566,12 +2584,18 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
         matrix(0, nrow = length(ICAMS::catalog.row.order$DBS144), ncol = 1,
                dimnames = list(ICAMS::catalog.row.order$DBS144, sample.id))
       if (return.annotated.vcf == FALSE) {
-        return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
-                    catDBS144 = catDBS144))
+        list.to.return <- 
+          list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+               catDBS144 = catDBS144, discarded.variants = discarded.variants)
       } else {
-        return(list(catDBS78 = catDBS78, catDBS136 = catDBS136,
-                    catDBS144 = catDBS144, annotated.vcf = vcf))
+        list.to.return <- 
+          list(catDBS78 = catDBS78, catDBS136 = catDBS136,
+               catDBS144 = catDBS144, annotated.vcf = vcf,
+               discarded.variants = discarded.variants)
       }
+      # Remove element discarded variants if it is NULL
+      list.to.return <- Filter(Negate(is.null), list.to.return)
+      return(list.to.return)
     } else {
       return(FALSE)
     }
@@ -2602,7 +2626,8 @@ CreateOneColDBSMatrix <- function(vcf, sample.id = "count",
   }
 
   ret2 <- CheckForEmptyDBSVCF(vcf = vcf,
-                              return.annotated.vcf = return.annotated.vcf)
+                              return.annotated.vcf = return.annotated.vcf,
+                              discarded.variants = discarded.variants)
   if (!is.logical(ret2)) {
     return(ret2)
   }
