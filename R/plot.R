@@ -1801,6 +1801,115 @@ PlotCatalogToPdf.IndelCatalog <-
   }
   grDevices::dev.off()
   invisible(list(plot.success = TRUE))
+  }
+
+#' @export
+PlotCatalog.ID166Catalog <- function(catalog, plot.SBS12, cex,
+                                     grid = TRUE, upper = TRUE, 
+                                     xlabels = TRUE, ylabels = TRUE,
+                                     ylim = NULL){
+  # define helper function
+  t_col <- function(color, percent = 50, name = NULL) {
+    #      color = color name
+    #    percent = % transparency
+    #       name = an optional name for the color
+    
+    ## Get RGB values for named color
+    rgb.val <- col2rgb(color)
+    
+    ## Make new color using input color as base and alpha set by transparency
+    t.col <- rgb(rgb.val[1], rgb.val[2], rgb.val[3],
+                 maxColorValue = 255,
+                 alpha = (100 - percent) * 255 / 100,
+                 names = name)
+    
+    ## Save the color
+    invisible(t.col)
+  }
+  
+  class.col <- c("#fdbe6f", "#ff8001", "#b0dd8b", "#36a12e", 
+                 "#fdcab5", "#fc8a6a", "#f14432", "#bc141a", "#d0e1f2", 
+                 "#94c4df", "#4a98c9", "#1764ab", "#e2e2ef", "#b6b6d8", 
+                 "#8683bd", "#61409b")
+  bg.col <- mapply(t_col, class.col, percent = 90)
+  strand.col <- c("black", "grey")
+  cols <- rep(strand.col, 83)
+  cex <- par("cex")
+  maj.class.names <- 
+    c("1bp deletion", "1bp insertion", 
+      ">1bp deletions at repeats\n(Deletion length)", 
+      ">1bp insertions at repeats\n(Insertion length)", 
+      "Deletions with microhomology\n(Deletion length)")
+  category.lab <- c(rep(c("C", "T"), 2), rep(c("2", "3", "4", 
+                                               "5+"), 3))
+  category.col <- c(rep(c("black", "white"), 2), 
+                    rep(c("black", "black", "black", "white"), 3))
+  
+  density <- rbind(catalog[1:83,1],catalog[84:166,1])
+  ymax <- max(density) * 1.3
+  bp <- barplot(unname(density), beside = TRUE, 
+                ylim = c(0, ymax), axes = FALSE, lwd = 3, xaxs = "i", border = NA, 
+                col = cols, xpd = NA, ylab = "counts", cex.lab = cex * 
+                  par("cex.lab") * 1.25, las = 2)
+  x.left <- bp[2 * c(seq(0, 66, 6), 72, 73, 75, 78) + 1] - 
+    0.5
+  x.right <- bp[2 * c(seq(6, 72, 6), 73, 75, 78, 83)] + 
+    0.5
+  class.pos <- c((x.left[seq(1, 4, 2)] + x.right[seq(2, 5, 2)])/2, 
+                 (x.left[c(6, 10)] + x.right[c(8, 12)] - 12)/2, 
+                 (x.left[13] + x.right[length(x.left)])/2)
+  
+  rect(xleft = x.left - 0.5, 0, xright = x.right + 0.5, 
+       ymax, col = bg.col, border = "grey90", lwd = 1.5)
+  barplot(unname(density), beside = TRUE, ylim = c(0, ymax), 
+          axes = FALSE, ann = FALSE, lwd = 3, border = NA, 
+          col = cols, xpd = NA, add = TRUE)
+  segments(x.left[1], seq(0, ymax, ymax/4), x.right[length(x.right)], 
+           seq(0, ymax, ymax/4), col = "grey60", lwd = 0.5, 
+           xpd = NA)
+  y.axis.values <- seq(0, ymax, length.out = 5)
+  y.axis.labels <- round(y.axis.values, digits = 0)
+  Axis(side = 2, at = y.axis.values, las = 1, labels = FALSE)
+  text(-2, y.axis.values, labels = y.axis.labels, las = 1, 
+       adj = 1, xpd = NA, cex = cex)
+  mut.type <- c(rep(c("1", "2", "3", "4", "5", "6+"), 2), 
+                rep(c("0", "1", "2", "3", "4", "5+"), 2), 
+                rep(c("1", "2", "3", "4", "5", "6+"), 4), 
+                rep(c("0", "1", "2", "3", "4", "5+"), 4), 
+                "1", "1", "2", "1", 
+                "2", "3", "1", "2", "3", "4", "5+")
+  bottom.pos <- c((x.left[1] + x.right[2])/2, (x.left[3] + 
+                                                 x.right[4])/2, class.pos[3:length(class.pos)])
+  bottom.lab <- c("Homopolymer length", "Homopolymer length", 
+                  "Number of repeat units", "Number of repeat units", 
+                  "Microhomology length")
+  rect(xleft = x.left, -ymax * 0.09, xright = x.right, 
+       -ymax * 0.01, col = class.col, border = NA, xpd = NA)
+  text((bp[1, ] + bp[2, ])/2, -ymax * 0.15, labels = mut.type, 
+       cex = 0.65, xpd = NA)
+  text(bottom.pos, -ymax * 0.27, labels = bottom.lab, cex = 0.75, 
+       xpd = NA)
+  rect(xleft = x.left, ymax * 1.02, xright = x.right, ymax * 
+         1.11, col = class.col, border = NA, xpd = NA)
+  text((x.left + x.right)/2, ymax * 1.06, labels = category.lab, 
+       cex = 0.65, col = category.col, xpd = NA)
+  text(class.pos, ymax * 1.27, labels = maj.class.names, 
+       cex = 0.75, xpd = NA)
+  text(3, ymax * 0.9, labels = colnames(catalog), 
+       adj = 0, cex = cex, font = 2)
+  
+  if (FALSE) {
+    count.labels = mapply(function(cols) {
+      sum(counts[, cols])
+    }, list(1:6, 7:12, 13:18, 19:24, 25:48, 49:72, 73:83))
+    text(bp[2 * c(6, 12, 18, 24, 48, 72, 83)], ymax * 0.92, 
+         labels = count.labels, adj = c(1, 1), xpd = NA, cex = cex)
+  }
+  
+  # Add legend
+  legend(bp[129], ymax * 1.05, fill = strand.col, border = strand.col,
+         xpd = NA, bty = "n", x.intersp = 0.5, , cex = cex * 0.88,
+         legend = c("Genic region", "Nongenic region"))
 }
 
 

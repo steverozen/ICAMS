@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+      - ID166
   pull_request:
     branches:
       - main
       - master
+      - ID166
 
 name: R-CMD-check
 
