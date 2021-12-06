@@ -1991,6 +1991,21 @@ GetCustomKmerCounts <- function(k, ref.genome, custom.ranges, filter.path,
   }
 }
 
+#' @export
+`[.ID166Catalog` <- function (x, i, j, drop = if (missing(i)) TRUE else length(cols) ==
+                                1) {
+  y <- NextMethod("[")
+  if (inherits(y, c("integer", "numeric"))) {
+    return(y)
+  } else {
+    class(y) <- class(x)
+    for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
+      attr(y, at) <- attr(x, at, exact = TRUE)
+    }
+    return(y)
+  }
+}
+
 #' @keywords internal
 CheckAndAssignAttributes <- function(x, list0) {
   for (at in c("ref.genome", "catalog.type", "abundance", "region")) {
@@ -2176,6 +2191,16 @@ CheckAndAssignAttributes <- function(x, list0) {
 
 #' @export
 `cbind.IndelCatalog` <- function (..., deparse.level = 1) {
+  x <- base::cbind.data.frame(..., deparse.level = deparse.level)
+  x <- data.matrix(x)
+  class(x) <- class(..1)
+  list0 <- list(...)
+  x <- CheckAndAssignAttributes(x, list0)
+  return(x)
+}
+
+#' @export
+`cbind.ID166Catalog` <- function (..., deparse.level = 1) {
   x <- base::cbind.data.frame(..., deparse.level = deparse.level)
   x <- data.matrix(x)
   class(x) <- class(..1)
