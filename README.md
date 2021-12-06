@@ -84,7 +84,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.2.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.3.pdf>
 
 ## Frequently asked questions
 
@@ -98,6 +98,6 @@ the data. Please refer to the documentation and example of
 
 If you use ICAMS in your work, please cite:
 
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN (2021).
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2021).
 > ICAMS:In-depth Characterization and Analysis of Mutational Signatures.
-> R package version 3.0.2, <https://CRAN.R-project.org/package=ICAMS>.
+> R package version 3.0.3, <https://CRAN.R-project.org/package=ICAMS>.

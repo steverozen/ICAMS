@@ -83,10 +83,6 @@ PlotCatalog <- function(catalog, plot.SBS12 = NULL, cex = NULL,
                         grid = NULL , upper = NULL, xlabels = NULL,
                         ylabels = NULL,
                         ylim = NULL) {
-  if (ncol(catalog) > 1) {
-    stop("\nPlotCatalog can only plot one sample at one time", 
-         "\nYou can use PlotCatalogToPdf to plot multiple samples to PDF")
-  }
   
   # Check options("digits") to prevent weird y axis labels
   old.digits <- options("digits")[[1]]

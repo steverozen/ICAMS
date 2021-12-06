@@ -99,6 +99,7 @@ et
 exome
 exomes
 freebayes
+genic
 gff
 ggplot
 github
@@ -121,6 +122,7 @@ mucosal
 mutect
 mutuations
 nd
+nongenic
 opar
 pentanucleotide
 rlang
