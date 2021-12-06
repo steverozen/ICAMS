@@ -17,7 +17,7 @@ ReadCatalog(
 \item{file}{Path to a catalog on disk in a standardized format.
 The recognized formats are:
 \itemize{
-\item ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID
+\item ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID, ID166
 (see \code{\link{CatalogRowOrder}}).
 \item SigProfiler-formatted SBS96, DBS78 and ID83 catalogs;
 see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.

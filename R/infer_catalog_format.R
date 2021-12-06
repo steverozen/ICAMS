@@ -29,11 +29,14 @@ InferCatalogInfo <- function(object) {
   if (nrow == 83)  {
     return(MakeID83Catalog(object))
   }
+  if (nrow == 166)  {
+    return(MakeID166Catalog(object))
+  }
   if (nrow == 1697){ # TODO(Wuyang)
     return(MakeCOMPOSITECatalog(object))
   }  
   stop("\nThe number of rows in the input object must be one of\n",
-       "96 192 1536 78 144 136 83 1697\ngot ", nrow)
+       "96 192 1536 78 144 136 83 166 1697\ngot ", nrow)
   
 }
 
@@ -52,10 +55,11 @@ InferCatalogClassPrefix <- function(object) {
   if (nrow == 144)  return("DBS144")
   if (nrow == 136)  return("DBS136")
   if (nrow == 83)   return("ID")
+  if (nrow == 166)   return("ID166")
   if (nrow == 1697) return("COMPOSITE")
   
   stop("\nThe number of rows in the input object must be one of\n",
-       "96 192 1536 78 144 136 83 1697\ngot ", nrow)
+       "96 192 1536 78 144 136 83 166 1697\ngot ", nrow)
   
 }
 
@@ -358,6 +362,33 @@ MakeID83Catalog <- function(object) {
   stop("83 mutation types, but not a ID83 catalog in",
        " ICAMS, COSMIC, or SigProfiler format")
 }
+
+# Convert external catalog files with 166 rows into ICAMS ID166 internal catalog format
+# ID166 is genic-nongenic indel catalog, there is an additional first column "Region" added
+# to the canonical ID83 catalog CSV file
+# "G" stands for "Genic", indicating the indel happens on genic region
+# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+MakeID166Catalog <- function(cos) {
+  cn <- names(cos)
+  ex.cn <- c("Region", "Type", "Subtype", "Indel_size", "Repeat_MH_size")
+  names(cos)[1:5] <- ex.cn
+  rn <- apply(cos[ , 1:5], MARGIN = 1, paste, collapse = ":")
+  out <- as.matrix(cos[ , -(1:5), drop = FALSE])
+  
+  if (!setequal(rn, ICAMS::catalog.row.order$ID166)) {
+    msg <- 
+      paste("The row names are not correct:\n",
+            "got", paste(rn, collapse = ", "),
+            "\nexpected", paste(ICAMS::catalog.row.order$ID166,
+                                collapse = ", "))
+    stop(msg)
+  }
+  
+  rownames(out) <- rn
+  out <- out[ICAMS::catalog.row.order$ID166, , drop = FALSE]
+  return(out)
+}
+
 ## Type Subtype Indel_size Repeat_MH_size
 ## INS/DEL C/T/repeats/MH 1~5+ 0~5+
 MakeID83CatalogFromICAMSExt <- function(cos) {

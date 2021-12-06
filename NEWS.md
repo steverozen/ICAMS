@@ -3,6 +3,9 @@
 * Added new data `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
 for genic-nongenic indel catalog.
 
+* Added functionality for `ReadCatalog` to read in genic-nongenic indel
+catalog (ID166).
+
 ## Updated
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to
 prevent weird y axis labels.

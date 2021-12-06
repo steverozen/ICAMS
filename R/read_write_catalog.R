@@ -7,7 +7,7 @@
 #' @param file Path to a catalog on disk in a standardized format.
 #' The recognized formats are:
 #' 
-#' * ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID 
+#' * ICAMS formatted SBS96, SBS192, SBS1536, DBS78, DBS136, DBS144, ID, ID166 
 #'   (see \code{\link{CatalogRowOrder}}).
 #'   
 #' * SigProfiler-formatted SBS96, DBS78 and ID83 catalogs;
