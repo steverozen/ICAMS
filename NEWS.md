@@ -11,6 +11,9 @@ catalog (ID166) to CSV file.
 
 * Added `cbind` and `[` method for `ID166Catalog`.
 
+* Added functionality for `PlotCatalog` and `PlotCatalogToPdf` to plot
+genic-nongenic indel catalog (ID166).
+
 ## Updated
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to
 prevent weird y axis labels.
