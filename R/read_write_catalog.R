@@ -232,3 +232,9 @@ WriteCatalog.IndelCatalog <- function(catalog, file, strict = TRUE) {
   WriteCat(catalog, file, 83, ICAMS::catalog.row.order$ID,
            catalog.row.headers$ID, strict)
 }
+
+#' @export
+WriteCatalog.ID166Catalog <- function(catalog, file, strict = TRUE) {
+  WriteCat(catalog, file, 166, ICAMS::catalog.row.order$ID166,
+           catalog.row.headers$ID166, strict)
+}

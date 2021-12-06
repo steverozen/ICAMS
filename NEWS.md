@@ -6,6 +6,9 @@ for genic-nongenic indel catalog.
 * Added functionality for `ReadCatalog` to read in genic-nongenic indel
 catalog (ID166).
 
+* Added functionality for `WriteCatalog` to write genic-nongenic indel
+catalog (ID166) to CSV file.
+
 ## Updated
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to
 prevent weird y axis labels.
