@@ -241,6 +241,14 @@ catalog.row.order.ID <-
     "DEL:MH:4:3", "DEL:MH:5+:1", "DEL:MH:5+:2", "DEL:MH:5+:3", "DEL:MH:5+:4",
     "DEL:MH:5+:5+")
 
+# Create the catalog row order for genic-nongenic indel catalog
+# "G" stands for "Genic", indicating the indel happens on genic region
+# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+catalog.row.order.ID.166 <- c(
+  paste0("G:", catalog.row.order.ID),
+  paste0("N:", catalog.row.order.ID)
+)
+
 catalog.row.headers.sp.ID.83 <-
   c("1:Del:C:0", "1:Del:C:1", "1:Del:C:2", "1:Del:C:3", "1:Del:C:4",  
     "1:Del:C:5", "1:Del:T:0", "1:Del:T:1", "1:Del:T:2", "1:Del:T:3",  
@@ -954,6 +962,13 @@ catalog.row.headers.ID <-
     #, .internal.selfref = <pointer: 0x0000000008dc1ef0>
   )
 
+# Create the catalog row headers for genic-nongenic indel catalog
+# "G" stands for "Genic", indicating the indel happens on genic region
+# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+catalog.row.headers.ID.166 <-
+  cbind(Region = c(rep("G", 83), rep("N", 83)),
+        catalog.row.headers.ID)
+
 catalog.row.headers.COMPOSITE <-
   data.frame("Mutation type" = catalog.row.order[["COMPOSITE"]])
 colnames(catalog.row.headers.COMPOSITE) <- "Mutation type"
@@ -991,6 +1006,7 @@ catalog.row.order <- list(SBS96 = catalog.row.order.SBS.96,
                           DBS136 = catalog.row.order.DBS.136,
                           DBS144 = catalog.row.order.DBS.144,
                           ID = catalog.row.order.ID,
+                          ID166= catalog.row.order.ID.166,
                           # NOT TESTED
                           COMPOSITE = c(catalog.row.order.SBS.1536,
                                         catalog.row.order.DBS.78,
@@ -1003,6 +1019,7 @@ catalog.row.headers <- list(SBS96 = catalog.row.headers.SBS.96,
                             DBS136 = catalog.row.headers.DBS.136,
                             DBS144 = catalog.row.headers.DBS.144,
                             ID = catalog.row.headers.ID,
+                            ID166 = catalog.row.headers.ID.166,
                             # NOT TESTED
                             COMPOSITE = catalog.row.headers.COMPOSITE)
 

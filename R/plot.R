@@ -1851,10 +1851,8 @@ PlotCatalog.ID166Catalog <- function(catalog, plot.SBS12, cex,
                 ylim = c(0, ymax), axes = FALSE, lwd = 3, xaxs = "i", border = NA, 
                 col = cols, xpd = NA, ylab = "counts", cex.lab = cex * 
                   par("cex.lab") * 1.25, las = 2)
-  x.left <- bp[2 * c(seq(0, 66, 6), 72, 73, 75, 78) + 1] - 
-    0.5
-  x.right <- bp[2 * c(seq(6, 72, 6), 73, 75, 78, 83)] + 
-    0.5
+  x.left <- bp[2 * c(seq(0, 66, 6), 72, 73, 75, 78) + 1] - 0.5
+  x.right <- bp[2 * c(seq(6, 72, 6), 73, 75, 78, 83)] + 0.5
   class.pos <- c((x.left[seq(1, 4, 2)] + x.right[seq(2, 5, 2)])/2, 
                  (x.left[c(6, 10)] + x.right[c(8, 12)] - 12)/2, 
                  (x.left[13] + x.right[length(x.left)])/2)
@@ -1865,8 +1863,7 @@ PlotCatalog.ID166Catalog <- function(catalog, plot.SBS12, cex,
           axes = FALSE, ann = FALSE, lwd = 3, border = NA, 
           col = cols, xpd = NA, add = TRUE)
   segments(x.left[1], seq(0, ymax, ymax/4), x.right[length(x.right)], 
-           seq(0, ymax, ymax/4), col = "grey60", lwd = 0.5, 
-           xpd = NA)
+           seq(0, ymax, ymax/4), col = "grey60", lwd = 0.5, xpd = NA)
   y.axis.values <- seq(0, ymax, length.out = 5)
   y.axis.labels <- round(y.axis.values, digits = 0)
   Axis(side = 2, at = y.axis.values, las = 1, labels = FALSE)
@@ -1878,8 +1875,8 @@ PlotCatalog.ID166Catalog <- function(catalog, plot.SBS12, cex,
                 rep(c("0", "1", "2", "3", "4", "5+"), 4), 
                 "1", "1", "2", "1", 
                 "2", "3", "1", "2", "3", "4", "5+")
-  bottom.pos <- c((x.left[1] + x.right[2])/2, (x.left[3] + 
-                                                 x.right[4])/2, class.pos[3:length(class.pos)])
+  bottom.pos <- c((x.left[1] + x.right[2])/2, 
+                  (x.left[3] + x.right[4])/2, class.pos[3:length(class.pos)])
   bottom.lab <- c("Homopolymer length", "Homopolymer length", 
                   "Number of repeat units", "Number of repeat units", 
                   "Microhomology length")

@@ -1,4 +1,8 @@
 # 3.0.2.90xx
+## Added
+* Added new data `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
+for genic-nongenic indel catalog.
+
 ## Updated
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to
 prevent weird y axis labels.
