@@ -1,3 +1,7 @@
+# 3.0.4
+## Changed
+* Changed the legend of ID166 plot from `Nongenic region` to `Intergenic region`.
+
 # 3.0.3
 ## Added
 * Added new data `catalog.row.order$ID166` and `catalog.row.headers$ID166` 

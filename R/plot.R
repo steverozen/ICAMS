@@ -1976,7 +1976,7 @@ PlotCatalog.ID166Catalog <- function(catalog, plot.SBS12, cex,
   # Add legend
   legend(bp[150], ymax * 1.05, fill = region.col, border = region.col,
          xpd = NA, bty = "n", x.intersp = 0.5, cex = cex * 0.88,
-         legend = c("Genic region", "Nongenic region"))
+         legend = c("Genic region", "Intergenic region"))
   
   invisible(list(plot.success = TRUE, plot.object = bp))
 }
