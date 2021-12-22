@@ -28,19 +28,4 @@ A list of all sequence contexts for the specified \code{indel.class}.
 Get all the sequence contexts of the indels in a given 1 base-pair indel
 class from a VCF
 }
-\examples{
-file <- c(system.file("extdata/Mutect-vcf",
-                      "Mutect.GRCh37.s1.vcf",
-                      package = "ICAMS"))
-split.vcfs <- ReadAndSplitVCFs(file, variant.caller = "mutect")
-ID.catalog <- VCFsToIDCatalogs(list.of.vcfs = split.vcfs$ID,
-                               ref.genome = "hg19",
-                               region = "genome",
-                               return.annotated.vcfs = TRUE)
-annotated.vcf <- ID.catalog$annotated.vcfs$Mutect.GRCh37.s1
-extended.seq.contexts <-
-  SymmetricalContextsFor1BPIndel(annotated.vcf = annotated.vcf,
-                                 indel.class = "DEL:T:1:0")
-
-}
 \keyword{internal}
