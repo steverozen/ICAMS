@@ -364,10 +364,10 @@ MakeID83Catalog <- function(object) {
 }
 
 # Convert external catalog files with 166 rows into ICAMS ID166 internal catalog format
-# ID166 is genic-nongenic indel catalog, there is an additional first column "Region" added
+# ID166 is genic-intergenic indel catalog, there is an additional first column "Region" added
 # to the canonical ID83 catalog CSV file
 # "G" stands for "Genic", indicating the indel happens on genic region
-# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+# "I" stands for "Intergenic", indicating the indel happens on Intergenic region
 MakeID166Catalog <- function(cos) {
   cn <- names(cos)
   ex.cn <- c("Region", "Type", "Subtype", "Indel_size", "Repeat_MH_size")

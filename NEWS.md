@@ -1,3 +1,8 @@
+# 3.0.5
+## Updated
+* Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
+for genic-intergenic indel catalog (ID166).
+
 # 3.0.4
 ## Changed
 * Changed the legend of ID166 plot from `Nongenic region` to `Intergenic region`.
@@ -5,18 +10,18 @@
 # 3.0.3
 ## Added
 * Added new data `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
-for genic-nongenic indel catalog.
+for genic-intergenic indel catalog.
 
-* Added functionality for `ReadCatalog` to read in genic-nongenic indel
+* Added functionality for `ReadCatalog` to read in genic-intergenic indel
 catalog (ID166).
 
-* Added functionality for `WriteCatalog` to write genic-nongenic indel
+* Added functionality for `WriteCatalog` to write genic-intergenic indel
 catalog (ID166) to CSV file.
 
 * Added `cbind` and `[` method for `ID166Catalog`.
 
 * Added functionality for `PlotCatalog` and `PlotCatalogToPdf` to plot
-genic-nongenic indel catalog (ID166).
+genic-intergenic indel catalog (ID166).
 
 ## Updated
 * Updated function `PlotCatalog` to change `options("digits")` temporarily to

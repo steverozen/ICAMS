@@ -44,6 +44,7 @@ in trinucleotide context)
 \item \code{DBS144Catalog}
 \item \code{DBS136Catalog}
 \item \code{IndelCatalog}
+\item \code{ID166Catalog} (genic-intergenic indel catalog)
 }
 \code{\link{as.catalog}}
 is the main constructor.

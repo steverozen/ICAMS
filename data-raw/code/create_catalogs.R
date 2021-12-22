@@ -241,12 +241,12 @@ catalog.row.order.ID <-
     "DEL:MH:4:3", "DEL:MH:5+:1", "DEL:MH:5+:2", "DEL:MH:5+:3", "DEL:MH:5+:4",
     "DEL:MH:5+:5+")
 
-# Create the catalog row order for genic-nongenic indel catalog
+# Create the catalog row order for genic-intergenic indel catalog
 # "G" stands for "Genic", indicating the indel happens on genic region
-# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+# "I" stands for "Intergenic", indicating the indel happens on Intergenic region
 catalog.row.order.ID.166 <- c(
   paste0("G:", catalog.row.order.ID),
-  paste0("N:", catalog.row.order.ID)
+  paste0("I:", catalog.row.order.ID)
 )
 
 catalog.row.headers.sp.ID.83 <-
@@ -962,11 +962,11 @@ catalog.row.headers.ID <-
     #, .internal.selfref = <pointer: 0x0000000008dc1ef0>
   )
 
-# Create the catalog row headers for genic-nongenic indel catalog
+# Create the catalog row headers for genic-intergenic indel catalog
 # "G" stands for "Genic", indicating the indel happens on genic region
-# "N" stands for "Nongenic", indicating the indel happens on nongenic region
+# "I" stands for "Intergenic", indicating the indel happens on Intergenic region
 catalog.row.headers.ID.166 <-
-  cbind(Region = c(rep("G", 83), rep("N", 83)),
+  cbind(Region = c(rep("G", 83), rep("I", 83)),
         catalog.row.headers.ID)
 
 catalog.row.headers.COMPOSITE <-
