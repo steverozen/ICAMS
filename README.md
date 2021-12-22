@@ -9,7 +9,7 @@
 status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)
 ![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 <!-- badges: end -->
@@ -71,7 +71,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://github.com/steverozen/ICAMS/blob/v3.0.5-branch/data-raw/source-file/ICAMS_3.0.5.tar.gz)
+source](https://github.com/steverozen/ICAMS/blob/v3.0.5-branch/data-raw/source-file/ICAMS_3.0.5.tar.gz?raw=true)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 

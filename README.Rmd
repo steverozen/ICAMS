@@ -79,7 +79,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
-Alternatively, you can download the [package source](https://github.com/steverozen/ICAMS/blob/v3.0.5-branch/data-raw/source-file/ICAMS_3.0.5.tar.gz) of recent *stable development* version of ICAMS to your computer, then do:
+Alternatively, you can download the [package source](https://github.com/steverozen/ICAMS/blob/v3.0.5-branch/data-raw/source-file/ICAMS_3.0.5.tar.gz?raw=true) of recent *stable development* version of ICAMS to your computer, then do:
 
 ``` r
 if (!requireNamespace("remotes", quietly = TRUE)) {
