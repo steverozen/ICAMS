@@ -72,6 +72,33 @@ InferCatalogClassString <- function(object) {
 }
 
 
+#' Check whether an R object contains one of the ICAMS catalog classes 
+#'
+#' @param object An R object.
+#'
+#' @return A logical value.
+#' 
+#' @export
+#'
+#' @examples
+#' # Create a matrix with all values being 1
+#' object <- matrix(1, nrow = 96, ncol = 1, 
+#'                  dimnames = list(catalog.row.order$SBS96))
+#' IsICAMSCatalog(object) # FALSE
+#' 
+#' # Use as.catalog to add class attribute to object
+#' catalog <- as.catalog(object)
+#' IsICAMSCatalog(catalog) # TRUE      
+IsICAMSCatalog <- function(object) {
+  supported.classes <-
+    paste0(
+    c(paste0("SBS", c(96, 192, 1536)),
+      paste0("DBS", c(78, 144, 136)),
+      "Indel", "ID166", "COMPOSITE"),
+    "Catalog")
+  return(inherits(x = object, what = supported.classes))
+}
+
 
 ## Convert external catalog files with 96 rows into ICAMS internal catalog format.
 #' @keywords internal

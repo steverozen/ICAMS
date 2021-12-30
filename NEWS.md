@@ -1,3 +1,8 @@
+# 3.0.5.90xx
+## Added
+* Added new exported function `IsICAMSCatalog` to check whether an R object
+contains one of the ICAMS catalog classes.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
