@@ -9,7 +9,7 @@
 status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)
 ![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 <!-- badges: end -->
@@ -36,7 +36,7 @@ per megabase) mutational spectra or signatures.
 
 ## Installation
 
-### Get the stable version
+### To install the stable version from [CRAN](https://CRAN.R-project.org/package=ICAMS):
 
 *IMPORTANT* Install the [Bioconductor](https://www.bioconductor.org/)
 dependencies first:
@@ -50,17 +50,27 @@ BiocManager::install("BSgenome")
 
 This may be slow; please be patient.
 
-Afterwards, install the stable version of ICAMS from
-[CRAN](https://cran.r-project.org/) with the R command line:
+Afterwards, install the latest release version of ICAMS with the R
+command line:
 
 ``` r
 install.packages("ICAMS")
 ```
 
+### To install the latest stable version from [GitHub](https://github.com/steverozen/ICAMS):
+
+``` r
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github(repo = "steverozen/ICAMS")
+```
+
 ### Get the development version
 
 To use new features in the development version, you can install ICAMS
-from the master branch on [GitHub](https://github.com/), which may not
+from the master branch on
+[GitHub](https://github.com/steverozen/ICAMS/tree/master), which may not
 be stable:
 
 ``` r
@@ -68,18 +78,6 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
 remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
-```
-
-Alternatively, you can download the [package
-source](https://github.com/steverozen/ICAMS/blob/v3.0.5-branch/data-raw/source-file/ICAMS_3.0.5.tar.gz?raw=true)
-of recent *stable development* version of ICAMS to your computer, then
-do:
-
-``` r
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 ```
 
 ## Reference manual
