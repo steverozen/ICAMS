@@ -10,12 +10,12 @@ catalogs <-
                 variant.caller = "mutect",
                 region = "genome",
                 base.filename = "Mutect")
-cat_sbs96 <- catalogs$catSBS96
-dim(cat_sbs96)
-expect_true(IsICAMSCatalog(cat_sbs96))
+cat.sbs96 <- catalogs$catSBS96
+dim(cat.sbs96)
+expect_true(IsICAMSCatalog(cat.sbs96))
 
 # Test subsetting the catalog
-test <- cat_sbs96[, 1, drop = FALSE]
+test <- cat.sbs96[, 1, drop = FALSE]
 dim(test)
 expect_true(IsICAMSCatalog(test)) 
 
