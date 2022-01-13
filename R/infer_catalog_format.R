@@ -71,6 +71,60 @@ InferCatalogClassString <- function(object) {
   return(paste0(prefix, "Catalog"))
 }
 
+#' Check whether an R object contains one of the ICAMS catalog classes 
+#'
+#' @param object An R object.
+#'
+#' @return A logical value.
+#' 
+#' @export
+#'
+#' @examples
+#' # Create a matrix with all values being 1
+#' object <- matrix(1, nrow = 96, ncol = 1, 
+#'                  dimnames = list(catalog.row.order$SBS96))
+#' IsICAMSCatalog(object) # FALSE
+#' 
+#' # Use as.catalog to add class attribute to object
+#' catalog <- as.catalog(object)
+#' IsICAMSCatalog(catalog) # TRUE      
+IsICAMSCatalog <- function(object) {
+  supported.num.rows <- 
+    c(96, 192, 1536, 78, 136, 144, 83, 166, 1697)
+  supported.type <- 
+    c(paste0("SBS", c(96, 192, 1536)),
+      paste0("DBS", c(78, 136, 144)),
+      "ID", "ID166", "COMPOSITE")
+  supported.classes <-
+    paste0(supported.type, "Catalog")
+  
+  # Change "IDCatalog" class to "IndelCatalog"
+  supported.classes[supported.classes == "IDCatalog"] <-
+    "IndelCatalog"
+  
+  if (!nrow(object) %in% supported.num.rows) {
+    return(FALSE)
+  } 
+  
+  if (!inherits(x = object, what = supported.classes)) {
+    return(FALSE)
+  } 
+  
+  if (!is.null(rownames(object))) {
+    index <- which(nrow(object) == supported.num.rows)
+    type <- supported.type[index]
+    if (all(rownames(object) == ICAMS::catalog.row.order[[type]])) {
+      return(TRUE)
+    } else {
+      message("The rownames of the input object do not match the catalog row ",
+              "order used in ICAMS exactly. See ICAMS::catalog.row.order for details")
+      return(FALSE)
+    }
+  }
+  
+  return(TRUE)
+}
+
 
 
 ## Convert external catalog files with 96 rows into ICAMS internal catalog format.

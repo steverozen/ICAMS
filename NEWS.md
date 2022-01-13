@@ -3,6 +3,9 @@
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
 for genic-intergenic indel catalog (ID166).
 
+## Added
+* Added new exported function `IsICAMSCatalog`.
+
 # 3.0.4
 ## Changed
 * Changed the legend of ID166 plot from `Nongenic region` to `Intergenic region`.
