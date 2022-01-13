@@ -90,15 +90,41 @@ InferCatalogClassString <- function(object) {
 #' catalog <- as.catalog(object)
 #' IsICAMSCatalog(catalog) # TRUE      
 IsICAMSCatalog <- function(object) {
-  supported.classes <-
-    paste0(
+  supported.num.rows <- 
+    c(96, 192, 1536, 78, 136, 144, 83, 166, 1697)
+  supported.type <- 
     c(paste0("SBS", c(96, 192, 1536)),
-      paste0("DBS", c(78, 144, 136)),
-      "Indel", "ID166", "COMPOSITE"),
-    "Catalog")
-  return(inherits(x = object, what = supported.classes))
+      paste0("DBS", c(78, 136, 144)),
+      "ID", "ID166", "COMPOSITE")
+  supported.classes <-
+    paste0(catalog.type, "Catalog")
+  
+  # Change "IDCatalog" class to "IndelCatalog"
+  supported.classes[supported.classes == "IDCatalog"] <-
+    "IndelCatalog"
+  
+  if (!nrow(object) %in% supported.num.rows) {
+    return(FALSE)
+  } 
+  
+  if (!inherits(x = object, what = supported.classes)) {
+    return(FALSE)
+  } 
+  
+  if (!is.null(rownames(object))) {
+    index <- which(nrow(object) == supported.num.rows)
+    type <- supported.type[index]
+    if (all(rownames(object) == ICAMS::catalog.row.order[[type]])) {
+      return(TRUE)
+    } else {
+      message("The rownames of the input object do not match the catalog row ",
+      "order used in ICAMS exactly. See ICAMS::catalog.row.order for details")
+      return(FALSE)
+    }
+  }
+  
+  return(TRUE)
 }
-
 
 ## Convert external catalog files with 96 rows into ICAMS internal catalog format.
 #' @keywords internal
