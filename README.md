@@ -36,7 +36,7 @@ per megabase) mutational spectra or signatures.
 
 ## Installation
 
-### Get the stable version
+### To install the stable version from [CRAN](https://CRAN.R-project.org/package=ICAMS):
 
 *IMPORTANT* Install the [Bioconductor](https://www.bioconductor.org/)
 dependencies first:
@@ -50,17 +50,27 @@ BiocManager::install("BSgenome")
 
 This may be slow; please be patient.
 
-Afterwards, install the stable version of ICAMS from
-[CRAN](https://cran.r-project.org/) with the R command line:
+Afterwards, install the latest release version of ICAMS with the R
+command line:
 
 ``` r
 install.packages("ICAMS")
 ```
 
+### To install the latest stable version from [GitHub](https://github.com/steverozen/ICAMS):
+
+``` r
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github(repo = "steverozen/ICAMS")
+```
+
 ### Get the development version
 
 To use new features in the development version, you can install ICAMS
-from the master branch on [GitHub](https://github.com/), which may not
+from the master branch on
+[GitHub](https://github.com/steverozen/ICAMS/tree/master), which may not
 be stable:
 
 ``` r
@@ -70,21 +80,9 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
-Alternatively, you can download the [package
-source](https://raw.githubusercontent.com/steverozen/ICAMS/master/data-raw/source-file/ICAMS_3.0.0.tar.gz)
-of recent *stable development* version of ICAMS to your computer, then
-do:
-
-``` r
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_local(path = "path-to-package-source-file-on-your-computer")
-```
-
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.5.9001.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.5.9002.pdf>
 
 ## Frequently asked questions
 
