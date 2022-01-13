@@ -97,7 +97,7 @@ IsICAMSCatalog <- function(object) {
       paste0("DBS", c(78, 136, 144)),
       "ID", "ID166", "COMPOSITE")
   supported.classes <-
-    paste0(catalog.type, "Catalog")
+    paste0(supported.type, "Catalog")
   
   # Change "IDCatalog" class to "IndelCatalog"
   supported.classes[supported.classes == "IDCatalog"] <-
