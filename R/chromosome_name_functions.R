@@ -52,10 +52,10 @@ StandardChromName <- function(df) {
 #' @return A \strong{list} with the elements
 #' * \code{df} a data frame with variants that had "legal" chromosome
 #'   names (see below for illegal chromosome names).
-#'   Leading "chr" strings are removed.
-#' * \code{discarded.variants}: \strong{Non-NULL only if} there
-#'   variants with illegal chromosome names; these are
-#'   names that contain the strings "GL", "Hs", "KI", "JH", "M", "random".
+#'   
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' with illegal chromosome names; these are names that contain the strings "GL",
+#' "KI", "random", "Hs", "M", "JH", "fix", "alt".
 #' @md
 #'
 #' @keywords internal
@@ -197,6 +197,43 @@ StandardChromNameNew <- function(df, name.of.VCF = NULL) {
     return(list(df = df8, discarded.variants = discarded.variants))
   }
 }
+
+#' Select variants according to chromosome names specified by user
+#'
+#' @param df An in-memory data.frame representing a VCF.
+#' 
+#' @param chr.names.to.process A character vector specifying the chromosome
+#'   names in \code{df} whose variants will be kept.
+#'
+#' @param name.of.VCF Name of the VCF file.
+#'
+#' @return A \strong{list} with the elements
+#' * \code{df}: A data frame with variants only from chromosomes specified by
+#' \code{chr.names.to.process}.
+#'   
+#' * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+#' that are from chromosomes not specified by \code{chr.names.to.process}.
+#' @md
+#'
+#' @keywords internal
+SelectVariantsByChromName <- 
+  function(df, chr.names.to.process, name.of.VCF = NULL) {
+    df1 <- dplyr::filter(df, CHROM %in% chr.names.to.process)
+    discarded.variants <- dplyr::filter(df, !CHROM %in% chr.names.to.process)
+    
+    if (nrow(discarded.variants) == 0) {
+      return(list(df = df1))
+    } else {
+      warning("In VCF ", ifelse(is.null(name.of.VCF), "", dQuote(name.of.VCF)),
+              " ", nrow(discarded.variants), " row out of ",
+              nrow(df), " had chromosome names that were not selected by user and ",
+              "were removed. ",
+              "See discarded.variants in the return value for more details")
+      discarded.variants$discarded.reason <- 'Chromosome names not selected by user'
+      return(list(df = df1, discarded.variants = discarded.variants))
+    }
+  }
+
 
 #' Check and, if possible, correct the chromosome names in a VCF \code{data.frame}.
 #'
