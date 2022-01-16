@@ -394,88 +394,16 @@ MutectVCFFilesToZipFile <-
 #'   ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 #'   \code{region}.
 #'
-#' @param files Character vector of file paths to the VCF files. Only \strong{one} of
-#' argument \code{dir} or \code{files} need to be specified.
+#' @param files Character vector of file paths to the VCF files. Only
+#'   \strong{one} of argument \code{dir} or \code{files} need to be specified.
 #'
 #' @param zipfile Pathname of the zip file to be created.
-#'
-#' @param ref.genome  A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
-#'
-#' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
-#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
-#'   allele frequencies). If variant caller is \code{"unknown"}(default) and
-#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
-#'   variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.
-#'
-#' @param num.of.cores The number of cores to use. Not available on Windows
-#'   unless \code{num.of.cores = 1}.
-#'
-#' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
-#'   \code{\link{BSgenome}} object
-#'   \enumerate{
-#'     \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-#'     \item \code{BSgenome.Hsapiens.UCSC.hg38}
-#'     \item \code{BSgenome.Mmusculus.UCSC.mm10}
-#'   }
-#'   then the function will infer \code{trans.ranges} automatically. Otherwise,
-#'   user will need to provide the necessary \code{trans.ranges}. Please refer to
-#'   \code{\link{TranscriptRanges}} for more details.
-#'   If \code{is.null(trans.ranges)} do not add transcript range
-#'   information.
-#'
-#' @param region A character string designating a genomic region;
-#'  see \code{\link{as.catalog}} and \code{\link{ICAMS}}.
-#'
-#' @param names.of.VCFs Optional. Character vector of names of the VCF files.
-#'   The order of names in \code{names.of.VCFs} should match the order of VCFs
-#'   listed in \code{dir}. If \code{NULL}(default), this function will remove
-#'   all of the path up to and including the last path separator (if any) in
-#'   \code{dir} and file paths without extensions (and the leading dot) will be
-#'   used as the names of the VCF files.
-#'
-#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Vector of column names or column indices in \strong{Mutect} VCFs which
-#'   contain the tumor sample information. The order of elements in
-#'   \code{tumor.col.names} should match the order of \strong{Mutect} VCFs
-#'   specified in \code{files}. If \code{tumor.col.names} is equal to
-#'   \code{NA}(default), this function will use the 10th column in all the
-#'   \strong{Mutect} VCFs to calculate VAFs. See \code{\link{GetMutectVAF}} for
-#'   more details.
-#'
-#' @param filter.status The character string in column \code{FILTER} of the VCF
-#'   that indicates that a variant has passed all the variant caller's filters.
-#'   Variants (lines in the VCF) for which the value in column \code{FILTER}
-#'   does not equal \code{filter.status} are silently excluded from the output.
-#'   The internal function \code{DefaultFilterStatus} tries to infer
-#'   \code{filter.status} based on \code{variant.caller}. If
-#'   \code{variant.caller} is "unknown", user must specify \code{filter.status}
-#'   explicitly. If \code{filter.status = NULL}, all variants are retained. If
-#'   there is no \code{FILTER} column in the VCF, all variants are retained with
-#'   a warning.
-#'
-#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
-#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
-#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
-#'   and read depth will be NAs.
-#'
-#' @param ... Optional arguments to \code{get.vaf.function}.
 #'
 #' @param base.filename Optional. The base name of the CSV and PDF files to be
 #'   produced; multiple files will be generated, each ending in
 #'   \eqn{x}\code{.csv} or \eqn{x}\code{.pdf}, where \eqn{x} indicates the type
 #'   of catalog.
 #'
-#' @param return.annotated.vcfs Logical. Whether to return the annotated VCFs
-#'   with additional columns showing mutation class for each variant. Default is
-#'   FALSE.
-#'
-#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
-#'   warning messages showing information about the discarded variants. Default
-#'   is TRUE.
-#'   
 #' @inheritParams VCFsToCatalogsAndPlotToPdf
 #'
 #' @importFrom utils glob2rx
@@ -519,7 +447,8 @@ VCFsToZipFile <-
            max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
-           suppress.discarded.variants.warnings = TRUE) {
+           suppress.discarded.variants.warnings = TRUE,
+           chr.names.to.process = NULL) {
     if (missing(dir) && missing(files)) {
       stop("One of argument dir or files need to be specified")
     }
@@ -550,7 +479,8 @@ VCFsToZipFile <-
                      ... = ..., max.vaf.diff = max.vaf.diff,
                      return.annotated.vcfs = return.annotated.vcfs,
                      suppress.discarded.variants.warnings =
-                       suppress.discarded.variants.warnings)
+                       suppress.discarded.variants.warnings,
+                     chr.names.to.process = chr.names.to.process)
 
     mutation.loads <- GetMutationLoadsFromMutectVCFs(catalogs0)
     strand.bias.statistics <- NULL
@@ -1113,7 +1043,8 @@ VCFsToCatalogs <- function(files,
                            ...,
                            max.vaf.diff = 0.02,
                            return.annotated.vcfs = FALSE,
-                           suppress.discarded.variants.warnings = TRUE) {
+                           suppress.discarded.variants.warnings = TRUE,
+                           chr.names.to.process = NULL) {
   num.of.cores <- AdjustNumberOfCores(num.of.cores)
 
   split.vcfs <-
@@ -1127,7 +1058,8 @@ VCFsToCatalogs <- function(files,
                      ... = ...,
                      max.vaf.diff = max.vaf.diff,
                      suppress.discarded.variants.warnings =
-                       suppress.discarded.variants.warnings)
+                       suppress.discarded.variants.warnings,
+                     chr.names.to.process = chr.names.to.process)
 
   SBS.list <- VCFsToSBSCatalogs(list.of.SBS.vcfs = split.vcfs$SBS,
                                 ref.genome = ref.genome,
@@ -1302,57 +1234,6 @@ ReadAndSplitMutectVCFs <-
 
 #' Read and split VCF files
 #'
-#' @param files Character vector of file paths to the VCF files.
-#'
-#' @param variant.caller Name of the variant caller that produces the VCF, can
-#'   be either \code{"strelka"}, \code{"mutect"}, \code{"freebayes"} or
-#'   \code{"unknown"}. This information is needed to calculate the VAFs (variant
-#'   allele frequencies). If variant caller is \code{"unknown"}(default) and
-#'   \code{get.vaf.function} is NULL, then VAF and read depth will be NAs. If
-#'   variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.
-#'
-#' @param num.of.cores The number of cores to use. Not available on Windows
-#'   unless \code{num.of.cores = 1}.
-#'
-#' @param names.of.VCFs Character vector of names of the VCF files. The order
-#'   of names in \code{names.of.VCFs} should match the order of VCF file paths
-#'   in \code{files}. If \code{NULL}(default), this function will remove all of
-#'   the path up to and including the last path separator (if any) and file
-#'   paths without extensions (and the leading dot) will be used as the names of
-#'   the VCF files.
-#'
-#' @param tumor.col.names Optional. Only applicable to \strong{Mutect} VCFs.
-#'   Vector of column names or column indices in \strong{Mutect} VCFs which
-#'   contain the tumor sample information. The order of elements in
-#'   \code{tumor.col.names} should match the order of \strong{Mutect} VCFs
-#'   specified in \code{files}. If \code{tumor.col.names} is equal to
-#'   \code{NA}(default), this function will use the 10th column in all the
-#'   \strong{Mutect} VCFs to calculate VAFs. See \code{\link{GetMutectVAF}} for
-#'   more details.
-#'
-#' @param filter.status The character string in column \code{FILTER} of the VCF
-#'   that indicates that a variant has passed all the variant caller's filters.
-#'   Variants (lines in the VCF) for which the value in column \code{FILTER}
-#'   does not equal \code{filter.status} are silently excluded from the output.
-#'   The internal function \code{DefaultFilterStatus} tries to infer
-#'   \code{filter.status} based on \code{variant.caller}. If
-#'   \code{variant.caller} is "unknown", user must specify \code{filter.status}
-#'   explicitly. If \code{filter.status = NULL}, all variants are retained. If
-#'   there is no \code{FILTER} column in the VCF, all variants are retained with
-#'   a warning.
-#'
-#' @param get.vaf.function Optional. Only applicable when \code{variant.caller} is
-#' \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-#'   depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
-#'   If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
-#'   and read depth will be NAs.
-#'
-#' @param ... Optional arguments to \code{get.vaf.function}.
-#'
-#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
-#'   warning messages showing information about the discarded variants. Default
-#'   is TRUE.
-#'
 #' @param always.merge.SBS If \code{TRUE} merge adjacent SBSs as DBSs
 #'   regardless of VAFs and regardless of the value of \code{max.vaf.diff}
 #'   and regardless of the value of \code{get.vaf.function}. It is an
@@ -1393,7 +1274,8 @@ ReadAndSplitVCFs <-
            ...,
            max.vaf.diff = 0.02,
            suppress.discarded.variants.warnings = TRUE,
-           always.merge.SBS                     = FALSE
+           always.merge.SBS                     = FALSE,
+           chr.names.to.process                 = NULL
            ) {
     num.of.cores <- AdjustNumberOfCores(num.of.cores)
 
@@ -1412,7 +1294,8 @@ ReadAndSplitVCFs <-
                       num.of.cores = num.of.cores,
                       suppress.discarded.variants.warnings =
                         suppress.discarded.variants.warnings,
-                      always.merge.SBS = always.merge.SBS
+                      always.merge.SBS = always.merge.SBS,
+                      chr.names.to.process = chr.names.to.process
                       )
     return(split.vcfs)
   }

@@ -16,10 +16,9 @@ A \strong{list} with the elements
 \itemize{
 \item \code{df} a data frame with variants that had "legal" chromosome
 names (see below for illegal chromosome names).
-Leading "chr" strings are removed.
-\item \code{discarded.variants}: \strong{Non-NULL only if} there
-variants with illegal chromosome names; these are
-names that contain the strings "GL", "Hs", "KI", "JH", "M", "random".
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+with illegal chromosome names; these are names that contain the strings "GL",
+"KI", "random", "Hs", "M", "JH", "fix", "alt".
 }
 }
 \description{

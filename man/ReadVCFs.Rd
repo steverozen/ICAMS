@@ -28,12 +28,12 @@ variant caller is \code{"mutect"}, do \strong{not} merge SBSs into DBS.}
 \item{num.of.cores}{The number of cores to use. Not available on Windows
 unless \code{num.of.cores = 1}.}
 
-\item{names.of.VCFs}{Character vector of names of the VCF files. The order
-of names in \code{names.of.VCFs} should match the order of VCF file paths
-in \code{files}. If \code{NULL}(default), this function will remove all of
-the path up to and including the last path separator (if any) and file
-paths without extensions (and the leading dot) will be used as the names of
-the VCF files.}
+\item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
+The order of names in \code{names.of.VCFs} should match the order of VCF
+file paths in \code{files}. If \code{NULL}(default), this function will
+remove all of the path up to and including the last path separator (if any)
+in \code{files} and file paths without extensions (and the leading dot)
+will be used as the names of the VCF files.}
 
 \item{tumor.col.names}{Optional. Only applicable to \strong{Mutect} VCFs.
 Vector of column names or column indices in \strong{Mutect} VCFs which

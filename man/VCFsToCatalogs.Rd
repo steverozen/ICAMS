@@ -18,7 +18,8 @@ VCFsToCatalogs(
   ...,
   max.vaf.diff = 0.02,
   return.annotated.vcfs = FALSE,
-  suppress.discarded.variants.warnings = TRUE
+  suppress.discarded.variants.warnings = TRUE,
+  chr.names.to.process = NULL
 )
 }
 \arguments{
@@ -103,6 +104,12 @@ FALSE.}
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
 is TRUE.}
+
+\item{chr.names.to.process}{A character vector specifying the chromosome
+names in VCF whose variants will be kept and processed, other chromosome
+variants will be discarded. If NULL(default), all variants will be kept
+except those on chromosomes with names that contain strings "GL", "KI",
+"random", "Hs", "M", "JH", "fix", "alt".}
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and

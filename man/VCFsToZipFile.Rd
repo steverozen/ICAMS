@@ -21,7 +21,8 @@ VCFsToZipFile(
   max.vaf.diff = 0.02,
   base.filename = "",
   return.annotated.vcfs = FALSE,
-  suppress.discarded.variants.warnings = TRUE
+  suppress.discarded.variants.warnings = TRUE,
+  chr.names.to.process = NULL
 )
 }
 \arguments{
@@ -30,8 +31,8 @@ VCFsToZipFile(
 ".vcf" (case insensitive) and share the \strong{same} \code{ref.genome} and
 \code{region}.}
 
-\item{files}{Character vector of file paths to the VCF files. Only \strong{one} of
-argument \code{dir} or \code{files} need to be specified.}
+\item{files}{Character vector of file paths to the VCF files. Only
+\strong{one} of argument \code{dir} or \code{files} need to be specified.}
 
 \item{zipfile}{Pathname of the zip file to be created.}
 
@@ -51,9 +52,9 @@ unless \code{num.of.cores = 1}.}
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link{BSgenome}} object
 \enumerate{
-  \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-  \item \code{BSgenome.Hsapiens.UCSC.hg38}
-  \item \code{BSgenome.Mmusculus.UCSC.mm10}
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{BSgenome.Mmusculus.UCSC.mm10}
 }
 then the function will infer \code{trans.ranges} automatically. Otherwise,
 user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -65,11 +66,11 @@ information.}
 see \code{\link{as.catalog}} and \code{\link{ICAMS}}.}
 
 \item{names.of.VCFs}{Optional. Character vector of names of the VCF files.
-The order of names in \code{names.of.VCFs} should match the order of VCFs
-listed in \code{dir}. If \code{NULL}(default), this function will remove
-all of the path up to and including the last path separator (if any) in
-\code{dir} and file paths without extensions (and the leading dot) will be
-used as the names of the VCF files.}
+The order of names in \code{names.of.VCFs} should match the order of VCF
+file paths in \code{files}. If \code{NULL}(default), this function will
+remove all of the path up to and including the last path separator (if any)
+in \code{files} and file paths without extensions (and the leading dot)
+will be used as the names of the VCF files.}
 
 \item{tumor.col.names}{Optional. Only applicable to \strong{Mutect} VCFs.
 Vector of column names or column indices in \strong{Mutect} VCFs which
@@ -93,9 +94,9 @@ a warning.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
-  If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
-  and read depth will be NAs.}
+depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
+If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+and read depth will be NAs.}
 
 \item{...}{Optional arguments to \code{get.vaf.function}.}
 
@@ -119,6 +120,12 @@ FALSE.}
 \item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
 warning messages showing information about the discarded variants. Default
 is TRUE.}
+
+\item{chr.names.to.process}{A character vector specifying the chromosome
+names in VCF whose variants will be kept and processed, other chromosome
+variants will be discarded. If NULL(default), all variants will be kept
+except those on chromosomes with names that contain strings "GL", "KI",
+"random", "Hs", "M", "JH", "fix", "alt".}
 }
 \description{
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and

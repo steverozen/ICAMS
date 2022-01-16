@@ -858,7 +858,8 @@ ReadVCFs <- function(files, variant.caller = "unknown", num.of.cores = 1,
 }
 
 #' @keywords internal
-CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
+CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL,
+                                            chr.names.to.process = NULL) {
   if (nrow(vcf) == 0) {
     return(list(df = vcf))
   }
@@ -888,12 +889,24 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
   df2 <- retval1$df
   discarded.variants <-
     dplyr::bind_rows(discarded.variants, retval1$discarded.variants)
-
-  # Remove rows with unstandardized chromosome names
-  retval2 <- StandardChromNameNew(df = df2, name.of.VCF = name.of.VCF)
-  df3 <- retval2$df
-  discarded.variants <-
-    dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+   
+  if (is.null(chr.names.to.process)) {
+    # Remove rows with unstandardized chromosome names
+    retval2 <- StandardChromNameNew(df = df2, name.of.VCF = name.of.VCF)
+    df3 <- retval2$df
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  } else {
+    # Only keep variants that are specified by chr.names.to.process
+    retval2 <- 
+      SelectVariantsByChromName(df = df2, 
+                                chr.names.to.process = chr.names.to.process,
+                                name.of.VCF = name.of.VCF)
+    df3 <- retval2$df
+    discarded.variants <-
+      dplyr::bind_rows(discarded.variants, retval2$discarded.variants)
+  }
+  
 
   # VCFs can represent multiple non-reference alleles at the
   # same site; the alleles are separated by commas in the ALT columm;
@@ -994,8 +1007,8 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 #'
 #' @param vcf.df An in-memory data.frame representing a Mutect VCF, including
 #'  VAFs, which are added by \code{\link{ReadMutectVCF}}.
-#'
-#' @param name.of.VCF Name of the VCF file.
+#' 
+#' @inheritParams SplitOneVCF
 #'
 #' @return A list with 3 in-memory VCFs and discarded variants that were not
 #'   incorporated into the first 3 VCFs:
@@ -1013,7 +1026,8 @@ CheckAndRemoveDiscardedVariants <- function(vcf, name.of.VCF = NULL) {
 #'  @md
 #'
 #' @keywords internal
-SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL) {
+SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL,
+                              chr.names.to.process = NULL) {
   if (nrow(vcf.df) == 0) {
     return(list(SBS = vcf.df, DBS = vcf.df, ID = vcf.df))
   }
@@ -1023,7 +1037,8 @@ SplitOneMutectVCF <- function(vcf.df, name.of.VCF = NULL) {
 
   # Check and remove discarded variants
   retval <-
-    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
+    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF,
+                                    chr.names.to.process = chr.names.to.process)
   df <- retval$df
   discarded.variants <-
     dplyr::bind_rows(discarded.variants, retval$discarded.variants)
@@ -1287,13 +1302,18 @@ SplitSBSVCF <- function(vcf.df,
 #' @param always.merge.SBS If \code{TRUE} merge adjacent SBSs as DBSs
 #'   regardless of VAFs and regardless of the value of \code{max.vaf.diff}.
 #'
+#' @param chr.names.to.process A character vector specifying the chromosome
+#'   names in VCF whose variants will be kept and processed, other chromosome
+#'   variants will be discarded. If \code{NULL}(default), all variants will be kept
+#'   except those on chromosomes with names that contain strings "GL", "KI",
+#'   "random", "Hs", "M", "JH", "fix", "alt".
+#'
 #' @return A list with 3 in-memory VCFs and discarded variants that were not
 #'   incorporated into the first 3 VCFs:
 #'
 #'  * \code{SBS}: VCF with only single base substitutions.
 #'
-#'  * \code{DBS}: VCF with only doublet base substitutions
-#'   as called by Mutect.
+#'  * \code{DBS}: VCF with only doublet base substitutions.
 #'
 #'  * \code{ID}: VCF with only small insertions and deletions.
 #'
@@ -1304,9 +1324,10 @@ SplitSBSVCF <- function(vcf.df,
 #'
 #' @keywords internal
 SplitOneVCF <- function(vcf.df,
-                        max.vaf.diff     = 0.02,
-                        name.of.VCF      = NULL,
-                        always.merge.SBS = FALSE) {
+                        max.vaf.diff         = 0.02,
+                        name.of.VCF          = NULL,
+                        always.merge.SBS     = FALSE,
+                        chr.names.to.process = NULL) {
   if (nrow(vcf.df) == 0) {
     return(list(SBS = vcf.df, DBS = vcf.df, ID = vcf.df))
   }
@@ -1316,7 +1337,8 @@ SplitOneVCF <- function(vcf.df,
 
   # Check and remove discarded variants
   retval <-
-    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF)
+    CheckAndRemoveDiscardedVariants(vcf = vcf.df, name.of.VCF = name.of.VCF,
+                                    chr.names.to.process = chr.names.to.process)
   df <- retval$df
   discarded.variants <-
     dplyr::bind_rows(discarded.variants, retval$discarded.variants)
@@ -1361,11 +1383,10 @@ SplitOneVCF <- function(vcf.df,
 #' @param num.of.cores The number of cores to use. Not available on Windows
 #'   unless \code{num.of.cores = 1}.
 #'
-#' @param always.merge.SBS If \code{TRUE} merge adjacent SBSs as DBSs
-#'   regardless of VAFs and regardless of the value of \code{max.vaf.diff}
-#'   and regardless of the value of \code{get.vaf.function}. It is an
-#'   error to set this to \code{TRUE} when \code{variant.caller = "mutect"}.
-#'
+#' @param always.merge.SBS If \code{TRUE} merge adjacent SBSs as DBSs regardless
+#'   of VAFs and regardless of the value of \code{max.vaf.diff}. It is an error
+#'   to set this to \code{TRUE} when \code{variant.caller = "mutect"}.
+#'   
 #' @inheritParams ReadAndSplitMutectVCFs
 #' 
 #' @inheritParams SplitOneVCF
@@ -1385,7 +1406,8 @@ SplitListOfVCFs <-function(list.of.vcfs,
                            max.vaf.diff = 0.02,
                            num.of.cores = 1,
                            suppress.discarded.variants.warnings = TRUE,
-                           always.merge.SBS                     = FALSE) {
+                           always.merge.SBS                     = FALSE,
+                           chr.names.to.process                 = NULL) {
   names.of.VCFs <- names(list.of.vcfs)
 
   GetSplitVCFs <- function(idx, list.of.vcfs, variant.caller) {
@@ -1394,12 +1416,14 @@ SplitListOfVCFs <-function(list.of.vcfs,
         stop("always.merge.SBS must be FALSE when variant.caller = \"mutect\"")
       }
       split.vcfs <- SplitOneMutectVCF(vcf.df = list.of.vcfs[[idx]],
-                                      name.of.VCF = names(list.of.vcfs)[idx])
-    } else {
-      split.vcfs <- SplitOneVCF(list.of.vcfs[[idx]],
-                                max.vaf.diff     = max.vaf.diff,
-                                name.of.VCF      = names(list.of.vcfs)[idx],
-                                always.merge.SBS = always.merge.SBS)
+                                      name.of.VCF = names(list.of.vcfs)[idx],
+                                      chr.names.to.process = chr.names.to.process)
+    } else {   
+      split.vcfs <- SplitOneVCF(vcf.df               = list.of.vcfs[[idx]],
+                                max.vaf.diff         = max.vaf.diff,
+                                name.of.VCF          = names(list.of.vcfs)[idx],
+                                always.merge.SBS     = always.merge.SBS, 
+                                chr.names.to.process = chr.names.to.process)
     }
 
     return(split.vcfs)
@@ -3165,6 +3189,12 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #'   warning messages showing information about the discarded variants. Default
 #'   is TRUE.
 #'
+#' @param chr.names.to.process A character vector specifying the chromosome
+#'   names in VCF whose variants will be kept and processed, other chromosome
+#'   variants will be discarded. If NULL(default), all variants will be kept
+#'   except those on chromosomes with names that contain strings "GL", "KI",
+#'   "random", "Hs", "M", "JH", "fix", "alt".
+#'
 #' @section Value:
 #' A list containing the following objects:
 #'
@@ -3252,7 +3282,8 @@ VCFsToCatalogsAndPlotToPdf <-
            max.vaf.diff = 0.02,
            base.filename = "",
            return.annotated.vcfs = FALSE,
-           suppress.discarded.variants.warnings = TRUE) {
+           suppress.discarded.variants.warnings = TRUE,
+           chr.names.to.process = NULL) {
     num.of.cores <- AdjustNumberOfCores(num.of.cores)
 
     catalogs0 <-
@@ -3270,7 +3301,8 @@ VCFsToCatalogsAndPlotToPdf <-
                      max.vaf.diff = max.vaf.diff,
                      return.annotated.vcfs = return.annotated.vcfs,
                      suppress.discarded.variants.warnings =
-                       suppress.discarded.variants.warnings)
+                       suppress.discarded.variants.warnings,
+                     chr.names.to.process = chr.names.to.process)
 
     # Retrieve the catalog matrix from catalogs0
     catalogs <- catalogs0

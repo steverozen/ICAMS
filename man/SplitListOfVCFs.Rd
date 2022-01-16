@@ -11,7 +11,8 @@ SplitListOfVCFs(
   max.vaf.diff = 0.02,
   num.of.cores = 1,
   suppress.discarded.variants.warnings = TRUE,
-  always.merge.SBS = FALSE
+  always.merge.SBS = FALSE,
+  chr.names.to.process = NULL
 )
 }
 \arguments{
@@ -38,10 +39,15 @@ unless \code{num.of.cores = 1}.}
 warning messages showing information about the discarded variants. Default
 is TRUE.}
 
-\item{always.merge.SBS}{If \code{TRUE} merge adjacent SBSs as DBSs
-regardless of VAFs and regardless of the value of \code{max.vaf.diff}
-and regardless of the value of \code{get.vaf.function}. It is an
-error to set this to \code{TRUE} when \code{variant.caller = "mutect"}.}
+\item{always.merge.SBS}{If \code{TRUE} merge adjacent SBSs as DBSs regardless
+of VAFs and regardless of the value of \code{max.vaf.diff}. It is an error
+to set this to \code{TRUE} when \code{variant.caller = "mutect"}.}
+
+\item{chr.names.to.process}{A character vector specifying the chromosome
+names in VCF whose variants will be kept and processed, other chromosome
+variants will be discarded. If \code{NULL}(default), all variants will be kept
+except those on chromosomes with names that contain strings "GL", "KI",
+"random", "Hs", "M", "JH", "fix", "alt".}
 }
 \description{
 Split each VCF into SBS, DBS, and ID VCFs (plus

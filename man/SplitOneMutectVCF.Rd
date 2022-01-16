@@ -4,13 +4,19 @@
 \alias{SplitOneMutectVCF}
 \title{Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations}
 \usage{
-SplitOneMutectVCF(vcf.df, name.of.VCF = NULL)
+SplitOneMutectVCF(vcf.df, name.of.VCF = NULL, chr.names.to.process = NULL)
 }
 \arguments{
 \item{vcf.df}{An in-memory data.frame representing a Mutect VCF, including
 VAFs, which are added by \code{\link{ReadMutectVCF}}.}
 
 \item{name.of.VCF}{Name of the VCF file.}
+
+\item{chr.names.to.process}{A character vector specifying the chromosome
+names in VCF whose variants will be kept and processed, other chromosome
+variants will be discarded. If \code{NULL}(default), all variants will be kept
+except those on chromosomes with names that contain strings "GL", "KI",
+"random", "Hs", "M", "JH", "fix", "alt".}
 }
 \value{
 A list with 3 in-memory VCFs and discarded variants that were not

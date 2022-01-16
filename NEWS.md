@@ -3,6 +3,13 @@
 * Added new exported function `IsICAMSCatalog` to check whether an R object
 contains one of the ICAMS catalog classes.
 
+* Added new internal function `SelectVariantsByChromName`.
+
+* Added new argument `chr.names.to.process` to exported functions
+`VCFsToCatalogs`, `ReadAndSplitVCFs`, `SplitListOfVCFs`, `VCFsToCatalogsAndPlotToPdf` and
+`VCFsToZipFile` that allow users to only select and process variants from
+specified chromosome names.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
