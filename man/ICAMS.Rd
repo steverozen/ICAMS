@@ -106,6 +106,14 @@ or \code{\link{VCFsToCatalogs}},
 \code{\link{as.catalog}}.
 }
 
+\section{Subscripting catalogs}{
+
+If user wants to subscript specific columns from a catalog, it is needed to
+call \code{library(ICAMS)} beforehand to preserve the ICAMS catalog
+attribute. Otherwise writing or plotting catalog function in ICAMS may not
+work properly.
+}
+
 \section{Creating catalogs from variant call files (VCF files)}{
 
 \itemize{

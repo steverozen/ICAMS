@@ -10,6 +10,8 @@ contains one of the ICAMS catalog classes.
 `VCFsToZipFile` that allow users to only select and process variants from
 specified chromosome names.
 
+* Added a section `Subscripting catalogs` in ICAMS package documentation.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
