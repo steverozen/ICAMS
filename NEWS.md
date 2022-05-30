@@ -1,3 +1,9 @@
+# 3.0.6
+## Updated
+* Updated method functions for plotting SBS96, SBS192, DBS78 and ID counts
+catalog; the counts shown on the plot are sum of **absolute** value of each
+peak.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
