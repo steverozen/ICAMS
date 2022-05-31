@@ -44,6 +44,12 @@ test_that("Convert ICAMS Catalog to SigProfiler format SBS96", {
    unlink(c(file3, file4, file5))
 })
 
+# TODO(Wuyang)
+test_that("Convert ICAMS Catalog to SigProfiler format SBS192", {
+  skip("Test for converting a SBS catalog is to be added.\n")
+})
+
+
 test_that("Convert ICAMS Catalog to SigProfiler format DBS78", {
    input.catalog1 <- "testdata/regress.cat.dbs.78.csv"
    catalog1 <- ReadCatalog(input.catalog1)

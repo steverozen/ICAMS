@@ -369,6 +369,15 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 
 #' Covert an ICAMS Catalog to SigProfiler format
 #' 
+#' Specially, the row headers in ICAMS internal format 
+#' (see \code{ICAMS::catalog.row.order})
+#' are converted to headers in SigPro format.
+#' 
+#' For SigPro formats, please see the links below for:
+#' [SBS](https://osf.io/s93d5/wiki/3.%20Using%20the%20Tool%20-%20Input/), 
+#' [DBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/) and 
+#' [ID](https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/)
+#' 
 #' @param input.catalog Either a character string, in which case this is the
 #'   path to a file containing a catalog in \code{\link[ICAMS]{ICAMS}}
 #'   format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.
@@ -381,8 +390,8 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' 
 #' @importFrom utils write.table 
 #' 
-#' @note This function can only transform SBS96, DBS78 and ID ICAMS catalog
-#' to SigProfiler format.
+#' @note This function can only transform SBS96, SBS192, DBS78 and ID 
+#' ICAMS catalog to SigProfiler format.
 #' 
 #' @keywords internal
 ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
@@ -391,6 +400,8 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
   } 
   if (nrow(input.catalog) == 96) {
     mutation.type <- "SBS96"
+  } else if (nrow(input.catalog) == 192) { 
+    mutation.type <- "SBS192"
   } else if (nrow(input.catalog) == 78) {
     mutation.type <- "DBS78"
   } else if (nrow(input.catalog) == 83) {
@@ -406,6 +417,39 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
                    substring(x, 4, 4), "]",
                    substring(x, 3, 3), sep = "")
     })
+    row.names(input.catalog) <- unlist(new.list)
+  } else if (mutation.type == "SBS192") {
+    sbs192_to_sp <- function (x) {
+      # If mutated base is A or G
+      # Then this mutation is on transcribed/antisense strand, 
+      # This is because ICAMS uses C or T as reference base.
+      if(substring(x, 2, 2) %in% c("A", "G")) {
+        # Convert mutation to its reverse complement.
+        #
+        # After that, C or T will be the reference base.
+        y <- paste0(ICAMS::revc(substring(x, 1, 3)),
+                    ICAMS::revc(substring(x, 4, 4)))
+        # "T" stands for transcribed (antisense) strand
+        new <- paste("T:",
+                     substring(y, 1, 1), "[",
+                     substring(y, 2, 2), ">",
+                     substring(y, 4, 4), "]",
+                     substring(y, 3, 3), sep = "")
+      } else if(substring(x, 2, 2) %in% c("C", "T"))  {
+        # If mutated base is C or T
+        # Then this mutation is on template/sense strand.
+        transribed_strand <- FALSE
+        # "U" stands for unstranscribed (sense, template) strand
+        new <- paste("U:",
+                     substring(x, 1, 1), "[",
+                     substring(x, 2, 2), ">",
+                     substring(x, 4, 4), "]",
+                     substring(x, 3, 3), sep = "")
+      } else {
+        stop("The row headers should not contain characters other than A/C/G/T\n")
+      }
+    }
+    new.list <- lapply(row.names(input.catalog), sbs192_to_sp)
     row.names(input.catalog) <- unlist(new.list)
   } else if (mutation.type == "DBS78") {
     new.list <- lapply(row.names(input.catalog), function(x){
