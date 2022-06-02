@@ -16,7 +16,7 @@ format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.}
 \item{sep}{Separator to use in the output file.}
 }
 \description{
-Specially, the row headers in ICAMS internal format 
+Specially, the row orders in ICAMS internal format 
 (see \code{ICAMS::catalog.row.order})
 are converted to headers in SigPro format.
 }

@@ -369,7 +369,7 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 
 #' Covert an ICAMS Catalog to SigProfiler format
 #' 
-#' Specially, the row headers in ICAMS internal format 
+#' Specially, the row orders in ICAMS internal format 
 #' (see \code{ICAMS::catalog.row.order})
 #' are converted to headers in SigPro format.
 #' 
@@ -407,7 +407,7 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
   } else if (nrow(input.catalog) == 83) {
     mutation.type <- "ID83"
   } else {
-    stop("Can only convert SBS96, DBS78 and ID ICAMS catalog to SigProfiler format")
+    stop("Can only convert SBS96, SBS192, DBS78 and ID ICAMS catalog to SigProfiler format")
   }
   
   if (mutation.type == "SBS96") {
