@@ -1,4 +1,15 @@
-# 3.0.5.90xx
+
+# 3.0.6
+## Updated
+* Updated method functions for plotting SBS96, SBS192, DBS78 and ID counts
+catalog; the counts shown on the plot are sum of **absolute** value of each
+peak.
+
+# 3.0.5
+## Updated
+* Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
+for genic-intergenic indel catalog (ID166).
+
 ## Added
 * Added new exported function `IsICAMSCatalog` to check whether an R object
 contains one of the ICAMS catalog classes.
@@ -11,11 +22,6 @@ contains one of the ICAMS catalog classes.
 specified chromosome names.
 
 * Added a section `Subscripting catalogs` in ICAMS package documentation.
-
-# 3.0.5
-## Updated
-* Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 
-for genic-intergenic indel catalog (ID166).
 
 # 3.0.4
 ## Changed

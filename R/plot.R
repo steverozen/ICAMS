@@ -392,7 +392,7 @@ PlotCatalog.SBS96Catalog <-
         j <- 16 + 16 * (i - 1)
         k <- 1 + 16 * (i - 1)    
         # Round the total mutation counts in case it is a reconstructed catalog
-        text(bp[j], ymax * 1.15, labels = round(sum(catalog[k:(16 * i), ])),
+        text(bp[j], ymax * 1.15, labels = round(sum(abs(catalog[k:(16 * i), ]))),
              adj = c(1, 1), xpd = NA, cex = count.cex)
       }
     }
@@ -600,7 +600,7 @@ PlotCatalog.SBS192Catalog <-
         j <- 32 + 32 * (i - 1)
         k <- 1 + 32 * (i - 1)
         # Round the total mutation counts in case it is a reconstructed catalog
-        text(bp[j], ymax * 0.84, labels = round(sum(cat[k : (32 * i), 1])),
+        text(bp[j], ymax * 0.84, labels = round(sum(abs(cat[k:(32 * i), 1]))),
              adj = c(1, 1), xpd = NA, cex = cex)
       }
     }
@@ -1105,7 +1105,7 @@ PlotCatalog.DBS78Catalog <- function(catalog, plot.SBS12, cex,
       name <- substr(rownames(catalog), 1, 2)
       # Round the total mutation counts in case it is a reconstructed catalog
       text(bp[j[i] + 0.5], ymax * 0.84, xpd = NA, cex = 0.8,
-           adj = c(1, 1), labels = round(sum(catalog[name == maj.class.names[i], ])))
+           adj = c(1, 1), labels = round(sum(abs(catalog[name == maj.class.names[i], ]))))
     }
   }
   
@@ -1705,9 +1705,9 @@ PlotCatalog.IndelCatalog <- function(catalog, plot.SBS12, cex,
                 107.6, 121.7, 135.8, 149.9, 164,
                 172.2, 175.5, 182, 191)
       if (i == 1) {
-        counts[i] <- sum(catalog[1:idx[1], 1])
+        counts[i] <- sum(abs(catalog[1:idx[1], 1]))
       } else {
-        counts[i] <- sum(catalog[(idx[i - 1] + 1):idx[i], 1])
+        counts[i] <- sum(abs(catalog[(idx[i - 1] + 1):idx[i], 1]))
       }
       # Round the total mutation counts in case it is a reconstructed catalog
       text(idx2[i], ymax * 0.8, labels = round(counts[i]),

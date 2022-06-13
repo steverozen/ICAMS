@@ -11,9 +11,9 @@ citEntry(
                     person("Mi Ni", "Huang"),
                     person("Jia Geng", "Chang")),
   year     = "2021",
-  note     = "R package version 3.0.3",
+  note     = "R package version 3.0.5",
   url      = "https://CRAN.R-project.org/package=ICAMS",
   textVersion = paste0("Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2021). ",
-  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 3.0.3, https://CRAN.R-project.org/package=ICAMS."
+  "ICAMS:In-depth Characterization and Analysis of Mutational Signatures. ", "R package version 3.0.5, https://CRAN.R-project.org/package=ICAMS."
   )
 )

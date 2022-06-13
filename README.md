@@ -82,7 +82,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.5.9004.pdf>
+<https://github.com/steverozen/ICAMS/blob/master/data-raw/ICAMS_3.0.6.pdf>
 
 ## Frequently asked questions
 
@@ -98,4 +98,4 @@ If you use ICAMS in your work, please cite:
 
 > Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2021).
 > ICAMS:In-depth Characterization and Analysis of Mutational Signatures.
-> R package version 3.0.5, <https://CRAN.R-project.org/package=ICAMS>.
+> R package version 3.0.6, <https://CRAN.R-project.org/package=ICAMS>.
