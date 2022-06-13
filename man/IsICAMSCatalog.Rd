@@ -5,17 +5,31 @@
 \title{Check whether an R object contains one of the ICAMS catalog classes}
 \usage{
 IsICAMSCatalog(object)
+
+IsICAMSCatalog(object)
 }
 \arguments{
 \item{object}{An R object.}
 }
 \value{
 A logical value.
+
+A logical value.
 }
 \description{
 Check whether an R object contains one of the ICAMS catalog classes
+
+Check whether an R object contains one of the ICAMS catalog classes
 }
 \examples{
+# Create a matrix with all values being 1
+object <- matrix(1, nrow = 96, ncol = 1, 
+                 dimnames = list(catalog.row.order$SBS96))
+IsICAMSCatalog(object) # FALSE
+
+# Use as.catalog to add class attribute to object
+catalog <- as.catalog(object)
+IsICAMSCatalog(catalog) # TRUE      
 # Create a matrix with all values being 1
 object <- matrix(1, nrow = 96, ncol = 1, 
                  dimnames = list(catalog.row.order$SBS96))

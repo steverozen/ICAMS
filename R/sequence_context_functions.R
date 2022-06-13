@@ -317,7 +317,7 @@ GeneratePlotPFMmatrix <-
 #' @return An \strong{invisible} list.
 #'
 #' @keywords internal
-PlotPFMmatrix<-function(PFMmatrix, title,
+PlotPFMmatrix <- function(PFMmatrix, title,
                         cex.main = 1.5,
                         cex.lab = 1.25,
                         cex.axis = 1){

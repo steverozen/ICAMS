@@ -60,6 +60,7 @@ Rozen
 SBS
 SBSs
 SG
+SigPro
 SigProExtractor
 SigProfiler
 SignatureAnalyzer
@@ -114,6 +115,7 @@ indel
 indels
 intergenic
 introns
+io
 lifecycle
 md
 megabase
@@ -125,6 +127,7 @@ mutect
 mutuations
 nd
 opar
+osf
 pentanucleotide
 rlang
 rowname
