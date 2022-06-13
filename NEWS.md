@@ -8,6 +8,9 @@ peak.
 * Updated internal function `ConvertCatalogToSigProfilerFormat` to support
 conversion from ICAMS SBS192 and SBS1536 catalog to SigPro format.
 
+* Updated exported function `ReadCatalog` to support reading in SBS1536 catalog
+in SigPro format.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 

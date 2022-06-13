@@ -321,6 +321,12 @@ MakeSBS1536Catalog <- function(object) {
     # Convert ICAMS / COSMIC csv into ICAMS internal format
     return(MakeSBS1536CatalogFromICAMSExt(object))
   }
+  
+  ## SigPro SBS1536 txt format
+  if("AA[C>A]AA" %in% unlist(object[,1])) {
+    return(MakeSBS1536CatalogFromSigPro(object))
+  }
+  
   stop("1536 mutation types, but not an SBS1536 catalog in",
        " ICAMS format")
 }
@@ -345,6 +351,19 @@ MakeSBS1536CatalogFromICAMSExt <- function(cos) {
   return(out)
 }
 
+MakeSBS1536CatalogFromSigPro <- function(cos) {
+  rownames <- Unstaple1536(unlist(cos[ , 1]))
+  cos <- cos[ , -1]
+  out <- as.matrix(cos)
+  rownames(out) <- rownames
+  if(!setequal(rownames(out), ICAMS::catalog.row.order$SBS1536)){
+    stop("The mutation types in this SBS1536 catalog is not in correct ICAMS format",
+         " check ICAMS::catalog.row.order$SBS1536 for more details.")
+  }
+  out <- out[ICAMS::catalog.row.order$SBS1536, , drop = FALSE]
+  class(out) <- c("SBS1536Catalog", class(out))
+  return(out)
+}
 
 ## Convert external catalog files with 78 rows into ICAMS DBS78 internal catalog format.
 MakeDBS78Catalog <- function(object) {

@@ -89,6 +89,10 @@ ReadCatalogInternal <- function(file, ref.genome = NULL, region = "unknown",
   ## and a catalog object in this step.
   dt <- data.table::fread(file)
   
+  # In some rare cases, there may be all NA in some columns in dt.
+  # So we remove the columns which have all NA in dt
+  dt <- dt[, which(unlist(lapply(dt, function(x)!all(is.na(x))))), with = FALSE]
+  
   # In some rare cases, there may be NA in dt, then the number of rows will not
   # be accurate to infer catalog type. So we remove the rows which have NA in dt
   dt <- stats::na.omit(dt)
