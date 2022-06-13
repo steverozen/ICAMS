@@ -106,6 +106,47 @@ to.reorder.SBS.192.for.plotting <-
     "TAAC", "TTAG", "GAAC", "TTCG", "CAAC", "TTGG", "AAAC", "TTTG"
   )
 
+catalog.row.headers.sp.SBS.192 <- 
+  c("T:A[C>A]A", "T:A[C>A]C", "T:A[C>A]G", "T:A[C>A]T", "T:A[C>G]A",
+    "T:A[C>G]C", "T:A[C>G]G", "T:A[C>G]T", "T:A[C>T]A", "T:A[C>T]C",
+    "T:A[C>T]G", "T:A[C>T]T", "T:A[T>A]A", "T:A[T>A]C", "T:A[T>A]G",
+    "T:A[T>A]T", "T:A[T>C]A", "T:A[T>C]C", "T:A[T>C]G", "T:A[T>C]T",
+    "T:A[T>G]A", "T:A[T>G]C", "T:A[T>G]G", "T:A[T>G]T", "T:C[C>A]A",
+    "T:C[C>A]C", "T:C[C>A]G", "T:C[C>A]T", "T:C[C>G]A", "T:C[C>G]C",
+    "T:C[C>G]G", "T:C[C>G]T", "T:C[C>T]A", "T:C[C>T]C", "T:C[C>T]G",
+    "T:C[C>T]T", "T:C[T>A]A", "T:C[T>A]C", "T:C[T>A]G", "T:C[T>A]T",
+    "T:C[T>C]A", "T:C[T>C]C", "T:C[T>C]G", "T:C[T>C]T", "T:C[T>G]A",
+    "T:C[T>G]C", "T:C[T>G]G", "T:C[T>G]T", "T:G[C>A]A", "T:G[C>A]C",
+    "T:G[C>A]G", "T:G[C>A]T", "T:G[C>G]A", "T:G[C>G]C", "T:G[C>G]G",
+    "T:G[C>G]T", "T:G[C>T]A", "T:G[C>T]C", "T:G[C>T]G", "T:G[C>T]T",
+    "T:G[T>A]A", "T:G[T>A]C", "T:G[T>A]G", "T:G[T>A]T", "T:G[T>C]A",
+    "T:G[T>C]C", "T:G[T>C]G", "T:G[T>C]T", "T:G[T>G]A", "T:G[T>G]C",
+    "T:G[T>G]G", "T:G[T>G]T", "T:T[C>A]A", "T:T[C>A]C", "T:T[C>A]G",
+    "T:T[C>A]T", "T:T[C>G]A", "T:T[C>G]C", "T:T[C>G]G", "T:T[C>G]T",
+    "T:T[C>T]A", "T:T[C>T]C", "T:T[C>T]G", "T:T[C>T]T", "T:T[T>A]A",
+    "T:T[T>A]C", "T:T[T>A]G", "T:T[T>A]T", "T:T[T>C]A", "T:T[T>C]C",
+    "T:T[T>C]G", "T:T[T>C]T", "T:T[T>G]A", "T:T[T>G]C", "T:T[T>G]G",
+    "T:T[T>G]T", "U:A[C>A]A", "U:A[C>A]C", "U:A[C>A]G", "U:A[C>A]T",
+    "U:A[C>G]A", "U:A[C>G]C", "U:A[C>G]G", "U:A[C>G]T", "U:A[C>T]A",
+    "U:A[C>T]C", "U:A[C>T]G", "U:A[C>T]T", "U:A[T>A]A", "U:A[T>A]C",
+    "U:A[T>A]G", "U:A[T>A]T", "U:A[T>C]A", "U:A[T>C]C", "U:A[T>C]G",
+    "U:A[T>C]T", "U:A[T>G]A", "U:A[T>G]C", "U:A[T>G]G", "U:A[T>G]T",
+    "U:C[C>A]A", "U:C[C>A]C", "U:C[C>A]G", "U:C[C>A]T", "U:C[C>G]A",
+    "U:C[C>G]C", "U:C[C>G]G", "U:C[C>G]T", "U:C[C>T]A", "U:C[C>T]C",
+    "U:C[C>T]G", "U:C[C>T]T", "U:C[T>A]A", "U:C[T>A]C", "U:C[T>A]G",
+    "U:C[T>A]T", "U:C[T>C]A", "U:C[T>C]C", "U:C[T>C]G", "U:C[T>C]T",
+    "U:C[T>G]A", "U:C[T>G]C", "U:C[T>G]G", "U:C[T>G]T", "U:G[C>A]A",
+    "U:G[C>A]C", "U:G[C>A]G", "U:G[C>A]T", "U:G[C>G]A", "U:G[C>G]C",
+    "U:G[C>G]G", "U:G[C>G]T", "U:G[C>T]A", "U:G[C>T]C", "U:G[C>T]G",
+    "U:G[C>T]T", "U:G[T>A]A", "U:G[T>A]C", "U:G[T>A]G", "U:G[T>A]T",
+    "U:G[T>C]A", "U:G[T>C]C", "U:G[T>C]G", "U:G[T>C]T", "U:G[T>G]A",
+    "U:G[T>G]C", "U:G[T>G]G", "U:G[T>G]T", "U:T[C>A]A", "U:T[C>A]C",
+    "U:T[C>A]G", "U:T[C>A]T", "U:T[C>G]A", "U:T[C>G]C", "U:T[C>G]G",
+    "U:T[C>G]T", "U:T[C>T]A", "U:T[C>T]C", "U:T[C>T]G", "U:T[C>T]T",
+    "U:T[T>A]A", "U:T[T>A]C", "U:T[T>A]G", "U:T[T>A]T", "U:T[T>C]A",
+    "U:T[T>C]C", "U:T[T>C]G", "U:T[T>C]T", "U:T[T>G]A", "U:T[T>G]C",
+    "U:T[T>G]G", "U:T[T>G]T")
+
 catalog.row.order.SBS.96 <-
   c("ACAA", "ACCA", "ACGA", "ACTA", "CCAA", "CCCA", "CCGA", "CCTA",
     "GCAA", "GCCA", "GCGA", "GCTA", "TCAA", "TCCA", "TCGA", "TCTA",
@@ -1024,9 +1065,10 @@ catalog.row.headers <- list(SBS96 = catalog.row.headers.SBS.96,
                             COMPOSITE = catalog.row.headers.COMPOSITE)
 
 catalog.row.headers.sp <- list(SBS96 = catalog.row.headers.sp.SBS.96,
-                             SBS1536 = catalog.row.headers.sp.SBS.1536,
-                             DBS78 = catalog.row.headers.sp.DBS.78,
-                             ID83 = catalog.row.headers.sp.ID.83)
+                               SBS192 = catalog.row.headers.sp.SBS.192,
+                               SBS1536 = catalog.row.headers.sp.SBS.1536,
+                               DBS78 = catalog.row.headers.sp.DBS.78,
+                               ID83 = catalog.row.headers.sp.ID.83)
 
 #Create regex pattern for FilterWithHomopolymerMS
 homopolymer.ms.regex.pattern <-
