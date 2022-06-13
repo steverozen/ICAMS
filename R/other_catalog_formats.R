@@ -374,7 +374,7 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' are converted to headers in SigPro format.
 #' 
 #' For SigPro formats, please see the links below for:
-#' [SBS](https://osf.io/s93d5/wiki/3.%20Using%20the%20Tool%20-%20Input/), 
+#' [SBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20SBS/), 
 #' [DBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/) and 
 #' [ID](https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/)
 #' 
@@ -390,8 +390,8 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' 
 #' @importFrom utils write.table 
 #' 
-#' @note This function can only transform SBS96, SBS192, DBS78 and ID 
-#' ICAMS catalog to SigProfiler format.
+#' @note This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
+#'   ICAMS catalog to SigProfiler format.
 #' 
 #' @keywords internal
 ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
@@ -402,12 +402,15 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
     mutation.type <- "SBS96"
   } else if (nrow(input.catalog) == 192) { 
     mutation.type <- "SBS192"
+  } else if (nrow(input.catalog) == 1536) { 
+    mutation.type <- "SBS1536"
   } else if (nrow(input.catalog) == 78) {
     mutation.type <- "DBS78"
   } else if (nrow(input.catalog) == 83) {
     mutation.type <- "ID83"
   } else {
-    stop("Can only convert SBS96, SBS192, DBS78 and ID ICAMS catalog to SigProfiler format")
+    stop("Can only convert SBS96, SBS192, SBS1536, DBS78 and ID ICAMS 
+         catalog to SigProfiler format")
   }
   
   if (mutation.type == "SBS96") {
@@ -450,6 +453,14 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
       }
     }
     new.list <- lapply(row.names(input.catalog), sbs192_to_sp)
+    row.names(input.catalog) <- unlist(new.list)
+  } else if (mutation.type == "SBS1536") {
+    new.list <- lapply(row.names(input.catalog), function(x){
+      new <- paste(substring(x, 1, 2), "[",
+                   substring(x, 3, 3), ">",
+                   substring(x, 6, 6), "]",
+                   substring(x, 4, 5), sep = "")
+    })
     row.names(input.catalog) <- unlist(new.list)
   } else if (mutation.type == "DBS78") {
     new.list <- lapply(row.names(input.catalog), function(x){

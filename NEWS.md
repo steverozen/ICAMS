@@ -5,6 +5,9 @@
 catalog; the counts shown on the plot are sum of **absolute** value of each
 peak.
 
+* Updated internal function `ConvertCatalogToSigProfilerFormat` to support
+conversion from ICAMS SBS192 and SBS1536 catalog to SigPro format.
+
 # 3.0.5
 ## Updated
 * Updated `catalog.row.order$ID166` and `catalog.row.headers$ID166` 

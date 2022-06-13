@@ -22,12 +22,12 @@ are converted to headers in SigPro format.
 }
 \details{
 For SigPro formats, please see the links below for:
-[SBS](https://osf.io/s93d5/wiki/3.%20Using%20the%20Tool%20-%20Input/), 
+[SBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20SBS/), 
 [DBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/) and 
 [ID](https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/)
 }
 \note{
-This function can only transform SBS96, SBS192, DBS78 and ID 
-ICAMS catalog to SigProfiler format.
+This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
+  ICAMS catalog to SigProfiler format.
 }
 \keyword{internal}
