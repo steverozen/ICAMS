@@ -53,7 +53,8 @@
 #'   list <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")
 #'   annotated.ID.vcf <- list$annotated.vcf}
 AnnotateIDVCF <- 
-  function(ID.vcf, ref.genome, flag.mismatches = 0, name.of.VCF = NULL,
+  function(ID.vcf, ref.genome, trans.ranges = NULL, 
+           flag.mismatches = 0, name.of.VCF = NULL,
            suppress.discarded.variants.warnings = TRUE) {
     if (nrow(ID.vcf) == 0) {
       return(list(annotated.vcf = ID.vcf))
@@ -166,15 +167,25 @@ AnnotateIDVCF <-
       df4 <- df3
     }
     
+    trans.ranges <- InferTransRanges(ref.genome, trans.ranges)
+    if (!is.null(trans.ranges)) {
+      df5 <- AddTranscript(df = df4, trans.ranges = trans.ranges,
+                           ref.genome = ref.genome,
+                           name.of.VCF = name.of.VCF)
+    } else {
+      df5 <- df4
+    }
+    df6 <- data.table::as.data.table(df5)
+    
     if (nrow(discarded.variants) > 0) {
       if (suppress.discarded.variants.warnings == TRUE) {
-        return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+        return(list(annotated.vcf = df6, discarded.variants = discarded.variants))
       } else {
         warning("\nSome ID variants were discarded, see element discarded.variants", 
                 " in the return value for more details")
-        return(list(annotated.vcf = df4, discarded.variants = discarded.variants))
+        return(list(annotated.vcf = df6, discarded.variants = discarded.variants))
       }
     } else {
-      return(list(annotated.vcf = df4))
+      return(list(annotated.vcf = df6))
     }
   }

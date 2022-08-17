@@ -655,10 +655,14 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
       # Create 1-column matrix with all values being 0 and the correct row labels.
       catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1,
                       dimnames = list(ICAMS::catalog.row.order$ID, sample.id))
+      catID166 <- 
+        matrix(0, nrow = length(ICAMS::catalog.row.order$ID166), ncol = 1,
+               dimnames = list(ICAMS::catalog.row.order$ID166, sample.id))
       if (return.annotated.vcf == FALSE) {
-        return(list(catalog = catID))
+        return(list(catalog = catID, catID166 = catID166))
       } else {
-        return(list(catalog = catID, annotated.vcf = ID.vcf))
+        return(list(catalog = catID, catID166 = catID166, 
+                    annotated.vcf = ID.vcf))
       }
     } else {
       return(FALSE)
@@ -717,7 +721,7 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
     return(ret2)
   }
   
-  # Create the ID catalog matrix
+  # Create the ID catalog matrix (83 rows)
   ID.class <- out.ID.vcf$ID.class
   tab.ID <- table(ID.class)
 
@@ -740,7 +744,17 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   rownames(ID.mat) <- ID.dt2$rn
   colnames(ID.mat) <- sample.id
   ID.mat <- ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE]
-
+  
+  # Create the ID166 catalog matrix (genic-intergenic indel catalog, 166 rows)
+  
+  # Add a column showing which DNA region a mutation falls into
+  # "G" stands for genic region, "I" stands for intergenic region
+  out.ID.vcf2 <- out.ID.vcf %>% 
+    dplyr::mutate(dna.region = ifelse(trans.strand %in% c("+", "-"), "G", "I"))
+  
+  out.ID.vcf3 <- out.ID.vcf2 %>% 
+    dplyr::mutate(ID166.class = paste0(dna.region, ":", ID.class))
+  
   CheckAndReturnIDMatrix(out.ID.vcf, discarded.variants, ID.mat, 
                          return.annotated.vcf)
 }

@@ -1802,15 +1802,20 @@ CheckAndReturnIDCatalog <-
 VCFsToIDCatalogs <- function(list.of.vcfs,
                              ref.genome,
                              num.of.cores = 1,
+                             trans.ranges = NULL,
                              region = "unknown",
                              flag.mismatches = 0,
                              return.annotated.vcfs = FALSE,
                              suppress.discarded.variants.warnings = TRUE) {
   ncol <- length(list.of.vcfs)
 
-  # Create a 0-column matrix with the correct row labels.
+  # Create 0-column matrices with the correct row labels.
   catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 0)
   rownames(catID) <- ICAMS::catalog.row.order$ID
+  catID166 <- 
+    matrix(0, nrow = length(ICAMS::catalog.row.order$ID166), ncol = 0)
+  rownames(catID166) <- ICAMS::catalog.row.order$ID166
+  
   annotated.vcfs <- discarded.variants <- list()
 
   GetIDCatalogs <- function(i, list.of.vcfs) {
@@ -1820,10 +1825,12 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
     if (suppress.discarded.variants.warnings == TRUE) {
       list <-
         suppressWarnings(AnnotateIDVCF(ID.vcf = ID, ref.genome = ref.genome,
+                                       trans.ranges = trans.ranges,
                                        flag.mismatches = flag.mismatches,
                                        name.of.VCF = sample.id))
     } else {
       list <- AnnotateIDVCF(ID.vcf = ID, ref.genome = ref.genome,
+                            trans.ranges = trans.ranges,
                             flag.mismatches = flag.mismatches,
                             name.of.VCF = sample.id)
     }

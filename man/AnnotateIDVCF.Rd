@@ -8,6 +8,7 @@ confirm that they match the given reference genome}
 AnnotateIDVCF(
   ID.vcf,
   ref.genome,
+  trans.ranges = NULL,
   flag.mismatches = 0,
   name.of.VCF = NULL,
   suppress.discarded.variants.warnings = TRUE
