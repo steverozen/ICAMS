@@ -189,9 +189,9 @@ test_that("VCFsToZipFile function for Mutect VCFs with no base.filename", {
   expect_equal(name, c("test.zip", "test1.zip"))
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 9)
 
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), "test1.zip"))
@@ -225,9 +225,9 @@ test_that("VCFsToZipFile function for Mutect VCFs with base.filename", {
   expect_equal(name, c("test.zip", "test1.zip"))
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 9)
 
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
@@ -258,7 +258,7 @@ test_that("VCFsToZipFile function for Strelka SBS VCFs with no base.filename", {
   expect_equal(name, c("test.zip", "test1.zip"))
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
   expect_equal(length(name2), 7)
 
@@ -363,9 +363,9 @@ test_that("VCFsToZipFile function for Strelka ID VCFs with base.filename", {
 
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 1)
+  expect_equal(length(name2), 2)
 
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
