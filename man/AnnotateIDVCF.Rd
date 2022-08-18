@@ -2,8 +2,9 @@
 % Please edit documentation in R/AnnotateIDVCF.R
 \name{AnnotateIDVCF}
 \alias{AnnotateIDVCF}
-\title{Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-confirm that they match the given reference genome}
+\title{Add sequence context and transcript information to an in-memory ID
+(insertion/deletion) VCF, and confirm that they match the given reference
+genome}
 \usage{
 AnnotateIDVCF(
   ID.vcf,
@@ -22,6 +23,19 @@ ACC (insertion of CC).}
 
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
+
+\item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
+\code{\link{BSgenome}} object
+\enumerate{
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{BSgenome.Mmusculus.UCSC.mm10}
+}
+then the function will infer \code{trans.ranges} automatically. Otherwise,
+user will need to provide the necessary \code{trans.ranges}. Please refer to
+\code{\link{TranscriptRanges}} for more details.
+If \code{is.null(trans.ranges)} do not add transcript range
+information.}
 
 \item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
 do not match the extracted sequence from \code{ref.genome}, the function
@@ -49,8 +63,9 @@ that were excluded from the analysis. See the added extra column
 }
 }
 \description{
-Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-confirm that they match the given reference genome
+Add sequence context and transcript information to an in-memory ID
+(insertion/deletion) VCF, and confirm that they match the given reference
+genome
 }
 \examples{
 file <- c(system.file("extdata/Strelka-ID-vcf/",

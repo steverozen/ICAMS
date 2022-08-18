@@ -1,13 +1,11 @@
-#' @title Add sequence context to an in-memory ID (insertion/deletion) VCF, and
-#'   confirm that they match the given reference genome
+#' @title Add sequence context and transcript information to an in-memory ID
+#'   (insertion/deletion) VCF, and confirm that they match the given reference
+#'   genome
 #'
 #' @param ID.vcf An in-memory ID (insertion/deletion) VCF as a
 #'   \code{data.frame}. This function expects that there is a "context base" to
 #'   the left, for example REF = ACG, ALT = A (deletion of CG) or REF = A, ALT =
 #'   ACC (insertion of CC).
-#'
-#' @param ref.genome A \code{ref.genome} argument as described in
-#'   \code{\link{ICAMS}}.
 #'
 #' @param flag.mismatches Deprecated. If there are ID variants whose \code{REF}
 #'   do not match the extracted sequence from \code{ref.genome}, the function
@@ -16,9 +14,7 @@
 #'   
 #' @param name.of.VCF Name of the VCF file.
 #' 
-#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
-#'   warning messages showing information about the discarded variants. Default
-#'   is TRUE.
+#' @inheritParams MutectVCFFilesToCatalogAndPlotToPdf
 #'
 #' @importFrom GenomicRanges GRanges
 #'

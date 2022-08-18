@@ -27,7 +27,7 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
   expect_equal(cat1, cat3)
   expect_equal(cat1, cat4)
   
-  cat6$catID <- NULL
+  cat6$catID <- cat6$catID166 <-NULL
   expect_equal(cat1, cat6)
   expect_equal(attributes(cat5$catSBS96)$region, "unknown")
   expect_null(attributes(cat5$catSBS96)$abundance)

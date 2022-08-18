@@ -8,6 +8,7 @@ CheckAndReturnIDMatrix(
   annotated.vcf,
   discarded.variants,
   ID.mat,
+  ID166.mat,
   return.annotated.vcf = FALSE
 )
 }
@@ -20,6 +21,8 @@ variants which are excluded in the analysis.}
 
 \item{ID.mat}{The ID mutation count matrix.}
 
+\item{ID166.mat}{The ID166 mutation count matrix.}
+
 \item{return.annotated.vcf}{Whether to return \code{annotated.vcf}. Default is
 FALSE.}
 }
@@ -27,7 +30,7 @@ FALSE.}
 Check and return the ID mutation matrix
 }
 \section{Value}{
- A list of a 1-column ID matrix containing the mutation catalog
+ A list of two 1-column ID matrices containing the mutation catalog
   information and the annotated VCF with ID categories information added. If
   some ID variants were excluded in the analysis, an additional element
   \code{discarded.variants} will appear in the return list.

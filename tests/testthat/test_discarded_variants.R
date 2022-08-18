@@ -105,13 +105,13 @@ test_that("StrelkaSBSVCFFilesToCatalog", {
   catalogs2 <- VCFsToCatalogs(files, ref.genome = "hg19",
                               variant.caller = "strelka", region = "genome",
                               filter.status = NULL)
-  catalogs2$catID <- NULL
+  catalogs2$catID <- catalogs2$catID166 <- NULL
   expect_equal(catalogs, catalogs2)
 
   catalogs3 <- VCFsToCatalogs(files, ref.genome = "hg19", variant.caller = "strelka",
                               region = "genome", return.annotated.vcfs = TRUE,
                               filter.status = NULL)
-  catalogs3$catID <- catalogs3$annotated.vcfs$ID <- NULL
+  catalogs3$catID <- catalogs3$catID166 <-catalogs3$annotated.vcfs$ID <- NULL
   expect_equal(catalogs1, catalogs3)
 })
 

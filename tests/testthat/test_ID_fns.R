@@ -98,6 +98,8 @@ test_that("FindDelMH", {
 test_that("CreateOneColIDMatrx insertions", {
   MakeTestInsVCF <- function() {
     return(data.frame(
+      CHROM = rep("1", 4),
+      POS = 10000:10003,
       seq.context = c("TTTTTTTTTTTTCGACCCCCCCCCCCC",
                       "TTTTTTTTTTTTGAACCCCCCCCCC",
                       "TTTTTTTTTTTTGCCCCCCCCCCCC",
@@ -105,6 +107,7 @@ test_that("CreateOneColIDMatrx insertions", {
       REF = c("C", "G", "G", "G"),
       ALT = c("CGA", "GA", "GA", "GC"),
       seq.context.width = c(12, 12, 12, 12),
+      trans.strand = rep("+", 4),
       stringsAsFactors = FALSE
     ))
   }
@@ -118,6 +121,8 @@ test_that("CreateOneColIDMatrix deletions", {
   MakeTestDelVCF <- function() {
     return(
       data.frame(
+        CHROM = rep("1", 4),
+        POS = 10000:10003,
         seq.context = c(
           "GAGGTATACATTGTGTTTACTTTTTCTATGTTTATGTACAATAGTAATATCTTTATAGTTATACTAACGTTATTAAAATAAGTAATTATATTAACTAAGTTTAGGACCAGTTTCTAGT",
           "GACCACTGAGAACCCAGGTTTTAGGCCCACCCCGGTACCAGGCCAGCCCCTGT",
@@ -126,6 +131,7 @@ test_that("CreateOneColIDMatrix deletions", {
         REF = c("ATAGTTATAC", "GCCCA", "TG", "AT"),
         ALT = c("A", "G", "T", "A"),
         seq.context.width = c(54, 24, 6, 6),
+        trans.strand = rep("+", 4),
         stringsAsFactors = FALSE))
   }
   load("testdata/create_one_col_delete_test.Rdata")

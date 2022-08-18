@@ -53,13 +53,13 @@ test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
                               get.vaf.function = GetStrelkaVAF,
                               return.annotated.vcfs = TRUE,
                               filter.status = NULL)
-  catalogs3$catID <- NULL
+  catalogs3$catID <- catalogs3$catID166 <- NULL
   expect_equal(catalogs1, catalogs3)
-  catalogs5$catID <- NULL
+  catalogs5$catID <- catalogs5$catID166 <- NULL
   expect_equal(catalogs1, catalogs5)
-  catalogs4$catID <- catalogs4$annotated.vcfs$ID <- NULL
+  catalogs4$catID <- catalogs4$catID166 <- catalogs4$annotated.vcfs$ID <- NULL
   expect_equal(catalogs2, catalogs4)
-  catalogs6$catID <- catalogs6$annotated.vcfs$ID <- NULL
+  catalogs6$catID <- catalogs6$catID166 <- catalogs6$annotated.vcfs$ID <- NULL
   expect_equal(catalogs2, catalogs6)
   })
 })
@@ -81,9 +81,11 @@ test_that("VCFsToCatalogs function for Strelka ID VCFs", {
                               variant.caller = "strelka", region = "genome",
                               return.annotated.vcfs = TRUE)
   expect_equal(catalogs1$catalog, catalogs3$catID)
+  expect_equal(catalogs1$catID166, catalogs3$catID166)
   expect_equal(catalogs1$discarded.variants, catalogs3$discarded.variants)
   
   expect_equal(catalogs2$catalog, catalogs4$catID)
+  expect_equal(catalogs2$catID166, catalogs4$catID166)
   expect_equal(catalogs2$discarded.variants, catalogs4$discarded.variants)
   expect_equal(catalogs2$annotated.vcfs, catalogs4$annotated.vcfs$ID)
   unlink("Rplots.pdf")

@@ -595,6 +595,8 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'   
 #' @param ID.mat The ID mutation count matrix.
 #' 
+#' @param ID166.mat The ID166 mutation count matrix.
+#' 
 #' @param return.annotated.vcf Whether to return \code{annotated.vcf}. Default is
 #'   FALSE.
 #'
@@ -602,18 +604,21 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #' 
 #' @keywords internal
 CheckAndReturnIDMatrix <- 
-  function(annotated.vcf, discarded.variants, ID.mat, return.annotated.vcf = FALSE) {
+  function(annotated.vcf, discarded.variants, ID.mat, ID166.mat,
+           return.annotated.vcf = FALSE) {
     if (nrow(discarded.variants) == 0) {
       if (return.annotated.vcf == FALSE) {
-        return(list(catalog = ID.mat))
+        return(list(catalog = ID.mat, catID166 = ID166.mat))
       } else {
-        return(list(catalog = ID.mat, annotated.vcf = annotated.vcf))
+        return(list(catalog = ID.mat, catID166 = ID166.mat, annotated.vcf = annotated.vcf))
       }
     } else {
       if (return.annotated.vcf == FALSE) {
-        return(list(catalog = ID.mat, discarded.variants = discarded.variants))
+        return(list(catalog = ID.mat, catID166 = ID166.mat,
+                    discarded.variants = discarded.variants))
       } else {
-        return(list(catalog = ID.mat, discarded.variants = discarded.variants,
+        return(list(catalog = ID.mat, catID166 = ID166.mat,
+                    discarded.variants = discarded.variants,
                     annotated.vcf = annotated.vcf))
       }
     }
@@ -641,7 +646,7 @@ CheckAndReturnIDMatrix <-
 #'   
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
-#' @section Value: A list of a 1-column ID matrix containing the mutation catalog
+#' @section Value: A list of two 1-column ID matrices containing the mutation catalog
 #'   information and the annotated VCF with ID categories information added. If
 #'   some ID variants were excluded in the analysis, an additional element
 #'   \code{discarded.variants} will appear in the return list.
@@ -722,7 +727,14 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   }
   
   # Create the ID catalog matrix (83 rows)
-  ID.class <- out.ID.vcf$ID.class
+  
+  # One ID mutation can be represented by more than 1 row in out.ID.vcf if the mutation
+  # position falls into the range of multiple transcripts. When creating the
+  # ID83 catalog, we only need to count these mutations once.
+  tmp <- out.ID.vcf %>% dplyr::group_by(CHROM, POS) %>%
+    dplyr::summarise(REF = REF[1], ALT = ALT[1], ID.class = ID.class[1])
+  
+  ID.class <- tmp$ID.class
   tab.ID <- table(ID.class)
 
   row.order <- data.table(rn = ICAMS::catalog.row.order$ID)
@@ -755,6 +767,38 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
   out.ID.vcf3 <- out.ID.vcf2 %>% 
     dplyr::mutate(ID166.class = paste0(dna.region, ":", ID.class))
   
-  CheckAndReturnIDMatrix(out.ID.vcf, discarded.variants, ID.mat, 
-                         return.annotated.vcf)
+  # One ID mutation can be represented by more than 1 row in out.ID.vcf3 if the mutation
+  # position falls into the range of multiple transcripts. When creating the
+  # ID166 catalog, we only need to count these mutations once.
+  out.ID.vcf4 <- out.ID.vcf3 %>% dplyr::group_by(CHROM, POS) %>%
+    dplyr::summarise(REF = REF[1], ALT = ALT[1], ID166.class = ID166.class[1])
+  
+  ID166.class <- out.ID.vcf4$ID166.class
+  tab.ID166 <- table(ID166.class)
+  
+  row.order.ID166 <- data.table(rn = ICAMS::catalog.row.order$ID166)
+  
+  ID166.dt <- as.data.table(tab.ID166)
+  # ID.dt has two columns, names ID166.class (from the table() function)
+  # and N (the count)
+  
+  ID166.dt2 <-
+    merge(row.order.ID166, ID166.dt, by.x = "rn", by.y = "ID166.class", all.x = TRUE)
+  ID166.dt2[ is.na(N) , N := 0]
+  if (!setequal(unlist(ID166.dt2$rn), ICAMS::catalog.row.order$ID166)) {
+    stop("\nThe set of ID166 categories generated from sample ", sample.id,
+         " is not the same as the catalog row order for ID166 used in ICAMS.",
+         "\nSee catalog.row.order$ID166 for more details.")
+  }
+  
+  ID166.mat <- as.matrix(ID166.dt2[ , 2])
+  rownames(ID166.mat) <- ID166.dt2$rn
+  colnames(ID166.mat) <- sample.id
+  ID166.mat <- ID166.mat[ICAMS::catalog.row.order$ID166, , drop = FALSE]
+  
+  CheckAndReturnIDMatrix(annotated.vcf = out.ID.vcf3, 
+                         discarded.variants = discarded.variants, 
+                         ID.mat = ID.mat, ID166.mat = ID166.mat, 
+                         return.annotated.vcf = return.annotated.vcf)
+                         
 }

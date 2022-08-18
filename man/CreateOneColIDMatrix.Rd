@@ -36,7 +36,7 @@ SBSs.}
 Create one column of the matrix for an indel catalog from *one* in-memory VCF.
 }
 \section{Value}{
- A list of a 1-column ID matrix containing the mutation catalog
+ A list of two 1-column ID matrices containing the mutation catalog
   information and the annotated VCF with ID categories information added. If
   some ID variants were excluded in the analysis, an additional element
   \code{discarded.variants} will appear in the return list.

@@ -872,6 +872,7 @@ CombineAndReturnCatalogsForMutectVCFs <-
                           catDBS136 = DBS.list$catDBS136,
                           catDBS144 = DBS.list$catDBS144,
                           catID = ID.list$catalog,
+                          catID166 = ID.list$catID166,
                           discarded.variants = discarded.variants.list2,
                           annotated.vcfs = annotated.vcfs.list2)
     # Remove NULL elements from the list
@@ -993,6 +994,7 @@ CombineAndReturnCatalogsForVCFs <-
                           catDBS136 = DBS.list$catDBS136,
                           catDBS144 = DBS.list$catDBS144,
                           catID = ID.list$catalog,
+                          catID166 = ID.list$catID166,
                           discarded.variants = discarded.variants.list2,
                           annotated.vcfs = annotated.vcfs.list2)
     # Remove NULL elements from the list
@@ -1721,6 +1723,8 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs,
 #' Check and return ID catalog
 #'
 #' @param catID An ID catalog.
+#' 
+#' @param catID166 An ID166 (genic-intergenic indel) catalog.
 #'
 #' @param discarded.variants A list of discarded variants.
 #'
@@ -1731,18 +1735,21 @@ VCFsToDBSCatalogs <- function(list.of.DBS.vcfs,
 #'
 #' @keywords internal
 CheckAndReturnIDCatalog <-
-  function(catID, discarded.variants, annotated.vcfs) {
+  function(catID, catID166, discarded.variants, annotated.vcfs) {
     if (length(discarded.variants) == 0) {
       if (length(annotated.vcfs) == 0) {
-        return(list(catalog = catID))
+        return(list(catalog = catID, catID166 = catID166))
       } else {
-        return(list(catalog = catID, annotated.vcfs = annotated.vcfs))
+        return(list(catalog = catID, catID166 = catID166,
+                    annotated.vcfs = annotated.vcfs))
       }
     } else {
       if (length(annotated.vcfs) == 0) {
-        return(list(catalog = catID, discarded.variants = discarded.variants))
+        return(list(catalog = catID, catID166 = catID166,
+                    discarded.variants = discarded.variants))
       } else {
-        return(list(catalog = catID, discarded.variants = discarded.variants,
+        return(list(catalog = catID, catID166 = catID166,
+                    discarded.variants = discarded.variants,
                     annotated.vcfs = annotated.vcfs))
       }
     }
@@ -1841,7 +1848,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
     if (!is.null(list$discarded.variants)) {
       df <- dplyr::bind_rows(df, list$discarded.variants)
     }
-    # Unlike the case for SBS and DBS, we do not add transcript information.
+    
     if (suppress.discarded.variants.warnings == TRUE) {
       tmp <- suppressWarnings({
         CreateOneColIDMatrix(list$annotated.vcf,
@@ -1853,6 +1860,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
                                   return.annotated.vcf = return.annotated.vcfs)
     }
     one.ID.column <- tmp$catalog
+    one.ID166.column <- tmp$catID166
     rm(ID)
 
     if (return.annotated.vcfs == TRUE) {
@@ -1868,6 +1876,7 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
     }
 
     return(list(ID.column = one.ID.column,
+                ID166.column = one.ID166.column,
                 discarded.variants = discarded.variants,
                 annotated.vcfs = annotated.vcfs))
   }
@@ -1880,14 +1889,20 @@ VCFsToIDCatalogs <- function(list.of.vcfs,
   ID.cat1 <- do.call("cbind", ID.cat)
   catID <- as.catalog(ID.cat1, ref.genome = ref.genome,
                       region = region, catalog.type = "counts")
+  
+  ID166.cat <- lapply(list0, FUN = "[[", 2)
+  ID166.cat1 <- do.call("cbind", ID166.cat)
+  catID166 <- as.catalog(ID166.cat1, ref.genome = ref.genome,
+                         region = region, catalog.type = "counts")
 
-  discarded.variants1 <- lapply(list0, FUN = "[[", 2)
+  discarded.variants1 <- lapply(list0, FUN = "[[", 3)
   discarded.variants2 <- do.call("c", discarded.variants1)
 
-  annotated.vcfs1 <- lapply(list0, FUN = "[[", 3)
+  annotated.vcfs1 <- lapply(list0, FUN = "[[", 4)
   annotated.vcfs2 <- do.call("c", annotated.vcfs1)
 
-  CheckAndReturnIDCatalog(catID = catID, discarded.variants = discarded.variants2,
+  CheckAndReturnIDCatalog(catID = catID, catID166 = catID166,
+                          discarded.variants = discarded.variants2,
                           annotated.vcfs = annotated.vcfs2)
 }
 

@@ -4,10 +4,12 @@
 \alias{CheckAndReturnIDCatalog}
 \title{Check and return ID catalog}
 \usage{
-CheckAndReturnIDCatalog(catID, discarded.variants, annotated.vcfs)
+CheckAndReturnIDCatalog(catID, catID166, discarded.variants, annotated.vcfs)
 }
 \arguments{
 \item{catID}{An ID catalog.}
+
+\item{catID166}{An ID166 (genic-intergenic indel) catalog.}
 
 \item{discarded.variants}{A list of discarded variants.}
 

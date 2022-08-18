@@ -10,7 +10,7 @@ test_that("CatalogAndPlotToPdf function for Mutect VCFs", {
                                          region = "genome",
                                          base.filename = "mutect")
   names <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(names), 8)
+  expect_equal(length(names), 9)
   unlink(file.path(tempdir(), names))
 })
 
@@ -38,6 +38,6 @@ test_that("CatalogAndPlotToPdf function for Strelka ID VCFs", {
                                          region = "genome",
                                          base.filename = "strelka.id")
   names <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(names), 1)
+  expect_equal(length(names), 2)
   unlink(file.path(tempdir(), names))
 })

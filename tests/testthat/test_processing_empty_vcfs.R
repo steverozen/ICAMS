@@ -12,11 +12,11 @@ test_that("Processing empty Strelka SBS vcfs", {
                                 return.annotated.vcfs = TRUE)
   catalogs1.1 <- VCFsToCatalogs(file, ref.genome = "hg19", variant.caller = "strelka",
                                 region = "genome")
-  catalogs1.1$catID <- NULL
+  catalogs1.1$catID <- catalogs1.1$catID166 <- NULL
   expect_equal(catalogs, catalogs1.1)
   catalogs1.2 <- VCFsToCatalogs(file, ref.genome = "hg19", variant.caller = "strelka",
                                 region = "genome", return.annotated.vcfs = TRUE)
-  catalogs1.2$catID <- catalogs1.2$annotated.vcfs$ID <- NULL
+  catalogs1.2$catID <- catalogs1.2$catID166 <- catalogs1.2$annotated.vcfs$ID <- NULL
   expect_equal(catalogs1, catalogs1.2)
   
   expect_equivalent(colSums(catalogs$catSBS96), 0)
@@ -29,13 +29,13 @@ test_that("Processing empty Strelka SBS vcfs", {
                                 return.annotated.vcfs = TRUE)
   catalogs2.1 <- VCFsToCatalogs(file1, ref.genome = "hg19", variant.caller = "strelka",
                                 region = "genome")
-  catalogs2.1$catID <- NULL
+  catalogs2.1$catID <- catalogs2.1$catID166 <-NULL
   expect_equal(catalogs2, catalogs2.1)
   
   catalogs3.1 <- VCFsToCatalogs(file1, ref.genome = "hg19", variant.caller = "strelka",
                                 region = "genome",
                                 return.annotated.vcfs = TRUE)
-  catalogs3.1$catID <- catalogs3.1$annotated.vcfs$ID <- NULL
+  catalogs3.1$catID <- catalogs3.1$catID166 <- catalogs3.1$annotated.vcfs$ID <- NULL
   expect_equal(catalogs3, catalogs3.1)
   expect_equivalent(colSums(catalogs2$catSBS96), 0)
   

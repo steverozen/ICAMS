@@ -13,9 +13,9 @@ test_that("MutectVCFFilesToZipFile function with no base.filename", {
   expect_equal(name, "test.zip")
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 9)
 
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
@@ -42,9 +42,9 @@ test_that("MutectVCFFilesToZipFile function with base.filename", {
   expect_equal(name, "test.zip")
   zip::unzip(zipfile = paste0(tempdir(), "/test.zip"), exdir = tempdir())
   name1 <- grep("\\.csv$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name1), 7)
+  expect_equal(length(name1), 8)
   name2 <- grep("\\.pdf$", list.files(tempdir()), value = TRUE)
-  expect_equal(length(name2), 8)
+  expect_equal(length(name2), 9)
 
   unlink(file.path(tempdir(), "test.zip"))
   unlink(file.path(tempdir(), name1))
