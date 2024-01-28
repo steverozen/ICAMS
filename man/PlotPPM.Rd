@@ -8,9 +8,9 @@
 PlotPPM(ppm, title)
 }
 \arguments{
-\item{title}{The main title of the plot.}
+\item{ppm}{A position probability matrix (PPM) for *one* sample.}
 
-\item{pwm}{A position probability matrix (PPM) for *one* sample.}
+\item{title}{The main title of the plot.}
 }
 \value{
 \code{invisible(TRUE)}

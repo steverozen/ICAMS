@@ -156,10 +156,6 @@ RenameColumnsWithNameVAF <- function(df) {
 #'   separator (if any) in \code{file} and file path without extensions (and the
 #'   leading dot) will be used as the name of the VCF file.
 #'
-#' @param suppress.discarded.variants.warnings Logical. Whether to suppress
-#'   warning messages showing information about the discarded variants. Default
-#'   is TRUE.
-#'
 #' @inheritSection ReadMutectVCF Value
 #'
 #' @keywords internal
@@ -592,9 +588,6 @@ GetConsensusVAF <- function(vcf, mc.cores = 1) {
 #'   and read depth will be NAs.
 #'
 #' @param ... Optional arguments to \code{get.vaf.function}.
-#'
-#' @param num.of.cores The number of cores to use. Not available on Windows
-#'   unless \code{num.of.cores = 1}.
 #'
 #' @return A data frame storing data lines of the VCF file with two additional
 #'   columns added which contain the VAF(variant allele frequency) and read

@@ -6,10 +6,10 @@
 <!-- badges: start -->
 
 ![R build
-status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg?branch=v2.3.10-branch)
+status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg?branch=v2.3.11-branch-cran)
 ![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 <!-- badges: end -->
@@ -71,7 +71,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
 ```
 
 Alternatively, you can download the [package
-source](https://github.com/steverozen/ICAMS/blob/v2.3.10-branch/data-raw/source-file/ICAMS_2.3.10.tar.gz?raw=true)
+source](https://github.com/steverozen/ICAMS/blob/v2.3.11-branch-cran/data-raw/source-file/ICAMS_2.3.11.tar.gz?raw=true)
 of recent *stable development* version of ICAMS to your computer, then
 do:
 
@@ -84,7 +84,7 @@ remotes::install_local(path = "path-to-package-source-file-on-your-computer")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/v2.3.10-branch/data-raw/ICAMS_2.3.10.pdf>
+<https://github.com/steverozen/ICAMS/blob/v2.3.11-branch-cran/data-raw/ICAMS_2.3.11.pdf>
 
 ## Frequently asked questions
 
@@ -98,6 +98,6 @@ the data. Please refer to the documentation and example of
 
 If you use ICAMS in your work, please cite:
 
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y (2021). ICAMS:In-depth
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y (2024). ICAMS:In-depth
 > Characterization and Analysis of Mutational Signatures. R package
-> version 2.3.10, <https://CRAN.R-project.org/package=ICAMS>.
+> version 2.3.11, <https://CRAN.R-project.org/package=ICAMS>.

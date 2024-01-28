@@ -12,16 +12,16 @@ GetCustomKmerCounts(k, ref.genome, custom.ranges, filter.path, verbose = FALSE)
 \item{ref.genome}{A \code{ref.genome} argument as described in
 \code{\link{ICAMS}}.}
 
-\item{filter.path}{If given, homopolymers will be masked from
-genome(sequence). Only simple repeat masking is accepted now.}
-
-\item{verbose}{If \code{TRUE} generate progress messages.}
-
-\item{custom.range}{A keyed data table which has custom ranges information. It
+\item{custom.ranges}{A keyed data table which has custom ranges information. It
 has three columns: chrom, start and end. It should use one-based coordinate
 system. You can use the internal function in this package
 \code{ICAMS:::ReadBedRanges} to read a BED file in 0-based coordinates and
 convert it to 1-based coordinates.}
+
+\item{filter.path}{If given, homopolymers will be masked from
+genome(sequence). Only simple repeat masking is accepted now.}
+
+\item{verbose}{If \code{TRUE} generate progress messages.}
 }
 \value{
 Matrix of the counts of custom k-mer across the \code{ref.genome}
