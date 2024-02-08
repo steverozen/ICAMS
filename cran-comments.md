@@ -1,13 +1,11 @@
 ## Resubmission  
 This is a resubmission. In this version I have:
-
-* Updated testing code to fix the no long double error.
+* Corrected documentation of some functions.
+* Changed citation file according to new style.
+* Updated URLs used in documentation.
 
 ## Test environments
-* Local Windows 10 install: R 4.0.4
-* Local OS X Big Sur install: R 4.0.4
-* Local Ubuntu 20.04.1 LTS: R 4.0.4
-* Winbuilder: R oldrelease (3.6.3), release (4.0.4) and devel
+* Local Windows 10 install: R 4.3.1
 
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTES.
