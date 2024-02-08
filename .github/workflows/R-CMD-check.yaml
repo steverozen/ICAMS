@@ -5,14 +5,12 @@ on:
     branches:
       - main
       - master
-      - v2.3.10-branch
-      - v2.3.11-branch-cran
+      - v2.3.12-branch-cran
   pull_request:
     branches:
       - main
       - master
-      - v2.3.10-branch
-      - v2.3.11-branch-cran
+      - v2.3.12-branch-cran
 
 name: R-CMD-check
 
@@ -28,9 +26,6 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: windows-latest, r: 'oldrel'}
-          - {os: macOS-latest, r: 'release'}
-          - {os: macOS-latest, r: 'devel'}
-          - {os: macOS-latest, r: 'oldrel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true

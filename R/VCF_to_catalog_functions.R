@@ -2906,7 +2906,7 @@ StrelkaIDVCFFilesToCatalogAndPlotToPdf <-
 #' @md
 #'
 #' @section ID classification:
-#' See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' See \url{https://github.com/steverozen/ICAMS/blob/master/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 #' for additional information on ID (small insertion and deletion) mutation
 #' classification.
 #' 
@@ -3102,7 +3102,7 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #' @md
 #'
 #' @section ID classification:
-#' See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+#' See \url{https://github.com/steverozen/ICAMS/blob/master/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 #' for additional information on ID (small insertion and deletion) mutation
 #' classification.
 #' 

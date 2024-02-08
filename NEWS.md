@@ -1,3 +1,10 @@
+# ICAMS 2.3.12
+## Updated
+* Changed citation file according to new style
+* Updated URLs used in documentation 
+
+<br/>
+
 # ICAMS 2.3.11
 ## Updated
 * Corrected documentation of some functions

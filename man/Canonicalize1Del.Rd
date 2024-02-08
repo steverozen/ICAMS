@@ -31,7 +31,7 @@ This function is primarily for internal use, but we export it
 to document the underlying logic.
 }
 \details{
-See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2017_12_08.xlsx}
+See \url{https://github.com/steverozen/ICAMS/blob/master/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 for additional information on deletion mutation classification.
 
 This function first handles deletions in homopolymers, then
