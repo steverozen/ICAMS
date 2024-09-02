@@ -393,7 +393,7 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' @note This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
 #'   ICAMS catalog to SigProfiler format.
 #' 
-#' @keywords internal
+#' @export
 ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
   if (inherits(input.catalog, "character")) {
     input.catalog <- ICAMS::ReadCatalog(input.catalog)
