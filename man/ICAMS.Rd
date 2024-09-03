@@ -2,6 +2,7 @@
 % Please edit documentation in R/ICAMS.R
 \docType{package}
 \name{ICAMS}
+\alias{ICAMS-package}
 \alias{ICAMS}
 \title{ICAMS: In-depth Characterization and Analysis of Mutational Signatures}
 \description{
@@ -287,3 +288,11 @@ cell lines.
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/steverozen/ICAMS}
+  \item Report bugs at \url{https://github.com/steverozen/ICAMS/issues}
+}
+
+}
