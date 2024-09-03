@@ -5,6 +5,7 @@ test_that("PlotTransBiasGeneExpToPdf function", {
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
   list.of.vcfs <- 
     ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf")
+
   annotated.SBS.vcf <- 
     AnnotateSBSVCF(list.of.vcfs$SBS.vcfs[[1]], "hg19", trans.ranges.GRCh37)
   vcf1 <- annotated.SBS.vcf[REF == "C",]
@@ -70,8 +71,10 @@ test_that("PlotTransBiasGeneExpToPdf function", {
 test_that("PlotTransBiasGeneExp function", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+  
   list.of.vcfs <- 
     ReadAndSplitStrelkaSBSVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf")
+
   annotated.SBS.vcf <- 
     AnnotateSBSVCF(list.of.vcfs$SBS.vcfs[[1]], "hg19", trans.ranges.GRCh37)
   vcf1 <- annotated.SBS.vcf[REF == "C",]
