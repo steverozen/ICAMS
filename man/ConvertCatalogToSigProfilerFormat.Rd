@@ -30,4 +30,3 @@ For SigPro formats, please see the links below for:
 This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
   ICAMS catalog to SigProfiler format.
 }
-\keyword{internal}
