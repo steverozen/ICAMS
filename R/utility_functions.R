@@ -539,7 +539,7 @@ CheckCatalogAttributes <- function(catalog, target.catalog.type) {
 #' @keywords internal
 IsRefGenomeInstalled <- function(ref.genome) {
   if (is.null(ref.genome)) stop("Need a non-NULL ref.genome")
-  if (class(ref.genome) == "BSgenome") return(TRUE)
+  if (inherits(ref.genome, "BSgenome")) return(TRUE)
   
   stopifnot(class(ref.genome) == "character")
   
@@ -1202,7 +1202,7 @@ CreatePentanucAbundance <- function(file) {
 NormalizeGenomeArg <- function(ref.genome) {
   
   if (is.null(ref.genome)) stop("Need a non-NULL ref.genome")
-  if (class(ref.genome) == "BSgenome") return(ref.genome)
+  if (inherits(ref.genome, "BSgenome")) return(ref.genome)
   
   stopifnot(class(ref.genome) == "character")
   
@@ -1416,7 +1416,7 @@ InferAbundance <- function(object, ref.genome, region, catalog.type) {
     
     if (is.null(ref.genome)) return(NULL)
     
-    if (class(ref.genome) == "BSgenome") {
+    if (inherits(ref.genome, "BSgenome")) {
       ref.genome.name <- ref.genome@pkgname
     } else {
       ref.genome.name <- InferRefGenomeName(ref.genome)
