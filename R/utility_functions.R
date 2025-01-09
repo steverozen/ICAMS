@@ -1814,7 +1814,7 @@ GetStrandedKmerCounts <-
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
-#' @param custom.range A keyed data table which has custom ranges information. It
+#' @param custom.ranges A keyed data table which has custom ranges information. It
 #'   has three columns: chrom, start and end. It should use one-based coordinate
 #'   system. You can use the internal function in this package
 #'   \code{ICAMS:::ReadBedRanges} to read a BED file in 0-based coordinates and

@@ -7,11 +7,11 @@
 PlotPPMToPdf(list.of.ppm, file, titles = names(list.of.ppm))
 }
 \arguments{
+\item{list.of.ppm}{A list of position probability matrices (PPM)}
+
 \item{file}{The name of the PDF file to be produced.}
 
 \item{titles}{A vector of titles on top of each PPM plot.}
-
-\item{list.of.pwm}{A list of position probability matrices (PPM)}
 }
 \value{
 \code{invisible(TRUE)}
