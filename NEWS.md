@@ -1,3 +1,6 @@
+# 3.0.8
+* Exported function `ConvertCatalogToSigProfilerFormat` and added example.
+
 # 3.0.7
 ## Added
 * Added new argument `trans.ranges` in exported function `AnnotateIDVCF`.

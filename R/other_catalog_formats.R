@@ -371,12 +371,12 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' 
 #' Specially, the row orders in ICAMS internal format 
 #' (see \code{ICAMS::catalog.row.order})
-#' are converted to headers in SigPro format.
+#' are converted to headers in SigProfiler format.
 #' 
-#' For SigPro formats, please see the links below for:
-#' [SBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20SBS/), 
-#' [DBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/) and 
-#' [ID](https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/)
+#' For SigProfiler formats, please see the links below for:
+#' * SBS: https://osf.io/s93d5/wiki/5.%20Output%20-%20SBS/
+#' * DBS: https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/
+#' * ID:  https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/
 #' 
 #' @param input.catalog Either a character string, in which case this is the
 #'   path to a file containing a catalog in \code{\link[ICAMS]{ICAMS}}
@@ -393,7 +393,17 @@ ConvertICAMSCatalogToSigProSBS96 <- function(input.catalog, file, sep = "\t") {
 #' @note This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
 #'   ICAMS catalog to SigProfiler format.
 #' 
+#' @md
+#' 
 #' @export
+#' 
+#' @examples 
+#' path <- system.file("extdata",
+#'                     "strelka.regress.cat.sbs.96.csv",
+#'                     package = "ICAMS")
+#' catSBS96 <- ReadCatalog(path)
+#' ConvertCatalogToSigProfilerFormat(input.catalog = catSBS96,
+#'                                   file = file.path(tempdir(), "sigproCat.txt"))
 ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
   if (inherits(input.catalog, "character")) {
     input.catalog <- ICAMS::ReadCatalog(input.catalog)
