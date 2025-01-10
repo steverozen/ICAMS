@@ -16,17 +16,27 @@ format, or an in-memory \code{\link[ICAMS]{ICAMS}} catalog.}
 \item{sep}{Separator to use in the output file.}
 }
 \description{
-Specially, the row orders in ICAMS internal format 
+Specially, the row orders in ICAMS internal format
 (see \code{ICAMS::catalog.row.order})
-are converted to headers in SigPro format.
+are converted to headers in SigProfiler format.
 }
 \details{
-For SigPro formats, please see the links below for:
-[SBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20SBS/), 
-[DBS](https://osf.io/s93d5/wiki/5.%20Output%20-%20DBS/) and 
-[ID](https://osf.io/s93d5/wiki/5.%20Output%20-%20ID/)
+For SigProfiler formats, please see the links below for:
+\itemize{
+\item SBS: https://osf.io/s93d5/wiki/5.\%20Output\%20-\%20SBS/
+\item DBS: https://osf.io/s93d5/wiki/5.\%20Output\%20-\%20DBS/
+\item ID:  https://osf.io/s93d5/wiki/5.\%20Output\%20-\%20ID/
+}
 }
 \note{
 This function can only transform SBS96, SBS192, SBS1536, DBS78 and ID
-  ICAMS catalog to SigProfiler format.
+ICAMS catalog to SigProfiler format.
+}
+\examples{
+path <- system.file("extdata",
+                    "strelka.regress.cat.sbs.96.csv",
+                    package = "ICAMS")
+catSBS96 <- ReadCatalog(path)
+ConvertCatalogToSigProfilerFormat(input.catalog = catSBS96,
+                                  file = file.path(tempdir(), "sigproCat.txt"))
 }

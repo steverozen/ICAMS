@@ -2005,7 +2005,7 @@ PlotCatalogToPdf.ID166Catalog <-
 #' Plot position probability matrix (PPM) for *one* sample from a Variant Call Format
 #' (VCF) file.
 #'
-#' @param pwm A position probability matrix (PPM) for *one* sample.
+#' @param ppm A position probability matrix (PPM) for *one* sample.
 #'
 #' @param title The main title of the plot.
 #'
@@ -2033,7 +2033,7 @@ PlotPPM <- function(ppm, title) {
 
 #' Plot position probability matrices (PPM) to a PDF file
 #'
-#' @param list.of.pwm A list of position probability matrices (PPM)
+#' @param list.of.ppm A list of position probability matrices (PPM)
 #'
 #' @param file The name of the PDF file to be produced.
 #'

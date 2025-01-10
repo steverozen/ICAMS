@@ -66,23 +66,9 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github(repo = "steverozen/ICAMS")
 ```
 
-### Get the development version
-
-To use new features in the development version, you can install ICAMS
-from the master branch on
-[GitHub](https://github.com/steverozen/ICAMS/tree/master), which may not
-be stable:
-
-``` r
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_github(repo = "steverozen/ICAMS", ref = "master")
-```
-
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/v3.0.7-branch/data-raw/ICAMS_3.0.7.pdf>
+<https://github.com/steverozen/ICAMS/blob/v3.0.8-branch/data-raw/ICAMS_3.0.8.pdf>
 
 ## Frequently asked questions
 
@@ -96,6 +82,6 @@ the data. Please refer to the documentation and example of
 
 If you use ICAMS in your work, please cite:
 
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2021).
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2025).
 > ICAMS:In-depth Characterization and Analysis of Mutational Signatures.
-> R package version 3.0.7, <https://CRAN.R-project.org/package=ICAMS>.
+> R package version 3.0.8, <https://CRAN.R-project.org/package=ICAMS>.

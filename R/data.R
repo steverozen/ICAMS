@@ -158,7 +158,7 @@ if(getRversion() >= "2.15.1") {
                            "ALT.y", "ref2alt", "minus1bs", "minus2bs", "plus1bs",
                            "plus2bs", "POS.plus.one", "HIGH", "POS.y", "VAF.x",
                            "VAF.y", "delete.flag", "trans.ranges.GRCh37", "cols",
-                           "Ensembl.gene.ID", "readthrough", "exp.value", 
+                           "Ensembl.gene.ID", "readthrough", "exp.value", "dna.region", 
                            "trans.end.pos", "trans.start.pos", "read.depth", "VAF", 
                            "read.depth.x", "read.depth.y","exp.level", "FILTER",
                            "trans.Ensembl.gene.ID", "..col.names.order", "remark.for.DBS",
