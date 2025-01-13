@@ -73,7 +73,7 @@ be obtained from \code{ID.class} column.
 
 \section{ID classification}{
 
-See \url{https://github.com/steverozen/ICAMS/raw/master/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
+See \url{https://github.com/steverozen/ICAMS/blob/v3.0.9-branch/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 for additional information on ID (small insertions and deletions) mutation
 classification.
 
