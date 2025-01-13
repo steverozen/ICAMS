@@ -1,4 +1,11 @@
+# 3.0.9
+## Updated
+* Corrected URL pointing to indel classification file.
+* Provide package anchors for all Rd \link{} targets not in the package itself and 
+the base packages
+
 # 3.0.8
+## Updated
 * Exported function `ConvertCatalogToSigProfilerFormat` and added example.
 
 # 3.0.7
