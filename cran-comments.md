@@ -1,7 +1,7 @@
 ## Resubmission  
 This is a resubmission. In this version I have:
 
-* Updated testing code to fix the no long double error.
+* Exported function `ConvertCatalogToSigProfilerFormat`
 
 ## Test environments
 * Local Windows 11 install: R 4.4.2
