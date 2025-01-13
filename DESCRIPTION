@@ -1,9 +1,29 @@
 Package: ICAMS
 Type: Package
 Title: In-Depth Characterization and Analysis of Mutational Signatures ('ICAMS')
-Version: 3.0.8
-Author: Steve Rozen, Nanhai Jiang, Arnoud Boot, Mo Liu, Yang Wu, Mi Ni Huang, Jia Geng Chang
-Maintainer: Steve Rozen <steverozen@gmail.com>
+Version: 3.0.9
+Authors@R: c(person(given = "Steve",
+                      family = "Rozen",
+                      role = c("aut", "cre"),
+                      email = "steverozen@gmail.com"),
+               person(given = "Nanhai",
+                      family = "Jiang",
+                      role = "aut"),
+               person(given = "Arnoud",
+                      family = "Boot",
+                      role = "aut"),
+               person(given = "Mo",
+                      family = "Liu",
+                      role = "aut"),
+               person(given = "Yang",
+                      family = "Wu",
+                      role = "aut"),
+               person(given = c("Mi", "Ni"),
+                      family = "Huang",
+                      role = "aut"),
+               person(given = c("Jia", "Geng"),
+                      family = "Chang",
+                      role = "aut"))
 Description: Analysis and visualization of experimentally elucidated mutational
     signatures -- the kind of analysis and visualization in Boot et al.,
     "In-depth characterization of the cisplatin mutational signature in 

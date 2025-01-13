@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{NormalizeGenomeArg}
 \alias{NormalizeGenomeArg}
-\title{Take strings representing a genome and return the \code{\link{BSgenome}} object.}
+\title{Take strings representing a genome and return the \code{\link[BSgenome]{BSgenome}} object.}
 \usage{
 NormalizeGenomeArg(ref.genome)
 }
@@ -12,11 +12,11 @@ NormalizeGenomeArg(ref.genome)
 }
 \value{
 If \code{ref.genome} is 
-a \code{\link{BSgenome}} object, return it.
-Otherwise return the \code{\link{BSgenome}} object identified by the
+a \code{\link[BSgenome]{BSgenome}} object, return it.
+Otherwise return the \code{\link[BSgenome]{BSgenome}} object identified by the
 string \code{ref.genome}.
 }
 \description{
-Take strings representing a genome and return the \code{\link{BSgenome}} object.
+Take strings representing a genome and return the \code{\link[BSgenome]{BSgenome}} object.
 }
 \keyword{internal}

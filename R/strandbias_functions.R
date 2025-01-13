@@ -4,7 +4,7 @@
 #'   \code{\link{AnnotateSBSVCF}}. It \strong{must} have transcript range
 #'   information added.
 #'   
-#' @param expression.data A \code{\link{data.table}} which contains the
+#' @param expression.data A \code{\link[data.table]{data.table}} which contains the
 #'   expression values of genes. \cr See \code{\link{GeneExpressionData}} for more
 #'   details.
 #'   

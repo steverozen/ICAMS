@@ -939,7 +939,7 @@ PyrPenta <- function(mutstring) {
 
 #' Reverse complement every string in \code{string.vec}
 #' 
-#' Based on \code{\link{reverseComplement}}.
+#' Based on \code{\link[Biostrings]{reverseComplement}}.
 #' Handles IUPAC ambiguity codes but not "u" (uracil). \cr
 #' (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 #'
@@ -1188,14 +1188,14 @@ CreatePentanucAbundance <- function(file) {
   return(abundance)
 }
 
-#' Take strings representing a genome and return the \code{\link{BSgenome}} object.
+#' Take strings representing a genome and return the \code{\link[BSgenome]{BSgenome}} object.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
 #'
 #' @return If \code{ref.genome} is 
-#' a \code{\link{BSgenome}} object, return it.
-#' Otherwise return the \code{\link{BSgenome}} object identified by the
+#' a \code{\link[BSgenome]{BSgenome}} object, return it.
+#' Otherwise return the \code{\link[BSgenome]{BSgenome}} object identified by the
 #' string \code{ref.genome}.
 #'
 #' @keywords internal

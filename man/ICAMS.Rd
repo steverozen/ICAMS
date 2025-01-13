@@ -163,7 +163,7 @@ provides this.
 
 \code{ref.genome} must be one of
 \enumerate{
-\item A variable from the Bioconductor \code{\link{BSgenome}} package
+\item A variable from the Bioconductor \code{\link[BSgenome]{BSgenome}} package
 that contains a particular reference genome, for example
 \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
 
@@ -293,6 +293,20 @@ Useful links:
 \itemize{
   \item \url{https://github.com/steverozen/ICAMS}
   \item Report bugs at \url{https://github.com/steverozen/ICAMS/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Steve Rozen \email{steverozen@gmail.com}
+
+Authors:
+\itemize{
+  \item Nanhai Jiang
+  \item Arnoud Boot
+  \item Mo Liu
+  \item Yang Wu
+  \item Mi Ni Huang
+  \item Jia Geng Chang
 }
 
 }

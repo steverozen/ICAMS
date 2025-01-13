@@ -236,7 +236,7 @@ StrelkaIDVCFFilesToZipFile <-
 #'   \code{\link{ICAMS}}.
 #'
 #' @param trans.ranges Optional. If \code{ref.genome} specifies one of the
-#'   \code{\link{BSgenome}} object
+#'   \code{\link[BSgenome]{BSgenome}} object
 #'   \enumerate{
 #'     \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
 #'     \item \code{BSgenome.Hsapiens.UCSC.hg38}

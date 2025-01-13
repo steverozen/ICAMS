@@ -23,7 +23,7 @@ information added.}
 
 \item{file}{The name of output file.}
 
-\item{expression.data}{A \code{\link{data.table}} which contains the
+\item{expression.data}{A \code{\link[data.table]{data.table}} which contains the
 expression values of genes. \cr See \code{\link{GeneExpressionData}} for more
 details.}
 

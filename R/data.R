@@ -124,7 +124,7 @@ NULL
 #' This data is designed to be used as an example in function \cr
 #' \code{\link{PlotTransBiasGeneExp}} and \code{\link{PlotTransBiasGeneExpToPdf}}.
 #'
-#' @format A \code{\link{data.table}} which contains the expression values of genes.
+#' @format A \code{\link[data.table]{data.table}} which contains the expression values of genes.
 #'   
 #' @name GeneExpressionData
 #' 

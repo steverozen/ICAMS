@@ -20,7 +20,7 @@ PlotTransBiasGeneExp(
 \code{\link{AnnotateSBSVCF}}. It \strong{must} have transcript range
 information added.}
 
-\item{expression.data}{A \code{\link{data.table}} which contains the
+\item{expression.data}{A \code{\link[data.table]{data.table}} which contains the
 expression values of genes. \cr See \code{\link{GeneExpressionData}} for more
 details.}
 
