@@ -11,7 +11,6 @@ status](https://github.com/steverozen/ICAMS/workflows/R-CMD-check/badge.svg)
 status](https://ci.appveyor.com/api/projects/status/github/steverozen/ICAMS?branch=master&svg=true)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
-
 <!-- badges: end -->
 
 In-depth Characterization and Analysis of Mutational Signatures
