@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
   [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ICAMS)](https://cran.r-project.org/package=ICAMS)
   ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
+[![R-CMD-check](https://github.com/steverozen/ICAMS/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steverozen/ICAMS/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 In-depth Characterization and Analysis of Mutational Signatures ('ICAMS')
