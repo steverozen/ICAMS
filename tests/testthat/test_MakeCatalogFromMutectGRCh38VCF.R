@@ -1,6 +1,7 @@
 context("Making catalogs from Mutect GRCh38 VCFs")
 
 test_that("MutectVCFFilesToCatalog", {
+  rlang::with_options(lifecycle_verbosity = "quiet", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
   cat1 <- MutectVCFFilesToCatalog("testdata/Mutect.GRCh38.vcf",
@@ -30,5 +31,5 @@ test_that("MutectVCFFilesToCatalog", {
   expect_equal(cat1, cat4)
   expect_equal(cat1, cat6)
   expect_equal(attributes(cat5$catSBS96)$region, "unknown")
-  expect_null(attributes(cat5$catSBS96)$abundance)
+  expect_null(attributes(cat5$catSBS96)$abundance)})
 })

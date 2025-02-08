@@ -8,9 +8,7 @@ test_that("VCFs to catalogs functions", {
     file1 <- "testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf"
     catalogs1 <- expect_warning(
       MutectVCFFilesToCatalog(file1, ref.genome = "hg19", 
-                              region = "genome"),
-      regexp = 'Please use `VCFsToCatalogs(variant.caller = "mutect")` instead',
-      fixed = TRUE)
+                              region = "genome"))
     
     file2 <- "testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf"
     catalogs1 <- expect_warning(

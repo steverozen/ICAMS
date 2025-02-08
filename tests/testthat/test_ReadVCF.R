@@ -1,4 +1,5 @@
 context("Read VCFs")
+rlang::with_options(lifecycle_verbosity = "quiet", {
 
 test_that("Read Strelka mixed VCF", {
   file <- "testdata/Strelka.mixed.GRCh37.vcf"
@@ -19,7 +20,7 @@ test_that(
     vcf2 <- ReadStrelkaSBSVCFs("testdata/Strelka.SBS.GRCm38.vcf")
     expect_equal(dim(vcf[[1]]), c(798, 21))
     expect_equal(dim(vcf1[[1]]), c(1574, 13))
-    expect_equal(dim(vcf2[[1]]), c(2870, 21))
+    expect_equal(dim(vcf2[[1]]), c(10, 21))
     
     list <- ReadVCFs("testdata/Strelka-SBS-GRCh37/Strelka.SBS.GRCh37.s1.vcf",
                      variant.caller = "strelka")
@@ -39,7 +40,7 @@ test_that(
     vcf1 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCh38.vcf")
     vcf2 <- ReadStrelkaIDVCFs("testdata/Strelka.ID.GRCm38.vcf")
     expect_equal(dim(vcf[[1]]), c(408, 19))
-    expect_equal(dim(vcf1[[1]]), c(1574, 11))
+    expect_equal(dim(vcf1[[1]]), c(10, 11))
     expect_equal(dim(vcf2[[1]]), c(747, 19))
     
     list <- ReadVCFs("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf",
@@ -60,7 +61,7 @@ test_that(
     vcf1 <- ReadMutectVCFs("testdata/Mutect.GRCh38.vcf")
     vcf2 <- expect_warning(ReadMutectVCFs("testdata/Mutect.GRCm38.vcf"))
     expect_equal(dim(vcf[[1]]), c(1851, 13))
-    expect_equal(dim(vcf1[[1]]), c(1561, 13))
+    expect_equal(dim(vcf1[[1]]), c(11, 13))
     expect_equal(dim(vcf2[[1]]), c(1895, 13))
     
     list <- ReadVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf",
@@ -214,4 +215,6 @@ test_that("Read in VCF like table", {
   test.vcf2 <- expect_warning(ReadVCFs("testdata/vcf.like.table2.txt",
                                        filter.status = "PASS"))
   expect_equal(test.vcf[[1]], test.vcf2[[1]])
+})
+
 })

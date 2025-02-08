@@ -3,7 +3,8 @@ context("extended seq.context functions")
 test_that("extended seq.context functions for Mutect GRCh38 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
-  vcf <- ReadAndSplitMutectVCFs("testdata/Mutect.GRCh38.vcf")
+  vcf <- 
+    ReadAndSplitMutectVCFs("testdata/Mutect.GRCh38.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
                                 seq.context.width = 10)
@@ -20,7 +21,8 @@ test_that("extended seq.context functions for Mutect GRCh38 vcf", {
 test_that("extended seq.context functions for Mutect GRCh37 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
-  vcf <- ReadAndSplitMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf")
+  vcf <- 
+    ReadAndSplitMutectVCFs("testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf")
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh37",
                                 seq.context.width = 10)
@@ -37,8 +39,10 @@ test_that("extended seq.context functions for Mutect GRCh37 vcf", {
 test_that("extended seq.context functions for Mutect GRCm38 vcf", {
   skip_if("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10"))
   stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
-  vcf <- 
-    expect_warning(ReadAndSplitMutectVCFs("testdata/Mutect.GRCm38.vcf"))
+  vcf <- expect_warning(
+    ReadAndSplitMutectVCFs("testdata/Mutect.GRCm38.vcf")
+  )
+    
   sbs.vcf <- vcf$SBS[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCm38",
                                 seq.context.width = 10)
@@ -55,7 +59,8 @@ test_that("extended seq.context functions for Mutect GRCm38 vcf", {
 test_that("extended seq.context functions for Strelka GRCh38 vcf", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.UCSC.hg38"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.UCSC.hg38"))
-  vcfs <- ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
+  vcfs <- 
+    ReadAndSplitStrelkaSBSVCFs("testdata/Strelka.SBS.GRCh38.vcf")
   sbs.vcf <- vcfs$SBS.vcfs[[1]]
   mat <- CreateOnePPMFromSBSVCF(sbs.vcf, ref.genome = "GRCh38",
                                 seq.context.width = 10)

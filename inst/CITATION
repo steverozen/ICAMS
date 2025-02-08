@@ -9,6 +9,6 @@ bibentry(
                     person("Mi Ni", "Huang"),
                     person("Jia Geng", "Chang")),
   year     = "2025",
-  note     = "R package version 3.0.9",
+  note     = "R package version 3.0.11",
   url      = "https://CRAN.R-project.org/package=ICAMS"
 )
