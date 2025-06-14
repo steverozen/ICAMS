@@ -1,3 +1,11 @@
+# 3.0.11
+## Updated
+* Minor changes to tests
+
+# 3.0.10
+## Updated
+* Updated some examples that took too long to run.
+
 # 3.0.9
 ## Updated
 * Corrected URL pointing to indel classification file.

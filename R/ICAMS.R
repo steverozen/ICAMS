@@ -248,8 +248,7 @@
 #'
 #'  }
 #'
-#' @md
 #'
-#' @docType package
+#' "_PACKAGE"
 #' @name ICAMS
 NULL
