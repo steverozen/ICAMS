@@ -10,7 +10,7 @@
 ## Updated
 * Corrected URL pointing to indel classification file.
 * Provide package anchors for all Rd \link{} targets not in the package itself and 
-the base packages
+the base packages.
 
 # 3.0.8
 ## Updated
@@ -18,7 +18,7 @@ the base packages
 
 # 3.0.7
 ## Added
-* Added new argument `trans.ranges` in exported function `AnnotateIDVCF`.
+* Added new argument `trans.ranges` in exported function `AnnotateIDVCF`; has default value.
 
 # 3.0.6
 ## Updated
