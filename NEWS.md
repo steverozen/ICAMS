@@ -1,6 +1,6 @@
 # 3.0.11
 ## Updated
-* Minor changes to tests
+* Minor changes to tests.
 
 # 3.0.10
 ## Updated
