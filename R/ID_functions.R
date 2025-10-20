@@ -14,7 +14,7 @@
 #' the input \code{rep.unit.seq} in the count.
 #'
 #' @details
-#' 
+#'
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.
 #'
@@ -28,12 +28,12 @@
 #' If this functions returns 0, then it is necessary to
 #'   look for microhomology using the function
 #'   \code{\link{FindDelMH}}.
-#'   
+#'
 #' \strong{Warning}\cr
-#' This function depends on the variant caller having 
+#' This function depends on the variant caller having
 #' "aligned" the deletion within the context of the
 #' repeat.
-#' 
+#'
 #' For example, a deletion of \code{CAG} in the repeat
 #' \preformatted{
 #' GTCAGCAGCATGT
@@ -47,19 +47,19 @@
 #' In these cases this function will return 2. (Please
 #' not that the return value does not include the
 #' \code{rep.uni.seq} in the count.)
-#' 
+#'
 #' However, the same deletion can also have an "unaligned" representation, such as
 #'  \preformatted{
 #' CTCAGC---AGGT
 #' }
 #' (a deletion of \code{AGC}).
-#' 
+#'
 #' In this case this function will return 1 (a deletion of \code{AGC}
 #' in a 2-element repeat of \code{AGC}).
-#' 
+#'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
-#' 
-#' @examples 
+#'
+#' @examples
 #' FindMaxRepeatDel("xyACACzt", "AC", 3) # 1
 #' FindMaxRepeatDel("xyACACzt", "CA", 4) # 0
 #'
@@ -75,7 +75,9 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
     if (substr(context, i, i + n - 1) == rep.unit.seq) {
       left.count <- left.count + 1
       i <- i - n
-    } else break
+    } else {
+      break
+    }
   }
 
   # Look right
@@ -86,7 +88,9 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
     if (substr(context, i, i + n - 1) == rep.unit.seq) {
       right.count <- right.count + 1
       i <- i + n
-    } else break
+    } else {
+      break
+    }
   }
 
   # IMPORTANT - in the catalog version of the the mutation class we exclude the
@@ -151,7 +155,7 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #' GGCTAG------TT GGCTAGTT GGCTAG[AACTAG]TT
 #'                           ****   ****
 #' }
-#' 
+#'
 #' This function finds:
 #'
 #' \enumerate{
@@ -201,112 +205,130 @@ FindMaxRepeatDel <- function(context, rep.unit.seq, pos) {
 #'
 #' @param pos The position of \code{del.sequence} in \code{context}.
 #'
-#' @param trace If > 0, then generate various 
+#' @param trace If > 0, then generate various
 #' messages showing how the computation is carried out.
-#' 
+#'
 #' @param warn.cryptic if \code{TRUE} generating a warning
 #'  if there is a cryptic repeat (see the example).
-#' 
+#'
 #' @return The length of the maximum microhomology of \code{del.sequence}
 #'   in \code{context}.
-#'   
+#'
 #' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' # GAGAGG[CTAGAA]CTAGTT
 #' #        ----   ----
 #' FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
-#' 
+#'
 #' # A cryptic repeat
-#' # 
+#' #
 #' # TAAATTATTTATTAATTTATTG
 #' # TAAATTA----TTAATTTATTG = TAAATTATTAATTTATTG
-#' # 
+#' #
 #' # equivalent to
 #' #
 #' # TAAATTATTTATTAATTTATTG
-#' # TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG 
-#' # 
+#' # TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG
+#' #
 #' # and
 #' #
 #' # TAAATTATTTATTAATTTATTG
-#' # TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG  
-#' 
+#' # TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG
+#'
 #' FindDelMH("TAAATTATTTATTAATTTATTG", "TTTA", 8, warn.cryptic = FALSE) # -1
 
-FindDelMH <- 
+FindDelMH <-
   function(context, deleted.seq, pos, trace = 0, warn.cryptic = TRUE) {
-  n <- nchar(deleted.seq)
+    n <- nchar(deleted.seq)
 
-  if (substr(context, pos, pos + n - 1) != deleted.seq) {
-    stop("substr(context, pos, pos + n - 1) != deleted.seq\n",
-         substr(context, pos, pos + n - 1), " ", deleted.seq, "\n")
-  }
-  # The context on the left has to be longer then deleted.seq
-  stopifnot((pos - 1) > n)
-  # The context on the right as to be longer than deleted.seq
-  stopifnot(nchar(context) - (pos + n - 1) > n)
-
-  ds <- unlist(strsplit(deleted.seq, ""))
-
-  # Look for microhomology to the left in context.
-  left.context <- substr(context, pos - n, pos - 1)
-  left <- unlist(strsplit(x = left.context, ""))
-  for (i in n:1) {
-    if (ds[i] != left[i]) break
-    if (i == 1) {
-      stop("There is a repeated ", deleted.seq,
-           " to the left of the deleted ",
-           deleted.seq)
+    if (substr(context, pos, pos + n - 1) != deleted.seq) {
+      stop(
+        "substr(context, pos, pos + n - 1) != deleted.seq\n",
+        substr(context, pos, pos + n - 1),
+        " ",
+        deleted.seq,
+        "\n"
+      )
     }
-  }
-  left.len <- n - i
-  if (trace > 0 ) {
-    message("Left break", i, "\nleft.len =", left.len, "\n")
-  }
+    # The context on the left has to be longer then deleted.seq
+    stopifnot((pos - 1) > n)
+    # The context on the right as to be longer than deleted.seq
+    stopifnot(nchar(context) - (pos + n - 1) > n)
 
-  # Look for microhomology to the right in context.
-  right.context <- substr(context, pos + n, (pos + 2 * n) - 1)
-  right <- unlist(strsplit(x = right.context, ""))
-  for (i2 in 1:n) {
-    if (ds[i2] != right[i2]) break
-    if (i2 == n) {
-      stop("There is a repeated ", deleted.seq,
-           " to the right of the deleted ",
-           deleted.seq)
+    ds <- unlist(strsplit(deleted.seq, ""))
+
+    # Look for microhomology to the left in context.
+    left.context <- substr(context, pos - n, pos - 1)
+    left <- unlist(strsplit(x = left.context, ""))
+    for (i in n:1) {
+      if (ds[i] != left[i]) {
+        break
+      }
+      if (i == 1) {
+        stop(
+          "There is a repeated ",
+          deleted.seq,
+          " to the left of the deleted ",
+          deleted.seq
+        )
+      }
     }
-  }
-  right.len <- i2 - 1
-  if (trace > 0) {
-    message("Right break", i2, "\nright.len =", right.len, "\n")
-    message(paste0(left.context, "[",
-               deleted.seq, "]",
-               right.context, "\n"))
-    # Print out strings of ** and -- to indicated the sequences involved in the
-    # microhomology; left.context and right.context are the same length as
-    # deleted.seq
-    message(
-      paste(c(
-      rep(" ", n - left.len),
-      rep("*", left.len),
-      " ",
-      rep("-", right.len),
-      rep(" ", n - (left.len + right.len)),
-      rep("*", left.len),
-      " ",
-      rep("-", right.len),
-      "\n"
-    ), collapse = ""))
+    left.len <- n - i
+    if (trace > 0) {
+      message("Left break", i, "\nleft.len =", left.len, "\n")
+    }
 
+    # Look for microhomology to the right in context.
+    right.context <- substr(context, pos + n, (pos + 2 * n) - 1)
+    right <- unlist(strsplit(x = right.context, ""))
+    for (i2 in 1:n) {
+      if (ds[i2] != right[i2]) {
+        break
+      }
+      if (i2 == n) {
+        stop(
+          "There is a repeated ",
+          deleted.seq,
+          " to the right of the deleted ",
+          deleted.seq
+        )
+      }
+    }
+    right.len <- i2 - 1
+    if (trace > 0) {
+      message("Right break", i2, "\nright.len =", right.len, "\n")
+      message(paste0(left.context, "[", deleted.seq, "]", right.context, "\n"))
+      # Print out strings of ** and -- to indicated the sequences involved in the
+      # microhomology; left.context and right.context are the same length as
+      # deleted.seq
+      message(
+        paste(
+          c(
+            rep(" ", n - left.len),
+            rep("*", left.len),
+            " ",
+            rep("-", right.len),
+            rep(" ", n - (left.len + right.len)),
+            rep("*", left.len),
+            " ",
+            rep("-", right.len),
+            "\n"
+          ),
+          collapse = ""
+        )
+      )
+    }
+    if (left.len + right.len >= n) {
+      if (warn.cryptic) {
+        warning("There is unhandled cryptic repeat, returning -1")
+      }
+      return(-1)
+    }
+    return(left.len + right.len)
   }
-  if (left.len + right.len >= n) {
-    if (warn.cryptic) warning("There is unhandled cryptic repeat, returning -1")
-    return(-1)
-  }
-  return(left.len + right.len)
-}
 
 #' @title Return the number of repeat units in which an insertion
 #' is embedded.
@@ -351,7 +373,7 @@ FindDelMH <-
 #' return 4
 #' }
 #'
-#' If 
+#' If
 #' \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq},
 #' then stop.
 #'
@@ -359,14 +381,16 @@ FindDelMH <-
 FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   n <- nchar(rep.unit.seq)
 
-  # If rep.unit.seq is in context adjacent to pos, it might start at 
+  # If rep.unit.seq is in context adjacent to pos, it might start at
   # pos + 1 - len(rep.unit.seq), so look left
   left.count <- 0
   p <- pos + 1 - n
   while (p > 0) {
     if (substring(context, p, p + n - 1) == rep.unit.seq) {
       left.count <- left.count + 1
-    } else break
+    } else {
+      break
+    }
     p <- p - n
   }
 
@@ -378,7 +402,9 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
   while ((p + n - 1) <= tot.len) {
     if (substr(context, p, p + n - 1) == rep.unit.seq) {
       right.count <- right.count + 1
-    } else break
+    } else {
+      break
+    }
     p <- p + n
   }
 
@@ -387,20 +413,20 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 
 
 #' Given a deletion and its sequence context, categorize it
-#' 
+#'
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.
-#' 
+#'
 #' See \url{https://github.com/steverozen/ICAMS/blob/v3.0.9-branch/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 #' for additional information on deletion mutation classification.
-#' 
+#'
 #' This function first handles deletions in homopolymers, then
 #' handles deletions in simple repeats with
 #' longer repeat units, (e.g. \code{CACACACA}, see
 #' \code{\link{FindMaxRepeatDel}}),
 #' and if the deletion is not in a simple repeat,
 #' looks for microhomology (see \code{\link{FindDelMH}}).
-#' 
+#'
 #' See the code for unexported function \code{\link{CanonicalizeID}}
 #' and the functions it calls for handling of insertions.
 #'
@@ -415,14 +441,14 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' how the computation is carried out.
 #
 #' @return A string that is the canonical representation
-#'  of the given deletion type. Return \code{NA} 
+#'  of the given deletion type. Return \code{NA}
 #'  and raise a warning if
 #'  there is an un-normalized representation of
 #'  the deletion of a repeat unit.
 #'  See \code{FindDelMH} for details.
 #'  (This seems to be very rare.)
 #'
-#' @examples 
+#' @examples
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 3) # "DEL:T:1:2"
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 4) # "DEL:T:1:2"
 #' Canonicalize1Del("xyAqr", del.seq = "A", pos = 3)   # "DEL:T:1:0"
@@ -435,29 +461,39 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
 
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
   deletion.size <- nchar(del.seq)
-  deletion.size.string <- 
+  deletion.size.string <-
     ifelse(deletion.size >= 5, "5+", as.character(deletion.size))
 
   # Category is "1bp deletion"
   if (deletion.size == 1) {
-    if (del.seq == "G") del.seq <- "C"
-    if (del.seq == "A") del.seq <- "T"
+    if (del.seq == "G") {
+      del.seq <- "C"
+    }
+    if (del.seq == "A") {
+      del.seq <- "T"
+    }
     return(paste0("DEL:", del.seq, ":1:", rep.count.string))
   }
 
   # Category is ">2bp deletion"
   if (rep.count > 0) {
     return(
-      paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string))
+      paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string)
+    )
   }
 
   # We have to look for microhomology
   microhomology.len <- FindDelMH(context, del.seq, pos, trace = trace)
   if (microhomology.len == -1) {
-    warning("Non-normalized deleted repeat ignored:",
-            "\ncontext: ", context,
-            "\ndeleted sequence: ", del.seq,
-            "\nposition of deleted sequence: ", pos)
+    warning(
+      "Non-normalized deleted repeat ignored:",
+      "\ncontext: ",
+      context,
+      "\ndeleted sequence: ",
+      del.seq,
+      "\nposition of deleted sequence: ",
+      pos
+    )
     return(NA)
   }
 
@@ -471,7 +507,11 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
     ifelse(microhomology.len >= 5, "5+", as.character(microhomology.len))
 
   return(paste0(
-    "DEL:MH:", deletion.size.string, ":", microhomology.len.str))
+    "DEL:MH:",
+    deletion.size.string,
+    ":",
+    microhomology.len.str
+  ))
 }
 
 #' @title Given an insertion and its sequence context, categorize it.
@@ -486,13 +526,13 @@ Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
 #' @param trace If > 0, then generate
 #' messages tracing how the computation is carried out.
 #
-#' @return A string that is the canonical representation of 
+#' @return A string that is the canonical representation of
 #' the given insertion type.
 #'
 #' @keywords internal
 Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
   if (trace > 0) {
-   message("Canonicalize1ID(", context, ",", ins.sequence, ",", pos, "\n")
+    message("Canonicalize1INS(", context, ",", ins.sequence, ",", pos, "\n")
   }
   rep.count <- FindMaxRepeatIns(context, ins.sequence, pos)
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
@@ -501,16 +541,24 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
     ifelse(insertion.size >= 5, "5+", as.character(insertion.size))
 
   if (insertion.size == 1) {
-    if (ins.sequence == "G") ins.sequence <- "C"
-    if (ins.sequence == "A") ins.sequence <- "T"
+    if (ins.sequence == "G") {
+      ins.sequence <- "C"
+    }
+    if (ins.sequence == "A") {
+      ins.sequence <- "T"
+    }
     retval <-
       paste0("INS:", ins.sequence, ":1:", rep.count.string)
-    if (trace > 0) message(retval)
+    if (trace > 0) {
+      message(retval)
+    }
     return(retval)
   }
   retval <-
     paste0("INS:repeats:", insertion.size.string, ":", rep.count.string)
-  if (trace > 0) message(retval)
+  if (trace > 0) {
+    message(retval)
+  }
   return(retval)
 }
 
@@ -531,7 +579,7 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
 #' @return A string that is the canonical representation
 #'  of the type of the given
 #'  insertion or deletion.
-#'  Return \code{NA} 
+#'  Return \code{NA}
 #'  and raise a warning if
 #'  there is an un-normalized representation of
 #'  the deletion of a repeat unit.
@@ -559,12 +607,17 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #' @param context A vector of ample surrounding
 #'   sequence on each side the variants
 #'
-#' @param ref Vector of reference alleles
+#' @param ref Vector of reference alleles; this includes
+#' one un-altered base at the start of the reference allele
+#' e.g. for a deletion of a single T this might be "AT", in
+#' which case the \code{alt} allele woult be "A"
 #'
-#' @param alt Vector of alternative alleles
+#' @param alt Vector of alternative alleles.
 #'
 #' @param pos Vector of the positions of the insertions and deletions in
-#'  \code{context}.
+#'  \code{context}. This is the position of the unaltered allele shared
+#' by \code{ref} and \code{alt}. So in 1-based indexing, it is the
+#' position just before the insertion or the deletion.
 #'
 #' @return A vector of strings that are the canonical representations
 #'  of the given insertions and deletions.
@@ -573,7 +626,6 @@ Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @keywords internal
 CanonicalizeID <- function(context, ref, alt, pos) {
-
   if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
     ref <- substr(ref, 2, nchar(ref))
     alt <- substr(alt, 2, nchar(alt))
@@ -581,7 +633,7 @@ CanonicalizeID <- function(context, ref, alt, pos) {
     stopifnot(ref != "" | alt != "")
   }
 
-  ret <- mapply(Canonicalize1ID, context, ref, alt, pos, 0)
+  ret <- mapply(xCanonicalize1ID, context, ref, alt, pos + 1, 0)
   return(ret)
 }
 
@@ -589,41 +641,56 @@ CanonicalizeID <- function(context, ref, alt, pos) {
 #'
 #' @param annotated.vcf An annotated ID VCF with additional column
 #'   \code{ID.class} showing ID classification for each variant.
-#'   
+#'
 #' @param discarded.variants A \code{data.frame} which contains rows of ID
 #'   variants which are excluded in the analysis.
-#'   
+#'
 #' @param ID.mat The ID mutation count matrix.
-#' 
+#'
 #' @param ID166.mat The ID166 mutation count matrix.
-#' 
+#'
 #' @param return.annotated.vcf Whether to return \code{annotated.vcf}. Default is
 #'   FALSE.
 #'
 #' @inheritSection CreateOneColIDMatrix Value
-#' 
+#'
 #' @keywords internal
-CheckAndReturnIDMatrix <- 
-  function(annotated.vcf, discarded.variants, ID.mat, ID166.mat,
-           return.annotated.vcf = FALSE) {
+CheckAndReturnIDMatrix <-
+  function(
+    annotated.vcf,
+    discarded.variants,
+    ID.mat,
+    ID166.mat,
+    return.annotated.vcf = FALSE
+  ) {
     if (nrow(discarded.variants) == 0) {
       if (return.annotated.vcf == FALSE) {
         return(list(catalog = ID.mat, catID166 = ID166.mat))
       } else {
-        return(list(catalog = ID.mat, catID166 = ID166.mat, annotated.vcf = annotated.vcf))
+        return(list(
+          catalog = ID.mat,
+          catID166 = ID166.mat,
+          annotated.vcf = annotated.vcf
+        ))
       }
     } else {
       if (return.annotated.vcf == FALSE) {
-        return(list(catalog = ID.mat, catID166 = ID166.mat,
-                    discarded.variants = discarded.variants))
+        return(list(
+          catalog = ID.mat,
+          catID166 = ID166.mat,
+          discarded.variants = discarded.variants
+        ))
       } else {
-        return(list(catalog = ID.mat, catID166 = ID166.mat,
-                    discarded.variants = discarded.variants,
-                    annotated.vcf = annotated.vcf))
+        return(list(
+          catalog = ID.mat,
+          catID166 = ID166.mat,
+          discarded.variants = discarded.variants,
+          annotated.vcf = annotated.vcf
+        ))
       }
     }
   }
-  
+
 #' @title Create one column of the matrix for an indel catalog from *one* in-memory VCF.
 #'
 #' @param ID.vcf An in-memory VCF as a data.frame annotated by the
@@ -639,101 +706,131 @@ CheckAndReturnIDMatrix <-
 #'   included in the indel VCFs.
 #'
 #' @param SBS.vcf This argument defaults to \code{NULL} and
-#'   is not used. Ideally this should be an in-memory SBS VCF 
+#'   is not used. Ideally this should be an in-memory SBS VCF
 #'   as a data frame. The rational is that for some data,
 #'   complex indels might be represented as an indel with adjoining
-#'   SBSs. 
-#'   
+#'   SBSs.
+#'
 #' @param sample.id Usually the sample id, but defaults to "count".
 #'
 #' @section Value: A list of two 1-column ID matrices containing the mutation catalog
 #'   information and the annotated VCF with ID categories information added. If
 #'   some ID variants were excluded in the analysis, an additional element
 #'   \code{discarded.variants} will appear in the return list.
-#'   
+#'
 #' @keywords internal
-CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
-                                 return.annotated.vcf = FALSE) {
-  
+CreateOneColIDMatrix <- function(
+  ID.vcf,
+  SBS.vcf = NULL,
+  sample.id = "count",
+  return.annotated.vcf = FALSE
+) {
   CheckForEmptyIDVCF <- function(ID.vcf, return.annotated.vcf) {
     if (nrow(ID.vcf) == 0) {
       # Create 1-column matrix with all values being 0 and the correct row labels.
-      catID <- matrix(0, nrow = length(ICAMS::catalog.row.order$ID), ncol = 1,
-                      dimnames = list(ICAMS::catalog.row.order$ID, sample.id))
-      catID166 <- 
-        matrix(0, nrow = length(ICAMS::catalog.row.order$ID166), ncol = 1,
-               dimnames = list(ICAMS::catalog.row.order$ID166, sample.id))
+      catID <- matrix(
+        0,
+        nrow = length(ICAMS::catalog.row.order$ID),
+        ncol = 1,
+        dimnames = list(ICAMS::catalog.row.order$ID, sample.id)
+      )
+      catID166 <-
+        matrix(
+          0,
+          nrow = length(ICAMS::catalog.row.order$ID166),
+          ncol = 1,
+          dimnames = list(ICAMS::catalog.row.order$ID166, sample.id)
+        )
       if (return.annotated.vcf == FALSE) {
         return(list(catalog = catID, catID166 = catID166))
       } else {
-        return(list(catalog = catID, catID166 = catID166, 
-                    annotated.vcf = ID.vcf))
+        return(list(
+          catalog = catID,
+          catID166 = catID166,
+          annotated.vcf = ID.vcf
+        ))
       }
     } else {
       return(FALSE)
     }
   }
-  
-  ret1 <- CheckForEmptyIDVCF(ID.vcf = ID.vcf, 
-                             return.annotated.vcf = return.annotated.vcf)
+
+  ret1 <- CheckForEmptyIDVCF(
+    ID.vcf = ID.vcf,
+    return.annotated.vcf = return.annotated.vcf
+  )
   if (!is.logical(ret1)) {
     return(ret1)
   }
-  
+
   # Create an empty data frame for discarded variants
   discarded.variants <- ID.vcf[0, ]
-  
-  if (!is.null(SBS.vcf)) 
-    warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
 
-  canon.ID <- CanonicalizeID(ID.vcf$seq.context,
-                             ID.vcf$REF,
-                             ID.vcf$ALT,
-                             ID.vcf$seq.context.width + 1)
-  
+  if (!is.null(SBS.vcf)) {
+    warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
+  }
+
+  canon.ID <- CanonicalizeID(
+    ID.vcf$seq.context,
+    ID.vcf$REF,
+    ID.vcf$ALT,
+    ID.vcf$seq.context.width + 1
+  )
+
   out.ID.vcf <- cbind(ID.vcf, ID.class = canon.ID)
-  
+
   idx <- which(is.na(out.ID.vcf$ID.class))
   if (length(idx) > 0) {
-    warning("Variants with NA ID.class are discarded, see element ",
-            "discarded.variants in the return value for more details")
+    warning(
+      "Variants with NA ID.class are discarded, see element ",
+      "discarded.variants in the return value for more details"
+    )
     out.ID.vcf.to.remove <- out.ID.vcf[idx, ]
-    out.ID.vcf.to.remove$discarded.reason <- 
-      paste0("ID variant has an un-normalized representation of the deletion ",
-             "of a repeat unit. See ICAMS::Canonicalize1Del for more details")
-    discarded.variants <- 
+    out.ID.vcf.to.remove$discarded.reason <-
+      paste0(
+        "ID variant has an un-normalized representation of the deletion ",
+        "of a repeat unit. See ICAMS::Canonicalize1Del for more details"
+      )
+    discarded.variants <-
       dplyr::bind_rows(discarded.variants, out.ID.vcf.to.remove)
     out.ID.vcf <- out.ID.vcf[-idx, ]
   }
-  
+
   idx1 <- which(!out.ID.vcf$ID.class %in% ICAMS::catalog.row.order$ID)
   if (length(idx1) > 0) {
-    warning("ID variants which cannot be categorized according to the ",
-            "canonical representation are discarded, see element ",
-            "discarded.variants in the return value for more details")
+    warning(
+      "ID variants which cannot be categorized according to the ",
+      "canonical representation are discarded, see element ",
+      "discarded.variants in the return value for more details"
+    )
     out.ID.vcf.to.remove <- out.ID.vcf[idx1, ]
-    out.ID.vcf.to.remove$discarded.reason <- 
-      paste0("ID variant cannot be categorized according to the canonical ", 
-             "representation. See ICAMS::catalog.row.order$ID for more details")
-    discarded.variants <- 
+    out.ID.vcf.to.remove$discarded.reason <-
+      paste0(
+        "ID variant cannot be categorized according to the canonical ",
+        "representation. See ICAMS::catalog.row.order$ID for more details"
+      )
+    discarded.variants <-
       dplyr::bind_rows(discarded.variants, out.ID.vcf.to.remove)
     out.ID.vcf <- out.ID.vcf[-idx1, ]
   }
-  
-  ret2 <- CheckForEmptyIDVCF(ID.vcf = out.ID.vcf, 
-                             return.annotated.vcf = return.annotated.vcf)
+
+  ret2 <- CheckForEmptyIDVCF(
+    ID.vcf = out.ID.vcf,
+    return.annotated.vcf = return.annotated.vcf
+  )
   if (!is.logical(ret2)) {
     return(ret2)
   }
-  
+
   # Create the ID catalog matrix (83 rows)
-  
+
   # One ID mutation can be represented by more than 1 row in out.ID.vcf if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # ID83 catalog, we only need to count these mutations once.
-  tmp <- out.ID.vcf %>% dplyr::group_by(CHROM, POS) %>%
+  tmp <- out.ID.vcf %>%
+    dplyr::group_by(CHROM, POS) %>%
     dplyr::summarise(REF = REF[1], ALT = ALT[1], ID.class = ID.class[1])
-  
+
   ID.class <- tmp$ID.class
   tab.ID <- table(ID.class)
 
@@ -745,60 +842,75 @@ CreateOneColIDMatrix <- function(ID.vcf, SBS.vcf = NULL, sample.id = "count",
 
   ID.dt2 <-
     merge(row.order, ID.dt, by.x = "rn", by.y = "ID.class", all.x = TRUE)
-  ID.dt2[ is.na(N) , N := 0]
+  ID.dt2[is.na(N), N := 0]
   if (!setequal(unlist(ID.dt2$rn), ICAMS::catalog.row.order$ID)) {
-    stop("\nThe set of ID categories generated from sample ", sample.id,
-         " is not the same as the catalog row order for ID used in ICAMS.",
-         "\nSee catalog.row.order$ID for more details.")
+    stop(
+      "\nThe set of ID categories generated from sample ",
+      sample.id,
+      " is not the same as the catalog row order for ID used in ICAMS.",
+      "\nSee catalog.row.order$ID for more details."
+    )
   }
 
-  ID.mat <- as.matrix(ID.dt2[ , 2])
+  ID.mat <- as.matrix(ID.dt2[, 2])
   rownames(ID.mat) <- ID.dt2$rn
   colnames(ID.mat) <- sample.id
   ID.mat <- ID.mat[ICAMS::catalog.row.order$ID, , drop = FALSE]
-  
+
   # Create the ID166 catalog matrix (genic-intergenic indel catalog, 166 rows)
-  
+
   # Add a column showing which DNA region a mutation falls into
   # "G" stands for genic region, "I" stands for intergenic region
-  out.ID.vcf2 <- out.ID.vcf %>% 
+  out.ID.vcf2 <- out.ID.vcf %>%
     dplyr::mutate(dna.region = ifelse(trans.strand %in% c("+", "-"), "G", "I"))
-  
-  out.ID.vcf3 <- out.ID.vcf2 %>% 
+
+  out.ID.vcf3 <- out.ID.vcf2 %>%
     dplyr::mutate(ID166.class = paste0(dna.region, ":", ID.class))
-  
+
   # One ID mutation can be represented by more than 1 row in out.ID.vcf3 if the mutation
   # position falls into the range of multiple transcripts. When creating the
   # ID166 catalog, we only need to count these mutations once.
-  out.ID.vcf4 <- out.ID.vcf3 %>% dplyr::group_by(CHROM, POS) %>%
+  out.ID.vcf4 <- out.ID.vcf3 %>%
+    dplyr::group_by(CHROM, POS) %>%
     dplyr::summarise(REF = REF[1], ALT = ALT[1], ID166.class = ID166.class[1])
-  
+
   ID166.class <- out.ID.vcf4$ID166.class
   tab.ID166 <- table(ID166.class)
-  
+
   row.order.ID166 <- data.table(rn = ICAMS::catalog.row.order$ID166)
-  
+
   ID166.dt <- as.data.table(tab.ID166)
   # ID.dt has two columns, names ID166.class (from the table() function)
   # and N (the count)
-  
+
   ID166.dt2 <-
-    merge(row.order.ID166, ID166.dt, by.x = "rn", by.y = "ID166.class", all.x = TRUE)
-  ID166.dt2[ is.na(N) , N := 0]
+    merge(
+      row.order.ID166,
+      ID166.dt,
+      by.x = "rn",
+      by.y = "ID166.class",
+      all.x = TRUE
+    )
+  ID166.dt2[is.na(N), N := 0]
   if (!setequal(unlist(ID166.dt2$rn), ICAMS::catalog.row.order$ID166)) {
-    stop("\nThe set of ID166 categories generated from sample ", sample.id,
-         " is not the same as the catalog row order for ID166 used in ICAMS.",
-         "\nSee catalog.row.order$ID166 for more details.")
+    stop(
+      "\nThe set of ID166 categories generated from sample ",
+      sample.id,
+      " is not the same as the catalog row order for ID166 used in ICAMS.",
+      "\nSee catalog.row.order$ID166 for more details."
+    )
   }
-  
-  ID166.mat <- as.matrix(ID166.dt2[ , 2])
+
+  ID166.mat <- as.matrix(ID166.dt2[, 2])
   rownames(ID166.mat) <- ID166.dt2$rn
   colnames(ID166.mat) <- sample.id
   ID166.mat <- ID166.mat[ICAMS::catalog.row.order$ID166, , drop = FALSE]
-  
-  CheckAndReturnIDMatrix(annotated.vcf = out.ID.vcf3, 
-                         discarded.variants = discarded.variants, 
-                         ID.mat = ID.mat, ID166.mat = ID166.mat, 
-                         return.annotated.vcf = return.annotated.vcf)
-                         
+
+  CheckAndReturnIDMatrix(
+    annotated.vcf = out.ID.vcf3,
+    discarded.variants = discarded.variants,
+    ID.mat = ID.mat,
+    ID166.mat = ID166.mat,
+    return.annotated.vcf = return.annotated.vcf
+  )
 }

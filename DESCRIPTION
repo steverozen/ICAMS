@@ -70,4 +70,5 @@ Suggests:
     ggplot2,
     reshape2,
     rlang,
-    testthat  
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
