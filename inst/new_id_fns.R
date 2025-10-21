@@ -248,4 +248,34 @@ categorize_del <- function(context, del.seq, pos, trace = 0) {
       paste0("DEL:repeats:", deletion.size.string, ":", rep.count.string)
     )
   }
+
+  # We have to look for microhomology
+  microhomology.len <- FindDelMH(context, del.seq, pos, trace = trace)
+  if (microhomology.len == -1) {
+    warning(
+      "Non-normalized deleted repeat ignored:",
+      "\ncontext: ",
+      context,
+      "\ndeleted sequence: ",
+      del.seq,
+      "\nposition of deleted sequence: ",
+      pos
+    )
+    return(NA)
+  }
+  if (microhomology.len == 0) {
+    stopifnot(rep.count.string == 0)
+    # Categorize and return non-repeat, non-microhomology deletion
+    return(paste0("DEL:repeats:", deletion.size.string, ":0"))
+  }
+
+  microhomology.len.str <-
+    ifelse(microhomology.len >= 5, "5+", as.character(microhomology.len))
+
+  return(paste0(
+    "DEL:MH:",
+    deletion.size.string,
+    ":",
+    microhomology.len.str
+  ))
 }
