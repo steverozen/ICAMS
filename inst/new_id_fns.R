@@ -135,7 +135,7 @@ xCanonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
     # An insertion
 
     tmp_short = context
-    tmp_long = stri_sub_replace(
+    tmp_long = stringi::stri_sub_replace(
       tmp_short,
       pos,
       pos - 1, # pos was just _after_ the site of the insertion
