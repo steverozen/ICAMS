@@ -1,3 +1,5 @@
+# To test the code in this file try test_VCFsToCatalogs.R
+
 # Take the view that there is a deletion in long_str
 # at pos that creates short_str.
 #
@@ -6,11 +8,11 @@
 # make an insertion to get long_str.
 #
 # Move pos as far to left as possible so that a deletion
-# at that position still results in and edit of long_str
+# at that position still results in an edit of long_str
 # to short_str
 #
 # This can also be interpreted an inserion in short_str
-# immediately in front of pos generating long_str
+# immediately in front of pos that generates long_str
 
 justify_indel = function(long_str, short_str, pos, expected_delta = NULL) {
   library(stringi)
@@ -75,7 +77,6 @@ if (FALSE) {
   justify_indel("xycagcagcagcaguv", "xycagcagcaguv", 9)
 }
 
-
 #' @title Given a single insertion or deletion in context categorize it.
 #'
 #' @param context Ample surrounding
@@ -120,7 +121,6 @@ xCanonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
       replacement = ""
     )
     tmp = justify_indel(tmp_long, tmp_short, pos, ref)
-    # browser()
     new_ret = ICAMS:::Canonicalize1Del(context, tmp$del_str, tmp$leftmost_pos)
     new_ret2 = categorize_del(context, tmp$del_str, tmp$leftmost_pos)
 
@@ -129,6 +129,10 @@ xCanonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
     if (is.na(prev_ret) || is.na(new_ret) || prev_ret != new_ret) {
       message("\n\nDELETION difference:")
       message(prev_ret, " vs ", new_ret, " ref = ", ref)
+    }
+    if (is.na(prev_ret) || is.na(new_ret2) || prev_ret != new_ret2) {
+      message("\n\nDELETION difference:")
+      message(prev_ret, " vs ", new_ret2, " ref = ", ref)
     }
     return(prev_ret)
   } else if (nchar(alt) > nchar(ref)) {
@@ -205,41 +209,54 @@ xCanonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
 #'
 #' @export
 
-categorize_del <- function(context, del.seq, pos, trace = 0) {
+categorize_del <- function(context, del_seq, pos, trace = 0, regress = TRUE) {
+  # Pos is the 1-based position of the first base that was deleted
   # is it 1 bp deletion?
-  if (nchar(del.seq) == 1) {
-    browser()
+  if (nchar(del_seq) == 1) {
     stopifnot(pos >= 2)
-    regex = paste0("^.{", pos - 2, "}(.)(", del.seq, "+)([^", del.seq, "])")
+    regex = paste0("^.{", pos - 2, "}(.)(", del_seq, "+)([^", del_seq, "])")
     message("regex = ", regex)
     match = stringr::str_match(context, regex)[1, ]
     pre = match[2]
     rep_count = nchar(match[3])
     post = match[4]
-    if (del.seq %in% c("A", "G")) {
+    if (del_seq %in% c("A", "G")) {
       pre = ICAMS::revc(match[4])
-      # del.seq = ICAMS::revc(del.seq)
+      del_seq = ICAMS::revc(del_seq)
       post = ICAMS::revc(match[2])
+    }
+    if (regress) {
+      rep_count_string = ifelse(rep_count >= 6, "5+", rep_count - 1)
+      return(paste0("DEL:", del_seq, ":1:", rep_count_string))
+    } else {
+      return(list(
+        pre = pre,
+        del_seq = del_seq,
+        rep_count = rep_count,
+        post = post,
+        mh = NA
+      ))
     }
   }
 
   # Is the deletion involved in a repeat?
-  rep.count <- ICAMS::FindMaxRepeatDel(context, del.seq, pos)
+  rep.count <- ICAMS::FindMaxRepeatDel(context, del_seq, pos)
 
   rep.count.string <- ifelse(rep.count >= 5, "5+", as.character(rep.count))
-  deletion.size <- nchar(del.seq)
+  deletion.size <- nchar(del_seq)
   deletion.size.string <-
     ifelse(deletion.size >= 5, "5+", as.character(deletion.size))
 
   # Category is "1bp deletion"
   if (deletion.size == 1) {
-    if (del.seq == "G") {
-      del.seq <- "C"
+    stop("This should be dead code")
+    if (del_seq == "G") {
+      del_seq <- "C"
     }
-    if (del.seq == "A") {
-      del.seq <- "T"
+    if (del_seq == "A") {
+      del_seq <- "T"
     }
-    return(paste0("DEL:", del.seq, ":1:", rep.count.string))
+    return(paste0("DEL:", del_seq, ":1:", rep.count.string))
   }
 
   # Category is ">2bp deletion"
@@ -250,14 +267,14 @@ categorize_del <- function(context, del.seq, pos, trace = 0) {
   }
 
   # We have to look for microhomology
-  microhomology.len <- FindDelMH(context, del.seq, pos, trace = trace)
+  microhomology.len <- FindDelMH(context, del_seq, pos, trace = trace)
   if (microhomology.len == -1) {
     warning(
       "Non-normalized deleted repeat ignored:",
       "\ncontext: ",
       context,
       "\ndeleted sequence: ",
-      del.seq,
+      del_seq,
       "\nposition of deleted sequence: ",
       pos
     )
@@ -278,4 +295,48 @@ categorize_del <- function(context, del.seq, pos, trace = 0) {
     ":",
     microhomology.len.str
   ))
+}
+
+#' @title Determine the mutation types of insertions and deletions.
+#'
+#' @param context A vector of ample surrounding
+#'   sequence on each side the variants
+#'
+#' @param ref Vector of reference alleles; this includes
+#' one un-altered base at the start of the reference allele
+#' e.g. for a deletion of a single T this might be "AT", in
+#' which case the \code{alt} allele woult be "A"
+#'
+#' @param alt Vector of alternative alleles.
+#'
+#' @param pos Vector of the positions of the insertions and deletions in
+#'  \code{context}. This is the position of the unaltered allele shared
+#' by \code{ref} and \code{alt}. So in 1-based indexing, it is the
+#' position just before the insertion or the deletion.
+#'
+#' @return A data frame parallel to the input vectors. The
+#' data frame has the columns "COSMIC_82", ins_or_del, previous_char, repeat_seq, repeat_count, post_char, mh_seq
+#'
+#' @importFrom utils head
+#'
+#' @keywords internal
+categorize_indel_mutations <- function(vcf) {
+  context = vcf[, "seq.context"]
+  ref = vcf$REF
+  alt = vcf$ALT
+  pos = vcf[, "seq.context.width"] + 1
+  if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
+    ref <- substr(ref, 2, nchar(ref))
+    alt <- substr(alt, 2, nchar(alt))
+    pos = pos + 1
+    # + 1 because ref and alt shared the first, shared character,
+    # e.g. ref = "AG", alt = "A" deletion of G
+    # e.g. ref = "T", alt = "TCC" -- insertion of CC
+  } else {
+    stopifnot(ref != "" | alt != "")
+  }
+
+  ret <- mapply(xCanonicalize1ID, context, ref, alt, pos, 0)
+
+  return(ret)
 }
