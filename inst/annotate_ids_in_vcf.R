@@ -57,7 +57,8 @@ annotate_ids_in_vcf <-
     trans.ranges = NULL,
     flag.mismatches = 0,
     name.of.VCF = NULL,
-    suppress.discarded.variants.warnings = TRUE
+    suppress.discarded.variants.warnings = TRUE,
+    explain_indels = FALSE
   ) {
     if (nrow(ID.vcf) == 0) {
       return(list(annotated.vcf = ID.vcf))
@@ -194,12 +195,13 @@ annotate_ids_in_vcf <-
     } else {
       df5 <- df4
     }
-    # browser()
-    test = categorize_many_indels(df5)
+
+    test = categorize_many_indels(df5, explain_indels = explain_indels)
     test_df = data.table::rbindlist(test, fill = TRUE)
 
     # Later, do a cbind here
     df6 <- data.table::as.data.table(df5)
+    df6 = cbind(df6, test_df)
 
     if (nrow(discarded.variants) > 0) {
       if (suppress.discarded.variants.warnings == TRUE) {
