@@ -81,13 +81,31 @@ justify_and_categorize_1_indel = function(
       message(prev_ret, " vs ", new_ret, " ref = ", ref)
     }
 
+    if (explain_indels) {
+      message("\n\nExplanation =========== del of ", tmp$del_str, " =====")
+      message("before: ", context)
+      message(
+        "after:  ",
+        substr(context, 1, tmp$leftmost_pos - 1),
+        strrep("-", nchar(ref)),
+        substr(context, tmp$leftmost_pos + nchar(ref), nchar(context))
+      )
+    }
+
+    # TATCATTTTCCATCATTCTATTCAAGCTTTTCTTCTT------TGTTACAACATTTTTGGTATTACATGACTTCTCCTA ->
+    # ATCATTTTCCATCATTCTATTCAAGCTTTTCTTCTTTGTTACAACATTTTTGGTATTACATGACTTCTCCTA
+
+    # TATCATTTTCCATCATTCTATTCAAGCTTTTC------TTCTTTGTTACAACATTTTTGGTATTACATGACTTCTCCTA ->
+    # TATCATTTTCCATCATTCTATTCAAGCTTTTCTTCTTTGTTACAACATTTTTGGTATTACATGACTTCTCCTA
+    # repeat is TTCTTT TTCTTT
+
     new_ret2 = categorize_1_justified_indel(
       context = context,
       ins_or_del = "d",
       ins_or_del_seq = tmp$del_str,
       pos = tmp$leftmost_pos
     )
-    # browser()
+
     if (is.na(prev_ret) || prev_ret != new_ret2$COSMIC_83) {
       message("\n\nDELETION difference 2:")
       message("old = ", prev_ret)
