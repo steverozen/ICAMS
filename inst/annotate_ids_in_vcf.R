@@ -38,7 +38,7 @@ library(GenomicRanges)
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 #'   that were excluded from the analysis. See the added extra column
 #'   \code{discarded.reason} for more details.
-#' @md
+#' @mdca
 #'
 #' @export
 #'
@@ -194,7 +194,10 @@ annotate_ids_in_vcf <-
     } else {
       df5 <- df4
     }
-    test = categorize_indel_mutations(df5)
+    # browser()
+    test = categorize_many_indels(df5)
+    test_df = data.table::rbindlist(test, fill = TRUE)
+
     # Later, do a cbind here
     df6 <- data.table::as.data.table(df5)
 
