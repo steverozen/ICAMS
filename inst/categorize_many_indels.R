@@ -23,12 +23,12 @@
 #' @importFrom utils head
 #'
 #' @keywords internal
-categorize_many_indels <- function(vcf) {
+categorize_many_indels <- function(vcf, explain_indels = FALSE) {
   context = vcf$seq.context
   ref = vcf$REF
   alt = vcf$ALT
   pos = vcf$seq.context.width + 1
-  if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
+  if (FALSE && all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
     ref <- substr(ref, 2, nchar(ref))
     alt <- substr(alt, 2, nchar(alt))
     pos = pos + 1
@@ -39,7 +39,17 @@ categorize_many_indels <- function(vcf) {
     stopifnot(ref != "" | alt != "")
   }
 
-  ret <- mapply(xCanonicalize1ID, context, ref, alt, pos, 0, regress = FALSE)
+  ret <- mapply(
+    justify_and_categorize_1_indel,
+    context = context,
+    orig_ref = ref,
+    orig_alt = alt,
+    orig_pos = pos,
+    explain_indels = explain_indels,
+    regress = FALSE,
+    remove_common_prefix = TRUE,
+    SIMPLIFY = FALSE
+  )
 
   return(ret)
 }
