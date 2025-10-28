@@ -1,11 +1,11 @@
 gen_COSMIC_83_string = function(arglist) {
   if (arglist$ins_or_del == "d") {
     INS_OR_DEL = "DEL:"
-    rep_count = arglist$rep_count - 1
+    rep_count = arglist$unmutated_rep_count - 1
   } else {
     stopifnot(arglist$ins_or_del == "i")
     INS_OR_DEL = "INS:"
-    rep_count = arglist$rep_count
+    rep_count = arglist$unmutated_rep_count
   }
 
   rep_count_string = ifelse(rep_count >= 5, "5+", rep_count)
