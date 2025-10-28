@@ -12,12 +12,13 @@ source("gen_COSMIC_83_string.R")
 source("justify_indel.R")
 source("xCanonicalize1ID.R")
 source("categorize_1_justified_indel.R")
+source("justify_and_categorize_1_indel.R")
 avcf1 = annotate_ids_in_vcf(
   ivcf1,
   "hg19",
   trans.ranges = NULL,
   flag.mismatches = 0,
-  explain_indels = TRUE
+  explain_indels = FALSE
 )
 
 avcf1 = avcf1$annotated.vcf
