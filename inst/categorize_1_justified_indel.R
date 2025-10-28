@@ -82,21 +82,21 @@ categorize_1_justified_indel <- function(
   regex = paste0("^.{", pos - 2, "}(.)((", ins_or_del_seq, ")+)(.)(.*$)")
   mymatch = stringr::str_match(context, regex)[1, ]
   pre = mymatch[2]
-  rep_count = nchar(mymatch[3]) / nchar(ins_or_del_seq)
-  if (FALSE && rep_count > 1) {
+  unmutated_rep_count = nchar(mymatch[3]) / nchar(ins_or_del_seq)
+  if (FALSE && unmutated_rep_count > 1) {
     browser()
   }
-  stopifnot(rep_count == floor(rep_count))
+  stopifnot(unmutated_rep_count == floor(unmutated_rep_count))
   if (ins_or_del == "i") {
-    rep_count = rep_count - 1
-    # The context arg is the sequence after the insertion. We want rep_count to
+    unmutated_rep_count = unmutated_rep_count - 1
+    # The context arg is the sequence after the insertion. We want unmutated_rep_count to
     # reflect the repeat count prior to the mutation
   }
   post = mymatch[5]
   post_all = paste0(post, mymatch[6])
   if (verbose > 0) {
     message("regex = ", regex)
-    message("rep_count = ", rep_count)
+    message("unmutated_rep_count = ", unmutated_rep_count)
     message("after match")
     message("pre = ", pre)
     message("mymatch[4] (repeats) = ", mymatch[4])
@@ -110,7 +110,7 @@ categorize_1_justified_indel <- function(
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
       post = ICAMS::revc(mymatch[2]) # pre was already overwritten
     }
-  } else if (rep_count == 1) {
+  } else if (unmutated_rep_count == 1) {
     if (ins_or_del == "d") {
       # Check for micrhomology
       microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
@@ -124,7 +124,7 @@ categorize_1_justified_indel <- function(
     ins_or_del = ins_or_del,
     pre = pre,
     ins_or_del_seq = ins_or_del_seq,
-    rep_count = rep_count,
+    unmutated_rep_count = unmutated_rep_count,
     post = post,
     mh = mh
   )
