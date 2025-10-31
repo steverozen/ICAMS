@@ -18,7 +18,7 @@ sequence on each side (at least as long as \code{ins.sequence} * 6).}
 messages tracing how the computation is carried out.}
 }
 \value{
-A string that is the canonical representation of 
+A string that is the canonical representation of
 the given insertion type.
 }
 \description{

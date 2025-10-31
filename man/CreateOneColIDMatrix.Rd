@@ -25,7 +25,7 @@ CreateOneColIDMatrix(
   included in the indel VCFs.}
 
 \item{SBS.vcf}{This argument defaults to \code{NULL} and
-is not used. Ideally this should be an in-memory SBS VCF 
+is not used. Ideally this should be an in-memory SBS VCF
 as a data frame. The rational is that for some data,
 complex indels might be represented as an indel with adjoining
 SBSs.}

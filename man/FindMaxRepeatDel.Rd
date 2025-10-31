@@ -38,9 +38,9 @@ If
 If this functions returns 0, then it is necessary to
   look for microhomology using the function
   \code{\link{FindDelMH}}.
-  
+
 \strong{Warning}\cr
-This function depends on the variant caller having 
+This function depends on the variant caller having
 "aligned" the deletion within the context of the
 repeat.
 

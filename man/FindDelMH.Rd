@@ -14,7 +14,7 @@ sequence on each side (at least as long as \code{del.sequence}).}
 
 \item{pos}{The position of \code{del.sequence} in \code{context}.}
 
-\item{trace}{If > 0, then generate various 
+\item{trace}{If > 0, then generate various
 messages showing how the computation is carried out.}
 
 \item{warn.cryptic}{if \code{TRUE} generating a warning
@@ -146,19 +146,19 @@ and the functions it calls for handling of insertions.
 FindDelMH("GGAGAGGCTAGAACTAGTTAAAAA", "CTAGAA", 8, trace = 0)  # 4
 
 # A cryptic repeat
-# 
+#
 # TAAATTATTTATTAATTTATTG
 # TAAATTA----TTAATTTATTG = TAAATTATTAATTTATTG
-# 
+#
 # equivalent to
 #
 # TAAATTATTTATTAATTTATTG
-# TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG 
-# 
+# TAAAT----TATTAATTTATTG = TAAATTATTAATTTATTG
+#
 # and
 #
 # TAAATTATTTATTAATTTATTG
-# TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG  
+# TAAA----TTATTAATTTATTG = TAAATTATTAATTTATTG
 
 FindDelMH("TAAATTATTTATTAATTTATTG", "TTTA", 8, warn.cryptic = FALSE) # -1
 }
