@@ -113,9 +113,17 @@ categorize_1_justified_indel <- function(
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
       post = ICAMS::revc(mymatch[2]) # pre was already overwritten
     }
-  } else if (unmutated_rep_count == 1) {
-    if (ins_or_del == "d") {
+  } else if (ins_or_del == "d") {
+    if (unmutated_rep_count == 1) {
       # Check for micrhomology
+      microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
+      if (microhomology_len > 0) {
+        mh = microhomology_len
+      }
+    }
+  } else {
+    # Insertion
+    if (unmutated_rep_count == 0) {
       microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
       if (microhomology_len > 0) {
         mh = microhomology_len

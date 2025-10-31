@@ -63,7 +63,7 @@
       56:          d      C             TG                   2      T    NA
       57:          d      A              T                   2      G    NA
       58:          i      A              T                   3      G    NA
-      59:          i      C            TCT                   0      T    NA
+      59:          i      C            TCT                   0      T     1
       60:          d      A             GG                   1      T    NA
           ins_or_del    pre ins_or_del_seq unmutated_rep_count   post    mh
                  COSMIC_83    pev_COSMIC_83
