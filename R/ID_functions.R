@@ -562,81 +562,6 @@ Canonicalize1INS <- function(context, ins.sequence, pos, trace = 0) {
   return(retval)
 }
 
-#' @title Given a single insertion or deletion in context categorize it.
-#'
-#' @param context Ample surrounding
-#'   sequence on each side of the insertion or deletion.
-#'
-#' @param ref The reference allele (vector of length 1)
-#'
-#' @param alt The alternative allele (vector of length 1)
-#'
-#' @param pos The position of \code{ins.or.del.seq} in \code{context}.
-#'
-#' @param trace If > 0, then generate messages tracing
-#' how the computation is carried out.
-#
-#' @return A string that is the canonical representation
-#'  of the type of the given
-#'  insertion or deletion.
-#'  Return \code{NA}
-#'  and raise a warning if
-#'  there is an un-normalized representation of
-#'  the deletion of a repeat unit.
-#'  See \code{FindDelMH} for details.
-#'  (This seems to be very rare.)
-#'
-#' @keywords internal
-Canonicalize1ID <- function(context, ref, alt, pos, trace = 0) {
-  if (trace > 0) {
-    message("Canonicalize1ID(", context, ",", ref, ",", alt, ",", pos, "\n")
-  }
-  if (nchar(alt) < nchar(ref)) {
-    # A deletion
-    return(Canonicalize1Del(context, ref, pos + 1, trace))
-  } else if (nchar(alt) > nchar(ref)) {
-    # An insertion
-    return(Canonicalize1INS(context, alt, pos, trace))
-  } else {
-    stop("Non-insertion / non-deletion found: ", ref, " ", alt, " ", context)
-  }
-}
-
-#' @title Determine the mutation types of insertions and deletions.
-#'
-#' @param context A vector of ample surrounding
-#'   sequence on each side the variants
-#'
-#' @param ref Vector of reference alleles; this includes
-#' one un-altered base at the start of the reference allele
-#' e.g. for a deletion of a single T this might be "AT", in
-#' which case the \code{alt} allele woult be "A"
-#'
-#' @param alt Vector of alternative alleles.
-#'
-#' @param pos Vector of the positions of the insertions and deletions in
-#'  \code{context}. This is the position of the unaltered allele shared
-#' by \code{ref} and \code{alt}. So in 1-based indexing, it is the
-#' position just before the insertion or the deletion.
-#'
-#' @return A vector of strings that are the canonical representations
-#'  of the given insertions and deletions.
-#'
-#' @importFrom utils head
-#'
-#' @keywords internal
-CanonicalizeID <- function(context, ref, alt, pos) {
-  if (all(substr(ref, 1, 1) == substr(alt, 1, 1))) {
-    ref <- substr(ref, 2, nchar(ref))
-    alt <- substr(alt, 2, nchar(alt))
-  } else {
-    stopifnot(ref != "" | alt != "")
-  }
-
-  ret <- mapply(xCanonicalize1ID, context, ref, alt, pos + 1, 0)
-  return(ret)
-}
-
 #' Check and return the ID mutation matrix
 #'
 #' @param annotated.vcf An annotated ID VCF with additional column
@@ -770,14 +695,10 @@ CreateOneColIDMatrix <- function(
     warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
   }
 
-  canon.ID <- CanonicalizeID(
-    ID.vcf$seq.context,
-    ID.vcf$REF,
-    ID.vcf$ALT,
-    ID.vcf$seq.context.width + 1
-  )
+  id_info_list = categorize_many_indels(ID.vcf)
+  id_info_df = data.table::rbindlist(id_info_list, fill = TRUE)
 
-  out.ID.vcf <- cbind(ID.vcf, ID.class = canon.ID)
+  out.ID.vcf <- cbind(ID.vcf, ID.class = id_info_df$COSMIC_83)
 
   idx <- which(is.na(out.ID.vcf$ID.class))
   if (length(idx) > 0) {
