@@ -9,9 +9,7 @@ justify_and_categorize_1_indel(
   orig_ref,
   orig_alt,
   orig_pos,
-  explain_indels = FALSE,
-  regress = TRUE,
-  remove_common_prefix = FALSE
+  explain_indels = FALSE
 )
 }
 \arguments{
@@ -27,15 +25,6 @@ If this is an insertion, it is the positon after the position of the insertion o
 If this is a deletion, it is the position in context at which \code{ref} starts.}
 
 \item{explain_indels}{If TRUE then generate output explaining the processing}
-
-\item{regress}{If TRUE than compare COSMIC-83 classification to results from
-the previous ICAMS implementation}
-
-\item{remove_common_prefix}{Set this to TRUE if the orig_alt and orig_ref
-strings share the first character, as is common for most indel callers.
-E.g. a the deletion ATGC to ATC show the ref allele as TG and the
-mutated allele as T. T is the common prefix.
-#}
 }
 \value{
 A string that is the canonical representation

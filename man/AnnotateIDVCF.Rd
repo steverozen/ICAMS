@@ -9,33 +9,19 @@ genome}
 AnnotateIDVCF(
   ID.vcf,
   ref.genome,
-  trans.ranges = NULL,
   flag.mismatches = 0,
   name.of.VCF = NULL,
-  suppress.discarded.variants.warnings = TRUE
+  suppress.discarded.variants.warnings = TRUE,
+  explain_indels = FALSE
 )
 }
 \arguments{
 \item{ID.vcf}{An in-memory ID (insertion/deletion) VCF as a
 \code{data.frame}. This function expects that there is a "context base" to
 the left, for example REF = ACG, ALT = A (deletion of CG) or REF = A, ALT =
-ACC (insertion of CC).}
+ACC (insertion of CC)}
 
-\item{ref.genome}{A \code{ref.genome} argument as described in
-\code{\link{ICAMS}}.}
-
-\item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
-\code{\link[BSgenome]{BSgenome}} object
-\enumerate{
-\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-\item \code{BSgenome.Hsapiens.UCSC.hg38}
-\item \code{BSgenome.Mmusculus.UCSC.mm10}
-}
-then the function will infer \code{trans.ranges} automatically. Otherwise,
-user will need to provide the necessary \code{trans.ranges}. Please refer to
-\code{\link{TranscriptRanges}} for more details.
-If \code{is.null(trans.ranges)} do not add transcript range
-information.}
+\item{ref.genome}{}
 
 \item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
 do not match the extracted sequence from \code{ref.genome}, the function
@@ -44,9 +30,9 @@ will automatically discard these variants. See element
 
 \item{name.of.VCF}{Name of the VCF file.}
 
-\item{suppress.discarded.variants.warnings}{Logical. Whether to suppress
-warning messages showing information about the discarded variants. Default
-is TRUE.}
+\item{suppress.discarded.variants.warnings}{}
+
+\item{explain_indels}{}
 }
 \value{
 A list of elements:

@@ -7,20 +7,26 @@
 categorize_many_indels(vcf, explain_indels = FALSE)
 }
 \arguments{
-\item{context}{A vector of ample surrounding
-sequence on each side the variants}
+\item{vcf}{A dataframe represenging a VCF, which must contain the
+following columns
 
-\item{ref}{Vector of reference alleles; this includes
+seq.context: ample surrounding
+sequence on each side the variants
+
+ref The reference alleles as strings; this includes
 one un-altered base at the start of the reference allele
 e.g. for a deletion of a single T this might be "AT", in
-which case the \code{alt} allele woult be "A"}
+which case the \code{alt} allele woult be "A"
 
-\item{alt}{Vector of alternative alleles.}
+alt The alternative alleles as strings
 
-\item{pos}{Vector of the positions of the insertions and deletions in
- \code{context}. This is the position of the unaltered allele shared
+pos The positions of the insertions and deletions in
+\code{context}. This is the position of the unaltered allele shared
 by \code{ref} and \code{alt}. So in 1-based indexing, it is the
 position just before the insertion or the deletion.}
+
+\item{explain_indels}{Generate verbose stdout messages regarding
+categorization process}
 }
 \value{
 A data frame parallel to the input vectors. The
