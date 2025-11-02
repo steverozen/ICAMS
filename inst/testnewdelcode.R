@@ -9,7 +9,6 @@ ivcf1 = dplyr::filter(vcf1[[1]], nchar(REF) != nchar(ALT))
 avcf1 = AnnotateIDVCF(
   ivcf1,
   "hg19",
-  trans.ranges = NULL,
   flag.mismatches = 0,
   explain_indels = FALSE
 )
@@ -26,6 +25,12 @@ rdata = avcf1[, c(
 )]
 ICAMS:::categorize_many_indels(rdata)
 
+apply(avcf1, MARGIN = 1, FUN = ICAMS:::gen_COSMIC_83_string)
+
+avcf1[, ICAMS:::gen_COSMIC_83_string(.SD), by = 1:nrow(avcf1)]
+
+source("c:/Users/steve/Documents/GitHub/ICAMS/R/gen_koh_476_string.R")
+avcf1[, xgen_Koh_476_string(.SD), by = 1:nrow(avcf1)]
 
 ## Older, end-to-end tests
 
