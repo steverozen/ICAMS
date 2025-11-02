@@ -58,3 +58,63 @@
       [1] "INS:repeats:2:0"
       
 
+---
+
+    Code
+      x3
+    Output
+      $ins_or_del
+      [1] "d"
+      
+      $pre
+      [1] "A"
+      
+      $ins_or_del_seq
+      [1] "GC"
+      
+      $unmutated_rep_count
+      [1] 1
+      
+      $post
+      [1] "G"
+      
+      $mh
+      [1] 1
+      
+      $COSMIC_83
+      [1] "DEL:MH:2:1"
+      
+      $pev_COSMIC_83
+      [1] "DEL:MH:2:1"
+      
+
+---
+
+    Code
+      x4
+    Output
+      $ins_or_del
+      [1] "d"
+      
+      $pre
+      [1] "A"
+      
+      $ins_or_del_seq
+      [1] "GC"
+      
+      $unmutated_rep_count
+      [1] 1
+      
+      $post
+      [1] "G"
+      
+      $mh
+      [1] 1
+      
+      $COSMIC_83
+      [1] "DEL:MH:2:1"
+      
+      $pev_COSMIC_83
+      [1] "DEL:MH:2:1"
+      
+
