@@ -34,10 +34,14 @@ test_that("justify_and_categorize_1_indel", {
     4
   )
 
+  expect_snapshot(x3)
+
   x4 = ICAMS:::justify_and_categorize_1_indel(
     "AAAGCGAACCC:",
     "AGC",
     "A",
     3
   )
+
+  expect_snapshot(x4)
 })
