@@ -28,7 +28,7 @@
 #'
 #' @keywords internal
 categorize_many_indels <- function(vcf, explain_indels = FALSE) {
-  context = vcf[, "seq.context"] # Make sure there's an error if there is no seq.context column
+  context = vcf[["seq.context"]] # Make sure there's an error if there is no seq.context column
   ref = vcf$REF
   alt = vcf$ALT
   pos = vcf$seq.context.width + 1
