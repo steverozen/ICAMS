@@ -190,7 +190,7 @@ AnnotateIDVCF <-
       df4 <- df3
     }
 
-    trans.ranges <- ICAMS:::InferTransRanges(ref.genome, trans.ranges)
+    trans.ranges <- ICAMS:::InferTransRanges(ref.genome)
     if (!is.null(trans.ranges)) {
       df5 <- ICAMS:::AddTranscript(
         df = df4,
