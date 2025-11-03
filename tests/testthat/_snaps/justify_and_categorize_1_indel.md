@@ -12,14 +12,23 @@
       $ins_or_del_seq
       [1] "C"
       
-      $unmutated_rep_count
+      $indel_str_count_in_ref
       [1] 0
       
       $post
       [1] "A"
       
       $mh
-      [1] NA
+      [1] 0
+      
+      $R
+      [1] 0
+      
+      $U
+      [1] 1
+      
+      $koh_mh
+      [1] 0
       
       $COSMIC_83
       [1] "INS:C:1:0"

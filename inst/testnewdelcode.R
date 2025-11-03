@@ -6,6 +6,7 @@ f1 = "c:/Users/steve/Documents/GitHub/ICAMS/tests/testthat/testdata/Mutect-GRCh3
 vcf1 = ICAMS::ReadVCFs(f1, "mutect")[1]
 ivcf1 = dplyr::filter(vcf1[[1]], nchar(REF) != nchar(ALT))
 
+source("xcategorize_1_justified_indel.R")
 avcf1 = AnnotateIDVCF(
   ivcf1,
   "hg19",
@@ -14,6 +15,8 @@ avcf1 = AnnotateIDVCF(
 )
 
 avcf1 = avcf1$annotated.vcf
+View(avcf1)
+
 
 rdata = avcf1[, c(
   "CHROM",

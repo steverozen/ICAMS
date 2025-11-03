@@ -1,12 +1,12 @@
 xgen_Koh_476_string = function(arglist) {
   if (arglist$ins_or_del == "d") {
     INS_OR_DEL = "Del"
-    rep_count = arglist$unmutated_rep_count
   } else {
     stopifnot(arglist$ins_or_del == "i")
     INS_OR_DEL = "Ins"
-    rep_count = arglist$unmutated_rep_count
   }
+
+  rep_count = arglist$R
 
   ins_or_del_seq = arglist$ins_or_del_seq
   ins_or_del_len = nchar(ins_or_del_seq)
@@ -27,7 +27,9 @@ xgen_Koh_476_string = function(arglist) {
     ))
   }
 
-  if (!is.na(arglist$mh)) {
+  microhom_len = arglist$mh_koh
+
+  if (!is.na(microhom_len && microhom_len > 0)) {
     if (INS_OR_DEL == "Ins") {
       # Insertion with microhomology
       # Lines 184 and 185
@@ -48,7 +50,7 @@ xgen_Koh_476_string = function(arglist) {
         browser()
       }
 
-      del_mh_str = ifelse(arglist$mh >= 6, "(6,)", arglist$mh)
+      del_mh_str = ifelse(microhom_len >= 6, "(6,)", microhom_len)
       del_len_str = ifelse(ins_or_del_len >= 7, "(7,)", ins_or_del_len)
       return(paste0(INS_OR_DEL, del_len_str, ":M", del_mh_str))
     }
@@ -81,6 +83,15 @@ xgen_Koh_476_string = function(arglist) {
   # Ins4:U2:R1 takes precedence, and the analgous reasoning applies to
   # deletions.
 
+  # We as assume that for e.g. |ABABA|BABAB we consider U = 5, L = 5, and for insertion R = 0
+
+  tt = function(s) {
+    pattern <- "^(.+?)\\1*$"
+    r1 <- stringr::str_match(s, pattern)
+    shortest_prefix = r1[1, 2]
+    return(shortest_prefix)
+  }
+
   rep_count_string = ifelse(rep_count >= 5, "5+", rep_count)
   rm(rep_count)
   if (nchar(arglist$ins_or_del_seq) == 1) {
@@ -94,8 +105,8 @@ xgen_Koh_476_string = function(arglist) {
     size_string = as.character(size_string)
   }
 
-  if (arglist$ins_or_del == "d" && !is.na(arglist$mh)) {
-    mh_string = ifelse(arglist$mh >= 5, "5+", arglist$mh)
+  if (arglist$ins_or_del == "d" && !is.na(microhom_len) && microhom_len > 0) {
+    mh_string = ifelse(microhom_len >= 5, "5+", microhom_len)
     return(paste0("DEL:MH:", size_string, ":", mh_string))
   }
 

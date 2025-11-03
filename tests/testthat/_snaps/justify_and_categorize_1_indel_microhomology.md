@@ -12,13 +12,22 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $unmutated_rep_count
+      $indel_str_count_in_ref
       [1] 0
       
       $post
       [1] "G"
       
       $mh
+      [1] 1
+      
+      $R
+      [1] 0
+      
+      $U
+      [1] 2
+      
+      $koh_mh
       [1] 1
       
       $COSMIC_83
@@ -42,13 +51,22 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $unmutated_rep_count
+      $indel_str_count_in_ref
       [1] 0
       
       $post
       [1] "G"
       
       $mh
+      [1] 1
+      
+      $R
+      [1] 0
+      
+      $U
+      [1] 2
+      
+      $koh_mh
       [1] 1
       
       $COSMIC_83
@@ -72,13 +90,22 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $unmutated_rep_count
+      $indel_str_count_in_ref
       [1] 1
       
       $post
       [1] "G"
       
       $mh
+      [1] 1
+      
+      $R
+      [1] 1
+      
+      $U
+      [1] 2
+      
+      $koh_mh
       [1] 1
       
       $COSMIC_83
@@ -102,13 +129,22 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $unmutated_rep_count
+      $indel_str_count_in_ref
       [1] 1
       
       $post
       [1] "G"
       
       $mh
+      [1] 1
+      
+      $R
+      [1] 1
+      
+      $U
+      [1] 2
+      
+      $koh_mh
       [1] 1
       
       $COSMIC_83

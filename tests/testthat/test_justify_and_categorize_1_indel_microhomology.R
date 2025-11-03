@@ -9,6 +9,8 @@ test_that("justify_and_categorize_1_indel", {
   # AAA[GC]GAA
   # but orig repeat count will be 0
 
+  source("../../inst/xcategorize_1_justified_indel.R")
+
   x1 = ICAMS:::justify_and_categorize_1_indel(
     "AAAGAACCC",
     "A",

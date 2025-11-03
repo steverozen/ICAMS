@@ -1,4 +1,5 @@
 test_that("categorize_many_indels", {
+  source("../../inst/xcategorize_1_justified_indel.R")
   dd = read.csv(
     "testdata/categorize_many_indels_test_input.csv"
   )
