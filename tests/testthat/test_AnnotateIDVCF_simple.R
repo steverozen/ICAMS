@@ -1,0 +1,14 @@
+test_that("AnnotateIDVCF_sample", {
+  f1 = "testdata/Mutect-GRCh37/Mutect.GRCh37.s1.vcf"
+  vcf1 = ICAMS::ReadVCFs(f1, "mutect")[1]
+  ivcf1 = dplyr::filter(vcf1[[1]], nchar(REF) != nchar(ALT))
+
+  avcf1 = AnnotateIDVCF(
+    ivcf1,
+    "hg19",
+    flag.mismatches = 0,
+    explain_indels = FALSE
+  )
+  avcf1 = avcf1$annotated.vcf
+  expect_snapshot(avcf1)
+})

@@ -58,17 +58,10 @@ categorize_1_justified_indel <- function(
   pos,
   verbose = 0
 ) {
-  return(xcategorize_1_justified_indel(
-    context,
-    ins_or_del,
-    ins_or_del_seq,
-    pos,
-    verbose
-  ))
   # Pos is the 1-based position of the first base that was deleted
   # is it 1 bp deletion?
-  mh = 0
-  koh_mh = 0
+  mh = 0L
+  koh_mh = 0L
   stopifnot(pos >= 2)
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
@@ -85,12 +78,7 @@ categorize_1_justified_indel <- function(
       substr(context, pos + 1, pos + 1)
     )
   }
-  if (FALSE && ins_or_del_seq_len > 3) {
-    browser()
-  }
-  if (ins_or_del_seq == "xGGAGTGGGGCCT") {
-    browser()
-  }
+
   regex = paste0("^.{", pos - 2, "}(.)((", ins_or_del_seq, ")+)(.)(.*$)")
   mymatch = stringr::str_match(context, regex)[1, ]
   pre = mymatch[2]
@@ -100,7 +88,7 @@ categorize_1_justified_indel <- function(
   # indel_str_count_in_ref is the number of times the indel string
   # appears in the reference sequence. For deletions this must be
   # >= 1, for insertions it can be 0 times.
-  indel_str_count_in_ref = nchar(all_repeat_seq) / ins_or_del_seq_len
+  indel_str_count_in_ref = nchar(all_repeated_seq) / ins_or_del_seq_len
   if (ins_or_del == "i") {
     indel_str_count_in_ref = indel_str_count_in_ref - 1
     # The context arg is the sequence after the insertion. We want indel_str_count_in_ref to
@@ -108,6 +96,7 @@ categorize_1_justified_indel <- function(
   }
 
   stopifnot(indel_str_count_in_ref == floor(indel_str_count_in_ref))
+  indel_str_count_in_ref = as.integer(indel_str_count_in_ref)
 
   post = mymatch[5]
   post_all = paste0(post, mymatch[6])
@@ -123,7 +112,7 @@ categorize_1_justified_indel <- function(
 
   if (ins_or_del_seq_len == 1) {
     R = indel_str_count_in_ref
-    U = 1
+    U = 1L
     if (ins_or_del_seq %in% c("A", "G")) {
       pre = ICAMS::revc(post)
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
@@ -148,39 +137,49 @@ categorize_1_justified_indel <- function(
     # Is shortest_prefix repeated in post_all?
     R_match_pattern = paste0("^(?:", shortest_prefix, ")+")
     R_match = stringr::str_match(
-      R_match_pattern,
-      paste0(all_repeated_seq, post_all)
+      paste0(all_repeated_seq, post_all),
+      R_match_pattern
     )
-    # We are using nomenclature from Koh et al. again here.
-    R = (attr(R_match, "match.length") / U)
 
+    # We are using nomenclature from Koh et al. again here.
+    R = (nchar(R_match[1, 1]) / U)
+    if (is.na(R)) {
+      browser() # This is a programming error
+    }
+
+    R_outside_ins_or_del_seq = R - (ins_or_del_seq_len / U)
     if (ins_or_del == "i") {
-      R = R - (ins_or_del_seq_len / U)
+      R = R_outside_ins_or_del_seq
+    } else {
+      if (R_outside_ins_or_del_seq == 0) {
+        # browser()
+        # I think we need to set U to ins_or_del_seq_len and set R to 1 See lines
+      }
     }
 
     stopifnot(R == floor(R))
+    R = as.integer(R)
 
     if (ins_or_del == "d") {
       if (indel_str_count_in_ref == 1) {
         # Check for micrhomology based on the ins_or_del_seq alone
-        microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
-        if (microhomology_len > 0) {
-          mh = microhomology_len
+        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        if (length(R) == 0) {
+          browser() # This is programming error
         }
         if (R == 1) {
-          stopifnot(ins_or_del_seq == shortest_prefix)
           koh_mh = mh
         }
       }
     } else {
       # Insertion
       if (indel_str_count_in_ref == 0) {
-        microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
-        if (microhomology_len > 0) {
-          mh = microhomology_len
-        }
+        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
         if (R == 0) {
-          stopifnot(ins_or_del_seq == shortest_prefix)
+          # shortest_prefix can be shorted than ins_or_del_seq, for example
+          # in the insertion ATC|GG|TC where GG is inserted.
+          # Then shortest_prefix is G but ins_or_del_seq is GG.
+
           koh_mh = mh
         }
       }
@@ -199,7 +198,9 @@ categorize_1_justified_indel <- function(
     koh_mh = koh_mh
   )
 
-  retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
+  retlist$COSMIC_83 = ICAMS:::gen_COSMIC_83_string(retlist)
+  retlist$Koh_89 = gen_Koh_89_string(retlist)
+  retlist$Koh_476 = gen_Koh_476_string(retlist)
 
   return(retlist)
 } # End categorize_del

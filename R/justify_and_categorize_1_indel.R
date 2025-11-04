@@ -52,6 +52,7 @@ justify_and_categorize_1_indel = function(
 
     if (explain_indels) {
       message("\n\nExplanation =========== del of ", ref, " =====")
+      message("Prior to justifying the deletion")
       message("before: ", context)
       message(
         "after:  ",
@@ -73,6 +74,7 @@ justify_and_categorize_1_indel = function(
 
     if (explain_indels) {
       message("\n\nExplanation =========== del of ", tmp$del_str, " =====")
+      message("After justifying the deletion")
       message("before: ", context)
       message(
         "after:  ",
@@ -138,7 +140,7 @@ justify_and_categorize_1_indel = function(
     stop("Non-insertion / non-deletion found: ", ref, " ", alt, " ", context)
   }
   if (regress) {
-    new_ret2$pev_COSMIC_83 = prev_ret
+    new_ret2$prev_COSMIC_83 = prev_ret
   }
   return(new_ret2)
 }

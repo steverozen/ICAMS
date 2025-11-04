@@ -51,17 +51,24 @@ library(Biostrings)
 
 #  ins_or_del, previous_char, repeat_seq, repeat_count, post_char, mh, COSMIC_83
 
-xcategorize_1_justified_indel <- function(
+categorize_1_justified_indel <- function(
   context,
   ins_or_del,
   ins_or_del_seq,
   pos,
   verbose = 0
 ) {
+  return(xcategorize_1_justified_indel(
+    context,
+    ins_or_del,
+    ins_or_del_seq,
+    pos,
+    verbose
+  ))
   # Pos is the 1-based position of the first base that was deleted
   # is it 1 bp deletion?
-  mh = 0L
-  koh_mh = 0L
+  mh = 0
+  koh_mh = 0
   stopifnot(pos >= 2)
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
@@ -93,7 +100,7 @@ xcategorize_1_justified_indel <- function(
   # indel_str_count_in_ref is the number of times the indel string
   # appears in the reference sequence. For deletions this must be
   # >= 1, for insertions it can be 0 times.
-  indel_str_count_in_ref = nchar(all_repeated_seq) / ins_or_del_seq_len
+  indel_str_count_in_ref = nchar(all_repeat_seq) / ins_or_del_seq_len
   if (ins_or_del == "i") {
     indel_str_count_in_ref = indel_str_count_in_ref - 1
     # The context arg is the sequence after the insertion. We want indel_str_count_in_ref to
@@ -101,7 +108,6 @@ xcategorize_1_justified_indel <- function(
   }
 
   stopifnot(indel_str_count_in_ref == floor(indel_str_count_in_ref))
-  indel_str_count_in_ref = as.integer(indel_str_count_in_ref)
 
   post = mymatch[5]
   post_all = paste0(post, mymatch[6])
@@ -117,7 +123,7 @@ xcategorize_1_justified_indel <- function(
 
   if (ins_or_del_seq_len == 1) {
     R = indel_str_count_in_ref
-    U = 1L
+    U = 1
     if (ins_or_del_seq %in% c("A", "G")) {
       pre = ICAMS::revc(post)
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
@@ -142,30 +148,24 @@ xcategorize_1_justified_indel <- function(
     # Is shortest_prefix repeated in post_all?
     R_match_pattern = paste0("^(?:", shortest_prefix, ")+")
     R_match = stringr::str_match(
-      paste0(all_repeated_seq, post_all),
-      R_match_pattern
+      R_match_pattern,
+      paste0(all_repeated_seq, post_all)
     )
-
-    # browser()
     # We are using nomenclature from Koh et al. again here.
-    R = (nchar(R_match[1, 1]) / U)
-    if (is.na(R)) {
-      browser()
-    }
+    R = (attr(R_match, "match.length") / U)
 
     if (ins_or_del == "i") {
       R = R - (ins_or_del_seq_len / U)
     }
 
     stopifnot(R == floor(R))
-    R = as.integer(R)
 
     if (ins_or_del == "d") {
       if (indel_str_count_in_ref == 1) {
         # Check for micrhomology based on the ins_or_del_seq alone
-        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
-        if (length(R) == 0) {
-          browser()
+        microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        if (microhomology_len > 0) {
+          mh = microhomology_len
         }
         if (R == 1) {
           stopifnot(ins_or_del_seq == shortest_prefix)
@@ -175,7 +175,10 @@ xcategorize_1_justified_indel <- function(
     } else {
       # Insertion
       if (indel_str_count_in_ref == 0) {
-        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        microhomology_len = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        if (microhomology_len > 0) {
+          mh = microhomology_len
+        }
         if (R == 0) {
           stopifnot(ins_or_del_seq == shortest_prefix)
           koh_mh = mh
@@ -196,7 +199,8 @@ xcategorize_1_justified_indel <- function(
     koh_mh = koh_mh
   )
 
-  retlist$COSMIC_83 = ICAMS:::gen_COSMIC_83_string(retlist)
+  retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
+  retlist$Koh_89 = gen_Koh_89_string(retlist)
 
   return(retlist)
 } # End categorize_del

@@ -33,7 +33,13 @@
       $COSMIC_83
       [1] "INS:repeats:2:0"
       
-      $pev_COSMIC_83
+      $Koh_89
+      [1] "Ins(2,4):R0"
+      
+      $Koh_476
+      [1] "Ins(5,):M"
+      
+      $prev_COSMIC_83
       [1] "INS:repeats:2:0"
       
 
@@ -72,7 +78,13 @@
       $COSMIC_83
       [1] "INS:repeats:2:0"
       
-      $pev_COSMIC_83
+      $Koh_89
+      [1] "Ins(2,4):R0"
+      
+      $Koh_476
+      [1] "Ins(5,):M"
+      
+      $prev_COSMIC_83
       [1] "INS:repeats:2:0"
       
 
@@ -111,7 +123,13 @@
       $COSMIC_83
       [1] "DEL:MH:2:1"
       
-      $pev_COSMIC_83
+      $Koh_89
+      [1] "del(2,1):M1"
+      
+      $Koh_476
+      [1] "Del2:M1"
+      
+      $prev_COSMIC_83
       [1] "DEL:MH:2:1"
       
 
@@ -150,7 +168,13 @@
       $COSMIC_83
       [1] "DEL:MH:2:1"
       
-      $pev_COSMIC_83
+      $Koh_89
+      [1] "del(2,1):M1"
+      
+      $Koh_476
+      [1] "Del2:M1"
+      
+      $prev_COSMIC_83
       [1] "DEL:MH:2:1"
       
 

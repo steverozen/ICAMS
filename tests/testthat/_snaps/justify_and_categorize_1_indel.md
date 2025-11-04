@@ -33,7 +33,13 @@
       $COSMIC_83
       [1] "INS:C:1:0"
       
-      $pev_COSMIC_83
+      $Koh_89
+      [1] "Ins(C):R(0,3)"
+      
+      $Koh_476
+      [1] "G[Ins(C):R0]A"
+      
+      $prev_COSMIC_83
       [1] "INS:C:1:0"
       
 

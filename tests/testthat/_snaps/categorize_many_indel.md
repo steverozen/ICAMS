@@ -66,7 +66,7 @@
       59:          i      C            TCT                      0      T     1     0
       60:          d      A             GG                      1      T     0     2
           ins_or_del    pre ins_or_del_seq indel_str_count_in_ref   post    mh     R
-              U koh_mh        COSMIC_83    pev_COSMIC_83
+              U koh_mh        COSMIC_83   prev_COSMIC_83
           <int>  <int>           <char>           <char>
        1:     1      0        DEL:C:1:1        DEL:C:1:1
        2:     1      0        DEL:T:1:0        DEL:T:1:0
@@ -128,5 +128,5 @@
       58:     1      0        INS:T:1:3        INS:T:1:3
       59:     3      1  INS:repeats:3:0  INS:repeats:3:0
       60:     1      0  DEL:repeats:2:0  DEL:repeats:2:0
-              U koh_mh        COSMIC_83    pev_COSMIC_83
+              U koh_mh        COSMIC_83   prev_COSMIC_83
 

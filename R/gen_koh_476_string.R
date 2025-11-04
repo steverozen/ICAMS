@@ -1,4 +1,4 @@
-xgen_Koh_476_string = function(arglist) {
+gen_Koh_476_string = function(arglist) {
   if (arglist$ins_or_del == "d") {
     INS_OR_DEL = "Del"
   } else {
@@ -6,14 +6,14 @@ xgen_Koh_476_string = function(arglist) {
     INS_OR_DEL = "Ins"
   }
 
-  rep_count = arglist$R
+  R = arglist$R
 
   ins_or_del_seq = arglist$ins_or_del_seq
-  ins_or_del_len = nchar(ins_or_del_seq)
+  L = nchar(ins_or_del_seq)
 
-  if (ins_or_del_len == 1) {
+  if (L == 1) {
     # Lines 4 through 183 (insertions) and 244 through 405 (deletions) of Koh et al. sup table 7
-    repcountstr = ifelse(rep_count >= 9, "9+", as.character(rep_count))
+    R_str = ifelse(R >= 9, "9+", as.character(R))
     return(paste0(
       arglist$pre,
       "[",
@@ -21,20 +21,20 @@ xgen_Koh_476_string = function(arglist) {
       "(",
       ins_or_del_seq,
       "):R",
-      repcountstr,
+      R_str,
       "]",
       arglist$post
     ))
   }
 
-  microhom_len = arglist$mh_koh
+  microhom_len = arglist$koh_mh
 
-  if (!is.na(microhom_len && microhom_len > 0)) {
+  if (microhom_len > 0) {
     if (INS_OR_DEL == "Ins") {
       # Insertion with microhomology
       # Lines 184 and 185
-      if (rep_count != 0) {
-        browser()
+      if (R != 0) {
+        browser() # This should be an error (?)
       }
 
       return(
@@ -46,12 +46,12 @@ xgen_Koh_476_string = function(arglist) {
     } else {
       # Deletion with microhomology
       # Lines 454 through 474
-      if (rep_count != 1) {
-        browser()
+      if (R != 1) {
+        browser() # This should be an error (?)
       }
 
       del_mh_str = ifelse(microhom_len >= 6, "(6,)", microhom_len)
-      del_len_str = ifelse(ins_or_del_len >= 7, "(7,)", ins_or_del_len)
+      del_len_str = ifelse(L >= 7, "(7,)", L)
       return(paste0(INS_OR_DEL, del_len_str, ":M", del_mh_str))
     }
   }
@@ -85,36 +85,37 @@ xgen_Koh_476_string = function(arglist) {
 
   # We as assume that for e.g. |ABABA|BABAB we consider U = 5, L = 5, and for insertion R = 0
 
-  tt = function(s) {
-    pattern <- "^(.+?)\\1*$"
-    r1 <- stringr::str_match(s, pattern)
-    shortest_prefix = r1[1, 2]
-    return(shortest_prefix)
-  }
+  U = arglist$U
 
-  rep_count_string = ifelse(rep_count >= 5, "5+", rep_count)
-  rm(rep_count)
-  if (nchar(arglist$ins_or_del_seq) == 1) {
-    return(paste0(INS_OR_DEL, arglist$ins_or_del_seq, ":1:", rep_count_string))
-  }
-
-  size_string = nchar(arglist$ins_or_del_seq)
-  if (size_string >= 5) {
-    size_string = "5+"
+  if (INS_OR_DEL == "Ins") {
+    L_str = ifelse(L >= 5, "(5,)", L)
+    U_str = ifelse(U >= 3, "(3,)", U)
+    R_str = ifelse(R >= 5, "(5,)", R)
   } else {
-    size_string = as.character(size_string)
+    L_str = ifelse(L >= 6, "(6,)", L)
+    U_str = ifelse(U >= 4, "(4,)", U)
+    R_str = ifelse(R >= 7, "(7+)", R)
+
+    if (L >= 6) {
+      if (U == 1) {
+        return("Del(6,):U1:R(7,)")
+      }
+      if (U == 2) {
+        return("Del(6,):U2:R(4,)")
+      }
+      if (U == 3) {
+        return("Del(6,):U3:R(3,)")
+      }
+      if (U >= 4) {
+        return("Del(6,):U(4,):R(2,)")
+      }
+    }
+    if (L == 5 && U == 1) {
+      return("Del5:U1:R(6,9)") ## Need to re-visit CGAAAATC -> CGTC is considered L = 4, R = 1, U = 4; OR is it R = 4, U = 1?  CGATATCG -> CGCG is considered L = 4, R = 1, U = 4
+    }
   }
 
-  if (arglist$ins_or_del == "d" && !is.na(microhom_len) && microhom_len > 0) {
-    mh_string = ifelse(microhom_len >= 5, "5+", microhom_len)
-    return(paste0("DEL:MH:", size_string, ":", mh_string))
-  }
+  # Del(6,):U2:R(4,9)
 
-  return(paste0(
-    INS_OR_DEL,
-    "repeats:",
-    size_string,
-    ":",
-    rep_count_string
-  ))
+  paste0(INS_OR_DEL, L_str, ":U", U_str, ":R", R_str)
 }
