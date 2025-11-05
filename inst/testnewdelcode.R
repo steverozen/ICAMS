@@ -40,13 +40,13 @@ rdata = avcf1[, c(
 )]
 ICAMS:::categorize_many_indels(rdata)
 
-avcf1[, ICAMS:::gen_COSMIC_83_string(.SD), by = 1:nrow(avcf1)]
+avcf1[, ICAMS:::gen_COSMIC_83_string(.SD), by = seq_len(nrow(avcf1))]
 
 source("c:/Users/steve/Documents/GitHub/ICAMS/R/gen_koh_476_string.R")
-avcf1[, gen_Koh_476_string(.SD), by = 1:nrow(avcf1)]
+avcf1[, gen_Koh_476_string(.SD), by = seq_len(nrow(avcf1))]
 
 source("c:/Users/steve/Documents/GitHub/ICAMS/R/gen_koh_89_string.R")
-avcf1[, xgen_Koh_89_string(.SD), by = 1:nrow(avcf1)]
+avcf1[, xgen_Koh_89_string(.SD), by = seq_len(nrow(avcf1))]
 
 ## Older, end-to-end tests
 
