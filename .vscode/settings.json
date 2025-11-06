@@ -48,9 +48,9 @@
         "tab.activeBorderTop": "#596083",
         "pickerGroup.foreground": "#596083",
         "list.activeSelectionBackground": "#4c53764d",
-        "tab.activeBackground": "#2A6458", // Sets the background color of the active tab
-        "tab.activeForeground": "#150106", // Sets the text color of the active tab
-        "panel.background": "#212c3b", // Sets the background of the entire panel area
+        "tab.activeBackground": "#7addc9", // Sets the background color of the active tab
+        "tab.activeForeground": "#e76182", // Sets the text color of the active tab
+        "panel.background": "#7ea8e2", // Sets the background of the entire panel area
         "panel.border": "#800080", // Adds a colored border to the panel
         "panel.activeBorder": "#800080", // Adds a purple highlight to the bottom of the active panel tab
         "panelTitle.activeBorder": "#800080" // Alternative propert
@@ -64,5 +64,7 @@
     "windowColor.isStatusBarColored": true,
     "windowColor.isWindowNameColored": false,
     "windowColor.isActiveItemsColored": true,
-    "windowColor.setWindowTitle": true
+    "windowColor.setWindowTitle": true,
+    "terminal.foreground": "#110101ff",
+    "activityBar.foreground": "#FFFFFF"
 }
