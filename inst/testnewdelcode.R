@@ -10,7 +10,7 @@ avcf1 = AnnotateIDVCF(
   ivcf1,
   "hg19",
   flag.mismatches = 0,
-  explain_indels = FALSE
+  explain_indels = TRUE
 )
 
 avcf1 = avcf1$annotated.vcf

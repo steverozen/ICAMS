@@ -32,7 +32,7 @@
         "titleBar.activeForeground": "#ffffff",
         "titleBar.inactiveBackground": "#4c5376",
         "titleBar.inactiveForeground": "#ffffff90",
-        "activityBar.background": "#4c5376",
+        "activityBar.background": "#070b22",
         "activityBar.foreground": "#ffffff",
         "activityBar.inactiveForeground": "#ffffff90",
         "focusBorder": "#4c537699",
@@ -48,16 +48,16 @@
         "tab.activeBorderTop": "#596083",
         "pickerGroup.foreground": "#596083",
         "list.activeSelectionBackground": "#4c53764d",
-        "tab.activeBackground": "#7addc9", // Sets the background color of the active tab
+        "tab.activeBackground": "#031814", // Sets the background color of the active tab
         "tab.activeForeground": "#e76182", // Sets the text color of the active tab
-        "panel.background": "#7ea8e2", // Sets the background of the entire panel area
+        // "panel.background": "#7ea8e2", // Sets the background of the entire panel area
         "panel.border": "#800080", // Adds a colored border to the panel
         "panel.activeBorder": "#800080", // Adds a purple highlight to the bottom of the active panel tab
         "panelTitle.activeBorder": "#800080" // Alternative propert
     },
     "peacock.color": "#1857a4",
     "windowColor.mainColor": "#4c5376",
-    "window.title": "c:\\Users\\steve\\Documents\\GitHub\\ICAMS",
+    "window.title": "${folderPath}",
     "windowColor.name": "c:\\Users\\steve\\Documents\\GitHub\\ICAMS",
     "windowColor.isActivityBarColored": true,
     "windowColor.isTitleBarColored": true,
@@ -65,6 +65,8 @@
     "windowColor.isWindowNameColored": false,
     "windowColor.isActiveItemsColored": true,
     "windowColor.setWindowTitle": true,
-    "terminal.foreground": "#110101ff",
-    "activityBar.foreground": "#FFFFFF"
+    //"terminal.foreground": "#110101ff",
+    //"console.foreground": "#110101ff",
+    "activityBar.foreground": "#FFFFFF", 
+    "json.schemaDownload.enable": false
 }

@@ -12,6 +12,15 @@ gen_Koh_476_string = function(arglist) {
   L = nchar(ins_or_del_seq)
 
   if (L == 1) {
+    if (!ins_or_del_seq %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel of ", ins_or_del_seq))
+    }
+    if (!arglist$pre %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel preceded by  ", arglist$pre))
+    }
+    if (!arglist$post %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel followed by  ", arglist$post))
+    }
     # Lines 4 through 183 (insertions) and 244 through 405 (deletions) of Koh et al. sup table 7
     R_str = ifelse(R >= 9, "9+", as.character(R))
     return(paste0(

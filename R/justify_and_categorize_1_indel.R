@@ -50,18 +50,6 @@ justify_and_categorize_1_indel = function(
     # We have a deletion.
     # pos is the 1-based start of the deletion in the input argumet "context".
 
-    if (explain_indels) {
-      message("\n\nExplanation =========== del of ", ref, " =====")
-      message("Prior to justifying the deletion")
-      message("before: ", context)
-      message(
-        "after:  ",
-        substr(context, 1, pos - 1),
-        strrep("-", nchar(ref)),
-        substr(context, pos + nchar(ref), nchar(context))
-      )
-    }
-
     tmp_long = context
     end_pos = pos + nchar(ref) - 1
     tmp_short = stringi::stri_sub_replace(
@@ -70,18 +58,19 @@ justify_and_categorize_1_indel = function(
       to = end_pos,
       replacement = ""
     )
+
     tmp = justify_indel(tmp_long, tmp_short, pos, ref)
 
+    explain_del = function() {
+      message("\n\nExplanation =========== deletion of ", ref, " =====")
+      message("Prior to justifying")
+      show_indel(tmp_long, tmp_short, pos, "d")
+      message("After justifying")
+      show_indel(tmp_long, tmp_short, tmp$leftmost_pos, "d")
+    }
+
     if (explain_indels) {
-      message("\n\nExplanation =========== del of ", tmp$del_str, " =====")
-      message("After justifying the deletion")
-      message("before: ", context)
-      message(
-        "after:  ",
-        substr(context, 1, tmp$leftmost_pos - 1),
-        strrep("-", nchar(ref)),
-        substr(context, tmp$leftmost_pos + nchar(ref), nchar(context))
-      )
+      explain_del()
     }
 
     # TATCATTTTCCATCATTCTATTCAAGCTTTTCTTCTT------TGTTACAACATTTTTGGTATTACATGACTTCTCCTA ->
@@ -105,6 +94,7 @@ justify_and_categorize_1_indel = function(
         message("\n\nDELETION difference 2:")
         message("old = ", prev_ret)
         message("new = ", new_ret2$COSMIC_83, " ref = ", ref)
+        explain_del()
       }
     }
   } else if (nchar(alt) > nchar(ref)) {
@@ -120,6 +110,18 @@ justify_and_categorize_1_indel = function(
 
     tmp = justify_indel(tmp_long, tmp_short, pos, alt)
 
+    explain_ins = function() {
+      message("\n\nExplanation =========== insertion of ", alt, " =====")
+      message("Prior to justifying")
+      show_indel(tmp_long, tmp_short, pos, "i")
+      message("After justifying")
+      show_indel(tmp_long, tmp_short, tmp$leftmost_pos, "i")
+    }
+
+    if (explain_indels) {
+      explain_ins()
+    }
+
     new_ret2 = categorize_1_justified_indel(
       context = tmp_long,
       ins_or_del = "i",
@@ -134,6 +136,7 @@ justify_and_categorize_1_indel = function(
         message("\nINSERTION difference: 2")
         message("old = ", prev_ret)
         message("new = ", new_ret2$COSMIC_83, " alt = ", alt)
+        explain_ins()
       }
     }
   } else {

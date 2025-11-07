@@ -65,17 +65,12 @@ categorize_1_justified_indel <- function(
   stopifnot(pos >= 2)
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
-  if (verbose > 0) {
-    message("\n===============================")
-    message("ins_or_del = ", ins_or_del)
-    message("ins_or_del_seq = ", ins_or_del_seq)
-    message("context = ", context)
-    message("pos = ", pos)
-    message("before pos context = ", substr(context, 1, pos - 1))
-    message("substr(context, pos, pos) = ", substr(context, pos, pos))
+  if (grepl("N", ins_or_del_seq)) {
     message(
-      "substr(context, pos + 1, pos + 1) = ",
-      substr(context, pos + 1, pos + 1)
+      "N found in indel sequence: ",
+      ins_or_del_seq,
+      " context: ",
+      context
     )
   }
 
@@ -100,15 +95,6 @@ categorize_1_justified_indel <- function(
 
   post = mymatch[5]
   post_all = paste0(post, mymatch[6])
-  if (verbose > 0) {
-    message("regex = ", regex)
-    message("indel_str_count_in_ref = ", indel_str_count_in_ref)
-    message("after match")
-    message("pre = ", pre)
-    message("mymatch[4] (repeats) = ", mymatch[4])
-    message("post = ", post)
-    message("post_all = ", post_all)
-  }
 
   if (ins_or_del_seq_len == 1) {
     R = indel_str_count_in_ref

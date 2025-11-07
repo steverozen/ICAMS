@@ -13,6 +13,16 @@ gen_Koh_89_string = function(arglist) {
   post = arglist$post
 
   if (L == 1) {
+    if (!ins_or_del_seq %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel of ", ins_or_del_seq))
+    }
+    if (!pre %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel preceded by  ", pre))
+    }
+    if (!post %in% c("A", "C", "G", "T")) {
+      return(paste0("Cannot categorize indel followed by  ", post))
+    }
+
     if (INS_OR_DEL == "Ins") {
       # Lines 4 through 35 of Koh et al. sup table 6
       if (ins_or_del_seq == "C") {
