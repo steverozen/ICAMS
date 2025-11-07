@@ -80,20 +80,25 @@ justify_and_categorize_1_indel = function(
     # TATCATTTTCCATCATTCTATTCAAGCTTTTCTTCTTTGTTACAACATTTTTGGTATTACATGACTTCTCCTA
     # repeat is TTCTTT TTCTTT
 
-    new_ret2 = categorize_1_justified_indel(
+    retval = categorize_1_justified_indel(
       context = context,
       ins_or_del = "d",
       ins_or_del_seq = tmp$del_str,
       pos = tmp$leftmost_pos
     )
 
+    if (is.null(retval$pre) || is.na(retval$pre)) {
+      browser()
+      explain_del()
+    }
+
     if (regress) {
       prev_ret = Canonicalize1Del(context, ref, pos) # pos is the start of the deletion
 
-      if (is.na(prev_ret) || prev_ret != new_ret2$COSMIC_83) {
+      if (is.na(prev_ret) || prev_ret != retval$COSMIC_83) {
         message("\n\nDELETION difference 2:")
         message("old = ", prev_ret)
-        message("new = ", new_ret2$COSMIC_83, " ref = ", ref)
+        message("new = ", retval$COSMIC_83, " ref = ", ref)
         explain_del()
       }
     }
@@ -122,28 +127,33 @@ justify_and_categorize_1_indel = function(
       explain_ins()
     }
 
-    new_ret2 = categorize_1_justified_indel(
+    retval = categorize_1_justified_indel(
       context = tmp_long,
       ins_or_del = "i",
       ins_or_del_seq = tmp$del_str,
       pos = tmp$leftmost_pos
     )
 
+    if (is.null(retval$pre) || is.na(retval$pre)) {
+      explain_ins()
+    }
+
     if (regress) {
       prev_ret = Canonicalize1INS(context, alt, pos - 1) # the insertion occurs immediately after pos - 1
 
-      if (prev_ret != new_ret2$COSMIC_83) {
+      if (prev_ret != retval$COSMIC_83) {
         message("\nINSERTION difference: 2")
         message("old = ", prev_ret)
-        message("new = ", new_ret2$COSMIC_83, " alt = ", alt)
+        message("new = ", retval$COSMIC_83, " alt = ", alt)
         explain_ins()
       }
     }
   } else {
-    stop("Non-insertion / non-deletion found: ", ref, " ", alt, " ", context)
+    message("Non-insertion / non-deletion found: ", ref, " ", alt, " ", context)
+    return(indel_all_na_return())
   }
   if (regress) {
-    new_ret2$prev_COSMIC_83 = prev_ret
+    retval$prev_COSMIC_83 = prev_ret
   }
-  return(new_ret2)
+  return(retval)
 }

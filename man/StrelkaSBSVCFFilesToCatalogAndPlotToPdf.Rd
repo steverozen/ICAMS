@@ -121,5 +121,5 @@ if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
                                             region = "genome",
                                             output.file =
                                             file.path(tempdir(), "StrelkaSBS"))}
-}                                           
+}
 }

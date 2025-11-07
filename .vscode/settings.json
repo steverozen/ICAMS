@@ -45,11 +45,11 @@
         "button.background": "#4c5376",
         "button.foreground": "#ffffff",
         "button.hoverBackground": "#596083",
-        "tab.activeBorderTop": "#596083",
+        "tab.activeBorderTop": "#b40942",
         "pickerGroup.foreground": "#596083",
         "list.activeSelectionBackground": "#4c53764d",
-        "tab.activeBackground": "#031814", // Sets the background color of the active tab
-        "tab.activeForeground": "#e76182", // Sets the text color of the active tab
+        "tab.activeBackground": "#309280", // Sets the background color of the active tab
+        "tab.activeForeground": "#221f20", // Sets the text color of the active tab
         // "panel.background": "#7ea8e2", // Sets the background of the entire panel area
         "panel.border": "#800080", // Adds a colored border to the panel
         "panel.activeBorder": "#800080", // Adds a purple highlight to the bottom of the active panel tab

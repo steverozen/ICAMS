@@ -33,13 +33,3 @@ This funcition moves pos as far to left as possible so that a deletion
 at that position still results in an edit of long_str
 to generate short_str.
 }
-\examples{
-
-justify_indel("abbbc", "abbc", 4) # Move the deletion to postion 2
-
-# The next exmples move the deletion to position 3
-justify_indel("xycagcaguv", "xycaguv", 4)
-justify_indel("xycagcaguv", "xycaguv", 5)
-justify_indel("xycagcaguv", "xycaguv", 6)
-
-}

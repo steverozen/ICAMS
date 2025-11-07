@@ -12,16 +12,18 @@ AnnotateIDVCF(
   flag.mismatches = 0,
   name.of.VCF = NULL,
   suppress.discarded.variants.warnings = TRUE,
-  explain_indels = FALSE
+  explain_indels = FALSE,
+  context_width_multiplier = 20L
 )
 }
 \arguments{
 \item{ID.vcf}{An in-memory ID (insertion/deletion) VCF as a
 \code{data.frame}. This function expects that there is a "context base" to
 the left, for example REF = ACG, ALT = A (deletion of CG) or REF = A, ALT =
-ACC (insertion of CC)}
+ACC (insertion of CC).}
 
-\item{ref.genome}{}
+\item{ref.genome}{Can be a string or a BSgenome. If a string, it should
+a well-known name for reference genome in BSgenome}
 
 \item{flag.mismatches}{Deprecated. If there are ID variants whose \code{REF}
 do not match the extracted sequence from \code{ref.genome}, the function
@@ -30,9 +32,14 @@ will automatically discard these variants. See element
 
 \item{name.of.VCF}{Name of the VCF file.}
 
-\item{suppress.discarded.variants.warnings}{}
+\item{suppress.discarded.variants.warnings}{If TRUE, do warn when variants
+that cannot be processed are discarded.}
 
-\item{explain_indels}{}
+\item{explain_indels}{If TRUE generate message on stdout showing how the
+indel was categorized.}
+
+\item{context_width_multiplier}{Used to guess how much sequence on each side
+of an indel is needed to categorize it.}
 }
 \value{
 A list of elements:

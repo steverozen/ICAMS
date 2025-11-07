@@ -88,7 +88,7 @@ gen_Koh_89_string = function(arglist) {
       if (L <= 4) {
         return(paste0("Ins(2,4):R", R))
       }
-      return(paste0("Ins(5,);R", R))
+      return(paste0("Ins(5,):R", R))
     }
     if (R < 4) {
       return("Ins(2,):R(2,4")

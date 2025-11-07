@@ -25,6 +25,9 @@ library(GenomicRanges)
 #' @param explain_indels If TRUE generate message on stdout showing how the
 #' indel was categorized.
 #'
+#' @param context_width_multiplier Used to guess how much sequence on each side
+#' of an indel is needed to categorize it.
+#'
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
@@ -64,7 +67,8 @@ AnnotateIDVCF <-
     flag.mismatches = 0,
     name.of.VCF = NULL,
     suppress.discarded.variants.warnings = TRUE,
-    explain_indels = FALSE
+    explain_indels = FALSE,
+    context_width_multiplier = 20L
   ) {
     if (nrow(ID.vcf) == 0) {
       return(list(annotated.vcf = ID.vcf))
@@ -76,13 +80,13 @@ AnnotateIDVCF <-
     # Check and remove discarded variants
     if (suppress.discarded.variants.warnings == TRUE) {
       retval <-
-        suppressWarnings(ICAMS:::CheckAndRemoveDiscardedVariants(
+        suppressWarnings(CheckAndRemoveDiscardedVariants(
           vcf = ID.vcf,
           name.of.VCF = name.of.VCF
         ))
     } else {
       retval <-
-        ICAMS:::CheckAndRemoveDiscardedVariants(
+        CheckAndRemoveDiscardedVariants(
           vcf = ID.vcf,
           name.of.VCF = name.of.VCF
         )
@@ -91,7 +95,7 @@ AnnotateIDVCF <-
     discarded.variants <-
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
 
-    ref.genome <- ICAMS:::NormalizeGenomeArg(ref.genome)
+    ref.genome <- NormalizeGenomeArg(ref.genome)
 
     # Remove variants which have the same number of bases
     # for REF and ALT alleles
@@ -142,16 +146,16 @@ AnnotateIDVCF <-
 
     # Set the minimum seq.context.width to be 21, this is to facilitate
     # extended sequence context analysis
-    df3$seq.context.width <- ifelse(var.width * 6 < 21, 21, var.width * 6)
+    df3$seq.context.width <- as.integer(ifelse(
+      var.width * context_width_multiplier < 21,
+      21,
+      var.width * context_width_multiplier
+    ))
 
-    # 6 because we need to find out if the insertion or deletion is embedded
-    # in up to 5 additional repeats of the inserted or deleted sequence.
-    # Then add 1 to avoid possible future issues.
-
-    # Extract sequence context from the reference genome
+    # Extract the sequence context from the reference genome
 
     # Check if the format of sequence names in df and genome are the same
-    chr.names <- ICAMS:::CheckAndFixChrNames(
+    chr.names <- CheckAndFixChrNames(
       vcf.df = df3,
       ref.genome = ref.genome,
       name.of.VCF = name.of.VCF
@@ -190,9 +194,9 @@ AnnotateIDVCF <-
       df4 <- df3
     }
 
-    trans.ranges <- ICAMS:::InferTransRanges(ref.genome)
+    trans.ranges <- InferTransRanges(ref.genome)
     if (!is.null(trans.ranges)) {
-      df5 <- ICAMS:::AddTranscript(
+      df5 <- AddTranscript(
         df = df4,
         trans.ranges = trans.ranges,
         ref.genome = ref.genome,
@@ -202,10 +206,11 @@ AnnotateIDVCF <-
       df5 <- df4
     }
 
-    indel_info_df = data.table::rbindlist(
-      categorize_many_indels(df5, explain_indels = explain_indels),
-      fill = TRUE
+    results_as_list = categorize_many_indels(
+      df5,
+      explain_indels = explain_indels
     )
+    indel_info_df = data.table::rbindlist(results_as_list, fill = TRUE)
 
     df6 = cbind(data.table::as.data.table(df5), indel_info_df)
 

@@ -28,16 +28,6 @@
 #' @param expected_delta A single string; see the desctiption
 #'
 #' @return A list with elements leftmost_pos and del_string
-#'
-#' @examples
-#'
-#' justify_indel("abbbc", "abbc", 4) # Move the deletion to postion 2
-#'
-#' # The next exmples move the deletion to position 3
-#' justify_indel("xycagcaguv", "xycaguv", 4)
-#' justify_indel("xycagcaguv", "xycaguv", 5)
-#' justify_indel("xycagcaguv", "xycaguv", 6)
-#'
 
 justify_indel = function(long_str, short_str, pos, expected_delta = NULL) {
   requireNamespace("stringi")

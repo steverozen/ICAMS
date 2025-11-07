@@ -55,8 +55,8 @@ See the code for unexported function \code{\link{CanonicalizeID}}
 and the functions it calls for handling of insertions.
 }
 \examples{
-categorize_1_justified_indel("xyAAAqr", "d", del.seq = "A", pos = 3) # "DEL:T:1:2"
-categorize_1_justified_indel("xyAAAqr", "d", del.seq = "A", pos = 4) # "DEL:T:1:2"
-categorize_1_justified_indel("xyAqr", "d", del.seq = "A", pos = 3)   # "DEL:T:1:0"
+categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"
+categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
+categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"
 
 }

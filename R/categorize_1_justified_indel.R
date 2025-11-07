@@ -43,9 +43,9 @@ library(Biostrings)
 #'  (This seems to be very rare.)
 #'
 #' @examples
-#' categorize_1_justified_indel("xyAAAqr", "d", del.seq = "A", pos = 3) # "DEL:T:1:2"
-#' categorize_1_justified_indel("xyAAAqr", "d", del.seq = "A", pos = 4) # "DEL:T:1:2"
-#' categorize_1_justified_indel("xyAqr", "d", del.seq = "A", pos = 3)   # "DEL:T:1:0"
+#' categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"
+#' categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
+#' categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"
 #'
 #' @export
 
@@ -62,7 +62,17 @@ categorize_1_justified_indel <- function(
   # is it 1 bp deletion?
   mh = 0L
   koh_mh = 0L
-  stopifnot(pos >= 2)
+  if (pos < 2) {
+    message(
+      "position of the insertion or deletion of ",
+      ins_or_del_seq,
+      " is ",
+      pos
+    )
+    message("This should be >= 2")
+    err_ret = indel_all_na_return()
+    return(err_ret)
+  }
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
   if (grepl("N", ins_or_del_seq)) {
@@ -184,9 +194,28 @@ categorize_1_justified_indel <- function(
     koh_mh = koh_mh
   )
 
-  retlist$COSMIC_83 = ICAMS:::gen_COSMIC_83_string(retlist)
+  retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
   retlist$Koh_89 = gen_Koh_89_string(retlist)
   retlist$Koh_476 = gen_Koh_476_string(retlist)
 
   return(retlist)
 } # End categorize_del
+
+
+indel_all_na_return = function(info_string = "Unable_to_categorize") {
+  retlist = list(
+    ins_or_del = NA,
+    pre = NA,
+    ins_or_del_seq = NA,
+    indel_str_count_in_ref = NA,
+    post = NA,
+    mh = NA,
+    R = NA,
+    U = NA,
+    koh_mh = NA,
+    COSMIC_83 = info_string,
+    Koh_89 = info_string,
+    Koh_476 = info_string
+  )
+  return(retlist)
+}

@@ -98,8 +98,16 @@ gen_Koh_476_string = function(arglist) {
 
   if (INS_OR_DEL == "Ins") {
     L_str = ifelse(L >= 5, "(5,)", L)
-    U_str = ifelse(U >= 3, "(3,)", U)
     R_str = ifelse(R >= 5, "(5,)", R)
+    if (R == 0) {
+      if (L >= 5) {
+        return("Ins(5,):R0")
+      } else {
+        U_str = as.character(U)
+      }
+    } else {
+      U_str = ifelse(U >= 3, "(3,)", U)
+    }
   } else {
     L_str = ifelse(L >= 6, "(6,)", L)
     U_str = ifelse(U >= 4, "(4,)", U)
@@ -120,7 +128,7 @@ gen_Koh_476_string = function(arglist) {
       }
     }
     if (L == 5 && U == 1) {
-      return("Del5:U1:R(6,9)") ## Need to re-visit CGAAAATC -> CGTC is considered L = 4, R = 1, U = 4; OR is it R = 4, U = 1?  CGATATCG -> CGCG is considered L = 4, R = 1, U = 4
+      return("Del5:U1:R(6,9)")
     }
   }
 
