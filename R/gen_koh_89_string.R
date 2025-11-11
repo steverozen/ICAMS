@@ -29,12 +29,9 @@ gen_Koh_89_string = function(arglist) {
         if (pre == "A" && R == 0) {
           if (post == "A") {
             return("A[Ins(C):R0]A")
-          }
-          if (post == "T") {
+          } else if (post == "T") {
             return("A[Ins(C):R0]T")
-          }
-        } else {
-          if (R %in% 0:3) {
+          } else if (R %in% 0:3) {
             return("Ins(C):R(0,3)")
           } else if (R %in% 4:6) {
             return("Ins(C):R(4,6)")
@@ -60,20 +57,19 @@ gen_Koh_89_string = function(arglist) {
       if (ins_or_del_seq == "C") {
         if (R >= 6) {
           return("Del(C):R(6,9)")
-        }
-        if (post == "G") {
+        } else if (post == "G") {
           return("Del(C):R(1,5)]G")
         }
         R_str = ifelse(R >= 4, "(4,5)", R)
-        return(paste0(pre, "[Del(C):R", R_str, "]", post))
+        return(paste0("[Del(C):R", R_str, "]", post))
       } else if (ins_or_del_seq == "T") {
         if (R %in% 1:4) {
           R_str = "1,4"
-        }
-        if (R %in% 5:7) {
+        } else if (R %in% 5:7) {
           R_str = "5,7"
+        } else {
+          R_str = "(8,)"
         }
-        R_str = "(8,)"
         return(paste0(pre, "[Del(T):R", R_str, "]", post))
       } else {
         browser() # A programming error
@@ -128,7 +124,7 @@ gen_Koh_89_string = function(arglist) {
   }
 
   if (R == 2) {
-    return("Del(3,):U(3):R2")
+    return("Del(3,):U(3,):R2")
   }
 
   "Del(3,):U(3,):R(3,)"
