@@ -55,6 +55,9 @@
         "panel.activeBorder": "#800080", // Adds a purple highlight to the bottom of the active panel tab
         "panelTitle.activeBorder": "#800080" // Alternative propert
     },
+        "[r]": {
+        "editor.formatOnSave": true
+    },
     "peacock.color": "#1857a4",
     "windowColor.mainColor": "#4c5376",
     "window.title": "${folderPath}",
@@ -70,3 +73,4 @@
     "activityBar.foreground": "#FFFFFF", 
     "json.schemaDownload.enable": false
 }
+
