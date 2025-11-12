@@ -91,8 +91,8 @@ categorize_1_justified_indel <- function(
   all_repeated_seq = mymatch[3]
 
   # indel_str_count_in_ref is the number of times the indel string
-  # appears in the reference sequence. For deletions this must be
-  # >= 1, for insertions it can be 0 times.
+  # appears in the reference sequence prior to the mutations.
+  # Therefore, for deletions this must be >= 1, for insertions it can be 0 times.
   indel_str_count_in_ref = nchar(all_repeated_seq) / ins_or_del_seq_len
   if (ins_or_del == "i") {
     indel_str_count_in_ref = indel_str_count_in_ref - 1
@@ -101,7 +101,6 @@ categorize_1_justified_indel <- function(
   }
 
   stopifnot(indel_str_count_in_ref == floor(indel_str_count_in_ref))
-  indel_str_count_in_ref = as.integer(indel_str_count_in_ref)
 
   post = mymatch[5]
   post_all = paste0(post, mymatch[6])
@@ -114,6 +113,9 @@ categorize_1_justified_indel <- function(
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
       post = ICAMS::revc(mymatch[2]) # pre was already overwritten
     }
+    U_seq = ins_or_del_seq
+    U_seq_count_in_indel_seq = 1
+    R_outside_ins_or_del_seq = nchar(post_all)
   } else {
     # For the Koh et al. 2025 classification we need to see if there
     # are repeats within ins_or_del_seq.  See Fig 2 A from this paper.
@@ -125,13 +127,15 @@ categorize_1_justified_indel <- function(
 
     newpattern = "^(.+?)\\1*$"
     newmatch = stringr::str_match(ins_or_del_seq, newpattern)
-    shortest_prefix = newmatch[1, 2]
+    U_seq = newmatch[1, 2]
 
     # U if from the nomenclature in Koh et al, Fig 2a.
-    U = nchar(shortest_prefix)
+    U = nchar(U_seq)
+    U_seq_count_in_indel_seq = ins_or_del_seq_len / U
+    stopifnot(U_seq_count_in_indel_seq == floor(U_seq_count_in_indel_seq))
 
-    # Is shortest_prefix repeated in post_all?
-    R_match_pattern = paste0("^(?:", shortest_prefix, ")+")
+    # Is U_seq repeated in post_all?
+    R_match_pattern = paste0("^(?:", U_seq, ")+")
     R_match = stringr::str_match(
       paste0(all_repeated_seq, post_all),
       R_match_pattern
@@ -143,18 +147,17 @@ categorize_1_justified_indel <- function(
       browser() # This is a programming error
     }
 
-    R_outside_ins_or_del_seq = R - (ins_or_del_seq_len / U)
+    R_outside_ins_or_del_seq = R - U_seq_count_in_indel_seq
     if (ins_or_del == "i") {
       R = R_outside_ins_or_del_seq
     } else {
       if (R_outside_ins_or_del_seq == 0) {
         # browser()
-        # I think we need to set U to ins_or_del_seq_len and set R to 1 See lines
+        # Do we need to set U to ins_or_del_seq_len and set R to 1?
       }
     }
 
     stopifnot(R == floor(R))
-    R = as.integer(R)
 
     if (ins_or_del == "d") {
       if (indel_str_count_in_ref == 1) {
@@ -172,9 +175,9 @@ categorize_1_justified_indel <- function(
       if (indel_str_count_in_ref == 0) {
         mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
         if (R == 0) {
-          # shortest_prefix can be shorted than ins_or_del_seq, for example
-          # in the insertion ATC|GG|TC where GG is inserted.
-          # Then shortest_prefix is G but ins_or_del_seq is GG.
+          # mh can be shorter than ins_or_del_seq, for example
+          # in the insertion ATC|GG|GTC where GG is inserted.
+          # Then mh is G but ins_or_del_seq is GG.
 
           koh_mh = mh
         }
@@ -186,12 +189,16 @@ categorize_1_justified_indel <- function(
     ins_or_del = ins_or_del,
     pre = pre,
     ins_or_del_seq = ins_or_del_seq,
-    indel_str_count_in_ref = indel_str_count_in_ref,
+    ins_or_del_seq_len = as.integer(ins_or_del_seq_len),
+    indel_str_count_in_ref = as.integer(indel_str_count_in_ref),
     post = post,
-    mh = mh,
-    R = R,
-    U = U,
-    koh_mh = koh_mh
+    mh = as.integer(mh),
+    R = as.integer(R),
+    U = as.integer(U),
+    U_seq = U_seq,
+    U_seq_count_in_indel_seq = as.integer(U_seq_count_in_indel_seq),
+    R_outside_ins_or_del_seq = as.integer(R_outside_ins_or_del_seq),
+    koh_mh = as.integer(koh_mh)
   )
 
   retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
@@ -207,11 +214,15 @@ indel_all_na_return = function(info_string = "Unable_to_categorize") {
     ins_or_del = NA,
     pre = NA,
     ins_or_del_seq = NA,
+    ins_or_del_seq_len = NA,
     indel_str_count_in_ref = NA,
     post = NA,
     mh = NA,
     R = NA,
     U = NA,
+    U_seq = NA,
+    U_seq_count_in_indel_seq = NA,
+    R_outside_ins_or_del_seq = NA,
     koh_mh = NA,
     COSMIC_83 = info_string,
     Koh_89 = info_string,
