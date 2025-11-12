@@ -24,7 +24,7 @@ devtools::load_all()
 
 split_xx = test_indel_categorization()
 s_diffs = which(split_xx$Koh_89 != split_xx$koh_orig_edited)
-View(split_xx[s_diffs, ])
+split_xx[s_diffs, ] -> diff_table
 View(split_xx[s_diffs, ] |> dplyr::filter(!grepl(":M", Koh89.annotate.class)))
 
 ### Check the cases where we both call microhomology but different amounts
