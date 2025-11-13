@@ -1,40 +1,34 @@
-prob_koh_errors = c(
-  89101431, # Empty koh string
-  84228145, # Pretty sure this one is wrong
-  47176946, # pretty sure this is wrong
-  83427584,
-  11662317,
-  24397244, # strong case that this is wrong
-  27832234, # another strong case,
-  231530875,
-  40660992,
-  73401849,
-  184999526,
-  100132569,
-  133647119
-)
-
 source("inst/make_exhuastive_test_cases.R")
-
-repeat_vs_mh_ambiguity = c(109160237, 109711828)
-
-deliberate_changes_from_koh = c(162229603) # This was bad design choice
+library(dplyr)
 
 devtools::load_all()
 split_xx = test_indel_categorization()
 
-dplyr::filter(split_xx, ins_or_del == "i" & U > 1) |>
-  dplyr::select(Koh476.annotate.class) |>
-  View()
-
+filter(split_xx, ins_or_del == "d") -> split_xx
 
 x476diffs = which(split_xx$Koh_476 != split_xx$Koh476.annotate.class)
 length(x476diffs)
-View(split_xx[x476diffs, ])
-View(dplyr::select(split_xx[x476diffs, ], Koh_476, Koh476.annotate.class))
+wdiff = split_xx[x476diffs, ] |>
+  dplyr::select(
+    -prev_COSMIC_83,
+    -COSMIC_83,
+    -koh_orig_edited,
+    -Koh_89,
+    -Koh89.annotate.class
+  )
+View(wdiff)
 
-s_diffs = which(split_xx$Koh_89 != split_xx$koh_orig_edited)
-split_xx[s_diffs, ] -> diff_table
+cosmh = wdiff
+View(cosmh)
+
+kohmh = wdiff
+View(kohmh)
+
+
+# View(dplyr::select(wdiff, Koh_476, Koh476.annotate.class))
+
+###################################3
+
 View(split_xx[s_diffs, ] |> dplyr::filter(!grepl(":M", Koh89.annotate.class)))
 
 ### Check the cases where we both call microhomology but different amounts

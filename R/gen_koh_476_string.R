@@ -1,4 +1,7 @@
 gen_Koh_476_string = function(arglist) {
+  open_interval_format = FALSE
+  fiveplus_str = ifelse(open_interval_format, "(5,)", "(5,9)")
+
   if (arglist$ins_or_del == "d") {
     INS_OR_DEL = "Del"
   } else {
@@ -22,7 +25,11 @@ gen_Koh_476_string = function(arglist) {
       return(paste0("Cannot categorize indel followed by  ", arglist$post))
     }
     # Lines 4 through 183 (insertions) and 244 through 405 (deletions) of Koh et al. sup table 7
-    R_str = ifelse(R >= 9, "9+", as.character(R))
+    R_str = ifelse(
+      R >= 13,
+      ifelse(open_interval_format, "13+", "13"),
+      as.character(R)
+    )
     return(paste0(
       arglist$pre,
       "[",
@@ -37,26 +44,28 @@ gen_Koh_476_string = function(arglist) {
   }
 
   microhom_len = arglist$koh_mh
+  # message("cosmh")
+
+  #  Hyptothesis: If U is 1 koh doesn't call Microhomology, s
 
   if (microhom_len > 0) {
+    # was micohom_len
     if (INS_OR_DEL == "Ins") {
       # Insertion with microhomology
       # Lines 184 and 185
       if (R != 0) {
-        browser() # This should be an error (?)
+        # browser() # This should be an error (?)
       }
-
-      return(
-        paste0(
-          INS_OR_DEL,
-          ifelse(ins_or_del_seq <= 4, "(2,4):M", "(5,):M")
-        )
-      )
+      if (L >= 5) {
+        return("Ins(5,):M")
+      } else {
+        return("Ins(2,4):M")
+      }
     } else {
       # Deletion with microhomology
       # Lines 454 through 474
       if (R != 1) {
-        browser() # This should be an error (?)
+        # browser() # This should be an error (?)
       }
 
       del_mh_str = ifelse(microhom_len >= 6, "(6,)", microhom_len)
@@ -98,37 +107,59 @@ gen_Koh_476_string = function(arglist) {
 
   if (INS_OR_DEL == "Ins") {
     L_str = ifelse(L >= 5, "(5,)", L)
-    R_str = ifelse(R >= 5, "(5,)", R)
+    R_str = ifelse(R >= 5, fiveplus_str, R)
     if (R == 0) {
       if (L >= 5) {
         return("Ins(5,):R0")
       } else {
-        U_str = as.character(U)
+        return(paste0("Ins", L, ":U", U, ":R0"))
       }
     } else {
-      U_str = ifelse(U >= 3, "(3,)", U)
+      if (L >= 5) {
+        U_str = ifelse(U >= 3, "(3,)", U)
+        return(paste0("Ins(5,):U", U_str, ":R", R_str))
+      } else {
+        return(paste0("Ins", L, ":U", U, ":R", R_str))
+      }
     }
   } else {
+    stopifnot(INS_OR_DEL == "Del")
+
+    if (R == 1) {}
+
     L_str = ifelse(L >= 6, "(6,)", L)
-    U_str = ifelse(U >= 4, "(4,)", U)
-    R_str = ifelse(R >= 7, "(7+)", R)
+    U_str = ifelse(U >= 5, "(5,)", U)
+    R_str = ifelse(R >= 5, ifelse(open_interval_format, "(5,)", "(5,9)"), R)
 
     if (L >= 6) {
       if (U == 1) {
-        return("Del(6,):U1:R(7,)")
+        if (open_interval_format) {
+          return("Del(6,):U1:R(7,)")
+        } else {
+          return("Del(6,):U1:R(7,9)")
+        }
       }
       if (U == 2) {
-        return("Del(6,):U2:R(4,)")
+        if (open_interval_format) {
+          return("Del(6,):U2:R(4,)")
+        } else {
+          return("Del(6,):U2:R(4,9)")
+        }
       }
       if (U == 3) {
         return("Del(6,):U3:R(3,)")
       }
       if (U >= 4) {
-        return("Del(6,):U(4,):R(2,)")
+        if (open_interval_format) {
+          return("Del(6,):U(4,):R(2,)")
+        } else {
+          return(("Del(6,):U(4,):R(2,9)"))
+        }
       }
     }
     if (L == 5 && U == 1) {
-      return("Del5:U1:R(6,9)")
+      R_str = ifelse(R >= 5, "(5,9)", R)
+      return(paste0("Del5:U1:R", R_str))
     }
   }
 

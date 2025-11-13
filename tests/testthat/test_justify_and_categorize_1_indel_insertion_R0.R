@@ -1,4 +1,4 @@
-test_that("justify_and_categorize_1_indel", {
+test_that("justify_and_categorize_1_indel_insertion_R0", {
   # the COSMIC-83 string should be "INS:C:1:0" (deletion of 1 C in a "repeat of 0 Cs")
 
   #  AAA[GC]GAA or
