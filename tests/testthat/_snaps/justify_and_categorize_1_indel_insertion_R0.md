@@ -1,4 +1,4 @@
-# justify_and_categorize_1_indel
+# justify_and_categorize_1_indel_insertion_R0
 
     Code
       x1
@@ -12,20 +12,32 @@
       $ins_or_del_seq
       [1] "AA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "A"
+      
+      $U
+      [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 2
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 1
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -57,20 +69,32 @@
       $ins_or_del_seq
       [1] "AAA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 3
+      
+      $U_seq
+      [1] "A"
+      
+      $U
+      [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 3
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 1
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -102,20 +126,32 @@
       $ins_or_del_seq
       [1] "AAAA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 4
+      
+      $U_seq
+      [1] "A"
+      
+      $U
+      [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 4
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 1
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -147,20 +183,32 @@
       $ins_or_del_seq
       [1] "AT"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "AT"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -192,20 +240,32 @@
       $ins_or_del_seq
       [1] "ATC"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 3
+      
+      $U_seq
+      [1] "ATC"
+      
+      $U
+      [1] 3
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 3
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -237,20 +297,32 @@
       $ins_or_del_seq
       [1] "ATAT"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 4
+      
+      $U_seq
+      [1] "AT"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
+      [1] 2
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -282,20 +354,32 @@
       $ins_or_del_seq
       [1] "ATTA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 4
+      
+      $U_seq
+      [1] "ATTA"
+      
+      $U
+      [1] 4
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 4
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -327,20 +411,32 @@
       $ins_or_del_seq
       [1] "AAAAA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 5
+      
+      $U_seq
+      [1] "A"
+      
+      $U
+      [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 5
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 1
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -372,19 +468,31 @@
       $ins_or_del_seq
       [1] "AA"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "A"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "A"
+      
+      $U
       [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 2
+      
+      $indel_str_count_in_ref
+      [1] 0
       
       $R
       [1] 1
       
-      $U
+      $R_outside_ins_or_del_seq
+      [1] 1
+      
+      $mh
       [1] 1
       
       $koh_mh
@@ -417,20 +525,32 @@
       $ins_or_del_seq
       [1] "ATATAT"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 6
+      
+      $U_seq
+      [1] "AT"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
+      [1] 3
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0
@@ -462,20 +582,32 @@
       $ins_or_del_seq
       [1] "ATTATT"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 6
+      
+      $U_seq
+      [1] "ATT"
+      
+      $U
+      [1] 3
+      
+      $U_seq_count_in_indel_seq
+      [1] 2
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 3
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0

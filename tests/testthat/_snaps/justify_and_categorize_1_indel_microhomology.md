@@ -12,20 +12,32 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "GC"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
       [1] 1
+      
+      $indel_str_count_in_ref
+      [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 1
       
       $koh_mh
       [1] 1
@@ -37,7 +49,7 @@
       [1] "Ins(2,4):R0"
       
       $Koh_476
-      [1] "Ins(5,):M"
+      [1] "Ins(2,4):M"
       
       $prev_COSMIC_83
       [1] "INS:repeats:2:0"
@@ -57,20 +69,32 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "GC"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
       [1] 1
+      
+      $indel_str_count_in_ref
+      [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 1
       
       $koh_mh
       [1] 1
@@ -82,7 +106,7 @@
       [1] "Ins(2,4):R0"
       
       $Koh_476
-      [1] "Ins(5,):M"
+      [1] "Ins(2,4):M"
       
       $prev_COSMIC_83
       [1] "INS:repeats:2:0"
@@ -102,20 +126,32 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $indel_str_count_in_ref
-      [1] 1
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "GC"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 1
       
       $R
       [1] 1
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 1
       
       $koh_mh
       [1] 1
@@ -124,7 +160,7 @@
       [1] "DEL:MH:2:1"
       
       $Koh_89
-      [1] "del(2,1):M1"
+      [1] "Del(2,5):M1"
       
       $Koh_476
       [1] "Del2:M1"
@@ -147,20 +183,32 @@
       $ins_or_del_seq
       [1] "GC"
       
-      $indel_str_count_in_ref
-      [1] 1
-      
       $post
       [1] "G"
       
-      $mh
+      $L
+      [1] 2
+      
+      $U_seq
+      [1] "GC"
+      
+      $U
+      [1] 2
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 1
       
       $R
       [1] 1
       
-      $U
-      [1] 2
+      $R_outside_ins_or_del_seq
+      [1] 0
+      
+      $mh
+      [1] 1
       
       $koh_mh
       [1] 1
@@ -169,7 +217,7 @@
       [1] "DEL:MH:2:1"
       
       $Koh_89
-      [1] "del(2,1):M1"
+      [1] "Del(2,5):M1"
       
       $Koh_476
       [1] "Del2:M1"

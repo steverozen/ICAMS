@@ -12,20 +12,32 @@
       $ins_or_del_seq
       [1] "C"
       
-      $indel_str_count_in_ref
-      [1] 0
-      
       $post
       [1] "A"
       
-      $mh
+      $L
+      [1] 1
+      
+      $U_seq
+      [1] "C"
+      
+      $U
+      [1] 1
+      
+      $U_seq_count_in_indel_seq
+      [1] 1
+      
+      $indel_str_count_in_ref
       [1] 0
       
       $R
       [1] 0
       
-      $U
-      [1] 1
+      $R_outside_ins_or_del_seq
+      [1] 3
+      
+      $mh
+      [1] 0
       
       $koh_mh
       [1] 0

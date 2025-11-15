@@ -12,7 +12,8 @@ gen_Koh_476_string = function(arglist) {
   R = arglist$R
 
   ins_or_del_seq = arglist$ins_or_del_seq
-  L = nchar(ins_or_del_seq)
+  L = arglist$L
+  U = arglist$U
 
   if (L == 1) {
     if (!ins_or_del_seq %in% c("A", "C", "G", "T")) {
@@ -42,9 +43,24 @@ gen_Koh_476_string = function(arglist) {
       arglist$post
     ))
   }
+  # arglist$indel_str_count_in_ref
+  if (
+    (INS_OR_DEL == "Del" && arglist$R_outside_ins_or_del_seq == 0) ||
+      ## (INS_OR_DEL == "Del" && arglist$indel_str_count_in_ref == 1) ||
+      (INS_OR_DEL == "Ins" && arglist$indel_str_count_in_ref == 0 && U != 1)
+  ) {
+    microhom_len = arglist$mh
+    message("mh")
 
-  microhom_len = arglist$koh_mh
-  # message("cosmh")
+    if (INS_OR_DEL == "Del") {
+      R = 1
+    } else {
+      R = 0
+    }
+  } else {
+    microhom_len = arglist$koh_mh
+    message("hmh")
+  }
 
   #  Hyptothesis: If U is 1 koh doesn't call Microhomology, s
 
@@ -103,8 +119,6 @@ gen_Koh_476_string = function(arglist) {
 
   # We as assume that for e.g. |ABABA|BABAB we consider U = 5, L = 5, and for insertion R = 0
 
-  U = arglist$U
-
   if (INS_OR_DEL == "Ins") {
     L_str = ifelse(L >= 5, "(5,)", L)
     R_str = ifelse(R >= 5, fiveplus_str, R)
@@ -125,45 +139,64 @@ gen_Koh_476_string = function(arglist) {
   } else {
     stopifnot(INS_OR_DEL == "Del")
 
-    if (R == 1) {}
+    if (R == 1) {
+      L_str = ifelse(L >= 10, "(10,)", L)
+      if (U == 1) {
+        return(paste0("Del", L_str, ":U1:R1"))
+      } else {
+        return(paste0("Del", L_str, ":U(2,):R1"))
+      }
+    }
 
-    L_str = ifelse(L >= 6, "(6,)", L)
+    if (L %in% 2:4) {
+      R_str = ifelse(R >= 5, fiveplus_str, R)
+      return(paste0("Del", L, ":U", U, ":R", R_str))
+    }
+
+    if (L == 5) {
+      if (U == 1) {
+        if (R < 5) {
+          return(paste0("*Del5:U1:R", R))
+        }
+        return("Del5:U1:R(5,9)")
+      } else {
+        R_str = ifelse(R >= 5, fiveplus_str, R)
+        return(paste0("Del", L, ":U", U, ":R", R_str))
+      }
+    }
+
+    stopifnot(L >= 6)
     U_str = ifelse(U >= 5, "(5,)", U)
     R_str = ifelse(R >= 5, ifelse(open_interval_format, "(5,)", "(5,9)"), R)
 
-    if (L >= 6) {
-      if (U == 1) {
-        if (open_interval_format) {
-          return("Del(6,):U1:R(7,)")
-        } else {
-          return("Del(6,):U1:R(7,9)")
-        }
-      }
-      if (U == 2) {
-        if (open_interval_format) {
-          return("Del(6,):U2:R(4,)")
-        } else {
-          return("Del(6,):U2:R(4,9)")
-        }
-      }
-      if (U == 3) {
-        return("Del(6,):U3:R(3,)")
-      }
-      if (U >= 4) {
-        if (open_interval_format) {
-          return("Del(6,):U(4,):R(2,)")
-        } else {
-          return(("Del(6,):U(4,):R(2,9)"))
-        }
+    if (U == 1) {
+      if (open_interval_format) {
+        return("Del(6,):U1:R(7,)")
+      } else {
+        return("Del(6,):U1:R(7,9)")
       }
     }
-    if (L == 5 && U == 1) {
-      R_str = ifelse(R >= 5, "(5,9)", R)
-      return(paste0("Del5:U1:R", R_str))
+    if (U == 2) {
+      if (open_interval_format) {
+        return("Del(6,):U2:R(4,)")
+      } else {
+        return("Del(6,):U2:R(4,9)")
+      }
+    }
+    if (U == 3) {
+      if (open_interval_format) {
+        return("Del(6,):U3:R(3,)")
+      } else {
+        return("Del(6,):U3:R(3,9)")
+      }
+    }
+    if (U >= 4) {
+      if (open_interval_format) {
+        return("Del(6,):U(4,):R(2,)")
+      } else {
+        return(("Del(6,):U(4,):R(2,9)"))
+      }
     }
   }
-
-  # Del(6,):U2:R(4,9)
-
-  paste0(INS_OR_DEL, L_str, ":U", U_str, ":R", R_str)
+  stop("Should not get here: programming error")
 }
