@@ -8,6 +8,8 @@ ICAMS (In-depth Characterization and Analysis of Mutational Signatures) is an R 
 
 **Key publications**: Boot et al., Genome Research 2018 & 2020
 
+**Current active branch**: v3.0.11-branch (development on version 3.0.12)
+
 ## Development Commands
 
 ### Building and Testing
@@ -71,19 +73,24 @@ Always use `as.catalog()` to ensure proper attribute assignment. Never manually 
 
 ### Module Organization
 
-The R/ directory contains ~15K lines organized by functionality:
+The R/ directory contains ~16.5K lines organized by functionality:
 
-- **VCF_to_catalog_functions.R** (3,386 lines): Core VCF parsing and catalog creation
-- **plot.R** (2,059 lines): All visualization with S3 method dispatch
-- **shiny_related_functions.R** (2,301 lines): Interactive visualization
+- **VCF_to_catalog_functions.R** (3,994 lines): Core VCF parsing and catalog creation
+- **shiny_related_functions.R** (2,150 lines): Interactive visualization
 - **utility_functions.R** (2,261 lines): Catalog transformation, collapsing, manipulation
-- **ID_functions.R** (803 lines): Indel classification (microhomology, repeat detection)
+- **plot.R** (2,059 lines): All visualization with S3 method dispatch
+- **ID_functions.R** (837 lines): Indel classification (microhomology, repeat detection)
 - **infer_catalog_format.R** (600 lines): Auto-detect catalog formats
 - **other_catalog_formats.R** (493 lines): SigProfiler/COSMIC format support
 - **chromosome_name_functions.R** (489 lines): Standardize chromosome naming
 - **sequence_context_functions.R** (462 lines): Extract sequence context from VCFs
 - **strandbias_functions.R** (404 lines): Transcriptional strand bias analysis
 - **read_write_catalog.R** (244 lines): Catalog I/O
+- **categorize_1_justified_indel.R** (232 lines): Koh indel categorization
+- **gen_koh_476_string.R** (202 lines): Generate Koh 476-category strings
+- **gen_koh_89_string.R** (176 lines): Generate Koh 89-category strings
+- **justify_id_vcf.R** (237 lines): Justify indel positions
+- **justify_and_categorize_1_indel.R** (159 lines): Combined justification and categorization
 
 ### VCF Processing Pipeline
 
@@ -133,6 +140,10 @@ Methods implemented: `PlotCatalog`, `PlotCatalogToPdf`, `WriteCatalog`, `[` (sub
 
 ## Indel Classification System
 
+ICAMS supports multiple indel classification schemes:
+
+### COSMIC 83-Category System (Original)
+
 The ID (insertion/deletion) classification is algorithmically complex:
 
 1. **`FindMaxRepeatDel()`**: Count tandem repeat units in deletion context
@@ -153,6 +164,20 @@ Examples:
 - `DEL:repeats:3:2` = 3bp deletion in 2 repeats
 - `DEL:MH:5:3` = 5bp deletion with 3bp microhomology
 - `INS:A:1:0` = 1bp insertion of A, no repeats
+
+### Koh Classification Systems (New Development)
+
+Two additional, more granular classification schemes based on Koh et al.:
+
+1. **Koh 89 categories** (`gen_koh_89_string.R`): Medium-resolution classification
+2. **Koh 476 categories** (`gen_koh_476_string.R`): High-resolution classification
+
+These systems consider additional factors:
+- Preceding and following bases
+- Repeat unit count (R) with finer binning
+- Different treatment for insertions vs deletions
+
+**Indel justification**: Before classification, indels must be "justified" (canonically positioned) using `justify_indel()` and related functions. This ensures consistent classification for indels that can be represented in multiple ways within repeat sequences.
 
 ## Reference Genome Management
 
@@ -227,7 +252,7 @@ Implementation: `parallel::mclapply()` on Unix-like systems (Linux, macOS)
 
 ## Testing Conventions
 
-- **63 test files** in `tests/testthat/`
+- **68 test files** in `tests/testthat/`
 - Each catalog type has dedicated tests for plotting, I/O, transformations
 - Test data: `tests/testthat/testdata/` (VCFs, catalogs, expected outputs)
 - Regression tests compare against saved `.csv` files
@@ -243,10 +268,23 @@ Implementation: `parallel::mclapply()` on Unix-like systems (Linux, macOS)
 
 ## Version and Branch Strategy
 
-- Current version: **3.0.11** (see DESCRIPTION)
+- Current version: **3.0.12** (see DESCRIPTION)
 - Active branch: **v3.0.11-branch**
 - CRAN releases use version-tagged branches
 - Main development typically on version branches, not master
+
+## Development Files in inst/
+
+The `inst/` directory contains experimental and testing code for indel classification development:
+
+- **are_mappings_unique.R**: Verify uniqueness of indel category mappings
+- **koh_checking.R**: Validation of Koh classification system
+- **generate_canonicalize_tests.R**: Generate test cases for indel canonicalization
+- **make_exhuastive_test_cases.R**: Create comprehensive test suites
+- **check_indel_M.R**: Check indel microhomology calculations
+- **koh.code.notes.txt**: Development notes on Koh classification implementation
+
+These files are for development reference and testing, not part of the package API.
 
 ## Common Pitfalls
 
@@ -261,4 +299,4 @@ Implementation: `parallel::mclapply()` on Unix-like systems (Linux, macOS)
 
 If adding features that should be cited, follow format in README:
 
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2025). ICAMS: In-depth Characterization and Analysis of Mutational Signatures. R package version 3.0.11, https://CRAN.R-project.org/package=ICAMS.
+> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2025). ICAMS: In-depth Characterization and Analysis of Mutational Signatures. R package version 3.0.12, https://CRAN.R-project.org/package=ICAMS.

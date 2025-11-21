@@ -11,3 +11,4 @@
 ^CLAUDE.md$
 ^docs$
 ^AGENTS.md$
+^[.]?air[.]toml$

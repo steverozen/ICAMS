@@ -56,8 +56,9 @@
         "panelTitle.activeBorder": "#800080" // Alternative propert
     },
         "[r]": {
-        "editor.formatOnSave": true
-    },
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "Posit.air-vscode"
+        },
     "peacock.color": "#1857a4",
     "windowColor.mainColor": "#4c5376",
     "window.title": "${folderPath}",
@@ -71,6 +72,10 @@
     //"terminal.foreground": "#110101ff",
     //"console.foreground": "#110101ff",
     "activityBar.foreground": "#FFFFFF", 
-    "json.schemaDownload.enable": false
+    "json.schemaDownload.enable": false,
+    "[quarto]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "quarto.quarto"
+    }
 }
 

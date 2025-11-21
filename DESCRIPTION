@@ -64,6 +64,7 @@ Imports: Biostrings,
     zip
 Depends: R (>= 3.5),
 RoxygenNote: 7.3.3
+Roxygen: list(markdown = TRUE)
 Suggests: 
     BSgenome.Hsapiens.1000genomes.hs37d5,
     BSgenome.Hsapiens.UCSC.hg38,
