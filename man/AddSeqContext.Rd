@@ -17,7 +17,7 @@ extracted around the mutated position from \code{ref.genome}. The default value 
 }
 \value{
 A copy of the input data.frame with a new column added
-    that contains sequence context information.
+that contains sequence context information.
 }
 \description{
 Add sequence context to a data frame with mutation records

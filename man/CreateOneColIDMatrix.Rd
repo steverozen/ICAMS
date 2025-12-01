@@ -2,7 +2,7 @@
 % Please edit documentation in R/ID_functions.R
 \name{CreateOneColIDMatrix}
 \alias{CreateOneColIDMatrix}
-\title{Create one column of the matrix for an indel catalog from *one* in-memory VCF.}
+\title{Create one column of the matrix for an indel catalog from \emph{one} in-memory VCF.}
 \usage{
 CreateOneColIDMatrix(
   ID.vcf,
@@ -13,16 +13,16 @@ CreateOneColIDMatrix(
 }
 \arguments{
 \item{ID.vcf}{An in-memory VCF as a data.frame annotated by the
-  \code{\link{AnnotateIDVCF}} function. It must only
-  contain indels and must \strong{not} contain SBSs
-  (single base substitutions), DBSs, or triplet
-  base substitutions, etc.
+\code{\link{AnnotateIDVCF}} function. It must only
+contain indels and must \strong{not} contain SBSs
+(single base substitutions), DBSs, or triplet
+base substitutions, etc.
 
-  One design decision for variant callers is the representation of "complex
-  indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
-  A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
-  arise. In PCAWG, overlapping indel/SBS calls from different callers were
-  included in the indel VCFs.}
+One design decision for variant callers is the representation of "complex
+indels", e.g. mutations e.g. CAT > GC. Some callers represent this as C>G,
+A>C, and T>_. Others might represent it as CAT > CG. Multiple issues can
+arise. In PCAWG, overlapping indel/SBS calls from different callers were
+included in the indel VCFs.}
 
 \item{SBS.vcf}{This argument defaults to \code{NULL} and
 is not used. Ideally this should be an in-memory SBS VCF
@@ -33,13 +33,13 @@ SBSs.}
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
 \description{
-Create one column of the matrix for an indel catalog from *one* in-memory VCF.
+Create one column of the matrix for an indel catalog from \emph{one} in-memory VCF.
 }
 \section{Value}{
  A list of two 1-column ID matrices containing the mutation catalog
-  information and the annotated VCF with ID categories information added. If
-  some ID variants were excluded in the analysis, an additional element
-  \code{discarded.variants} will appear in the return list.
+information and the annotated VCF with ID categories information added. If
+some ID variants were excluded in the analysis, an additional element
+\code{discarded.variants} will appear in the return list.
 }
 
 \keyword{internal}

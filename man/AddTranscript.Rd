@@ -20,7 +20,7 @@ transcript range and strand information. Please refer to
 }
 \value{
 A data frame with new columns added to the input data frame,
-    which contain the mutated gene's name, range and strand information.
+which contain the mutated gene's name, range and strand information.
 }
 \description{
 Add transcript information to a data frame with mutation records

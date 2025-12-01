@@ -12,7 +12,7 @@ FindMaxRepeatDel(context, rep.unit.seq, pos)
 
 \item{rep.unit.seq}{A substring of \code{context} at \code{pos}
 to \code{pos + nchar(rep.unit.seq) - 1}, which is the repeat
- unit sequence.}
+unit sequence.}
 
 \item{pos}{The position of \code{rep.unit.seq} in \code{context}.}
 }
@@ -33,11 +33,11 @@ returns 0.
 
 If
 \code{substr(context, pos, pos + nchar(rep.unit.seq) - 1) != rep.unit.seq}
- then stop.
+then stop.
 
 If this functions returns 0, then it is necessary to
-  look for microhomology using the function
-  \code{\link{FindDelMH}}.
+look for microhomology using the function
+\code{\link{FindDelMH}}.
 
 \strong{Warning}\cr
 This function depends on the variant caller having
@@ -49,7 +49,7 @@ For example, a deletion of \code{CAG} in the repeat
 GTCAGCAGCATGT
 }
 can have 3 "aligned" representations as follows:
- \preformatted{
+\preformatted{
 CT---CAGCAGGT
 CTCAG---CAGGT
 CTCAGCAG---GT
@@ -59,7 +59,7 @@ not that the return value does not include the
 \code{rep.uni.seq} in the count.)
 
 However, the same deletion can also have an "unaligned" representation, such as
- \preformatted{
+\preformatted{
 CTCAGC---AGGT
 }
 (a deletion of \code{AGC}).

@@ -15,9 +15,9 @@ AnnotateSBSVCF(SBS.vcf, ref.genome, trans.ranges = NULL, name.of.VCF = NULL)
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link[BSgenome]{BSgenome}} object
 \enumerate{
-  \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-  \item \code{BSgenome.Hsapiens.UCSC.hg38}
-  \item \code{BSgenome.Mmusculus.UCSC.mm10}
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{BSgenome.Mmusculus.UCSC.mm10}
 }
 then the function will infer \code{trans.ranges} automatically. Otherwise,
 user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -29,12 +29,12 @@ information.}
 }
 \value{
 An in-memory SBS VCF as a \code{data.table}. This has been annotated
-  with the sequence context (column name \code{seq.21bases}) and with
-  transcript information in the form of a gene symbol (e.g. \code{"TP53"})
-  and transcript strand. This information is in the columns
-  \code{trans.start.pos}, \code{trans.end.pos} , \code{trans.strand},
-  \code{trans.Ensembl.gene.ID} and \code{trans.gene.symbol} in the output.
-  These columns are not added if \code{is.null(trans.ranges)}.
+with the sequence context (column name \code{seq.21bases}) and with
+transcript information in the form of a gene symbol (e.g. \code{"TP53"})
+and transcript strand. This information is in the columns
+\code{trans.start.pos}, \code{trans.end.pos} , \code{trans.strand},
+\code{trans.Ensembl.gene.ID} and \code{trans.gene.symbol} in the output.
+These columns are not added if \code{is.null(trans.ranges)}.
 }
 \description{
 Add sequence context and transcript information to an in-memory SBS VCF

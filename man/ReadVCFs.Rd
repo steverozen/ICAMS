@@ -65,8 +65,8 @@ and read depth will be NAs.}
 }
 \value{
 A list of data frames storing data lines of the VCF files with two
-  additional columns added which contain the VAF(variant allele frequency)
-  and read depth information.
+additional columns added which contain the VAF(variant allele frequency)
+and read depth information.
 }
 \description{
 Read VCF files

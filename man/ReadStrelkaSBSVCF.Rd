@@ -19,8 +19,8 @@ Read in the data lines of an SBS VCF created by Strelka version 1
 }
 \section{Value}{
  A data frame storing data lines of a VCF file with two
-  additional columns added which contain the VAF(variant allele frequency)
-  and read depth information.
+additional columns added which contain the VAF(variant allele frequency)
+and read depth information.
 }
 
 \keyword{internal}

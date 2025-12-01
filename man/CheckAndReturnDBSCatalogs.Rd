@@ -25,7 +25,7 @@ CheckAndReturnDBSCatalogs(
 }
 \value{
 A list of DBS catalogs. Also return the discarded variants and
-  annotated VCFs if they exit.
+annotated VCFs if they exit.
 }
 \description{
 Check and return DBS catalogs

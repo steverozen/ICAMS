@@ -12,7 +12,7 @@ with 5 base pairs.}
 }
 \value{
 A numeric vector whose names indicate 512 different types of 5 base
-  pairs combinations while its values indicate the occurrences of each type.
+pairs combinations while its values indicate the occurrences of each type.
 }
 \description{
 Create pentanucleotide abundance

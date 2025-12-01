@@ -34,7 +34,7 @@ immediately preceding and following bases).
 to an SBS 96 catalog.
 
 \code{Collapse1536CatalogTo96} Collapse an SBS 1536 catalog
- to an SBS 96 catalog.
+to an SBS 96 catalog.
 
 \code{Collapse144CatalogTo78} Collapse a DBS 144 catalog
 to a DBS 78 catalog.

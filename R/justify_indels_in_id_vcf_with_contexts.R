@@ -17,7 +17,7 @@
 #' genomic position POS corresponds to position (seq.context.width + 1) in seq.context.
 #'
 #' For example, if seq.context was extracted from genomic positions
-#' [POS - seq.context.width, POS + var.width + seq.context.width], then after
+#' (POS - seq.context.width, POS + var.width + seq.context.width), then after
 #' justification by shift S:
 #' \itemize{
 #'   \item seq.context remains unchanged

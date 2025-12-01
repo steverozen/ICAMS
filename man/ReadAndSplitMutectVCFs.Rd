@@ -56,7 +56,7 @@ file <- c(system.file("extdata/Mutect-vcf",
                       "Mutect.GRCh37.s1.vcf",
                       package = "ICAMS"))
 list.of.vcfs <- ReadAndSplitMutectVCFs(file)
-}  
+}
 }
 \seealso{
 \code{\link{MutectVCFFilesToCatalog}}

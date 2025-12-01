@@ -37,7 +37,7 @@ represented in the catalog. The additional class is one of
 \item \code{SBS96Catalog} (strand-agnostic single base substitutions in
 trinucleotide context)
 \item \code{SBS192Catalog} (transcription-stranded single-base substitutions
- in trinucleotide context)
+in trinucleotide context)
 \item \code{SBS1536Catalog}
 \item \code{DBS78Catalog}
 \item \code{DBS144Catalog}
@@ -56,9 +56,9 @@ indicated by the attribute \code{catalog.type}:
 \item Matrix of mutation counts (one column per sample), representing
 (counts-based) mutational spectra (\code{catalog.type = "counts"}).
 
-\item Matrix of mutation **densities**, i.e. mutations per occurrences
- of source sequences (one column per sample), representing
- (density-based) mutational spectra (\code{catalog.type = "density"}).
+\item Matrix of mutation \strong{densities}, i.e. mutations per occurrences
+of source sequences (one column per sample), representing
+(density-based) mutational spectra (\code{catalog.type = "density"}).
 
 \item Matrix of mutational signatures, which
 are similar to spectra. However where spectra consist of
@@ -69,10 +69,10 @@ the proportions of mutations in each class (with all the
 proportions summing to 1). A mutational signature can be based
 on either:
 \itemize{
-  \item mutation counts (a "counts-based mutational signature",
-  \code{catalog.type = "counts.signature"}), or
-  \item mutation densities (a "density-based mutational signature",
-  \code{catalog.type = "density.signature"}).
+\item mutation counts (a "counts-based mutational signature",
+\code{catalog.type = "counts.signature"}), or
+\item mutation densities (a "density-based mutational signature",
+\code{catalog.type = "density.signature"}).
 }
 }
 
@@ -91,7 +91,6 @@ function arguments \code{region}, \code{ref.genome},
 and \code{catalog.type}.
 Otherwise abundances can be provided as an \code{abundance} argument.
 See \code{\link{all.abundance}} for examples.
-
 
 Possible values for
 \code{region} are the strings \code{genome}, \code{transcript},
@@ -116,31 +115,38 @@ work properly.
 
 \section{Creating catalogs from variant call files (VCF files)}{
 
-* \code{\link{VCFsToCatalogs}} creates 3 SBS catalogs (96, 192, 1536), 3
+\itemize{
+\item \code{\link{VCFsToCatalogs}} creates 3 SBS catalogs (96, 192, 1536), 3
 DBS catalogs (78, 136, 144) and ID (small insertions and deletions) catalog
 from the VCFs.
+}
 }
 
 \section{Plotting catalogs}{
 
-* \code{\link{PlotCatalog}} function plots mutational spectra
+\itemize{
+\item \code{\link{PlotCatalog}} function plots mutational spectra
 for \strong{one} sample or plot \strong{one} mutational signature.
-
-* \code{\link{PlotCatalogToPdf}}
+\item \code{\link{PlotCatalogToPdf}}
 function plots catalogs of mutational spectra or
 of mutational signatures to a PDF file.
+}
 }
 
 \section{Wrapper function to create catalogs from VCFs and plot the catalogs to PDF files}{
 
-* \code{\link{VCFsToCatalogsAndPlotToPdf}} creates all types of SBS, DBS
+\itemize{
+\item \code{\link{VCFsToCatalogsAndPlotToPdf}} creates all types of SBS, DBS
 and ID catalogs from VCFs and plots the catalogs.
+}
 }
 
 \section{Wrapper function to create a zip file which contains catalogs and plot PDFs from VCF files}{
 
-* \code{\link{VCFsToZipFile}} creates a zip file which contains SBS, DBS
+\itemize{
+\item \code{\link{VCFsToZipFile}} creates a zip file which contains SBS, DBS
 and ID catalogs and plot PDFs from VCF files.
+}
 }
 
 \section{The \code{ref.genome} (reference genome) argument}{
@@ -155,19 +161,19 @@ provides this.
 
 \code{ref.genome} must be one of
 \enumerate{
-  \item A variable from the Bioconductor \code{\link[BSgenome]{BSgenome}} package
-  that contains a particular reference genome, for example
-  \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
+\item A variable from the Bioconductor \code{\link[BSgenome]{BSgenome}} package
+that contains a particular reference genome, for example
+\code{BSgenome.Hsapiens.1000genomes.hs37d5}.
 
- \item The strings \code{"hg38"} or \code{"GRCh38"}, which specify
- \code{BSgenome.Hsapiens.UCSC.hg38}.
- \item The strings \code{"hg19"} or \code{"GRCh37"},
- which specify
- \code{BSgenome.Hsapiens.1000genomes.hs37d5}.
- \item The strings \code{"mm10"} or \code{"GRCm38"},
- which specify
- \code{BSgenome.Mmusculus.UCSC.mm10}.
- }
+\item The strings \code{"hg38"} or \code{"GRCh38"}, which specify
+\code{BSgenome.Hsapiens.UCSC.hg38}.
+\item The strings \code{"hg19"} or \code{"GRCh37"},
+which specify
+\code{BSgenome.Hsapiens.1000genomes.hs37d5}.
+\item The strings \code{"mm10"} or \code{"GRCm38"},
+which specify
+\code{BSgenome.Mmusculus.UCSC.mm10}.
+}
 
 All needed reference genomes must be installed separately by the user.
 Further instructions are at \cr
@@ -180,19 +186,23 @@ unless the user also creates the necessary abundance vectors.
 See \code{\link{all.abundance}}.
 
 Use \code{\link[BSgenome]{available.genomes}()}
- to get the list of available genomes.
+to get the list of available genomes.
 }
 
 \section{Writing catalogs to files}{
 
-* \code{\link{WriteCatalog}} function
+\itemize{
+\item \code{\link{WriteCatalog}} function
 writes a catalog to a file.
+}
 }
 
 \section{Reading catalogs}{
 
-* \code{\link{ReadCatalog}} function
+\itemize{
+\item \code{\link{ReadCatalog}} function
 reads a file that contains a catalog in standardized format.
+}
 }
 
 \section{Transforming catalogs}{
@@ -258,7 +268,7 @@ immediately preceding and following bases).
 
 \section{Data}{
 
- \enumerate{
+\enumerate{
 
 \item \code{\link{CatalogRowOrder}} Standard order of rownames in a catalog.
 The rownames encode the type of each mutation. For example, for SBS96
@@ -273,8 +283,7 @@ for mutations.
 \item \code{\link{GeneExpressionData}} Example gene expression data from two
 cell lines.
 
- }
-
+}
 
 "_PACKAGE"
 }

@@ -18,13 +18,13 @@ which case the \code{alt} allele woult be "A"}
 \item{alt}{Vector of alternative alleles.}
 
 \item{pos}{Vector of the positions of the insertions and deletions in
- \code{context}. This is the position of the unaltered allele shared
+\code{context}. This is the position of the unaltered allele shared
 by \code{ref} and \code{alt}. So in 1-based indexing, it is the
 position just before the insertion or the deletion.}
 }
 \value{
 A vector of strings that are the canonical representations
- of the given insertions and deletions.
+of the given insertions and deletions.
 }
 \description{
 Determine the mutation types of insertions and deletions.

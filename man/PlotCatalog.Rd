@@ -27,7 +27,7 @@ rownames taken from the element names of the \code{vector} and with column
 name \code{"Unknown"}.}
 
 \item{plot.SBS12}{Only meaningful for class \code{SBS192Catalog}; if \code{TRUE},
-generate an abbreviated plot of only SBS without context, i.e. 
+generate an abbreviated plot of only SBS without context, i.e.
 C>A, C>G, C>T, T>A, T>C, T>G each on transcribed and untranscribed strands,
 rather than SBS in trinucleotide context, e.g.
 ACA > AAA, ACA > AGA, ..., TCT > TAT, ... There are 12 bars in the graph.}
@@ -43,7 +43,7 @@ the names of major mutation class on top of graph. Only implemented for
 SBS96Catalog, DBS78Catalog, IndelCatalog, ID166Catalog.}
 
 \item{xlabels}{A logical value indicating whether to draw x axis labels. Only
-implemented for SBS96Catalog, DBS78Catalog, IndelCatalog, ID166Catalog. 
+implemented for SBS96Catalog, DBS78Catalog, IndelCatalog, ID166Catalog.
 If \code{FALSE} then plot x axis tick marks for SBS96Catalog; set
 \code{par(tck = 0)} to suppress.}
 
@@ -55,14 +55,14 @@ IndelCatalog, ID166Catalog.}
 }
 \value{
 An \strong{invisible} list whose first element is a logic value
-  indicating whether the plot is successful. For \code{SBS96Catalog},
-  \code{SBS192Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog} and
-  \code{IndelCatalog}, the list will have a second element, which is a
-  numeric vector giving the coordinates of all the bar midpoints drawn,
-  useful for adding to the graph. For \strong{SBS192Catalog} with "counts"
-  catalog.type and non-NULL abundance and \code{plot.SBS12 = TRUE}, the list
-  will have an additional element which is a list containing the strand bias
-  statistics.
+indicating whether the plot is successful. For \code{SBS96Catalog},
+\code{SBS192Catalog}, \code{DBS78Catalog}, \code{DBS144Catalog} and
+\code{IndelCatalog}, the list will have a second element, which is a
+numeric vector giving the coordinates of all the bar midpoints drawn,
+useful for adding to the graph. For \strong{SBS192Catalog} with "counts"
+catalog.type and non-NULL abundance and \code{plot.SBS12 = TRUE}, the list
+will have an additional element which is a list containing the strand bias
+statistics.
 }
 \description{
 Plot the spectrum of \strong{one} sample or plot \strong{one} signature. The
@@ -72,17 +72,17 @@ catalog and then do the plotting.
 }
 \note{
 The sizes of repeats involved in deletions range from 0 to 5+ in the
-  mutational-spectra and signature catalog rownames, but for plotting and
-  end-user documentation deletion repeat sizes range from 1 to 6+.
+mutational-spectra and signature catalog rownames, but for plotting and
+end-user documentation deletion repeat sizes range from 1 to 6+.
 }
 \section{Comments}{
  For \strong{SBS192Catalog} with "counts" catalog.type and
-  non-NULL abundance and \code{plot.SBS12 = TRUE}, the strand bias statistics
-  are Benjamini-Hochberg q-values based on two-sided binomial tests of the
-  mutation counts on the transcribed and untranscribed strands relative to
-  the actual abundances of C and T on the transcribed strand. On the SBS12
-  plot, asterisks indicate q-values as follows *, \eqn{Q<0.05}; **,
-  \eqn{Q<0.01}; ***, \eqn{Q<0.001}.
+non-NULL abundance and \code{plot.SBS12 = TRUE}, the strand bias statistics
+are Benjamini-Hochberg q-values based on two-sided binomial tests of the
+mutation counts on the transcribed and untranscribed strands relative to
+the actual abundances of C and T on the transcribed strand. On the SBS12
+plot, asterisks indicate q-values as follows *, \eqn{Q<0.05}; **,
+\eqn{Q<0.01}; ***, \eqn{Q<0.001}.
 }
 
 \examples{

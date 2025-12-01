@@ -20,19 +20,17 @@ except those on chromosomes with names that contain strings "GL", "KI",
 }
 \value{
 A list with 3 in-memory VCFs and discarded variants that were not
-  incorporated into the first 3 VCFs:
-
- * \code{SBS}: VCF with only single base substitutions.
-
- * \code{DBS}: VCF with only doublet base substitutions
-  as called by Mutect.
-
- * \code{ID}: VCF with only small insertions and deletions.
-
- * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
- that were excluded from the analysis. See the added extra column
- \code{discarded.reason} for more details.
- @md
+incorporated into the first 3 VCFs:
+\itemize{
+\item \code{SBS}: VCF with only single base substitutions.
+\item \code{DBS}: VCF with only doublet base substitutions
+as called by Mutect.
+\item \code{ID}: VCF with only small insertions and deletions.
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are variants
+that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
+@md
+}
 }
 \description{
 Split a mutect2 VCF into SBS, DBS, and ID VCFs, plus a list of other mutations

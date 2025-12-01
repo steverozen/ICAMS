@@ -9,12 +9,12 @@ AddDBSClass(vcf)
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
 transcript information by function \code{\link{AnnotateDBSVCF}}. It must
-*not* contain indels and must *not* contain SBS (single base
+\emph{not} contain indels and must \emph{not} contain SBS (single base
 substitutions), or triplet base substitutions etc.}
 }
 \value{
 The original \code{vcf} with three additional columns
-  \code{DBS78.class}, \code{DBS136.class} and \code{DBS144.class} added.
+\code{DBS78.class}, \code{DBS136.class} and \code{DBS144.class} added.
 }
 \description{
 Add DBS mutation class to an annotated DBS VCF

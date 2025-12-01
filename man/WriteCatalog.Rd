@@ -23,8 +23,8 @@ See also \code{\link{ReadCatalog}}.
 }
 \note{
 In ID (small insertions and deletions) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation
-  deletion repeat sizes range from 1 to 6+.
+range from 0 to 5+, but for plotting and end-user documentation
+deletion repeat sizes range from 1 to 6+.
 }
 \examples{
 file <- system.file("extdata",

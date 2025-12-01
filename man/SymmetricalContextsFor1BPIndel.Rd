@@ -11,7 +11,7 @@ SymmetricalContextsFor1BPIndel(annotated.vcf, indel.class, flank.length = 5)
 \item{annotated.vcf}{An in-memory \code{data.frame} or similar table
 containing "VCF" (variant call format) data as created by
 \code{\link{VCFsToIDCatalogs}}
- with argument \code{return.annotated.vcfs = TRUE}.}
+with argument \code{return.annotated.vcfs = TRUE}.}
 
 \item{indel.class}{A single character string that denotes a 1 base pair
 insertion or deletion, as taken from \code{ICAMS::catalog.row.order$ID}.

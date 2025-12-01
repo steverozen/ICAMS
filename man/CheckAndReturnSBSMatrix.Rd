@@ -17,7 +17,7 @@ CheckAndReturnSBSMatrix(
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
 transcript information by function \code{\link{AnnotateSBSVCF}}. It must
-*not* contain indels and must *not* contain DBS (double base
+\emph{not} contain indels and must \emph{not} contain DBS (double base
 substitutions), or triplet base substitutions etc., even if encoded as
 neighboring SBS.}
 
@@ -41,14 +41,14 @@ Check and return the SBS mutation matrix
 }
 \section{Value}{
  A list of three 1-column matrices with the names
-  \code{catSBS96}, \code{catSBS192}, \code{catSBS1536}. If transcript
-  information is not available in \code{vcf}, \code{catSBS192} is not
-  generated. Do not rely on the order of elements in the list. If
-  \code{return.annotated.vcf} = TRUE, another element \code{annotated.vcf}
-  will appear in the list. If there are SBS variants whose pentanucleotide
-  context contains "N", they will be excluded in the analysis and an
-  additional element \code{discarded.variants} will appear in the return
-  list.
+\code{catSBS96}, \code{catSBS192}, \code{catSBS1536}. If transcript
+information is not available in \code{vcf}, \code{catSBS192} is not
+generated. Do not rely on the order of elements in the list. If
+\code{return.annotated.vcf} = TRUE, another element \code{annotated.vcf}
+will appear in the list. If there are SBS variants whose pentanucleotide
+context contains "N", they will be excluded in the analysis and an
+additional element \code{discarded.variants} will appear in the return
+list.
 }
 
 \keyword{internal}

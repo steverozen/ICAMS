@@ -11,7 +11,7 @@ StandardChromName(df)
 }
 \value{
 A data frame whose Chromosome names are only in the form of 1:22, "X"
-  and "Y".
+and "Y".
 }
 \description{
 Standardize the chromosome name annotations for a data frame.

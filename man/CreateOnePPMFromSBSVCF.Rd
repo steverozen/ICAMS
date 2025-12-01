@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequence_context_functions.R
 \name{CreateOnePPMFromSBSVCF}
 \alias{CreateOnePPMFromSBSVCF}
-\title{Create position probability matrix (PPM) for *one* sample from
+\title{Create position probability matrix (PPM) for \emph{one} sample from
 a Variant Call Format (VCF) file.}
 \usage{
 CreateOnePPMFromSBSVCF(vcf, ref.genome, seq.context.width)
@@ -21,7 +21,7 @@ extracted around the mutated position from \code{ref.genome}.}
 A position probability matrix (PPM).
 }
 \description{
-Create position probability matrix (PPM) for *one* sample from
+Create position probability matrix (PPM) for \emph{one} sample from
 a Variant Call Format (VCF) file.
 }
 \keyword{internal}

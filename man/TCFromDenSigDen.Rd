@@ -2,13 +2,13 @@
 % Please edit documentation in R/utility_functions.R
 \name{TCFromDenSigDen}
 \alias{TCFromDenSigDen}
-\title{density -> <anything>
+\title{density -> \if{html}{\out{<anything>}}
 density.signature -> density.signature, counts.signature}
 \usage{
 TCFromDenSigDen(s, t)
 }
 \description{
-density -> <anything>
+density -> \if{html}{\out{<anything>}}
 density.signature -> density.signature, counts.signature
 }
 \keyword{internal}

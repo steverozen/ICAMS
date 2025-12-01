@@ -102,5 +102,5 @@ file <- c(system.file("extdata/Strelka-ID-vcf",
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
   catID <- StrelkaIDVCFFilesToCatalog(file, ref.genome = "hg19",
                                       region = "genome")}
-}                                      
+}
 }

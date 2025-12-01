@@ -9,9 +9,9 @@
 \title{Transcript ranges data}
 \format{
 A \code{\link[data.table]{data.table}} which contains transcript
-  range and strand information for a particular reference genome.
-  \code{colname}s are \code{chrom}, \code{start}, \code{end}, \code{strand},
-  \code{Ensembl.gene.ID}, \code{gene.symbol}. It uses one-based coordinates.
+range and strand information for a particular reference genome.
+\code{colname}s are \code{chrom}, \code{start}, \code{end}, \code{strand},
+\code{Ensembl.gene.ID}, \code{gene.symbol}. It uses one-based coordinates.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 19083 rows and 6 columns.
 
@@ -39,20 +39,20 @@ Transcript ranges and strand information for a particular reference genome.
 \details{
 This information is needed to generate catalogs that
 depend on transcriptional
-strand information, for example catalogs of 
-class \code{SBS192Catalog}. 
+strand information, for example catalogs of
+class \code{SBS192Catalog}.
 
-\code{trans.ranges.GRCh37}:  \strong{Human} GRCh37. 
+\code{trans.ranges.GRCh37}:  \strong{Human} GRCh37.
 
-\code{trans.ranges.GRCh38}:  \strong{Human} GRCh38. 
+\code{trans.ranges.GRCh38}:  \strong{Human} GRCh38.
 
-\code{trans.ranges.GRCm38}:  \strong{Mouse} GRCm38. 
+\code{trans.ranges.GRCm38}:  \strong{Mouse} GRCm38.
 
 For these two tables, only genes that are associated with a CCDS ID are kept for transcriptional
-strand bias analysis. 
+strand bias analysis.
 
 This information is needed for \code{\link{StrelkaSBSVCFFilesToCatalog}}, \cr
-\code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}}, 
+\code{\link{StrelkaSBSVCFFilesToCatalogAndPlotToPdf}},
 \code{\link{MutectVCFFilesToCatalog}}, \cr
 \code{\link{MutectVCFFilesToCatalogAndPlotToPdf}},
 \code{\link{VCFsToSBSCatalogs}} and \code{\link{VCFsToDBSCatalogs}}.

@@ -2,13 +2,13 @@
 % Please edit documentation in R/plot.R
 \name{PlotPPM}
 \alias{PlotPPM}
-\title{Plot position probability matrix (PPM) for *one* sample from a Variant Call Format
+\title{Plot position probability matrix (PPM) for \emph{one} sample from a Variant Call Format
 (VCF) file.}
 \usage{
 PlotPPM(ppm, title)
 }
 \arguments{
-\item{ppm}{A position probability matrix (PPM) for *one* sample.}
+\item{ppm}{A position probability matrix (PPM) for \emph{one} sample.}
 
 \item{title}{The main title of the plot.}
 }
@@ -16,7 +16,7 @@ PlotPPM(ppm, title)
 \code{invisible(TRUE)}
 }
 \description{
-Plot position probability matrix (PPM) for *one* sample from a Variant Call Format
+Plot position probability matrix (PPM) for \emph{one} sample from a Variant Call Format
 (VCF) file.
 }
 \keyword{internal}

@@ -11,9 +11,9 @@ CreateTransRanges(file)
 }
 \value{
 A data table which contains chromosome name, start, end position,
-  strand information and gene name. It is keyed by chrom, start, and
-  end. Only genes that are associated with a CCDS ID are kept for
-  transcriptional strand bias analysis.
+strand information and gene name. It is keyed by chrom, start, and
+end. Only genes that are associated with a CCDS ID are kept for
+transcriptional strand bias analysis.
 }
 \description{
 Create a transcript range file from the raw GFF3 File

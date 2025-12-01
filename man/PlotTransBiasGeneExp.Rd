@@ -53,14 +53,14 @@ specific mutation type.}
 }
 \value{
 A list whose first element is a logic value indicating whether the
-  plot is successful. The second element is a named numeric vector containing
-  the p-values printed on the plot.
+plot is successful. The second element is a named numeric vector containing
+the p-values printed on the plot.
 }
 \description{
 Plot transcription strand bias with respect to gene expression values
 }
 \section{Note}{
- 
+
 The p-values are calculated by logistic regression using function
 \code{\link[stats]{glm}}. The dependent variable is labeled "1" and "0" if
 the mutation from \code{annotated.SBS.vcf} falls onto the untranscribed and

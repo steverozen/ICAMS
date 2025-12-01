@@ -17,7 +17,7 @@ CheckAndReturnIDCatalog(catID, catID166, discarded.variants, annotated.vcfs)
 }
 \value{
 A list of ID catalog. Also return the discarded variants and
-  annotated VCFs if they exit.
+annotated VCFs if they exit.
 }
 \description{
 Check and return ID catalog

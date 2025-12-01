@@ -7,7 +7,7 @@
 \title{Standard order of row names in a catalog}
 \format{
 A list of character vectors indicating the standard
-  orders of row names in catalogs.
+orders of row names in catalogs.
 
 An object of class \code{list} of length 9.
 }
@@ -19,13 +19,13 @@ This data is designed for those
 who need to create their own catalogs from formats not
 supported by this package. The rownames denote the mutation
 types.  For example, for SBS96 catalogs, the rowname
- AGAT represents a mutation from AGA > ATA.
+AGAT represents a mutation from AGA > ATA.
 }
 \note{
 In ID (small insertions and deletions) catalogs, deletion repeat sizes
-  range from 0 to 5+, but for plotting and end-user documentation deletion
-  repeat sizes range from 1 to 6+. In ID83 catalogs, deletion repeat sizes
-  range from 0 to 5.
+range from 0 to 5+, but for plotting and end-user documentation deletion
+repeat sizes range from 1 to 6+. In ID83 catalogs, deletion repeat sizes
+range from 0 to 5.
 }
 \section{ID classification}{
 

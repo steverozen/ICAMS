@@ -2,8 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitSBSVCF}
 \alias{SplitSBSVCF}
-\title{Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving
-> 2 consecutive bases}
+\title{Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving > 2 consecutive bases}
 \usage{
 SplitSBSVCF(vcf.df, max.vaf.diff = 0.02, name.of.VCF = NULL, always.merge.SBS)
 }
@@ -26,17 +25,17 @@ regardless of VAFs and regardless of the value of \code{max.vaf.diff}.}
 A list of in-memory objects with the elements:
 
 \enumerate{
-   \item \code{SBS.vcf}: Data frame of pure SBS mutations -- no DBS or 3+BS
-   mutations.
+\item \code{SBS.vcf}: Data frame of pure SBS mutations -- no DBS or 3+BS
+mutations.
 
-   \item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
-   mutations.
+\item \code{DBS.vcf}: Data frame of pure DBS mutations -- no SBS or 3+BS
+mutations.
 
-   \item \code{discarded.variants}: \strong{Non-NULL only if} there are
-   variants that were excluded from the analysis. See the added extra column
-   \code{discarded.reason} for more details.
+\item \code{discarded.variants}: \strong{Non-NULL only if} there are
+variants that were excluded from the analysis. See the added extra column
+\code{discarded.reason} for more details.
 
-   }
+}
 }
 \description{
 SBSs are single base substitutions,

@@ -14,16 +14,16 @@ GetMutationLoadsFromMutectVCFs(catalogs)
 A list containing mutation loads information from Mutect VCF files:
 
 \enumerate{
- \item \code{total.variants} Total number of mutations.
+\item \code{total.variants} Total number of mutations.
 
- \item \code{SBS} Number of single base substitutions.
+\item \code{SBS} Number of single base substitutions.
 
- \item \code{DBS} Number of double base substitutions.
+\item \code{DBS} Number of double base substitutions.
 
- \item \code{ID} Number of small insertions and deletions.
+\item \code{ID} Number of small insertions and deletions.
 
- \item \code{discarded.variants} Number of other types of mutations which are
- excluded in the analysis in \code{\link{ICAMS}}.
+\item \code{discarded.variants} Number of other types of mutations which are
+excluded in the analysis in \code{\link{ICAMS}}.
 
 }
 }

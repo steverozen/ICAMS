@@ -9,13 +9,13 @@ AddSBSClass(vcf)
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
 transcript information by function \code{\link{AnnotateSBSVCF}}. It must
-*not* contain indels and must *not* contain DBS (double base
+\emph{not} contain indels and must \emph{not} contain DBS (double base
 substitutions), or triplet base substitutions etc., even if encoded as
 neighboring SBS.}
 }
 \value{
 The original \code{vcf} with three additional columns
-  \code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
+\code{SBS96.class}, \code{SBS192.class} and \code{SBS1536.class} added.
 }
 \description{
 Add SBS mutation class to an annotated SBS VCF

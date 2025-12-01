@@ -15,7 +15,7 @@ see also \code{\link{as.catalog}}.}
 \item{strict}{If TRUE, do additional checks on the input, and stop if the
 checks fail.}
 
-\item{sep}{Separator to use in the output file. In older version 
+\item{sep}{Separator to use in the output file. In older version
 SigProfiler read comma-separated files; as of May 2020 it
 reads tab-separated files.}
 }
@@ -23,7 +23,7 @@ reads tab-separated files.}
 Write Indel Catalogs in SigProExtractor format to a file.
 }
 \note{
-In ID (small insertions and deletions) catalogs in SigProExtractor format, 
+In ID (small insertions and deletions) catalogs in SigProExtractor format,
 deletion repeat sizes range from 0 to 5, rather than 0 to 5+.
 }
 \keyword{internal}

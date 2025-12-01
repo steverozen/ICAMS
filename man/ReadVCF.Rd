@@ -48,16 +48,16 @@ a warning.}
 
 \item{get.vaf.function}{Optional. Only applicable when \code{variant.caller} is
 \strong{"unknown"}. Function to calculate VAF(variant allele frequency) and read
-  depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
-  If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
-  and read depth will be NAs.}
+depth information from original VCF. See \code{\link{GetMutectVAF}} as an example.
+If \code{NULL}(default) and \code{variant.caller} is "unknown", then VAF
+and read depth will be NAs.}
 
 \item{...}{Optional arguments to \code{get.vaf.function}.}
 }
 \value{
 A data frame storing data lines of the VCF file with two additional
-  columns added which contain the VAF(variant allele frequency) and read
-  depth information.
+columns added which contain the VAF(variant allele frequency) and read
+depth information.
 }
 \description{
 Read in the data lines of a Variant Call Format (VCF) file

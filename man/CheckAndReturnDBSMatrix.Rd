@@ -17,7 +17,7 @@ CheckAndReturnDBSMatrix(
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
 transcript information by function \code{\link{AnnotateDBSVCF}}. It must
-*not* contain indels and must *not* contain SBS (single base
+\emph{not} contain indels and must \emph{not} contain SBS (single base
 substitutions), or triplet base substitutions etc.}
 
 \item{discarded.variants}{A \code{data.frame} which contains rows of DBS
@@ -40,13 +40,13 @@ Check and return the DBS mutation matrix
 }
 \section{Value}{
  A list of three 1-column matrices with the names \code{catDBS78},
-  \code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
-  \code{catDBS144} is not generated. Do not rely on the order of elements in
-  the list. If \code{return.annotated.vcf} = TRUE, another element
-  \code{annotated.vcf} will appear in the list. If there are DBS variants
-  whose tetranucleotide context contains "N", they will be excluded in the
-  analysis and an additional element \code{discarded.variants} will appear in
-  the return list.
+\code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
+\code{catDBS144} is not generated. Do not rely on the order of elements in
+the list. If \code{return.annotated.vcf} = TRUE, another element
+\code{annotated.vcf} will appear in the list. If there are DBS variants
+whose tetranucleotide context contains "N", they will be excluded in the
+analysis and an additional element \code{discarded.variants} will appear in
+the return list.
 }
 
 \keyword{internal}

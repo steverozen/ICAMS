@@ -21,8 +21,8 @@ Read Strelka SBS (single base substitutions) VCF files.
 }
 \section{Value}{
  A list of data frames which store data lines of VCF files
-  with two additional columns added which contain the VAF(variant allele
-  frequency) and read depth information.
+with two additional columns added which contain the VAF(variant allele
+frequency) and read depth information.
 }
 
 \keyword{internal}

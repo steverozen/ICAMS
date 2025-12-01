@@ -2,8 +2,7 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{SplitListOfStrelkaSBSVCFs}
 \alias{SplitListOfStrelkaSBSVCFs}
-\title{Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
-> 2 consecutive bases}
+\title{Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving > 2 consecutive bases}
 \usage{
 SplitListOfStrelkaSBSVCFs(
   list.of.vcfs,

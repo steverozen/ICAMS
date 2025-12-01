@@ -17,9 +17,9 @@ Read a VCF file into a data frame with minimal processing.
 }
 \details{
 Header lines beginning "##" are removed, and column
-  "#CHROM" is renamed to "CHROM". Other column names are
-  unchanged. Columns "#CHROM", "POS", "REF", and "ALT" must
-  be in the input.
+"#CHROM" is renamed to "CHROM". Other column names are
+unchanged. Columns "#CHROM", "POS", "REF", and "ALT" must
+be in the input.
 }
 \examples{
 file <- c(system.file("extdata/Strelka-SBS-vcf",

@@ -2,33 +2,33 @@
 % Please edit documentation in R/VCF_to_catalog_functions.R
 \name{CreateOneColDBSMatrix}
 \alias{CreateOneColDBSMatrix}
-\title{Create the matrix a DBS catalog for *one* sample from an in-memory VCF.}
+\title{Create the matrix a DBS catalog for \emph{one} sample from an in-memory VCF.}
 \usage{
 CreateOneColDBSMatrix(vcf, sample.id = "count", return.annotated.vcf = FALSE)
 }
 \arguments{
 \item{vcf}{An in-memory VCF file annotated with sequence context and
 transcript information by function \code{\link{AnnotateDBSVCF}}. It must
-*not* contain indels and must *not* contain SBS (single base
+\emph{not} contain indels and must \emph{not} contain SBS (single base
 substitutions), or triplet base substitutions etc.}
 
 \item{sample.id}{Usually the sample id, but defaults to "count".}
 }
 \description{
-Create the matrix a DBS catalog for *one* sample from an in-memory VCF.
+Create the matrix a DBS catalog for \emph{one} sample from an in-memory VCF.
 }
 \note{
 DBS 144 catalog only contains mutations in transcribed regions.
 }
 \section{Value}{
  A list of three 1-column matrices with the names \code{catDBS78},
-  \code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
-  \code{catDBS144} is not generated. Do not rely on the order of elements in
-  the list. If \code{return.annotated.vcf} = TRUE, another element
-  \code{annotated.vcf} will appear in the list. If there are DBS variants
-  whose tetranucleotide context contains "N", they will be excluded in the
-  analysis and an additional element \code{discarded.variants} will appear in
-  the return list.
+\code{catDBS136}, and \code{catDBS144}. If trans.ranges is NULL,
+\code{catDBS144} is not generated. Do not rely on the order of elements in
+the list. If \code{return.annotated.vcf} = TRUE, another element
+\code{annotated.vcf} will appear in the list. If there are DBS variants
+whose tetranucleotide context contains "N", they will be excluded in the
+analysis and an additional element \code{discarded.variants} will appear in
+the return list.
 }
 
 \keyword{internal}

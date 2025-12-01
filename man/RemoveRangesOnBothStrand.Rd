@@ -12,7 +12,7 @@ It has four columns: chrom, start, end and strand.}
 }
 \value{
 A data table which has removed ranges that fall on both strands from
-  the input \code{stranded.ranges}.
+the input \code{stranded.ranges}.
 }
 \description{
 Remove ranges that fall on both strands

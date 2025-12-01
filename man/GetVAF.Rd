@@ -32,7 +32,7 @@ unless \code{mc.cores = 1}.}
 }
 \value{
 The original \code{vcf} with two additional columns added which
-  contain the VAF(variant allele frequency) and read depth information.
+contain the VAF(variant allele frequency) and read depth information.
 }
 \description{
 Extract the VAFs (variant allele frequencies) and read depth information from a VCF file

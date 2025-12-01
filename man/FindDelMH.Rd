@@ -22,7 +22,7 @@ if there is a cryptic repeat (see the example).}
 }
 \value{
 The length of the maximum microhomology of \code{del.sequence}
-  in \code{context}.
+in \code{context}.
 }
 \description{
 Return the length of microhomology at a deletion

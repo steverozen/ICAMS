@@ -15,9 +15,9 @@ with the context information.}
 }
 \value{
 Throws error with location information if the value of REF is
-  inconsistent with the value of seq.21bases. Assumes the first base of the
-  reference allele is at position (size(<context string>)-1)/2, and generates
-  error if this is not an integer. Indices are 1-based.
+inconsistent with the value of seq.21bases. Assumes the first base of the
+reference allele is at position (size(\if{html}{\out{<context string>}})-1)/2, and generates
+error if this is not an integer. Indices are 1-based.
 }
 \description{
 Check that the sequence context information is consistent with the value of

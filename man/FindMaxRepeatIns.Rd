@@ -19,8 +19,8 @@ positions \code{pos} and \code{pos + 1}.}
 }
 \value{
 If same sequence as \code{rep.unit.seq} occurs ending at
-  \code{pos} or starting at \code{pos + 1} then the number of
-  repeat units before the insertion, otherwise 0.
+\code{pos} or starting at \code{pos + 1} then the number of
+repeat units before the insertion, otherwise 0.
 }
 \description{
 Return the number of repeat units in which an insertion

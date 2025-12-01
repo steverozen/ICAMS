@@ -12,7 +12,7 @@ base pairs.}
 }
 \value{
 A numeric vector whose names indicate 136 different types of 4 base pairs
-  combinations while its values indicate the occurrences of each type.
+combinations while its values indicate the occurrences of each type.
 }
 \description{
 Create tetranucleotide abundance

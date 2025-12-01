@@ -11,9 +11,9 @@ show_indel(long_str, short_str, pos, ins_or_del)
 
 \item{short_str}{Character string containing the post-edit sequence.}
 
-\item{pos}{One-based position of the edit within `long_str`.}
+\item{pos}{One-based position of the edit within \code{long_str}.}
 
-\item{ins_or_del}{Single character, `"i"` for insertion or `"d"` for deletion.}
+\item{ins_or_del}{Single character, \code{"i"} for insertion or \code{"d"} for deletion.}
 }
 \description{
 Print an indel with a dotted deletion marker.

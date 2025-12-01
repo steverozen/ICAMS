@@ -76,6 +76,7 @@
     "[quarto]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "quarto.quarto"
-    }
+    },
+      "git.commitEditorArtificialIntelligenceSuggestions.enabled": false
 }
 

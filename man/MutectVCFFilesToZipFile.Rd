@@ -2,8 +2,7 @@
 % Please edit documentation in R/shiny_related_functions.R
 \name{MutectVCFFilesToZipFile}
 \alias{MutectVCFFilesToZipFile}
-\title{\strong{[Deprecated, use VCFsToZipFile(variant.caller = "mutect") instead]}
-Create a zip file which contains catalogs and plot PDFs from Mutect VCF files}
+\title{Create a zip file which contains catalogs and plot PDFs from Mutect VCF files}
 \usage{
 MutectVCFFilesToZipFile(
   dir,
@@ -33,9 +32,9 @@ insensitive) and share the \strong{same} \code{ref.genome} and
 \item{trans.ranges}{Optional. If \code{ref.genome} specifies one of the
 \code{\link[BSgenome]{BSgenome}} object
 \enumerate{
-  \item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
-  \item \code{BSgenome.Hsapiens.UCSC.hg38}
-  \item \code{BSgenome.Mmusculus.UCSC.mm10}
+\item \code{BSgenome.Hsapiens.1000genomes.hs37d5}
+\item \code{BSgenome.Hsapiens.UCSC.hg38}
+\item \code{BSgenome.Mmusculus.UCSC.mm10}
 }
 then the function will infer \code{trans.ranges} automatically. Otherwise,
 user will need to provide the necessary \code{trans.ranges}. Please refer to
@@ -80,7 +79,7 @@ warning messages showing information about the discarded variants. Default
 is TRUE.}
 }
 \description{
-\strong{[Deprecated, use VCFsToZipFile(variant.caller = "mutect") instead]}
+\strong{Deprecated, use VCFsToZipFile(variant.caller = "mutect") instead}
 Create 3 SBS catalogs (96, 192, 1536), 3 DBS catalogs (78, 136, 144) and
 Indel catalog from the Mutect VCFs specified by \code{dir}, save the catalogs
 as CSV files, plot them to PDF and generate a zip archive of all the output files.

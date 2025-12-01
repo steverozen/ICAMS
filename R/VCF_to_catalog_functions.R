@@ -1289,8 +1289,7 @@ SplitListOfMutectVCFs <-
     }
   }
 
-#' Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving
-#' > 2 consecutive bases
+#' Split an in-memory SBS VCF into pure SBSs, pure DBSs, and variants involving > 2 consecutive bases
 #'
 #' SBSs are single base substitutions,
 #' e.g. C>T, A>G,....  DBSs are double base substitutions,
@@ -1973,8 +1972,7 @@ MakeVCFDBSdf <- function(DBS.range.df, SBS.vcf.dt) {
   return(tmp2[, ..col.names.order])
 }
 
-#' Split an in-memory Strelka VCF into SBS, DBS, and variants involving
-#' > 2 consecutive bases
+#' Split an in-memory Strelka VCF into SBS, DBS, and variants involving > 2 consecutive bases
 #'
 #' SBSs are single base substitutions,
 #' e.g. C>T, A>G,....  DBSs are double base substitutions,
@@ -2029,8 +2027,7 @@ SplitStrelkaSBSVCF <- function(
   return(retval)
 }
 
-#' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving
-#' > 2 consecutive bases
+#' Split a list of in-memory Strelka SBS VCF into SBS, DBS, and variants involving > 2 consecutive bases
 #'
 #' SBSs are single base substitutions,
 #' e.g. C>T, A<G,....  DBSs are double base substitutions,
@@ -3427,11 +3424,9 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
     return(catalogs)
   }
 
-#' \strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
-#' Create ID (small insertions and deletions) catalog from Strelka ID VCF files
-#' and plot them to PDF
+#' Create ID (small insertions and deletions) catalog from Strelka ID VCF files and plot them to PDF
 #'
-#' \strong{[Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead]}
+#' \strong{Deprecated, use VCFsToCatalogsAndPlotToPdf(variant.caller = "strelka") instead}
 #' Create ID (small insertions and deletions) catalog from the Strelka ID VCFs
 #' specified by \code{files} and plot them to PDF
 #'
@@ -3450,8 +3445,6 @@ StrelkaSBSVCFFilesToCatalogAndPlotToPdf <-
 #' @inheritSection VCFsToCatalogsAndPlotToPdf ID classification
 #'
 #' @inheritSection VCFsToIDCatalogs Note
-#'
-#' @export
 #'
 #' @examples
 #' \dontrun{

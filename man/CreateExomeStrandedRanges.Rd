@@ -16,8 +16,8 @@ details.}
 }
 \value{
 A data table which contains chromosome name, start, end position,
-  strand information. It is keyed by chrom, start, and
-  end.
+strand information. It is keyed by chrom, start, and
+end.
 }
 \description{
 Create exome transcriptionally stranded regions

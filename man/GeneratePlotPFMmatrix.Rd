@@ -30,7 +30,7 @@ homopolymer targeted by the indel.}
 }
 \value{
 A matrix recording the frequency of each base (A, C, G, T) on each
-  position of the sequence.
+position of the sequence.
 }
 \description{
 Generate PFMmatrix (Position Frequency Matrix) from a given list of sequences

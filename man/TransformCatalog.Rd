@@ -23,7 +23,7 @@ must \strong{not} be an ID (small insertions and deletions) catalog.}
 
 \item{target.region}{A \code{region} argument; see \code{\link{as.catalog}}
 and \code{\link{ICAMS}}. If \code{NULL}, then defaults to the
-  \code{region} attribute of \code{catalog}.}
+\code{region} attribute of \code{catalog}.}
 
 \item{target.catalog.type}{A character string acting as a catalog type
 identifier, one of "counts", "density", "counts.signature",
@@ -69,7 +69,7 @@ a warning)
 \item \code{density -> (counts.signature, density.signature)}
 
 \item \code{counts.signature -> counts.signature} (used to transform
-   between the source abundance and \code{target.abundance})
+between the source abundance and \code{target.abundance})
 
 \item \code{counts.signature -> density.signature}
 
@@ -85,7 +85,7 @@ generates a warning)
 }
 }
 \section{Rationale}{
-  
+
 The \code{\link{TransformCatalog}}
 function transforms catalogs of mutational spectra or
 signatures to account for differing abundances of the source

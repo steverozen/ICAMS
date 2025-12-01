@@ -2,13 +2,13 @@
 % Please edit documentation in R/infer_catalog_format.R
 \name{InferCatalogClassPrefix}
 \alias{InferCatalogClassPrefix}
-\title{These two functions is applicable only for 
+\title{These two functions is applicable only for
 internal ICAMS-formatted catalog object.}
 \usage{
 InferCatalogClassPrefix(object)
 }
 \description{
-These two functions is applicable only for 
+These two functions is applicable only for
 internal ICAMS-formatted catalog object.
 }
 \keyword{internal}
