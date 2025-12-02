@@ -12,13 +12,18 @@ library(GenomicRanges)
 #' @param ref.genome Can be a string or a BSgenome. If a string, it should
 #' a well-known name for reference genome in BSgenome
 #'
+#' @param flag.mismatches Deprecated. If there are ID variants whose \code{REF}
+#'   do not match the extracted sequence from \code{ref.genome}, the function
+#'   will automatically discard these variants. See element
+#'   \code{discarded.variants} in the return value for more details.
+#'
 #' @param name.of.VCF Name of the VCF file.
 #'
 #' @param suppress.discarded.variants.warnings If TRUE, do warn when variants
 #' that cannot be processed are discarded.
 #'
-#' @param explain_indels If 0, do not explain, if 1, explain indels that were
-#'  justifed (via messages), if 2, geenrate messages for all indels.
+#' @param explain_indels If TRUE generate message on stdout showing how the
+#' indel was categorized.
 #'
 #' @param context_width_multiplier Used to guess how much sequence on each side
 #' of an indel is needed to categorize it.
@@ -37,10 +42,9 @@ library(GenomicRanges)
 #'
 #' @return A list of elements:
 #'   * \code{annotated.vcf}: The original VCF data
-#'   frame in which `POS`, `REF` and `ALT` with new columns added to the input data frame:
+#'   frame with two new columns added to the input data frame:
 #'       + \code{seq.context}: The sequence embedding the variant.
-#'       + \code{seq.context.width}: The width of \code{seq.context} to the left of the indel
-#'       + \code{pos_shift}
+#'       + \code{seq.context.width}: The width of \code{seq.context} to the left.
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
 #'   that were excluded from the analysis. See the added extra column
 #'   \code{discarded.reason} for more details.
@@ -49,21 +53,21 @@ library(GenomicRanges)
 #' @export
 #'
 #' @examples
-#' file <- c(system.file("tests/testthat/testdata/extdata/Strelka-ID-vcf/",
-#'                       "vcf_to_test_justify_indels_in_id_vcf_with_contexts.csv",
+#' file <- c(system.file("extdata/Strelka-ID-vcf/",
+#'                       "Strelka.ID.GRCh37.s1.vcf",
 #'                       package = "ICAMS"))
-#' vcf_no_contexts <- read.csv(file) |>
-#' #   dplyr::select(-seq.context.width, -seq.context)
+#' ID.vcf <- ReadAndSplitVCFs(file, variant.caller = "strelka")$ID[[1]]
 #' if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
-#'     justify_id_vcf(vcf_no_contexts, ref.genome = "hg19", explain_indels = 2)}
-#'
-justify_id_vcf <-
+#'   list <- AnnotateIDVCF(ID.vcf, ref.genome = "hg19")
+#'   annotated.ID.vcf <- list$annotated.vcf}
+AnnotateIDVCF <-
   function(
     ID.vcf,
     ref.genome,
+    flag.mismatches = 0,
     name.of.VCF = NULL,
     suppress.discarded.variants.warnings = TRUE,
-    explain_indels = 1,
+    explain_indels = FALSE,
     context_width_multiplier = 20L
   ) {
     if (nrow(ID.vcf) == 0) {
@@ -90,6 +94,8 @@ justify_id_vcf <-
     df <- retval$df
     discarded.variants <-
       dplyr::bind_rows(discarded.variants, retval$discarded.variants)
+
+    ref.genome <- NormalizeGenomeArg(ref.genome)
 
     # Remove variants which have the same number of bases
     # for REF and ALT alleles
@@ -147,7 +153,7 @@ justify_id_vcf <-
     ))
 
     # Extract the sequence context from the reference genome
-    ref.genome <- NormalizeGenomeArg(ref.genome)
+
     # Check if the format of sequence names in df and genome are the same
     chr.names <- CheckAndFixChrNames(
       vcf.df = df3,
@@ -188,15 +194,30 @@ justify_id_vcf <-
       df4 <- df3
     }
 
-    df5 = justify_indels_in_id_vcf_with_contexts(
-      df4,
+    trans.ranges <- InferTransRanges(ref.genome)
+    if (!is.null(trans.ranges)) {
+      df5 <- AddTranscript(
+        df = df4,
+        trans.ranges = trans.ranges,
+        ref.genome = ref.genome,
+        name.of.VCF = name.of.VCF
+      )
+    } else {
+      df5 <- df4
+    }
+
+    results_as_list = categorize_many_indels(
+      df5,
       explain_indels = explain_indels
     )
+    indel_info_df = data.table::rbindlist(results_as_list, fill = TRUE)
+
+    df6 = cbind(data.table::as.data.table(df5), indel_info_df)
 
     if (nrow(discarded.variants) > 0) {
       if (suppress.discarded.variants.warnings == TRUE) {
         return(list(
-          annotated.vcf = df5,
+          annotated.vcf = df6,
           discarded.variants = discarded.variants
         ))
       } else {
@@ -205,11 +226,11 @@ justify_id_vcf <-
           " in the return value for more details"
         )
         return(list(
-          annotated.vcf = df5,
+          annotated.vcf = df6,
           discarded.variants = discarded.variants
         ))
       }
     } else {
-      return(list(annotated.vcf = df5, discarded.variants = NULL))
+      return(list(annotated.vcf = df6))
     }
   }

@@ -45,12 +45,12 @@ gen_Koh_476_string = function(arglist) {
   }
   # arglist$indel_str_count_in_ref
   if (
-    (INS_OR_DEL == "Del" && arglist$R_outside_ins_or_del_seq == 0) ||
+    (INS_OR_DEL == "Del" && arglist$R_outside_ins_or_del_seq == 0 && U != 1) || # not sure about U != 1 I think Koh does not have this...
       ## (INS_OR_DEL == "Del" && arglist$indel_str_count_in_ref == 1) ||
       (INS_OR_DEL == "Ins" && arglist$indel_str_count_in_ref == 0 && U != 1)
   ) {
     microhom_len = arglist$mh
-    message("mh")
+    # message("mh")
 
     if (INS_OR_DEL == "Del") {
       R = 1
@@ -59,7 +59,7 @@ gen_Koh_476_string = function(arglist) {
     }
   } else {
     microhom_len = arglist$koh_mh
-    message("hmh")
+    # message("hmh")
   }
 
   #  Hyptothesis: If U is 1 koh doesn't call Microhomology, s

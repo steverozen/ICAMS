@@ -1,4 +1,4 @@
-test_that("justify_many_indels works correctly", {
+test_that("justify_indels_in_id_vcf_w_context works correctly", {
   # Read test data
   dd <- read.csv(
     "testdata/categorize_many_indels_test_input.csv"
@@ -8,7 +8,10 @@ test_that("justify_many_indels works correctly", {
   original_pos <- dd$POS
 
   # Run justify_many_indels
-  result <- ICAMS:::justify_many_indels(dd, explain_indels = FALSE)
+  result <- ICAMS:::justify_indels_in_id_vcf_w_context(
+    dd,
+    explain_indels = FALSE
+  )
 
   # Check that pos_shift column was added
   expect_true("pos_shift" %in% colnames(result))
@@ -20,7 +23,10 @@ test_that("justify_many_indels works correctly", {
   expect_equal(result$POS, original_pos - result$pos_shift)
 
   # Check that seq.context.width was updated correctly
-  expect_equal(result$seq.context.width, dd$seq.context.width - result$pos_shift)
+  expect_equal(
+    result$seq.context.width,
+    dd$seq.context.width - result$pos_shift
+  )
 
   # Check that categorization columns are present
   expect_true("COSMIC_83" %in% colnames(result))
@@ -31,7 +37,7 @@ test_that("justify_many_indels works correctly", {
   expect_equal(nrow(result), nrow(dd))
 })
 
-test_that("justify_many_indels handles empty input", {
+test_that("justify_indels_in_id_vcf_w_context handles empty input", {
   # Create empty dataframe with required columns
   empty_vcf <- data.frame(
     CHROM = character(0),
@@ -42,7 +48,7 @@ test_that("justify_many_indels handles empty input", {
     seq.context.width = integer(0)
   )
 
-  result <- ICAMS:::justify_many_indels(empty_vcf)
+  result <- ICAMS:::justify_indels_in_id_vcf_w_context(empty_vcf)
 
   expect_equal(nrow(result), 0)
   expect_true(is.data.frame(result))

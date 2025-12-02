@@ -12,7 +12,7 @@ AnnotateIDVCF(
   flag.mismatches = 0,
   name.of.VCF = NULL,
   suppress.discarded.variants.warnings = TRUE,
-  explain_indels = FALSE,
+  explain_indels = 1,
   context_width_multiplier = 20L
 )
 }

@@ -4,13 +4,7 @@
 \alias{categorize_1_justified_indel}
 \title{Given a indel and its sequence context, categorize it}
 \usage{
-categorize_1_justified_indel(
-  context,
-  ins_or_del,
-  ins_or_del_seq,
-  pos,
-  verbose = 0
-)
+categorize_1_justified_indel(context, ins_or_del, ins_or_del_seq, pos)
 }
 \arguments{
 \item{context}{The sequence surrounding the indel.}
@@ -23,9 +17,6 @@ an insertion and "d" denotine an deletion.}
 \item{pos}{For deletions, the 1-based position of the start of the
 deleted sequence; for insertions, the position immediately to the right
 of where the inserrtion occurs.}
-
-\item{verbose}{If > 0, then generate messages tracing
-how the computation is carried out.}
 }
 \value{
 A string that is the canonical representation

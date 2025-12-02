@@ -191,4 +191,7 @@
       12         1
       13         4
       
+      $discarded.variants
+      NULL
+      
 

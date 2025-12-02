@@ -53,7 +53,7 @@ check1 = function(pos) {
 
 test_indel_categorization = function() {
   mock_vcf = read.csv("inst/exhaustive_mock_vcf.csv")
-  retval1 = ICAMS:::categorize_many_indels(mock_vcf)
+  retval1 = ICAMS:::categorize_indels_in_vcf(mock_vcf)
   cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) |>
     dplyr::relocate(Koh89.annotate.class, .after = Koh_89) |>
     dplyr::relocate(Koh476.annotate.class, .after = Koh_476) |>
@@ -107,7 +107,11 @@ make_koh_open_intervals = function(xx) {
 if (FALSE) {
   devtools::load_all()
   xx = test_indel_categorization()
+
   zz = which(xx$Koh_89 != xx$koh_orig_edited)
+  View(xx[zz, ])
+  write.csv(xx[zz, ], file = "inst/our_koh89_ne_their_koh89.csv")
+  write.csv(xx, file = "inst/all_rows.csv")
 
   # 84228145 error in Koh's code?
   # Chr 4 47176946, error in Koh's code?

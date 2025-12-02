@@ -20,7 +20,8 @@ library(Biostrings)
 #' See the code for unexported function \code{\link{CanonicalizeID}}
 #' and the functions it calls for handling of insertions.
 #'
-#' @param context The sequence surrounding the indel.
+#' @param context The sequence surrounding the indel PRIOR to the insertion
+#' or deletion.
 #'
 #' @param ins_or_del A singgle character, with "i" denoting
 #' an insertion and "d" denotine an deletion.
@@ -29,11 +30,8 @@ library(Biostrings)
 #'
 #' @param pos For deletions, the 1-based position of the start of the
 #' deleted sequence; for insertions, the position immediately to the right
-#' of where the inserrtion occurs.
+#' of where the insertion occurs.
 #'
-#' @param verbose If > 0, then generate messages tracing
-#' how the computation is carried out.
-#
 #' @return A string that is the canonical representation
 #'  of the given deletion type. Return \code{NA}
 #'  and raise a warning if
@@ -55,11 +53,31 @@ categorize_1_justified_indel <- function(
   context,
   ins_or_del,
   ins_or_del_seq,
-  pos,
-  verbose = 0
+  pos
 ) {
-  # Pos is the 1-based position of the first base that was deleted
-  # is it 1 bp deletion?
+  if (TRUE) {
+    if (ins_or_del == "i") {
+      start_of_slice3 = pos
+    } else {
+      start_of_slice3 = pos + nchar(ins_or_del_seq)
+    }
+    slice3 = stringi::stri_sub(context, from = start_of_slice3)
+    if (ins_or_del == "d") {
+      if (
+        paste0(ins_or_del_seq, slice3) != stringi::stri_sub(context, from = pos)
+      ) {
+        browser()
+      }
+    }
+    koh_extra = seg_traced(
+      ins_or_del = ins_or_del,
+      string = ins_or_del_seq,
+      context = slice3
+    )
+  } else {
+    koh_extra = list()
+  }
+
   mh = 0L
   koh_mh = 0L
   if (pos < 2) {
@@ -85,7 +103,19 @@ categorize_1_justified_indel <- function(
   }
 
   regex = paste0("^.{", pos - 2, "}(.)((", ins_or_del_seq, ")+)(.)(.*$)")
-  mymatch = stringr::str_match(context, regex)[1, ]
+
+  if (ins_or_del == "i") {
+    x_context = stringi::stri_sub_replace(
+      context,
+      pos,
+      pos - 1, # pos was just _after_ the site of the insertion
+      replacement = ins_or_del_seq
+    )
+  } else {
+    x_context = context
+  }
+
+  mymatch = stringr::str_match(x_context, regex)[1, ]
   pre = mymatch[2]
 
   all_repeated_seq = mymatch[3]
@@ -96,8 +126,8 @@ categorize_1_justified_indel <- function(
   indel_str_count_in_ref = nchar(all_repeated_seq) / ins_or_del_seq_len
   if (ins_or_del == "i") {
     indel_str_count_in_ref = indel_str_count_in_ref - 1
-    # The context arg is the sequence after the insertion. We want indel_str_count_in_ref to
-    # reflect the repeat count prior to the insertion
+    # x_context was the sequence after the insertion. We want
+    # indel_str_count_in_ref to reflect the repeat count prior to the insertion
   }
 
   stopifnot(indel_str_count_in_ref == floor(indel_str_count_in_ref))
@@ -205,7 +235,7 @@ categorize_1_justified_indel <- function(
   retlist$Koh_89 = gen_Koh_89_string(retlist)
   retlist$Koh_476 = gen_Koh_476_string(retlist)
 
-  return(retlist)
+  return(c(retlist, koh_extra))
 } # End categorize_del
 
 
