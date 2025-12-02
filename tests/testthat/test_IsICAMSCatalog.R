@@ -34,8 +34,8 @@ test_that("IsICAMSCatalog function", {
   mat3 <- as.catalog(mat3, infer.rownames = TRUE)
   rownames(mat3) <- paste0("test", 1:96)
   
-  result <- 
-    expect_message(IsICAMSCatalog(mat3), 
-                   "The rownames of the input object do not match the catalog row order used in ICAMS exactly.") 
+  expect_message(
+    {result <- IsICAMSCatalog(mat3)},
+                   "The rownames of the input object do not match the catalog row order used in ICAMS exactly.")
   expect_false(result)
 })

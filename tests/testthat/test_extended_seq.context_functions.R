@@ -39,8 +39,8 @@ test_that("extended seq.context functions for Mutect GRCh37 vcf", {
 test_that("extended seq.context functions for Mutect GRCm38 vcf", {
   skip_if("" == system.file(package = "BSgenome.Mmusculus.UCSC.mm10"))
   stopifnot(requireNamespace("BSgenome.Mmusculus.UCSC.mm10"))
-  vcf <- expect_warning(
-    ReadAndSplitMutectVCFs("testdata/Mutect.GRCm38.vcf")
+  expect_warning(
+    {vcf <- ReadAndSplitMutectVCFs("testdata/Mutect.GRCm38.vcf")}
   )
     
   sbs.vcf <- vcf$SBS[[1]]

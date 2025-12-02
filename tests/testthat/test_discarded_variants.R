@@ -7,9 +7,9 @@ test_that("ReadAndSplitMutectVCFs", {
   expect_equal(length(list.of.vcfs1$discarded.variants), 1)
 
   files2 <- files
-  list.of.vcfs2 <-
-    expect_warning(ReadAndSplitMutectVCFs(files2,
-                                          suppress.discarded.variants.warnings = FALSE))
+  expect_warning(
+    {list.of.vcfs2 <- ReadAndSplitMutectVCFs(files2,
+                                          suppress.discarded.variants.warnings = FALSE)})
   expect_equal(length(list.of.vcfs2$discarded.variants), 2)
 
   SBS.cats <-
@@ -45,9 +45,9 @@ test_that("ReadAndSplitStrelkaSBSVCFs", {
   expect_null(list.of.vcfs1$discarded.variants)
 
   files2 <- files
-  list.of.vcfs2 <-
-    expect_warning(ReadAndSplitStrelkaSBSVCFs(files2,
-                                              suppress.discarded.variants.warnings = FALSE))
+  expect_warning(
+    {list.of.vcfs2 <- ReadAndSplitStrelkaSBSVCFs(files2,
+                                              suppress.discarded.variants.warnings = FALSE)})
 
   expect_false(is.null(list.of.vcfs2$discarded.variants))
 })

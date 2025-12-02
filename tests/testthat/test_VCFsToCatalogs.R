@@ -1,7 +1,6 @@
 context("VCFsToCatalogs function")
 
 test_that("VCFsToCatalogs function for Mutect VCFs", {
-  source("c:/Users/steve/Documents/GitHub/ICAMS/inst/new_id_fns.R")
   rlang::with_options(lifecycle_verbosity = "quiet", {
     skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
     stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -114,7 +113,6 @@ test_that("VCFsToCatalogs function for Strelka SBS VCFs", {
 
 #' @import rlang with_options
 test_that("VCFsToCatalogs function for Strelka ID VCFs", {
-  source("c:/Users/steve/Documents/GitHub/ICAMS/inst/new_id_fns.R")
   rlang::with_options(lifecycle_verbosity = "quiet", {
     skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
     stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
