@@ -1,5 +1,7 @@
 # Make a nearly exhuastive set of test cases for ICAMS indel classification
 
+testinput = "tests/testthat/testdata/long_test_vs_indelsiglib.csv"
+
 if (FALSE) {
   tmpmock = read.csv("inst/annotations.unique.rows.csv") |>
     dplyr::select(
@@ -52,9 +54,12 @@ check1 = function(pos) {
 
 
 test_indel_categorization = function() {
-  mock_vcf = read.csv("inst/exhaustive_mock_vcf.csv")
+  mock_vcf = read.csv(testinput)
   retval1 = ICAMS:::categorize_indels_in_vcf(mock_vcf)
-  cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) |>
+  # browser()
+  cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) -> bar
+
+  bar |>
     dplyr::relocate(Koh89.annotate.class, .after = Koh_89) |>
     dplyr::relocate(Koh476.annotate.class, .after = Koh_476) |>
     dplyr::relocate(COSMIC_83, .before = prev_COSMIC_83) -> retval2
@@ -109,16 +114,25 @@ if (FALSE) {
   xx = test_indel_categorization()
 
   zz = which(xx$Koh_89 != xx$koh_orig_edited)
-  View(xx[zz, ])
-  write.csv(xx[zz, ], file = "inst/our_koh89_ne_their_koh89.csv")
-  write.csv(xx, file = "inst/all_rows.csv")
+  length(zz)
+  uu = (xx[zz, ])
+  View(uu)
+  # write.csv(xx[zz, ], file = "inst/our_koh89_ne_their_koh89.csv")
+  # write.csv(xx, file = "inst/all_rows.csv")
 
-  # 84228145 error in Koh's code?
-  # Chr 4 47176946, error in Koh's code?
+  library(tidyr)
 
-  # Chr 9, 133647119, need to examine Koh's conception....
-  # There is a special rule if there is microhomolgy
+  xx %>% dplyr::filter(spacer_length == 0 & prime3_reps == 0 & L > 1) -> vv
 
+  xx %>%
+    dplyr::filter(stringr::str_detect(Koh89.annotate.class, ":M(\\d|\\()")) %>%
+    dplyr::filter(spacer_length > 0) -> uu
+
+  xx %>%
+    dplyr::filter(!stringr::str_detect(Koh89.annotate.class, ":M(\\d|\\()")) %>%
+    dplyr::filter(spacer_length > 0) -> uu # Only Ins...
+
+  # examle single sample checking
   to_save = rbind(
     check1("56119277"),
     check1("47927645"),

@@ -76,19 +76,16 @@ gen_Koh_89_string = function(arglist) {
 
   if (INS_OR_DEL == "Ins") {
     # browser()
-    indel_seq_count_in_ref = arglist$indel_str_count_in_ref
 
-    if (FALSE) {
-      # This gives us 13 deltas where we call Ins(2,4):R0
-      # Without this we get 9 deltas where Koh calls Ins(5,):0
-      if (arglist$mh > 0) {
-        if (L <= 4) {
-          return("Ins(2,4):R0")
-        } else {
-          return("Ins(5,):R0")
-        }
+    if (arglist$spacer_length > 0) {
+      if (L >= 5) {
+        return("Ins(5,):R0")
+      } else {
+        return("Ins(2,4):R0")
       }
     }
+
+    indel_seq_count_in_ref = arglist$indel_str_count_in_ref
 
     testR = R
     # It looks like, for insertions, the Koh paper takes R to be the indel_seq_count_in_ref
@@ -110,50 +107,22 @@ gen_Koh_89_string = function(arglist) {
   ### L > 1 && Del ######################
 
   stopifnot(INS_OR_DEL == "Del")
+  # browser()
 
-  whole_del_microhom_len = arglist$mh
-
-  if (whole_del_microhom_len > 0 && FALSE) {
-    # Deletion with microhomology
-    if (R != 1) {
-      browser() # This would be a programming error
-    }
-    if (L <= 5) {
-      mh_str = ifelse(
-        whole_del_microhom_len <= 3,
-        whole_del_microhom_len,
-        "(4,)"
-      )
-      return(paste0("Del(2,5):M", mh_str))
-    }
-    mh_str = ifelse(whole_del_microhom_len <= 3, whole_del_microhom_len, "(4,)")
-    return(paste0("Del(6,):M", mh_str))
+  if (arglist$spacer_length > 0) {
+    return(gen_koh89_del_mh_str(arglist))
   }
 
-  koh_microhom_len = arglist$koh_mh
-
-  if (koh_microhom_len > 0) {
-    # Deletion with microhomology
-    if (R != 1) {
-      browser()
-    }
-    if (L %in% 2:5 && koh_microhom_len == 1) {
-      return("Del(2,5):M1")
-    } else if (L %in% 3:5 && koh_microhom_len == 2) {
-      return("Del(3,5):M2")
-    } else if (L %in% 4:5) {
-      return("Del(4,5):M(3,4)")
+  if (arglist$spacer_length == 0 && arglist$prime3_reps == 0) {
+    if (L %in% 2:4) {
+      return("Del(2,4):R1")
     } else {
-      stopifnot(L >= 6)
-      if (koh_microhom_len >= 4) {
-        return("Del(6,):M(4,)")
-      } else {
-        return(paste0("Del(6,):M", koh_microhom_len))
-      }
+      return("Del(5,):R1")
     }
-  } # koh_microhom_len > 0
+  }
 
   if (R == 1) {
+    browser() # should not get here?
     if (L <= 4) {
       return("Del(2,4):R1")
     }
@@ -172,5 +141,5 @@ gen_Koh_89_string = function(arglist) {
     return("Del(3,):U(3,):R2")
   }
 
-  "Del(3,):U(3,):R(3,)"
+  return("Del(3,):U(3,):R(3,)")
 }

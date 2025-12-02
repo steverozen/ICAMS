@@ -215,27 +215,30 @@ categorize_1_justified_indel <- function(
     }
   } # end else (i.e. ins_or_del_seq_len > 1)
 
-  retlist = list(
-    ins_or_del = ins_or_del,
-    pre = pre,
-    ins_or_del_seq = ins_or_del_seq,
-    post = post,
-    L = as.integer(ins_or_del_seq_len),
-    U_seq = U_seq,
-    U = as.integer(U),
-    U_seq_count_in_indel_seq = as.integer(U_seq_count_in_indel_seq),
-    indel_str_count_in_ref = as.integer(indel_str_count_in_ref),
-    R = as.integer(R),
-    R_outside_ins_or_del_seq = as.integer(R_outside_ins_or_del_seq),
-    mh = as.integer(mh),
-    koh_mh = as.integer(koh_mh)
+  retlist = c(
+    list(
+      ins_or_del = ins_or_del,
+      pre = pre,
+      ins_or_del_seq = ins_or_del_seq,
+      post = post,
+      L = as.integer(ins_or_del_seq_len),
+      U_seq = U_seq,
+      U = as.integer(U),
+      U_seq_count_in_indel_seq = as.integer(U_seq_count_in_indel_seq),
+      indel_str_count_in_ref = as.integer(indel_str_count_in_ref),
+      R = as.integer(R),
+      R_outside_ins_or_del_seq = as.integer(R_outside_ins_or_del_seq),
+      mh = as.integer(mh),
+      koh_mh = as.integer(koh_mh)
+    ),
+    koh_extra
   )
 
   retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
   retlist$Koh_89 = gen_Koh_89_string(retlist)
   retlist$Koh_476 = gen_Koh_476_string(retlist)
 
-  return(c(retlist, koh_extra))
+  return(retlist)
 } # End categorize_del
 
 

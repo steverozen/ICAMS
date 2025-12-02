@@ -45,7 +45,7 @@ seg_traced <- function(
   string,
   context,
   trace = FALSE,
-  binary_path = "./segment_traced"
+  binary_path = devtools::package_file("segment_traced")
 ) {
   # Input validation
   if (length(string) != 1 || length(context) != 1) {
