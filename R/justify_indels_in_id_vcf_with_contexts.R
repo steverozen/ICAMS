@@ -171,7 +171,7 @@ justify_indels_in_id_vcf_with_contexts <- function(vcf, explain_indels = 1) {
     # The justified position is now closer to the left edge of seq.context
     vcf$seq.context.width[i] <- vcf$seq.context.width[i] - pos_shift
 
-    if (explain_indels) {
+    if (explain_indels > 1) {
       message(sprintf(
         "Row %d: shifted by %d bases (POS: %d -> %d)",
         i,

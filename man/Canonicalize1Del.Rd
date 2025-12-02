@@ -27,10 +27,13 @@ See \code{FindDelMH} for details.
 (This seems to be very rare.)
 }
 \description{
-This function is primarily for internal use, but we export it
-to document the underlying logic.
+This function has been superseded by categorize_1_justified_indel,
+but is temporarily maintained for regression testing.
 }
 \details{
+This function is primarily for internal use, but we export it
+to document the underlying logic.
+
 See \url{https://github.com/steverozen/ICAMS/blob/v3.0.9-branch/data-raw/PCAWG7_indel_classification_2021_09_03.xlsx}
 for additional information on deletion mutation classification.
 
@@ -40,9 +43,6 @@ longer repeat units, (e.g. \code{CACACACA}, see
 \code{\link{FindMaxRepeatDel}}),
 and if the deletion is not in a simple repeat,
 looks for microhomology (see \code{\link{FindDelMH}}).
-
-See the code for unexported function \code{\link{CanonicalizeID}}
-and the functions it calls for handling of insertions.
 }
 \examples{
 Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 3) # "DEL:T:1:2"

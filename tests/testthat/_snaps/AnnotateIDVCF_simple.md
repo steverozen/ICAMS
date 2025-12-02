@@ -4,7 +4,7 @@
       avcf1
     Output
            CHROM       POS     ID           REF    ALT   QUAL FILTER
-          <char>     <int> <char>        <char> <char> <char> <char>
+          <char>     <num> <char>        <char> <char> <char> <char>
        1:      1   5288645      .            TG      T      .   PASS
        2:      1  41781103      .            AT      A      .   PASS
        3:      1  73638531      .             T     TA      .   PASS
@@ -319,7 +319,7 @@
       60:                               0/0:35,0:0.014:35:19,0:16,0:34,0:316,0:0:0:0
                                                            MCF10A_DHG11565_HH2GKALXX
                  VAF read.depth seq.context.width
-               <num>      <int>             <int>
+               <num>      <int>             <num>
        1: 0.60000000         45                21
        2: 0.36363636         22                21
        3: 0.54285714         35                21
@@ -444,71 +444,71 @@
       59:                                                                                                                                                                                                                                                                                                                                                                                     AAGTAATTGTCCAGAGTTTGGTATCAAAACTATGTTTCTTAAGACTATTTGCATCTCTCTCTTTTTTTTTTTAACACTGTTTTGTGATCCAATGATGTATTTCTGGAGTTACTTGTTAATG
       60:                                                                                                                                                                                                                                                                                                                                                                                                                           GGTATCTCACCTTAATCAGCCACAGAACTAATTTTCAGGCAGGTACGTGTTAAAGATTAGGGAAGGACAGCAGCTTTAGCTCA
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             seq.context
-          trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
-                    <int>         <int>       <char>                <char>
-       1:              NA            NA         <NA>                  <NA>
-       2:              NA            NA         <NA>                  <NA>
-       3:              NA            NA         <NA>                  <NA>
-       4:              NA            NA         <NA>                  <NA>
-       5:              NA            NA         <NA>                  <NA>
-       6:              NA            NA         <NA>                  <NA>
-       7:        89149905      89301938            +       ENSG00000065243
-       8:       102462586     102268130            -       ENSG00000118733
-       9:              NA            NA         <NA>                  <NA>
-      10:              NA            NA         <NA>                  <NA>
-      11:              NA            NA         <NA>                  <NA>
-      12:              NA            NA         <NA>                  <NA>
-      13:              NA            NA         <NA>                  <NA>
-      14:       158431364     158440647            +       ENSG00000173285
-      15:              NA            NA         <NA>                  <NA>
-      16:              NA            NA         <NA>                  <NA>
-      17:       175036994     175117202            +       ENSG00000120332
-      18:       182808482     182857117            +       ENSG00000135829
-      19:              NA            NA         <NA>                  <NA>
-      20:              NA            NA         <NA>                  <NA>
-      21:              NA            NA         <NA>                  <NA>
-      22:              NA            NA         <NA>                  <NA>
-      23:              NA            NA         <NA>                  <NA>
-      24:              NA            NA         <NA>                  <NA>
-      25:              NA            NA         <NA>                  <NA>
-      26:              NA            NA         <NA>                  <NA>
-      27:              NA            NA         <NA>                  <NA>
-      28:              NA            NA         <NA>                  <NA>
-      29:       223045613     223179337            +       ENSG00000154309
-      30:              NA            NA         <NA>                  <NA>
-      31:       233431471     233119181            -       ENSG00000135749
-      32:              NA            NA         <NA>                  <NA>
-      33:              NA            NA         <NA>                  <NA>
-      34:         3751182       3895001            +       ENSG00000214866
-      35:              NA            NA         <NA>                  <NA>
-      36:              NA            NA         <NA>                  <NA>
-      37:              NA            NA         <NA>                  <NA>
-      38:        32582096      32843966            +       ENSG00000115760
-      39:        43864399      43995126            +       ENSG00000152527
-      40:        49381676      49189296            -       ENSG00000170820
-      41:              NA            NA         <NA>                  <NA>
-      42:        51452713      50145641            -       ENSG00000179915
-      43:              NA            NA         <NA>                  <NA>
-      44:        73053170      72403113            -       ENSG00000144036
-      45:        77820445      76974845            -       ENSG00000176204
-      46:              NA            NA         <NA>                  <NA>
-      47:              NA            NA         <NA>                  <NA>
-      48:              NA            NA         <NA>                  <NA>
-      49:       131113618     131132978            +       ENSG00000072135
-      50:       134877554     135212192            +       ENSG00000152127
-      51:              NA            NA         <NA>                  <NA>
-      52:              NA            NA         <NA>                  <NA>
-      53:              NA            NA         <NA>                  <NA>
-      54:              NA            NA         <NA>                  <NA>
-      55:              NA            NA         <NA>                  <NA>
-      56:       162280843     162841792            +       ENSG00000144290
-      57:              NA            NA         <NA>                  <NA>
-      58:              NA            NA         <NA>                  <NA>
-      59:       209130979     209223470            +       ENSG00000115020
-      60:       214149103     215275225            +       ENSG00000144451
-          trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
+          pos_shift trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
+              <int>           <int>         <int>       <char>                <char>
+       1:         0              NA            NA         <NA>                  <NA>
+       2:         0              NA            NA         <NA>                  <NA>
+       3:         0              NA            NA         <NA>                  <NA>
+       4:         0              NA            NA         <NA>                  <NA>
+       5:         0              NA            NA         <NA>                  <NA>
+       6:         0              NA            NA         <NA>                  <NA>
+       7:         0        89149905      89301938            +       ENSG00000065243
+       8:         0       102462586     102268130            -       ENSG00000118733
+       9:         0              NA            NA         <NA>                  <NA>
+      10:         0              NA            NA         <NA>                  <NA>
+      11:         0              NA            NA         <NA>                  <NA>
+      12:         0              NA            NA         <NA>                  <NA>
+      13:         0              NA            NA         <NA>                  <NA>
+      14:         0       158431364     158440647            +       ENSG00000173285
+      15:         0              NA            NA         <NA>                  <NA>
+      16:         0              NA            NA         <NA>                  <NA>
+      17:         0       175036994     175117202            +       ENSG00000120332
+      18:         0       182808482     182857117            +       ENSG00000135829
+      19:         0              NA            NA         <NA>                  <NA>
+      20:         0              NA            NA         <NA>                  <NA>
+      21:         0              NA            NA         <NA>                  <NA>
+      22:         0              NA            NA         <NA>                  <NA>
+      23:         0              NA            NA         <NA>                  <NA>
+      24:         0              NA            NA         <NA>                  <NA>
+      25:         0              NA            NA         <NA>                  <NA>
+      26:         0              NA            NA         <NA>                  <NA>
+      27:         0              NA            NA         <NA>                  <NA>
+      28:         0              NA            NA         <NA>                  <NA>
+      29:         0       223045613     223179337            +       ENSG00000154309
+      30:         0              NA            NA         <NA>                  <NA>
+      31:         0       233431471     233119181            -       ENSG00000135749
+      32:         0              NA            NA         <NA>                  <NA>
+      33:         0              NA            NA         <NA>                  <NA>
+      34:         0         3751182       3895001            +       ENSG00000214866
+      35:         0              NA            NA         <NA>                  <NA>
+      36:         0              NA            NA         <NA>                  <NA>
+      37:         0              NA            NA         <NA>                  <NA>
+      38:         0        32582096      32843966            +       ENSG00000115760
+      39:         0        43864399      43995126            +       ENSG00000152527
+      40:         0        49381676      49189296            -       ENSG00000170820
+      41:         0              NA            NA         <NA>                  <NA>
+      42:         0        51452713      50145641            -       ENSG00000179915
+      43:         0              NA            NA         <NA>                  <NA>
+      44:         0        73053170      72403113            -       ENSG00000144036
+      45:         0        77820445      76974845            -       ENSG00000176204
+      46:         0              NA            NA         <NA>                  <NA>
+      47:         0              NA            NA         <NA>                  <NA>
+      48:         0              NA            NA         <NA>                  <NA>
+      49:         0       131113618     131132978            +       ENSG00000072135
+      50:         0       134877554     135212192            +       ENSG00000152127
+      51:         0              NA            NA         <NA>                  <NA>
+      52:         0              NA            NA         <NA>                  <NA>
+      53:         0              NA            NA         <NA>                  <NA>
+      54:         0              NA            NA         <NA>                  <NA>
+      55:         0              NA            NA         <NA>                  <NA>
+      56:         0       162280843     162841792            +       ENSG00000144290
+      57:         0              NA            NA         <NA>                  <NA>
+      58:         0              NA            NA         <NA>                  <NA>
+      59:         0       209130979     209223470            +       ENSG00000115020
+      60:         0       214149103     215275225            +       ENSG00000144451
+          pos_shift trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
-                     <char>     <int>     <lgcl> <int>     <char> <char>
+                     <char>     <num>     <lgcl> <int>     <char> <char>
        1:              <NA>   5288645      FALSE     1          d      G
        2:              <NA>  41781103      FALSE     1          d      A
        3:              <NA>  73638531      FALSE     1          i      C
@@ -570,130 +570,319 @@
       59:           PIKFYVE 209218269      FALSE     1          i      C
       60:            SPAG16 215239837      FALSE     1          d      A
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
-          ins_or_del_seq indel_str_count_in_ref   post    mh     R     U koh_mh
-                  <char>                  <int> <char> <int> <int> <int>  <int>
-       1:              C                      2      A     0     2     1      0
-       2:              T                      1      G     0     1     1      0
-       3:              T                      4      A     0     4     1      0
-       4:              C                      2      T     0     2     1      0
-       5:              T                      2      A     0     2     1      0
-       6:              T                      1      C     0     1     1      0
-       7:              T                      0      C     0     0     1      0
-       8:              C                      0      A     0     0     1      0
-       9:             TA                     11      A     0    11     2      0
-      10:              C                      4      T     0     4     1      0
-      11:              T                      3      A     0     3     1      0
-      12:              C                      2      T     0     2     1      0
-      13:              T                      4      C     0     4     1      0
-      14:      TAGTTATAC                      1      T     2     1     9      2
-      15:              T                      3      G     0     3     1      0
-      16:           CCCA                      1      C     3     1     4      3
-      17:              T                      4      C     0     4     1      0
-      18:              C                      2      T     0     2     1      0
-      19:              C                      4      A     0     4     1      0
-      20:             AA                      1      G     0     2     1      0
-      21:            CTT                      2      T     0     2     3      0
-      22:              T                      5      G     0     5     1      0
-      23:   CCTGAGCTGTAC                      1      C     1     1    12      1
-      24:         CTGTAC                      1      C     3     1     6      3
-      25:              C                      7      A     0     7     1      0
-      26:              C                      2      A     0     2     1      0
-      27:              T                      1      G     0     1     1      0
-      28:              C                      4      A     0     4     1      0
-      29:              T                      3      G     0     3     1      0
-      30:              T                      1      G     0     1     1      0
-      31:              T                      3      A     0     3     1      0
-      32:              T                      1      A     0     1     1      0
-      33:              T                      4      G     0     4     1      0
-      34:              T                      1      A     0     1     1      0
-      35:              T                      6      G     0     6     1      0
-      36:              T                      3      C     0     3     1      0
-      37:              C                      1      A     0     1     1      0
-      38:              T                      1      G     0     1     1      0
-      39:              T                     20      A     0    20     1      0
-      40:              C                      1      T     0     1     1      0
-      41:              T                      4      A     0     4     1      0
-      42:              C                      1      T     0     1     1      0
-      43:              T                      1      A     0     1     1      0
-      44:        TGATTCT                      1      T     2     1     7      2
-      45:              C                      4      T     0     4     1      0
-      46:              T                      9      C     0     9     1      0
-      47:              T                      1      G     0     1     1      0
-      48:              T                      1      C     0     1     1      0
-      49:              T                      1      A     0     1     1      0
-      50:              T                      4      A     0     4     1      0
-      51:              C                      2      T     0     2     1      0
-      52:              C                      3      G     0     3     1      0
-      53:              T                      4      G     0     4     1      0
-      54:              C                      1      T     0     1     1      0
-      55:              T                      7      A     0     7     1      0
-      56:             TG                      2      T     0     2     2      0
-      57:              T                      2      G     0     2     1      0
-      58:              T                      3      G     0     3     1      0
-      59:            TCT                      0      T     1     0     3      1
-      60:             GG                      1      T     0     2     1      0
-          ins_or_del_seq indel_str_count_in_ref   post    mh     R     U koh_mh
-                 COSMIC_83                Koh_89        Koh_476   prev_COSMIC_83
-                    <char>                <char>         <char>           <char>
-       1:        DEL:C:1:1         G[Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
-       2:        DEL:T:1:0      A[Del(T):R(8,)]G  A[Del(T):R1]G        DEL:T:1:0
-       3:        INS:T:1:4     C[Ins(T):R(0,4)]A  C[Ins(T):R4]A        INS:T:1:4
-       4:        DEL:C:1:1         A[Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
-       5:        DEL:T:1:1      A[Del(T):R(8,)]A  A[Del(T):R2]A        DEL:T:1:1
-       6:        DEL:T:1:0      A[Del(T):R(8,)]C  A[Del(T):R1]C        DEL:T:1:0
-       7:        INS:T:1:0     G[Ins(T):R(0,4)]C  G[Ins(T):R0]C        INS:T:1:0
-       8:        INS:C:1:0         Ins(C):R(0,3)  G[Ins(C):R0]A        INS:C:1:0
-       9: INS:repeats:2:5+         Ins(2,):R(5,)  Ins2:U2:R(5,) INS:repeats:2:5+
-      10:        DEL:C:1:3     A[Del(C):R(4,5)]T  A[Del(C):R4]T        DEL:C:1:3
-      11:        DEL:T:1:2      A[Del(T):R(8,)]A  A[Del(T):R3]A        DEL:T:1:2
-      12:        DEL:C:1:1         T[Del(C):R2]T  T[Del(C):R2]T        DEL:C:1:1
-      13:        INS:T:1:4     G[Ins(T):R(0,4)]C  G[Ins(T):R4]C        INS:T:1:4
-      14:      DEL:MH:5+:2            Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
-      15:        DEL:T:1:2      A[Del(T):R(8,)]G  A[Del(T):R3]G        DEL:T:1:2
-      16:       DEL:MH:4:3       del(2,3):M(3,4)        Del4:M3       DEL:MH:4:3
-      17:        DEL:T:1:3      C[Del(T):R(8,)]C  C[Del(T):R4]C        DEL:T:1:3
-      18:        DEL:C:1:1         A[Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
-      19:        DEL:C:1:3     A[Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
-      20:  DEL:repeats:2:0 Del(2,):U(1,2):R(2,4)     Del2:U1:R2  DEL:repeats:2:0
-      21:  DEL:repeats:3:1       Del(3,):U(3):R2     Del3:U3:R2  DEL:repeats:3:1
-      22:       INS:T:1:5+     G[Ins(T):R(5,6)]G  G[Ins(T):R5]G       INS:T:1:5+
-      23:      DEL:MH:5+:1            Del(6,):M1     Del(7,):M1      DEL:MH:5+:1
-      24:      DEL:MH:5+:3            Del(6,):M3        Del6:M3      DEL:MH:5+:3
-      25:       INS:C:1:5+          Ins(C):R(7,)  A[Ins(C):R7]A       INS:C:1:5+
-      26:        DEL:C:1:1         G[Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
-      27:        INS:T:1:1     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      28:        DEL:C:1:3     A[Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
-      29:        DEL:T:1:2      C[Del(T):R(8,)]G  C[Del(T):R3]G        DEL:T:1:2
-      30:        INS:T:1:1     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      31:        DEL:T:1:2      A[Del(T):R(8,)]A  A[Del(T):R3]A        DEL:T:1:2
-      32:        DEL:T:1:0      G[Del(T):R(8,)]A  G[Del(T):R1]A        DEL:T:1:0
-      33:        INS:T:1:4     C[Ins(T):R(0,4)]G  C[Ins(T):R4]G        INS:T:1:4
-      34:        INS:T:1:1     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      35:       INS:T:1:5+     G[Ins(T):R(5,6)]G  G[Ins(T):R6]G       INS:T:1:5+
-      36:        INS:T:1:3     G[Ins(T):R(0,4)]C  G[Ins(T):R3]C        INS:T:1:3
-      37:        DEL:C:1:0         G[Del(C):R1]A  G[Del(C):R1]A        DEL:C:1:0
-      38:        INS:T:1:1     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      39:       INS:T:1:5+      T[Ins(T):R(9,)]A T[Ins(T):R9+]A       INS:T:1:5+
-      40:        DEL:C:1:0         T[Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      41:        INS:T:1:4     G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
-      42:        DEL:C:1:0         T[Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      43:        INS:T:1:1     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      44:      DEL:MH:5+:2            Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
-      45:        DEL:C:1:3     T[Del(C):R(4,5)]T  T[Del(C):R4]T        DEL:C:1:3
-      46:       INS:T:1:5+      G[Ins(T):R(9,)]C G[Ins(T):R9+]C       INS:T:1:5+
-      47:        DEL:T:1:0      C[Del(T):R(8,)]G  C[Del(T):R1]G        DEL:T:1:0
-      48:        DEL:T:1:0      C[Del(T):R(8,)]C  C[Del(T):R1]C        DEL:T:1:0
-      49:        INS:T:1:1     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      50:        INS:T:1:4     G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
-      51:        DEL:C:1:1         G[Del(C):R2]T  G[Del(C):R2]T        DEL:C:1:1
-      52:        DEL:C:1:2       Del(C):R(1,5)]G  A[Del(C):R3]G        DEL:C:1:2
-      53:        DEL:T:1:3      A[Del(T):R(8,)]G  A[Del(T):R4]G        DEL:T:1:3
-      54:        DEL:C:1:0         T[Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      55:       INS:T:1:5+     A[Ins(T):R(7,8)]A  A[Ins(T):R7]A       INS:T:1:5+
-      56:  DEL:repeats:2:1 Del(2,):U(1,2):R(2,4)     Del2:U2:R2  DEL:repeats:2:1
-      57:        DEL:T:1:1      A[Del(T):R(8,)]G  A[Del(T):R2]G        DEL:T:1:1
-      58:        INS:T:1:3     A[Ins(T):R(0,4)]G  A[Ins(T):R3]G        INS:T:1:3
-      59:  INS:repeats:3:0           Ins(2,4):R0      Ins(5,):M  INS:repeats:3:0
-      60:  DEL:repeats:2:0 Del(2,):U(1,2):R(2,4)     Del2:U1:R2  DEL:repeats:2:0
-                 COSMIC_83                Koh_89        Koh_476   prev_COSMIC_83
+          ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
+                  <char> <char> <int>       <char> <int>                    <int>
+       1:              C      A     1            C     1                        1
+       2:              T      G     1            T     1                        1
+       3:              T      A     1            T     1                        1
+       4:              C      T     1            C     1                        1
+       5:              T      A     1            T     1                        1
+       6:              T      C     1            T     1                        1
+       7:              T      C     1            T     1                        1
+       8:              C      A     1            C     1                        1
+       9:             TA      A     2           TA     2                        1
+      10:              C      T     1            C     1                        1
+      11:              T      A     1            T     1                        1
+      12:              C      T     1            C     1                        1
+      13:              T      C     1            T     1                        1
+      14:      TAGTTATAC      T     9    TAGTTATAC     9                        1
+      15:              T      G     1            T     1                        1
+      16:           CCCA      C     4         CCCA     4                        1
+      17:              T      C     1            T     1                        1
+      18:              C      T     1            C     1                        1
+      19:              C      A     1            C     1                        1
+      20:             AA      G     2            A     1                        2
+      21:            CTT      T     3          CTT     3                        1
+      22:              T      G     1            T     1                        1
+      23:   CCTGAGCTGTAC      C    12 CCTGAGCTGTAC    12                        1
+      24:         CTGTAC      C     6       CTGTAC     6                        1
+      25:              C      A     1            C     1                        1
+      26:              C      A     1            C     1                        1
+      27:              T      G     1            T     1                        1
+      28:              C      A     1            C     1                        1
+      29:              T      G     1            T     1                        1
+      30:              T      G     1            T     1                        1
+      31:              T      A     1            T     1                        1
+      32:              T      A     1            T     1                        1
+      33:              T      G     1            T     1                        1
+      34:              T      A     1            T     1                        1
+      35:              T      G     1            T     1                        1
+      36:              T      C     1            T     1                        1
+      37:              C      A     1            C     1                        1
+      38:              T      G     1            T     1                        1
+      39:              T      A     1            T     1                        1
+      40:              C      T     1            C     1                        1
+      41:              T      A     1            T     1                        1
+      42:              C      T     1            C     1                        1
+      43:              T      A     1            T     1                        1
+      44:        TGATTCT      T     7      TGATTCT     7                        1
+      45:              C      T     1            C     1                        1
+      46:              T      C     1            T     1                        1
+      47:              T      G     1            T     1                        1
+      48:              T      C     1            T     1                        1
+      49:              T      A     1            T     1                        1
+      50:              T      A     1            T     1                        1
+      51:              C      T     1            C     1                        1
+      52:              C      G     1            C     1                        1
+      53:              T      G     1            T     1                        1
+      54:              C      T     1            C     1                        1
+      55:              T      A     1            T     1                        1
+      56:             TG      T     2           TG     2                        1
+      57:              T      G     1            T     1                        1
+      58:              T      G     1            T     1                        1
+      59:            TCT      T     3          TCT     3                        1
+      60:             GG      T     2            G     1                        2
+          ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
+          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
+                           <int> <int>                    <int> <int>  <int> <char>
+       1:                      2     2                       20     0      0      G
+       2:                      1     1                       21     0      0      T
+       3:                      4     4                       17     0      0      A
+       4:                      2     2                       20     0      0      C
+       5:                      2     2                       20     0      0      A
+       6:                      1     1                       21     0      0      A
+       7:                      0     0                       21     0      0      T
+       8:                      0     0                       21     0      0      G
+       9:                     11    11                       11     0      0     TA
+      10:                      4     4                       18     0      0      C
+      11:                      3     3                       19     0      0      A
+      12:                      2     2                       20     0      0      G
+      13:                      4     4                       17     0      0      T
+      14:                      1     1                        0     2      2     TA
+      15:                      3     3                       19     0      0      A
+      16:                      1     1                        0     3      3      C
+      17:                      4     4                       18     0      0      A
+      18:                      2     2                       20     0      0      G
+      19:                      4     4                       18     0      0      G
+      20:                      1     2                        0     0      0      A
+      21:                      2     2                        1     0      0    CTT
+      22:                      5     5                       16     0      0      T
+      23:                      1     1                        0     1      1      C
+      24:                      1     1                        0     3      3    CTG
+      25:                      7     7                       14     0      0      G
+      26:                      2     2                       20     0      0      G
+      27:                      1     1                       20     0      0      T
+      28:                      4     4                       18     0      0      C
+      29:                      3     3                       19     0      0      T
+      30:                      1     1                       20     0      0      T
+      31:                      3     3                       19     0      0      A
+      32:                      1     1                       21     0      0      T
+      33:                      4     4                       17     0      0      T
+      34:                      1     1                       20     0      0      T
+      35:                      6     6                       15     0      0      T
+      36:                      3     3                       18     0      0      T
+      37:                      1     1                       21     0      0      C
+      38:                      1     1                       20     0      0      T
+      39:                     20    20                        1     0      0      A
+      40:                      1     1                       21     0      0      G
+      41:                      4     4                       17     0      0      T
+      42:                      1     1                       21     0      0      C
+      43:                      1     1                       20     0      0      A
+      44:                      1     1                        0     2      2     TG
+      45:                      4     4                       18     0      0      G
+      46:                      9     9                       12     0      0      T
+      47:                      1     1                       21     0      0      A
+      48:                      1     1                       21     0      0      A
+      49:                      1     1                       20     0      0      A
+      50:                      4     4                       17     0      0      T
+      51:                      2     2                       20     0      0      C
+      52:                      3     3                       19     0      0      C
+      53:                      4     4                       18     0      0      T
+      54:                      1     1                       21     0      0      C
+      55:                      7     7                       14     0      0      A
+      56:                      2     2                        1     0      0     TG
+      57:                      2     2                       20     0      0      A
+      58:                      3     3                       18     0      0      A
+      59:                      0     0                        0     1      1      T
+      60:                      1     2                        0     0      0      G
+          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
+          unit_length internal_rep internal_reps     spacer spacer_length
+                <int>       <char>         <int>     <char>         <int>
+       1:           1                          0                        0
+       2:           1                          0                        0
+       3:           1                          0                        0
+       4:           1                          0                        0
+       5:           1                          0                        0
+       6:           1                          0                        0
+       7:           1                          0                        0
+       8:           1                          0                        0
+       9:           2                          0                        0
+      10:           1                          0                        0
+      11:           1                          0                        0
+      12:           1                          0                        0
+      13:           1                          0                        0
+      14:           2                          0    GTTATAC             7
+      15:           1                          0                        0
+      16:           1           CC             2          A             1
+      17:           1                          0                        0
+      18:           1                          0                        0
+      19:           1                          0                        0
+      20:           1            A             1                        0
+      21:           3                          0                        0
+      22:           1                          0                        0
+      23:           1            C             1 TGAGCTGTAC            10
+      24:           3                          0        TAC             3
+      25:           1                          0                        0
+      26:           1                          0                        0
+      27:           1                          0                        0
+      28:           1                          0                        0
+      29:           1                          0                        0
+      30:           1                          0                        0
+      31:           1                          0                        0
+      32:           1                          0                        0
+      33:           1                          0                        0
+      34:           1                          0                        0
+      35:           1                          0                        0
+      36:           1                          0                        0
+      37:           1                          0                        0
+      38:           1                          0                        0
+      39:           1                          0                        0
+      40:           1                          0                        0
+      41:           1                          0                        0
+      42:           1                          0                        0
+      43:           1                          0                        0
+      44:           2                          0      ATTCT             5
+      45:           1                          0                        0
+      46:           1                          0                        0
+      47:           1                          0                        0
+      48:           1                          0                        0
+      49:           1                          0                        0
+      50:           1                          0                        0
+      51:           1                          0                        0
+      52:           1                          0                        0
+      53:           1                          0                        0
+      54:           1                          0                        0
+      55:           1                          0                        0
+      56:           2                          0                        0
+      57:           1                          0                        0
+      58:           1                          0                        0
+      59:           1                          0         CT             2
+      60:           1            G             1                        0
+          unit_length internal_rep internal_reps     spacer spacer_length
+                      prime3_rep prime3_reps original_reps        COSMIC_83
+                          <char>       <int>         <int>           <char>
+       1:                      G           1             2        DEL:C:1:1
+       2:                                  0             1        DEL:T:1:0
+       3:                   AAAA           4             4        INS:T:1:4
+       4:                      C           1             2        DEL:C:1:1
+       5:                      A           1             2        DEL:T:1:1
+       6:                                  0             1        DEL:T:1:0
+       7:                                  0             0        INS:T:1:0
+       8:                                  0             0        INS:C:1:0
+       9: TATATATATATATATATATATA          11            11 INS:repeats:2:5+
+      10:                    CCC           3             4        DEL:C:1:3
+      11:                     AA           2             3        DEL:T:1:2
+      12:                      G           1             2        DEL:C:1:1
+      13:                   TTTT           4             4        INS:T:1:4
+      14:                     TA           1             1      DEL:MH:5+:2
+      15:                     AA           2             3        DEL:T:1:2
+      16:                   CCCC           4             4       DEL:MH:4:3
+      17:                    AAA           3             4        DEL:T:1:3
+      18:                      G           1             2        DEL:C:1:1
+      19:                    GGG           3             4        DEL:C:1:3
+      20:                                  0             2  DEL:repeats:2:0
+      21:                    CTT           1             2  DEL:repeats:3:1
+      22:                  TTTTT           5             5       INS:T:1:5+
+      23:                      C           1             1      DEL:MH:5+:1
+      24:                    CTG           1             1      DEL:MH:5+:3
+      25:                GGGGGGG           7             7       INS:C:1:5+
+      26:                      G           1             2        DEL:C:1:1
+      27:                      T           1             1        INS:T:1:1
+      28:                    CCC           3             4        DEL:C:1:3
+      29:                     TT           2             3        DEL:T:1:2
+      30:                      T           1             1        INS:T:1:1
+      31:                     AA           2             3        DEL:T:1:2
+      32:                                  0             1        DEL:T:1:0
+      33:                   TTTT           4             4        INS:T:1:4
+      34:                      T           1             1        INS:T:1:1
+      35:                 TTTTTT           6             6       INS:T:1:5+
+      36:                    TTT           3             3        INS:T:1:3
+      37:                                  0             1        DEL:C:1:0
+      38:                      T           1             1        INS:T:1:1
+      39:  AAAAAAAAAAAAAAAAAAAAA          21            21       INS:T:1:5+
+      40:                                  0             1        DEL:C:1:0
+      41:                   TTTT           4             4        INS:T:1:4
+      42:                                  0             1        DEL:C:1:0
+      43:                      A           1             1        INS:T:1:1
+      44:                     TG           1             1      DEL:MH:5+:2
+      45:                    GGG           3             4        DEL:C:1:3
+      46:              TTTTTTTTT           9             9       INS:T:1:5+
+      47:                                  0             1        DEL:T:1:0
+      48:                                  0             1        DEL:T:1:0
+      49:                      A           1             1        INS:T:1:1
+      50:                   TTTT           4             4        INS:T:1:4
+      51:                      C           1             2        DEL:C:1:1
+      52:                     CC           2             3        DEL:C:1:2
+      53:                    TTT           3             4        DEL:T:1:3
+      54:                                  0             1        DEL:C:1:0
+      55:                AAAAAAA           7             7       INS:T:1:5+
+      56:                     TG           1             2  DEL:repeats:2:1
+      57:                      A           1             2        DEL:T:1:1
+      58:                    AAA           3             3        INS:T:1:3
+      59:            TTTTTTTTTTT          11            11  INS:repeats:3:0
+      60:                                  0             2  DEL:repeats:2:0
+                      prime3_rep prime3_reps original_reps        COSMIC_83
+                         Koh_89        Koh_476   prev_COSMIC_83
+                         <char>         <char>           <char>
+       1:          [Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
+       2:     A[Del(T):R(1,4)]G  A[Del(T):R1]G        DEL:T:1:0
+       3:     C[Ins(T):R(0,4)]A  C[Ins(T):R4]A        INS:T:1:4
+       4:          [Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
+       5:     A[Del(T):R(1,4)]A  A[Del(T):R2]A        DEL:T:1:1
+       6:     A[Del(T):R(1,4)]C  A[Del(T):R1]C        DEL:T:1:0
+       7:     G[Ins(T):R(0,4)]C  G[Ins(T):R0]C        INS:T:1:0
+       8:         Ins(C):R(0,3)  G[Ins(C):R0]A        INS:C:1:0
+       9:         Ins(2,):R(5,) Ins2:U2:R(5,9) INS:repeats:2:5+
+      10:      [Del(C):R(4,5)]T  A[Del(C):R4]T        DEL:C:1:3
+      11:     A[Del(T):R(1,4)]A  A[Del(T):R3]A        DEL:T:1:2
+      12:          [Del(C):R2]T  T[Del(C):R2]T        DEL:C:1:1
+      13:     G[Ins(T):R(0,4)]C  G[Ins(T):R4]C        INS:T:1:4
+      14:            Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
+      15:     A[Del(T):R(1,4)]G  A[Del(T):R3]G        DEL:T:1:2
+      16:       Del(4,5):M(3,4)        Del4:M3       DEL:MH:4:3
+      17:     C[Del(T):R(1,4)]C  C[Del(T):R4]C        DEL:T:1:3
+      18:          [Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
+      19:      [Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
+      20:           Del(2,4):R1     Del2:U1:R2  DEL:repeats:2:0
+      21:      Del(3,):U(3,):R2     Del3:U3:R2  DEL:repeats:3:1
+      22:     G[Ins(T):R(5,7)]G  G[Ins(T):R5]G       INS:T:1:5+
+      23:            Del(6,):M1     Del(7,):M1      DEL:MH:5+:1
+      24:            Del(6,):M3        Del6:M3      DEL:MH:5+:3
+      25:          Ins(C):R(7,)  A[Ins(C):R7]A       INS:C:1:5+
+      26:          [Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
+      27:     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
+      28:      [Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
+      29:     C[Del(T):R(1,4)]G  C[Del(T):R3]G        DEL:T:1:2
+      30:     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
+      31:     A[Del(T):R(1,4)]A  A[Del(T):R3]A        DEL:T:1:2
+      32:     G[Del(T):R(1,4)]A  G[Del(T):R1]A        DEL:T:1:0
+      33:     C[Ins(T):R(0,4)]G  C[Ins(T):R4]G        INS:T:1:4
+      34:     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
+      35:     G[Ins(T):R(5,7)]G  G[Ins(T):R6]G       INS:T:1:5+
+      36:     G[Ins(T):R(0,4)]C  G[Ins(T):R3]C        INS:T:1:3
+      37:          [Del(C):R1]A  G[Del(C):R1]A        DEL:C:1:0
+      38:     G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
+      39:      T[Ins(T):R(8,)]A T[Ins(T):R13]A       INS:T:1:5+
+      40:          [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
+      41:     G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
+      42:          [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
+      43:     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
+      44:            Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
+      45:      [Del(C):R(4,5)]T  T[Del(C):R4]T        DEL:C:1:3
+      46:      G[Ins(T):R(8,)]C  G[Ins(T):R9]C       INS:T:1:5+
+      47:     C[Del(T):R(1,4)]G  C[Del(T):R1]G        DEL:T:1:0
+      48:     C[Del(T):R(1,4)]C  C[Del(T):R1]C        DEL:T:1:0
+      49:     G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
+      50:     G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
+      51:          [Del(C):R2]T  G[Del(C):R2]T        DEL:C:1:1
+      52:      [Del(C):R(1,5)]G  A[Del(C):R3]G        DEL:C:1:2
+      53:     A[Del(T):R(1,4)]G  A[Del(T):R4]G        DEL:T:1:3
+      54:          [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
+      55:     A[Ins(T):R(5,7)]A  A[Ins(T):R7]A       INS:T:1:5+
+      56: Del(2,):U(1,2):R(2,4)     Del2:U2:R2  DEL:repeats:2:1
+      57:     A[Del(T):R(1,4)]G  A[Del(T):R2]G        DEL:T:1:1
+      58:     A[Ins(T):R(0,4)]G  A[Ins(T):R3]G        INS:T:1:3
+      59:           Ins(2,4):R0     Ins(2,4):M  INS:repeats:3:0
+      60:           Del(2,4):R1     Del2:U1:R2  DEL:repeats:2:0
+                         Koh_89        Koh_476   prev_COSMIC_83
 

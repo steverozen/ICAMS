@@ -12,3 +12,4 @@
 ^docs$
 ^AGENTS.md$
 ^[.]?air[.]toml$
+^inst/segment_traced$

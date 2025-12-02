@@ -17,9 +17,6 @@ library(Biostrings)
 #' and if the deletion is not in a simple repeat,
 #' looks for microhomology (see \code{\link{FindDelMH}}).
 #'
-#' See the code for unexported function \code{\link{CanonicalizeID}}
-#' and the functions it calls for handling of insertions.
-#'
 #' @param context The sequence surrounding the indel PRIOR to the insertion
 #' or deletion.
 #'
@@ -45,9 +42,6 @@ library(Biostrings)
 #' categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
 #' categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"
 #'
-#' @export
-
-#  ins_or_del, previous_char, repeat_seq, repeat_count, post_char, mh, COSMIC_83
 
 categorize_1_justified_indel <- function(
   context,
@@ -69,7 +63,7 @@ categorize_1_justified_indel <- function(
         browser()
       }
     }
-    koh_extra = seg_traced(
+    koh_extra = seg_simple(
       ins_or_del = ins_or_del,
       string = ins_or_del_seq,
       context = slice3

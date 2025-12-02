@@ -78,9 +78,6 @@ deletions in homopolymers, then handles deletions in simple repeats with
 longer repeat units, (e.g. \code{CACACACA}, see
 \code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
 repeat, looks for microhomology (see \code{\link{FindDelMH}}).
-
-See the code for unexported function \code{\link{CanonicalizeID}}
-and the functions it calls for handling of insertions.
 }
 
 \examples{

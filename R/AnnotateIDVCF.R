@@ -103,6 +103,6 @@ AnnotateIDVCF <-
 
     return(list(
       annotated.vcf = df6,
-      discarded.variants = discarded.variants
+      discarded.variants = discarded_variants
     ))
   }

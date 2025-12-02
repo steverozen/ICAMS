@@ -3824,9 +3824,6 @@ MutectVCFFilesToCatalogAndPlotToPdf <-
 #' \code{\link{FindMaxRepeatDel}}), and if the deletion is not in a simple
 #' repeat, looks for microhomology (see \code{\link{FindDelMH}}).
 #'
-#' See the code for unexported function \code{\link{CanonicalizeID}}
-#' and the functions it calls for handling of insertions.
-#'
 #' @section Note:
 #'  SBS 192 and DBS 144 catalogs include only mutations in transcribed regions.
 #'  In ID (small insertions and deletions) catalogs, deletion repeat sizes range

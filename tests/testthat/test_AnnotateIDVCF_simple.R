@@ -7,7 +7,7 @@ test_that("AnnotateIDVCF_sample", {
     ivcf1,
     "hg19",
     flag.mismatches = 0,
-    explain_indels = FALSE
+    explain_indels = 1
   )
   avcf1 = avcf1$annotated.vcf
   expect_snapshot(avcf1)

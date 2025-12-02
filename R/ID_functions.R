@@ -414,6 +414,9 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 
 #' Given a deletion and its sequence context, categorize it
 #'
+#' This function has been superseded by categorize_1_justified_indel,
+#' but is temporarily maintained for regression testing.
+#'
 #' This function is primarily for internal use, but we export it
 #' to document the underlying logic.
 #'
@@ -426,9 +429,6 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' \code{\link{FindMaxRepeatDel}}),
 #' and if the deletion is not in a simple repeat,
 #' looks for microhomology (see \code{\link{FindDelMH}}).
-#'
-#' See the code for unexported function \code{\link{CanonicalizeID}}
-#' and the functions it calls for handling of insertions.
 #'
 #' @param context The deleted sequence plus ample surrounding
 #'   sequence on each side (at least as long as \code{del.seq}).
@@ -453,7 +453,6 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 4) # "DEL:T:1:2"
 #' Canonicalize1Del("xyAqr", del.seq = "A", pos = 3)   # "DEL:T:1:0"
 #'
-#' @export
 
 Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
   # Is the deletion involved in a repeat?
@@ -695,7 +694,7 @@ CreateOneColIDMatrix <- function(
     warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
   }
 
-  id_info_list = categorize_many_indels(ID.vcf)
+  id_info_list = categorize_indels_in_vcf(ID.vcf)
   id_info_df = data.table::rbindlist(id_info_list, fill = TRUE)
 
   out.ID.vcf <- cbind(ID.vcf, ID.class = id_info_df$COSMIC_83)

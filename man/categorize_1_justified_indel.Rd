@@ -7,7 +7,8 @@
 categorize_1_justified_indel(context, ins_or_del, ins_or_del_seq, pos)
 }
 \arguments{
-\item{context}{The sequence surrounding the indel.}
+\item{context}{The sequence surrounding the indel PRIOR to the insertion
+or deletion.}
 
 \item{ins_or_del}{A singgle character, with "i" denoting
 an insertion and "d" denotine an deletion.}
@@ -16,7 +17,7 @@ an insertion and "d" denotine an deletion.}
 
 \item{pos}{For deletions, the 1-based position of the start of the
 deleted sequence; for insertions, the position immediately to the right
-of where the inserrtion occurs.}
+of where the insertion occurs.}
 }
 \value{
 A string that is the canonical representation
@@ -41,9 +42,6 @@ longer repeat units, (e.g. \code{CACACACA}, see
 \code{\link{FindMaxRepeatDel}}),
 and if the deletion is not in a simple repeat,
 looks for microhomology (see \code{\link{FindDelMH}}).
-
-See the code for unexported function \code{\link{CanonicalizeID}}
-and the functions it calls for handling of insertions.
 }
 \examples{
 categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"

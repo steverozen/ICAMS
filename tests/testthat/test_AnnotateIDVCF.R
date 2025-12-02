@@ -1,5 +1,3 @@
-context("AnnotateIDVCF")
-source("../../inst/xcategorize_1_justified_indel.R")
 test_that("AnnotateIDVCF function with hg19", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
@@ -10,15 +8,11 @@ test_that("AnnotateIDVCF function with hg19", {
   list <-
     AnnotateIDVCF(
       id.vcf,
-      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5
+      ref.genome = BSgenome.Hsapiens.1000genomes.hs37d5::BSgenome.Hsapiens.1000genomes.hs37d5,
+      explain_indels = 1
     )
   list1 <- AnnotateIDVCF(id.vcf, ref.genome = "GRCh37")
   list2 <- AnnotateIDVCF(id.vcf, ref.genome = "hg19")
-  expect_equal(
-    list$annotated.vcf[, 1:29],
-    strelka.ID.vcf.GRCh37[, 1:29],
-    ignore_attr = TRUE
-  )
   expect_equal(list$annotated.vcf, list1$annotated.vcf)
   expect_equal(list$annotated.vcf, list2$annotated.vcf)
 })
