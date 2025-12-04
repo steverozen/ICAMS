@@ -4,5 +4,6 @@ test_that("test_long_test_vs_indelsiglib", {
   cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) -> xx
   xx$koh_orig_edited = make_koh_open_intervals(xx)
   zz = which(xx$Koh_89 != xx$koh_orig_edited)
+  # View(xx[zz, ] |> dplyr::select(Koh_89, koh_orig_edited))
   expect_snapshot(xx[zz, ])
 })

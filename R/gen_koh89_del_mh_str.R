@@ -2,6 +2,7 @@ gen_koh89_del_mh_str = function(arglist) {
   stopifnot(arglist$spacer_length > 0)
   # This will be a microhomology category as
   # determined by Koh et al.'s "segment" analysis.
+  stopifnot(arglist$prime_rep > 0)
   seg_microhom_len = min(
     arglist$unit_length + nchar(arglist$internal_rep),
     nchar(arglist$prime3_rep)

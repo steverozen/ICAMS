@@ -108,8 +108,7 @@ gen_Koh_89_string = function(arglist) {
 
   stopifnot(INS_OR_DEL == "Del")
   # browser()
-
-  if (arglist$spacer_length > 0) {
+  if (arglist$spacer_length > 0 && arglist$prime3_reps > 0) {
     return(gen_koh89_del_mh_str(arglist))
   }
 
@@ -122,12 +121,12 @@ gen_Koh_89_string = function(arglist) {
   }
 
   if (R == 1) {
-    browser() # should not get here?
     if (L <= 4) {
       return("Del(2,4):R1")
     }
     return("Del(5,):R1")
   }
+
   U = arglist$U
 
   if (U <= 2) {
