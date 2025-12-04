@@ -843,7 +843,7 @@
       17:     C[Del(T):R(1,4)]C  C[Del(T):R4]C        DEL:T:1:3
       18:          [Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
       19:      [Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
-      20:           Del(2,4):R1     Del2:U1:R2  DEL:repeats:2:0
+      20:           Del(2,4):R1     Del2:U1:R1  DEL:repeats:2:0
       21:      Del(3,):U(3,):R2     Del3:U3:R2  DEL:repeats:3:1
       22:     G[Ins(T):R(5,7)]G  G[Ins(T):R5]G       INS:T:1:5+
       23:            Del(6,):M1     Del(7,):M1      DEL:MH:5+:1
@@ -883,6 +883,6 @@
       57:     A[Del(T):R(1,4)]G  A[Del(T):R2]G        DEL:T:1:1
       58:     A[Ins(T):R(0,4)]G  A[Ins(T):R3]G        INS:T:1:3
       59:           Ins(2,4):R0     Ins(2,4):M  INS:repeats:3:0
-      60:           Del(2,4):R1     Del2:U1:R2  DEL:repeats:2:0
+      60:           Del(2,4):R1     Del2:U1:R1  DEL:repeats:2:0
                          Koh_89        Koh_476   prev_COSMIC_83
 

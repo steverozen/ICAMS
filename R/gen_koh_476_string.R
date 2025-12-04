@@ -43,9 +43,17 @@ gen_Koh_476_string = function(arglist) {
       arglist$post
     ))
   }
-  # arglist$indel_str_count_in_ref
+
+  if (arglist$spacer_length > 0 && arglist$prime3_reps > 0) {
+    return(gen_koh476_mh_str(arglist))
+  }
+
   if (
-    (INS_OR_DEL == "Del" && arglist$R_outside_ins_or_del_seq == 0 && U != 1) || # not sure about U != 1 I think Koh does not have this...
+    FALSE &&
+      #### FIXME
+      (INS_OR_DEL == "Del" &&
+        arglist$R_outside_ins_or_del_seq == 0 &&
+        U != 1) || # not sure about U != 1 I think Koh does not have this...
       ## (INS_OR_DEL == "Del" && arglist$indel_str_count_in_ref == 1) ||
       (INS_OR_DEL == "Ins" && arglist$indel_str_count_in_ref == 0 && U != 1)
   ) {
@@ -60,34 +68,6 @@ gen_Koh_476_string = function(arglist) {
   } else {
     microhom_len = arglist$koh_mh
     # message("hmh")
-  }
-
-  #  Hyptothesis: If U is 1 koh doesn't call Microhomology, s
-
-  if (microhom_len > 0) {
-    # was micohom_len
-    if (INS_OR_DEL == "Ins") {
-      # Insertion with microhomology
-      # Lines 184 and 185
-      if (R != 0) {
-        # browser() # This should be an error (?)
-      }
-      if (L >= 5) {
-        return("Ins(5,):M")
-      } else {
-        return("Ins(2,4):M")
-      }
-    } else {
-      # Deletion with microhomology
-      # Lines 454 through 474
-      if (R != 1) {
-        # browser() # This should be an error (?)
-      }
-
-      del_mh_str = ifelse(microhom_len >= 6, "(6,)", microhom_len)
-      del_len_str = ifelse(L >= 7, "(7,)", L)
-      return(paste0(INS_OR_DEL, del_len_str, ":M", del_mh_str))
-    }
   }
 
   # Remaining classes of insertions and deletions;
@@ -120,9 +100,10 @@ gen_Koh_476_string = function(arglist) {
   # We as assume that for e.g. |ABABA|BABAB we consider U = 5, L = 5, and for insertion R = 0
 
   if (INS_OR_DEL == "Ins") {
+    # browser()
     L_str = ifelse(L >= 5, "(5,)", L)
-    R_str = ifelse(R >= 5, fiveplus_str, R)
-    if (R == 0) {
+    R_str = ifelse(arglist$R >= 5, fiveplus_str, arglist$R)
+    if (arglist$R == 0) {
       if (L >= 5) {
         return("Ins(5,):R0")
       } else {
@@ -138,6 +119,15 @@ gen_Koh_476_string = function(arglist) {
     }
   } else {
     stopifnot(INS_OR_DEL == "Del")
+
+    if (arglist$spacer_length == 0 && arglist$prime3_reps == 0) {
+      U_str = ifelse(arglist$unit_length >= 2, "(2,)", "1")
+      if (L >= 10) {
+        return(as.character(glue::glue("Del(10,):U{U_str}:R1")))
+      } else {
+        return(as.character(glue::glue("Del{L}:U{U_str}:R1")))
+      }
+    }
 
     if (R == 1) {
       L_str = ifelse(L >= 10, "(10,)", L)

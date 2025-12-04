@@ -276,7 +276,7 @@
       17:             4        DEL:T:1:3     C[Del(T):R(1,4)]C  C[Del(T):R4]C
       18:             2        DEL:C:1:1          [Del(C):R2]T  A[Del(C):R2]T
       19:             4        DEL:C:1:3      [Del(C):R(4,5)]A  A[Del(C):R4]A
-      20:             2  DEL:repeats:2:0           Del(2,4):R1     Del2:U1:R2
+      20:             2  DEL:repeats:2:0           Del(2,4):R1     Del2:U1:R1
       21:             2  DEL:repeats:3:1      Del(3,):U(3,):R2     Del3:U3:R2
       22:             5       INS:T:1:5+     G[Ins(T):R(5,7)]G  G[Ins(T):R5]G
       23:             1      DEL:MH:5+:1            Del(6,):M1     Del(7,):M1
@@ -316,7 +316,7 @@
       57:             2        DEL:T:1:1     A[Del(T):R(1,4)]G  A[Del(T):R2]G
       58:             3        INS:T:1:3     A[Ins(T):R(0,4)]G  A[Ins(T):R3]G
       59:            11  INS:repeats:3:0           Ins(2,4):R0     Ins(2,4):M
-      60:             2  DEL:repeats:2:0           Del(2,4):R1     Del2:U1:R2
+      60:             2  DEL:repeats:2:0           Del(2,4):R1     Del2:U1:R1
           original_reps        COSMIC_83                Koh_89        Koh_476
             prev_COSMIC_83
                     <char>
