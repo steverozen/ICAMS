@@ -46,5 +46,4 @@ justify_indel("CAAAG", "CAAG", pos = 2, expected_delta = "A")
 justify_indel("CAAAG", "CAAG", pos = 3, expected_delta = "A")
 justify_indel("CACAG", "CAG", pos = 3, expected_delta = "CA")
 
-
 }

@@ -453,6 +453,7 @@ FindMaxRepeatIns <- function(context, rep.unit.seq, pos) {
 #' Canonicalize1Del("xyAAAqr", del.seq = "A", pos = 4) # "DEL:T:1:2"
 #' Canonicalize1Del("xyAqr", del.seq = "A", pos = 3)   # "DEL:T:1:0"
 #'
+#' @export
 
 Canonicalize1Del <- function(context, del.seq, pos, trace = 0) {
   # Is the deletion involved in a repeat?

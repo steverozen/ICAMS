@@ -1,5 +1,3 @@
-# categorize_del
-
 library(Biostrings)
 
 #' Given a indel and its sequence context, categorize it
@@ -38,10 +36,12 @@ library(Biostrings)
 #'  (This seems to be very rare.)
 #'
 #' @examples
+#'
 #' categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"
 #' categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
 #' categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"
 #'
+#' @export
 
 categorize_1_justified_indel <- function(
   context,

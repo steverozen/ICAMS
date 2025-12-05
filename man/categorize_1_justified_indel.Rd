@@ -44,6 +44,7 @@ and if the deletion is not in a simple repeat,
 looks for microhomology (see \code{\link{FindDelMH}}).
 }
 \examples{
+
 categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"
 categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
 categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"

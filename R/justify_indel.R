@@ -44,7 +44,7 @@
 #' justify_indel("CAAAG", "CAAG", pos = 3, expected_delta = "A")
 #' justify_indel("CACAG", "CAG", pos = 3, expected_delta = "CA")
 #'
-#'
+#' @export
 
 justify_indel = function(long_str, short_str, pos, expected_delta = NULL) {
   requireNamespace("stringi")

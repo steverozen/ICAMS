@@ -56,11 +56,12 @@ Add sequence context and transcript information to an in-memory ID
 genome
 }
 \examples{
-file <- c(system.file("tests/testthat/testdata/extdata/Strelka-ID-vcf/",
+file <- c(system.file("tests/testthat/testdata/",
                       "vcf_to_test_justify_indels_in_id_vcf_with_contexts.csv",
-                      package = "ICAMS"))
-vcf_no_contexts <- read.csv(file) |>
-#   dplyr::select(-seq.context.width, -seq.context)
+                       package = "ICAMS"))
+
+read.csv(file) |> dplyr::select(-seq.context.width, -seq.context) -> vcf_no_contexts
+
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
     justify_id_vcf(vcf_no_contexts, ref.genome = "hg19", explain_indels = 2)}
 

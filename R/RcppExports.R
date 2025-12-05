@@ -23,6 +23,6 @@
 #'
 #' @export
 segment_simple_cpp <- function(ins_or_del, string, context) {
-    .Call('_ICAMS_segment_simple_cpp', PACKAGE = 'ICAMS', ins_or_del, string, context)
+    .Call(`_ICAMS_segment_simple_cpp`, ins_or_del, string, context)
 }
 
