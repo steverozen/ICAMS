@@ -131,7 +131,8 @@ gen_Koh_89_string = function(arglist) {
 
   if (U <= 2) {
     if (R <= 4) {
-      return("Del(2,):U(1,2):R(2,4)")
+      stopifnot(R <= 8) # R > 8 (actualy > 7?) should be impossible
+      return("Del(2,8):U(1,2):R(2,4)")
     }
     return("Del(2,):U(1,2):R(5,)")
   }

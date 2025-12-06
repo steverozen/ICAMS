@@ -1,7 +1,5 @@
-# Edit koh89 categories to change e.t. R(5,9) to R(5,) -- make them right-open
-# intervals
-
 make_koh_open_intervals = function(xx) {
+  message("HERE")
   tmp = xx$Koh89.annotate.class
   tmp = gsub("Ins(2,):R(5,9)", "Ins(2,):R(5,)", x = tmp, fixed = TRUE) # Ins(C):R(7,)
   tmp = gsub("Ins(C):R(7,9)", "Ins(C):R(7,)", x = tmp, fixed = TRUE)

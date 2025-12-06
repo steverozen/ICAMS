@@ -230,6 +230,9 @@ categorize_1_justified_indel <- function(
 
   retlist$COSMIC_83 = gen_COSMIC_83_string(retlist)
   retlist$Koh_89 = gen_Koh_89_string(retlist)
+  if (retlist$Koh_89 == "Del(2,8):U(1,2):R(2,4)") {
+    stopifnot(R <= 8) # R > 8 should be impossible
+  }
   retlist$Koh_476 = gen_Koh_476_string(retlist)
 
   return(retlist)

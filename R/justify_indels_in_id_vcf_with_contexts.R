@@ -104,6 +104,13 @@ justify_indels_in_id_vcf_with_contexts <- function(vcf, explain_indels = 1) {
       tmp <- justify_indel(tmp_long, tmp_short, pos, ref)
       new_ref = tmp$del_str_plus
       new_alt = stringi::stri_sub(new_ref, 1, 1)
+      if (tmp$edge_warning) {
+        warning(
+          "There was not enough context to completly justify the deletion at ",
+          vcf$CHOM[i],
+          vcf$POS[i]
+        )
+      }
 
       # Calculate position shift (how much we moved left)
       pos_shift <- pos - tmp$leftmost_pos
@@ -120,6 +127,13 @@ justify_indels_in_id_vcf_with_contexts <- function(vcf, explain_indels = 1) {
       tmp <- justify_indel(tmp_long, tmp_short, pos, alt)
       new_alt = tmp$del_str_plus
       new_ref = stringi::stri_sub(new_alt, 1, 1)
+      if (tmp$edge_warning) {
+        warning(
+          "There was not enough context to completly justify the insertion at ",
+          vcf$CHOM[i],
+          vcf$POS[i]
+        )
+      }
 
       # Calculate position shift (how much we moved left)
       pos_shift <- pos - tmp$leftmost_pos
