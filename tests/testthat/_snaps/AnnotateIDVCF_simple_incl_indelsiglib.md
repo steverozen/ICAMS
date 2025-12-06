@@ -862,7 +862,7 @@
       36:      G[Ins(T):R(0,4)]C  G[Ins(T):R3]C        INS:T:1:3
       37:           [Del(C):R1]A  G[Del(C):R1]A        DEL:C:1:0
       38:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      39:       T[Ins(T):R(8,)]A T[Ins(T):R13]A       INS:T:1:5+
+      39:       T[Ins(T):R(8,)]A T[Ins(T):R20]A       INS:T:1:5+
       40:           [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
       41:      G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
       42:           [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
