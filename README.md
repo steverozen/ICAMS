@@ -35,8 +35,6 @@ per megabase) mutational spectra or signatures.
 
 ## Installation
 
-### To install the stable version from [CRAN](https://CRAN.R-project.org/package=ICAMS):
-
 *IMPORTANT* Install the [Bioconductor](https://www.bioconductor.org/)
 dependencies first:
 
@@ -49,20 +47,14 @@ BiocManager::install("BSgenome")
 
 This may be slow; please be patient.
 
-Afterwards, install the latest release version of ICAMS with the R
-command line:
 
-``` r
-install.packages("ICAMS")
-```
-
-### To install the latest stable version from [GitHub](https://github.com/steverozen/ICAMS):
+### To install the latest version in this branch from [GitHub](https://github.com/steverozen/ICAMS):
 
 ``` r
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
-remotes::install_github(repo = "steverozen/ICAMS")
+remotes::install_github(repo = "steverozen/ICAMS", ref = "3.0.11_plus_koh")
 ```
 
 ## Reference manual
