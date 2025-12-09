@@ -60,6 +60,8 @@ file <- c(system.file("tests/testthat/testdata/",
                       "vcf_to_test_justify_indels_in_id_vcf_with_contexts.csv",
                        package = "ICAMS"))
 
+stopifnot(file.exists(file))
+
 read.csv(file) |> dplyr::select(-seq.context.width, -seq.context) -> vcf_no_contexts
 
 if (requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5", quietly = TRUE)) {
