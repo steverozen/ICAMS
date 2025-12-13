@@ -1,8 +1,0 @@
-File single_file_scott.R, lines 99 is call to segment, implemented in c++
-
-it only looks to 3' sequence
-
-not sure how it determines microhomology
-
-but it happens at line 24 of indel_classification.R
-
