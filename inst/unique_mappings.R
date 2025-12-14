@@ -27,9 +27,3 @@ xx89 = xx |>
   group_by(Koh_476) |>
   mutate(count_89 = dplyr::n()) |>
   dplyr::filter(count_89 > 1)
-
-yy89 = xx |>
-  dplyr::distinct() |>
-  group_by(Koh_476) |>
-  mutate(count_89 = dplyr::n()) |>
-  dplyr::filter(count_89 > 1)
