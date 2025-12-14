@@ -27,3 +27,6 @@ xx89 = xx |>
   group_by(Koh_476) |>
   mutate(count_89 = dplyr::n()) |>
   dplyr::filter(count_89 > 1)
+
+write.csv(xx89, "inst/multimap_to_89.csv")
+write.csv(xx83, "inst/multimap_to_83.csv")
