@@ -59,7 +59,7 @@ remotes::install_github(repo = "steverozen/ICAMS", ref = "3.0.12-branch")
 
 ## Reference manual
 
-<https://github.com/steverozen/ICAMS/blob/v3.0.9-branch/data-raw/ICAMS_3.0.9.pdf>
+<https://github.com/steverozen/ICAMS/blob/3.0.12-branch/data-raw/ICAMS_3.0.12.pdf>
 
 ## Frequently asked questions
 
