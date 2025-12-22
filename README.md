@@ -54,7 +54,7 @@ This may be slow; please be patient.
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
-remotes::install_github(repo = "steverozen/ICAMS", ref = "3.0.11_plus_koh")
+remotes::install_github(repo = "steverozen/ICAMS", ref = "3.0.12-branch")
 ```
 
 ## Reference manual
