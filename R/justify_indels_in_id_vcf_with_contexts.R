@@ -176,7 +176,7 @@ justify_indels_in_id_vcf_with_contexts <- function(vcf, explain_indels = 1) {
 
     if (pos_shift == 0) {
       stopifnot(orig_alt == new_alt)
-      stopifnot(orig_ref == orig_ref)
+      stopifnot(orig_ref == new_ref)
     } else {
       vcf$ALT[i] = new_alt
       vcf$REF[i] = new_ref
