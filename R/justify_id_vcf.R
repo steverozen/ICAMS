@@ -131,7 +131,17 @@ justify_id_vcf <-
     } else {
       df3 <- df2
     }
-    stopifnot(substr(df3$REF, 1, 1) == substr(df3$ALT, 1, 1))
+
+    has_na_to_remove =
+      which(is.na(df3$REF) | is.na(df3$ALT))
+    if (length(has_na_to_remove) > 0) {
+      dfx.to.remove <- df3[has_na_to_remove, ]
+      df3 <- df3[-has_na_to_remove, ]
+      dfx.to.remove$discarded.reason <- "REF or ALT is NA"
+      discarded.variants <-
+        dplyr::bind_rows(discarded.variants, dfx.to.remove)
+      rm(dfx.to.remove)
+    }
 
     # First, figure out how much sequence context is needed.
     var.width <- abs(nchar(df3$ALT) - nchar(df3$REF))
