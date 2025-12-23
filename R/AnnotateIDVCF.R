@@ -28,6 +28,8 @@ library(GenomicRanges)
 #' @param context_width_multiplier Used to guess how much sequence on each side
 #' of an indel is needed to categorize it.
 #'
+#' @param add_transcript_ranges If TRUE add transcript ranges to the output VCF.
+#
 #' @importFrom GenomicRanges GRanges
 #'
 #' @importFrom IRanges IRanges
@@ -42,7 +44,7 @@ library(GenomicRanges)
 #'
 #' @return A list of elements:
 #'   * \code{annotated.vcf}: The original VCF data
-#'   frame with two new columns added to the input data frame:
+#'   frame with new columns added to the input data frame, including:
 #'       + \code{seq.context}: The sequence embedding the variant.
 #'       + \code{seq.context.width}: The width of \code{seq.context} to the left.
 #'   * \code{discarded.variants}: \strong{Non-NULL only if} there are variants
@@ -68,7 +70,8 @@ AnnotateIDVCF <-
     name.of.VCF = NULL,
     suppress.discarded.variants.warnings = TRUE,
     explain_indels = 1,
-    context_width_multiplier = 20L
+    context_width_multiplier = 20L,
+    add_transcript_ranges = TRUE
   ) {
     return_list = justify_id_vcf(
       ID.vcf = ID.vcf,
@@ -82,16 +85,18 @@ AnnotateIDVCF <-
     justified_vcf = return_list$annotated.vcf
     discarded_variants = return_list$discarded.variants
 
-    trans.ranges <- InferTransRanges(ref.genome)
-    if (!is.null(trans.ranges)) {
-      df5 <- AddTranscript(
-        df = justified_vcf,
-        trans.ranges = trans.ranges,
-        ref.genome = ref.genome,
-        name.of.VCF = name.of.VCF
-      )
-    } else {
-      df5 <- justified_vcf
+    df5 = justified_vcf
+    if (add_transcript_ranges) {
+      trans.ranges <- InferTransRanges(ref.genome)
+      if (!is.null(trans.ranges)) {
+        df5 <- AddTranscript(
+          # overwrite previous df5
+          df = justified_vcf,
+          trans.ranges = trans.ranges,
+          ref.genome = ref.genome,
+          name.of.VCF = name.of.VCF
+        )
+      }
     }
 
     results_as_list = categorize_indels_in_vcf(
