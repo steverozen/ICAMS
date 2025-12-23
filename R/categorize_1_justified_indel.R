@@ -93,10 +93,13 @@ categorize_1_justified_indel <- function(
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
   if (grepl("N", ins_or_del_seq)) {
+    typeseq = ifelse(ins_or_del == "i", "inserted", "deleted")
     message(
-      "N found in indel sequence: ",
+      "The ",
+      typeseq,
+      " sequence (",
       ins_or_del_seq,
-      " context: ",
+      ") contains an N\nThe context is: ",
       context
     )
   }
