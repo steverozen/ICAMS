@@ -66,6 +66,7 @@
       59:          i      C            TCT      T     3          TCT     3
       60:          d      A             GG      T     2            G     1
           ins_or_del    pre ins_or_del_seq   post     L        U_seq     U
+              <char> <char>         <char> <char> <int>       <char> <int>
           U_seq_count_in_indel_seq indel_str_count_in_ref     R
                              <int>                  <int> <int>
        1:                        1                      2     2
@@ -129,6 +130,7 @@
       59:                        1                      0     0
       60:                        2                      1     2
           U_seq_count_in_indel_seq indel_str_count_in_ref     R
+                             <int>                  <int> <int>
           R_outside_ins_or_del_seq    mh koh_mh   unit unit_length internal_rep
                              <int> <int>  <int> <char>       <int>       <char>
        1:                       20     0      0      G           1             
@@ -192,6 +194,7 @@
       59:                        0     1      1      T           1             
       60:                        0     0      0      G           1            G
           R_outside_ins_or_del_seq    mh koh_mh   unit unit_length internal_rep
+                             <int> <int>  <int> <char>       <int>       <char>
           internal_reps     spacer spacer_length            prime3_rep prime3_reps
                   <int>     <char>         <int>                <char>       <int>
        1:             0                        0                     G           1
@@ -255,6 +258,7 @@
       59:             0         CT             2           TTTTTTTTTTT          11
       60:             1                        0                                 0
           internal_reps     spacer spacer_length            prime3_rep prime3_reps
+                  <int>     <char>         <int>                <char>       <int>
           original_reps        COSMIC_83                 Koh_89        Koh_476
                   <int>           <char>                 <char>         <char>
        1:             2        DEL:C:1:1           [Del(C):R2]A  G[Del(C):R2]A
@@ -318,6 +322,7 @@
       59:            11  INS:repeats:3:0            Ins(2,4):R0     Ins(2,4):M
       60:             2  DEL:repeats:2:0            Del(2,4):R1     Del2:U1:R1
           original_reps        COSMIC_83                 Koh_89        Koh_476
+                  <int>           <char>                 <char>         <char>
             prev_COSMIC_83
                     <char>
        1:        DEL:C:1:1
@@ -381,4 +386,5 @@
       59:  INS:repeats:3:0
       60:  DEL:repeats:2:0
             prev_COSMIC_83
+                    <char>
 

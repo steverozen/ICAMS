@@ -54,28 +54,24 @@ categorize_1_justified_indel <- function(
   ins_or_del_seq,
   pos
 ) {
-  if (TRUE) {
-    if (ins_or_del == "i") {
-      start_of_slice3 = pos
-    } else {
-      start_of_slice3 = pos + nchar(ins_or_del_seq)
-    }
-    slice3 = stringi::stri_sub(context, from = start_of_slice3)
-    if (ins_or_del == "d") {
-      if (
-        paste0(ins_or_del_seq, slice3) != stringi::stri_sub(context, from = pos)
-      ) {
-        browser()
-      }
-    }
-    koh_extra = seg_simple(
-      ins_or_del = ins_or_del,
-      string = ins_or_del_seq,
-      context = slice3
-    )
+  if (ins_or_del == "i") {
+    start_of_slice3 = pos
   } else {
-    koh_extra = list()
+    start_of_slice3 = pos + nchar(ins_or_del_seq)
   }
+  slice3 = stringi::stri_sub(context, from = start_of_slice3)
+  if (ins_or_del == "d") {
+    if (
+      paste0(ins_or_del_seq, slice3) != stringi::stri_sub(context, from = pos)
+    ) {
+      browser()
+    }
+  }
+  koh_extra = seg_simple(
+    ins_or_del = ins_or_del,
+    string = ins_or_del_seq,
+    context = slice3
+  )
 
   mh = 0L
   koh_mh = 0L
@@ -118,9 +114,12 @@ categorize_1_justified_indel <- function(
   }
 
   mymatch = stringr::str_match(x_context, regex)[1, ]
-  pre = mymatch[2]
 
+  pre = mymatch[2]
   all_repeated_seq = mymatch[3]
+  # ins_or_del_seq = mymatch[4]
+  post = mymatch[5]
+  post_all = paste0(post, mymatch[6])
 
   # indel_str_count_in_ref is the number of times the indel string
   # appears in the reference sequence prior to the mutations.
@@ -133,9 +132,6 @@ categorize_1_justified_indel <- function(
   }
 
   stopifnot(indel_str_count_in_ref == floor(indel_str_count_in_ref))
-
-  post = mymatch[5]
-  post_all = paste0(post, mymatch[6])
 
   if (ins_or_del_seq_len == 1) {
     R = indel_str_count_in_ref

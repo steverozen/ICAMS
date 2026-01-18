@@ -66,6 +66,7 @@
       59:      2 209218269      .             C   CTCT      .   PASS
       60:      2 215239837      .           AGG      A      .   PASS
            CHROM       POS     ID           REF    ALT   QUAL FILTER
+          <char>     <num> <char>        <char> <char> <char> <char>
                                                                                                                                                    INFO
                                                                                                                                                  <char>
        1:       DP=82;ECNT=1;NLOD=10.53;N_ART_LOD=-1.556e+00;POP_AF=2.500e-06;P_CONTAM=0.00;P_GERMLINE=-1.022e+01;RCNTS=2,0;RPA=2,1;RU=G;STR;TLOD=87.23
@@ -129,6 +130,7 @@
       59:                     DP=75;ECNT=1;NLOD=5.43;N_ART_LOD=-1.953e-01;POP_AF=2.500e-06;P_CONTAM=1.753e-09;P_GERMLINE=-9.728e+00;RCNTS=2,0;TLOD=6.09
       60:                        DP=78;ECNT=1;NLOD=10.53;N_ART_LOD=-1.561e+00;POP_AF=2.500e-06;P_CONTAM=0.00;P_GERMLINE=-1.010e+01;RCNTS=2,0;TLOD=59.81
                                                                                                                                                    INFO
+                                                                                                                                                 <char>
                                                                                                    FORMAT
                                                                                                    <char>
        1:         GT:AD:AF:DP:F1R2:F2R1:MBQ:MFRL:MMQ:MPOS:ORIGINAL_CONTIG_MISMATCH:SA_MAP_AF:SA_POST_PROB
@@ -192,6 +194,7 @@
       59:         GT:AD:AF:DP:F1R2:F2R1:MBQ:MFRL:MMQ:MPOS:ORIGINAL_CONTIG_MISMATCH:SA_MAP_AF:SA_POST_PROB
       60:         GT:AD:AF:DP:F1R2:F2R1:MBQ:MFRL:MMQ:MPOS:ORIGINAL_CONTIG_MISMATCH:SA_MAP_AF:SA_POST_PROB
                                                                                                    FORMAT
+                                                                                                   <char>
                                                                                                                MCF10A_Carb_Low_cl2
                                                                                                                             <char>
        1:                                   0/1:18,27:0.596:45:6,6:12,21:34,34:242,272:60:21:0:0.576,0.576,0.600:0.021,0.025,0.954
@@ -255,6 +258,7 @@
       59:                                 0/1:33,5:0.147:38:17,3:16,2:34,33:271,248:60:21:0:0.00,0.131,0.132:0.137,5.640e-03,0.857
       60:                                   0/1:23,16:0.415:39:11,8:12,8:34,34:257,235:60:31:0:0.394,0.354,0.410:0.011,0.058,0.931
                                                                                                                MCF10A_Carb_Low_cl2
+                                                                                                                            <char>
                                                            MCF10A_DHG11565_HH2GKALXX
                                                                               <char>
        1:                           0/0:35,0:2.312e-04:35:16,0:19,0:34,0:288,0:0:0:0
@@ -318,6 +322,7 @@
       59:                          0/0:26,1:0.070:27:15,0:11,1:32,27:287,272:60:71:0
       60:                               0/0:35,0:0.014:35:19,0:16,0:34,0:316,0:0:0:0
                                                            MCF10A_DHG11565_HH2GKALXX
+                                                                              <char>
                  VAF read.depth seq.context.width
                <num>      <int>             <num>
        1: 0.60000000         45                21
@@ -381,6 +386,7 @@
       59: 0.13157895         38                60
       60: 0.41025641         39                40
                  VAF read.depth seq.context.width
+               <num>      <int>             <num>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             seq.context
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <char>
        1:                                                                                                                                                                                                                                                                                                                                                                                                                                                                  CTGTCCCCTTTCTTGAAGGTTTGGCTTCATATGCAATTCTAAGT
@@ -444,6 +450,7 @@
       59:                                                                                                                                                                                                                                                                                                                                                                                     AAGTAATTGTCCAGAGTTTGGTATCAAAACTATGTTTCTTAAGACTATTTGCATCTCTCTCTTTTTTTTTTTAACACTGTTTTGTGATCCAATGATGTATTTCTGGAGTTACTTGTTAATG
       60:                                                                                                                                                                                                                                                                                                                                                                                                                           GGTATCTCACCTTAATCAGCCACAGAACTAATTTTCAGGCAGGTACGTGTTAAAGATTAGGGAAGGACAGCAGCTTTAGCTCA
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             seq.context
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <char>
           pos_shift trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
               <int>           <int>         <int>       <char>                <char>
        1:         0              NA            NA         <NA>                  <NA>
@@ -507,6 +514,7 @@
       59:         0       209130979     209223470            +       ENSG00000115020
       60:         0       214149103     215275225            +       ENSG00000144451
           pos_shift trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
+              <int>           <int>         <int>       <char>                <char>
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
                      <char>     <num>     <lgcl> <int>     <char> <char>
        1:              <NA>   5288645      FALSE     1          d      G
@@ -570,6 +578,7 @@
       59:           PIKFYVE 209218269      FALSE     1          i      C
       60:            SPAG16 215239837      FALSE     1          d      A
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
+                     <char>     <num>     <lgcl> <int>     <char> <char>
           ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
                   <char> <char> <int>       <char> <int>                    <int>
        1:              C      A     1            C     1                        1
@@ -633,6 +642,7 @@
       59:            TCT      T     3          TCT     3                        1
       60:             GG      T     2            G     1                        2
           ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
+                  <char> <char> <int>       <char> <int>                    <int>
           indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
                            <int> <int>                    <int> <int>  <int> <char>
        1:                      2     2                       20     0      0      G
@@ -696,6 +706,7 @@
       59:                      0     0                        0     1      1      T
       60:                      1     2                        0     0      0      G
           indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
+                           <int> <int>                    <int> <int>  <int> <char>
           unit_length internal_rep internal_reps     spacer spacer_length
                 <int>       <char>         <int>     <char>         <int>
        1:           1                          0                        0
@@ -759,6 +770,7 @@
       59:           1                          0         CT             2
       60:           1            G             1                        0
           unit_length internal_rep internal_reps     spacer spacer_length
+                <int>       <char>         <int>     <char>         <int>
                       prime3_rep prime3_reps original_reps        COSMIC_83
                           <char>       <int>         <int>           <char>
        1:                      G           1             2        DEL:C:1:1
@@ -822,6 +834,7 @@
       59:            TTTTTTTTTTT          11            11  INS:repeats:3:0
       60:                                  0             2  DEL:repeats:2:0
                       prime3_rep prime3_reps original_reps        COSMIC_83
+                          <char>       <int>         <int>           <char>
                           Koh_89        Koh_476   prev_COSMIC_83
                           <char>         <char>           <char>
        1:           [Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
@@ -885,4 +898,5 @@
       59:            Ins(2,4):R0     Ins(2,4):M  INS:repeats:3:0
       60:            Del(2,4):R1     Del2:U1:R1  DEL:repeats:2:0
                           Koh_89        Koh_476   prev_COSMIC_83
+                          <char>         <char>           <char>
 
