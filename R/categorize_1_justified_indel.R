@@ -100,7 +100,7 @@ categorize_1_justified_indel <- function(
     )
   }
 
-  regex = paste0("^.{", pos - 2, "}(.)((", ins_or_del_seq, ")+)(.)(.*$)")
+  regex = paste0("(^.{", pos - 2, "})(.)((", ins_or_del_seq, ")+)(.)(.*$)")
 
   if (ins_or_del == "i") {
     x_context = stringi::stri_sub_replace(
@@ -115,11 +115,22 @@ categorize_1_justified_indel <- function(
 
   mymatch = stringr::str_match(x_context, regex)[1, ]
 
-  pre = mymatch[2]
-  all_repeated_seq = mymatch[3]
-  # ins_or_del_seq = mymatch[4]
-  post = mymatch[5]
-  post_all = paste0(post, mymatch[6])
+  preceding_context = mymatch[2]
+  pre = mymatch[3] # single character preceding the indel
+  all_repeated_seq = mymatch[4] # the indel sequence and subsequent repeats of the indel sequence
+  # ins_or_del_seq = mymatch[5]
+  post = mymatch[6]
+  post_all = paste0(post, mymatch[7])
+
+  # At this point paste(mymatch[c(2:4, 6:7)], collapse = '') == x_context
+  # mymatch[5] == ins_or_del_seq is a prefix of mymatch[4]
+  dh = list(
+    before = paste0(preceding_context, pre),
+    insordel = ins_or_del_seq,
+    repeated_insordel = substring(all_repeated_seq, nchar(ins_or_del_seq) + 1), # can be empty string ""
+    after = post_all
+  )
+  stopifnot(paste(dh, collapse = '') == x_context)
 
   # indel_str_count_in_ref is the number of times the indel string
   # appears in the reference sequence prior to the mutations.
@@ -139,7 +150,7 @@ categorize_1_justified_indel <- function(
     if (ins_or_del_seq %in% c("A", "G")) {
       pre = ICAMS::revc(post)
       ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
-      post = ICAMS::revc(mymatch[2]) # pre was already overwritten
+      post = ICAMS::revc(mymatch[3]) # pre was already overwritten
     }
     U_seq = ins_or_del_seq
     U_seq_count_in_indel_seq = 1
@@ -213,6 +224,41 @@ categorize_1_justified_indel <- function(
     }
   } # end else (i.e. ins_or_del_seq_len > 1)
 
+  dh$mh = mh
+  if (mh > 0) {
+    dh$internal_mh_seq = substr(dh$insordel, 1, mh)
+    dh$insordel = substring(dh$insordel, mh + 1)
+    dh$post_mh_seq = substr(dh$after, 1, mh)
+    dh$after = substring(dh$after, mh + 1)
+  }
+
+  startindel = "<"
+  endindel = ">"
+  startmh = "{"
+  endmh = "}"
+  startextrarep = "["
+  endextrarep = "]"
+
+  outstr = paste0(startindel)
+  if (dh$mh > 0) {
+    outstr = paste0(outstr, startmh, dh$internal_mh_seq, endmh)
+  }
+  outstr = paste0(outstr, dh$insordel, endindel)
+  if (dh$mh > 0) {
+    outstr = paste0(outstr, startmh, dh$post_mh_seq, endmh)
+  }
+  if (dh$repeated_insordel != "") {
+    outstr = paste0(
+      outstr,
+      startextrarep,
+      dh$repeated_insordel,
+      endextrarep
+    )
+  }
+  # cat(outstr, sep = "\n")
+  longoutstr = paste(dh$before, outstr, dh$after)
+  # cat(longoutstr, "\n", x_context, "\n", sep = '')
+
   retlist = c(
     list(
       ins_or_del = ins_or_del,
@@ -227,7 +273,8 @@ categorize_1_justified_indel <- function(
       R = as.integer(R),
       R_outside_ins_or_del_seq = as.integer(R_outside_ins_or_del_seq),
       mh = as.integer(mh),
-      koh_mh = as.integer(koh_mh)
+      short_visual = outstr,
+      long_visual = longoutstr
     ),
     koh_extra
   )

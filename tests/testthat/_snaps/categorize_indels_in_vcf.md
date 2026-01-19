@@ -131,70 +131,70 @@
       60:                        2                      1     2
           U_seq_count_in_indel_seq indel_str_count_in_ref     R
                              <int>                  <int> <int>
-          R_outside_ins_or_del_seq    mh koh_mh   unit unit_length internal_rep
-                             <int> <int>  <int> <char>       <int>       <char>
-       1:                       20     0      0      G           1             
-       2:                       21     0      0      T           1             
-       3:                       17     0      0      A           1             
-       4:                       20     0      0      C           1             
-       5:                       20     0      0      A           1             
-       6:                       21     0      0      A           1             
-       7:                       21     0      0      T           1             
-       8:                       21     0      0      G           1             
-       9:                       10     0      0     TA           2             
-      10:                       18     0      0      C           1             
-      11:                       19     0      0      A           1             
-      12:                       20     0      0      G           1             
-      13:                       17     0      0      T           1             
-      14:                        0     2      2     TA           2             
-      15:                       19     0      0      A           1             
-      16:                        0     3      3      C           1           CC
-      17:                       18     0      0      A           1             
-      18:                       20     0      0      G           1             
-      19:                       18     0      0      G           1             
-      20:                        0     0      0      A           1            A
-      21:                        1     0      0    CTT           3             
-      22:                       16     0      0      T           1             
-      23:                        0     1      1      C           1            C
-      24:                        0     3      3    CTG           3             
-      25:                       14     0      0      G           1             
-      26:                       20     0      0      G           1             
-      27:                       20     0      0      T           1             
-      28:                       18     0      0      C           1             
-      29:                       19     0      0      T           1             
-      30:                       20     0      0      T           1             
-      31:                       19     0      0      A           1             
-      32:                       21     0      0      T           1             
-      33:                       17     0      0      T           1             
-      34:                       20     0      0      T           1             
-      35:                       15     0      0      T           1             
-      36:                       18     0      0      T           1             
-      37:                       21     0      0      C           1             
-      38:                       20     0      0      T           1             
-      39:                        1     0      0      A           1             
-      40:                       21     0      0      G           1             
-      41:                       17     0      0      T           1             
-      42:                       21     0      0      C           1             
-      43:                       20     0      0      A           1             
-      44:                        0     2      2     TG           2             
-      45:                       18     0      0      G           1             
-      46:                       12     0      0      T           1             
-      47:                       21     0      0      A           1             
-      48:                       21     0      0      A           1             
-      49:                       20     0      0      A           1             
-      50:                       17     0      0      T           1             
-      51:                       20     0      0      C           1             
-      52:                       19     0      0      C           1             
-      53:                       18     0      0      T           1             
-      54:                       21     0      0      C           1             
-      55:                       14     0      0      A           1             
-      56:                        1     0      0     TG           2             
-      57:                       20     0      0      A           1             
-      58:                       18     0      0      A           1             
-      59:                        0     1      1      T           1             
-      60:                        0     0      0      G           1            G
-          R_outside_ins_or_del_seq    mh koh_mh   unit unit_length internal_rep
-                             <int> <int>  <int> <char>       <int>       <char>
+          R_outside_ins_or_del_seq    mh   unit unit_length internal_rep
+                             <int> <int> <char>       <int>       <char>
+       1:                       20     0      G           1             
+       2:                       21     0      T           1             
+       3:                       17     0      A           1             
+       4:                       20     0      C           1             
+       5:                       20     0      A           1             
+       6:                       21     0      A           1             
+       7:                       21     0      T           1             
+       8:                       21     0      G           1             
+       9:                       10     0     TA           2             
+      10:                       18     0      C           1             
+      11:                       19     0      A           1             
+      12:                       20     0      G           1             
+      13:                       17     0      T           1             
+      14:                        0     2     TA           2             
+      15:                       19     0      A           1             
+      16:                        0     3      C           1           CC
+      17:                       18     0      A           1             
+      18:                       20     0      G           1             
+      19:                       18     0      G           1             
+      20:                        0     0      A           1            A
+      21:                        1     0    CTT           3             
+      22:                       16     0      T           1             
+      23:                        0     1      C           1            C
+      24:                        0     3    CTG           3             
+      25:                       14     0      G           1             
+      26:                       20     0      G           1             
+      27:                       20     0      T           1             
+      28:                       18     0      C           1             
+      29:                       19     0      T           1             
+      30:                       20     0      T           1             
+      31:                       19     0      A           1             
+      32:                       21     0      T           1             
+      33:                       17     0      T           1             
+      34:                       20     0      T           1             
+      35:                       15     0      T           1             
+      36:                       18     0      T           1             
+      37:                       21     0      C           1             
+      38:                       20     0      T           1             
+      39:                        1     0      A           1             
+      40:                       21     0      G           1             
+      41:                       17     0      T           1             
+      42:                       21     0      C           1             
+      43:                       20     0      A           1             
+      44:                        0     2     TG           2             
+      45:                       18     0      G           1             
+      46:                       12     0      T           1             
+      47:                       21     0      A           1             
+      48:                       21     0      A           1             
+      49:                       20     0      A           1             
+      50:                       17     0      T           1             
+      51:                       20     0      C           1             
+      52:                       19     0      C           1             
+      53:                       18     0      T           1             
+      54:                       21     0      C           1             
+      55:                       14     0      A           1             
+      56:                        1     0     TG           2             
+      57:                       20     0      A           1             
+      58:                       18     0      A           1             
+      59:                        0     1      T           1             
+      60:                        0     0      G           1            G
+          R_outside_ins_or_del_seq    mh   unit unit_length internal_rep
+                             <int> <int> <char>       <int>       <char>
           internal_reps     spacer spacer_length            prime3_rep prime3_reps
                   <int>     <char>         <int>                <char>       <int>
        1:             0                        0                     G           1

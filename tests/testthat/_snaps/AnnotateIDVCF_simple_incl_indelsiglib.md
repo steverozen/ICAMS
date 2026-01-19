@@ -643,134 +643,262 @@
       60:             GG      T     2            G     1                        2
           ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
                   <char> <char> <int>       <char> <int>                    <int>
-          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
-                           <int> <int>                    <int> <int>  <int> <char>
-       1:                      2     2                       20     0      0      G
-       2:                      1     1                       21     0      0      T
-       3:                      4     4                       17     0      0      A
-       4:                      2     2                       20     0      0      C
-       5:                      2     2                       20     0      0      A
-       6:                      1     1                       21     0      0      A
-       7:                      0     0                       21     0      0      T
-       8:                      0     0                       21     0      0      G
-       9:                     11    11                       11     0      0     TA
-      10:                      4     4                       18     0      0      C
-      11:                      3     3                       19     0      0      A
-      12:                      2     2                       20     0      0      G
-      13:                      4     4                       17     0      0      T
-      14:                      1     1                        0     2      2     TA
-      15:                      3     3                       19     0      0      A
-      16:                      1     1                        0     3      3      C
-      17:                      4     4                       18     0      0      A
-      18:                      2     2                       20     0      0      G
-      19:                      4     4                       18     0      0      G
-      20:                      1     2                        0     0      0      A
-      21:                      2     2                        1     0      0    CTT
-      22:                      5     5                       16     0      0      T
-      23:                      1     1                        0     1      1      C
-      24:                      1     1                        0     3      3    CTG
-      25:                      7     7                       14     0      0      G
-      26:                      2     2                       20     0      0      G
-      27:                      1     1                       20     0      0      T
-      28:                      4     4                       18     0      0      C
-      29:                      3     3                       19     0      0      T
-      30:                      1     1                       20     0      0      T
-      31:                      3     3                       19     0      0      A
-      32:                      1     1                       21     0      0      T
-      33:                      4     4                       17     0      0      T
-      34:                      1     1                       20     0      0      T
-      35:                      6     6                       15     0      0      T
-      36:                      3     3                       18     0      0      T
-      37:                      1     1                       21     0      0      C
-      38:                      1     1                       20     0      0      T
-      39:                     20    20                        1     0      0      A
-      40:                      1     1                       21     0      0      G
-      41:                      4     4                       17     0      0      T
-      42:                      1     1                       21     0      0      C
-      43:                      1     1                       20     0      0      A
-      44:                      1     1                        0     2      2     TG
-      45:                      4     4                       18     0      0      G
-      46:                      9     9                       12     0      0      T
-      47:                      1     1                       21     0      0      A
-      48:                      1     1                       21     0      0      A
-      49:                      1     1                       20     0      0      A
-      50:                      4     4                       17     0      0      T
-      51:                      2     2                       20     0      0      C
-      52:                      3     3                       19     0      0      C
-      53:                      4     4                       18     0      0      T
-      54:                      1     1                       21     0      0      C
-      55:                      7     7                       14     0      0      A
-      56:                      2     2                        1     0      0     TG
-      57:                      2     2                       20     0      0      A
-      58:                      3     3                       18     0      0      A
-      59:                      0     0                        0     1      1      T
-      60:                      1     2                        0     0      0      G
-          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh koh_mh   unit
-                           <int> <int>                    <int> <int>  <int> <char>
-          unit_length internal_rep internal_reps     spacer spacer_length
-                <int>       <char>         <int>     <char>         <int>
-       1:           1                          0                        0
-       2:           1                          0                        0
-       3:           1                          0                        0
-       4:           1                          0                        0
-       5:           1                          0                        0
-       6:           1                          0                        0
-       7:           1                          0                        0
-       8:           1                          0                        0
-       9:           2                          0                        0
-      10:           1                          0                        0
-      11:           1                          0                        0
-      12:           1                          0                        0
-      13:           1                          0                        0
-      14:           2                          0    GTTATAC             7
-      15:           1                          0                        0
-      16:           1           CC             2          A             1
-      17:           1                          0                        0
-      18:           1                          0                        0
-      19:           1                          0                        0
-      20:           1            A             1                        0
-      21:           3                          0                        0
-      22:           1                          0                        0
-      23:           1            C             1 TGAGCTGTAC            10
-      24:           3                          0        TAC             3
-      25:           1                          0                        0
-      26:           1                          0                        0
-      27:           1                          0                        0
-      28:           1                          0                        0
-      29:           1                          0                        0
-      30:           1                          0                        0
-      31:           1                          0                        0
-      32:           1                          0                        0
-      33:           1                          0                        0
-      34:           1                          0                        0
-      35:           1                          0                        0
-      36:           1                          0                        0
-      37:           1                          0                        0
-      38:           1                          0                        0
-      39:           1                          0                        0
-      40:           1                          0                        0
-      41:           1                          0                        0
-      42:           1                          0                        0
-      43:           1                          0                        0
-      44:           2                          0      ATTCT             5
-      45:           1                          0                        0
-      46:           1                          0                        0
-      47:           1                          0                        0
-      48:           1                          0                        0
-      49:           1                          0                        0
-      50:           1                          0                        0
-      51:           1                          0                        0
-      52:           1                          0                        0
-      53:           1                          0                        0
-      54:           1                          0                        0
-      55:           1                          0                        0
-      56:           2                          0                        0
-      57:           1                          0                        0
-      58:           1                          0                        0
-      59:           1                          0         CT             2
-      60:           1            G             1                        0
-          unit_length internal_rep internal_reps     spacer spacer_length
-                <int>       <char>         <int>     <char>         <int>
+          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh
+                           <int> <int>                    <int> <int>
+       1:                      2     2                       20     0
+       2:                      1     1                       21     0
+       3:                      4     4                       17     0
+       4:                      2     2                       20     0
+       5:                      2     2                       20     0
+       6:                      1     1                       21     0
+       7:                      0     0                       21     0
+       8:                      0     0                       21     0
+       9:                     11    11                       11     0
+      10:                      4     4                       18     0
+      11:                      3     3                       19     0
+      12:                      2     2                       20     0
+      13:                      4     4                       17     0
+      14:                      1     1                        0     2
+      15:                      3     3                       19     0
+      16:                      1     1                        0     3
+      17:                      4     4                       18     0
+      18:                      2     2                       20     0
+      19:                      4     4                       18     0
+      20:                      1     2                        0     0
+      21:                      2     2                        1     0
+      22:                      5     5                       16     0
+      23:                      1     1                        0     1
+      24:                      1     1                        0     3
+      25:                      7     7                       14     0
+      26:                      2     2                       20     0
+      27:                      1     1                       20     0
+      28:                      4     4                       18     0
+      29:                      3     3                       19     0
+      30:                      1     1                       20     0
+      31:                      3     3                       19     0
+      32:                      1     1                       21     0
+      33:                      4     4                       17     0
+      34:                      1     1                       20     0
+      35:                      6     6                       15     0
+      36:                      3     3                       18     0
+      37:                      1     1                       21     0
+      38:                      1     1                       20     0
+      39:                     20    20                        1     0
+      40:                      1     1                       21     0
+      41:                      4     4                       17     0
+      42:                      1     1                       21     0
+      43:                      1     1                       20     0
+      44:                      1     1                        0     2
+      45:                      4     4                       18     0
+      46:                      9     9                       12     0
+      47:                      1     1                       21     0
+      48:                      1     1                       21     0
+      49:                      1     1                       20     0
+      50:                      4     4                       17     0
+      51:                      2     2                       20     0
+      52:                      3     3                       19     0
+      53:                      4     4                       18     0
+      54:                      1     1                       21     0
+      55:                      7     7                       14     0
+      56:                      2     2                        1     0
+      57:                      2     2                       20     0
+      58:                      3     3                       18     0
+      59:                      0     0                        0     1
+      60:                      1     2                        0     0
+          indel_str_count_in_ref     R R_outside_ins_or_del_seq    mh
+                           <int> <int>                    <int> <int>
+                          short_visual
+                                <char>
+       1:                       <G>[G]
+       2:                          <T>
+       3:                    <A>[AAAA]
+       4:                       <C>[C]
+       5:                       <A>[A]
+       6:                          <A>
+       7:                          <T>
+       8:                          <G>
+       9: <TA>[TATATATATATATATATATATA]
+      10:                     <C>[CCC]
+      11:                      <A>[AA]
+      12:                       <G>[G]
+      13:                    <T>[TTTT]
+      14:            <{TA}GTTATAC>{TA}
+      15:                      <A>[AA]
+      16:                <{CCC}A>{CCC}
+      17:                     <A>[AAA]
+      18:                       <G>[G]
+      19:                     <G>[GGG]
+      20:                         <AA>
+      21:                   <CTT>[CTT]
+      22:                   <T>[TTTTT]
+      23:          <{C}CTGAGCTGTAC>{C}
+      24:              <{CTG}TAC>{CTG}
+      25:                 <G>[GGGGGGG]
+      26:                       <G>[G]
+      27:                       <T>[T]
+      28:                     <C>[CCC]
+      29:                      <T>[TT]
+      30:                       <T>[T]
+      31:                      <A>[AA]
+      32:                          <T>
+      33:                    <T>[TTTT]
+      34:                       <T>[T]
+      35:                  <T>[TTTTTT]
+      36:                     <T>[TTT]
+      37:                          <C>
+      38:                       <T>[T]
+      39:    <A>[AAAAAAAAAAAAAAAAAAAA]
+      40:                          <G>
+      41:                    <T>[TTTT]
+      42:                          <C>
+      43:                       <A>[A]
+      44:              <{TG}ATTCT>{TG}
+      45:                     <G>[GGG]
+      46:               <T>[TTTTTTTTT]
+      47:                          <A>
+      48:                          <A>
+      49:                       <A>[A]
+      50:                    <T>[TTTT]
+      51:                       <C>[C]
+      52:                      <C>[CC]
+      53:                     <T>[TTT]
+      54:                          <C>
+      55:                 <A>[AAAAAAA]
+      56:                     <TG>[TG]
+      57:                       <A>[A]
+      58:                     <A>[AAA]
+      59:                   <{T}CT>{T}
+      60:                         <GG>
+                          short_visual
+                                <char>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    long_visual
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <char>
+       1:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CTGTCCCCTTTCTTGAAGGTTT <G>[G] CTTCATATGCAATTCTAAGT
+       2:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      GCTGCTCTGTTTCTGATTAAAA <T> GGGGTTGGGGAGACCTTTTCG
+       3:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTTTTCACTCTAATAGAGCCTT <A>[AAAA] GTTTTACCCATGTGGCA
+       4:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CAAATGAGGTATAGCTCAAGTA <C>[C] TCAAGTAAAATGATTTCAAA
+       5:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTTTTTCACATCGGAATAAATT <A>[A] TGATTCTATTAATGTTCATT
+       6:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ACAATTTGGATTACAATTCAAG <A> TGAGACTTGGGTGGGGACACA
+       7:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      TGACCCTTGAGCAACGCAGGGG <T> CTAGGGAGCACAAGCCTACAT
+       8:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      AAGAGTCGGGACTTAAATGAGT <G> CTGAAAGTTTTCAAGATGACA
+       9:                                                                                                                                                                                                                                                                                                                                                                                                                             ATCTCTTTGTTTTACATTTAGTATAGAGTAAGGGCTAAAAG <TA>[TATATATATATATATATATATA] AAACAGAATTAATACTTT
+      10:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    GCCTCTTTCCCCACGTCTCTCA <C>[CCC] TGTCATTGCCTAATGGGC
+      11:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AAAGTTTCTGTTGAGAAGCTTT <A>[AA] TCTGATAATCCTTTATAGG
+      12:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CAGGATGAAGTGAGTGCAAGCA <G>[G] AGAAATGCCAGAACCTTACA
+      13:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    GCAAGTGAGCACAAGAACCAGG <T>[TTTT] CTAATTCCATGACTCCT
+      14:                                                                                                                            TCCTCATTGTTTTGAATAGACAGGAAATCATTTGTCCAGAAGGAGGTATTATGTAGGGAAACTTTTACCTTTCTGTATATAAAAACATATAACTAATACACACACACTCATACACAAATATCAATGGAGGTATACATTGTGTTTACTTTTTCTATGTTTATGTACAATAGTAATATCTTTA <{TA}GTTATAC>{TA} ACGTTATTAAAATAAGTAATTATATTAACTAAGTTTAGGACCAGTTTCTAGTAAGTAAGAAAGAAAAAAAATCATCTCCAAATTCTATGAATAGATATAATGAATTTCAAGAATGCCTGATGAATTAACTTAGGATTCAGGAAACAAAAAAAGTTGCTATTGAATAGAAAAATGGAAA
+      15:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ACAAGGAATTGAGAGTGTATAC <A>[AA] TGAGTGAATATGTTAATTA
+      16:                                                                                                                                                                                                                                                                                                                                         TTCCAGGCCTGCCTGAGATTTAAGGGCAGCAGCCTCATGGCCCCAGACACCAGACTGACCACTGAGAACCCAGGTTTTAGG <{CCC}A>{CCC} CGGTACCAGGCCAGCCCCTGTGGACTTGGGCCTAAGAACTGCCCCAATGCCAGGATAGCTCCCGTAGACATAAGCTT
+      17:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TATAGCAGAACAGATGAGGAAG <A>[AAA] GGAAGTCACATTCAGTAA
+      18:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AACGTCAGCCTTCATTCCAGTA <G>[G] TGTCCTCTTAGATTATCTCC
+      19:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTTTTGTATTTTTTGTAGAGAT <G>[GGG] TTTTGTTATGTTGCCCAG
+      20:                                                                                                                                                                                                                                                                                                                                                                                                                               AAATATCCATAGTAATTTATCTTTGAAAGATTATGTTTTGT <AA> GTTGGGATGGCTACAAAATTACATATTAACACATATAACT
+      21:                                                                                                                                                                                                                                                                                                                                                                                    CCTAGCCAGAAAACACATTCTTACAATGGTTTCAAATGCGTGAGGGCAAACAAATAATTTA <CTT>[CTT] TTTCCCAGGTTATGAGTGTCATTCTTTTACTATTTGTTAATTGAAAGTATTTCCAGT
+      22:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CAAAATTGCTATAAAAAGTAGG <T>[TTTTT] GCCAAGTGCAGTGGCT
+      23: GCTCTACTAGGCAGTGCCCCAGAGGGGACTCTATGTAAGGGCTCCAACCCCACATTTCCCATCTGCACTGCCCTAGCAGAGGTTCTCTATTAGGTCTTTGCCTCTGCAGCAGGCTTTTCCATACATCCTCTGAAATCCAGGTAGAGACTCCCAAGCCTCAACACTTGCACTGTGTGCAACTGCAGGCTTAACACCACGTGAAGCCACCAAGGCTTATGACTTGCACCCTCTAAAGCAGCAG <{C}CTGAGCTGTAC>{C} TGGGTCCCTTTGGGCCACAGCTGGGGCTGGAGTGGCTGGGATGCAGGGAGCAGTGTCCTGAGCCTGTGCAGGGCAGTGGGAGCCCTGGGCATGGCCCATGAAATCCTGGCTCTGTCACTTAACAGCAATTGGATCTTGAACCAATTGTTTAACTTCCACAGCCTTAAGGTTTTAAACCATGTAATGGGGATAGTACTTCCCTTTCAGGGTTATTGTGTGGAATATATAAAATAGTAACA
+      24:                                                                                                                                                                                                                                                       CCTCTGAAATCCAGGTAGAGACTCCCAAGCCTCAACACTTGCACTGTGTGCAACTGCAGGCTTAACACCACGTGAAGCCACCAAGGCTTATGACTTGCACCCTCTAAAGCAGCAGCCTGAG <{CTG}TAC>{CTG} GGTCCCTTTGGGCCACAGCTGGGGCTGGAGTGGCTGGGATGCAGGGAGCAGTGTCCTGAGCCTGTGCAGGGCAGTGGGAGCCCTGGGCATGGCCCATGAAATCCTGGCTCTGTCACT
+      25:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CATCCTCTTGACCTGGCAGGGT <G>[GGGGGGG] TCAGAGAGCCTCCA
+      26:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TACAGGTGTGATAGAATTAAAT <G>[G] CTAATGACGGAGGAGGTGAG
+      27:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AGAATTGCTTGAATCTGGGAGG <T>[T] GGAGGTTGCACTGAGCCTAG
+      28:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CCACAGTGGACAATTTTTTCAA <C>[CCC] AACAGTAATTTATATAGA
+      29:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TGAATACATTTTCCAGACTGGC <T>[TT] GAGAGTCGTTTAATTATAG
+      30:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TCATAAACTTAAGGCAAAGGGG <T>[T] GGAAAAATACATTCCATCCA
+      31:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CTATTAGATGAGCAAAAACTGT <A>[AA] TATTTGATTGATGGAAATG
+      32:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ATGAAATTGCTGGGTCATTTGG <T> AACTGTAACTTTTTGAGGACC
+      33:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTCAAGTTTGAGAGATCCCTTC <T>[TTTT] GGGATACACTAGCTCTA
+      34:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AAGAATACATTTCACAAATTGG <T>[T] AAATATTGTAGGCACAGATT
+      35:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CTTGAAGAAAAAAAATGTTCAG <T>[TTTTTT] GCCATTGAGCATGAT
+      36:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TATTTTAATATAATATAATTGG <T>[TTT] CCTTGGAGATCCTATTAT
+      37:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      GGGTACAACCAAGGCCAGGCAG <C> AAAGACTAAAATAATACCAAA
+      38:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CTAGCTGCTCAGGAGGTTGAGG <T>[T] GGGAGGATCGCTTGAGACTA
+      39:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TGACAGAGCAAGATTCTGTCTT <A>[AAAAAAAAAAAAAAAAAAAA] A
+      40:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      AGTCTGGTATAAAATTAATTCA <G> AATTGAACTTTTGTTACTCTA
+      41:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTGCTGAGGCTTGAGTAGGTGG <T>[TTTT] ATGCTCACAGTGTAAAC
+      42:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      GCCAAACTGAATAACACTACCT <C> TTGAATATGTAGTTATAATTC
+      43:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ACTTATATTCCTTTGGATATAT <A>[A] CCCAACAATGGGATTACTGT
+      44:                                                                                                                                                                                                              AAACCACAATTACTTTTGCACCAATCTAACAGAAGCAGTGACACCTCAGTAGAACCAAGTACTCCCAGCAACCAGATCTTGGTTTCTAAATACCATTCTCCATTAACGCAGTGTTTAGTGCTACATGGAAAAGAAAATGGA <{TG}ATTCT>{TG} GACTGGGACAGGGATTAAGTAATTGCTGAAAATATAAAAATATGGGGGTACATTAAGGGACATAGAAGGTAGCCTGAAAGAACTCCCAATCTGAGCAACAAAATAAATAACATAGTATTGTATTAAAACTCAAAGTAT
+      45:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ATCAAATGAACACATCTTTAAA <G>[GGG] ACATAGAAAGGAATGATA
+      46:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    GCACCTCTTTTATATTTACATG <T>[TTTTTTTTT] CACTGTTTCATG
+      47:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      GAAAGAAATCTTTTTTCTGAGC <A> GTAGGTCTCAATAGTAGACTT
+      48:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      CTTGTAATGTCTTCCCCATTTG <A> GAAATCAAAGCAGAGAGGATT
+      49:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AGACAGCCAAAGCTTCAGAGAT <A>[A] CAGTCCACAGGTGGACAAAG
+      50:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ATTTATGGCAGTCAATACTGGG <T>[TTTT] ATTTATGGTCTTTAAAA
+      51:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ACCAATCAGCACACTCTTCCTG <C>[C] TTCTGAGCCCATAAAATCCA
+      52:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    AAGATTTGTAAAGGGAAGTTCA <C>[CC] GCCCTCCGAAATATTTAGC
+      53:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    CCTTATATTTGGCATTTACTTA <T>[TTT] GCTACAACTAAATATACT
+      54:                                                                                                                                                                                                                                                                                                                                                                                                                                                                      CCACATTTTGGACATGTCCATT <C> TTGGACCACTTGCAAGGGGAA
+      55:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    GGGGGGCGGTGCGAACAAAAAT <A>[AAAAAAA] TAAAAAATAAAAAC
+      56:                                                                                                                                                                                                                                                                                                                                                                                                                             AGCCATCAAGCTTGAAACCACAAATTCCTGCTGGAGAAAAC <TG>[TG] TTCCAGTGTGCATGACATCACAAGATTTACAACACAGC
+      57:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TTTTGACAAACCTGACAAAAGC <A>[A] TGGGGAAAGGATTCCCTATT
+      58:                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TGTTTTGGTGTTAAGAGAAAGC <A>[AAA] TTTATGGACTGCATAAAA
+      59:                                                                                                                                                                                                                                                                                                                                                                                  AAGTAATTGTCCAGAGTTTGGTATCAAAACTATGTTTCTTAAGACTATTTGCATCTCTCTC <{T}CT>{T} TTTTTTTTTTAACACTGTTTTGTGATCCAATGATGTATTTCTGGAGTTACTTGTTAATG
+      60:                                                                                                                                                                                                                                                                                                                                                                                                                               GGTATCTCACCTTAATCAGCCACAGAACTAATTTTCAGGCA <GG> TACGTGTTAAAGATTAGGGAAGGACAGCAGCTTTAGCTCA
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    long_visual
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <char>
+            unit unit_length internal_rep internal_reps     spacer spacer_length
+          <char>       <int>       <char>         <int>     <char>         <int>
+       1:      G           1                          0                        0
+       2:      T           1                          0                        0
+       3:      A           1                          0                        0
+       4:      C           1                          0                        0
+       5:      A           1                          0                        0
+       6:      A           1                          0                        0
+       7:      T           1                          0                        0
+       8:      G           1                          0                        0
+       9:     TA           2                          0                        0
+      10:      C           1                          0                        0
+      11:      A           1                          0                        0
+      12:      G           1                          0                        0
+      13:      T           1                          0                        0
+      14:     TA           2                          0    GTTATAC             7
+      15:      A           1                          0                        0
+      16:      C           1           CC             2          A             1
+      17:      A           1                          0                        0
+      18:      G           1                          0                        0
+      19:      G           1                          0                        0
+      20:      A           1            A             1                        0
+      21:    CTT           3                          0                        0
+      22:      T           1                          0                        0
+      23:      C           1            C             1 TGAGCTGTAC            10
+      24:    CTG           3                          0        TAC             3
+      25:      G           1                          0                        0
+      26:      G           1                          0                        0
+      27:      T           1                          0                        0
+      28:      C           1                          0                        0
+      29:      T           1                          0                        0
+      30:      T           1                          0                        0
+      31:      A           1                          0                        0
+      32:      T           1                          0                        0
+      33:      T           1                          0                        0
+      34:      T           1                          0                        0
+      35:      T           1                          0                        0
+      36:      T           1                          0                        0
+      37:      C           1                          0                        0
+      38:      T           1                          0                        0
+      39:      A           1                          0                        0
+      40:      G           1                          0                        0
+      41:      T           1                          0                        0
+      42:      C           1                          0                        0
+      43:      A           1                          0                        0
+      44:     TG           2                          0      ATTCT             5
+      45:      G           1                          0                        0
+      46:      T           1                          0                        0
+      47:      A           1                          0                        0
+      48:      A           1                          0                        0
+      49:      A           1                          0                        0
+      50:      T           1                          0                        0
+      51:      C           1                          0                        0
+      52:      C           1                          0                        0
+      53:      T           1                          0                        0
+      54:      C           1                          0                        0
+      55:      A           1                          0                        0
+      56:     TG           2                          0                        0
+      57:      A           1                          0                        0
+      58:      A           1                          0                        0
+      59:      T           1                          0         CT             2
+      60:      G           1            G             1                        0
+            unit unit_length internal_rep internal_reps     spacer spacer_length
+          <char>       <int>       <char>         <int>     <char>         <int>
                       prime3_rep prime3_reps original_reps        COSMIC_83
                           <char>       <int>         <int>           <char>
        1:                      G           1             2        DEL:C:1:1
