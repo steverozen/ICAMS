@@ -25,3 +25,5 @@ foo %>%
   group_by(dinuc, hasmh) %>%
   dplyr::summarize(total_n = sum(n), .groups = "drop") %>%
   dplyr::arrange(dinuc) -> bar
+
+View(dplyr::filter(foo, dinuc %in% c("AG", "TC")))
