@@ -7416,6 +7416,8 @@ catalog.row.order <- list(
   DBS144 = catalog.row.order.DBS.144,
   ID = catalog.row.order.ID,
   ID166 = catalog.row.order.ID.166,
+  ID476 = catalog.row.order.indel476,
+  ID89 = catalog.row.order.indel89,
   # NOT TESTED
   COMPOSITE = c(
     catalog.row.order.SBS.1536,
