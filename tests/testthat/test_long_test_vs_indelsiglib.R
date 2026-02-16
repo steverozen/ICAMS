@@ -1,5 +1,10 @@
 test_that("test_long_test_vs_indelsiglib", {
-  mock_vcf = read.csv("testdata/long_test_vs_indelsiglib.csv")
+  withr::local_options(list(width = 200))
+  fixture_path <- testthat::test_path(
+    "testdata",
+    "long_test_vs_indelsiglib.csv"
+  )
+  mock_vcf = read.csv(fixture_path)
   retval1 = ICAMS:::categorize_indels_in_vcf(mock_vcf)
   cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) -> xx
   xx$koh_orig_edited = make_koh_open_intervals(xx)

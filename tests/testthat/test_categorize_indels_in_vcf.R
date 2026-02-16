@@ -9,5 +9,5 @@ test_that("categorize_indels_in_vcf", {
 
   yy = data.table::rbindlist(ICAMS:::categorize_indels_in_vcf(dd), fill = TRUE)
 
-  expect_snapshot(yy)
+  expect_snapshot(t(yy))
 })
