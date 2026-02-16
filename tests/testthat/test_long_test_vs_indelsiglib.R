@@ -1,4 +1,5 @@
 test_that("test_long_test_vs_indelsiglib", {
+  withr::local_options(list(width = 80))
   mock_vcf = read.csv("testdata/long_test_vs_indelsiglib.csv")
   retval1 = ICAMS:::categorize_indels_in_vcf(mock_vcf)
   cbind(mock_vcf, data.table::rbindlist(retval1, fill = TRUE)) -> xx
