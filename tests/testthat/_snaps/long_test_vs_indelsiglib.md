@@ -1,20 +1,42 @@
 # test_long_test_vs_indelsiglib
 
     Code
-      xx[zz, ]
+      t(xx[zz, ])
     Output
-         CHROM      POS REF ALT                                 seq.context
-      82  chr3 89101431   A  AC CACCCCACAGAAGTGAGATGAACCCCCCCCCCAACTCAAAATT
-         seq.context.width Koh89.annotate.class Koh476.annotate.class ins_or_del pre
-      82                21                             A[Ins(C):R10]A          i   A
-         ins_or_del_seq post L U_seq U U_seq_count_in_indel_seq
-      82              C    A 1     C 1                        1
-         indel_str_count_in_ref  R R_outside_ins_or_del_seq mh unit unit_length
-      82                     10 10                       11  0    C           1
-         internal_rep internal_reps spacer spacer_length prime3_rep prime3_reps
-      82                          0                    0 CCCCCCCCCC          10
-         original_reps  COSMIC_83       Koh_89        Koh_476 prev_COSMIC_83
-      82            10 INS:C:1:5+ Ins(C):R(7,) A[Ins(C):R10]A     INS:C:1:5+
-         koh_orig_edited
-      82                
+                               82                                           
+      CHROM                    "chr3"                                       
+      POS                      "89101431"                                   
+      REF                      "A"                                          
+      ALT                      "AC"                                         
+      seq.context              "CACCCCACAGAAGTGAGATGAACCCCCCCCCCAACTCAAAATT"
+      seq.context.width        "21"                                         
+      Koh89.annotate.class     ""                                           
+      Koh476.annotate.class    "A[Ins(C):R10]A"                             
+      ins_or_del               "i"                                          
+      pre                      "A"                                          
+      ins_or_del_seq           "C"                                          
+      post                     "A"                                          
+      L                        "1"                                          
+      U_seq                    "C"                                          
+      U                        "1"                                          
+      U_seq_count_in_indel_seq "1"                                          
+      indel_str_count_in_ref   "10"                                         
+      R                        "10"                                         
+      R_outside_ins_or_del_seq "11"                                         
+      mh                       "0"                                          
+      koh_mh                   "0"                                          
+      unit                     "C"                                          
+      unit_length              "1"                                          
+      internal_rep             ""                                           
+      internal_reps            "0"                                          
+      spacer                   ""                                           
+      spacer_length            "0"                                          
+      prime3_rep               "CCCCCCCCCC"                                 
+      prime3_reps              "10"                                         
+      original_reps            "10"                                         
+      COSMIC_83                "INS:C:1:5+"                                 
+      Koh_89                   "Ins(C):R(7,)"                               
+      Koh_476                  "A[Ins(C):R10]A"                             
+      prev_COSMIC_83           "INS:C:1:5+"                                 
+      koh_orig_edited          ""                                           
 

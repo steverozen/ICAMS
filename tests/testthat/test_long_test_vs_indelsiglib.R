@@ -11,5 +11,5 @@ test_that("test_long_test_vs_indelsiglib", {
   }
   expect_equal(length(qq), 0)
   expect_equal(length(zz), 1)
-  expect_snapshot(xx[zz, ])
+  expect_snapshot(t(xx[zz, ]))
 })
