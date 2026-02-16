@@ -44,9 +44,14 @@ and if the deletion is not in a simple repeat,
 looks for microhomology (see \code{\link{FindDelMH}}).
 }
 \examples{
-
+simplify = function(ll) unlist(ll[c("COSMIC_83", "Koh_89", "Koh_476")])
 categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 3) # "DEL:T:1:2"
 categorize_1_justified_indel("GGAAAGG", "d", ins_or_del_seq = "A", pos = 4) # "DEL:T:1:2"
-categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3)   # "DEL:T:1:0"
+simplify(
+  categorize_1_justified_indel("TTATT", "d", ins_or_del_seq = "A", pos = 3))
+simplify(
+  categorize_1_justified_indel("TTATATAT", "d", ins_or_del_seq = "TATA", pos = 2))
+simplify(
+  categorize_1_justified_indel("TTATATAT", "d", ins_or_del_seq = "TATAT", pos = 2))
 
 }

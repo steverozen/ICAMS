@@ -13,7 +13,8 @@ AnnotateIDVCF(
   name.of.VCF = NULL,
   suppress.discarded.variants.warnings = TRUE,
   explain_indels = 1,
-  context_width_multiplier = 20L
+  context_width_multiplier = 20L,
+  add_transcript_ranges = TRUE
 )
 }
 \arguments{
@@ -40,12 +41,14 @@ indel was categorized.}
 
 \item{context_width_multiplier}{Used to guess how much sequence on each side
 of an indel is needed to categorize it.}
+
+\item{add_transcript_ranges}{If TRUE add transcript ranges to the output VCF.}
 }
 \value{
 A list of elements:
 \itemize{
 \item \code{annotated.vcf}: The original VCF data
-frame with two new columns added to the input data frame:
+frame with new columns added to the input data frame, including:
 \itemize{
 \item \code{seq.context}: The sequence embedding the variant.
 \item \code{seq.context.width}: The width of \code{seq.context} to the left.

@@ -1,7 +1,8 @@
 #' Create ID (small insertions and deletions) catalog from ID VCFs
 #'
 #' @param list.of.vcfs List of in-memory ID VCFs. The list names will be
-#' the sample ids in the output catalog.
+#' the sample ids in the output catalog. `AnnotateIDVCF`` has not been
+#' on these VCFs.
 #'
 #' @param ref.genome A \code{ref.genome} argument as described in
 #'   \code{\link{ICAMS}}.
