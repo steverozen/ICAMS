@@ -47,9 +47,9 @@
 #' @export
 #'
 #' @examples
-#' file <- c(system.file("tests/testthat/testdata/",
-#'                       "vcf_to_test_justify_indels_in_id_vcf_with_contexts.csv",
-#'                        package = "ICAMS"))
+#' file <- system.file("extdata",
+#'                     "vcf_to_test_justify_indels_in_id_vcf_with_contexts.csv",
+#'                     package = "ICAMS")
 #'
 #' stopifnot(file.exists(file))
 #'

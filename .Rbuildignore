@@ -13,3 +13,5 @@
 ^AGENTS.md$
 ^[.]?air[.]toml$
 ^inst/segment_traced$
+^\.Rd2pdf\d*$
+^\.claude$
