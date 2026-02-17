@@ -33,7 +33,7 @@
 #'   and integer mutation counts. Row names are the Koh 89 category
 #'   strings; the column name is \code{sample_id}.
 #'
-#' @importFrom dplyr %>% filter group_by pull mutate if_else
+#' @importFrom dplyr %>% pull mutate if_else
 #'
 #' @export
 annot_vcf_to_89_catalog <- function(
@@ -42,42 +42,7 @@ annot_vcf_to_89_catalog <- function(
   FILTER_PASS = FALSE,
   do_message = FALSE
 ) {
-  if (colnames(annot_vcf)[1] == "#CHROM") {
-    colnames(annot_vcf)[1] <- "CHROM"
-  }
-
-  if (do_message) {
-    message("initial annot_vcf rows = ", nrow(annot_vcf))
-  }
-
-  if (FILTER_PASS) {
-    annot_vcf %>%
-      filter(FILTER == "PASS") -> annot_vcf
-  }
-
-  if (do_message) {
-    message("num PASS rows = ", nrow(annot_vcf))
-  }
-
-  annot_vcf %>%
-    dplyr::mutate(pos_id = paste0(CHROM, "-", POS)) -> vcf_with_pos_id
-
-  vcf_with_pos_id %>%
-    group_by(pos_id) %>%
-    filter(dplyr::n_distinct(ALT) > 1) %>%
-    select(pos_id, REF, ALT) -> multiple_alts
-
-  if (length(multiple_alts) > 0) {
-    warning(
-      "Differences in 'ALT'; only 1 ALT value chosen arbitrarily at the following positions: ",
-      paste(capture.output(print(multiple_alts)), collapse = '\n')
-    )
-  }
-
-  vcf_with_pos_id %>% dplyr::distinct(pos_id, .keep_all = TRUE) -> cleaner_vcf
-  if (do_message) {
-    message("num PASS && unique rows = ", nrow(cleaner_vcf))
-  }
+  cleaner_vcf <- quick_check_vcf(annot_vcf, FILTER_PASS, do_message)
 
   cleaner_vcf %>%
     dplyr::count(Koh_89) -> compacted_vcf
