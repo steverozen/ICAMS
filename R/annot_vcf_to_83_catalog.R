@@ -65,8 +65,7 @@ annot_vcf_to_83_catalog <- function(
   vcf_with_pos_id %>%
     group_by(pos_id) %>%
     filter(dplyr::n_distinct(ALT) > 1) %>%
-    pull(pos_id) %>%
-    unique() -> multiple_alts
+    select(pos_id, REF, ALT) -> multiple_alts
 
   if (length(multiple_alts) > 0) {
     warning(
