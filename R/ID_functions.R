@@ -695,10 +695,17 @@ CreateOneColIDMatrix <- function(
     warning("Argument SBS.vcf in CreateOneColIDMatrix is always ignored")
   }
 
-  id_info_list = categorize_indels_in_vcf(ID.vcf)
-  id_info_df = data.table::rbindlist(id_info_list, fill = TRUE)
-
-  out.ID.vcf <- cbind(ID.vcf, ID.class = id_info_df$COSMIC_83)
+  if ("COSMIC_83" %in% colnames(ID.vcf)) {
+    message("CreateOneColIDMatrix: using existing COSMIC_83 column, ",
+            "skipping categorize_indels_in_vcf")
+    out.ID.vcf <- cbind(ID.vcf, ID.class = ID.vcf$COSMIC_83)
+  } else {
+    message("CreateOneColIDMatrix: COSMIC_83 column not found, ",
+            "calling categorize_indels_in_vcf")
+    id_info_list = categorize_indels_in_vcf(ID.vcf)
+    id_info_df = data.table::rbindlist(id_info_list, fill = TRUE)
+    out.ID.vcf <- cbind(ID.vcf, ID.class = id_info_df$COSMIC_83)
+  }
 
   idx <- which(is.na(out.ID.vcf$ID.class))
   if (length(idx) > 0) {
