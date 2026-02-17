@@ -163,5 +163,5 @@ if(getRversion() >= "2.15.1") {
                            "read.depth.x", "read.depth.y","exp.level", "FILTER",
                            "trans.Ensembl.gene.ID", "..col.names.order", "remark.for.DBS",
                            "..column.to.use", "SampleID", "variable", "value", "chrom.y",
-                           "pos_id", "n_distinct", "Koh_476", "Koh_89", "R", "n"))
+                           "pos_id", "n_distinct", "COSMIC_83", "Koh_476", "Koh_89", "R", "n"))
 }
