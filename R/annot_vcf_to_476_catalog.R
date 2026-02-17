@@ -71,7 +71,7 @@ annot_vcf_to_476_catalog <- function(
 
   if (length(multiple_alts) > 0) {
     warning(
-      Differences in 'ALT'; only 1 ALT value chosen arbitrarily at the following positions: ",
+      "Differences in 'ALT'; only 1 ALT value chosen arbitrarily at the following positions: ",
       paste(capture.output(print(multiple_alts)), collapse = '\n')
     )
   }
