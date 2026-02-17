@@ -116,6 +116,7 @@ VCFsToIDCatalogs <- function(
     }
     one.ID.column <- tmp$catalog
     one.ID166.column <- tmp$catID166
+    one.ID476.column <- tmp$catID476
     rm(ID)
 
     if (return.annotated.vcfs == TRUE) {
@@ -133,6 +134,7 @@ VCFsToIDCatalogs <- function(
     return(list(
       ID.column = one.ID.column,
       ID166.column = one.ID166.column,
+      ID476.column = one.ID476.column,
       discarded.variants = discarded.variants,
       annotated.vcfs = annotated.vcfs
     ))
@@ -145,7 +147,7 @@ VCFsToIDCatalogs <- function(
     mc.cores = num.of.cores
   )
 
-  ID.cat <- lapply(list0, FUN = "[[", 1)
+  ID.cat <- lapply(list0, FUN = "[[", "ID.column")
   ID.cat1 <- do.call("cbind", ID.cat)
   catID <- as.catalog(
     ID.cat1,
@@ -154,7 +156,7 @@ VCFsToIDCatalogs <- function(
     catalog.type = "counts"
   )
 
-  ID166.cat <- lapply(list0, FUN = "[[", 2)
+  ID166.cat <- lapply(list0, FUN = "[[", "ID166.column")
   ID166.cat1 <- do.call("cbind", ID166.cat)
   catID166 <- as.catalog(
     ID166.cat1,
@@ -163,15 +165,24 @@ VCFsToIDCatalogs <- function(
     catalog.type = "counts"
   )
 
-  discarded.variants1 <- lapply(list0, FUN = "[[", 3)
+  ID476.cat <- lapply(list0, FUN = "[[", "ID476.column")
+  # ID476.column can be NULL if Koh_476 was not in the VCF
+  ID476.cat <- Filter(Negate(is.null), ID476.cat)
+  catID476 <- NULL
+  if (length(ID476.cat) > 0) {
+    catID476 <- do.call("cbind", ID476.cat)
+  }
+
+  discarded.variants1 <- lapply(list0, FUN = "[[", "discarded.variants")
   discarded.variants2 <- do.call("c", discarded.variants1)
 
-  annotated.vcfs1 <- lapply(list0, FUN = "[[", 4)
+  annotated.vcfs1 <- lapply(list0, FUN = "[[", "annotated.vcfs")
   annotated.vcfs2 <- do.call("c", annotated.vcfs1)
 
   CheckAndReturnIDCatalog(
     catID = catID,
     catID166 = catID166,
+    catID476 = catID476,
     discarded.variants = discarded.variants2,
     annotated.vcfs = annotated.vcfs2
   )

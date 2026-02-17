@@ -298,7 +298,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Steve Rozen \email{steverozen@gmail.com}
+\strong{Maintainer}: Steve Rozen \email{steverozen@pm.me}
 
 Authors:
 \itemize{

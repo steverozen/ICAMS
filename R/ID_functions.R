@@ -586,34 +586,20 @@ CheckAndReturnIDMatrix <-
     discarded.variants,
     ID.mat,
     ID166.mat,
+    ID476.mat = NULL,
     return.annotated.vcf = FALSE
   ) {
-    if (nrow(discarded.variants) == 0) {
-      if (return.annotated.vcf == FALSE) {
-        return(list(catalog = ID.mat, catID166 = ID166.mat))
-      } else {
-        return(list(
-          catalog = ID.mat,
-          catID166 = ID166.mat,
-          annotated.vcf = annotated.vcf
-        ))
-      }
-    } else {
-      if (return.annotated.vcf == FALSE) {
-        return(list(
-          catalog = ID.mat,
-          catID166 = ID166.mat,
-          discarded.variants = discarded.variants
-        ))
-      } else {
-        return(list(
-          catalog = ID.mat,
-          catID166 = ID166.mat,
-          discarded.variants = discarded.variants,
-          annotated.vcf = annotated.vcf
-        ))
-      }
+    result <- list(catalog = ID.mat, catID166 = ID166.mat)
+    if (!is.null(ID476.mat)) {
+      result$catID476 <- ID476.mat
     }
+    if (nrow(discarded.variants) > 0) {
+      result$discarded.variants <- discarded.variants
+    }
+    if (return.annotated.vcf) {
+      result$annotated.vcf <- annotated.vcf
+    }
+    return(result)
   }
 
 #' @title Create one column of the matrix for an indel catalog from *one* in-memory VCF.
@@ -666,15 +652,18 @@ CreateOneColIDMatrix <- function(
           ncol = 1,
           dimnames = list(ICAMS::catalog.row.order$ID166, sample.id)
         )
-      if (return.annotated.vcf == FALSE) {
-        return(list(catalog = catID, catID166 = catID166))
-      } else {
-        return(list(
-          catalog = catID,
-          catID166 = catID166,
-          annotated.vcf = ID.vcf
-        ))
+      catID476 <-
+        matrix(
+          0,
+          nrow = length(ICAMS::catalog.row.order$ID476),
+          ncol = 1,
+          dimnames = list(ICAMS::catalog.row.order$ID476, sample.id)
+        )
+      result <- list(catalog = catID, catID166 = catID166, catID476 = catID476)
+      if (return.annotated.vcf) {
+        result$annotated.vcf <- ID.vcf
       }
+      return(result)
     } else {
       return(FALSE)
     }
@@ -834,11 +823,58 @@ CreateOneColIDMatrix <- function(
   colnames(ID166.mat) <- sample.id
   ID166.mat <- ID166.mat[ICAMS::catalog.row.order$ID166, , drop = FALSE]
 
+  # Create the ID476 catalog matrix (Koh 476-category, 476 rows)
+  ID476.mat <- NULL
+  if ("Koh_476" %in% colnames(out.ID.vcf) && "R" %in% colnames(out.ID.vcf)) {
+    # Deduplicate by position, keeping one Koh_476 and R per mutation
+    tmp476 <- out.ID.vcf %>%
+      dplyr::group_by(CHROM, POS) %>%
+      dplyr::summarise(
+        Koh_476 = Koh_476[1],
+        R = R[1],
+        .groups = "drop"
+      )
+
+    # Collapse single-base indels with R >= 9 into the R(9,) bin
+    tmp476 <- tmp476 %>%
+      dplyr::mutate(
+        Koh_476 = dplyr::if_else(
+          R >= 9 &
+            stringr::str_detect(
+              Koh_476,
+              "Del\\(T\\)|Del\\(C\\)|Ins\\(C\\)|Ins\\(T\\)"
+            ),
+          stringr::str_replace(Koh_476, "R\\d+", "R(9,)"),
+          Koh_476
+        )
+      )
+
+    tab.ID476 <- table(tmp476$Koh_476)
+    row.order.ID476 <- data.table(rn = ICAMS::catalog.row.order$ID476)
+    ID476.dt <- as.data.table(tab.ID476)
+
+    ID476.dt2 <-
+      merge(
+        row.order.ID476,
+        ID476.dt,
+        by.x = "rn",
+        by.y = "V1",
+        all.x = TRUE
+      )
+    ID476.dt2[is.na(N), N := 0]
+
+    ID476.mat <- as.matrix(ID476.dt2[, 2])
+    rownames(ID476.mat) <- ID476.dt2$rn
+    colnames(ID476.mat) <- sample.id
+    ID476.mat <- ID476.mat[ICAMS::catalog.row.order$ID476, , drop = FALSE]
+  }
+
   CheckAndReturnIDMatrix(
     annotated.vcf = out.ID.vcf3,
     discarded.variants = discarded.variants,
     ID.mat = ID.mat,
     ID166.mat = ID166.mat,
+    ID476.mat = ID476.mat,
     return.annotated.vcf = return.annotated.vcf
   )
 }

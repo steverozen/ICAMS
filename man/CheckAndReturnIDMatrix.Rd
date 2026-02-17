@@ -9,6 +9,7 @@ CheckAndReturnIDMatrix(
   discarded.variants,
   ID.mat,
   ID166.mat,
+  ID476.mat = NULL,
   return.annotated.vcf = FALSE
 )
 }

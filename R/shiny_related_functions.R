@@ -2078,33 +2078,18 @@ VCFsToDBSCatalogs <- function(
 #'
 #' @keywords internal
 CheckAndReturnIDCatalog <-
-  function(catID, catID166, discarded.variants, annotated.vcfs) {
-    if (length(discarded.variants) == 0) {
-      if (length(annotated.vcfs) == 0) {
-        return(list(catalog = catID, catID166 = catID166))
-      } else {
-        return(list(
-          catalog = catID,
-          catID166 = catID166,
-          annotated.vcfs = annotated.vcfs
-        ))
-      }
-    } else {
-      if (length(annotated.vcfs) == 0) {
-        return(list(
-          catalog = catID,
-          catID166 = catID166,
-          discarded.variants = discarded.variants
-        ))
-      } else {
-        return(list(
-          catalog = catID,
-          catID166 = catID166,
-          discarded.variants = discarded.variants,
-          annotated.vcfs = annotated.vcfs
-        ))
-      }
+  function(catID, catID166, catID476 = NULL, discarded.variants, annotated.vcfs) {
+    result <- list(catalog = catID, catID166 = catID166)
+    if (!is.null(catID476)) {
+      result$catID476 <- catID476
     }
+    if (length(discarded.variants) > 0) {
+      result$discarded.variants <- discarded.variants
+    }
+    if (length(annotated.vcfs) > 0) {
+      result$annotated.vcfs <- annotated.vcfs
+    }
+    return(result)
   }
 
 #' Calculate the number of space needed to add strand bias statistics to

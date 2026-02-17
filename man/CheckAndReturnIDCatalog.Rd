@@ -4,7 +4,13 @@
 \alias{CheckAndReturnIDCatalog}
 \title{Check and return ID catalog}
 \usage{
-CheckAndReturnIDCatalog(catID, catID166, discarded.variants, annotated.vcfs)
+CheckAndReturnIDCatalog(
+  catID,
+  catID166,
+  catID476 = NULL,
+  discarded.variants,
+  annotated.vcfs
+)
 }
 \arguments{
 \item{catID}{An ID catalog.}
