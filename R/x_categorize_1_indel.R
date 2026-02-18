@@ -27,7 +27,8 @@ x_categorize_1_indel = function(
 ) {
   requireNamespace("stringi")
 
-  regress = (Sys.getenv("ICAMS_DO_NOT_REGRESS") == '')
+  # regress = (Sys.getenv("ICAMS_DO_NOT_REGRESS") == '')
+  regress = FALSE
 
   if (orig_ref == "" || orig_alt == "") {
     stop(

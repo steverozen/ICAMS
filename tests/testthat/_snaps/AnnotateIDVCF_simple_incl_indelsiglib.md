@@ -963,68 +963,68 @@
       60:                                  0             2  DEL:repeats:2:0
                       prime3_rep prime3_reps original_reps        COSMIC_83
                           <char>       <int>         <int>           <char>
-                          Koh_89        Koh_476   prev_COSMIC_83
-                          <char>         <char>           <char>
-       1:           [Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
-       2:      A[Del(T):R(1,4)]G  A[Del(T):R1]G        DEL:T:1:0
-       3:      C[Ins(T):R(0,4)]A  C[Ins(T):R4]A        INS:T:1:4
-       4:           [Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
-       5:      A[Del(T):R(1,4)]A  A[Del(T):R2]A        DEL:T:1:1
-       6:      A[Del(T):R(1,4)]C  A[Del(T):R1]C        DEL:T:1:0
-       7:      G[Ins(T):R(0,4)]C  G[Ins(T):R0]C        INS:T:1:0
-       8:          Ins(C):R(0,3)  G[Ins(C):R0]A        INS:C:1:0
-       9:          Ins(2,):R(5,) Ins2:U2:R(5,9) INS:repeats:2:5+
-      10:       [Del(C):R(4,5)]T  A[Del(C):R4]T        DEL:C:1:3
-      11:      A[Del(T):R(1,4)]A  A[Del(T):R3]A        DEL:T:1:2
-      12:           [Del(C):R2]T  T[Del(C):R2]T        DEL:C:1:1
-      13:      G[Ins(T):R(0,4)]C  G[Ins(T):R4]C        INS:T:1:4
-      14:             Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
-      15:      A[Del(T):R(1,4)]G  A[Del(T):R3]G        DEL:T:1:2
-      16:        Del(4,5):M(3,4)        Del4:M3       DEL:MH:4:3
-      17:      C[Del(T):R(1,4)]C  C[Del(T):R4]C        DEL:T:1:3
-      18:           [Del(C):R2]T  A[Del(C):R2]T        DEL:C:1:1
-      19:       [Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
-      20:            Del(2,4):R1     Del2:U1:R1  DEL:repeats:2:0
-      21:       Del(3,):U(3,):R2     Del3:U3:R2  DEL:repeats:3:1
-      22:      G[Ins(T):R(5,7)]G  G[Ins(T):R5]G       INS:T:1:5+
-      23:             Del(6,):M1     Del(7,):M1      DEL:MH:5+:1
-      24:             Del(6,):M3        Del6:M3      DEL:MH:5+:3
-      25:           Ins(C):R(7,)  A[Ins(C):R7]A       INS:C:1:5+
-      26:           [Del(C):R2]A  G[Del(C):R2]A        DEL:C:1:1
-      27:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      28:       [Del(C):R(4,5)]A  A[Del(C):R4]A        DEL:C:1:3
-      29:      C[Del(T):R(1,4)]G  C[Del(T):R3]G        DEL:T:1:2
-      30:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      31:      A[Del(T):R(1,4)]A  A[Del(T):R3]A        DEL:T:1:2
-      32:      G[Del(T):R(1,4)]A  G[Del(T):R1]A        DEL:T:1:0
-      33:      C[Ins(T):R(0,4)]G  C[Ins(T):R4]G        INS:T:1:4
-      34:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      35:      G[Ins(T):R(5,7)]G  G[Ins(T):R6]G       INS:T:1:5+
-      36:      G[Ins(T):R(0,4)]C  G[Ins(T):R3]C        INS:T:1:3
-      37:           [Del(C):R1]A  G[Del(C):R1]A        DEL:C:1:0
-      38:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G        INS:T:1:1
-      39:       T[Ins(T):R(8,)]A T[Ins(T):R20]A       INS:T:1:5+
-      40:           [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      41:      G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
-      42:           [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      43:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      44:             Del(6,):M2     Del(7,):M2      DEL:MH:5+:2
-      45:       [Del(C):R(4,5)]T  T[Del(C):R4]T        DEL:C:1:3
-      46:       G[Ins(T):R(8,)]C  G[Ins(T):R9]C       INS:T:1:5+
-      47:      C[Del(T):R(1,4)]G  C[Del(T):R1]G        DEL:T:1:0
-      48:      C[Del(T):R(1,4)]C  C[Del(T):R1]C        DEL:T:1:0
-      49:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A        INS:T:1:1
-      50:      G[Ins(T):R(0,4)]A  G[Ins(T):R4]A        INS:T:1:4
-      51:           [Del(C):R2]T  G[Del(C):R2]T        DEL:C:1:1
-      52:       [Del(C):R(1,5)]G  A[Del(C):R3]G        DEL:C:1:2
-      53:      A[Del(T):R(1,4)]G  A[Del(T):R4]G        DEL:T:1:3
-      54:           [Del(C):R1]T  T[Del(C):R1]T        DEL:C:1:0
-      55:      A[Ins(T):R(5,7)]A  A[Ins(T):R7]A       INS:T:1:5+
-      56: Del(2,8):U(1,2):R(2,4)     Del2:U2:R2  DEL:repeats:2:1
-      57:      A[Del(T):R(1,4)]G  A[Del(T):R2]G        DEL:T:1:1
-      58:      A[Ins(T):R(0,4)]G  A[Ins(T):R3]G        INS:T:1:3
-      59:            Ins(2,4):R0     Ins(2,4):M  INS:repeats:3:0
-      60:            Del(2,4):R1     Del2:U1:R1  DEL:repeats:2:0
-                          Koh_89        Koh_476   prev_COSMIC_83
-                          <char>         <char>           <char>
+                          Koh_89        Koh_476
+                          <char>         <char>
+       1:           [Del(C):R2]A  G[Del(C):R2]A
+       2:      A[Del(T):R(1,4)]G  A[Del(T):R1]G
+       3:      C[Ins(T):R(0,4)]A  C[Ins(T):R4]A
+       4:           [Del(C):R2]T  A[Del(C):R2]T
+       5:      A[Del(T):R(1,4)]A  A[Del(T):R2]A
+       6:      A[Del(T):R(1,4)]C  A[Del(T):R1]C
+       7:      G[Ins(T):R(0,4)]C  G[Ins(T):R0]C
+       8:          Ins(C):R(0,3)  G[Ins(C):R0]A
+       9:          Ins(2,):R(5,) Ins2:U2:R(5,9)
+      10:       [Del(C):R(4,5)]T  A[Del(C):R4]T
+      11:      A[Del(T):R(1,4)]A  A[Del(T):R3]A
+      12:           [Del(C):R2]T  T[Del(C):R2]T
+      13:      G[Ins(T):R(0,4)]C  G[Ins(T):R4]C
+      14:             Del(6,):M2     Del(7,):M2
+      15:      A[Del(T):R(1,4)]G  A[Del(T):R3]G
+      16:        Del(4,5):M(3,4)        Del4:M3
+      17:      C[Del(T):R(1,4)]C  C[Del(T):R4]C
+      18:           [Del(C):R2]T  A[Del(C):R2]T
+      19:       [Del(C):R(4,5)]A  A[Del(C):R4]A
+      20:            Del(2,4):R1     Del2:U1:R1
+      21:       Del(3,):U(3,):R2     Del3:U3:R2
+      22:      G[Ins(T):R(5,7)]G  G[Ins(T):R5]G
+      23:             Del(6,):M1     Del(7,):M1
+      24:             Del(6,):M3        Del6:M3
+      25:           Ins(C):R(7,)  A[Ins(C):R7]A
+      26:           [Del(C):R2]A  G[Del(C):R2]A
+      27:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G
+      28:       [Del(C):R(4,5)]A  A[Del(C):R4]A
+      29:      C[Del(T):R(1,4)]G  C[Del(T):R3]G
+      30:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G
+      31:      A[Del(T):R(1,4)]A  A[Del(T):R3]A
+      32:      G[Del(T):R(1,4)]A  G[Del(T):R1]A
+      33:      C[Ins(T):R(0,4)]G  C[Ins(T):R4]G
+      34:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A
+      35:      G[Ins(T):R(5,7)]G  G[Ins(T):R6]G
+      36:      G[Ins(T):R(0,4)]C  G[Ins(T):R3]C
+      37:           [Del(C):R1]A  G[Del(C):R1]A
+      38:      G[Ins(T):R(0,4)]G  G[Ins(T):R1]G
+      39:       T[Ins(T):R(8,)]A T[Ins(T):R20]A
+      40:           [Del(C):R1]T  T[Del(C):R1]T
+      41:      G[Ins(T):R(0,4)]A  G[Ins(T):R4]A
+      42:           [Del(C):R1]T  T[Del(C):R1]T
+      43:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A
+      44:             Del(6,):M2     Del(7,):M2
+      45:       [Del(C):R(4,5)]T  T[Del(C):R4]T
+      46:       G[Ins(T):R(8,)]C  G[Ins(T):R9]C
+      47:      C[Del(T):R(1,4)]G  C[Del(T):R1]G
+      48:      C[Del(T):R(1,4)]C  C[Del(T):R1]C
+      49:      G[Ins(T):R(0,4)]A  G[Ins(T):R1]A
+      50:      G[Ins(T):R(0,4)]A  G[Ins(T):R4]A
+      51:           [Del(C):R2]T  G[Del(C):R2]T
+      52:       [Del(C):R(1,5)]G  A[Del(C):R3]G
+      53:      A[Del(T):R(1,4)]G  A[Del(T):R4]G
+      54:           [Del(C):R1]T  T[Del(C):R1]T
+      55:      A[Ins(T):R(5,7)]A  A[Ins(T):R7]A
+      56: Del(2,8):U(1,2):R(2,4)     Del2:U2:R2
+      57:      A[Del(T):R(1,4)]G  A[Del(T):R2]G
+      58:      A[Ins(T):R(0,4)]G  A[Ins(T):R3]G
+      59:            Ins(2,4):R0     Ins(2,4):M
+      60:            Del(2,4):R1     Del2:U1:R1
+                          Koh_89        Koh_476
+                          <char>         <char>
 

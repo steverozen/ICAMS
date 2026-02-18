@@ -30,7 +30,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]A"                                      
       Koh_476                  "G[Del(C):R2]A"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,2]                                              
       ins_or_del               "d"                                               
       pre                      "A"                                               
@@ -58,7 +57,6 @@
       COSMIC_83                "DEL:T:1:0"                                       
       Koh_89                   "A[Del(T):R(1,4)]G"                               
       Koh_476                  "A[Del(T):R1]G"                                   
-      prev_COSMIC_83           "DEL:T:1:0"                                       
                                [,3]                                                
       ins_or_del               "i"                                                 
       pre                      "C"                                                 
@@ -86,7 +84,6 @@
       COSMIC_83                "INS:T:1:4"                                         
       Koh_89                   "C[Ins(T):R(0,4)]A"                                 
       Koh_476                  "C[Ins(T):R4]A"                                     
-      prev_COSMIC_83           "INS:T:1:4"                                         
                                [,4]                                                
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -114,7 +111,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]T"                                      
       Koh_476                  "A[Del(C):R2]T"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,5]                                                
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -142,7 +138,6 @@
       COSMIC_83                "DEL:T:1:1"                                         
       Koh_89                   "A[Del(T):R(1,4)]A"                                 
       Koh_476                  "A[Del(T):R2]A"                                     
-      prev_COSMIC_83           "DEL:T:1:1"                                         
                                [,6]                                              
       ins_or_del               "d"                                               
       pre                      "A"                                               
@@ -170,7 +165,6 @@
       COSMIC_83                "DEL:T:1:0"                                       
       Koh_89                   "A[Del(T):R(1,4)]C"                               
       Koh_476                  "A[Del(T):R1]C"                                   
-      prev_COSMIC_83           "DEL:T:1:0"                                       
                                [,7]                                              
       ins_or_del               "i"                                               
       pre                      "G"                                               
@@ -198,7 +192,6 @@
       COSMIC_83                "INS:T:1:0"                                       
       Koh_89                   "G[Ins(T):R(0,4)]C"                               
       Koh_476                  "G[Ins(T):R0]C"                                   
-      prev_COSMIC_83           "INS:T:1:0"                                       
                                [,8]                                              
       ins_or_del               "i"                                               
       pre                      "G"                                               
@@ -226,7 +219,6 @@
       COSMIC_83                "INS:C:1:0"                                       
       Koh_89                   "Ins(C):R(0,3)"                                   
       Koh_476                  "G[Ins(C):R0]A"                                   
-      prev_COSMIC_83           "INS:C:1:0"                                       
                                [,9]                                                 
       ins_or_del               "i"                                                  
       pre                      "G"                                                  
@@ -254,7 +246,6 @@
       COSMIC_83                "INS:repeats:2:5+"                                   
       Koh_89                   "Ins(2,):R(5,)"                                      
       Koh_476                  "Ins2:U2:R(5,9)"                                     
-      prev_COSMIC_83           "INS:repeats:2:5+"                                   
                                [,10]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -282,7 +273,6 @@
       COSMIC_83                "DEL:C:1:3"                                         
       Koh_89                   "[Del(C):R(4,5)]T"                                  
       Koh_476                  "A[Del(C):R4]T"                                     
-      prev_COSMIC_83           "DEL:C:1:3"                                         
                                [,11]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -310,7 +300,6 @@
       COSMIC_83                "DEL:T:1:2"                                         
       Koh_89                   "A[Del(T):R(1,4)]A"                                 
       Koh_476                  "A[Del(T):R3]A"                                     
-      prev_COSMIC_83           "DEL:T:1:2"                                         
                                [,12]                                               
       ins_or_del               "d"                                                 
       pre                      "T"                                                 
@@ -338,7 +327,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]T"                                      
       Koh_476                  "T[Del(C):R2]T"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,13]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -366,7 +354,6 @@
       COSMIC_83                "INS:T:1:4"                                         
       Koh_89                   "G[Ins(T):R(0,4)]C"                                 
       Koh_476                  "G[Ins(T):R4]C"                                     
-      prev_COSMIC_83           "INS:T:1:4"                                         
                                [,14]                                                                                                                           
       ins_or_del               "d"                                                                                                                             
       pre                      "A"                                                                                                                             
@@ -394,7 +381,6 @@
       COSMIC_83                "DEL:MH:5+:2"                                                                                                                   
       Koh_89                   "Del(6,):M2"                                                                                                                    
       Koh_476                  "Del(7,):M2"                                                                                                                    
-      prev_COSMIC_83           "DEL:MH:5+:2"                                                                                                                   
                                [,15]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -422,7 +408,6 @@
       COSMIC_83                "DEL:T:1:2"                                         
       Koh_89                   "A[Del(T):R(1,4)]G"                                 
       Koh_476                  "A[Del(T):R3]G"                                     
-      prev_COSMIC_83           "DEL:T:1:2"                                         
                                [,16]                                                          
       ins_or_del               "d"                                                            
       pre                      "G"                                                            
@@ -450,7 +435,6 @@
       COSMIC_83                "DEL:MH:4:3"                                                   
       Koh_89                   "Del(4,5):M(3,4)"                                              
       Koh_476                  "Del4:M3"                                                      
-      prev_COSMIC_83           "DEL:MH:4:3"                                                   
                                [,17]                                               
       ins_or_del               "d"                                                 
       pre                      "C"                                                 
@@ -478,7 +462,6 @@
       COSMIC_83                "DEL:T:1:3"                                         
       Koh_89                   "C[Del(T):R(1,4)]C"                                 
       Koh_476                  "C[Del(T):R4]C"                                     
-      prev_COSMIC_83           "DEL:T:1:3"                                         
                                [,18]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -506,7 +489,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]T"                                      
       Koh_476                  "A[Del(C):R2]T"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,19]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -534,7 +516,6 @@
       COSMIC_83                "DEL:C:1:3"                                         
       Koh_89                   "[Del(C):R(4,5)]A"                                  
       Koh_476                  "A[Del(C):R4]A"                                     
-      prev_COSMIC_83           "DEL:C:1:3"                                         
                                [,20]                                              
       ins_or_del               "d"                                                
       pre                      "T"                                                
@@ -562,7 +543,6 @@
       COSMIC_83                "DEL:repeats:2:0"                                  
       Koh_89                   "Del(2,4):R1"                                      
       Koh_476                  "Del2:U1:R1"                                       
-      prev_COSMIC_83           "DEL:repeats:2:0"                                  
                                [,21]                                                 
       ins_or_del               "d"                                                   
       pre                      "A"                                                   
@@ -590,7 +570,6 @@
       COSMIC_83                "DEL:repeats:3:1"                                     
       Koh_89                   "Del(3,):U(3,):R2"                                    
       Koh_476                  "Del3:U3:R2"                                          
-      prev_COSMIC_83           "DEL:repeats:3:1"                                     
                                [,22]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -618,7 +597,6 @@
       COSMIC_83                "INS:T:1:5+"                                        
       Koh_89                   "G[Ins(T):R(5,7)]G"                                 
       Koh_476                  "G[Ins(T):R5]G"                                     
-      prev_COSMIC_83           "INS:T:1:5+"                                        
                                [,23]                                                                                                                                                                  
       ins_or_del               "d"                                                                                                                                                                    
       pre                      "G"                                                                                                                                                                    
@@ -646,7 +624,6 @@
       COSMIC_83                "DEL:MH:5+:1"                                                                                                                                                          
       Koh_89                   "Del(6,):M1"                                                                                                                                                           
       Koh_476                  "Del(7,):M1"                                                                                                                                                           
-      prev_COSMIC_83           "DEL:MH:5+:1"                                                                                                                                                          
                                [,24]                                                                                    
       ins_or_del               "d"                                                                                      
       pre                      "G"                                                                                      
@@ -674,7 +651,6 @@
       COSMIC_83                "DEL:MH:5+:3"                                                                            
       Koh_89                   "Del(6,):M3"                                                                             
       Koh_476                  "Del6:M3"                                                                                
-      prev_COSMIC_83           "DEL:MH:5+:3"                                                                            
                                [,25]                                               
       ins_or_del               "i"                                                 
       pre                      "A"                                                 
@@ -702,7 +678,6 @@
       COSMIC_83                "INS:C:1:5+"                                        
       Koh_89                   "Ins(C):R(7,)"                                      
       Koh_476                  "A[Ins(C):R7]A"                                     
-      prev_COSMIC_83           "INS:C:1:5+"                                        
                                [,26]                                               
       ins_or_del               "d"                                                 
       pre                      "G"                                                 
@@ -730,7 +705,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]A"                                      
       Koh_476                  "G[Del(C):R2]A"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,27]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -758,7 +732,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]G"                                 
       Koh_476                  "G[Ins(T):R1]G"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,28]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -786,7 +759,6 @@
       COSMIC_83                "DEL:C:1:3"                                         
       Koh_89                   "[Del(C):R(4,5)]A"                                  
       Koh_476                  "A[Del(C):R4]A"                                     
-      prev_COSMIC_83           "DEL:C:1:3"                                         
                                [,29]                                               
       ins_or_del               "d"                                                 
       pre                      "C"                                                 
@@ -814,7 +786,6 @@
       COSMIC_83                "DEL:T:1:2"                                         
       Koh_89                   "C[Del(T):R(1,4)]G"                                 
       Koh_476                  "C[Del(T):R3]G"                                     
-      prev_COSMIC_83           "DEL:T:1:2"                                         
                                [,30]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -842,7 +813,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]G"                                 
       Koh_476                  "G[Ins(T):R1]G"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,31]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -870,7 +840,6 @@
       COSMIC_83                "DEL:T:1:2"                                         
       Koh_89                   "A[Del(T):R(1,4)]A"                                 
       Koh_476                  "A[Del(T):R3]A"                                     
-      prev_COSMIC_83           "DEL:T:1:2"                                         
                                [,32]                                             
       ins_or_del               "d"                                               
       pre                      "G"                                               
@@ -898,7 +867,6 @@
       COSMIC_83                "DEL:T:1:0"                                       
       Koh_89                   "G[Del(T):R(1,4)]A"                               
       Koh_476                  "G[Del(T):R1]A"                                   
-      prev_COSMIC_83           "DEL:T:1:0"                                       
                                [,33]                                               
       ins_or_del               "i"                                                 
       pre                      "C"                                                 
@@ -926,7 +894,6 @@
       COSMIC_83                "INS:T:1:4"                                         
       Koh_89                   "C[Ins(T):R(0,4)]G"                                 
       Koh_476                  "C[Ins(T):R4]G"                                     
-      prev_COSMIC_83           "INS:T:1:4"                                         
                                [,34]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -954,7 +921,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]A"                                 
       Koh_476                  "G[Ins(T):R1]A"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,35]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -982,7 +948,6 @@
       COSMIC_83                "INS:T:1:5+"                                        
       Koh_89                   "G[Ins(T):R(5,7)]G"                                 
       Koh_476                  "G[Ins(T):R6]G"                                     
-      prev_COSMIC_83           "INS:T:1:5+"                                        
                                [,36]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1010,7 +975,6 @@
       COSMIC_83                "INS:T:1:3"                                         
       Koh_89                   "G[Ins(T):R(0,4)]C"                                 
       Koh_476                  "G[Ins(T):R3]C"                                     
-      prev_COSMIC_83           "INS:T:1:3"                                         
                                [,37]                                             
       ins_or_del               "d"                                               
       pre                      "G"                                               
@@ -1038,7 +1002,6 @@
       COSMIC_83                "DEL:C:1:0"                                       
       Koh_89                   "[Del(C):R1]A"                                    
       Koh_476                  "G[Del(C):R1]A"                                   
-      prev_COSMIC_83           "DEL:C:1:0"                                       
                                [,38]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1066,7 +1029,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]G"                                 
       Koh_476                  "G[Ins(T):R1]G"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,39]                                               
       ins_or_del               "i"                                                 
       pre                      "T"                                                 
@@ -1094,7 +1056,6 @@
       COSMIC_83                "INS:T:1:5+"                                        
       Koh_89                   "T[Ins(T):R(8,)]A"                                  
       Koh_476                  "T[Ins(T):R20]A"                                    
-      prev_COSMIC_83           "INS:T:1:5+"                                        
                                [,40]                                             
       ins_or_del               "d"                                               
       pre                      "T"                                               
@@ -1122,7 +1083,6 @@
       COSMIC_83                "DEL:C:1:0"                                       
       Koh_89                   "[Del(C):R1]T"                                    
       Koh_476                  "T[Del(C):R1]T"                                   
-      prev_COSMIC_83           "DEL:C:1:0"                                       
                                [,41]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1150,7 +1110,6 @@
       COSMIC_83                "INS:T:1:4"                                         
       Koh_89                   "G[Ins(T):R(0,4)]A"                                 
       Koh_476                  "G[Ins(T):R4]A"                                     
-      prev_COSMIC_83           "INS:T:1:4"                                         
                                [,42]                                             
       ins_or_del               "d"                                               
       pre                      "T"                                               
@@ -1178,7 +1137,6 @@
       COSMIC_83                "DEL:C:1:0"                                       
       Koh_89                   "[Del(C):R1]T"                                    
       Koh_476                  "T[Del(C):R1]T"                                   
-      prev_COSMIC_83           "DEL:C:1:0"                                       
                                [,43]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1206,7 +1164,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]A"                                 
       Koh_476                  "G[Ins(T):R1]A"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,44]                                                                                                 
       ins_or_del               "d"                                                                                                   
       pre                      "A"                                                                                                   
@@ -1234,7 +1191,6 @@
       COSMIC_83                "DEL:MH:5+:2"                                                                                         
       Koh_89                   "Del(6,):M2"                                                                                          
       Koh_476                  "Del(7,):M2"                                                                                          
-      prev_COSMIC_83           "DEL:MH:5+:2"                                                                                         
                                [,45]                                               
       ins_or_del               "d"                                                 
       pre                      "T"                                                 
@@ -1262,7 +1218,6 @@
       COSMIC_83                "DEL:C:1:3"                                         
       Koh_89                   "[Del(C):R(4,5)]T"                                  
       Koh_476                  "T[Del(C):R4]T"                                     
-      prev_COSMIC_83           "DEL:C:1:3"                                         
                                [,46]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1290,7 +1245,6 @@
       COSMIC_83                "INS:T:1:5+"                                        
       Koh_89                   "G[Ins(T):R(8,)]C"                                  
       Koh_476                  "G[Ins(T):R9]C"                                     
-      prev_COSMIC_83           "INS:T:1:5+"                                        
                                [,47]                                             
       ins_or_del               "d"                                               
       pre                      "C"                                               
@@ -1318,7 +1272,6 @@
       COSMIC_83                "DEL:T:1:0"                                       
       Koh_89                   "C[Del(T):R(1,4)]G"                               
       Koh_476                  "C[Del(T):R1]G"                                   
-      prev_COSMIC_83           "DEL:T:1:0"                                       
                                [,48]                                             
       ins_or_del               "d"                                               
       pre                      "C"                                               
@@ -1346,7 +1299,6 @@
       COSMIC_83                "DEL:T:1:0"                                       
       Koh_89                   "C[Del(T):R(1,4)]C"                               
       Koh_476                  "C[Del(T):R1]C"                                   
-      prev_COSMIC_83           "DEL:T:1:0"                                       
                                [,49]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1374,7 +1326,6 @@
       COSMIC_83                "INS:T:1:1"                                         
       Koh_89                   "G[Ins(T):R(0,4)]A"                                 
       Koh_476                  "G[Ins(T):R1]A"                                     
-      prev_COSMIC_83           "INS:T:1:1"                                         
                                [,50]                                               
       ins_or_del               "i"                                                 
       pre                      "G"                                                 
@@ -1402,7 +1353,6 @@
       COSMIC_83                "INS:T:1:4"                                         
       Koh_89                   "G[Ins(T):R(0,4)]A"                                 
       Koh_476                  "G[Ins(T):R4]A"                                     
-      prev_COSMIC_83           "INS:T:1:4"                                         
                                [,51]                                               
       ins_or_del               "d"                                                 
       pre                      "G"                                                 
@@ -1430,7 +1380,6 @@
       COSMIC_83                "DEL:C:1:1"                                         
       Koh_89                   "[Del(C):R2]T"                                      
       Koh_476                  "G[Del(C):R2]T"                                     
-      prev_COSMIC_83           "DEL:C:1:1"                                         
                                [,52]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -1458,7 +1407,6 @@
       COSMIC_83                "DEL:C:1:2"                                         
       Koh_89                   "[Del(C):R(1,5)]G"                                  
       Koh_476                  "A[Del(C):R3]G"                                     
-      prev_COSMIC_83           "DEL:C:1:2"                                         
                                [,53]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -1486,7 +1434,6 @@
       COSMIC_83                "DEL:T:1:3"                                         
       Koh_89                   "A[Del(T):R(1,4)]G"                                 
       Koh_476                  "A[Del(T):R4]G"                                     
-      prev_COSMIC_83           "DEL:T:1:3"                                         
                                [,54]                                             
       ins_or_del               "d"                                               
       pre                      "T"                                               
@@ -1514,7 +1461,6 @@
       COSMIC_83                "DEL:C:1:0"                                       
       Koh_89                   "[Del(C):R1]T"                                    
       Koh_476                  "T[Del(C):R1]T"                                   
-      prev_COSMIC_83           "DEL:C:1:0"                                       
                                [,55]                                               
       ins_or_del               "i"                                                 
       pre                      "A"                                                 
@@ -1542,7 +1488,6 @@
       COSMIC_83                "INS:T:1:5+"                                        
       Koh_89                   "A[Ins(T):R(5,7)]A"                                 
       Koh_476                  "A[Ins(T):R7]A"                                     
-      prev_COSMIC_83           "INS:T:1:5+"                                        
                                [,56]                                                
       ins_or_del               "d"                                                  
       pre                      "C"                                                  
@@ -1570,7 +1515,6 @@
       COSMIC_83                "DEL:repeats:2:1"                                    
       Koh_89                   "Del(2,8):U(1,2):R(2,4)"                             
       Koh_476                  "Del2:U2:R2"                                         
-      prev_COSMIC_83           "DEL:repeats:2:1"                                    
                                [,57]                                               
       ins_or_del               "d"                                                 
       pre                      "A"                                                 
@@ -1598,7 +1542,6 @@
       COSMIC_83                "DEL:T:1:1"                                         
       Koh_89                   "A[Del(T):R(1,4)]G"                                 
       Koh_476                  "A[Del(T):R2]G"                                     
-      prev_COSMIC_83           "DEL:T:1:1"                                         
                                [,58]                                               
       ins_or_del               "i"                                                 
       pre                      "A"                                                 
@@ -1626,7 +1569,6 @@
       COSMIC_83                "INS:T:1:3"                                         
       Koh_89                   "A[Ins(T):R(0,4)]G"                                 
       Koh_476                  "A[Ins(T):R3]G"                                     
-      prev_COSMIC_83           "INS:T:1:3"                                         
                                [,59]                                                   
       ins_or_del               "i"                                                     
       pre                      "C"                                                     
@@ -1654,7 +1596,6 @@
       COSMIC_83                "INS:repeats:3:0"                                       
       Koh_89                   "Ins(2,4):R0"                                           
       Koh_476                  "Ins(2,4):M"                                            
-      prev_COSMIC_83           "INS:repeats:3:0"                                       
                                [,60]                                              
       ins_or_del               "d"                                                
       pre                      "A"                                                
@@ -1682,5 +1623,4 @@
       COSMIC_83                "DEL:repeats:2:0"                                  
       Koh_89                   "Del(2,4):R1"                                      
       Koh_476                  "Del2:U1:R1"                                       
-      prev_COSMIC_83           "DEL:repeats:2:0"                                  
 

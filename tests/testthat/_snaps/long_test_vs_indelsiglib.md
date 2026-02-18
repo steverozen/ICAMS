@@ -38,6 +38,5 @@
       COSMIC_83                "INS:C:1:5+"                                        
       Koh_89                   "Ins(C):R(7,)"                                      
       Koh_476                  "A[Ins(C):R10]A"                                    
-      prev_COSMIC_83           "INS:C:1:5+"                                        
       koh_orig_edited          ""                                                  
 
