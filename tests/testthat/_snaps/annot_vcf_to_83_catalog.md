@@ -88,3 +88,93 @@
       DEL:MH:5+:4        6
       DEL:MH:5+:5+       1
 
+# annot_vcf_to_83_catalog produces correct output -- test 2
+
+    Code
+      result
+    Output
+                        s1
+      DEL:C:1:0          0
+      DEL:C:1:1          0
+      DEL:C:1:2          0
+      DEL:C:1:3          0
+      DEL:C:1:4          0
+      DEL:C:1:5+         0
+      DEL:T:1:0          0
+      DEL:T:1:1          0
+      DEL:T:1:2          0
+      DEL:T:1:3          0
+      DEL:T:1:4          0
+      DEL:T:1:5+         0
+      INS:C:1:0          0
+      INS:C:1:1          0
+      INS:C:1:2          0
+      INS:C:1:3          0
+      INS:C:1:4          0
+      INS:C:1:5+         0
+      INS:T:1:0          0
+      INS:T:1:1          0
+      INS:T:1:2          0
+      INS:T:1:3          0
+      INS:T:1:4          0
+      INS:T:1:5+         0
+      DEL:repeats:2:0    0
+      DEL:repeats:2:1    0
+      DEL:repeats:2:2    0
+      DEL:repeats:2:3    0
+      DEL:repeats:2:4    0
+      DEL:repeats:2:5+   0
+      DEL:repeats:3:0    0
+      DEL:repeats:3:1    0
+      DEL:repeats:3:2    0
+      DEL:repeats:3:3    0
+      DEL:repeats:3:4    0
+      DEL:repeats:3:5+   0
+      DEL:repeats:4:0    0
+      DEL:repeats:4:1    0
+      DEL:repeats:4:2    0
+      DEL:repeats:4:3    0
+      DEL:repeats:4:4    0
+      DEL:repeats:4:5+   0
+      DEL:repeats:5+:0   0
+      DEL:repeats:5+:1   0
+      DEL:repeats:5+:2   0
+      DEL:repeats:5+:3   0
+      DEL:repeats:5+:4   0
+      DEL:repeats:5+:5+  0
+      INS:repeats:2:0    0
+      INS:repeats:2:1    0
+      INS:repeats:2:2    0
+      INS:repeats:2:3    0
+      INS:repeats:2:4    0
+      INS:repeats:2:5+   1
+      INS:repeats:3:0    0
+      INS:repeats:3:1    0
+      INS:repeats:3:2    0
+      INS:repeats:3:3    0
+      INS:repeats:3:4    0
+      INS:repeats:3:5+   1
+      INS:repeats:4:0    0
+      INS:repeats:4:1    0
+      INS:repeats:4:2    0
+      INS:repeats:4:3    0
+      INS:repeats:4:4    0
+      INS:repeats:4:5+   0
+      INS:repeats:5+:0   0
+      INS:repeats:5+:1   0
+      INS:repeats:5+:2   0
+      INS:repeats:5+:3   0
+      INS:repeats:5+:4   0
+      INS:repeats:5+:5+  0
+      DEL:MH:2:1         0
+      DEL:MH:3:1         0
+      DEL:MH:3:2         0
+      DEL:MH:4:1         0
+      DEL:MH:4:2         0
+      DEL:MH:4:3         0
+      DEL:MH:5+:1        0
+      DEL:MH:5+:2        0
+      DEL:MH:5+:3        0
+      DEL:MH:5+:4        0
+      DEL:MH:5+:5+       0
+

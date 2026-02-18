@@ -732,7 +732,11 @@ DefaultFilterStatus <- function(variant.caller) {
     return(".")
   } else if (variant.caller == "unknown") {
     stop(
-      '\nUser must specify the value of filter.status explicitly when variant.caller is "unknown"'
+      paste0(
+        '\nUser must specify the value of filter.status',
+        'explicitly when variant.caller is "unknown"\n',
+        'You can ignore filtering by setting filter.status = NULL'
+      )
     )
   } else {
     stop(

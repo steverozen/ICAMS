@@ -1,3 +1,5 @@
+source("~/.Rprofile")
+
 .workspace_home = getwd()
 
 mysnapreview = function() {

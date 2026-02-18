@@ -74,7 +74,7 @@ annot_vcf_to_476_catalog <- function(
   }
 
   data.table::data.table(Koh_476 = ICAMS::catalog.row.order$ID476) %>%
-    dplyr::left_join(compacted_vcf) %>%
+    dplyr::left_join(compacted_vcf, by = "Koh_476") %>%
     mutate(n = if_else(is.na(n), 0L, n)) -> almost
   almost <- as.data.frame(almost)
   rownames(almost) <- pull(almost, Koh_476)
