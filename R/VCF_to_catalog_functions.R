@@ -1608,7 +1608,7 @@ CanonicalizeDBS <- function(ref.vec, alt.vec) {
   if (length(idx) == 0) {
     return(DBS)
   } else {
-    out <- paste0(revc(ref.vec[idx]), revc(alt.vec[idx]))
+    out <- paste0(fastrc::fast_rc(ref.vec[idx]), fastrc::fast_rc(alt.vec[idx]))
     stopifnot(all(out %in% ICAMS::catalog.row.order$DBS78))
     DBS[idx] <- out
     return(DBS)
@@ -1621,7 +1621,7 @@ CanonicalizeQUAD <- function(quad) {
   if (length(idx) == 0) {
     return(quad)
   } else {
-    out <- revc(quad[idx])
+    out <- fastrc::fast_rc(quad[idx])
     stopifnot(all(out %in% ICAMS::catalog.row.order$DBS136))
     quad[idx] <- out
     return(quad)

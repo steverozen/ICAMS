@@ -22,6 +22,7 @@
 #'   column added.
 #'
 #' @importFrom dplyr %>% filter group_by select
+#' @importFrom utils capture.output
 #'
 #' @keywords internal
 quick_check_vcf <- function(

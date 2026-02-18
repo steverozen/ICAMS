@@ -358,10 +358,10 @@ MakeSBS192CatalogFromICAMSExt <- function(cos) {
   transcribed.strand.pos <- which(cos[, 1] == 'T')
 
   before.ref.after[transcribed.strand.pos] <-
-    revc(before.ref.after[transcribed.strand.pos])
+    fastrc::fast_rc(before.ref.after[transcribed.strand.pos])
 
   var <- substring(ref.gt.var, 3, 3)
-  var[transcribed.strand.pos] <- revc(var[transcribed.strand.pos])
+  var[transcribed.strand.pos] <- fastrc::fast_rc(var[transcribed.strand.pos])
 
   internalHeaders <- paste0(before.ref.after, var)
   stopifnot(setequal(internalHeaders, ICAMS::catalog.row.order$SBS192))

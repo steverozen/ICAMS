@@ -49,6 +49,7 @@ Imports: Biostrings,
     BSgenome,
     data.table,
     dplyr,
+    fastrc,
     fuzzyjoin,
     GenomeInfoDb,
     GenomicRanges,
@@ -64,6 +65,7 @@ Imports: Biostrings,
     stringr,
     utils,
     zip
+Remotes: steverozen/fastrc
 Depends: R (>= 4.1),
 LinkingTo: Rcpp
 RoxygenNote: 7.3.3

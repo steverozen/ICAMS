@@ -491,8 +491,8 @@ ConvertCatalogToSigProfilerFormat <- function(input.catalog, file, sep = "\t") {
         #
         # After that, C or T will be the reference base.
         y <- paste0(
-          ICAMS::revc(substring(x, 1, 3)),
-          ICAMS::revc(substring(x, 4, 4))
+          fastrc::fast_rc(substring(x, 1, 3)),
+          fastrc::fast_rc(substring(x, 4, 4))
         )
         # "T" stands for transcribed (antisense) strand
         new <- paste(

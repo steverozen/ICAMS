@@ -148,9 +148,9 @@ categorize_1_justified_indel <- function(
     R = indel_str_count_in_ref
     U = 1L
     if (ins_or_del_seq %in% c("A", "G")) {
-      pre = ICAMS::revc(post)
-      ins_or_del_seq = ICAMS::revc(ins_or_del_seq)
-      post = ICAMS::revc(mymatch[3]) # pre was already overwritten
+      pre = fastrc::fast_rc(post)
+      ins_or_del_seq = fastrc::fast_rc(ins_or_del_seq)
+      post = fastrc::fast_rc(mymatch[3]) # pre was already overwritten
     }
     U_seq = ins_or_del_seq
     U_seq_count_in_indel_seq = 1

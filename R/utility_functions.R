@@ -65,7 +65,7 @@ Collapse192AbundanceTo96 <- function(abundance192) {
   PyrTri <- function(string) {
     stopifnot(nchar(string) == rep(3, length(string)))
     output <-
-      ifelse(substr(string, 2, 2) %in% c("A", "G"), revc(string), string)
+      ifelse(substr(string, 2, 2) %in% c("A", "G"), fastrc::fast_rc(string), string)
     return(output)
   }
   dt <- data.table(abundance192)
@@ -153,8 +153,8 @@ Collapse144AbundanceTo78 <- function(abundance144) {
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   dt <- data.table(abundance144)
   rownames(dt) <- names(abundance144)
-  dt$rn <- ifelse(rownames(dt) %in% canonical.ref, rownames(dt), 
-                  revc(rownames(dt)))
+  dt$rn <- ifelse(rownames(dt) %in% canonical.ref, rownames(dt),
+                  fastrc::fast_rc(rownames(dt)))
   dt1 <- dt[, lapply(.SD, sum), by = rn, .SDcols = ]
   abundance78 <- unlist(dt1[, -1])
   names(abundance78) <- dt1$rn
@@ -920,8 +920,8 @@ PyrTri <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 2, 2) %in% c("A", "G"),
-           paste0(revc(substr(mutstring, 1, 3)),
-                  revc(substr(mutstring, 4, 4))),
+           paste0(fastrc::fast_rc(substr(mutstring, 1, 3)),
+                  fastrc::fast_rc(substr(mutstring, 4, 4))),
            mutstring)
   return(output)
 }
@@ -931,39 +931,35 @@ PyrPenta <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(6, length(mutstring)))
   output <-
     ifelse(substr(mutstring, 3, 3) %in% c("A", "G"),
-           paste0(revc(substr(mutstring, 1, 5)),
-                  revc(substr(mutstring, 6, 6))),
+           paste0(fastrc::fast_rc(substr(mutstring, 1, 5)),
+                  fastrc::fast_rc(substr(mutstring, 6, 6))),
            mutstring)
   return(output)
 }
 
 #' Reverse complement every string in \code{string.vec}
-#' 
-#' Based on \code{\link[Biostrings]{reverseComplement}}.
+#'
+#' A wrapper around \code{\link[fastrc]{fastrc}}.
 #' Handles IUPAC ambiguity codes but not "u" (uracil). \cr
 #' (see <https://en.wikipedia.org/wiki/Nucleic_acid_notation>).
 #'
 #' @param string.vec A character vector.
 #'
-#' @importFrom Biostrings reverseComplement DNAStringSet
-#'
 #' @return A character vector with the reverse complement of every
 #'   string in \code{string.vec}.
 #'
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' revc("aTgc") # GCAT
-#' 
+#'
 #' # A vector and strings with ambiguity codes
 #' revc(c("ATGC", "aTGc", "wnTCb")) # GCAT GCAT VGANW
-#' 
+#'
 #' \dontrun{
 #' revc("ACGU") # An error}
 revc <- function(string.vec) {
-  return(
-    as.character(reverseComplement(DNAStringSet(string.vec)))
-  )
+  fastrc::fast_rc(string.vec)
 }
 
 #' @title Reverse complement strings that represent stranded SBSs
@@ -980,8 +976,8 @@ revc <- function(string.vec) {
 #' @keywords internal
 RevcSBS96 <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
-  context <- revc(substr(mutstring, 1, 3))
-  target  <- revc(substr(mutstring, 4, 4))
+  context <- fastrc::fast_rc(substr(mutstring, 1, 3))
+  target  <- fastrc::fast_rc(substr(mutstring, 4, 4))
   return(paste0(context, target))
 }
 
@@ -998,8 +994,8 @@ RevcSBS96 <- function(mutstring) {
 #' @keywords internal
 RevcDBS144 <- function(mutstring) {
   stopifnot(nchar(mutstring) == rep(4, length(mutstring)))
-  context <- revc(substr(mutstring, 1, 2))
-  target  <- revc(substr(mutstring, 3, 4))
+  context <- fastrc::fast_rc(substr(mutstring, 1, 2))
+  target  <- fastrc::fast_rc(substr(mutstring, 3, 4))
   return(paste0(context, target))
 }
 
@@ -1074,7 +1070,7 @@ CreateTrinucAbundance <- function(file) {
   dt <- fread(file)
   colnames(dt) <- c("3bp", "occurrences")
   dt$type <-
-    ifelse(substr(dt[[1]], 2, 2) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
+    ifelse(substr(dt[[1]], 2, 2) %in% c("A", "G"), fastrc::fast_rc(dt[[1]]), dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   abundance <- dt1$counts
   names(abundance) <- dt1$type
@@ -1117,7 +1113,7 @@ CreateDinucAbundance <- function(file) {
   canonical.ref <-
     c("AC", "AT", "CC", "CG", "CT", "GC", "TA", "TC", "TG", "TT")
   dt$type <-
-    ifelse((dt[[1]]) %in% canonical.ref, dt[[1]], revc(dt[[1]]))
+    ifelse((dt[[1]]) %in% canonical.ref, dt[[1]], fastrc::fast_rc(dt[[1]]))
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   abundance <- dt1$counts
   names(abundance) <- dt1$type
@@ -1181,7 +1177,7 @@ CreatePentanucAbundance <- function(file) {
   dt <- fread(file)
   colnames(dt) <- c("5bp", "occurrences")
   dt$type <-
-    ifelse(substr(dt[[1]], 3, 3) %in% c("A", "G"), revc(dt[[1]]), dt[[1]])
+    ifelse(substr(dt[[1]], 3, 3) %in% c("A", "G"), fastrc::fast_rc(dt[[1]]), dt[[1]])
   dt1 <- dt[, .(counts = sum(occurrences)), by = type]
   abundance <- dt1$counts
   names(abundance) <- dt1$type

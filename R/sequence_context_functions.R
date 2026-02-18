@@ -24,7 +24,7 @@ CreateOnePPMFromSBSVCF <- function(vcf, ref.genome, seq.context.width) {
   # Map the sequence context column in dt to strand-agnostic category
   idx <- substr(dt[[tail(names(dt), 1)]], seq.context.width + 1,
                 seq.context.width + 1) %in% c("A", "G")
-  dt[[tail(names(dt), 1)]][idx] <- revc(dt[[tail(names(dt), 1)]][idx])
+  dt[[tail(names(dt), 1)]][idx] <- fastrc::fast_rc(dt[[tail(names(dt), 1)]][idx])
 
   # Create the position probability matrix (PPM)
   GetPPM <- function(idx, seq.context) {
@@ -170,16 +170,16 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
     
     # alt could be A, C, G, T, need to "normalize" to C or T
     if(alt != indel.base) {
-      seq.context <- revc(seq.context)
+      seq.context <- fastrc::fast_rc(seq.context)
     }
   } else {
-    
+
     if (ins.or.del == "DEL"){
       homopolymer.length <- homopolymer.length + 1
     }
-    
+
     ##except for de novo insertion, we need to check if the ref is at the center
-    
+
     # I don't think this is the only check we need
     if(nchar(alt) == 2 & substring(sequence, mid.base, mid.base) != ref){ #means we are looking at an insertion
       stop("REF not at the center")
@@ -187,25 +187,25 @@ Get1BPIndelFlanks <- function(sequence, ref, alt, indel.class, flank.length = 5)
     if(nchar(alt) == 1 & substring(sequence, mid.base, mid.base + 1) != ref){ #means we are looking at a deletion
       stop("REF not at the center")
     }
-    
+
     homopolymer.starts <- mid.base + 1
-    
+
     homopolymer.ends <- mid.base + homopolymer.length
-    
+
     if (ins.or.del == "DEL"){
       # For deletions, the deleted base will be at position 0
       var.length <- homopolymer.length - 1
     } else {
       var.length <- homopolymer.length
     }
-    
+
     ## normalize the insertion context to the middle
-    
+
     if(substring(sequence, homopolymer.starts, homopolymer.starts)!= indel.base){
       seq.context <- substring(sequence,
                                homopolymer.starts - flank.length ,
                                homopolymer.ends + flank.length + var.length)
-      seq.context <- revc(seq.context)
+      seq.context <- fastrc::fast_rc(seq.context)
       
     } else {
       seq.context <- substring(sequence,

@@ -14,7 +14,7 @@ A character vector with the reverse complement of every
 string in \code{string.vec}.
 }
 \description{
-Based on \code{\link[Biostrings]{reverseComplement}}.
+A wrapper around \code{\link[fastrc]{fastrc}}.
 Handles IUPAC ambiguity codes but not "u" (uracil). \cr
 (see \url{https://en.wikipedia.org/wiki/Nucleic_acid_notation}).
 }

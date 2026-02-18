@@ -272,8 +272,8 @@ CalculatePValues <- function(dt) {
 
 #' @keywords internal
 revcSBS6 <- function(string) {
-  start <- revc(substr(string, 1, 1))
-  end <- revc(substr(string, 3, 3))
+  start <- fastrc::fast_rc(substr(string, 1, 1))
+  end <- fastrc::fast_rc(substr(string, 3, 3))
   return(paste0(start, ">", end))
 }
 
