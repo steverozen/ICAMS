@@ -1595,6 +1595,8 @@ AddSeqContext <-
 #'
 #' @import data.table
 #'
+#' @importFrom GenomicRanges findOverlaps
+#'
 #' @importFrom dplyr %>% group_by mutate
 #'
 #' @return A data frame with new columns added to the input data frame,
@@ -1607,7 +1609,7 @@ AddTranscript <-
       return(df)
     }
 
-    # Sometimes CHROM is numeric, but this breaks foverlaps, below.
+    # Sometimes CHROM is numeric; ensure character for GRanges seqnames.
     df$CHROM <- as.character(df$CHROM)
 
     if (is.null(trans.ranges)) {
@@ -1631,37 +1633,45 @@ AddTranscript <-
       )
     trans.ranges$chrom <- new.chr.names
 
-    # We need to set key for trans.ranges for using data.table::foverlaps
-    #if (!data.table::haskey(trans.ranges)) {
-    #  data.table::setkeyv(trans.ranges, c("chrom", "start", "end"))
-    #}
+    # Use GenomicRanges::findOverlaps to find mutations within transcript ranges
+    query_gr <- GenomicRanges::GRanges(
+      seqnames = df$CHROM,
+      ranges = IRanges::IRanges(start = df$POS, end = df$POS)
+    )
+    subject_gr <- GenomicRanges::GRanges(
+      seqnames = trans.ranges$chrom,
+      ranges = IRanges::IRanges(start = trans.ranges$start,
+                                end = trans.ranges$end)
+    )
+    hits <- GenomicRanges::findOverlaps(query_gr, subject_gr, type = "within")
+    hits_df <- as.data.frame(hits)
+    qi <- hits_df$queryHits
+    si <- hits_df$subjectHits
 
-    # Find range overlaps between the df and trans.ranges
-    #df1 <- data.table(df)
-    #df1[, POS2 := POS]
-    #dt <- data.table::foverlaps(df1, trans.ranges,
-    #                            by.x = c("CHROM", "POS", "POS2"),
-    #                            type = "within", mult = "all")
+    # Build left-joined data.table: matched rows with transcript info
+    matched_dt <- data.table::as.data.table(df[qi, ])
+    matched_dt[, `:=`(
+      .orig_row       = qi,
+      POS2            = df$POS[qi],
+      chrom.y         = trans.ranges$chrom[si],
+      start           = trans.ranges$start[si],
+      end             = trans.ranges$end[si],
+      strand          = trans.ranges$strand[si],
+      Ensembl.gene.ID = trans.ranges$Ensembl.gene.ID[si],
+      gene.symbol     = trans.ranges$gene.symbol[si]
+    )]
 
-    # No longer using data.table::foverlaps as it will cause memory usage error
-    # when df has many rows (e.g. >70000)
-    df2 <- df
-    df2$POS2 <- df2$POS
-    data.table::setnames(
-      df2,
-      old = c("CHROM", "POS", "POS2"),
-      new = c("chrom", "start", "end")
-    )
-    dt <- fuzzyjoin::genome_left_join(
-      x = df2,
-      y = trans.ranges,
-      by = c("chrom", "start", "end")
-    )
-    data.table::setnames(
-      dt,
-      old = c("chrom.x", "start.x", "end.x", "start.y", "end.y"),
-      new = c("CHROM", "POS", "POS2", "start", "end")
-    )
+    # Add unmatched rows (left join semantics), preserving original row order
+    unmatched_idx <- setdiff(seq_len(nrow(df)), qi)
+    if (length(unmatched_idx) > 0) {
+      unmatched_dt <- data.table::as.data.table(df[unmatched_idx, ])
+      unmatched_dt[, `:=`(.orig_row = unmatched_idx, POS2 = POS)]
+      dt <- data.table::rbindlist(list(matched_dt, unmatched_dt), fill = TRUE)
+    } else {
+      dt <- matched_dt
+    }
+    data.table::setorder(dt, .orig_row)
+    dt[, .orig_row := NULL]
 
     # Find out mutations that fall on transcripts on both strands
     #dt1 <- dt[, bothstrand := "+" %in% strand && "-" %in% strand,
