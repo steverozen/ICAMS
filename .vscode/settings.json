@@ -1,14 +1,14 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#1f6fd0",
-        "activityBarBadge.background": "#ee90bb",
-        "activityBarBadge.foreground": "#15202b",
+        "activityBar.activeBackground": "#400735",
+        "activityBarBadge.background": "#475609",
+        "activityBarBadge.foreground": "#e7e7e7",
         "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#1f6fd0",
-        "statusBar.background": "#1857a4",
+        "sash.hoverBorder": "#400735",
+        "statusBar.background": "#12020f",
         "statusBar.foreground": "#e7e7e7",
-        "statusBarItem.hoverBackground": "#1f6fd0",
-        "statusBarItem.remoteBackground": "#1857a4",
+        "statusBarItem.hoverBackground": "#400735",
+        "statusBarItem.remoteBackground": "#12020f",
         "statusBarItem.remoteForeground": "#e7e7e7",
         "statusBarItem.warningBackground": "#4c5376",
         "statusBarItem.warningForeground": "#ffffff",
@@ -24,11 +24,11 @@
         "statusBar.prominentHoverBackground": "#4c5376",
         "statusBar.prominentHoverForeground": "#ffffff90",
         "activityBar.activeBorder": "#4c5376",
-        "titleBar.activeBackground": "#1857a4",
+        "titleBar.activeBackground": "#12020f",
         "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#1857a499",
+        "titleBar.inactiveBackground": "#12020f99",
         "titleBar.inactiveForeground": "#e7e7e799",
-        "activityBar.background": "#1f6fd0",
+        "activityBar.background": "#400735",
         "activityBar.foreground": "#e7e7e7",
         "activityBar.inactiveForeground": "#e7e7e799",
         "focusBorder": "#4c537699",
@@ -49,11 +49,11 @@
         "panel.activeBorder": "#800080",
         "panelTitle.activeBorder": "#800080"
     },
-        "[r]": {
-            "editor.formatOnSave": true,
-            "editor.defaultFormatter": "Posit.air-vscode"
-        },
-    "peacock.color": "#1857a4",
+    "[r]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "Posit.air-vscode"
+    },
+    "peacock.color": "#12020f",
     "windowColor.mainColor": "#4c5376",
     "window.title": "${folderPath}",
     "windowColor.name": "c:\\Users\\steve\\Documents\\GitHub\\ICAMS",
@@ -65,12 +65,11 @@
     "windowColor.setWindowTitle": true,
     //"terminal.foreground": "#110101ff",
     //"console.foreground": "#110101ff",
-    "activityBar.foreground": "#FFFFFF", 
+    "activityBar.foreground": "#FFFFFF",
     "json.schemaDownload.enable": false,
     "[quarto]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "quarto.quarto"
     },
-      "git.commitEditorArtificialIntelligenceSuggestions.enabled": false
+    "git.commitEditorArtificialIntelligenceSuggestions.enabled": false
 }
-
