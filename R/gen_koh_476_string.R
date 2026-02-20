@@ -1,6 +1,6 @@
 gen_Koh_476_string = function(arglist) {
   open_interval_format = FALSE
-  fiveplus_str = ifelse(open_interval_format, "(5,)", "(5,9)")
+  fiveplus_str = if (open_interval_format) "(5,)" else "(5,9)"
 
   if (arglist$ins_or_del == "d") {
     INS_OR_DEL = "Del"
@@ -25,11 +25,7 @@ gen_Koh_476_string = function(arglist) {
     if (!arglist$post %in% c("A", "C", "G", "T")) {
       return(paste0("Cannot categorize indel followed by  ", arglist$post))
     }
-    R_str = ifelse(
-      R >= 99, # Mo, adjust accoring to what you find in the actual data
-      "(99,)",
-      R
-    )
+    R_str = if (R >= 99) "(99,)" else R # Mo, adjust accoring to what you find in the actual data
     return(paste0(
       arglist$pre,
       "[",
@@ -50,14 +46,14 @@ gen_Koh_476_string = function(arglist) {
   if (
     arglist$unit_length == 1 && arglist$prime3_reps == 0 && INS_OR_DEL == "Del"
   ) {
-    L_str = ifelse(L >= 10, "(10,)", L)
-    return(as.character(glue::glue("Del{L_str}:U1:R1")))
+    L_str = if (L >= 10) "(10,)" else L
+    return(paste0("Del", L_str, ":U1:R1"))
   }
 
   if (INS_OR_DEL == "Ins") {
     # browser()
-    L_str = ifelse(L >= 5, "(5,)", L)
-    R_str = ifelse(arglist$R >= 5, fiveplus_str, arglist$R)
+    L_str = if (L >= 5) "(5,)" else L
+    R_str = if (arglist$R >= 5) fiveplus_str else arglist$R
     if (arglist$R == 0) {
       if (L >= 5) {
         return("Ins(5,):R0")
@@ -66,7 +62,7 @@ gen_Koh_476_string = function(arglist) {
       }
     } else {
       if (L >= 5) {
-        U_str = ifelse(U >= 3, "(3,)", U)
+        U_str = if (U >= 3) "(3,)" else U
         return(paste0("Ins(5,):U", U_str, ":R", R_str))
       } else {
         return(paste0("Ins", L, ":U", U, ":R", R_str))
@@ -76,16 +72,16 @@ gen_Koh_476_string = function(arglist) {
     stopifnot(INS_OR_DEL == "Del")
 
     if (arglist$spacer_length == 0 && arglist$prime3_reps == 0) {
-      U_str = ifelse(arglist$unit_length >= 2, "(2,)", "1")
+      U_str = if (arglist$unit_length >= 2) "(2,)" else "1"
       if (L >= 10) {
-        return(as.character(glue::glue("Del(10,):U{U_str}:R1")))
+        return(paste0("Del(10,):U", U_str, ":R1"))
       } else {
-        return(as.character(glue::glue("Del{L}:U{U_str}:R1")))
+        return(paste0("Del", L, ":U", U_str, ":R1"))
       }
     }
 
     if (R == 1) {
-      L_str = ifelse(L >= 10, "(10,)", L)
+      L_str = if (L >= 10) "(10,)" else L
       if (U == 1) {
         return(paste0("Del", L_str, ":U1:R1"))
       } else {
@@ -93,8 +89,8 @@ gen_Koh_476_string = function(arglist) {
       }
     }
 
-    if (L %in% 2:4) {
-      R_str = ifelse(R >= 5, fiveplus_str, R)
+    if (L <= 4) {
+      R_str = if (R >= 5) fiveplus_str else R
       return(paste0("Del", L, ":U", U, ":R", R_str))
     }
 
@@ -105,14 +101,14 @@ gen_Koh_476_string = function(arglist) {
         }
         return("Del5:U1:R(5,9)")
       } else {
-        R_str = ifelse(R >= 5, fiveplus_str, R)
+        R_str = if (R >= 5) fiveplus_str else R
         return(paste0("Del", L, ":U", U, ":R", R_str))
       }
     }
 
     stopifnot(L >= 6)
-    U_str = ifelse(U >= 5, "(5,)", U)
-    R_str = ifelse(R >= 5, ifelse(open_interval_format, "(5,)", "(5,9)"), R)
+    U_str = if (U >= 5) "(5,)" else U
+    R_str = if (R >= 5) fiveplus_str else R
 
     if (U == 1) {
       if (open_interval_format) {

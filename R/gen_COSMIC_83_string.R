@@ -8,7 +8,7 @@ gen_COSMIC_83_string = function(arglist) {
     rep_count = arglist$indel_str_count_in_ref
   }
 
-  rep_count_string = ifelse(rep_count >= 5, "5+", rep_count)
+  rep_count_string = if (rep_count >= 5) "5+" else rep_count
   rm(rep_count)
   if (nchar(arglist$ins_or_del_seq) == 1) {
     return(paste0(INS_OR_DEL, arglist$ins_or_del_seq, ":1:", rep_count_string))
@@ -22,7 +22,7 @@ gen_COSMIC_83_string = function(arglist) {
   }
 
   if (arglist$ins_or_del == "d" && !is.na(arglist$mh) && arglist$mh > 0) {
-    mh_string = ifelse(arglist$mh >= 5, "5+", arglist$mh)
+    mh_string = if (arglist$mh >= 5) "5+" else arglist$mh
     return(paste0("DEL:MH:", size_string, ":", mh_string))
   }
 

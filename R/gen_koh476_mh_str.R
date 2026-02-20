@@ -18,8 +18,8 @@ gen_koh476_mh_str = function(arglist) {
     }
   }
 
-  L_str = ifelse(arglist$L >= 7, "(7,)", arglist$L)
-  M_str = ifelse(seg_microhom_len >= 6, "(6,)", seg_microhom_len)
+  L_str = if (arglist$L >= 7) "(7,)" else arglist$L
+  M_str = if (seg_microhom_len >= 6) "(6,)" else seg_microhom_len
 
-  return(as.character(glue::glue("Del{L_str}:M{M_str}")))
+  return(paste0("Del", L_str, ":M", M_str))
 }

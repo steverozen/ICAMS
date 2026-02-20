@@ -16,8 +16,8 @@ gen_koh89_del_mh_str = function(arglist) {
       microhom_len_str = as.character(seg_microhom_len)
     }
   } else {
-    L_str = glue::glue("{min(4, seg_microhom_len + 1)},5")
-    if (seg_microhom_len %in% 3:4) {
+    L_str = paste0(min(4, seg_microhom_len + 1), ",5")
+    if (seg_microhom_len >= 3 && seg_microhom_len <= 4) {
       microhom_len_str = "(3,4)"
     } else if (seg_microhom_len >= 6) {
       microhom_len_str = "(6,)"
@@ -25,5 +25,5 @@ gen_koh89_del_mh_str = function(arglist) {
       microhom_len_str = as.character(seg_microhom_len)
     }
   }
-  return(as.character(glue::glue("Del({L_str}):M{microhom_len_str}")))
+  return(paste0("Del(", L_str, "):M", microhom_len_str))
 }

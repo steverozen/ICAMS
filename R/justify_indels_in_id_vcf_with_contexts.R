@@ -166,24 +166,24 @@ justify_indels_in_id_vcf_with_contexts <- function(vcf, explain_indels = 1) {
       }
     }
 
-    # Store the position shift
-    vcf$pos_shift[i] <- as.integer(pos_shift)
+    # Store the position shift (use set() to avoid data.table column copy)
+    data.table::set(vcf, i = as.integer(i), j = "pos_shift", value = as.integer(pos_shift))
 
     # Update POS: decrement by the shift amount
     # When we justify an indel and move it left by pos_shift bases,
     # the genomic position also moves left (decreases)
-    vcf$POS[i] <- vcf$POS[i] - pos_shift
+    data.table::set(vcf, i = as.integer(i), j = "POS", value = vcf$POS[i] - pos_shift)
 
     if (pos_shift == 0) {
       stopifnot(orig_alt == new_alt)
       stopifnot(orig_ref == new_ref)
     } else {
-      vcf$ALT[i] = new_alt
-      vcf$REF[i] = new_ref
+      data.table::set(vcf, i = as.integer(i), j = "ALT", value = new_alt)
+      data.table::set(vcf, i = as.integer(i), j = "REF", value = new_ref)
     }
     # Update seq.context.width: decrement by the shift amount
     # The justified position is now closer to the left edge of seq.context
-    vcf$seq.context.width[i] <- vcf$seq.context.width[i] - pos_shift
+    data.table::set(vcf, i = as.integer(i), j = "seq.context.width", value = vcf$seq.context.width[i] - pos_shift)
 
     if (explain_indels > 1) {
       message(sprintf(

@@ -29,19 +29,19 @@ gen_Koh_89_string = function(arglist) {
         if (pre == "A" && R == 0 && post %in% c("A", "T")) {
           return(paste0("A[Ins(C):R0]", post))
         } else {
-          if (R %in% 0:3) {
+          if (R <= 3) {
             return("Ins(C):R(0,3)")
-          } else if (R %in% 4:6) {
+          } else if (R <= 6) {
             return("Ins(C):R(4,6)")
           } else {
             return("Ins(C):R(7,)")
           }
         }
       } else if (ins_or_del_seq == "T") {
-        if (R %in% 0:4) {
+        if (R <= 4) {
           return(paste0(pre, "[Ins(T):R(0,4)]", post))
         }
-        if (R %in% 5:7) {
+        if (R <= 7) {
           return(paste0(pre, "[Ins(T):R(5,7)]", post))
         }
         return(paste0(pre, "[Ins(T):R(8,)]", post))
@@ -55,12 +55,12 @@ gen_Koh_89_string = function(arglist) {
         } else if (post == "G") {
           return("[Del(C):R(1,5)]G")
         }
-        R_str = ifelse(R >= 4, "(4,5)", R)
+        R_str = if (R >= 4) "(4,5)" else R
         return(paste0("[Del(C):R", R_str, "]", post))
       } else if (ins_or_del_seq == "T") {
-        if (R %in% 1:4) {
+        if (R <= 4) {
           R_str = "1,4"
-        } else if (R %in% 5:7) {
+        } else if (R <= 7) {
           R_str = "5,7"
         } else {
           R_str = "8,"
@@ -113,7 +113,7 @@ gen_Koh_89_string = function(arglist) {
   }
 
   if (arglist$spacer_length == 0 && arglist$prime3_reps == 0) {
-    if (L %in% 2:4) {
+    if (L <= 4) {
       return("Del(2,4):R1")
     } else {
       return("Del(5,):R1")

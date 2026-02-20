@@ -4,7 +4,7 @@
       avcf1
     Output
            CHROM       POS     ID           REF    ALT   QUAL FILTER
-          <char>     <num> <char>        <char> <char> <char> <char>
+          <char>     <int> <char>        <char> <char> <char> <char>
        1:      1   5288645      .            TG      T      .   PASS
        2:      1  41781103      .            AT      A      .   PASS
        3:      1  73638531      .             T     TA      .   PASS
@@ -66,7 +66,7 @@
       59:      2 209218269      .             C   CTCT      .   PASS
       60:      2 215239837      .           AGG      A      .   PASS
            CHROM       POS     ID           REF    ALT   QUAL FILTER
-          <char>     <num> <char>        <char> <char> <char> <char>
+          <char>     <int> <char>        <char> <char> <char> <char>
                                                                                                                                                    INFO
                                                                                                                                                  <char>
        1:       DP=82;ECNT=1;NLOD=10.53;N_ART_LOD=-1.556e+00;POP_AF=2.500e-06;P_CONTAM=0.00;P_GERMLINE=-1.022e+01;RCNTS=2,0;RPA=2,1;RU=G;STR;TLOD=87.23
@@ -324,7 +324,7 @@
                                                            MCF10A_DHG11565_HH2GKALXX
                                                                               <char>
                  VAF read.depth seq.context.width
-               <num>      <int>             <num>
+               <num>      <int>             <int>
        1: 0.60000000         45                21
        2: 0.36363636         22                21
        3: 0.54285714         35                21
@@ -386,7 +386,7 @@
       59: 0.13157895         38                60
       60: 0.41025641         39                40
                  VAF read.depth seq.context.width
-               <num>      <int>             <num>
+               <num>      <int>             <int>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             seq.context
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <char>
        1:                                                                                                                                                                                                                                                                                                                                                                                                                                                                  CTGTCCCCTTTCTTGAAGGTTTGGCTTCATATGCAATTCTAAGT
@@ -516,7 +516,7 @@
           pos_shift trans.start.pos trans.end.pos trans.strand trans.Ensembl.gene.ID
               <int>           <int>         <int>       <char>                <char>
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
-                     <char>     <num>     <lgcl> <int>     <char> <char>
+                     <char>     <int>     <lgcl> <int>     <char> <char>
        1:              <NA>   5288645      FALSE     1          d      G
        2:              <NA>  41781103      FALSE     1          d      A
        3:              <NA>  73638531      FALSE     1          i      C
@@ -578,7 +578,7 @@
       59:           PIKFYVE 209218269      FALSE     1          i      C
       60:            SPAG16 215239837      FALSE     1          d      A
           trans.gene.symbol      POS2 bothstrand count ins_or_del    pre
-                     <char>     <num>     <lgcl> <int>     <char> <char>
+                     <char>     <int>     <lgcl> <int>     <char> <char>
           ins_or_del_seq   post     L        U_seq     U U_seq_count_in_indel_seq
                   <char> <char> <int>       <char> <int>                    <int>
        1:              C      A     1            C     1                        1

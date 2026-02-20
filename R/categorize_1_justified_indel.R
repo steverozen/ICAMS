@@ -1,5 +1,3 @@
-library(Biostrings)
-
 #' Given a indel and its sequence context, categorize it
 #'
 #' This function is primarily for internal use, but we export it
@@ -88,8 +86,8 @@ categorize_1_justified_indel <- function(
   }
   ins_or_del_seq_len = nchar(ins_or_del_seq)
 
-  if (grepl("N", ins_or_del_seq)) {
-    typeseq = ifelse(ins_or_del == "i", "inserted", "deleted")
+  if (grepl("N", ins_or_del_seq, fixed = TRUE)) {
+    typeseq = if (ins_or_del == "i") "inserted" else "deleted"
     message(
       "The ",
       typeseq,
@@ -113,7 +111,7 @@ categorize_1_justified_indel <- function(
     x_context = context
   }
 
-  mymatch = stringr::str_match(x_context, regex)[1, ]
+  mymatch = stringi::stri_match_first_regex(x_context, regex)[1, ]
 
   preceding_context = mymatch[2]
   pre = mymatch[3] # single character preceding the indel
@@ -165,7 +163,7 @@ categorize_1_justified_indel <- function(
     # exactly ins_or_del_seq.
 
     newpattern = "^(.+?)\\1*$"
-    newmatch = stringr::str_match(ins_or_del_seq, newpattern)
+    newmatch = stringi::stri_match_first_regex(ins_or_del_seq, newpattern)
     U_seq = newmatch[1, 2]
 
     # U if from the nomenclature in Koh et al, Fig 2a.
@@ -175,7 +173,7 @@ categorize_1_justified_indel <- function(
 
     # Is U_seq repeated in post_all?
     R_match_pattern = paste0("^(?:", U_seq, ")+")
-    R_match = stringr::str_match(
+    R_match = stringi::stri_match_first_regex(
       paste0(all_repeated_seq, post_all),
       R_match_pattern
     )
@@ -201,7 +199,7 @@ categorize_1_justified_indel <- function(
     if (ins_or_del == "d") {
       if (indel_str_count_in_ref == 1) {
         # Check for micrhomology based on the ins_or_del_seq alone
-        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        mh = lcprefix_fast(ins_or_del_seq, post_all)
         if (length(R) == 0) {
           browser() # This is programming error
         }
@@ -212,7 +210,7 @@ categorize_1_justified_indel <- function(
     } else {
       # Insertion
       if (indel_str_count_in_ref == 0) {
-        mh = Biostrings::lcprefix(ins_or_del_seq, post_all)
+        mh = lcprefix_fast(ins_or_del_seq, post_all)
         if (R == 0) {
           # mh can be shorter than ins_or_del_seq, for example
           # in the insertion ATC|GG|GTC where GG is inserted.
