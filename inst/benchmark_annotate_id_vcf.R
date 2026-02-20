@@ -3,10 +3,10 @@ zz = ReadVCF(
   filter.status = NULL
 )
 file.remove("/tmp/out.out")
-Rprof("/tmp/out.out")
+Rprof("/tmp/out.out", line.profiling = TRUE)
 uu = AnnotateIDVCF(zz, ref.genome = "hg19")
 Rprof(NULL)
-summaryRprof("/tmp/out.out")
+summaryRprof("/tmp/out.out", lines = "show")
 
 # 0980e7fd-051d-45e9-9ca6-2baf073da4e8.consensus.indel.vcf.gz
 #161K
