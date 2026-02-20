@@ -1,7 +1,7 @@
 Package: ICAMS
 Type: Package
 Title: In-Depth Characterization and Analysis of Mutational Signatures ('ICAMS')
-Version: 3.0.14
+Version: 3.0.15
 Authors@R: c(person(given = "Steve",
                       family = "Rozen",
                       role = c("aut", "cre"),
