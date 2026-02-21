@@ -35,6 +35,22 @@ test_that("annot_vcf_to_476_catalog produces correct output", {
   expect_snapshot(result)
 })
 
+test_that("annot_vcf_to_476_catalog returns zero catalog for empty input", {
+  empty_vcf <- data.frame(
+    CHROM = character(), POS = integer(), REF = character(),
+    ALT = character(), FILTER = character(),
+    Koh_476 = character(), R = integer()
+  )
+
+  result <- annot_vcf_to_476_catalog(empty_vcf, sample_id = "empty")
+
+  expect_equal(nrow(result), 476)
+  expect_equal(ncol(result), 1)
+  expect_equal(colnames(result), "empty")
+  expect_equal(rownames(result), ICAMS::catalog.row.order$ID476)
+  expect_equal(sum(result[, 1]), 0L)
+})
+
 test_that("annot_vcf_to_476_catalog clip_le_9 produces <= counts", {
   skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
   stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))

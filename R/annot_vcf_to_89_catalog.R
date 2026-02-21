@@ -46,7 +46,18 @@ annot_vcf_to_89_catalog <- function(
   do_message = FALSE,
   clip_le_9 = FALSE
 ) {
+  zero_catalog <- function() {
+    rn <- ICAMS::catalog.row.order$ID89
+    m <- data.frame(x = rep(0L, length(rn)), row.names = rn)
+    colnames(m) <- sample_id
+    m
+  }
+
+  if (nrow(annot_vcf) == 0) return(zero_catalog())
+
   cleaner_vcf <- quick_check_vcf(annot_vcf, FILTER_PASS, do_message)
+
+  if (nrow(cleaner_vcf) == 0) return(zero_catalog())
 
   if (clip_le_9) {
     cleaner_vcf <- dplyr::filter(cleaner_vcf, R <= 9)
