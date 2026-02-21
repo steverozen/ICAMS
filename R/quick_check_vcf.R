@@ -21,7 +21,6 @@
 #' @return A data frame deduplicated by position, with a \code{pos_id}
 #'   column added.
 #'
-#' @importFrom dplyr %>% filter group_by select
 #' @importFrom utils capture.output
 #'
 #' @keywords internal
@@ -38,22 +37,35 @@ quick_check_vcf <- function(
     message("initial annot_vcf rows = ", nrow(annot_vcf))
   }
 
+  # Replaced dplyr with data.table for performance:
+  # if (FILTER_PASS) {
+  #   annot_vcf %>%
+  #     filter(FILTER == "PASS") -> annot_vcf
+  # }
   if (FILTER_PASS) {
-    annot_vcf %>%
-      filter(FILTER == "PASS") -> annot_vcf
+    dt <- data.table::as.data.table(annot_vcf)
+    annot_vcf <- as.data.frame(dt[FILTER == "PASS"])
   }
 
   if (do_message) {
     message("num PASS rows = ", nrow(annot_vcf))
   }
 
-  annot_vcf %>%
-    dplyr::mutate(pos_id = paste0(CHROM, "-", POS)) -> vcf_with_pos_id
+  # Replaced dplyr with data.table for performance:
+  # annot_vcf %>%
+  #   dplyr::mutate(pos_id = paste0(CHROM, "-", POS)) -> vcf_with_pos_id
+  dt <- data.table::as.data.table(annot_vcf)
+  dt[, pos_id := paste0(CHROM, "-", POS)]
+  vcf_with_pos_id <- dt
 
-  vcf_with_pos_id %>%
-    group_by(pos_id) %>%
-    filter(dplyr::n_distinct(ALT) > 1) %>%
-    dplyr::select(pos_id, REF, ALT) -> multiple_alts
+  # Replaced dplyr with data.table for performance:
+  # vcf_with_pos_id %>%
+  #   group_by(pos_id) %>%
+  #   filter(dplyr::n_distinct(ALT) > 1) %>%
+  #   dplyr::select(pos_id, REF, ALT) -> multiple_alts
+  n_alts <- vcf_with_pos_id[, .(n_alt = data.table::uniqueN(ALT)), by = pos_id]
+  multi_pos <- n_alts[n_alt > 1, pos_id]
+  multiple_alts <- vcf_with_pos_id[pos_id %in% multi_pos, .(pos_id, REF, ALT)]
 
   if (nrow(multiple_alts) > 0) {
     warning(
@@ -62,7 +74,9 @@ quick_check_vcf <- function(
     )
   }
 
-  vcf_with_pos_id %>% dplyr::distinct(pos_id, .keep_all = TRUE) -> cleaner_vcf
+  # Replaced dplyr with data.table for performance:
+  # vcf_with_pos_id %>% dplyr::distinct(pos_id, .keep_all = TRUE) -> cleaner_vcf
+  cleaner_vcf <- as.data.frame(unique(vcf_with_pos_id, by = "pos_id"))
   if (do_message) {
     message("num PASS && unique rows = ", nrow(cleaner_vcf))
   }
