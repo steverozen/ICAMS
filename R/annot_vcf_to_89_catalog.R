@@ -26,6 +26,9 @@
 #' @param FILTER_PASS If \code{TRUE}, retain only rows where the
 #'   \code{FILTER} column equals \code{"PASS"}.
 #'
+#' @param clip_le_9 Only keep variants with "R" <= 9, to approximate
+#'   PCAWG indel calling.
+#'
 #' @param do_message If \code{TRUE}, emit diagnostic messages showing
 #'   row counts at each processing step.
 #'
@@ -40,9 +43,17 @@ annot_vcf_to_89_catalog <- function(
   annot_vcf,
   sample_id = "no_sample_id_provided",
   FILTER_PASS = FALSE,
-  do_message = FALSE
+  do_message = FALSE,
+  clip_le_9 = FALSE
 ) {
   cleaner_vcf <- quick_check_vcf(annot_vcf, FILTER_PASS, do_message)
+
+  if (clip_le_9) {
+    cleaner_vcf <- dplyr::filter(cleaner_vcf, R <= 9)
+    if (do_message) {
+      message("num rows after R <= 9 filter = ", nrow(cleaner_vcf))
+    }
+  }
 
   cleaner_vcf %>%
     dplyr::count(Koh_89) -> compacted_vcf

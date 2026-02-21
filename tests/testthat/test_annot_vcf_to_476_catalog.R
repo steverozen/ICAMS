@@ -34,3 +34,29 @@ test_that("annot_vcf_to_476_catalog produces correct output", {
   expect_equal(sum(result), n_unique)
   expect_snapshot(result)
 })
+
+test_that("annot_vcf_to_476_catalog clip_le_9 produces <= counts", {
+  skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
+  stopifnot(requireNamespace("BSgenome.Hsapiens.1000genomes.hs37d5"))
+
+  id.vcf <- ICAMS:::ReadStrelkaIDVCF(
+    testthat::test_path("testdata/Strelka-ID-GRCh37/Strelka.ID.GRCh37.s1.vcf")
+  )
+
+  annotated <- AnnotateIDVCF(
+    id.vcf,
+    ref.genome = "hg19",
+    explain_indels = 0
+  )
+
+  full <- annot_vcf_to_476_catalog(
+    annotated$annotated.vcf, sample_id = "s1"
+  )
+  clipped <- annot_vcf_to_476_catalog(
+    annotated$annotated.vcf, sample_id = "s1", clip_le_9 = TRUE
+  )
+
+  expect_equal(nrow(clipped), 476)
+  expect_true(all(clipped >= 0))
+  expect_true(sum(clipped) <= sum(full))
+})

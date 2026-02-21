@@ -8,7 +8,8 @@ annot_vcf_to_89_catalog(
   annot_vcf,
   sample_id = "no_sample_id_provided",
   FILTER_PASS = FALSE,
-  do_message = FALSE
+  do_message = FALSE,
+  clip_le_9 = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ returned matrix.}
 
 \item{do_message}{If \code{TRUE}, emit diagnostic messages showing
 row counts at each processing step.}
+
+\item{clip_le_9}{Only keep variants with "R" <= 9, to approximate
+PCAWG indel calling.}
 }
 \value{
 A single-column matrix with 89 rows (one per Koh category)
