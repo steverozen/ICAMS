@@ -8,7 +8,7 @@ ICAMS (In-depth Characterization and Analysis of Mutational Signatures) is an R 
 
 **Key publications**: Boot et al., Genome Research 2018 & 2020
 
-**Current active branch**: v3.0.11-branch (development on version 3.0.12)
+**Current version**: 3.0.15 (see DESCRIPTION). Development branch: `4.0.0-branch`. Default remote branch: `v3.0.11-branch`.
 
 ## Development Commands
 
@@ -46,7 +46,17 @@ devtools::test(filter = "SBS96")
 
 ### CI/CD
 
-GitHub Actions runs R CMD check on macOS, Windows, and Ubuntu (devel, release, oldrel-1). Build arguments: `--no-manual --compact-vignettes=gs+qpdf`
+GitHub Actions (`.github/workflows/R-CMD-check.yaml`) runs R CMD check on macOS, Windows, and Ubuntu (devel, release, oldrel-1). Build arguments: `--no-manual --compact-vignettes=gs+qpdf`. Currently triggered on pushes to `main`, `master`, `v3.0.10-branch`.
+
+### Linting
+
+`.lintr` config: UTF-8 encoding, 120-character line length, no assignment or object name linting enforced.
+
+## Coding Style
+
+- Exported functions use UpperCamelCase (`CanonicalizeID`, `ReadVCFs`); newer internal helpers use snake_case (`justify_indel`, `seg_simple`)
+- Two-space indents, `<-` for assignment
+- Roxygen2 with markdown enabled (`Roxygen: list(markdown = TRUE)` in DESCRIPTION)
 
 ## Architecture
 
@@ -56,10 +66,10 @@ Catalogs are S3 objects extending matrices with specialized classes and attribut
 
 ```r
 # Class hierarchy
-matrix → SBS96Catalog / SBS192Catalog / SBS1536Catalog
-         DBS78Catalog / DBS136Catalog / DBS144Catalog
-         IndelCatalog / ID166Catalog
-         COMPOSITECatalog (multiple types combined)
+matrix -> SBS96Catalog / SBS192Catalog / SBS1536Catalog
+          DBS78Catalog / DBS136Catalog / DBS144Catalog
+          IndelCatalog / ID166Catalog
+          COMPOSITECatalog (multiple types combined)
 
 # Critical attributes
 catalog.type    # "counts", "density", "counts.signature", "density.signature"
@@ -73,42 +83,47 @@ Always use `as.catalog()` to ensure proper attribute assignment. Never manually 
 
 ### Module Organization
 
-The R/ directory contains ~16.5K lines organized by functionality:
+The R/ directory contains ~18K lines across 42 files. Major modules:
 
-- **VCF_to_catalog_functions.R** (3,994 lines): Core VCF parsing and catalog creation
-- **shiny_related_functions.R** (2,150 lines): Interactive visualization
-- **utility_functions.R** (2,261 lines): Catalog transformation, collapsing, manipulation
-- **plot.R** (2,059 lines): All visualization with S3 method dispatch
-- **ID_functions.R** (837 lines): Indel classification (microhomology, repeat detection)
-- **infer_catalog_format.R** (600 lines): Auto-detect catalog formats
-- **other_catalog_formats.R** (493 lines): SigProfiler/COSMIC format support
-- **chromosome_name_functions.R** (489 lines): Standardize chromosome naming
-- **sequence_context_functions.R** (462 lines): Extract sequence context from VCFs
-- **strandbias_functions.R** (404 lines): Transcriptional strand bias analysis
-- **read_write_catalog.R** (244 lines): Catalog I/O
-- **categorize_1_justified_indel.R** (232 lines): Koh indel categorization
-- **gen_koh_476_string.R** (202 lines): Generate Koh 476-category strings
-- **gen_koh_89_string.R** (176 lines): Generate Koh 89-category strings
-- **justify_id_vcf.R** (237 lines): Justify indel positions
-- **justify_and_categorize_1_indel.R** (159 lines): Combined justification and categorization
+- **shiny_related_functions.R** (~2,600 lines): Interactive visualization (Shiny app)
+- **utility_functions.R** (~2,260 lines): Catalog transformation, collapsing, manipulation
+- **readVCF_etc.R** (~2,170 lines): VCF reading functions (ReadVCF, ReadStrelka*, ReadMutect*)
+- **plot.R** (~2,060 lines): All visualization with S3 method dispatch
+- **VCF_to_catalog_functions.R** (~1,660 lines): Core VCF-to-catalog pipeline orchestration
+- **ID_functions.R** (~880 lines): Indel classification (microhomology, repeat detection)
+- **infer_catalog_format.R** (~690 lines): Auto-detect catalog formats from files
+- **other_catalog_formats.R** (~570 lines): SigProfiler/COSMIC format support
+- **chromosome_name_functions.R** (~490 lines): Standardize chromosome naming ("chr1" vs "1")
+- **sequence_context_functions.R** (~460 lines): Extract flanking sequence context from VCFs
+- **strandbias_functions.R** (~400 lines): Transcriptional strand bias analysis
+
+Indel classification has been modularized into several files:
+- **categorize_1_justified_indel.R**: Koh indel categorization dispatch
+- **justify_id_vcf.R**, **justify_indel.R**, **justify_indels_in_id_vcf_with_contexts.R**: Indel justification (canonical positioning)
+- **annot_vcf_to_83_catalog.R**, **annot_vcf_to_89_catalog.R**, **annot_vcf_to_476_catalog.R**: Create catalogs for each classification scheme
+- **gen_COSMIC_83_string.R**, **gen_koh_89_string.R**, **gen_koh_476_string.R**: Category string generation
+
+### Rcpp
+
+`src/segment_simple.cpp` provides a C++ segmentation implementation, exported as `segment_simple_cpp()`. Linked via `LinkingTo: Rcpp` in DESCRIPTION and `useDynLib(ICAMS, .registration = TRUE)` in NAMESPACE.
 
 ### VCF Processing Pipeline
 
 ```
-ReadVCF() / ReadStrelkaXXXVCF() / ReadMutectVCF()
-    ↓
-MakeDataFrameFromVCF() → Remove duplicates, filter chromosomes
-    ↓
+ReadVCF() / ReadStrelkaXXXVCF() / ReadMutectVCF()   [readVCF_etc.R]
+    |
+MakeDataFrameFromVCF() -> Remove duplicates, filter chromosomes
+    |
 Annotate VCF:
-  - AddSeqContext() → Extract flanking sequences
-  - AddTranscript() → Add gene/strand info for transcriptional bias
-  - AddRunInformation() → Add repeat/microhomology info for indels
-    ↓
-CreateOneColXXXMatrix() → Create matrix with canonical row order
-    ↓
-as.catalog() → Add attributes
-    ↓
-cbind() → Combine multiple samples
+  - AddSeqContext() -> Extract flanking sequences
+  - AddTranscript() -> Add gene/strand info for transcriptional bias
+  - AddRunInformation() -> Add repeat/microhomology info for indels
+    |
+CreateOneColXXXMatrix() -> Create matrix with canonical row order
+    |
+as.catalog() -> Add attributes
+    |
+cbind() -> Combine multiple samples
 ```
 
 Functions return lists containing:
@@ -133,31 +148,33 @@ PlotCatalog <- function(catalog, ...) {
 # Type-specific methods
 PlotCatalog.SBS96Catalog <- function(catalog, ...) { ... }
 PlotCatalog.DBS78Catalog <- function(catalog, ...) { ... }
-# etc.
 ```
 
 Methods implemented: `PlotCatalog`, `PlotCatalogToPdf`, `WriteCatalog`, `[` (subsetting), `cbind`
 
+### Exported Functions
+
+53 exported functions plus 41 S3 methods. Key function groups:
+- **VCF readers**: `ReadVCFs`, `ReadAndSplitVCFs`, `ReadAndSplitMutectVCFs`, `ReadAndSplitStrelkaSBSVCFs`, `SimpleReadVCF`
+- **VCF-to-catalog pipelines**: `VCFsToCatalogs`, `VCFsToSBSCatalogs`, `VCFsToDBSCatalogs`, `VCFsToIDCatalogs`
+- **Convenience wrappers**: `MutectVCFFilesToCatalog`, `StrelkaSBSVCFFilesToCatalog`, `StrelkaIDVCFFilesToCatalog`, plus `*ToPdf` and `*ToZipFile` variants
+- **Catalog I/O**: `ReadCatalog`, `WriteCatalog`, `as.catalog`
+- **Transformations**: `TransformCatalog`, `Collapse*` functions
+- **Plotting**: `PlotCatalog`, `PlotCatalogToPdf`, `PlotTransBiasGeneExp`
+- **VCF annotation**: `AnnotateSBSVCF`, `AnnotateDBSVCF`, `AnnotateIDVCF`
+- **Indel functions**: `justify_indel`, `justify_id_vcf`, `categorize_1_justified_indel`, `annot_vcf_to_83_catalog`, `annot_vcf_to_89_catalog`, `annot_vcf_to_476_catalog`
+- **Low-level indel**: `Canonicalize1Del`, `FindMaxRepeatDel`, `FindDelMH`
+- **Utilities**: `revc`, `seg_simple`, `segment_simple_cpp`, `IsICAMSCatalog`, `GetFreebayesVAF`, `GetMutectVAF`, `GetStrelkaVAF`, `GetPCAWGConsensusVAF`
+
 ## Indel Classification System
 
-ICAMS supports multiple indel classification schemes:
+ICAMS supports three indel classification schemes:
 
-### COSMIC 83-Category System (Original)
-
-The ID (insertion/deletion) classification is algorithmically complex:
-
-1. **`FindMaxRepeatDel()`**: Count tandem repeat units in deletion context
-2. **`FindDelMH()`**: Find microhomology at deletion boundaries
-3. **`Canonicalize1Del()`**: Classify deletion type
-   - 1bp deletions: Track deleted base + repeat count
-   - Multi-bp in repeats: Track length + repeat count
-   - Microhomology deletions: Track length + MH length
-4. **`Canonicalize1INS()`**: Classify insertion type
-   - 1bp insertions: Track inserted base + repeat count
-   - Multi-bp insertions: Track length + repeat count
-5. **`CanonicalizeID()`**: Vectorized wrapper for full VCF
+### COSMIC 83-Category System
 
 Classification output format: `{DEL|INS}:{base|repeats|MH}:{length}:{count}`
+
+Key functions: `FindMaxRepeatDel()` -> `FindDelMH()` -> `Canonicalize1Del()` / `Canonicalize1INS()` -> `CanonicalizeID()` (vectorized wrapper)
 
 Examples:
 - `DEL:T:1:2` = 1bp deletion of T in 2 tandem repeats
@@ -165,17 +182,14 @@ Examples:
 - `DEL:MH:5:3` = 5bp deletion with 3bp microhomology
 - `INS:A:1:0` = 1bp insertion of A, no repeats
 
-### Koh Classification Systems (New Development)
+### Koh Classification Systems
 
-Two additional, more granular classification schemes based on Koh et al.:
+Two additional, more granular schemes based on Koh et al.:
 
-1. **Koh 89 categories** (`gen_koh_89_string.R`): Medium-resolution classification
-2. **Koh 476 categories** (`gen_koh_476_string.R`): High-resolution classification
+1. **Koh 89 categories** (`gen_koh_89_string.R`): Medium-resolution
+2. **Koh 476 categories** (`gen_koh_476_string.R`): High-resolution
 
-These systems consider additional factors:
-- Preceding and following bases
-- Repeat unit count (R) with finer binning
-- Different treatment for insertions vs deletions
+These consider additional factors: preceding/following bases, repeat unit count (R) with finer binning, and different treatment for insertions vs deletions.
 
 **Indel justification**: Before classification, indels must be "justified" (canonically positioned) using `justify_indel()` and related functions. This ensures consistent classification for indels that can be represented in multiple ways within repeat sequences.
 
@@ -186,42 +200,39 @@ Three supported genomes:
 - **GRCh38**: `BSgenome.Hsapiens.UCSC.hg38`
 - **GRCm38**: `BSgenome.Mmusculus.UCSC.mm10`
 
-BSgenome packages are Suggests (not Imports) to reduce installation burden. Tests skip gracefully if genomes not installed:
+BSgenome packages are Suggests (not Imports). Tests skip gracefully if genomes not installed:
 
 ```r
 skip_if("" == system.file(package = "BSgenome.Hsapiens.1000genomes.hs37d5"))
 ```
 
-Users must install separately: `BiocManager::install("BSgenome.Hsapiens.UCSC.hg38")`
+## Key Dependencies
+
+- **fastrc**: Provides `fast_rc` for fast reverse complement (replaces older custom `revc` implementation). Installed from GitHub via `Remotes: steverozen/fastrc`.
+- **Rcpp**: C++ segmentation via `segment_simple.cpp`
+- **Bioconductor**: BSgenome, Biostrings, GenomicRanges, IRanges, GenomeInfoDb
+- **data.table**: High-performance data manipulation
 
 ## Abundance and Density Calculations
 
 **Density** = counts / abundance (mutations per megabase of context)
 
-Abundance varies by:
-- K-mer size (2bp, 3bp, 4bp, 5bp)
-- Reference genome (GRCh37, GRCh38, GRCm38)
-- Region (genome, exome, transcript)
-- Strand context (stranded for transcribed regions)
-
-Pre-computed abundances stored in `sysdata.rda` (internal package data). Use `TransformCatalog()` to convert between count-based and density-based representations or to normalize across different regions.
+Abundance varies by k-mer size, reference genome, region (genome/exome/transcript), and strand context. Pre-computed abundances stored in `sysdata.rda`. Use `TransformCatalog()` for conversions.
 
 ## Data Generation Pipeline
 
 To regenerate internal data (only needed when updating reference genomes or transcript annotations):
 
 1. **K-mer abundance files**: CSV files in `data-raw/new_masked_abundance/{GRCh37,GRCh38,GRCm38}/`
-2. **Run scripts in order**:
-   - `load_abundance_from_files.R` → Load k-mer counts
-   - `create_catalogs.R` → Generate catalog row orders
-   - `create_order_for_DBS136_plotting.R` → DBS136 plotting order
-   - `create_ranges.R` → Transcript ranges from GENCODE GTF
-   - `create_gene_expression_data.R` → Gene expression datasets
-   - `create_ICAMS_SigPro_ID.R` → ID format conversion matrices
-   - `create_catalogs_COSMIC.R` → COSMIC signature headers
-3. **Save**: `save_global_variables.R` → Creates `sysdata.rda`
-
-The pipeline is documented in `data-raw/code/save_global_variables.R`
+2. **Run scripts in order** (in `data-raw/code/`):
+   - `load_abundance_from_files.R` -> Load k-mer counts
+   - `create_catalogs.R` -> Generate catalog row orders
+   - `create_order_for_DBS136_plotting.R` -> DBS136 plotting order
+   - `create_ranges.R` -> Transcript ranges from GENCODE GTF
+   - `create_gene_expression_data.R` -> Gene expression datasets
+   - `create_ICAMS_SigPro_ID.R` -> ID format conversion matrices
+   - `create_catalogs_COSMIC.R` -> COSMIC signature headers
+3. **Save**: `save_global_variables.R` -> Creates `sysdata.rda`
 
 ## Multi-Format Support
 
@@ -231,60 +242,18 @@ ICAMS reads/writes multiple catalog formats:
 - **SigProfiler**: TSV format with different row ordering for ID catalogs
 - **COSMIC**: CSV format from COSMIC signature database
 
-`ReadCatalog()` auto-detects format. Use `ConvertCatalogToSigProfilerFormat()` for exports.
-
-Conversion between ICAMS and SigProfiler ID formats uses matrices:
-- `ICAMS.to.SigPro.ID` (83x83 sparse matrix)
-- `SigPro.to.ICAMS.ID` (83x83 sparse matrix)
+`ReadCatalog()` auto-detects format. Conversion between ICAMS and SigProfiler ID formats uses `ICAMS.to.SigPro.ID` and `SigPro.to.ICAMS.ID` matrices.
 
 ## Parallel Processing
 
-Many functions accept `num.of.cores` parameter:
+Many functions accept `num.of.cores` parameter. Implementation: `parallel::mclapply()` on Unix-like systems. Windows automatically falls back to sequential (num.of.cores forced to 1).
 
-```r
-ReadVCFs(..., num.of.cores = 4)
-VCFsToCatalogs(..., num.of.cores = 4)
-```
+## Testing
 
-Implementation: `parallel::mclapply()` on Unix-like systems (Linux, macOS)
-
-**Windows limitation**: No fork support, automatically falls back to sequential processing (num.of.cores forced to 1)
-
-## Testing Conventions
-
-- **68 test files** in `tests/testthat/`
-- Each catalog type has dedicated tests for plotting, I/O, transformations
-- Test data: `tests/testthat/testdata/` (VCFs, catalogs, expected outputs)
+- **76 test files** in `tests/testthat/` (testthat edition 3)
+- Test data in `tests/testthat/testdata/` (VCFs, catalogs, expected outputs)
 - Regression tests compare against saved `.csv` files
-- Use `expect_equal()` with tolerance for numeric comparisons
-- Test parallel execution separately from sequential
-
-## Documentation
-
-- **Roxygen2**: All exported functions documented with `@title`, `@param`, `@return`, `@export`, `@examples`
-- Generate with: `devtools::document()`
-- Reference manual: See `data-raw/ICAMS_3.0.9.pdf` (version-specific)
-- Function count: 88 exported functions
-
-## Version and Branch Strategy
-
-- Current version: **3.0.12** (see DESCRIPTION)
-- Active branch: **v3.0.11-branch**
-- CRAN releases use version-tagged branches
-- Main development typically on version branches, not master
-
-## Development Files in inst/
-
-The `inst/` directory contains experimental and testing code for indel classification development:
-
-- **are_mappings_unique.R**: Verify uniqueness of indel category mappings
-- **koh_checking.R**: Validation of Koh classification system
-- **generate_canonicalize_tests.R**: Generate test cases for indel canonicalization
-- **make_exhuastive_test_cases.R**: Create comprehensive test suites
-- **check_indel_M.R**: Check indel microhomology calculations
-- **koh.code.notes.txt**: Development notes on Koh classification implementation
-
-These files are for development reference and testing, not part of the package API.
+- Tests skip gracefully when BSgenome packages not installed
 
 ## Common Pitfalls
 
@@ -294,9 +263,3 @@ These files are for development reference and testing, not part of the package A
 4. **Discarded variants**: Check `discarded.variants` element of return lists to diagnose missing mutations
 5. **Row order**: Each catalog type has a canonical row order; use `CatalogRowOrder()` and `CheckAndReorderRownames()`
 6. **Abundance matching**: When transforming catalogs, ensure abundance matches region and reference genome
-
-## Citation
-
-If adding features that should be cited, follow format in README:
-
-> Rozen SG, Jiang NH, Boot A, Liu M, Wu Y, Huang MN, Chang JG (2025). ICAMS: In-depth Characterization and Analysis of Mutational Signatures. R package version 3.0.12, https://CRAN.R-project.org/package=ICAMS.
