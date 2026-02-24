@@ -19,7 +19,7 @@ annot_vcf_to_476_catalog(
 a \code{FILTER} column is also required.}
 
 \item{sample_id}{A character string used as the column name in the
-returned matrix.}
+returned data frame.}
 
 \item{FILTER_PASS}{If \code{TRUE}, retain only rows where the
 \code{FILTER} column equals \code{"PASS"}.}
@@ -31,14 +31,14 @@ row counts at each processing step.}
 PCAWG indel calling.}
 }
 \value{
-A single-column matrix with 476 rows (one per Koh
+A single-column data frame with 476 rows (one per Koh
 category) and integer mutation counts. Row names are the Koh 476
 category strings; the column name is \code{sample_id}.
 }
 \description{
 Take an annotated indel VCF data frame (with columns
 \code{Koh_476} and \code{R} as produced by indel classification
-functions) and produce a single-column matrix of mutation counts
+functions) and produce a single-column data frame of mutation counts
 in the 476-category Koh classification scheme.
 }
 \details{
@@ -48,7 +48,7 @@ The function:
 \item Removes duplicate positions (warns if ALT alleles differ).
 \item Collapses single-base indels with repeat count \eqn{\ge 9}
 into an \code{"R(9,)"} bin.
-\item Tallies counts per Koh 476 category and returns a matrix
+\item Tallies counts per Koh 476 category and returns a data frame
 with one row per category (using
 \code{ICAMS::catalog.row.order$ID476}).
 }

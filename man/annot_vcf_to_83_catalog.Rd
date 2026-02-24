@@ -19,7 +19,7 @@ If \code{FILTER_PASS} is \code{TRUE}, a \code{FILTER} column
 is also required.}
 
 \item{sample_id}{A character string used as the column name in the
-returned matrix.}
+returned data frame.}
 
 \item{FILTER_PASS}{If \code{TRUE}, retain only rows where the
 \code{FILTER} column equals \code{"PASS"}.}
@@ -31,14 +31,14 @@ row counts at each processing step.}
 PCAWG indel calling.}
 }
 \value{
-A single-column matrix with 83 rows (one per COSMIC ID
+A single-column data frame with 83 rows (one per COSMIC ID
 category) and integer mutation counts. Row names are the COSMIC 83
 category strings; the column name is \code{sample_id}.
 }
 \description{
 Take an annotated indel VCF data frame (with column
 \code{COSMIC_83} as produced by indel classification functions) and
-produce a single-column matrix of mutation counts in the
+produce a single-column data frame of mutation counts in the
 83-category COSMIC ID classification scheme.
 }
 \details{
@@ -46,7 +46,7 @@ The function:
 \enumerate{
 \item Optionally filters to PASS variants.
 \item Removes duplicate positions (warns if ALT alleles differ).
-\item Tallies counts per COSMIC 83 category and returns a matrix
+\item Tallies counts per COSMIC 83 category and returns a data frame
 with one row per category (using
 \code{ICAMS::catalog.row.order$ID}).
 }
